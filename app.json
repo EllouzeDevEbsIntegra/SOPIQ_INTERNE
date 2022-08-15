@@ -1,6 +1,6 @@
 {
-  "id": "5af00cb7-5c54-478f-993e-494765498f4f",
-  "name": "SOPIQ_INTERNE",
+  "id": "fe610c13-6229-4f65-9f57-05b0ea985881",
+  "name": "SOPIQ INTERNE",
   "publisher": "Default publisher",
   "version": "1.0.0.0",
   "brief": "",
@@ -12,16 +12,34 @@
   "logo": "",
   "dependencies": [
     {
+      "id": "ad36f199-c652-4e8e-9c9a-ca851e424760",
+      "publisher": "Default publisher",
+      "name": "SOPICBC16A",
+      "version": "1.0.0.0"
+    },
+    {
+      "id": "2b27f547-3678-406e-b857-9483795217ac",
+      "publisher": "DeltaSoft International",
+      "name": "ModuleEncaiss_Decaiss",
+      "version": "1.0.0.0"
+    },
+    {
+      "id": "840d69c1-a2ae-4b41-bfb1-4b23af2cf237",
+      "publisher": "DeltaSoft International",
+      "name": "StandardTunisien",
+      "version": "1.0.0.0"
+    },
+    {
       "id": "63ca2fa4-4f03-4f2b-a480-172fef340d3f",
       "publisher": "Microsoft",
       "name": "System Application",
-      "version": "16.0.0.0"
+      "version": "16.0.11240.12076"
     },
     {
       "id": "437dbf0e-84ff-417a-965d-ed2bb9650972",
       "publisher": "Microsoft",
       "name": "Base Application",
-      "version": "16.0.0.0"
+      "version": "16.0.11240.12076"
     }
   ],
   "screenshots": [],
