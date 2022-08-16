@@ -17,24 +17,22 @@
             "schemaUpdateMode": "ForceSync",
             "port": 7049
         }
-        // ,
-        // {
-        //     "name": "SOPIQ PROD",
-        //     "request": "launch",
-        //     "type": "al",
-        //     "environmentType": "OnPrem",
-        //     "server": "http://192.168.1.4",
-        //     "serverInstance": "BC160",
-        //     "authentication": "Windows",
-        //     "startupObjectId": 50101,
-        //     "startupObjectType": "Page",
-        //     "breakOnError": true,
-        //     "launchBrowser": true,
-        //     "enableLongRunningSqlStatements": true,
-        //     "enableSqlInformationDebugger": true,
-        //     "tenant": "default",
-        //     "schemaUpdateMode": "ForceSync",
-        //     "port": 7049
-        // }
+        ,
+        {
+            "name": "SOPIQ PROD",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "OnPrem",
+            "server": "http://192.168.1.4",
+            "serverInstance": "BC160",
+            "authentication": "Windows",
+            "breakOnError": true,
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "tenant": "default",
+            "schemaUpdateMode": "ForceSync",
+            "port": 7049
+        }
     ]
 }

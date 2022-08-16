@@ -77,6 +77,22 @@ pageextension 50118 "item" extends "Item List" //31
 
             }
         }
+        addafter("UPDATE ITEM INFO")
+        {
+            action("ITEM OLD TRANSACTION") // MAJ des quelques champs sur la fiche article dans toute la table article
+            {
+                ApplicationArea = All;
+                Caption = 'Historique des articles 2020-2021';
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+
+                RunObject = page "Item Old Transaction";
+                RunPageLink = "Item N°" = field("No.");
+            }
+
+
+        }
 
     }
 

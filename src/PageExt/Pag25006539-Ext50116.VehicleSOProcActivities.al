@@ -16,8 +16,9 @@ pageextension 50116 "Vehicle SO Proc. Activities" extends "Vehicle SO Proc. Acti
 
                 }
 
-                field("Cmd ouvert"; rec."Today Sum Sales")
+                field("Today Sum Sales"; rec."Today Sum Sales")
                 {
+                    Caption = 'Vente du jour';
                     ApplicationArea = All;
                     DrillDownPageId = "Sales line";
                     DrillDown = true;
