@@ -3,7 +3,35 @@ pageextension 50118 "item" extends "Item List" //31
 
     layout
     {
-        // Add changes to page layout here
+        addlast(content)
+        {
+            field("PurshQty20"; rec.PurshQty20)
+            {
+                ApplicationArea = All;
+                DrillDown = true;
+                DrillDownPageId = "Item Old Transaction";
+            }
+            field("PurshQty21"; rec.PurshQty21)
+            {
+                ApplicationArea = All;
+                DrillDown = true;
+                DrillDownPageId = "Item Old Transaction";
+            }
+
+            field("SalesQty20"; rec.SalesQty20)
+            {
+                ApplicationArea = All;
+                DrillDown = true;
+                DrillDownPageId = "Item Old Transaction";
+            }
+
+            field("SalesQty21"; rec.SalesQty21)
+            {
+                ApplicationArea = All;
+                DrillDown = true;
+                DrillDownPageId = "Item Old Transaction";
+            }
+        }
     }
 
     actions

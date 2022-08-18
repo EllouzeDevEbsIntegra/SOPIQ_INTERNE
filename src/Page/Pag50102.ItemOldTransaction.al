@@ -5,15 +5,61 @@ page 50102 "Item Old Transaction"
     UsageCategory = Lists;
     SourceTable = "Item Old Transaction";
     Caption = 'Mouvement articles 2020-2021';
+    Editable = false;
     ModifyAllowed = false;
     DeleteAllowed = false;
     InsertAllowed = false;
+    DataCaptionExpression = GetCaption;
+    DataCaptionFields = "Item N°";
 
 
     layout
     {
         area(Content)
         {
+            grid(Quantité)
+            {
+
+                field(ActualQty; Itemstk.Inventory)
+                {
+                    Caption = 'Quantité actuel';
+                    Editable = false;
+                }
+                field(PurshQty20; ItemStk.PurshQty20)
+                {
+
+                    Caption = 'Achat 2020';
+                    Editable = false;
+
+                    ApplicationArea = All;
+                }
+
+                field(PurshQty21; ItemStk.PurshQty21)
+                {
+
+                    Caption = 'Achat 2021';
+                    Editable = false;
+
+                    ApplicationArea = All;
+                }
+                field(SalesQty20; ItemStk.SalesQty20)
+                {
+
+                    Caption = 'Vente 2020';
+                    Editable = false;
+
+                    ApplicationArea = All;
+                }
+                field(SalesQty21; ItemStk.SalesQty21)
+                {
+
+                    Caption = 'Vente 2021';
+                    Editable = false;
+
+                    ApplicationArea = All;
+                }
+
+            }
             repeater(GroupName)
             {
                 field("Document N°"; "Document N°")
@@ -32,12 +78,14 @@ page 50102 "Item Old Transaction"
                 {
                     Caption = 'Sortie';
                     Editable = false;
+                    Visible = false;
                 }
 
                 field("Is Input"; "Is Input")
                 {
                     Caption = 'Entré';
                     Editable = false;
+                    Visible = false;
                 }
 
                 field("Tier N°"; "Tier N°")
@@ -131,6 +179,40 @@ page 50102 "Item Old Transaction"
         }
     }
 
+
+    trigger OnAfterGetRecord()
+
+    begin
+
+        if ItemStk.get("Item N°") Then
+            ItemStk.CalcFields(Inventory, PurshQty20, PurshQty21, SalesQty20, SalesQty21);
+
+    end;
+
     var
-        myInt: Integer;
+        ItemStk: Record Item;
+        recItem: Record "Item old transaction";
+
+
+
+    local procedure GetCaption(): Text
+    var
+
+        ItemLocal: Record "Item";
+        SourceTableName: Text;
+        SourceFilter: Text;
+    begin
+
+        case true of
+            GetFilter("Item N°") <> '':
+                begin
+                    SourceTableName := 'Article';
+                    SourceFilter := GetFilter("Item N°");
+                end;
+
+        end;
+        exit(StrSubstNo('%1 %2', SourceTableName, SourceFilter));
+
+    end;
+
 }
