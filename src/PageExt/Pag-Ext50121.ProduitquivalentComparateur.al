@@ -30,7 +30,7 @@ pageextension 50121 "Produit équivalent Comparateur" extends "Produit équivale
 
             }
 
-            action("Item Old Transaction") // On click, afficher la page item info contenant l'image et les attributs  
+            action("Item Old Transaction")
             {
                 ApplicationArea = All;
                 Caption = 'Historique article 2020-2021';
@@ -40,8 +40,6 @@ pageextension 50121 "Produit équivalent Comparateur" extends "Produit équivale
                 RunObject = page "Item Old Transaction";
                 RunPageLink = "Item N°" = field("No.");
                 ShortcutKey = F8;
-
-
             }
         }
     }
