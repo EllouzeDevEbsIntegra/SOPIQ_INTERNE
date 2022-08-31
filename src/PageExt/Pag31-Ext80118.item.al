@@ -3,33 +3,17 @@ pageextension 80118 "item" extends "Item List" //31
 
     layout
     {
-        addlast(Control1)
+        addafter(InventoryField) // Ajout du champ prix initial dans ligne vente
         {
-            field("PurshQty20"; rec.PurshQty20)
+            field("ImportQty"; ImportQty)
             {
+                Caption = 'Qté Import';
                 ApplicationArea = All;
-                DrillDown = true;
-                DrillDownPageId = "Item Old Transaction";
             }
-            field("PurshQty21"; rec.PurshQty21)
+            field("StockQty"; StockQty)
             {
+                Caption = 'Qté Stock';
                 ApplicationArea = All;
-                DrillDown = true;
-                DrillDownPageId = "Item Old Transaction";
-            }
-
-            field("SalesQty20"; rec.SalesQty20)
-            {
-                ApplicationArea = All;
-                DrillDown = true;
-                DrillDownPageId = "Item Old Transaction";
-            }
-
-            field("SalesQty21"; rec.SalesQty21)
-            {
-                ApplicationArea = All;
-                DrillDown = true;
-                DrillDownPageId = "Item Old Transaction";
             }
         }
     }
@@ -110,13 +94,13 @@ pageextension 80118 "item" extends "Item List" //31
             action("ITEM OLD TRANSACTION") // MAJ des quelques champs sur la fiche article dans toute la table article
             {
                 ApplicationArea = All;
-                Caption = 'Historique des articles 2020-2021';
+                Caption = 'Historique des articles 2021';
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
-
-                RunObject = page "Item Old Transaction";
-                RunPageLink = "Item N°" = field("No.");
+                ShortcutKey = F9;
+                RunObject = page "Item Transaction 2021";
+                RunPageLink = "Item N°" = field("No."), Year = CONST('2021');
             }
 
 

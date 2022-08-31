@@ -4,6 +4,8 @@ page 50100 "Sales line"
     ApplicationArea = All;
     UsageCategory = Administration;
     SourceTable = "Sales Line";
+    SourceTableView = where("Document Type" = filter(Order));
+    // SourceTable = "Sales Shipment Line";
 
     layout
     {

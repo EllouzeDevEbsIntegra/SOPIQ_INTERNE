@@ -13,7 +13,4 @@ pageextension 80120 "Product To Be Compared card" extends "Product To Be Compare
     {
         // Add changes to page actions here
     }
-
-    var
-        myInt: Integer;
 }

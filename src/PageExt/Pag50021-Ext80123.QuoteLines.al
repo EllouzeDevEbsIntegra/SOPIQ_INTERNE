@@ -1,4 +1,4 @@
-pageextension 80123 "Quote Lines" extends "Quote Lines"
+pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
 {
     layout
     {
@@ -12,12 +12,12 @@ pageextension 80123 "Quote Lines" extends "Quote Lines"
             action("Item Old Transaction")
             {
                 ApplicationArea = All;
-                Caption = 'Historique article 2020-2021';
+                Caption = 'Historique article 2021';
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
-                RunObject = page "Item Old Transaction";
-                RunPageLink = "Item N°" = field("No.");
+                RunObject = page "Item Transaction 2021";
+                RunPageLink = "Item N°" = field("No."), Year = CONST('2021');
                 ShortcutKey = F8;
             }
         }

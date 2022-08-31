@@ -9,6 +9,7 @@ tableextension 80101 "Sales Cue" extends "Sales Cue"
 
             FieldClass = FlowField;
             CalcFormula = sum("Sales Line"."Line Amount" where("Shipment Date" = field("date jour")));
+            // CalcFormula = sum("Sales Shipment Line"."Line Amount" where("Shipment Date" = field("date jour")));
 
         }
 

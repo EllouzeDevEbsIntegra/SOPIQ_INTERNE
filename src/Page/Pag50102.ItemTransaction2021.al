@@ -1,10 +1,10 @@
-page 50102 "Item Old Transaction"
+page 50102 "Item Transaction 2021"
 {
     PageType = List;
     ApplicationArea = All;
     UsageCategory = Lists;
     SourceTable = "Item Old Transaction";
-    Caption = 'Mouvement articles 2020-2021';
+    Caption = 'Mouvement articles 2021';
     Editable = false;
     ModifyAllowed = false;
     DeleteAllowed = false;
@@ -25,27 +25,11 @@ page 50102 "Item Old Transaction"
                     Caption = 'Quantité actuel';
                     Editable = false;
                 }
-                field(PurshQty20; ItemStk.PurshQty20)
-                {
-
-                    Caption = 'Achat 2020';
-                    Editable = false;
-
-                    ApplicationArea = All;
-                }
 
                 field(PurshQty21; ItemStk.PurshQty21)
                 {
 
                     Caption = 'Achat 2021';
-                    Editable = false;
-
-                    ApplicationArea = All;
-                }
-                field(SalesQty20; ItemStk.SalesQty20)
-                {
-
-                    Caption = 'Vente 2020';
                     Editable = false;
 
                     ApplicationArea = All;
@@ -177,6 +161,25 @@ page 50102 "Item Old Transaction"
         {
 
         }
+
+
+    }
+    actions
+    {
+        area(Processing)
+        {
+            action("Item Old Transaction")
+            {
+                ApplicationArea = All;
+                Caption = 'Historique article 2020';
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                RunObject = page "Item Transaction 2020";
+                RunPageLink = "Item N°" = field("Item N°"), Year = CONST('2020');
+                ShortcutKey = F9;
+            }
+        }
     }
 
 
@@ -185,7 +188,7 @@ page 50102 "Item Old Transaction"
     begin
 
         if ItemStk.get("Item N°") Then
-            ItemStk.CalcFields(Inventory, PurshQty20, PurshQty21, SalesQty20, SalesQty21);
+            ItemStk.CalcFields(Inventory, PurshQty21, SalesQty21);
 
     end;
 

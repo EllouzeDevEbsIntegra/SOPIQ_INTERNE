@@ -13,7 +13,7 @@ pageextension 80116 "Vehicle SO Proc. Activities" extends "Vehicle SO Proc. Acti
                     Caption = 'Prix vente modifié';
                     ApplicationArea = All;
                     DrillDownPageId = "Sales line";
-
+                    DrillDown = true;
                 }
 
                 field("Today Sum Sales"; rec."Today Sum Sales")

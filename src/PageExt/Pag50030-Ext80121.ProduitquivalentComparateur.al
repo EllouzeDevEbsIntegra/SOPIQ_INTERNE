@@ -1,11 +1,26 @@
 pageextension 80121 "Produit équivalent Comparateur" extends "Produit équivalent Comparateur" //50030
 {
+
     layout
     {
+        modify("Last Direct Cost")
+        {
+            Visible = true;
+        }
+
+        modify("Inventory without Import")
+        {
+            Visible = false;
+        }
+
+        modify("Import Inventory")
+        {
+            Visible = false;
+        }
         // Add changes to page layout here
         addbefore("Unit Price")
         {
-            field("Last Pursh. Date"; rec."Last Purchase Date")
+            field("Last Pursh. Date"; "Last. Pursh. Date")
             {
                 Caption = 'Date Dernier Achat';
                 ApplicationArea = All;
@@ -21,6 +36,38 @@ pageextension 80121 "Produit équivalent Comparateur" extends "Produit équivale
                 ApplicationArea = All;
                 Editable = false;
             }
+            field("Last. Preferential"; "Last. Preferential")
+            {
+                Caption = 'Dernier Preferential';
+                ApplicationArea = All;
+                Editable = false;
+
+            }
+        }
+
+        addafter("Import Inventory")
+        {
+            field("StockQty"; StockQty)
+            {
+                Caption = 'Stock actuel';
+                ApplicationArea = All;
+                StyleExpr = FieldStyleQty;
+
+            }
+            field("ImportQty"; ImportQty)
+            {
+                Caption = 'Stock import';
+                ApplicationArea = All;
+                // StyleExpr = FieldStyleQtyImport;
+                StyleExpr = FieldStyleQtyImport;
+            }
+
+            field("Last Pursh. Cost"; rec."Last. Pursh. cost DS")
+            {
+                Caption = 'Dernier Cout Achat Calculé';
+                ApplicationArea = All;
+                Editable = false;
+            }
         }
     }
 
@@ -29,28 +76,15 @@ pageextension 80121 "Produit équivalent Comparateur" extends "Produit équivale
 
         addafter(ItemTransaction)
         {
-            action("Item Info") // On click, afficher la page item info contenant l'image et les attributs  
-            {
-                ApplicationArea = All;
-                Caption = 'Information de l''article';
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
-                RunObject = page "Item info";
-                RunPageLink = "No." = field("No.");
-
-
-            }
-
             action("Item Old Transaction")  // On click, afficher la page historique des articles 2020 - 2021  
             {
                 ApplicationArea = All;
-                Caption = 'Historique article 2020-2021';
+                Caption = 'Historique article 2021';
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
-                RunObject = page "Item Old Transaction";
-                RunPageLink = "Item N°" = field("No.");
+                RunObject = page "Item Transaction 2021";
+                RunPageLink = "Item N°" = field("No."), Year = CONST('2021');
                 ShortcutKey = F8;
             }
         }
@@ -58,13 +92,27 @@ pageextension 80121 "Produit équivalent Comparateur" extends "Produit équivale
 
     var
         lastDevisePrice: Decimal;
+        FieldStyleQty, FieldStyleQtyImport : Text[50];
+
+
+    procedure SetStyleQte(PDecimal: Decimal): Text[50]
+    begin
+        IF PDecimal <= 0 THEN exit('Unfavorable') ELSE exit('Favorable');
+    end;
 
     trigger OnAfterGetRecord()
     var
         lPurchasePrice: Record "purchase price";
-    begin // récupérer dernier prix en devise 
+
+
+    begin
+        FieldStyleQty := SetStyleQte(StockQty);
+        FieldStyleQtyImport := SetStyleQte(ImportQty);
+
+        // Initialisation des variables
         lastDevisePrice := 0;
-        lPurchasePrice.Reset();
+
+        // récupérer dernier prix en devise 
         lPurchasePrice.SetCurrentKey("Starting Date");
         lPurchasePrice.SetRange("Vendor No.", "Vendor No.");
         lPurchasePrice.SetRange("Item No.", "No.");
@@ -72,5 +120,7 @@ pageextension 80121 "Produit équivalent Comparateur" extends "Produit équivale
         if lPurchasePrice.FindLast() then begin
             lastDevisePrice := lPurchasePrice."Direct Unit Cost";
         end;
+
     end;
+
 }
