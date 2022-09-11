@@ -2,7 +2,7 @@ pageextension 80122 "Item Transactions" extends "Item Transactions"
 {
     layout
     {
-        // Add changes to page layout here
+
     }
 
     actions
@@ -25,6 +25,4 @@ pageextension 80122 "Item Transactions" extends "Item Transactions"
         }
     }
 
-    var
-        myInt: Integer;
 }

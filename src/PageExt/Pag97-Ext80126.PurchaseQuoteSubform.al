@@ -4,13 +4,14 @@ pageextension 80126 "Purchase Quote Subform" extends "Purchase Quote Subform" //
     {
         addafter(Quantity)
         {
-            field(Stock; Itemstk.Inventory)
+            field(Stock; Itemstk."StockQty")
             {
                 Caption = 'Stock actuel';
                 ApplicationArea = All;
                 Editable = false;
                 StyleExpr = FieldStyleQty;
             }
+
 
             field("On Pursh. Qty"; Itemstk."Qty. on Purch. Order")
             {
@@ -21,6 +22,53 @@ pageextension 80126 "Purchase Quote Subform" extends "Purchase Quote Subform" //
             }
 
 
+        }
+
+        addafter("Vendor Unit Cost")
+        {
+            field("asking price"; "asking price")
+            {
+                ApplicationArea = All;
+                Caption = 'Prix demandé';
+                StyleExpr = FieldStyleNegPrice;
+                trigger OnValidate()
+                begin
+                    FieldStyleNegPrice := SetStyleNegociation("negotiated price", "asking price");
+                end;
+            }
+            field("asking qty"; "asking qty")
+            {
+                ApplicationArea = All;
+                Caption = 'Qté demandé';
+            }
+
+            field("negotiated price"; "negotiated price")
+            {
+                ApplicationArea = All;
+                Caption = 'Prix négocié';
+                StyleExpr = FieldStyleNegPrice;
+                trigger OnValidate()
+                begin
+                    FieldStyleNegPrice := SetStyleNegociation("negotiated price", "asking price");
+                end;
+            }
+            field("negotiated qty"; "negotiated qty")
+            {
+                ApplicationArea = All;
+                Caption = 'Qté négocié';
+            }
+
+
+        }
+
+        modify("Vendor Unit Cost")
+        {
+            Editable = false;
+        }
+
+        modify("Vendor Quantity")
+        {
+            Editable = false;
         }
     }
 
@@ -34,18 +82,27 @@ pageextension 80126 "Purchase Quote Subform" extends "Purchase Quote Subform" //
     begin
 
         if ItemStk.get("No.") Then
-            ItemStk.CalcFields(Inventory, "Qty. on Purch. Order");
+            ItemStk.CalcFields("Qty. on Purch. Order", "StockQty");
 
         FieldStyleQty := SetStyle(ItemStk.Inventory);
         FieldStyleOnOrdQty := SetStyle(ItemStk."Qty. on Purch. Order");
+
+
+        FieldStyleNegPrice := SetStyleNegociation("negotiated price", "asking price");
     end;
 
     var
         ItemStk: Record Item;
-        FieldStyleQty, FieldStyleOnOrdQty : Text[50];
+        FieldStyleQty, FieldStyleOnOrdQty, FieldStyleNegPrice : Text[50];
 
     procedure SetStyle(PDecimal: Decimal): Text[50]
     begin
         IF PDecimal <= 0 THEN exit('Unfavorable') ELSE exit('Favorable');
+    end;
+
+    procedure SetStyleNegociation(PrixNeg: Decimal; PrixDemandé: Decimal): Text[50]
+    begin
+        IF (PrixNeg > 0) then
+            IF PrixNeg > PrixDemandé THEN exit('Unfavorable') ELSE exit('Favorable');
     end;
 }

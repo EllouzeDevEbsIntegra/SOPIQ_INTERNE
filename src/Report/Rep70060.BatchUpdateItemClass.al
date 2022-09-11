@@ -33,6 +33,7 @@ report 70060 "Batch Update Item Class"
                 Modify();
 
             end;
+
         }
     }
 

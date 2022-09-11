@@ -9,20 +9,26 @@ pageextension 80127 "Item Card" extends "Item Card"//30
                 ApplicationArea = All;
                 Caption = 'Date dernier achat validé';
             }
+
+
+            field("Last. Pursh. cost DS"; "Last. Pursh. cost DS")
+            {
+                ApplicationArea = All;
+                Caption = 'Dernier prix calculé DS';
+            }
+
             field("Last. Preferential"; "Last. Preferential")
             {
                 ApplicationArea = All;
                 Caption = 'Dernier préférentiel';
             }
         }
-        // Add changes to page layout here
+
     }
 
     actions
     {
-        // Add changes to page actions here
+
     }
 
-    var
-        myInt: Integer;
 }

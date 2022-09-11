@@ -48,9 +48,21 @@ tableextension 80103 "Item" extends Item //27
             DecimalPlaces = 0 : 5;
         }
 
+        field(50107; "Last Curr. Price."; Decimal)
+        {
+            CalcFormula = lookup("purchase price"."Direct Unit Cost" where("Item No." = field("No."), "Ending Date" = filter(' ')));
+            Editable = false;
+            FieldClass = FlowField;
+            DecimalPlaces = 2 : 2;
+        }
+
         field(50108; "Last. Pursh. cost DS"; Decimal)
         {
             DataClassification = ToBeClassified;
+            // CalcFormula = sum("purchase price"."Direct Unit Cost" where("Item No." = field("No."), "Ending Date" = filter(' ')));
+            Editable = false;
+            // FieldClass = FlowField;
+            DecimalPlaces = 3 : 3;
         }
 
         field(50109; "Last. Pursh. Date"; Date)
@@ -64,4 +76,5 @@ tableextension 80103 "Item" extends Item //27
         }
 
     }
+
 }

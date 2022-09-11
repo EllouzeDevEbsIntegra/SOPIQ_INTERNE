@@ -7,7 +7,31 @@ pageextension 80128 "Product To Be Compared" extends "Product To Be Compared"//5
 
     actions
     {
-        // Add changes to page actions here
+        modify(Post)
+        {
+            trigger OnBeforeAction()
+            var
+                recPurchHeader: Record "Purchase Header";
+                recPurchLine: Record "Purchase Line";
+            begin
+
+                recPurchHeader.Reset();
+                recPurchHeader.SetRange("Compare Quote No.", "Compare Quote No.");
+                if recPurchHeader.FindSet then
+                    repeat
+                        recPurchLine.Reset();
+                        recPurchLine.SetRange("Document No.", recPurchHeader."No.");
+                        recPurchLine.SetFilter("asking price", '> 0');
+                        recPurchLine.SetRange("negotiated price", 0);
+
+                        if recPurchLine.FindFirst() then begin
+                            //Message('Succés : %1 - %2 - %3', recPurchLine."Document No.", recPurchLine."asking price", recPurchLine."negotiated price");
+                            Error('Vérifier les prix négociés dans la demande de prix %1', recPurchHeader."No.");
+                        end;
+                    UNTIL recPurchHeader.NEXT = 0;
+
+            end;
+        }
     }
 
     var

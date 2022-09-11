@@ -166,20 +166,7 @@ page 50103 "Item Transaction 2020"
     }
     actions
     {
-        area(Processing)
-        {
-            // action("Item Old Transaction")
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Historique article 2021';
-            //     Promoted = true;
-            //     PromotedIsBig = true;
-            //     PromotedCategory = Process;
-            //     RunObject = page "Item Transaction 2021";
-            //     RunPageLink = "Item N°" = field("Item N°"), Year = CONST('2020');
-            //     ShortcutKey = F9;
-            // }
-        }
+
     }
 
 
