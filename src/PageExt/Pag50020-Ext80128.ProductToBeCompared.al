@@ -32,66 +32,95 @@ pageextension 80128 "Product To Be Compared" extends "Product To Be Compared"//5
 
             end;
         }
-    }
+        addafter(Post)
+        {
+            action("Update last. Purch. Cost. DS")
+            {
+                Caption = 'Mettre à jour les derniers prix consultés en devise scoiété';
+                trigger OnAction()
+                var
+                    recItemTobeCompared: Record "Item To Be Compared";
+                    recItem: Record Item;
+                    RecPurchPrice: Record "purchase price";
+                    recVendor: Record Vendor;
+                    lCurrExchRate: Record "Currency Exchange Rate";
+                    CurrencyFactor: Decimal;
+                    Coefficiant: Decimal;
+                    LastCostDS: Decimal;
+                begin
 
-    var
-        myInt: Integer;
+                    recItemTobeCompared.SetRange("Compare Quote No.", "Compare Quote No.");
+                    if recItemTobeCompared.FindFirst() then begin
+                        repeat
+                            recItem.Reset();
+                            recItem.SetRange("Reference Origine Lié", recItemTobeCompared."No.");
+                            if recItem.FindFirst() then begin
+                                repeat
 
-    trigger OnAfterGetRecord()
+                                    // Message('test Master : %1 - No : %2', recItem."Reference Origine Lié", recItem."No.");
+                                    RecPurchPrice.Reset();
+                                    LastCostDS := 0;
 
-    var
-        lItem: Record Item;
-        lPurchasePrice: Record "purchase price";
-        Vendor: Record Vendor;
-        lCurrExchRate: Record "Currency Exchange Rate";
-        CurrencyFactor: Decimal;
-        Coefficiant: Decimal;
-        LastCostDS: Decimal;
-        lastDevisePrice: Decimal;
-        test: Text[50];
 
-    begin
-        lItem.SetRange("Reference Origine Lié", "No.");
-        if lItem.FindFirst() then begin
-            repeat
-                lastDevisePrice := 0;
-                LastCostDS := 0;
-                CurrencyFactor := 0;
-                Coefficiant := 0;
-                lPurchasePrice.Reset();
 
-                // récupérer dernier prix en devise 
-                lPurchasePrice.SetCurrentKey("Starting Date");
-                lPurchasePrice.SetRange("Vendor No.", lItem."Vendor No.");
-                lPurchasePrice.SetRange("Item No.", lItem."No.");
-                lPurchasePrice.SetFilter("Unit of Measure Code", '%1|%2', lItem."Purch. Unit of Measure", '');
-                if lPurchasePrice.FindLast() then begin
-                    lastDevisePrice := lPurchasePrice."Direct Unit Cost";
+                                    RecPurchPrice.SetCurrentKey("Starting Date");
+                                    RecPurchPrice.SetRange(RecPurchPrice."Item No.", recItem."No.");
+                                    RecPurchPrice.SetFilter("Unit of Measure Code", '%1|%2', recItem."Purch. Unit of Measure", '');
+                                    RecPurchPrice.Setrange(RecPurchPrice."Ending Date", 0D);
+                                    if RecPurchPrice.FindFirst() then begin
+                                        repeat
+
+                                            recVendor.Reset();
+                                            Coefficiant := 0;
+                                            CurrencyFactor := 0;
+
+                                            if recVendor.get(RecPurchPrice."Vendor No.") then begin
+                                                Coefficiant := recVendor.Coefficient;
+                                                if recVendor."Currency Code" <> '' then begin
+
+                                                    CurrencyFactor := lCurrExchRate.ExchangeRate(Today, recVendor."Currency Code");
+                                                    if CurrencyFactor <> 0 then
+                                                        CurrencyFactor := 1 / CurrencyFactor
+                                                    else
+                                                        CurrencyFactor := 1;
+                                                end;
+                                                // Calcul du Dernier prix de revient en devise société
+                                                if (LastCostDS = 0) then begin
+                                                    LastCostDS := RecPurchPrice."Direct Unit Cost" * Coefficiant * CurrencyFactor;
+
+                                                    // Message('Alternatif 01 -> Vendeur : %1  -  Article : %2 - start date : %3 - Prix devise : %4 - Dernier cout calculé DS : %5', RecPurchPrice."Vendor No.", RecPurchPrice."Item No.", RecPurchPrice."Starting Date", RecPurchPrice."Direct Unit Cost", LastCostDS);
+
+                                                end
+                                                else
+
+                                                    if (LastCostDS > (RecPurchPrice."Direct Unit Cost" * Coefficiant * CurrencyFactor)) then begin
+                                                        LastCostDS := RecPurchPrice."Direct Unit Cost" * Coefficiant * CurrencyFactor;
+                                                        // Message('Alternatif 02 -> Vendeur : %1  -  Article : %2 - start date : %3 - Prix devise : %4 - Dernier cout calculé DS : %5', RecPurchPrice."Vendor No.", RecPurchPrice."Item No.", RecPurchPrice."Starting Date", RecPurchPrice."Direct Unit Cost", LastCostDS);
+
+                                                    end;
+                                            end;
+
+
+
+
+
+                                        until RecPurchPrice.Next() = 0;
+                                    end;
+
+
+
+                                    recItem."Last. Pursh. cost DS" := LastCostDS;
+                                    recItem.Modify();
+                                until recItem.Next() = 0;
+                            end
+                        until recItemTobeCompared.Next() = 0;
+                    end;
+                    Message('Mise à jour effectué avec succés !');
                 end;
 
-                //Mise à jour du champ dernier prix de revient en devise société calculé dans la fiche article
-                if Vendor.get(lItem."Vendor No.") then
-                    Coefficiant := Vendor.Coefficient;
+            }
+        }
+    }
 
-                // Calcul du Dernier prix de revient en devise société
-                if Vendor."Currency Code" <> '' then begin
-
-                    CurrencyFactor := lCurrExchRate.ExchangeRate(Today, Vendor."Currency Code");
-                    if CurrencyFactor <> 0 then
-                        CurrencyFactor := 1 / CurrencyFactor
-                    else
-                        CurrencyFactor := 1;
-
-                    LastCostDS := lastDevisePrice * Coefficiant * CurrencyFactor;
-                end
-                else
-                    LastCostDS := lastDevisePrice * Coefficiant * CurrencyFactor;
-
-                lItem."Last. Pursh. cost DS" := LastCostDS;
-                lItem.Modify();
-            until lItem.Next() = 0;
-        end
-
-    end;
 
 }

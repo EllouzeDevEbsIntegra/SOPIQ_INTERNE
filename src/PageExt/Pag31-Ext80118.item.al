@@ -63,8 +63,11 @@ pageextension 80118 "item" extends "Item List" //31
 
                                 // MAJ description structuré
                                 if (recItem."Champs libre" <> '') then begin
-                                    ;
                                     recItem."Description structurée" := recItem."Sous Groupe" + ' - ' + recItem."Champs libre";
+                                    Modify();
+                                end
+                                else begin
+                                    recItem."Description structurée" := recItem."Sous Groupe";
                                     Modify();
                                 end;
 

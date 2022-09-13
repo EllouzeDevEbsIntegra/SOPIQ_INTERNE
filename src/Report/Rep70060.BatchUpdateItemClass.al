@@ -31,7 +31,6 @@ report 70060 "Batch Update Item Class"
                 end;
                 "Item Class" := RecItemClass."Item Class";
                 Modify();
-
             end;
 
         }
