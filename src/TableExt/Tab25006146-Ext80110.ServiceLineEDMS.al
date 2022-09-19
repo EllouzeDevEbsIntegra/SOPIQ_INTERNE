@@ -20,6 +20,7 @@ tableextension 80110 "Service Line EDMS" extends "Service Line EDMS" //25006146
                     if recUnitofMesure.FindFirst() then begin
                         rec."Unit of Measure Code" := recUnitofMesure.Code;
                         rec."Unit Price" := recItem."Unit Price" * recUnitofMesure."Qty. per Unit of Measure";
+                        Validate(rec."Unit Price");
 
                     end
 
@@ -50,13 +51,12 @@ tableextension 80110 "Service Line EDMS" extends "Service Line EDMS" //25006146
                     recUnitofMesure.SetRange("code", recItem."Sales Unit of Measure");
                     if recUnitofMesure.FindFirst() then begin
 
-                        rec."Line Discount %" := xRec."Line Discount %";
-                        rec."Unit of Measure Code" := recUnitofMesure.Code;
-                        rec."Unit Price" := recItem."Unit Price" * recUnitofMesure."Qty. per Unit of Measure";
-                        rec."Amount" := Quantity * recItem."Unit Price" * recUnitofMesure."Qty. per Unit of Measure" * (1 - ("Line Discount %" / 100));
-                        rec."Amount Including VAT" := Quantity * recItem."Unit Price" * recUnitofMesure."Qty. per Unit of Measure" * (1 - ("Line Discount %" / 100));
-                        rec."Line Amount" := Quantity * recItem."Unit Price" * recUnitofMesure."Qty. per Unit of Measure" * (1 - ("Line Discount %" / 100));
-
+                        if (recUnitofMesure."Qty. per Unit of Measure" <> 1) then begin
+                            rec."Line Discount %" := xRec."Line Discount %";
+                            rec."Unit of Measure Code" := recUnitofMesure.Code;
+                            rec."Unit Price" := recItem."Unit Price" * recUnitofMesure."Qty. per Unit of Measure";
+                            Validate(rec."Unit Price");
+                        end;
                     end
 
                 end

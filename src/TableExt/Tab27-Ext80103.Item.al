@@ -48,9 +48,18 @@ tableextension 80103 "Item" extends Item //27
             DecimalPlaces = 0 : 5;
         }
 
+
+
+        field(50111; "Last Date"; Date)
+        {
+            CalcFormula = max("purchase price"."Starting Date" where("Item No." = field("No."), "Ending Date" = filter(0D)));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
         field(50107; "Last Curr. Price."; Decimal)
         {
-            CalcFormula = lookup("purchase price"."Direct Unit Cost" where("Item No." = field("No."), "Ending Date" = filter(' ')));
+            CalcFormula = lookup("purchase price"."Direct Unit Cost" where("Item No." = field("No."), "Ending Date" = filter(0D), "Starting Date" = field("Last Date")));
             Editable = false;
             FieldClass = FlowField;
             DecimalPlaces = 2 : 2;

@@ -8,6 +8,10 @@ pageextension 80125 "Purchase Lines" extends "Purchase Lines" //518
             {
                 ApplicationArea = All;
             }
+            field("Initial Vendor Price"; "Initial Vendor Price")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

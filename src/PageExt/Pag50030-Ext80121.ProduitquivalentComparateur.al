@@ -1,8 +1,13 @@
 pageextension 80121 "Produit équivalent Comparateur" extends "Produit équivalent Comparateur" //50030
 {
 
+
     layout
     {
+        modify("Last date")
+        {
+            Caption = 'Date du dernier prix en devise';
+        }
         modify("Last Direct Cost")
         {
             Visible = true;
@@ -30,13 +35,6 @@ pageextension 80121 "Produit équivalent Comparateur" extends "Produit équivale
 
         addafter("Unit Price")
         {
-            // field("Last Curr. Price."; lastDevisePrice)
-            // {
-            //     Caption = 'Dernier Prix Devise Consulté';
-            //     ApplicationArea = All;
-            //     Editable = false;
-            //     DecimalPlaces = 2 : 2;
-            // }
 
             field("Last Curr. Price."; "Last Curr. Price.")
             {
@@ -100,9 +98,12 @@ pageextension 80121 "Produit équivalent Comparateur" extends "Produit équivale
     }
 
     var
-        lastDevisePrice: Decimal;
+
         FieldStyleQty, FieldStyleQtyImport : Text[50];
-        RecgItem: Record item;
+        recKit, recComponent : Record "BOM Component";
+        filterParent, filtreComponent : TEXT;
+        EntredOnce: Boolean;
+        RecgItem, recItem : Record item;
 
 
     procedure SetStyleQte(PDecimal: Decimal): Text[50]
@@ -110,16 +111,82 @@ pageextension 80121 "Produit équivalent Comparateur" extends "Produit équivale
         IF PDecimal <= 0 THEN exit('Unfavorable') ELSE exit('Favorable');
     end;
 
-    procedure SetNo(PItemNo: Code[20])
+    procedure SetNo(PItemNo: TEXT)
     begin
-
         if RecgItem.get(PItemNo) THEN begin
             SETFILTER("No.", '%1', PItemNo);
-
             CurrPage.Update();
+        end;
+    end;
+
+    procedure SetKit(PItemNo: TEXT)
+    Var
+        Master: Code[50];
+    begin
+        Message('kits!');
+        recKit.Reset();
+        filterParent := '';
+        EntredOnce := false;
+
+        recKit.Reset();
+        recKit.SetRange("Parent Item No.", PItemNo);
+        if recKit.FindSet() then begin
+            repeat
+                recItem.SetRange("No.", recKit."No.");
+                if recitem.FindFirst() then Master := recitem."Reference Origine Lié";
+                if EntredOnce then
+                    FilterParent := FilterParent + '|';
+                FilterParent := FilterParent + Master;
+                EntredOnce := true;
+            until recKit.next = 0;
+
+            if EntredOnce then begin
+                Message('%1', filterParent);
+                SetFilter("No.", '*');
+                SetFilter(Produit, 'false');
+                SETFILTER("Reference Origine Lié", filterParent);
+                CurrPage.Update();
+            end
         end;
 
     end;
+
+
+    procedure SetComponent(PItemNo: TEXT)
+    begin
+        Message('compenents!');
+        recComponent.Reset();
+        filtreComponent := '';
+        EntredOnce := false;
+        recComponent.Reset();
+        recComponent.SetRange("No.", PItemNo);
+        if recComponent.FindSet() then begin
+            repeat
+                if EntredOnce then
+                    filtreComponent := filtreComponent + '|';
+                filtreComponent := filtreComponent + "No.";
+                EntredOnce := true;
+            until recComponent.next = 0;
+
+            if EntredOnce then begin
+                Message('%1', filtreComponent);
+                SetFilter(Produit, 'false');
+                SETFILTER("No.", filtreComponent);
+                CurrPage.Update();
+            end
+        end;
+
+    end;
+
+
+
+    procedure SetNothing()
+    begin
+        SetFilter("No.", '''''');
+        CurrPage.Update();
+
+    end;
+
 
     trigger OnAfterGetRecord()
     var
@@ -129,23 +196,9 @@ pageextension 80121 "Produit équivalent Comparateur" extends "Produit équivale
 
     begin
 
-
-        // CalcFields("Last. Pursh. cost DS", "Last Curr. Price.");
         CalcFields("Last Curr. Price.");
         FieldStyleQty := SetStyleQte(StockQty);
         FieldStyleQtyImport := SetStyleQte(ImportQty);
-
-        // Initialisation des variables
-        // lastDevisePrice := 0;
-
-        // // récupérer dernier prix en devise 
-        // lPurchasePrice.SetCurrentKey("Starting Date");
-        // lPurchasePrice.SetRange("Vendor No.", "Vendor No.");
-        // lPurchasePrice.SetRange("Item No.", "No.");
-        // lPurchasePrice.SetFilter("Unit of Measure Code", '%1|%2', "Purch. Unit of Measure", '');
-        // if lPurchasePrice.FindLast() then begin
-        //     lastDevisePrice := lPurchasePrice."Direct Unit Cost";
-        // end;
 
     end;
 

@@ -275,4 +275,5 @@ page 50100 "Sales line"
             }
         }
     }
+
 }

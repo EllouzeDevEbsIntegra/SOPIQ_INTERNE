@@ -3,6 +3,21 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
     layout
     {
         // Add changes to page layout here
+        addbefore("Initial Quantity")
+        {
+            field("Last Unit Price"; "Direct Unit Cost")
+            {
+                Caption = 'Prix Devise Consulté';
+                ApplicationArea = All;
+                Editable = false;
+            }
+            field("Initial Vendor Price"; "Initial Vendor Price")
+            {
+                Caption = 'Prix Initial Vendeur';
+                ApplicationArea = All;
+                Editable = false;
+            }
+        }
     }
 
     actions
@@ -22,7 +37,4 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
             }
         }
     }
-
-    var
-        myInt: Integer;
 }

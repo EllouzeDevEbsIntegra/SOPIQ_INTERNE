@@ -6,7 +6,7 @@ pageextension 80133 "Detailed Cust. Ledg. Ent 573" extends "Detailed Cust. Ledg.
         {
             field("Entry Due Date"; dueDate)
             {
-
+                ApplicationArea = All;
             }
         }
 

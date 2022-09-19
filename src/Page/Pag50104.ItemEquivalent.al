@@ -1,24 +1,19 @@
-page 50101 "Purchase Item Search"
+page 50104 "Item Equivalent"
 {
-    //PageType = NavigatePage;
-    PageType = List;
+    PageType = ListPart;
     SourceTable = Item;
-    SourceTableView = sorting("No.") where("No." = Filter('<> '''''));
-    UsageCategory = Lists;
-    ApplicationArea = all;
-    ModifyAllowed = false;
     DeleteAllowed = false;
     InsertAllowed = false;
-    Caption = 'Achat : Consultation articles';
+    ModifyAllowed = false;
     Editable = true;
+    Caption = 'Produit Equivalent';
+    SourceTableView = sorting("StockQty", "ImportQty", "Qty. on Purch. Order") order(descending) where(Produit = const(FALSE));
     layout
     {
-
-        area(Content)
+        area(content)
         {
-            repeater("Search Item")
+            repeater(Group)
             {
-                Caption = 'Recherche Article';
                 field("Vendor No."; "Vendor No.")
                 {
                     Caption = 'Frs';
@@ -102,26 +97,11 @@ page 50101 "Purchase Item Search"
                     ApplicationArea = All;
                     Editable = false;
                 }
-
             }
-            part("Produitéquivalent"; "Item Equivalent")
-            {
-                Caption = 'Equivalent';
-                UpdatePropagation = SubPart;
-                ApplicationArea = All;
-            }
-            part("Kit"; "Item Kit")
-            {
-                Caption = 'Kit';
-                UpdatePropagation = SubPart;
-                ApplicationArea = All;
-            }
-
-
 
         }
-
     }
+
     actions
     {
         area(Processing)
@@ -130,16 +110,31 @@ page 50101 "Purchase Item Search"
             {
                 Caption = 'Transactions articles';
                 ShortcutKey = F9;
+                // Visible = false;
                 RunObject = page "Item Transactions";
                 RunPageLink = "Item No." = field("No.");
             }
-        }
 
+            action("Item Old Transaction")  // On click, afficher la page historique des articles 2020 - 2021  
+            {
+                ApplicationArea = All;
+                Caption = 'Historique article 2021';
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                RunObject = page "Item Transaction 2021";
+                RunPageLink = "Item N°" = field("No."), Year = CONST('2021');
+                ShortcutKey = F8;
+            }
+        }
     }
 
-    var
+    VAR
+        lItemNo: TEXT;
+        RecgItem: Record item;
         [InDataSet]
         FieldStyleQty, FieldStyleImportQty, FieldStyleOnPurchQty : Text[50];
+
 
     trigger OnAfterGetRecord()
     var
@@ -150,47 +145,51 @@ page 50101 "Purchase Item Search"
         FieldStyleQty := SetStyleQte(StockQty);
         FieldStyleImportQty := SetStyleQte(ImportQty);
         FieldStyleOnPurchQty := SetStyleQte("Qty. on Purch. Order");
-
-    end;
-
-    trigger OnAfterGetCurrRecord()
-    VAR
-        recIsKit, recIsComponent : Record "BOM Component";
-        recitem: Record item;
-        iscomponent: Boolean;
-
-    begin
-
-        CurrPage."Produitéquivalent".Page.SetItemNo(rec."No.");
-
-        // Vérifier si c'est un parent, composant ou rien
-        recIsKit.Reset();
-        recIsKit.SetRange("Parent Item No.", rec."No.");
-
-        iscomponent := false;
-        recitem.Reset();
-        recitem.SetRange("Reference Origine Lié", "Reference Origine Lié");
-        if recitem.FindSet() then begin
-            repeat
-                recIsComponent.Reset();
-                recIsComponent.SetRange("No.", recitem."No.");
-                if recIsComponent.FindFirst() then iscomponent := true;
-            until recitem.next = 0;
-        end;
-
-        if (recIsKit.IsEmpty = true AND iscomponent = false) then begin
-            CurrPage.Kit.Page.SetNothing();
-        end
-        else
-            if recIsKit.FindFirst() then
-                CurrPage."kit".Page.SetKit(rec."No.")
-            else
-                CurrPage.Kit.Page.SetComponent(rec."No.");
     end;
 
     procedure SetStyleQte(PDecimal: Decimal): Text[50]
     begin
         IF PDecimal <= 0 THEN exit('Unfavorable') ELSE exit('Favorable');
     end;
+
+    procedure SetItemNo(PItemNo: TEXT)
+    begin
+        RecgItem.reset();
+        RecgItem.SetFilter("No.", PItemNo);
+        lItemNo := '<>' + PItemNo;
+        if RecgItem.FindFirst() then begin
+            IF RecgItem.Produit THEN begin
+                SETFILTER("Reference Origine Lié", PItemNo);
+                SetFilter("No.", lItemNo.Replace('|', '&<>'));
+                CurrPage.Update();
+            end else begin
+                if RecgItem."Reference Origine Lié" <> '' then
+                    SETFILTER("Reference Origine Lié", RecgItem."Reference Origine Lié");
+                SETFILTER("No.", lItemNo.Replace('|', '&<>'));
+                CurrPage.Update();
+            end;
+        end
+
+
+    end;
+
+    procedure SetNo(PItemNo: TEXT)
+    begin
+        RecgItem.reset();
+        RecgItem.SetFilter("No.", PItemNo);
+        if RecgItem.FindFirst() then begin
+            IF RecgItem.Produit THEN begin
+                SETFILTER("Reference Origine Lié", PItemNo);
+                CurrPage.Update();
+            end else begin
+                if RecgItem."Reference Origine Lié" <> '' then
+                    SETFILTER("Reference Origine Lié", RecgItem."Reference Origine Lié");
+                CurrPage.Update();
+            end;
+        end
+
+
+    end;
+
 
 }

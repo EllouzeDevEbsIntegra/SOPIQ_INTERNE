@@ -18,7 +18,7 @@ tableextension 80101 "Sales Cue" extends "Sales Cue"
             Caption = 'Ligne vente avec prix unitaire modifié';
 
             FieldClass = FlowField;
-            CalcFormula = count("Sales Line" where("Price modified" = filter(true), "Ctrl Modified Price" = filter(false)));
+            CalcFormula = count("Sales Line" where("Price modified" = filter(true), "Ctrl Modified Price" = filter(false), "Document Type" = filter(Order)));
 
         }
         field(50103; "date jour"; Date)
