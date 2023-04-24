@@ -1,4 +1,4 @@
-report 70059 "Batch Update Last Unit Price"
+report 50209 "Batch Update Last Unit Price"
 {
     UsageCategory = ReportsAndAnalysis;
     ApplicationArea = All;

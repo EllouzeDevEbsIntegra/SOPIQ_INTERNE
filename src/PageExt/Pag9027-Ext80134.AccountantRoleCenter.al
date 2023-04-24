@@ -21,6 +21,22 @@ pageextension 80134 "Accountant Role Center" extends "Accountant Role Center" //
                 Visible = true;
                 RunObject = report 50199;
             }
+
+            action("Vendor GL")
+            {
+                Caption = 'Grand Livre Fournisseur 2';
+                ApplicationArea = All;
+                Visible = true;
+                RunObject = report 50205;
+            }
+
+            action("Customer GL")
+            {
+                Caption = 'Grand Livre Client 2';
+                ApplicationArea = All;
+                Visible = true;
+                RunObject = report 50206;
+            }
         }
 
     }

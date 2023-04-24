@@ -1,0 +1,14 @@
+tableextension 80118 "Manufacturer" extends "Manufacturer" //5720
+{
+    fields
+    {
+        field(80118; "Actif"; Boolean)
+        {
+            InitValue = true;
+            DataClassification = ToBeClassified;
+        }
+    }
+
+    var
+        myInt: Integer;
+}

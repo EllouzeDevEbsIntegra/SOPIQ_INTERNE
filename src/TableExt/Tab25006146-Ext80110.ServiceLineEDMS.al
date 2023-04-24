@@ -2,12 +2,35 @@ tableextension 80110 "Service Line EDMS" extends "Service Line EDMS" //25006146
 {
     fields
     {
+        field(80109; "Prix Vente Public"; Decimal)
+        {
+
+        }
+
+        field(80110; "Last Price First Vendor"; Decimal)
+        {
+
+        }
+
+        field(80111; "Last Price Date"; Date)
+        {
+
+        }
+
+        field(80112; "Last Document Type"; Enum "Purchase Document Type")
+        {
+
+        }
         modify("No.")
         {
             trigger OnAfterValidate()
             var
                 recUnitofMesure: Record "Item Unit of Measure";
                 recItem: Record Item;
+                recPurchaseLine: Record "Purchase Line";
+                recSetupPurchase: Record "Purchases & Payables Setup";
+                defaultVendor: code[20];
+                defaultProfit: Decimal;
 
             begin
                 recUnitofMesure.Reset();
@@ -24,9 +47,26 @@ tableextension 80110 "Service Line EDMS" extends "Service Line EDMS" //25006146
 
                     end
 
-                end
+                end;
 
+                recSetupPurchase.Reset();
+                if recSetupPurchase.FindFirst() then begin
+                    defaultVendor := recSetupPurchase."Default Vendor";
+                    defaultProfit := recSetupPurchase."DEFAult Profit %";
+                end;
 
+                recPurchaseLine.Reset();
+                recPurchaseLine.SetRange("No.", "No.");
+                recPurchaseLine.SetRange("Buy-from Vendor No.", defaultVendor);
+                if recPurchaseLine.FindLast() then begin
+                    rec."Last Price First Vendor" := recPurchaseLine."Direct Unit Cost";
+                    rec."Prix Vente Public" := recPurchaseLine."Direct Unit Cost" * (1 + (defaultProfit / 100));
+                    rec."Last Price Date" := recPurchaseLine."Order Date";
+                    rec."Last Document Type" := recPurchaseLine."Document Type";
+                    // Message('%1 - %2 - %3', rec."Last Price First Vendor", defaultVendor, (1 + (defaultProfit / 100)));
+                end;
+
+                if (rec."Unit Price" < rec."Prix Vente Public") then Message('Attention ! Prix de vente à vérifier SVP !');
 
             end;
 
@@ -38,7 +78,6 @@ tableextension 80110 "Service Line EDMS" extends "Service Line EDMS" //25006146
             var
                 recUnitofMesure: Record "Item Unit of Measure";
                 recItem: Record Item;
-
 
             begin
 
@@ -61,11 +100,19 @@ tableextension 80110 "Service Line EDMS" extends "Service Line EDMS" //25006146
 
                 end
 
-
-
             end;
 
         }
+
+        modify("Unit Price")
+        {
+            trigger OnAfterValidate()
+            begin
+                if (rec."Unit Price" < rec."Prix Vente Public") then Message('Attention ! Prix de vente à vérifier SVP !');
+
+            end;
+        }
+
     }
 
     var

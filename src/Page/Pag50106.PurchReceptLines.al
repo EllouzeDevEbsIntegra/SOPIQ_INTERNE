@@ -136,6 +136,12 @@ page 50106 "Purch. Recept. Lines"
                     Editable = false;
                 }
 
+                field("Prix Special Vendor"; "Prix Special Vendor")
+                {
+                    ApplicationArea = all;
+                    Editable = true;
+                }
+
             }
 
             part("Equivalent"; "Item Equivalent")
@@ -161,7 +167,7 @@ page 50106 "Purch. Recept. Lines"
                 Caption = 'Transactions articles';
                 ShortcutKey = F9;
                 // Visible = false;
-                RunObject = page "Item Transactions";
+                RunObject = page "Specific Item Ledger Entry";
                 RunPageLink = "Item No." = field("No.");
             }
 

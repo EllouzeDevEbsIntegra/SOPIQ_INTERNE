@@ -3,6 +3,7 @@ pageextension 80118 "item" extends "Item List" //31
 
     layout
     {
+
         addafter(InventoryField) // Ajout du champ prix initial dans ligne vente
         {
             field("ImportQty"; ImportQty)
@@ -15,6 +16,25 @@ pageextension 80118 "item" extends "Item List" //31
                 Caption = 'Qté Stock';
                 ApplicationArea = All;
             }
+
+        }
+        addafter("Search Description")
+        {
+            field("Fabricant is Actif"; "Fabricant Is Actif")
+            {
+                Caption = 'Fabricant est Actif';
+                ApplicationArea = All;
+            }
+            field("NbJourRupture"; "NbJourRupture")
+            {
+                Caption = 'Nb Jour Rupture';
+                ApplicationArea = All;
+            }
+            field("LastPurchPricePrincipalVendor"; "LastPurchPricePrincipalVendor")
+            {
+
+            }
+
         }
     }
 
@@ -94,16 +114,51 @@ pageextension 80118 "item" extends "Item List" //31
         }
         addafter("UPDATE ITEM INFO")
         {
-            action("ITEM OLD TRANSACTION") // MAJ des quelques champs sur la fiche article dans toute la table article
+
+            action("ITEM TRANSACTION") // MAJ des quelques champs sur la fiche article dans toute la table article
             {
                 ApplicationArea = All;
-                Caption = 'Historique des articles 2021';
+                Caption = 'Historique des articles';
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
                 ShortcutKey = F9;
-                RunObject = page "Item Transaction 2021";
-                RunPageLink = "Item N°" = field("No."), Year = CONST('2021');
+                RunObject = page "Specific Item Ledger Entry";
+                RunPageLink = "Item No." = field("No.");
+
+            }
+
+            action("Last Default Vendor Price")
+            {
+                ApplicationArea = all;
+                ShortcutKey = F3;
+                trigger OnAction()
+                var
+                    recInvLine: Record "Purch. Inv. Line";
+                    recPurchaseLine: Record "Purchase Line";
+                    recSetupPurchase: Record "Purchases & Payables Setup";
+                    defaultVendor: code[20];
+                    defaultProfit: Decimal;
+                begin
+                    recSetupPurchase.Reset();
+                    if recSetupPurchase.FindFirst() then begin
+                        defaultVendor := recSetupPurchase."Default Vendor";
+                        defaultProfit := recSetupPurchase."DEFAult Profit %";
+                    end;
+
+
+                    recPurchaseLine.Reset();
+                    recPurchaseLine.SetRange("No.", "No.");
+                    recPurchaseLine.SetRange("Buy-from Vendor No.", defaultVendor);
+                    if recPurchaseLine.FindLast() then begin
+                        rec.LastPurchPricePrincipalVendor := recPurchaseLine."Direct Unit Cost";
+                        rec.Modify();
+                    end
+                    else
+                        rec.LastPurchPricePrincipalVendor := 0;
+
+
+                end;
             }
 
 
@@ -112,5 +167,8 @@ pageextension 80118 "item" extends "Item List" //31
     }
 
     var
-        myInt: Integer;
+        filterDate: text;
+
+
+
 }

@@ -19,6 +19,23 @@
         }
         ,
         {
+            "name": "SOPIQ DEV",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "OnPrem",
+            "server": "http://192.168.1.5",
+            "serverInstance": "BC160-DEV",
+            "authentication": "Windows",
+            "breakOnError": true,
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "tenant": "default",
+            "schemaUpdateMode": "ForceSync",
+            "port": 8049
+        }
+        ,
+        {
             "name": "SOPIQ PROD",
             "request": "launch",
             "type": "al",

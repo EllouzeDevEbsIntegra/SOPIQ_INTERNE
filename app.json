@@ -10,6 +10,7 @@
   "help": "",
   "url": "",
   "logo": "",
+  "target":"OnPrem",
   "dependencies": [
     {
       "id": "ad36f199-c652-4e8e-9c9a-ca851e424760",

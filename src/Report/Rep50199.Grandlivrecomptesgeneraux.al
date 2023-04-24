@@ -20,6 +20,14 @@ report 50199 "Grand livre comptes generaux" //70039
             column(STRSUBSTNO_Text004_PreviousStartDate_; STRSUBSTNO(Text004, PreviousStartDate))
             {
             }
+            column(StartDate_; StartDate)
+            {
+            }
+
+            column(EndtDate_; EndDate)
+            {
+            }
+
             column(PageCaption; STRSUBSTNO(Text005, ' '))
             {
             }
@@ -339,7 +347,7 @@ report 50199 "Grand livre comptes generaux" //70039
                 CurrReport.CREATETOTALS(GLAccount2."Debit Amount", GLAccount2."Credit Amount",
                   "Debit Amount", "Credit Amount",
                   "G/L Entry"."Debit Amount", "G/L Entry"."Credit Amount");
-                // FiscalYearStatusText := STRSUBSTNO(Text012, FYFiscalClose.CheckFiscalYearStatus(GETFILTER("Date Filter")));
+                FiscalYearStatusText := STRSUBSTNO(Text012, FYFiscalClose.CheckFiscalYearStatus(GETFILTER("Date Filter")));
 
                 TotalByInt := TotalBy;
             end;
@@ -384,7 +392,7 @@ report 50199 "Grand livre comptes generaux" //70039
                         CaptionML = ENU = 'Show date',
                                     FRA = 'Afficher date';
                     }
-                    field("Afficher fitre date"; AfficherUtilisateur)
+                    field("Afficher Utilisateur"; AfficherUtilisateur)
                     {
                         ApplicationArea = Basic, Suite;
                         CaptionML = ENU = 'Show User',
@@ -403,7 +411,6 @@ report 50199 "Grand livre comptes generaux" //70039
     labels
     {
     }
-
     trigger OnInitReport();
     begin
         TotalBy := TotalBy::Month;
@@ -413,11 +420,13 @@ report 50199 "Grand livre comptes generaux" //70039
         TXTADRESSE := RecGCompanyInfo.Address + ' ' + RecGCompanyInfo.City + ' ' + RecGCompanyInfo."Post Code";
         GeneralLedgerSetup.Get();
 
+
     end;
 
     trigger OnPreReport();
     begin
         Filter := "G/L Account".GETFILTERS;
+
         // GLAccountTypeFilter := "G/L Account".GETFILTER("G/L Entry Type Filter");
     end;
 

@@ -7,7 +7,7 @@ page 50104 "Item Equivalent"
     ModifyAllowed = false;
     Editable = true;
     Caption = 'Produit Equivalent';
-    SourceTableView = sorting("StockQty", "ImportQty", "Qty. on Purch. Order") order(descending) where(Produit = const(FALSE));
+    SourceTableView = sorting("StockQty", "ImportQty", "Qty. on Purch. Order") order(descending) where(Produit = const(FALSE), "Fabricant Is Actif" = filter(true));
     layout
     {
         area(content)
@@ -111,7 +111,7 @@ page 50104 "Item Equivalent"
                 Caption = 'Transactions articles';
                 ShortcutKey = F9;
                 // Visible = false;
-                RunObject = page "Item Transactions";
+                RunObject = page "Specific Item Ledger Entry";
                 RunPageLink = "Item No." = field("No.");
             }
 
@@ -125,6 +125,18 @@ page 50104 "Item Equivalent"
                 RunObject = page "Item Transaction 2021";
                 RunPageLink = "Item N°" = field("No."), Year = CONST('2021');
                 ShortcutKey = F8;
+            }
+
+            action(Prices)
+            {
+                ApplicationArea = All;
+                Caption = 'Prices';
+                Image = Price;
+                RunObject = Page "Purchase Prices";
+                RunPageLink = "Item No." = FIELD("No."), "Vendor No." = FIELD("Vendor No.");
+                RunPageView = SORTING("Item No.");
+                ToolTip = 'View or set up different prices for the item. An item price is automatically granted on invoice lines when the specified criteria are met, such as vendor, quantity, or ending date.';
+                ShortcutKey = F7;
             }
         }
     }
@@ -161,11 +173,13 @@ page 50104 "Item Equivalent"
             IF RecgItem.Produit THEN begin
                 SETFILTER("Reference Origine Lié", PItemNo);
                 SetFilter("No.", lItemNo.Replace('|', '&<>'));
+                SetFilter("Fabricant Is Actif", 'Oui');
                 CurrPage.Update();
             end else begin
                 if RecgItem."Reference Origine Lié" <> '' then
                     SETFILTER("Reference Origine Lié", RecgItem."Reference Origine Lié");
                 SETFILTER("No.", lItemNo.Replace('|', '&<>'));
+                SetFilter("Fabricant Is Actif", 'Oui');
                 CurrPage.Update();
             end;
         end
@@ -191,5 +205,8 @@ page 50104 "Item Equivalent"
 
     end;
 
-
+    trigger OnOpenPage()
+    begin
+        IF FindFirst THEN;
+    end;
 }

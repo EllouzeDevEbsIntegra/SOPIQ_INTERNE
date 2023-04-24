@@ -111,7 +111,7 @@ page 50105 "Item Kit"
                 Caption = 'Transactions articles';
                 ShortcutKey = F9;
                 // Visible = false;
-                RunObject = page "Item Transactions";
+                RunObject = page "Specific Item Ledger Entry";
                 RunPageLink = "Item No." = field("No.");
             }
 
@@ -125,6 +125,17 @@ page 50105 "Item Kit"
                 RunObject = page "Item Transaction 2021";
                 RunPageLink = "Item N°" = field("No."), Year = CONST('2021');
                 ShortcutKey = F8;
+            }
+            action(Prices)
+            {
+                ApplicationArea = All;
+                Caption = 'Prices';
+                Image = Price;
+                RunObject = Page "Purchase Prices";
+                RunPageLink = "Item No." = FIELD("No."), "Vendor No." = FIELD("Vendor No.");
+                RunPageView = SORTING("Item No.");
+                ToolTip = 'View or set up different prices for the item. An item price is automatically granted on invoice lines when the specified criteria are met, such as vendor, quantity, or ending date.';
+                ShortcutKey = F7;
             }
         }
     }
@@ -190,6 +201,7 @@ page 50105 "Item Kit"
                 // Message('Parent %1', filterParent);
                 SetFilter("No.", '');
                 SETFILTER("Reference Origine Lié", filterParent);
+                SetFilter("Fabricant Is Actif", 'Oui');
                 CurrPage.Update();
             end
         end;
@@ -233,6 +245,7 @@ page 50105 "Item Kit"
                 // Message('filtre KIT OF Component : %1', filtreKitofComponent);
                 SETFILTER("Reference Origine Lié", '');
                 SETFILTER("No.", filtreKitofComponent);
+                SetFilter("Fabricant Is Actif", 'Oui');
                 CurrPage.Update();
             end;
 

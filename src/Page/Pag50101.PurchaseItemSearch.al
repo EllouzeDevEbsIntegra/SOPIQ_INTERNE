@@ -103,7 +103,21 @@ page 50101 "Purchase Item Search"
                     Editable = false;
                 }
 
+                field("First Reception Date"; "First Reception Date")
+                {
+                    Caption = 'Date Recep proche';
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+
             }
+            // part("cmd"; "Purchase Line Reliquat")
+            // {
+            //     Caption = 'Vérification article en commande';
+            //     UpdatePropagation = SubPart;
+            //     ApplicationArea = All;
+            //     SubPageLink = "No." = field("No.");
+            // }
             part("Produitéquivalent"; "Item Equivalent")
             {
                 Caption = 'Equivalent';
@@ -130,7 +144,7 @@ page 50101 "Purchase Item Search"
             {
                 Caption = 'Transactions articles';
                 ShortcutKey = F9;
-                RunObject = page "Item Transactions";
+                RunObject = page "Specific Item Ledger Entry";
                 RunPageLink = "Item No." = field("No.");
             }
         }
@@ -146,7 +160,7 @@ page 50101 "Purchase Item Search"
 
     begin
 
-        CalcFields("Last Curr. Price.", "Qty. on Purch. Order", "Last Date", StockQty, ImportQty);
+        CalcFields("Last Curr. Price.", "Qty. on Purch. Order", "Last Date", StockQty, ImportQty, "First Reception Date");
         FieldStyleQty := SetStyleQte(StockQty);
         FieldStyleImportQty := SetStyleQte(ImportQty);
         FieldStyleOnPurchQty := SetStyleQte("Qty. on Purch. Order");

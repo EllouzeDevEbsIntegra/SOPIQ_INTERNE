@@ -12,6 +12,13 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
             end;
         }
 
+        field(80190; "Last Receipt Date"; Date)
+        {
+            CalcFormula = max("Purch. Rcpt. Line"."Posting Date" where("Order No." = field("Document No."), "Order Line No." = field("Line No.")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
         field(80104; "asking price"; Decimal)
         {
             DataClassification = ToBeClassified;
@@ -24,6 +31,7 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
             end;
 
         }
+
         field(80103; "asking qty"; Decimal)
         {
             DataClassification = ToBeClassified;
@@ -134,6 +142,7 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
             Caption = 'Marge à définir';
             Editable = true;
         }
+
 
     }
 

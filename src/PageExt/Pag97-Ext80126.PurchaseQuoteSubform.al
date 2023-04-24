@@ -21,6 +21,13 @@ pageextension 80126 "Purchase Quote Subform" extends "Purchase Quote Subform" //
                 StyleExpr = FieldStyleOnOrdQty;
             }
 
+            field("Vendor Item No"; "Vendor Item No.")
+            {
+                Caption = 'Ref Fournisseur';
+                ApplicationArea = All;
+                Editable = false;
+            }
+
 
         }
 

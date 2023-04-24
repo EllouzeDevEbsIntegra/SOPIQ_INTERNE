@@ -4,7 +4,7 @@ page 50100 "Sales line"
     ApplicationArea = All;
     UsageCategory = Administration;
     SourceTable = "Sales Line";
-    SourceTableView = where("Document Type" = filter(Order));
+    // SourceTableView = where("Document Type" = filter(Order | "Return Order"));
     layout
     {
         area(content)
@@ -85,6 +85,12 @@ page 50100 "Sales line"
                     Editable = false;
 
                 }
+                field("Initial Discount"; "Initial Discount")
+                {
+                    ApplicationArea = Basic;
+                    Editable = false;
+                }
+
                 field("Line Amount"; "Line Amount")
                 {
                     ApplicationArea = Basic;
@@ -268,6 +274,12 @@ page 50100 "Sales line"
                     Visible = false;
                 }
                 field("Ctrl Modified Price"; "Ctrl Modified Price")
+                {
+
+
+                }
+
+                field("Ctrl Modified Discount"; "Ctrl Modified Discount")
                 {
 
 

@@ -4,6 +4,7 @@ page 50102 "Item Transaction 2021"
     ApplicationArea = All;
     UsageCategory = Lists;
     SourceTable = "Item Old Transaction";
+    SourceTableView = sorting("Document date") order(descending);
     Caption = 'Mouvement articles 2021';
     Editable = false;
     ModifyAllowed = false;
@@ -212,7 +213,6 @@ page 50102 "Item Transaction 2021"
                     SourceTableName := 'Article';
                     SourceFilter := GetFilter("Item N°");
                 end;
-
         end;
         exit(StrSubstNo('%1 %2', SourceTableName, SourceFilter));
 

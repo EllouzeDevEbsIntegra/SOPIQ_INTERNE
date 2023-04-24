@@ -4,6 +4,7 @@ page 50103 "Item Transaction 2020"
     ApplicationArea = All;
     UsageCategory = Lists;
     SourceTable = "Item Old Transaction";
+    SourceTableView = sorting("Document date") order(descending);
     Caption = 'Mouvement articles 2020';
     Editable = false;
     ModifyAllowed = false;

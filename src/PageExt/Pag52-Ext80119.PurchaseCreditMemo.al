@@ -2,6 +2,7 @@ pageextension 80119 "Purchase Credit Memo" extends "Purchase Credit Memo"//52
 {
     layout
     {
+
         // Add changes to page layout here
     }
 
