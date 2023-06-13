@@ -38,8 +38,8 @@ pageextension 80116 "Vehicle SO Proc. Activities" extends "Vehicle SO Proc. Acti
                     ApplicationArea = All;
                     DrillDownPageId = "Sales Line";
                     DrillDown = true;
-
                 }
+
 
                 field("Vente Annuelle"; Vente3)
                 {
@@ -47,6 +47,15 @@ pageextension 80116 "Vehicle SO Proc. Activities" extends "Vehicle SO Proc. Acti
                     Caption = 'Année';
                     DecimalPlaces = 0 : 0;
                     Image = Calculator;
+                }
+
+                field("Achat Mensuel"; achat)
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Achat Mensuel Frs Principal';
+                    DecimalPlaces = 0 : 0;
+                    Image = Calculator;
+                    Visible = StatPurchaseCA;
                 }
 
             }
@@ -80,7 +89,25 @@ pageextension 80116 "Vehicle SO Proc. Activities" extends "Vehicle SO Proc. Acti
     }
 
     trigger OnOpenPage()
+    var
+        recSetupPurchase: Record "Purchases & Payables Setup";
+        defaultVendor: code[20];
     begin
+
+        userSetup.SetFilter("User ID", UserId);
+        if userSetup.FindFirst() then begin
+            StatPurchaseCA := userSetup."Purchase Stat CA";
+        end;
+
+        recSetupPurchase.Reset();
+        if recSetupPurchase.FindFirst() then begin
+            defaultVendor := recSetupPurchase."Default Vendor";
+        end;
+        if "Default Vendor" <> defaultVendor then begin
+            "Default Vendor" := defaultVendor;
+            Modify();
+        end;
+
         if "date jour" <> Today then begin
             "date jour" := Today;
             Modify();
@@ -89,13 +116,20 @@ pageextension 80116 "Vehicle SO Proc. Activities" extends "Vehicle SO Proc. Acti
         StartingDate := System.DMY2Date(1, 1, System.Date2DMY(Today, 3));
         Setfilter("Date Filter2", '%1..', StartingDate);
         CalcFields("Sales (LCY)");
-        SetFilter("First Day Of Year", '%1..', StartingDate);
         Vente3 := "Sales (LCY)";
 
+
+        debutMois := CalcDate('<-CM>', Today);
+        FinMois := CalcDate('<CM>', Today);
+        SetFilter("Date Filter Month", '%1..%2', debutMois, FinMois);
+        CalcFields("Month Sum Purchase");
+        achat := "Month Sum Purchase";
 
     end;
 
     var
-        Vente3: Decimal;
-        StartingDate: Date;
+        Vente3, achat : Decimal;
+        StatPurchaseCA: Boolean;
+        StartingDate, debutMois, FinMois : Date;
+        userSetup: Record "User Setup";
 }

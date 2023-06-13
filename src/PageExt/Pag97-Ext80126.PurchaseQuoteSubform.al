@@ -2,6 +2,7 @@ pageextension 80126 "Purchase Quote Subform" extends "Purchase Quote Subform" //
 {
     layout
     {
+
         addafter(Quantity)
         {
             field(Stock; Itemstk."StockQty")

@@ -11,16 +11,16 @@ tableextension 80100 "Sales line" extends "Sales line" //37
                 "Initial Unit Price" := "Unit Price";
                 "Initial Discount" := "Line Discount %";
 
-                recItem.Reset();
-                recItem.SetRange("No.", "No.");
-                if recItem.FindFirst() then begin
-                    // Message('Here %1 - %2', recItem."No.", recItem."Manufacturer Code");
-                    if (recItem."Manufacturer Code" = 'FAB0001') then Begin
+                // recItem.Reset();
+                // recItem.SetRange("No.", "No.");
+                // if recItem.FindFirst() then begin
+                //     // Message('Here %1 - %2', recItem."No.", recItem."Manufacturer Code");
+                //     if (recItem."Manufacturer Code" = 'FAB0001') then Begin
 
-                        rec."Line Discount %" := 2;
-                        Validate(rec."Line Discount %");
-                    End;
-                end;
+                //         rec."Line Discount %" := 2;
+                //         Validate(rec."Line Discount %");
+                //     End;
+                // end;
             end;
 
 
@@ -46,7 +46,7 @@ tableextension 80100 "Sales line" extends "Sales line" //37
                         repeat
                             if (recProfitAdd."Item Group" = 'PR') OR (recProfitAdd."Item Group" = recItem."Item Product Code") then begin
 
-                                rec."Line Discount %" := 2;
+                                rec."Line Discount %" := recProfitAdd.Taux;
                                 Validate(rec."Line Discount %");
                             end;
 

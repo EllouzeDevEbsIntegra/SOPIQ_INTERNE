@@ -25,6 +25,12 @@ tableextension 80111 "Purchase Header" extends "Purchase Header" //38
                 ModifyPostingDesc(rec);
             end;
         }
+
+        field(80111; "Etat Demande"; Enum "Etat Demande Prix")
+        {
+            Caption = 'Etat Demande Prix';
+            Editable = false;
+        }
     }
 
     var
@@ -73,5 +79,10 @@ tableextension 80111 "Purchase Header" extends "Purchase Header" //38
         "Posting Description" := typeDoc.ToUpper() + ' ' + recVendorName + ' N°' + vendorDocNo;
         Validate("Posting Description");
         // Message('%1', "Posting Description");
+    end;
+
+    trigger OnBeforeInsert()
+    begin
+        "Etat Demande" := Enum::"Etat Demande Prix"::encours;
     end;
 }

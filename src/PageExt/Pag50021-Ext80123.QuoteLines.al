@@ -29,6 +29,35 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
                 Editable = false;
             }
         }
+
+        addafter(Quantity)
+        {
+            field("Quote Line Reason"; "Quote Line Reason")
+            {
+                Caption = 'Raison Qte Cmdé';
+                ApplicationArea = All;
+                Editable = true;
+            }
+
+            field("asking Price"; "asking price")
+            {
+                Caption = 'Prix Demandé';
+                ApplicationArea = All;
+                Editable = true;
+                trigger OnValidate()
+                begin
+                    "asking qty" := "Vendor Quantity";
+                    Modify();
+                end;
+            }
+
+            field("asking Qty"; "asking qty")
+            {
+                Caption = 'Qté Demandée';
+                ApplicationArea = All;
+                Editable = true;
+            }
+        }
         // Add changes to page layout here
         addbefore("Initial Quantity")
         {

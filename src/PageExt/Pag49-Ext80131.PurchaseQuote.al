@@ -2,7 +2,16 @@ pageextension 80131 "Purchase Quote" extends "Purchase Quote" //49
 {
     layout
     {
-        // Add changes to page layout here
+
+        addafter(Status)
+        {
+            field("Etat Demande Prix"; "Etat Demande")
+            {
+                ApplicationArea = All;
+                Editable = false;
+
+            }
+        }
     }
 
     actions
@@ -28,9 +37,46 @@ pageextension 80131 "Purchase Quote" extends "Purchase Quote" //49
 
             end;
         }
-        // Add changes to page actions here
+
+        addafter("Make Order")
+        {
+            action("Purshase Quote Verification")
+            {
+                ApplicationArea = all;
+                Caption = 'Vérification de demande de prix';
+                Image = TestFile;
+                RunObject = Page "Purchase Quote Check";
+                RunPageLink = "Document No." = FIELD("No.");
+                ShortCutKey = 'F8';
+                Enabled = "Etat Demande" = "Etat Demande"::"En attente Validation";
+                //Enabled = Status <> Status::Open;
+            }
+
+            action("Validate Pursh. Qty")
+            {
+                ApplicationArea = all;
+                Caption = 'Valider Qte à Commander';
+                Image = Approval;
+                trigger OnAction()
+                var
+                    PurchaseLine: Record "Purchase Line";
+                begin
+                    PurchaseLine.Reset();
+                    PurchaseLine.Setfilter("Document No.", "No.");
+                    if PurchaseLine.FindSet() then begin
+                        repeat
+                            PurchaseLine."Qty First Confirmation" := PurchaseLine.Quantity;
+                            PurchaseLine.Modify();
+                        until PurchaseLine.next = 0;
+                    end;
+
+                    "Etat Demande" := Enum::"Etat Demande Prix"::"En attente Validation";
+                end;
+            }
+        }
     }
 
-    var
-        myInt: Integer;
+
+
+
 }

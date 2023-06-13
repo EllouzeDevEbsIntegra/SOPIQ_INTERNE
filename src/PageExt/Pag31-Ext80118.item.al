@@ -18,6 +18,16 @@ pageextension 80118 "item" extends "Item List" //31
             }
 
         }
+
+        addlast(Control1)
+        {
+            field("stockMagPrincipal"; StockMagPrincipal)
+            {
+                Caption = 'Stk Mg Principal';
+                ApplicationArea = All;
+            }
+        }
+
         addafter("Search Description")
         {
             field("Fabricant is Actif"; "Fabricant Is Actif")

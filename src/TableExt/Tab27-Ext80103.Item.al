@@ -63,6 +63,15 @@ tableextension 80103 "Item" extends Item //27
             DecimalPlaces = 0 : 5;
         }
 
+        field(50220; "StockMagPrincipal"; Decimal)
+        {
+            CalcFormula = sum("Item Ledger Entry".Quantity where("Item No." = field("No."), "Location Code" = filter('MG-SFAX')));
+            Editable = false;
+            FieldClass = FlowField;
+            DecimalPlaces = 0 : 5;
+        }
+
+
 
 
         field(50111; "Last Date"; Date)

@@ -97,6 +97,19 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
             DecimalPlaces = 0 : 2;
         }
 
+        field(80170; "Qty First Confirmation"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Confirmation Initial Qte';
+            DecimalPlaces = 0 : 5;
+        }
+
+        field(80171; "Quote Line Reason"; Enum "Quote Line Reason")
+        {
+            Caption = 'Raison de la Qté commandé';
+            InitValue = ' ';
+        }
+
         modify("Vendor Unit Cost")
         {
             trigger OnAfterValidate()

@@ -41,6 +41,15 @@ pageextension 80170 "Service Advisor Activitie" extends "Service Advisor Activit
                     Editable = true;
                 }
 
+                field("Achat Mensuel"; achat)
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Achat Mensuel Frs Principal';
+                    DecimalPlaces = 0 : 0;
+                    Image = Calculator;
+                    Visible = StatPurchaseCA;
+                }
+
             }
         }
     }
@@ -51,5 +60,36 @@ pageextension 80170 "Service Advisor Activitie" extends "Service Advisor Activit
     }
 
     var
-        myInt: Integer;
+        achat: Decimal;
+        StatPurchaseCA: Boolean;
+        StartingDate, debutMois, FinMois : Date;
+        userSetup: Record "User Setup";
+
+    trigger OnOpenPage()
+    var
+        recSetupPurchase: Record "Purchases & Payables Setup";
+        defaultVendor: code[20];
+    begin
+
+        userSetup.SetFilter("User ID", UserId);
+        if userSetup.FindFirst() then begin
+            StatPurchaseCA := userSetup."Purchase Stat CA";
+        end;
+
+        recSetupPurchase.Reset();
+        if recSetupPurchase.FindFirst() then begin
+            defaultVendor := recSetupPurchase."Default Vendor";
+        end;
+        if "Default Vendor" <> defaultVendor then begin
+            "Default Vendor" := defaultVendor;
+            Modify();
+        end;
+
+        debutMois := CalcDate('<-CM>', Today);
+        FinMois := CalcDate('<CM>', Today);
+        SetFilter("Date Filter Month", '%1..%2', debutMois, FinMois);
+        CalcFields("Month Sum Purchase");
+        achat := "Month Sum Purchase";
+
+    end;
 }

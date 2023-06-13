@@ -42,6 +42,28 @@ tableextension 80131 "Service Cue EDMS" extends "Service Cue EDMS"//25006177
             CalcFormula = sum("Sales Invoice Line"."Amount" WHERE("Gen. Prod. Posting Group" = filter('MO'), "Labor Groupe Code" = filter('SRV CARR')));
 
         }
+
+        field(50100; "Month Sum Purchase"; Decimal)
+        {
+            Caption = 'Total achat du mois';
+
+            FieldClass = FlowField;
+            CalcFormula = sum("Purch. Inv. Line"."Amount" WHERE("Posting Date" = field("Date Filter Month"), "Buy-from Vendor No." = field("Default Vendor")));
+            // CalcFormula = sum("Sales Shipment Line"."Line Amount" where("Shipment Date" = field("date jour")));
+
+        }
+
+        field(50200; "Date Filter Month"; Date)
+        {
+            Caption = 'Date Filter Month';
+            Editable = false;
+            FieldClass = FlowFilter;
+        }
+
+        field(50201; "Default Vendor"; Code[20])
+        {
+
+        }
     }
 
     var

@@ -3,6 +3,18 @@ tableextension 80101 "Sales Cue" extends "Sales Cue"
 {
     fields
     {
+
+
+        field(50100; "Month Sum Purchase"; Decimal)
+        {
+            Caption = 'Total achat du mois';
+
+            FieldClass = FlowField;
+            CalcFormula = sum("Purch. Inv. Line"."Amount" WHERE("Posting Date" = field("Date Filter Month"), "Buy-from Vendor No." = field("Default Vendor")));
+            // CalcFormula = sum("Sales Shipment Line"."Line Amount" where("Shipment Date" = field("date jour")));
+
+        }
+
         field(50101; "Today Sum Sales"; Decimal)
         {
             Caption = 'Total des ventes du jour';
@@ -66,6 +78,18 @@ tableextension 80101 "Sales Cue" extends "Sales Cue"
 
         }
 
+        field(50200; "Date Filter Month"; Date)
+        {
+            Caption = 'Date Filter Month';
+            Editable = false;
+            FieldClass = FlowFilter;
+        }
+
+        field(50201; "Default Vendor"; Code[20])
+        {
+
+        }
+
         field(50115; "First Day Of Year"; Date)
         {
             Caption = 'Date Debut Année';
@@ -86,6 +110,4 @@ tableextension 80101 "Sales Cue" extends "Sales Cue"
         }
     }
 
-    var
-        StartingDate: Date;
 }

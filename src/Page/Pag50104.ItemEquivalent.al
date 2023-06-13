@@ -166,6 +166,7 @@ page 50104 "Item Equivalent"
 
     procedure SetItemNo(PItemNo: TEXT)
     begin
+
         RecgItem.reset();
         RecgItem.SetFilter("No.", PItemNo);
         lItemNo := '<>' + PItemNo;
@@ -182,7 +183,10 @@ page 50104 "Item Equivalent"
                 SetFilter("Fabricant Is Actif", 'Oui');
                 CurrPage.Update();
             end;
-        end
+
+
+        end;
+
 
 
     end;
@@ -203,6 +207,13 @@ page 50104 "Item Equivalent"
         end
 
 
+    end;
+
+
+    procedure SetNothing()
+    begin
+        SetFilter("No.", '''''');
+        CurrPage.Update();
     end;
 
     trigger OnOpenPage()
