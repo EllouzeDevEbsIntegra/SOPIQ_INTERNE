@@ -111,6 +111,14 @@ page 50108 "Purchase Item Search With Cmd"
                 }
 
             }
+
+            part("Produitéquivalent"; "Item Equivalent")
+            {
+                Caption = 'Equivalent';
+                UpdatePropagation = SubPart;
+                ApplicationArea = All;
+            }
+
             part("cmd"; "Purchase Line Reliquat")
             {
                 Caption = 'Vérification article en commande';
@@ -118,12 +126,7 @@ page 50108 "Purchase Item Search With Cmd"
                 ApplicationArea = All;
                 SubPageLink = "No." = field("No.");
             }
-            part("Produitéquivalent"; "Item Equivalent")
-            {
-                Caption = 'Equivalent';
-                UpdatePropagation = SubPart;
-                ApplicationArea = All;
-            }
+
             part("Kit"; "Item Kit")
             {
                 Caption = 'Kit';

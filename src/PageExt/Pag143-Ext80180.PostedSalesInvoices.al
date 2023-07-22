@@ -70,7 +70,11 @@ pageextension 80180 "Posted Sales Invoices" extends "Posted Sales Invoices"//143
                 THEN begin
                 end
                 ELSE begin
-                    CumulJourPaiement := CumulJourPaiement + ((-PaymentLine."STMontant Initial DS" / totalPaiement) * (PaymentLine."Due Date" - rec."Posting Date"));
+                    if totalPaiement <> 0
+                    THEN
+                        CumulJourPaiement := CumulJourPaiement + ((-PaymentLine."STMontant Initial DS" / totalPaiement) * (PaymentLine."Due Date" - rec."Posting Date"))
+                    ELSE
+                        Message('Facture N° %1 - Total Paiement : %2', Facture."No.", totalPaiement);
                 end;
 
 

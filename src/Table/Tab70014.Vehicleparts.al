@@ -1,4 +1,4 @@
-table 50020 "Vehicle parts"
+table 70014 "Vehicle parts"
 {
     DataClassification = ToBeClassified;
 

@@ -157,10 +157,11 @@ page 50112 "Purchase Quote Check"
 
                 field("Last Pursh. Cost DS"; ItemStk."Last. Pursh. cost DS")
                 {
-                    Caption = 'Cout Calculé';
+                    Caption = 'Dernier Cout DS';
                     ApplicationArea = All;
                     Editable = false;
                 }
+
                 field("Last Pursh. Date"; ItemStk."Last. Pursh. Date")
                 {
                     Caption = 'Dernier Achat';
@@ -174,9 +175,9 @@ page 50112 "Purchase Quote Check"
                     Editable = false;
                 }
 
-                field("Last Curr. Price."; ItemStk."Last Curr. Price.")
+                field("Last Curr. Price."; ItemStk."Pre Last Curr. Price.")
                 {
-                    Caption = 'PU Devise';
+                    Caption = 'Dernier PU Devise';
                     ApplicationArea = All;
                     DecimalPlaces = 2 : 2;
                     Editable = false;
@@ -190,7 +191,7 @@ page 50112 "Purchase Quote Check"
                     Editable = false;
 
                 }
-                field("Last date"; ItemStk."Last Date")
+                field("Last date"; ItemStk."Last starting Date")
                 {
                     Caption = 'Date Prix Devise';
                     ApplicationArea = All;
@@ -280,7 +281,7 @@ page 50112 "Purchase Quote Check"
     begin
 
         if ItemStk.get("No.") Then
-            ItemStk.CalcFields("Last Curr. Price.", "Qty. on Purch. Order", "Last Date", StockQty, ImportQty, "First Reception Date");
+            ItemStk.CalcFields("Last starting Date", "Last Curr. Price.", "Qty. on Purch. Order", "Last Date", "Last Ending Date", StockQty, ImportQty, "First Reception Date", "Pre Last Curr. Price.");
         FieldStyleQty := SetStyleQte(ItemStk.StockQty);
         FieldStyleImportQty := SetStyleQte(ItemStk.ImportQty);
         FieldStyleOnPurchQty := SetStyleQte(ItemStk."Qty. on Purch. Order");

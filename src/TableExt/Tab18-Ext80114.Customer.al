@@ -2,6 +2,11 @@ tableextension 80114 "Customer" extends "Customer" //18
 {
     fields
     {
+        field(80113; "Dep Enc Princ."; Decimal)
+        {
+            AutoFormatType = 1;
+            Caption = 'Dépassement Encour Principal';
+        }
         // Add changes to table fields here
         field(80114; "Opened Invoice"; Decimal)
         {
@@ -71,12 +76,90 @@ tableextension 80114 "Customer" extends "Customer" //18
                             until recSalesPrice.Next = 0;
                         end;
                     end
-
                 END
-
-
             End;
         }
+
+
+        field(90000; "Total Encours Financier"; Decimal)
+        {
+            AutoFormatType = 1;
+            Caption = 'Total Encours Financier';
+            Editable = false;
+        }
+
+
+        field(80120; "Cheque En Coffre"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_CHEQUE'),
+                                                                 "Account No." = field("No."),
+                                                                 "Account Type" = FILTER(Customer),
+                                                                  "Copied To No." = FILTER('')
+                                                                  , "Status No." = FILTER(21000)
+                                                                 ));
+            Caption = 'Chèque en coffre';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(80900; "Cheque Impaye"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_CHEQUE'),
+                                                                 "Account No." = field("No."),
+                                                                 "Account Type" = FILTER(Customer),
+                                                                  "Copied To No." = FILTER('')
+                                                                  , "Status No." = FILTER(32000)
+                                                                 ));
+            Caption = 'Chèque Impayé';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(80121; "Traite En Coff."; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_TRAITE'),
+                                                                 "Account No." = field("No."),
+                                                                 "Account Type" = FILTER(Customer),
+                                                                  "Copied To No." = FILTER('')
+                                                                  , "Status No." = FILTER(30000)
+                                                                 ));
+            Caption = 'Traite en coffre';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(80122; "Traite En Escompte"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_TRAITE'),
+                                                                 "Account No." = field("No."),
+                                                                 "Account Type" = FILTER(Customer),
+                                                                 "Copied To No." = FILTER('')
+                                                                , "Status No." = FILTER(50030)
+                                                                 , "Due Date" = filter('>a')));
+            Caption = 'Traite en escompte';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(80901; "Traite Impaye"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_TRAITE'),
+                                                                 "Account No." = field("No."),
+                                                                 "Account Type" = FILTER(Customer),
+                                                                  "Copied To No." = FILTER('')
+                                                                  , "Status No." = FILTER(40050 | 50070)
+                                                                 ));
+            Caption = 'Traite Impayée';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+
+
 
     }
 

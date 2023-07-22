@@ -81,9 +81,31 @@ tableextension 80103 "Item" extends Item //27
             FieldClass = FlowField;
         }
 
+        field(50171; "Last Ending Date"; Date)
+        {
+            CalcFormula = max("purchase price"."Ending Date" where("Item No." = field("No.")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(50172; "Last starting Date"; Date)
+        {
+            CalcFormula = max("purchase price"."Starting Date" where("Item No." = field("No.")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
         field(50107; "Last Curr. Price."; Decimal)
         {
             CalcFormula = lookup("purchase price"."Direct Unit Cost" where("Item No." = field("No."), "Ending Date" = filter(0D), "Starting Date" = field("Last Date")));
+            Editable = false;
+            FieldClass = FlowField;
+            DecimalPlaces = 2 : 2;
+        }
+
+        field(50170; "Pre Last Curr. Price."; Decimal)
+        {
+            CalcFormula = lookup("purchase price"."Direct Unit Cost" where("Item No." = field("No."), "Ending Date" = field("Last Ending Date")));
             Editable = false;
             FieldClass = FlowField;
             DecimalPlaces = 2 : 2;
@@ -187,6 +209,7 @@ tableextension 80103 "Item" extends Item //27
         recVendorByManufacturer: Record "Vendor By Manufacturer";
         recItemVendor: Record "Item Vendor";
         recVendor: Record "Vendor";
+        recItemMaster: Record "items Master";
     begin
         recVendorByManufacturer.SetRange("Manufacturer Code", "Manufacturer Code");
         if recVendorByManufacturer.FindSet() then begin
@@ -202,6 +225,13 @@ tableextension 80103 "Item" extends Item //27
             until recVendorByManufacturer.next = 0;
 
         end;
+
+
+        recItemMaster.Reset();
+        recItemMaster.No := rec."No.";
+        recItemMaster.Company := Database.CompanyName;
+        recitemmaster.Insert();
+
     end;
 
 }

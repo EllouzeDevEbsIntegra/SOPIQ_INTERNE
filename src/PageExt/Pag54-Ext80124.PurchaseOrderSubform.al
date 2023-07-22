@@ -11,6 +11,11 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
                 ApplicationArea = All;
             }
 
+            field("Vendor Item No."; "Vendor Item No.")
+            {
+                ApplicationArea = All;
+            }
+
         }
 
         addafter("Direct Unit Cost")
@@ -19,26 +24,22 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
             {
                 ApplicationArea = All;
                 Caption = 'Prix demandé';
-                Editable = false;
             }
             field("asking qty"; "asking qty")
             {
                 ApplicationArea = All;
                 Caption = 'Qté demandé';
-                Editable = false;
             }
 
             field("negotiated price"; "negotiated price")
             {
                 ApplicationArea = All;
                 Caption = 'Prix négocié';
-                Editable = false;
             }
             field("negotiated qty"; "negotiated qty")
             {
                 ApplicationArea = All;
                 Caption = 'Qté négocié';
-                Editable = false;
             }
         }
     }
