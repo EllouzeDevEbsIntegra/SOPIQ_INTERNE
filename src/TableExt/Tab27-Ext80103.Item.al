@@ -2,6 +2,69 @@ tableextension 80103 "Item" extends Item //27
 {
     fields
     {
+        field(80103; "Sales Qty 'Year'"; Decimal)
+        {
+            CalcFormula = - Sum("Value Entry"."Invoiced Quantity" WHERE("Item Ledger Entry Type" = CONST(Sale),
+                                                                        "Item No." = FIELD("No."),
+                                                                        "Global Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
+                                                                        "Global Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
+                                                                        "Location Code" = FIELD("Location Filter"),
+                                                                        "Drop Shipment" = FIELD("Drop Shipment Filter"),
+                                                                        "Variant Code" = FIELD("Variant Filter"),
+                                                                        "Posting Date" = FIELD("Date filter 'Year'")));
+            Caption = 'Sales (Qty.)';
+            DecimalPlaces = 0 : 5;
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(80104; "Sales Qty 'Year-1'"; Decimal)
+        {
+            CalcFormula = - Sum("Value Entry"."Invoiced Quantity" WHERE("Item Ledger Entry Type" = CONST(Sale),
+                                                                        "Item No." = FIELD("No."),
+                                                                        "Global Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
+                                                                        "Global Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
+                                                                        "Location Code" = FIELD("Location Filter"),
+                                                                        "Drop Shipment" = FIELD("Drop Shipment Filter"),
+                                                                        "Variant Code" = FIELD("Variant Filter"),
+                                                                        "Posting Date" = FIELD("Date filter 'Year-1'")));
+            Caption = 'Sales (Qty.)';
+            DecimalPlaces = 0 : 5;
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(80105; "Date filter 'Year'"; Date)
+        {
+
+        }
+        field(80106; "Date filter 'Year-1'"; Date)
+        {
+
+        }
+
+        // modify("Item Replacement No.")
+        // {
+        //     trigger OnAfterValidate()
+        //     begin
+
+        //         if (xRec."Item Replacement No." <> '') AND ("Item Replacement No." <> '') then begin
+
+        //             DeleteReplacementItem("No.", "Item Replacement No.");
+        //             Message('Step 1 %1 - %2', "No.", "Item Replacement No.");
+        //         end;
+
+        //         if (xRec."Item Replacement No." = '') AND ("Item Replacement No." <> '') then begin
+        //             DeleteReplacement("No.", "Item Replacement No.");
+        //             CreateReplacementItem("No.", "Item Replacement No.");
+        //             Message('Step 2 %1 - %2', "No.", "Item Replacement No.");
+        //         end;
+        //     end;
+
+
+        // }
+
+
         modify(Reserve)
         {
             trigger OnBeforeValidate()
@@ -18,6 +81,20 @@ tableextension 80103 "Item" extends Item //27
             end;
         }
 
+        field(50102; "Replacement No"; Code[20])
+        {
+            Caption = 'Référence de Remplacement';
+            TableRelation = item;
+            trigger OnValidate()
+            begin
+                if (xRec."Item Replacement No." <> '') AND ("Item Replacement No." <> '') then
+                    DeleteReplacementItem("No.", "Item Replacement No.");
+
+                if (xRec."Item Replacement No." = '') AND ("Item Replacement No." <> '') then
+                    CreateReplacementItem("No.", "Item Replacement No.");
+            end;
+
+        }
         field(50103; "PurshQty20"; integer)
         {
             CalcFormula = sum("Item old transaction"."Purshase Qty" where("Item N°" = field("No."), Year = const('2020')));
@@ -231,6 +308,82 @@ tableextension 80103 "Item" extends Item //27
         recItemMaster.No := rec."No.";
         recItemMaster.Company := Database.CompanyName;
         recitemmaster.Insert();
+
+    end;
+
+    trigger OnAfterModify()
+    var
+        recItemMaster: Record "items Master";
+    begin
+        recItemMaster.SetRange(No, rec."No.");
+        recItemMaster.SetRange(Company, Database.CompanyName);
+        if recItemMaster.FindSet() then begin
+            REPEAT
+                recItemMaster.Famille := rec.Groupe;
+                recItemMaster."Sous Famille" := rec."Sous Groupe";
+                recItemMaster.Master := rec."Reference Origine Lié";
+                recItemMaster.Modify();
+            UNTIL recItemMaster.Next() = 0;
+        end;
+    end;
+
+
+    procedure CreateReplacementItem(ReplacedNo: Code[20]; ReplacedBy: Code[20])
+    var
+        ItemSubstitution: Record "Item Substitution";
+        Master: record "Nonstock Item";
+        Item: Record Item;
+    begin
+        IF NOT Master.Get(ReplacedNo) then begin
+            If Item.GET(ReplacedNo) then begin
+                Master.Init();
+                Master."Entry No." := ReplacedNo;
+                Master."Item No." := ReplacedNo;
+                Master."Vendor Item No." := ReplacedNo;
+                Master.Description := Item.Description;
+                Master.INSERT;
+            end;
+        end;
+        IF NOT Master.Get(ReplacedBy) then begin
+            If Item.GET(ReplacedBy) then begin
+                Master.Init();
+                Master."Entry No." := ReplacedBy;
+                Master."Item No." := ReplacedBy;
+                Master."Vendor Item No." := ReplacedBy;
+                Master.Description := Item.Description;
+                Master.INSERT;
+            end;
+        end;
+
+        ItemSubstitution.init;
+        ItemSubstitution.Type := ItemSubstitution.Type::"Nonstock Item";
+        ItemSubstitution."No." := ReplacedNo;
+        ItemSubstitution."Entry Type" := ItemSubstitution."Entry Type"::Replacement;
+        ItemSubstitution."Substitute Type" := ItemSubstitution."Substitute Type"::Item;
+        ItemSubstitution."Replacement Info." := ItemSubstitution."Replacement Info."::Replacement;
+        ItemSubstitution."Substitute No." := ReplacedBy;
+        ItemSubstitution.Description := 'Interne';
+        ItemSubstitution."Posting Date" := Today;
+        ItemSubstitution.Validate(Interchangeable, true);
+        Message('%1 - %2 - %3 ', ItemSubstitution."No.", ItemSubstitution."Substitute No.", ItemSubstitution."Posting Date");
+        ItemSubstitution.Insert();
+
+
+    end;
+
+    procedure DeleteReplacementItem(ReplacedNo: Code[20]; ReplacedBy: Code[20])
+    var
+        ItemSubstitution: Record "Item Substitution";
+    begin
+        ItemSubstitution.SetRange(Type, ItemSubstitution.Type::Item);
+        ItemSubstitution.SetRange("No.", ReplacedNo);
+        ItemSubstitution.SetRange("Entry Type", ItemSubstitution."Entry Type"::Replacement);
+        ItemSubstitution.SetRange("Substitute Type", ItemSubstitution."Substitute Type"::Item);
+        ItemSubstitution.SetRange("Replacement Info.", ItemSubstitution."Replacement Info."::Replacement);
+        ItemSubstitution.SetRange("Substitute No.", ReplacedBy);
+        IF ItemSubstitution.FindFirst() then
+            ItemSubstitution.Delete();
+
 
     end;
 

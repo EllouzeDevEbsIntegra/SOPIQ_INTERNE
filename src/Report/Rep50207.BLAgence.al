@@ -338,6 +338,10 @@ report 50207 "Sales - Shipment Valorise"
                         column(CodeEmplacement; "Bin Code")
                         {
                         }
+                        column(Quantity_Invoiced; "Quantity Invoiced")
+                        {
+
+                        }
 
 
 

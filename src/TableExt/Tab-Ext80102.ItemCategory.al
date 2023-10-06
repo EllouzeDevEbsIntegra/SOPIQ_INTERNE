@@ -70,4 +70,47 @@ tableextension 80102 "Item Category" extends "Item Category"
 
     var
         myInt: Integer;
+
+    // trigger OnAfterModify()
+    // Var
+    //     recCategory: Record "Item Category";
+    //     recCompany: Record Company;
+    //     recCompanyInformation: Record "Company Information";
+    // begin
+
+    //     recCompanyInformation.Reset();
+    //     recCompanyInformation.SetRange("Base Company", true);
+    //     if recCompanyInformation.FindFirst() then begin
+
+
+    //         if (Database.CompanyName = recCompanyInformation.Company) then begin
+
+    //             recCompany.Reset();
+    //             if recCompany.FindSet() then begin
+    //                 REPEAT
+
+    //                     if (recCompany.Name <> recCompanyInformation.Company) then begin
+    //                         recCategory.Reset();
+    //                         recCategory.SetRange(Code, rec.Code);
+    //                         recCategory.ChangeCompany(recCompany.Name);
+
+    //                         if recCategory.FindFirst() then begin
+    //                             recCategory := rec;
+    //                             recCategory.Modify();
+    //                             Message('Category Modified : %1 Dans société : %2', recCategory.Code, recCompany.Name);
+    //                         end
+    //                         else begin
+    //                             rec.Insert();
+    //                         end;
+    //                     end
+
+    //                 UNTIL recCompany.Next() = 0;
+    //             end;
+
+
+    //         end
+    //     end;
+
+
+    // end;
 }

@@ -2,6 +2,7 @@ pageextension 80127 "Item Card" extends "Item Card"//30
 {
     layout
     {
+
         addafter("Last Purchase Date")
         {
             field("Last. Pursh. Date"; "Last. Pursh. Date")
@@ -30,5 +31,54 @@ pageextension 80127 "Item Card" extends "Item Card"//30
     {
 
     }
+
+    trigger OnClosePage()
+    var
+        recitem, tempItem : Record Item;
+        recCompany: Record Company;
+        recCompanyInformation: Record "Company Information";
+    begin
+        recitem.Reset();
+        recitem.SetRange("No.", rec."No.");
+        if recitem.FindFirst() then begin
+            tempItem := recitem;
+            // Message('Item Temporaire : %1 --- Item : %2', tempItem."No.", recitem."No.");
+        end;
+
+
+        recCompanyInformation.Reset();
+        recCompanyInformation.SetRange("Base Company", true);
+        if recCompanyInformation.FindFirst() then begin
+
+
+            if (Database.CompanyName = recCompanyInformation.Company) then begin
+
+                recCompany.Reset();
+                if recCompany.FindSet() then begin
+                    REPEAT
+
+                        if (recCompany.Name <> recCompanyInformation.Company) then begin
+                            tempItem.ChangeCompany(recCompany.Name);
+                            recitem.Reset();
+                            recitem.SetRange("No.", rec."No.");
+                            recitem.ChangeCompany(recCompany.Name);
+
+                            if recitem.FindFirst() then begin
+                                recitem := rec;
+                                recitem.Modify();
+                                // Message('Item Modified : %1 Dans société : %2', recitem."No.", recCompany.Name);
+                            end
+
+                        end
+
+                    UNTIL recCompany.Next() = 0;
+                end;
+
+
+            end
+        end;
+
+
+    end;
 
 }

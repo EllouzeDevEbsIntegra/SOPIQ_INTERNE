@@ -10,6 +10,12 @@ pageextension 80157 "Purchases & Payables Setup" extends "Purchases & Payables S
                 ApplicationArea = All;
                 Caption = 'Fournisseur Par Défaut';
             }
+
+            field("MF obligatoire"; "MF obligatoire")
+            {
+                ApplicationArea = All;
+                Caption = 'MF Fournisseur Obligatoire';
+            }
         }
     }
 

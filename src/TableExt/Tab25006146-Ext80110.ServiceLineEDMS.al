@@ -23,6 +23,29 @@ tableextension 80110 "Service Line EDMS" extends "Service Line EDMS" //25006146
         }
         modify("No.")
         {
+            trigger OnBeforeValidate()
+            var
+                recItem2: Record Item;
+                recSalesLine: Record "Service Line EDMS";
+            begin
+                recSalesLine.Reset();
+                recSalesLine.SetRange("Document No.", "Document No.");
+                recSalesLine.SetRange("No.", "No.");
+                if recSalesLine.FindFirst() then begin
+                    recItem2.Reset();
+                    recItem2.SetRange("No.", recSalesLine."No.");
+                    recItem2.SetRange("Item Type", recItem2."Item Type"::Item);
+                    // recItem2.Setfilter("Small Parts", 'False');
+                    if recItem2.FindFirst() then begin
+                        if (recItem2."Small Parts" = false) then begin
+                            message('L''article %1 existe déja dans ce document !', "No.");
+                            Error('L''article %1 existe déja dans ce document !', "No.");
+                        end
+                    end
+                end;
+            end;
+
+
             trigger OnAfterValidate()
             var
                 recUnitofMesure: Record "Item Unit of Measure";
@@ -33,6 +56,10 @@ tableextension 80110 "Service Line EDMS" extends "Service Line EDMS" //25006146
                 defaultProfit: Decimal;
 
             begin
+
+
+
+
                 recUnitofMesure.Reset();
                 recItem.Reset();
                 recItem.SetRange("No.", rec."No.");

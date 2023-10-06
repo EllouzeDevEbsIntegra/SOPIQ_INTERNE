@@ -16,15 +16,22 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
                 ApplicationArea = All;
             }
 
+
+
         }
 
         addafter("Direct Unit Cost")
         {
+            field("Last Direct Cost"; "Last Direct Cost")
+            {
+                ApplicationArea = all;
+            }
             field("asking price"; "asking price")
             {
                 ApplicationArea = All;
                 Caption = 'Prix demandé';
             }
+
             field("asking qty"; "asking qty")
             {
                 ApplicationArea = All;
@@ -73,14 +80,18 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
                             REPEAT
                                 if recItem.Get(recPurshLine."No.") then begin
                                     recItem."Profit %" := recPurshLine.Marge;
-                                    recItem."Price/Profit Calculation New" := recItem."Price/Profit Calculation New"::"Price=Cost+Profit";
-                                    recItem."Price/Profit Calculation" := recItem."Price/Profit Calculation"::"Price=Cost+Profit";
+                                    recItem."Price/Profit Calculation New" := recItem."Price/Profit Calculation New"::"No Relationship";
+                                    recItem."Price/Profit Calculation" := recItem."Price/Profit Calculation"::"No Relationship";
 
-                                    if recItem."Profit %" < 100 then begin
+                                    if recItem."Profit %" <= 50 then begin
                                         GetGLSetup;
                                         recItem."Unit Price" :=
-                                          Round(
-                                            (recItem."Unit Cost" / (1 - recItem."Profit %" / 100)) *
+                                        //   Round(
+                                        //     (recItem."Unit Cost" / (1 - recItem."Profit %" / 100)) *
+                                        //     (1 + CalcVAT),
+                                        //     GLSetup."Unit-Amount Rounding Precision");
+                                         Round(
+                                            (recPurshLine."Direct Unit Cost" / (1 - recItem."Profit %" / 100)) *
                                             (1 + CalcVAT),
                                             GLSetup."Unit-Amount Rounding Precision");
                                     end;
@@ -96,6 +107,21 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
 
 
             }
+
+
+        }
+
+        addafter("Co&mments")
+        {
+            action("Transaction Article")
+            {
+                Caption = 'Transactions articles';
+                ShortcutKey = F8;
+                RunObject = page "Specific Item Ledger Entry";
+                RunPageLink = "Item No." = field("No.");
+                Image = Change;
+            }
+
         }
 
     }
@@ -140,6 +166,11 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
         if 1 + CalcVAT = 0 then
             exit(0);
         exit(Round(recitem."Unit Price" / (1 + CalcVAT), GLSetup."Unit-Amount Rounding Precision"));
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        CalcFields("Last Direct Cost");
     end;
 
 

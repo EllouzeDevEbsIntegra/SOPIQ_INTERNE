@@ -28,6 +28,7 @@ page 50111 "Follow Up Card"
                 field(statut; statut)
                 {
                     Editable = false;
+
                 }
                 field(type; type)
                 {
@@ -39,6 +40,7 @@ page 50111 "Follow Up Card"
                         recFollowUpLines.DeleteLines(No);
                         recFollowUpLines.AddLines(Rec);
                     end;
+
                 }
             }
             group("Sales Invoice Details")

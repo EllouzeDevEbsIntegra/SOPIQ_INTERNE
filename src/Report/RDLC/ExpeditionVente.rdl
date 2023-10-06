@@ -3056,6 +3056,12 @@ Kv6MZxJVLDe2pG2/n0ruOBzhrBx5uwz8Hv6YaVZDAR94Xn3qVHlzj4q/0YXhT4+vleblHjyQd676/gdd
         <Field Name="CodeEmplacement">
           <DataField>CodeEmplacement</DataField>
         </Field>
+        <Field Name="Quantity_Invoiced">
+          <DataField>Quantity_Invoiced</DataField>
+        </Field>
+        <Field Name="Quantity_InvoicedFormat">
+          <DataField>Quantity_InvoicedFormat</DataField>
+        </Field>
         <Field Name="DimText1">
           <DataField>DimText1</DataField>
         </Field>

@@ -156,6 +156,14 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
             Editable = true;
         }
 
+        field(80220; "Last Direct Cost"; Decimal)
+        {
+            Caption = 'Dernier Coût Direct';
+            Editable = true;
+            CalcFormula = lookup(Item."Last Direct Cost" where("No." = field("No.")));
+            FieldClass = FlowField;
+        }
+
 
     }
 

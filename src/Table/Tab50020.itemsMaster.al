@@ -11,10 +11,22 @@ table 50020 "items Master"
             TableRelation = Item."No.";
 
         }
-        field(2; Famille; Code[20])
+        field(2; Famille; Code[200])
         {
             DataClassification = ToBeClassified;
             TableRelation = "Item Category".Code;
+        }
+
+        field(3; "Sous Famille"; Code[200])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Item Category".Code;
+        }
+
+        field(4; "Master"; Code[50])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Item"."No.";
         }
 
         field(20; Company; Code[20])
@@ -34,7 +46,7 @@ table 50020 "items Master"
 
     keys
     {
-        key(Key1; No)
+        key(Key1; No, Company)
         {
             Clustered = true;
         }
@@ -44,50 +56,45 @@ table 50020 "items Master"
         myInt: Integer;
 
 
-    trigger OnInsert()
-    begin
-        Message(Database.CompanyName);
+    // trigger OnModify()
+    // var
+    //     recItem, tempItem : Record Item;
+    //     recCompany: Record Company;
+    //     tempNo, tempFamille : Code[20];
+
+    // begin
+
+    //     recCompany.Reset();
+    //     if recCompany.FindSet() then begin
+    //         REPEAT
+
+    //             recItem.Reset();
+    //             recItem.SetRange("No.", rec.No);
+    //             recItem.ChangeCompany(recCompany.Name);
+    //             if recItem.FindFirst() then begin
+    //                 tempItem := recItem;
+    //                 Message('Modification' + recItem."No." + ' - ' + rec.Famille + Database.CompanyName);
+    //                 recItem."Item Product Code" := rec.Famille;
+    //                 recItem.Modify();
+
+    //             end else begin
+    //                 recItem.Reset();
+    //                 recItem."No." := rec.No;
+    //                 recItem."Item Product Code" := rec.Famille;
+    //                 recItem.Type := recItem.Type::Inventory;
+    //                 recItem."Item Type" := recItem."Item Type"::Item;
+    //                 recItem.Insert();
+    //                 Message('Insertion %1 - %2 - %3 - %4', recItem."No.", recItem."Item Sub Product Code", recItem.Type, Database.CompanyName);
+    //             end;
 
 
-    end;
+    //         UNTIL recCompany.Next() = 0;
+    //     end;
 
-    trigger OnModify()
-    var
-        recItem, tempItem : Record Item;
-        recCompany: Record Company;
-        tempNo, tempFamille : Code[20];
-
-    begin
-
-        recCompany.Reset();
-        if recCompany.FindSet() then begin
-            REPEAT
-
-                recItem.Reset();
-                recItem.SetRange("No.", rec.No);
-                recItem.ChangeCompany(recCompany.Name);
-                if recItem.FindFirst() then begin
-                    Message('Modification' + recItem."No." + ' - ' + rec.Famille + Database.CompanyName);
-                    recItem."Item Product Code" := rec.Famille;
-                    recItem.Modify();
-
-                end else begin
-                    tempItem.Reset();
-                    tempItem."No." := rec.No;
-                    tempItem."Item Sub Product Code" := rec.Famille;
-                    tempItem.Type := tempItem.Type::Inventory;
-                    tempItem.Insert();
-                    Message('Insertion %1 - %2 - %3', tempItem."No.", tempItem."Item Sub Product Code", tempItem.Type);
-                end;
+    //     rec.Verified := true;
 
 
-            UNTIL recCompany.Next() = 0;
-        end;
-
-        rec.Verified := true;
-
-
-    end;
+    // end;
 
     trigger OnDelete()
     begin

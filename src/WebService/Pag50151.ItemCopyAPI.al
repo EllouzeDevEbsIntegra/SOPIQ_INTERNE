@@ -1,15 +1,14 @@
-page 50120 "ItemAPI"
+page 50151 "ItemCopyAPI"
 {
     PageType = API;
-    Caption = 'Item API';
+    Caption = 'Item Copy API';
     APIPublisher = 'sopiq';
     APIGroup = 'interne';
     APIVersion = 'v1.0';
-    EntityName = 'Item';
-    EntitySetName = 'Item';
+    EntityName = 'ItemCopy';
+    EntitySetName = 'ItemCopy';
     SourceTable = Item;
     DelayedInsert = true;
-    // InsertAllowed = true;
 
     layout
     {
@@ -19,8 +18,21 @@ page 50120 "ItemAPI"
             {
                 field(ref; "No.")
                 {
-                    Caption = 'Référence Master';
+                    Caption = 'Référence SOPIQ';
+                }
 
+                field(frs; "Vendor No.")
+                {
+                    Caption = 'Code Fournisseur';
+                }
+                field(refTecdoc; "Vendor Item No.")
+                {
+                    Caption = 'Référence Tecdoc';
+                }
+
+                field(refMaster; "Reference Origine Lié")
+                {
+                    Caption = 'Reference Origine Lié';
                 }
                 field(category; "Item Category Code")
                 {
@@ -46,7 +58,6 @@ page 50120 "ItemAPI"
                     Caption = 'Fabricant';
                 }
 
-
                 field(marque; "Make Code")
                 {
                     Caption = 'Marque';
@@ -62,7 +73,7 @@ page 50120 "ItemAPI"
         item: Record Item;
         recFabricant: Record Manufacturer;
         recItemUnit: Record "Item Unit of Measure";
-        fabricant, reference : Text[100];
+        fabricant: Text[100];
     begin
         if "No." = '' then
             Error(NotProvidedCustomerNameErr);
@@ -70,12 +81,7 @@ page 50120 "ItemAPI"
         recFabricant.Reset();
         If recFabricant.get(rec."Fabricant WS") then fabricant := recFabricant.Name;
 
-
-        reference := rec."No.";
-        rec."No." := 'MASTER' + rec."No.";
-
-
-
+        //Add item unit
         recItemUnit.Init();
         recItemUnit."Item No." := rec."No.";
         recItemUnit.code := 'PCS';
@@ -83,22 +89,20 @@ page 50120 "ItemAPI"
         recItemUnit.Insert;
 
 
-        rec."Reference Origine Lié" := rec."No.";
         rec."Base Unit of Measure" := 'PCS';
         rec."Sales Unit of Measure" := 'PCS';
         rec."Purch. Unit of Measure" := 'PCS';
         rec."Item Type" := "Item Type"::Item;
-        rec.Produit := true;
+        rec.Produit := false;
         rec."Search Description2" := rec."No." + ' - ' + rec."Description structurée" + ' - ' + fabricant;
         rec."Gen. Prod. Posting Group" := 'MARCH_19';
         rec."VAT Prod. Posting Group" := 'TVA_19';
         rec."Inventory Posting Group" := 'MARCHANDISES';
-        rec."Vendor No." := '401230';
-        rec."Vendor Item No." := reference;
-        rec."Item Class" := "Item Class"::Original;
+        rec."Item Class" := "Item Class"::Adaptable;
         rec.Reserve := Reserve::Always;
         rec."Price/Profit Calculation" := "Price/Profit Calculation"::"No Relationship";
         rec."VAT Bus. Posting Gr. (Price)" := 'LOCAL';
+        rec."Profit %" := 20;
 
         rec."Manufacturer Code" := rec."Fabricant WS";
 
@@ -107,18 +111,16 @@ page 50120 "ItemAPI"
         if not Item.IsEmpty then
             Insert;
 
+
         Insert(true);
 
         Modify(true);
-
 
         exit(false);
 
 
 
-
     end;
-
 
     var
         NotProvidedCustomerNameErr: Label '"No." must be provided.', Locked = true;

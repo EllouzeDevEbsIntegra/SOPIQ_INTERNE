@@ -7,6 +7,12 @@ tableextension 80121 "Purchases & Payables Setup" extends "Purchases & Payables 
             Caption = 'Fournisseur Par Défaut';
             TableRelation = Vendor;
         }
+
+        field(80121; "MF obligatoire"; Boolean)
+        {
+            Caption = 'MF Fournisseur Obligatoire';
+            InitValue = false;
+        }
     }
 
     var

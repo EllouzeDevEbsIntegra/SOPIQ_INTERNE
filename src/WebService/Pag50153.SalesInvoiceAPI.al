@@ -1,11 +1,11 @@
-page 50123 "Sales Invoice API"
+page 50153 "Sales Invoice API"
 {
     PageType = API;
     Caption = 'sales Invoices Headers';
     APIPublisher = 'sopiq';
     APIGroup = 'interne';
     APIVersion = 'v1.0';
-    EntityName = 'salesInvoiceAPI';
+    EntityName = 'salesInvoices';
     EntitySetName = 'salesInvoices';
     SourceTable = "Sales Invoice Header";
     DelayedInsert = true;
