@@ -900,7 +900,6 @@
                                               <PaddingBottom>2pt</PaddingBottom>
                                             </Style>
                                           </Textbox>
-                                          <rd:Selected>true</rd:Selected>
                                         </CellContents>
                                       </TablixCell>
                                       <TablixCell>
@@ -2300,7 +2299,7 @@
       <Width>20.34626cm</Width>
       <Page>
         <PageHeader>
-          <Height>7.22521cm</Height>
+          <Height>7.26048cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -2311,7 +2310,7 @@
               <Sizing>Fit</Sizing>
               <Top>0in</Top>
               <Left>0.00488in</Left>
-              <Height>1.64411cm</Height>
+              <Height>2.31438cm</Height>
               <Width>20.33386cm</Width>
               <Visibility>
                 <Hidden>=if(Fields!afficherPiedsPage.Value=true,false,true)</Hidden>
@@ -2544,7 +2543,7 @@
                 </Textbox>
               </ReportItems>
               <KeepTogether>true</KeepTogether>
-              <Top>1.63999in</Top>
+              <Top>1.65388in</Top>
               <Left>0.28289in</Left>
               <Height>1.17125in</Height>
               <Width>2.9in</Width>
@@ -2676,7 +2675,7 @@
                 </Textbox>
               </ReportItems>
               <KeepTogether>true</KeepTogether>
-              <Top>1.63999in</Top>
+              <Top>1.65388in</Top>
               <Left>4.91354in</Left>
               <Height>1.17125in</Height>
               <Width>2.9in</Width>
@@ -2728,7 +2727,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox13</rd:DefaultName>
-              <Top>0.3549cm</Top>
+              <Top>0.39017cm</Top>
               <Left>13.24924cm</Left>
               <Height>0.423cm</Height>
               <Width>7.09702cm</Width>
@@ -2764,7 +2763,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox13</rd:DefaultName>
-              <Top>0.95429cm</Top>
+              <Top>0.98956cm</Top>
               <Left>15.9847cm</Left>
               <Height>1.6776cm</Height>
               <Width>2.61955cm</Width>
@@ -2812,7 +2811,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>1.89299in</Top>
+              <Top>1.90688in</Top>
               <Left>4.94383in</Left>
               <Height>0.2in</Height>
               <Width>2.79685in</Width>
@@ -2854,7 +2853,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>2.55043in</Top>
+              <Top>2.56432in</Top>
               <Left>4.94383in</Left>
               <Height>0.2in</Height>
               <Width>2.79685in</Width>
@@ -2903,7 +2902,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>2.12077in</Top>
+              <Top>2.13466in</Top>
               <Left>4.94697in</Left>
               <Height>0.2in</Height>
               <Width>2.79685in</Width>
@@ -2939,7 +2938,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>2.38494cm</Top>
+              <Top>2.42021cm</Top>
               <Left>7.21674cm</Left>
               <Height>0.69624cm</Height>
               <Width>5.89467cm</Width>
@@ -2975,7 +2974,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>3.2223cm</Top>
+              <Top>3.25757cm</Top>
               <Left>7.22301cm</Left>
               <Height>0.68984cm</Height>
               <Width>5.89467cm</Width>
@@ -3016,7 +3015,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox13</rd:DefaultName>
-              <Top>6.47809cm</Top>
+              <Top>6.51336cm</Top>
               <Left>8.69369cm</Left>
               <Height>0.57073cm</Height>
               <Width>3.21681cm</Width>

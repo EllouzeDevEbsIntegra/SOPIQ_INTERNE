@@ -34,6 +34,11 @@ report 50219 "ST Remise effets à lescompte"
             {
 
             }
+
+            column(Status_No_; "Status No.")
+            {
+
+            }
             column(MatriculeFiscal; CompanyInfo."VAT Registration No.")
             {
             }
@@ -41,6 +46,7 @@ report 50219 "ST Remise effets à lescompte"
             {
 
             }
+
             column(RSCaption; CstG011)
             {
             }
@@ -118,6 +124,7 @@ report 50219 "ST Remise effets à lescompte"
             column(DateGWorkDate; DateGWorkDate)
             {
             }
+
             dataitem("Payment Line"; 10866)
             {
                 DataItemLink = "No." = FIELD("No.");
@@ -221,6 +228,7 @@ report 50219 "ST Remise effets à lescompte"
     {
     }
 
+
     trigger OnInitReport()
     begin
         //>>MIG2013 18022013
@@ -229,7 +237,11 @@ report 50219 "ST Remise effets à lescompte"
         //<<MIG2013 18022013
         CompanyInfo.CalcFields(Picture);
         TXTADRESSE := CompanyInfo.Address + ' ' + CompanyInfo.City + ' ' + CompanyInfo."Post Code";
+
+
     end;
+
+
 
     var
         Banque: Record 270;
@@ -262,5 +274,6 @@ report 50219 "ST Remise effets à lescompte"
         currency: Record Currency;
         RIBKEY: Text[5];
         TXTADRESSE: Text;
+
 }
 

@@ -5,7 +5,9 @@ report 50207 "Sales - Shipment Valorise"
     //   Changed trigger:
     //     Sales Header - OnAfterGetRecord()
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report/RDLC/ExpeditionVente.rdl';
+    // RDLCLayout = './src/report/RDLC/ExpeditionVente.rdl';
+    RDLCLayout = './src/report/RDLC/ExpeditionVenteEntete.rdl';
+
 
     Caption = 'Sales - Shipment Valorise';
     PreviewMode = PrintLayout;
@@ -24,6 +26,24 @@ report 50207 "Sales - Shipment Valorise"
             column(PageCaption; PageCaptionCap)
             {
             }
+            column(Entete; RecCompany."Invoice Header Picture")
+            {
+            }
+            column(Pied; RecCompany."Invoice Footer Picture")
+            {
+            }
+
+            column(afficherPiedsPage; afficherPiedsPage)
+            {
+
+            }
+
+            column(BilltoCustNo; "Sales Shipment Header"."Bill-to Customer No.")
+            {
+            }
+            column(BilltoCustName; "Sales Shipment Header"."Bill-to Name")
+            {
+            }
 
 
             dataitem(CopyLoop; "Integer")
@@ -35,6 +55,7 @@ report 50207 "Sales - Shipment Valorise"
                     column(CompanyInfo2Picture; CompanyInfo2.Picture)
                     {
                     }
+
                     column(CompanyInfo1Picture; CompanyInfo1.Picture)
                     {
                     }
@@ -511,11 +532,15 @@ report 50207 "Sales - Shipment Valorise"
                     dataitem(Total; "Integer")
                     {
                         DataItemTableView = SORTING(Number) WHERE(Number = CONST(1));
+
                     }
                     dataitem(Total2; "Integer")
                     {
                         DataItemTableView = SORTING(Number) WHERE(Number = CONST(1));
                         column(BilltoCustNo_SalesShptHeader; "Sales Shipment Header"."Bill-to Customer No.")
+                        {
+                        }
+                        column(BilltoCustName_SalesShptHeader; "Sales Shipment Header"."Bill-to Name")
                         {
                         }
                         column(CustAddr1; CustAddr[1])
@@ -716,6 +741,11 @@ report 50207 "Sales - Shipment Valorise"
                         Caption = 'No. of Copies';
                         ToolTip = 'Specifies how many copies of the document to print.';
                     }
+                    field(afficherPiedsPage; afficherPiedsPage)
+                    {
+                        ApplicationArea = all;
+                        Caption = 'Afficher entête et pied de page';
+                    }
                     field(ShowInternalInfo; ShowInternalInfo)
                     {
                         ApplicationArea = Basic, Suite;
@@ -756,7 +786,13 @@ report 50207 "Sales - Shipment Valorise"
 
     trigger OnInitReport()
     begin
+        Clear(RecCompany);
+        RecCompany.CalcFields("Invoice Footer Picture");
+        RecCompany.CalcFields("Invoice Header Picture");
+
         CompanyInfo.Get();
+        CompanyInfo.CalcFields("Invoice Footer Picture");
+        CompanyInfo.CalcFields("Invoice Header Picture");
         SalesSetup.Get();
         FormatDocument.SetLogoPosition(SalesSetup."Logo Position on Documents", CompanyInfo1, CompanyInfo2, CompanyInfo3);
 
@@ -799,12 +835,15 @@ report 50207 "Sales - Shipment Valorise"
         CodeTVA: Code[20];
         TexteLettre: Text[1024];
         MTTIMBRE: Decimal;
+        afficherPiedsPage: Boolean;
+
         GeneralLedgerSetup: Record "General Ledger Setup";
         RecGVATPostingGroup: Record "VAT Business Posting Group";
         TXTSUSP: Text;
         // Fin New Declaration
         Text002: Label 'Sales - Shipment %1', Comment = '%1 = Document No.';
         SalesPurchPerson: Record "Salesperson/Purchaser";
+        RecCompany: Record "Company Information";
         CompanyInfo: Record "Company Information";
         CompanyInfo1: Record "Company Information";
         CompanyInfo2: Record "Company Information";

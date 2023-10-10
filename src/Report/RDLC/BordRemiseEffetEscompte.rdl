@@ -104,22 +104,22 @@
                       <Width>0.69242in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>0.61462in</Width>
+                      <Width>0.45462in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>2.37317in</Width>
+                      <Width>2.86879in</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>0.50982in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>0.83842in</Width>
+                      <Width>0.8in</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>0.39118in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.13593in</Width>
+                      <Width>0.82343in</Width>
                     </TablixColumn>
                   </TablixColumns>
                   <TablixRows>
@@ -838,7 +838,7 @@
                                       <Value>(Si BIAT)</Value>
                                       <Style>
                                         <FontFamily />
-                                        <FontSize>9pt</FontSize>
+                                        <FontSize>7pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -1334,17 +1334,17 @@
                         </TablixCell>
                         <TablixCell>
                           <CellContents>
-                            <Textbox Name="Textbox21">
+                            <Textbox Name="BankAdresse">
                               <CanGrow>true</CanGrow>
                               <KeepTogether>true</KeepTogether>
                               <Paragraphs>
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value />
+                                      <Value>=Fields!BankAdresse.Value</Value>
                                       <Style>
                                         <FontFamily />
-                                        <FontSize>9pt</FontSize>
+                                        <FontSize>8pt</FontSize>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1353,7 +1353,7 @@
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
-                              <rd:DefaultName>Textbox21</rd:DefaultName>
+                              <rd:DefaultName>BankAdresse</rd:DefaultName>
                               <Style>
                                 <Border>
                                   <Style>Solid</Style>
@@ -1453,7 +1453,7 @@
                                       <Value>=Fields!PaymentLineDraweeReference.Value</Value>
                                       <Style>
                                         <FontFamily />
-                                        <FontSize>8pt</FontSize>
+                                        <FontSize>7pt</FontSize>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1657,6 +1657,7 @@
                                       <Style>
                                         <FontFamily />
                                         <FontSize>9pt</FontSize>
+                                        <Format>#,0.000;(#,0.000)</Format>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1670,26 +1671,6 @@
                                 <Border>
                                   <Style>Solid</Style>
                                 </Border>
-                                <TopBorder>
-                                  <Color>Black</Color>
-                                  <Style>Solid</Style>
-                                  <Width>1pt</Width>
-                                </TopBorder>
-                                <BottomBorder>
-                                  <Color>Black</Color>
-                                  <Style>Solid</Style>
-                                  <Width>1pt</Width>
-                                </BottomBorder>
-                                <LeftBorder>
-                                  <Color>Black</Color>
-                                  <Style>Solid</Style>
-                                  <Width>1pt</Width>
-                                </LeftBorder>
-                                <RightBorder>
-                                  <Color>Black</Color>
-                                  <Style>Solid</Style>
-                                  <Width>1pt</Width>
-                                </RightBorder>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1746,9 +1727,9 @@
                 </TablixRowHierarchy>
                 <KeepTogether>true</KeepTogether>
                 <DataSetName>DataSet_Result</DataSetName>
-                <Left>0.0125cm</Left>
+                <Left>0.0375cm</Left>
                 <Height>0.86411in</Height>
-                <Width>7.8239in</Width>
+                <Width>7.8086in</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -1757,9 +1738,9 @@
               </Tablix>
             </ReportItems>
             <KeepTogether>true</KeepTogether>
-            <Top>4.4467cm</Top>
+            <Top>4.41839cm</Top>
             <Left>0.34285cm</Left>
-            <Height>2.44144in</Height>
+            <Height>2.45259in</Height>
             <Width>19.88522cm</Width>
             <ZIndex>2</ZIndex>
             <Style>
@@ -1830,7 +1811,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>X</Value>
+                    <Value />
                     <Style>
                       <FontSize>11pt</FontSize>
                       <FontWeight>Bold</FontWeight>
@@ -2732,11 +2713,87 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
+          <Textbox Name="LettreX">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>X</Value>
+                    <Style>
+                      <FontSize>11pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <Top>1.01452cm</Top>
+            <Left>13.41845cm</Left>
+            <Height>0.58152cm</Height>
+            <Width>0.76509cm</Width>
+            <ZIndex>24</ZIndex>
+            <Visibility>
+              <Hidden>=IIf((Fields!Status_No_.Value=40000),false,true)</Hidden>
+            </Visibility>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <VerticalAlign>Middle</VerticalAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="LettreX2">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>X</Value>
+                    <Style>
+                      <FontSize>11pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <Top>1.90009cm</Top>
+            <Left>13.41844cm</Left>
+            <Height>0.62618cm</Height>
+            <Width>0.76509cm</Width>
+            <ZIndex>25</ZIndex>
+            <Visibility>
+              <Hidden>=IIf((Fields!Status_No_.Value=50000),false,true)</Hidden>
+            </Visibility>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <VerticalAlign>Middle</VerticalAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
-        <Height>29.7cm</Height>
+        <Height>15.06854cm</Height>
         <Style />
       </Body>
-      <Width>21cm</Width>
+      <Width>20.50796cm</Width>
       <Page>
         <PageHeight>29.7cm</PageHeight>
         <PageWidth>21cm</PageWidth>
@@ -2813,6 +2870,9 @@ End Function
         </Field>
         <Field Name="Fax">
           <DataField>Fax</DataField>
+        </Field>
+        <Field Name="Status_No_">
+          <DataField>Status_No_</DataField>
         </Field>
         <Field Name="MatriculeFiscal">
           <DataField>MatriculeFiscal</DataField>
