@@ -98,6 +98,10 @@ report 50218 "Invoice Services"
             {
             }
 
+            column(ShowVehiculeInfo; ShowVehiculeInfo)
+            {
+            }
+
             column(afficherPiedsPage; afficherPiedsPage)
             {
 
@@ -403,6 +407,12 @@ report 50218 "Invoice Services"
                 {
                     ApplicationArea = all;
                     Caption = 'Afficher entête et pied de page';
+
+                }
+                field(ShowVehiculeInfo; ShowVehiculeInfo)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Afficher information véhicule';
                 }
             }
         }
@@ -421,6 +431,8 @@ report 50218 "Invoice Services"
         RecGCompany.Get();
         RecCompany.CalcFields("Invoice Footer Picture");
         RecCompany.CalcFields("Invoice Header Picture");
+        ShowVehiculeInfo := true;
+        afficherPiedsPage := true;
 
     end;
 
@@ -461,7 +473,7 @@ report 50218 "Invoice Services"
         PaymentMethod: Record 289;
         CustomerPostingGroup: Record 92;
         Text1Footer: Text;
-        afficherPiedsPage: Boolean;
+        afficherPiedsPage, ShowVehiculeInfo : Boolean;
         ShowLabor: Boolean;
 
         islabor: Boolean;

@@ -43,34 +43,29 @@ tableextension 80103 "Item" extends Item //27
 
         }
 
-        // modify("Item Replacement No.")
-        // {
-        //     trigger OnAfterValidate()
-        //     begin
+        field(80107; "Mg Principal Filter"; code[20])
+        {
 
-        //         if (xRec."Item Replacement No." <> '') AND ("Item Replacement No." <> '') then begin
-
-        //             DeleteReplacementItem("No.", "Item Replacement No.");
-        //             Message('Step 1 %1 - %2', "No.", "Item Replacement No.");
-        //         end;
-
-        //         if (xRec."Item Replacement No." = '') AND ("Item Replacement No." <> '') then begin
-        //             DeleteReplacement("No.", "Item Replacement No.");
-        //             CreateReplacementItem("No.", "Item Replacement No.");
-        //             Message('Step 2 %1 - %2', "No.", "Item Replacement No.");
-        //         end;
-        //     end;
-
-
-        // }
-
+        }
 
         modify(Reserve)
         {
             trigger OnBeforeValidate()
+            var
+                salesRecSetup: record "Sales & Receivables Setup";
             begin
-                If (Type = Type::Inventory) then Reserve := Reserve::Always;
+
+                salesRecSetup.Reset();
+                if salesRecSetup.FindFirst() then begin
+                    if (salesRecSetup."Reservation Obligatoire") then begin
+                        If (Type = Type::Inventory) then Reserve := Reserve::Always;
+                    end;
+
+                end;
+
             end;
+
+
         }
 
         modify("Vendor Item No.")
@@ -142,7 +137,7 @@ tableextension 80103 "Item" extends Item //27
 
         field(50220; "StockMagPrincipal"; Decimal)
         {
-            CalcFormula = sum("Item Ledger Entry".Quantity where("Item No." = field("No."), "Location Code" = filter('MG-SFAX')));
+            CalcFormula = sum("Item Ledger Entry".Quantity where("Item No." = field("No."), "Location Code" = field("Mg Principal Filter")));
             Editable = false;
             FieldClass = FlowField;
             DecimalPlaces = 0 : 5;
@@ -238,33 +233,6 @@ tableextension 80103 "Item" extends Item //27
             FieldClass = FlowField;
             DecimalPlaces = 0 : 0;
         }
-
-        // field(50150; "SP Incoming Quantity"; Decimal)
-        // {
-        //     CalcFormula = Sum("Specific Item Ledger Entry".Quantity WHERE("Item No." = FIELD("No."),
-        //                                                         "Entry Type" = filter("Positive Adjmt." | Purchase),
-        //                                                         "Document No." = Filter('<>''RECTR STK 2022'''),
-        //                                                           "Location Code" = FIELD("Location Filter"),
-        //                                                           "Drop Shipment" = FIELD("Drop Shipment Filter"),
-        //                                                           "Unit of Measure Code" = FIELD("Unit of Measure Filter")));
-        //     DecimalPlaces = 0 : 5;
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
-
-        // field(50151; "SP Outgoing Quantity"; Decimal)
-        // {
-        //     CalcFormula = Sum("Specific Item Ledger Entry".Quantity WHERE("Item No." = FIELD("No."),
-        //                                                         "Entry Type" = filter("Negative Adjmt." | Sale),
-        //                                                          "Document No." = Filter('<>''RECTR STK 2022'''),
-        //                                                           "Location Code" = FIELD("Location Filter"),
-        //                                                           "Drop Shipment" = FIELD("Drop Shipment Filter"),
-        //                                                           "Unit of Measure Code" = FIELD("Unit of Measure Filter")));
-        //     DecimalPlaces = 0 : 5;
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
-
         field(50131; "Fabricant WS"; Code[50])
         {
             DataClassification = ToBeClassified;
@@ -280,6 +248,7 @@ tableextension 80103 "Item" extends Item //27
 
     }
 
+    var
 
     trigger OnAfterInsert()
     var

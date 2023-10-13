@@ -6,7 +6,7 @@ report 50207 "Sales - Shipment Valorise"
     //     Sales Header - OnAfterGetRecord()
     DefaultLayout = RDLC;
     // RDLCLayout = './src/report/RDLC/ExpeditionVente.rdl';
-    RDLCLayout = './src/report/RDLC/ExpeditionVenteEntete.rdl';
+    RDLCLayout = './src/report/RDLC/ExpeditionVente.rdl';
 
 
     Caption = 'Sales - Shipment Valorise';
@@ -42,6 +42,29 @@ report 50207 "Sales - Shipment Valorise"
             {
             }
             column(BilltoCustName; "Sales Shipment Header"."Bill-to Name")
+            {
+            }
+
+            column(BilltoCustAdresse; "Sales Shipment Header"."Bill-to Address")
+            {
+            }
+
+            column(BilltoCustCity; "Sales Shipment Header"."Bill-to City")
+            {
+            }
+
+            column(BilltoCustCountry; RecGCustomer.count)
+            {
+            }
+
+            column(BilltoCustPostCode; RecGCustomer."Post Code")
+            {
+            }
+
+            column(BilltoCustMF; RecGCustomer."VAT Registration No.")
+            {
+            }
+            column(BilltoCustPhone; RecGCustomer."Phone No.")
             {
             }
 
@@ -715,6 +738,9 @@ report 50207 "Sales - Shipment Valorise"
                         SegManagement.LogDocumentEDMS( // 04.02.2015 EDMS P11 #T019
                           5, "No.", 0, 0, Database::Customer, "Sell-to Customer No.", "Salesperson Code",
                           "Campaign No.", "Posting Description", '', "Vehicle Serial No."); //EDMS - changed
+
+                // SOPIQ INTERNE DEV MPAA
+                IF RecGCustomer.GET("Bill-to Customer No.") THEN;
             end;
 
             trigger OnPostDataItem()
@@ -840,6 +866,8 @@ report 50207 "Sales - Shipment Valorise"
         GeneralLedgerSetup: Record "General Ledger Setup";
         RecGVATPostingGroup: Record "VAT Business Posting Group";
         TXTSUSP: Text;
+
+        RecGCustomer: Record 18;
         // Fin New Declaration
         Text002: Label 'Sales - Shipment %1', Comment = '%1 = Document No.';
         SalesPurchPerson: Record "Salesperson/Purchaser";

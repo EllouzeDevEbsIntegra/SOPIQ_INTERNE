@@ -1,4 +1,4 @@
-pageextension 80136 "Sales Order" extends "Sales Order"
+pageextension 80136 "Sales Order" extends "Sales Order"//42
 {
     layout
     {

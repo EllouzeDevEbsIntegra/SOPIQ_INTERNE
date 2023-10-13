@@ -9,6 +9,7 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
                 recItem: Record Item;
             begin
                 if recItem.Get("No.") then Marge := recItem."Profit %";
+
             end;
         }
 
@@ -153,6 +154,13 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
         {
             DataClassification = ToBeClassified;
             Caption = 'Marge à définir';
+            Editable = true;
+        }
+
+        field(80119; "Prix vente calculé"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Prix Vente Calculé';
             Editable = true;
         }
 

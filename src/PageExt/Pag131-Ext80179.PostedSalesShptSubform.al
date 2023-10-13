@@ -16,17 +16,20 @@ pageextension 80179 "Posted Sales Shpt. Subform" extends "Posted Sales Shpt. Sub
     var
         UndoShipment: Boolean;
 
-    trigger OnOpenPage()
+    trigger OnAfterGetRecord()
     var
         salesRecSetup: record "Sales & Receivables Setup";
     begin
+
+
+
         UndoShipment := BS;
 
         salesRecSetup.Reset();
         if salesRecSetup.FindFirst() then begin
             if (salesRecSetup.UndoShipment) then UndoShipment := true;
-        end;
 
+        end;
 
     end;
 }

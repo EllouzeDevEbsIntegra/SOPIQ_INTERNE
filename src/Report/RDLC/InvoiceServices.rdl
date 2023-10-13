@@ -1692,6 +1692,9 @@
                               <Height>1.2cm</Height>
                               <Width>19.06434cm</Width>
                               <ZIndex>1</ZIndex>
+                              <Visibility>
+                                <Hidden>=not(Fields!ShowVehiculeInfo.Value)</Hidden>
+                              </Visibility>
                               <Style>
                                 <Border>
                                   <Style>None</Style>
@@ -2891,9 +2894,9 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>2.20805cm</Top>
+              <Top>2.455cm</Top>
               <Left>7.11997cm</Left>
-              <Height>0.92896cm</Height>
+              <Height>0.78785cm</Height>
               <Width>7.15813cm</Width>
               <Style>
                 <Border>
@@ -2925,9 +2928,9 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>3.17229cm</Top>
+              <Top>3.24284cm</Top>
               <Left>7.11997cm</Left>
-              <Height>0.66439cm</Height>
+              <Height>0.59384cm</Height>
               <Width>7.15813cm</Width>
               <ZIndex>1</ZIndex>
               <Style>
@@ -2969,7 +2972,7 @@
                   <Top>0.05278in</Top>
                   <Left>0in</Left>
                   <Height>0.18397in</Height>
-                  <Width>2.21596in</Width>
+                  <Width>2.70554in</Width>
                   <Style>
                     <Border>
                       <Style>None</Style>
@@ -3009,7 +3012,7 @@
                   <Top>0.26453in</Top>
                   <Left>0in</Left>
                   <Height>0.18397in</Height>
-                  <Width>2.21596in</Width>
+                  <Width>2.70554in</Width>
                   <ZIndex>1</ZIndex>
                   <Style>
                     <Border>
@@ -3058,7 +3061,7 @@
                   <Top>0.72627in</Top>
                   <Left>0in</Left>
                   <Height>0.18397in</Height>
-                  <Width>2.21596in</Width>
+                  <Width>2.70554in</Width>
                   <ZIndex>2</ZIndex>
                   <Style>
                     <Border>
@@ -3099,7 +3102,7 @@
                   <Top>0.93802in</Top>
                   <Left>0in</Left>
                   <Height>0.18397in</Height>
-                  <Width>2.21596in</Width>
+                  <Width>2.70554in</Width>
                   <ZIndex>3</ZIndex>
                   <Style>
                     <Border>
@@ -3140,7 +3143,7 @@
                   <Top>0.50921in</Top>
                   <Left>0.0125in</Left>
                   <Height>0.18397in</Height>
-                  <Width>2.21596in</Width>
+                  <Width>2.69304in</Width>
                   <ZIndex>4</ZIndex>
                   <Style>
                     <Border>
@@ -3157,7 +3160,7 @@
               <Top>1.52439in</Top>
               <Left>0.29204in</Left>
               <Height>1.20239in</Height>
-              <Width>2.24096in</Width>
+              <Width>2.80346in</Width>
               <ZIndex>2</ZIndex>
               <Style>
                 <Border>
@@ -3517,8 +3520,8 @@
               <Sizing>Fit</Sizing>
               <Top>0in</Top>
               <Left>0.00488in</Left>
-              <Height>2.10222cm</Height>
-              <Width>17.26471cm</Width>
+              <Height>2.455cm</Height>
+              <Width>20.33386cm</Width>
               <ZIndex>4</ZIndex>
               <Visibility>
                 <Hidden>=if(Fields!afficherPiedsPage.Value=true,false,true)</Hidden>
@@ -3529,42 +3532,6 @@
                 </Border>
               </Style>
             </Image>
-            <Textbox Name="Textbox46">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Globals!ExecutionTime</Value>
-                      <Style>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                        <Format>dddd d MMMM yyyy HH:mm:ss</Format>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Right</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>Textbox13</rd:DefaultName>
-              <Top>0.3549cm</Top>
-              <Left>13.24924cm</Left>
-              <Height>0.423cm</Height>
-              <Width>7.09702cm</Width>
-              <ZIndex>5</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-                <PaddingLeft>2pt</PaddingLeft>
-                <PaddingRight>2pt</PaddingRight>
-                <PaddingTop>2pt</PaddingTop>
-                <PaddingBottom>2pt</PaddingBottom>
-              </Style>
-            </Textbox>
             <Textbox Name="Textbox44">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
@@ -3589,20 +3556,21 @@
                     </TextRun>
                   </TextRuns>
                   <Style>
-                    <TextAlign>Right</TextAlign>
+                    <TextAlign>Center</TextAlign>
                   </Style>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox13</rd:DefaultName>
-              <Top>0.81318cm</Top>
-              <Left>16.64896cm</Left>
+              <Top>6.40942cm</Top>
+              <Left>8.03896cm</Left>
               <Height>0.45052cm</Height>
-              <Width>3.6973cm</Width>
-              <ZIndex>6</ZIndex>
+              <Width>4.0599cm</Width>
+              <ZIndex>5</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
                 </Border>
+                <VerticalAlign>Middle</VerticalAlign>
                 <PaddingLeft>2pt</PaddingLeft>
                 <PaddingRight>2pt</PaddingRight>
                 <PaddingTop>2pt</PaddingTop>
@@ -3628,7 +3596,7 @@
               <Sizing>Fit</Sizing>
               <Top>0.02778in</Top>
               <Left>0in</Left>
-              <Height>1.90963cm</Height>
+              <Height>1.53921cm</Height>
               <Width>20.34626cm</Width>
               <Visibility>
                 <Hidden>=if(Fields!afficherPiedsPage.Value=true,false,true)</Hidden>
@@ -3791,6 +3759,9 @@ End Function
         </Field>
         <Field Name="Pied">
           <DataField>Pied</DataField>
+        </Field>
+        <Field Name="ShowVehiculeInfo">
+          <DataField>ShowVehiculeInfo</DataField>
         </Field>
         <Field Name="afficherPiedsPage">
           <DataField>afficherPiedsPage</DataField>

@@ -9,6 +9,22 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
                 ModifyPostingDesc(rec);
             end;
         }
+
+        modify("bill-to Customer No.")
+        {
+            trigger OnAfterValidate()
+            begin
+                ModifyPostingDesc(rec);
+            end;
+        }
+
+        modify("Bill-to Name")
+        {
+            trigger OnAfterValidate()
+            begin
+                ModifyPostingDesc(rec);
+            end;
+        }
         // Add changes to table fields here
 
 

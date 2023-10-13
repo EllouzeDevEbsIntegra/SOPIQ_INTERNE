@@ -1694,7 +1694,6 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
             </TablixRowHierarchy>
             <KeepTogether>true</KeepTogether>
             <DataSetName>DataSet_Result</DataSetName>
-            <Left>0.30136cm</Left>
             <Height>2.11364cm</Height>
             <Width>19.61798cm</Width>
             <Style />
@@ -2018,7 +2017,7 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
             </ReportItems>
             <KeepTogether>true</KeepTogether>
             <Top>3.27058cm</Top>
-            <Left>12.58672cm</Left>
+            <Left>12.28536cm</Left>
             <Height>3.53284cm</Height>
             <Width>7.33262cm</Width>
             <ZIndex>1</ZIndex>
@@ -2053,13 +2052,29 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
         <Height>7.9783cm</Height>
         <Style />
       </Body>
-      <Width>19.91934cm</Width>
+      <Width>19.74354cm</Width>
       <Page>
         <PageHeader>
           <Height>7.03428cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
+            <Image Name="CompanyInfoPicture1">
+              <Source>Database</Source>
+              <Value>=Convert.ToBase64String(Fields!CompanyInfo3Picture.Value)</Value>
+              <MIMEType>image/bmp</MIMEType>
+              <Sizing>FitProportional</Sizing>
+              <Left>0.03529cm</Left>
+              <Height>19.73793mm</Height>
+              <Width>82.2713mm</Width>
+              <Visibility>
+                <Hidden>=iif(ISNOTHING(Fields!CompanyInfo3Picture.Value) = TRUE,true,false)</Hidden>
+              </Visibility>
+              <DataElementOutput>NoOutput</DataElementOutput>
+              <Style>
+                <Border />
+              </Style>
+            </Image>
             <Textbox Name="CompanyAddr1">
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -2082,9 +2097,10 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
                 </Paragraph>
               </Paragraphs>
               <Top>3.68243cm</Top>
-              <Left>0.33665cm</Left>
+              <Left>0.03529cm</Left>
               <Height>17.49997pt</Height>
               <Width>5.46317cm</Width>
+              <ZIndex>1</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2111,10 +2127,10 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
                 </Paragraph>
               </Paragraphs>
               <Top>3.68243cm</Top>
-              <Left>5.9762cm</Left>
+              <Left>5.67484cm</Left>
               <Height>17.49997pt</Height>
               <Width>3.1522cm</Width>
-              <ZIndex>1</ZIndex>
+              <ZIndex>2</ZIndex>
               <Style>
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
@@ -2140,10 +2156,10 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
                 </Paragraph>
               </Paragraphs>
               <Top>2.80049cm</Top>
-              <Left>0.33665cm</Left>
+              <Left>0.03529cm</Left>
               <Height>20pt</Height>
               <Width>8.79176cm</Width>
-              <ZIndex>2</ZIndex>
+              <ZIndex>3</ZIndex>
               <Style>
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
@@ -2167,10 +2183,10 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
                 </Paragraph>
               </Paragraphs>
               <Top>5.75795cm</Top>
-              <Left>3.53688cm</Left>
+              <Left>4.34677cm</Left>
               <Height>21.5pt</Height>
-              <Width>5.59152cm</Width>
-              <ZIndex>3</ZIndex>
+              <Width>4.48027cm</Width>
+              <ZIndex>4</ZIndex>
               <Style>
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
@@ -2194,10 +2210,10 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
                 </Paragraph>
               </Paragraphs>
               <Top>5.75795cm</Top>
-              <Left>0.33665cm</Left>
+              <Left>0.03529cm</Left>
               <Height>0.68792cm</Height>
-              <Width>3.02384cm</Width>
-              <ZIndex>4</ZIndex>
+              <Width>4.13509cm</Width>
+              <ZIndex>5</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2205,6 +2221,20 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
             </Textbox>
+            <Image Name="Image1">
+              <Source>Embedded</Source>
+              <Value>Mercedes</Value>
+              <Sizing>FitProportional</Sizing>
+              <Left>17.69465cm</Left>
+              <Height>1.97379cm</Height>
+              <Width>1.92333cm</Width>
+              <ZIndex>6</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Image>
             <Rectangle Name="Rectangle1">
               <ReportItems>
                 <Textbox Name="BuyFromAddr11">
@@ -2214,7 +2244,7 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
                     <Paragraph>
                       <TextRuns>
                         <TextRun>
-                          <Value>=Fields!BilltoCustName.Value</Value>
+                          <Value>=Code.GetData(1,1)</Value>
                           <Style>
                             <FontStyle>Normal</FontStyle>
                             <FontFamily>Segoe UI</FontFamily>
@@ -2271,7 +2301,7 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
                     <Paragraph>
                       <TextRuns>
                         <TextRun>
-                          <Value>=Fields!BilltoCustNo.Value</Value>
+                          <Value>=Code.GetData(9,1)</Value>
                           <Style>
                             <FontStyle>Normal</FontStyle>
                             <FontFamily>Segoe UI</FontFamily>
@@ -2303,7 +2333,7 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
                     <Paragraph>
                       <TextRuns>
                         <TextRun>
-                          <Value>=Fields!BilltoCustAdresse.Value</Value>
+                          <Value>=Code.GetData(3,1)</Value>
                           <Style>
                             <FontStyle>Normal</FontStyle>
                             <FontFamily>Segoe UI</FontFamily>
@@ -2328,7 +2358,7 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
                     <Paragraph>
                       <TextRuns>
                         <TextRun>
-                          <Value>="Tél : "+Fields!BilltoCustPhone.Value</Value>
+                          <Value>=Code.GetData(6,1)</Value>
                           <Style>
                             <FontStyle>Normal</FontStyle>
                             <FontFamily>Segoe UI</FontFamily>
@@ -2338,10 +2368,10 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
                       <Style />
                     </Paragraph>
                   </Paragraphs>
-                  <Top>2.43416cm</Top>
-                  <Left>5.91611cm</Left>
-                  <Height>17.50016pt</Height>
-                  <Width>4.26056cm</Width>
+                  <Top>2.39301cm</Top>
+                  <Left>7.79206cm</Left>
+                  <Height>19.5pt</Height>
+                  <Width>2.38461cm</Width>
                   <ZIndex>4</ZIndex>
                   <Style>
                     <VerticalAlign>Middle</VerticalAlign>
@@ -2353,7 +2383,32 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
                     <Paragraph>
                       <TextRuns>
                         <TextRun>
-                          <Value>=Fields!BilltoCustCity.Value</Value>
+                          <Value>=Code.GetData(5,1)</Value>
+                          <Style>
+                            <FontStyle>Normal</FontStyle>
+                            <FontFamily>Segoe UI</FontFamily>
+                          </Style>
+                        </TextRun>
+                      </TextRuns>
+                      <Style />
+                    </Paragraph>
+                  </Paragraphs>
+                  <Top>2.43416cm</Top>
+                  <Left>2.40814cm</Left>
+                  <Height>18.33364pt</Height>
+                  <Width>5.15721cm</Width>
+                  <ZIndex>5</ZIndex>
+                  <Style>
+                    <VerticalAlign>Middle</VerticalAlign>
+                  </Style>
+                </Textbox>
+                <Textbox Name="BuyFromAddr41">
+                  <KeepTogether>true</KeepTogether>
+                  <Paragraphs>
+                    <Paragraph>
+                      <TextRuns>
+                        <TextRun>
+                          <Value>=Code.GetData(4,1)</Value>
                           <Style>
                             <FontStyle>Normal</FontStyle>
                             <FontFamily>Segoe UI</FontFamily>
@@ -2366,8 +2421,8 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
                   <Top>2.43416cm</Top>
                   <Left>0.27781cm</Left>
                   <Height>18.33364pt</Height>
-                  <Width>5.46192cm</Width>
-                  <ZIndex>5</ZIndex>
+                  <Width>2.03048cm</Width>
+                  <ZIndex>6</ZIndex>
                   <Style>
                     <VerticalAlign>Middle</VerticalAlign>
                   </Style>
@@ -2378,7 +2433,7 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
                     <Paragraph>
                       <TextRuns>
                         <TextRun>
-                          <Value>="MF/CIN : "+Fields!BilltoCustMF.Value</Value>
+                          <Value>="MF/CIN : "</Value>
                           <Style>
                             <FontStyle>Normal</FontStyle>
                             <FontFamily>Segoe UI</FontFamily>
@@ -2392,7 +2447,7 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
                   <Left>0.27781cm</Left>
                   <Height>16.49993pt</Height>
                   <Width>9.96932cm</Width>
-                  <ZIndex>6</ZIndex>
+                  <ZIndex>7</ZIndex>
                   <Style>
                     <VerticalAlign>Middle</VerticalAlign>
                   </Style>
@@ -2400,10 +2455,10 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
               </ReportItems>
               <KeepTogether>true</KeepTogether>
               <Top>2.74171cm</Top>
-              <Left>9.41308cm</Left>
+              <Left>9.11172cm</Left>
               <Height>3.81855cm</Height>
               <Width>10.50626cm</Width>
-              <ZIndex>5</ZIndex>
+              <ZIndex>7</ZIndex>
               <Style>
                 <Border>
                   <Style>Solid</Style>
@@ -2431,43 +2486,35 @@ Cstr(Fields!OrderNo_SalesShptHeader.Value)
                 </RightBorder>
               </Style>
             </Rectangle>
-            <Image Name="PictureCompany">
-              <Source>Database</Source>
-              <Value>=First(Fields!Entete.Value, "DataSet_Result")</Value>
-              <MIMEType>image/bmp</MIMEType>
-              <Sizing>Fit</Sizing>
-              <Top>0in</Top>
-              <Left>0.00488in</Left>
-              <Height>2.31438cm</Height>
-              <Width>19.90694cm</Width>
-              <ZIndex>6</ZIndex>
-              <Visibility>
-                <Hidden>=if(Fields!afficherPiedsPage.Value=true,false,true)</Hidden>
-              </Visibility>
+          </ReportItems>
+          <Style />
+        </PageHeader>
+        <PageFooter>
+          <Height>2.25402cm</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Image Name="Image2">
+              <Source>Embedded</Source>
+              <Value>Sanstitre</Value>
+              <Sizing>FitProportional</Sizing>
+              <Top>1.26118cm</Top>
+              <Left>16.31069cm</Left>
+              <Height>0.63124cm</Height>
+              <Width>3.30729cm</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
                 </Border>
               </Style>
             </Image>
-          </ReportItems>
-          <Style />
-        </PageHeader>
-        <PageFooter>
-          <Height>1.68077cm</Height>
-          <PrintOnFirstPage>true</PrintOnFirstPage>
-          <PrintOnLastPage>true</PrintOnLastPage>
-          <ReportItems>
-            <Image Name="Image1">
-              <Source>Database</Source>
-              <Value>=First(Fields!Pied.Value, "DataSet_Result")</Value>
-              <MIMEType>image/bmp</MIMEType>
-              <Sizing>Fit</Sizing>
-              <Height>1.62785cm</Height>
-              <Width>19.90694cm</Width>
-              <Visibility>
-                <Hidden>=if(Fields!afficherPiedsPage.Value=true,false,true)</Hidden>
-              </Visibility>
+            <Image Name="Image3">
+              <Source>Embedded</Source>
+              <Value>Sanstitre3</Value>
+              <Sizing>FitProportional</Sizing>
+              <Height>2.15701cm</Height>
+              <Width>10.5496cm</Width>
+              <ZIndex>1</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2723,39 +2770,6 @@ Kv6MZxJVLDe2pG2/n0ruOBzhrBx5uwz8Hv6YaVZDAR94Xn3qVHlzj4q/0YXhT4+vleblHjyQd676/gdd
         </Field>
         <Field Name="PageCaption">
           <DataField>PageCaption</DataField>
-        </Field>
-        <Field Name="Entete">
-          <DataField>Entete</DataField>
-        </Field>
-        <Field Name="Pied">
-          <DataField>Pied</DataField>
-        </Field>
-        <Field Name="afficherPiedsPage">
-          <DataField>afficherPiedsPage</DataField>
-        </Field>
-        <Field Name="BilltoCustNo">
-          <DataField>BilltoCustNo</DataField>
-        </Field>
-        <Field Name="BilltoCustName">
-          <DataField>BilltoCustName</DataField>
-        </Field>
-        <Field Name="BilltoCustAdresse">
-          <DataField>BilltoCustAdresse</DataField>
-        </Field>
-        <Field Name="BilltoCustCity">
-          <DataField>BilltoCustCity</DataField>
-        </Field>
-        <Field Name="BilltoCustCountry">
-          <DataField>BilltoCustCountry</DataField>
-        </Field>
-        <Field Name="BilltoCustPostCode">
-          <DataField>BilltoCustPostCode</DataField>
-        </Field>
-        <Field Name="BilltoCustMF">
-          <DataField>BilltoCustMF</DataField>
-        </Field>
-        <Field Name="BilltoCustPhone">
-          <DataField>BilltoCustPhone</DataField>
         </Field>
         <Field Name="CompanyInfo2Picture">
           <DataField>CompanyInfo2Picture</DataField>
@@ -3071,9 +3085,6 @@ Kv6MZxJVLDe2pG2/n0ruOBzhrBx5uwz8Hv6YaVZDAR94Xn3qVHlzj4q/0YXhT4+vleblHjyQd676/gdd
         </Field>
         <Field Name="BilltoCustNo_SalesShptHeader">
           <DataField>BilltoCustNo_SalesShptHeader</DataField>
-        </Field>
-        <Field Name="BilltoCustName_SalesShptHeader">
-          <DataField>BilltoCustName_SalesShptHeader</DataField>
         </Field>
         <Field Name="CustAddr1">
           <DataField>CustAddr1</DataField>

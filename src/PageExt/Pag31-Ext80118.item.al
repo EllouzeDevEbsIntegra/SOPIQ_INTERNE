@@ -178,7 +178,24 @@ pageextension 80118 "item" extends "Item List" //31
 
     var
         filterDate: text;
+        recInventorySetup: Record "Inventory Setup";
 
+    trigger OnAfterGetRecord()
+    var
+    begin
+        recInventorySetup.Reset();
+        if recInventorySetup.FindFirst() then begin
 
+            "Mg Principal Filter" := recInventorySetup."Magasin Central";
+
+        end;
+
+        CalcFields(rec.StockMagPrincipal);
+    end;
+
+    trigger OnOpenPage()
+    begin
+
+    end;
 
 }

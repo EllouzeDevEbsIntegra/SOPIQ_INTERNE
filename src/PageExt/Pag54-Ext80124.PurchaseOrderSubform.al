@@ -2,13 +2,69 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
 {
     layout
     {
+
+        // modify("No.")
+        // {
+        //     trigger OnAfterValidate()
+        //     begin
+        //         recInventorySetup.Reset();
+        //         recItem.Reset();
+        //         if recItem.get(rec."No.") then begin
+        //             if recInventorySetup.FindFirst() then begin
+
+        //                 recItem."Mg Principal Filter" := recInventorySetup."Magasin Central";
+
+        //             end;
+        //             recItem.CalcFields(StockMagPrincipal);
+        //             FieldStyleQty := SetStyleQte(recItem.StockMagPrincipal);
+        //         end;
+
+        //     end;
+        // }
+        modify("Quantity")
+        {
+            trigger OnAfterValidate()
+            begin
+                rec."Prix vente calculé" := Round((rec."Direct Unit Cost" / (1 - rec.Marge / 100)) *
+                                                            (1 + CalcVAT),
+                                                            GLSetup."Unit-Amount Rounding Precision");
+            end;
+        }
+        modify("Direct Unit Cost")
+        {
+            trigger OnAfterValidate()
+            begin
+                rec."Prix vente calculé" := Round((rec."Direct Unit Cost" / (1 - rec.Marge / 100)) *
+                                                            (1 + CalcVAT),
+                                                            GLSetup."Unit-Amount Rounding Precision");
+            end;
+        }
         // Add changes to page layout here
         addafter(Quantity)
         {
+            // field("Stk Mg Principal"; recItem.StockMagPrincipal)
+            // {
+            //     ApplicationArea = All;
+            //     Editable = false;
+            //     StyleExpr = FieldStyleQty;
+            // }
 
             field("Marge à définir"; rec.Marge)
             {
                 ApplicationArea = All;
+                trigger OnValidate()
+                begin
+                    rec."Prix vente calculé" := Round((rec."Direct Unit Cost" / (1 - rec.Marge / 100)) *
+                                                                (1 + CalcVAT),
+                                                                GLSetup."Unit-Amount Rounding Precision");
+                    // rec.Modify();
+                end;
+            }
+
+            field("Prix vente calculé"; "Prix vente calculé")
+            {
+                ApplicationArea = All;
+                Editable = false;
             }
 
             field("Vendor Item No."; "Vendor Item No.")
@@ -132,6 +188,8 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
         VATPostingSetup: Record "VAT Posting Setup";
         recItem: Record "Item";
         GLSetupRead: Boolean;
+        recInventorySetup: Record "Inventory Setup";
+        FieldStyleQty: Text[50];
 
 
     local procedure CalcVAT(): Decimal
@@ -171,6 +229,13 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
     trigger OnAfterGetCurrRecord()
     begin
         CalcFields("Last Direct Cost");
+
+    end;
+
+
+    procedure SetStyleQte(PDecimal: Decimal): Text[50]
+    begin
+        IF PDecimal <= 0 THEN exit('Unfavorable') ELSE exit('Favorable');
     end;
 
 
