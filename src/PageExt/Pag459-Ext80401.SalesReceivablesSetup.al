@@ -11,12 +11,7 @@ pageextension 80401 "Sales & Receivables Setup" extends "Sales & Receivables Set
                 Caption = 'Autoriser annuler expédition';
             }
 
-            field("Reservation Obligatoire"; "Reservation Obligatoire")
-            {
-                ApplicationArea = All;
-                Caption = 'Reservation article Obligatoire';
-                ToolTip = 'En activant cette option, l''option reserver sur la fiche article prend automatiquement la valeur Toujours.';
-            }
+
         }
     }
 

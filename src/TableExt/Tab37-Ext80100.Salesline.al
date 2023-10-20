@@ -5,22 +5,12 @@ tableextension 80100 "Sales line" extends "Sales line" //37
         modify("No.")
         {
             trigger OnAfterValidate()
-            var
-                recItem: Record Item;
+
             begin
                 "Initial Unit Price" := "Unit Price";
                 "Initial Discount" := "Line Discount %";
 
-                // recItem.Reset();
-                // recItem.SetRange("No.", "No.");
-                // if recItem.FindFirst() then begin
-                //     // Message('Here %1 - %2', recItem."No.", recItem."Manufacturer Code");
-                //     if (recItem."Manufacturer Code" = 'FAB0001') then Begin
 
-                //         rec."Line Discount %" := 2;
-                //         Validate(rec."Line Discount %");
-                //     End;
-                // end;
             end;
 
 
@@ -129,9 +119,36 @@ tableextension 80100 "Sales line" extends "Sales line" //37
             Editable = false;
         }
 
+        field(50200; "Stk Mg Principal"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
+
     }
 
 
+    trigger OnAfterInsert()
+    var
+        recItem: Record Item;
+        recInventorySetup: Record "Inventory Setup";
 
+    begin
+
+        recItem.Reset();
+        recItem.SetRange("No.", rec."No.");
+        if recItem.FindFirst() then begin
+            recInventorySetup.get();
+            recItem."Mg Principal Filter" := recInventorySetup."Magasin Central";
+            recItem.Modify();
+            recItem.CalcFields(StockMagPrincipal);
+            "Stk Mg Principal" := recItem.StockMagPrincipal;
+            // Message('Mg Principal Setup : %1 - Mg Principal Item :%2', recInventorySetup."Magasin Central", recItem."Mg Principal Filter");
+            // Message('NO %1 - QteMgP %2 - SalesStkMgP %3', recItem."No.", recItem.StockMagPrincipal, "Stk Mg Principal");
+            rec.Modify();
+
+        end;
+
+    end;
 
 }

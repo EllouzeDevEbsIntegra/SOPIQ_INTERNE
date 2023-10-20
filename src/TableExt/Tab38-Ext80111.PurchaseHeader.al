@@ -85,4 +85,19 @@ tableextension 80111 "Purchase Header" extends "Purchase Header" //38
     begin
         "Etat Demande" := Enum::"Etat Demande Prix"::encours;
     end;
+
+    procedure ignoreStamp(Prec: Record "Purchase Header")
+    begin
+        "STApply Stamp Fiscal" := false;
+        "STStamp Fiscal Amount" := 0.000;
+    end;
+
+
+    trigger OnInsert()
+    begin
+        ModifyPostingDesc(rec);
+        if (rec."Document Type" = "Document Type"::"Credit Memo") then
+            ignoreStamp(rec);
+    end;
+
 }

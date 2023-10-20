@@ -3,24 +3,7 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
     layout
     {
 
-        // modify("No.")
-        // {
-        //     trigger OnAfterValidate()
-        //     begin
-        //         recInventorySetup.Reset();
-        //         recItem.Reset();
-        //         if recItem.get(rec."No.") then begin
-        //             if recInventorySetup.FindFirst() then begin
 
-        //                 recItem."Mg Principal Filter" := recInventorySetup."Magasin Central";
-
-        //             end;
-        //             recItem.CalcFields(StockMagPrincipal);
-        //             FieldStyleQty := SetStyleQte(recItem.StockMagPrincipal);
-        //         end;
-
-        //     end;
-        // }
         modify("Quantity")
         {
             trigger OnAfterValidate()
@@ -40,14 +23,18 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
             end;
         }
         // Add changes to page layout here
+
+
         addafter(Quantity)
         {
-            // field("Stk Mg Principal"; recItem.StockMagPrincipal)
-            // {
-            //     ApplicationArea = All;
-            //     Editable = false;
-            //     StyleExpr = FieldStyleQty;
-            // }
+            field("Stk Mg Principal"; "Stk Mg Principal")
+            {
+                ApplicationArea = All;
+                Editable = false;
+                StyleExpr = FieldStyleQty;
+                DecimalPlaces = 0 : 2;
+
+            }
 
             field("Marge à définir"; rec.Marge)
             {
@@ -60,6 +47,8 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
                     // rec.Modify();
                 end;
             }
+
+
 
             field("Prix vente calculé"; "Prix vente calculé")
             {
@@ -138,7 +127,7 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
                                     recItem."Profit %" := recPurshLine.Marge;
                                     recItem."Price/Profit Calculation New" := recItem."Price/Profit Calculation New"::"No Relationship";
                                     recItem."Price/Profit Calculation" := recItem."Price/Profit Calculation"::"No Relationship";
-
+                                    recItem."Last Direct Cost" := recPurshLine."Direct Unit Cost";
                                     if recItem."Profit %" <= 50 then begin
                                         GetGLSetup;
                                         recItem."Unit Price" :=
@@ -236,6 +225,11 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
     procedure SetStyleQte(PDecimal: Decimal): Text[50]
     begin
         IF PDecimal <= 0 THEN exit('Unfavorable') ELSE exit('Favorable');
+    end;
+
+    trigger OnAfterGetRecord()
+    begin
+        FieldStyleQty := SetStyleQte("Stk Mg Principal");
     end;
 
 

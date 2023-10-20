@@ -2684,7 +2684,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -7328,7 +7327,7 @@
               <MIMEType>image/png</MIMEType>
               <Sizing>Fit</Sizing>
               <Top>2.56629cm</Top>
-              <Height>2.91059cm</Height>
+              <Height>1.71996cm</Height>
               <Width>19.99038cm</Width>
               <Visibility>
                 <Hidden>=NOT(Fields!afficherPiedsPage.Value)</Hidden>

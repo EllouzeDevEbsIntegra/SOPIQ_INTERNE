@@ -1,4 +1,4 @@
-report 50221 "Devis  PDR"
+report 50221 "SI Devis  PDR"
 {
     // DELTA 01 HT (17-05-2021) TMP
     DefaultLayout = RDLC;
@@ -393,6 +393,7 @@ report 50221 "Devis  PDR"
         RecCompany.CALCFIELDS(RecCompany."Invoice Header Picture");
         RecCompany.CALCFIELDS(RecCompany."Invoice Footer Picture");
         SalesReceivablesSetup.GET;
+        afficherPiedsPage := true;
     end;
 
     var

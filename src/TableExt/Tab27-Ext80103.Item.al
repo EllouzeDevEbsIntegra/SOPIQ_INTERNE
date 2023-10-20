@@ -57,7 +57,7 @@ tableextension 80103 "Item" extends Item //27
 
                 salesRecSetup.Reset();
                 if salesRecSetup.FindFirst() then begin
-                    if (salesRecSetup."Reservation Obligatoire") then begin
+                    if (salesRecSetup."Reservation Mandatory") then begin
                         If (Type = Type::Inventory) then Reserve := Reserve::Always;
                     end;
 

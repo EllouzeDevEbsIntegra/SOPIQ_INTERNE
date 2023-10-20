@@ -272,6 +272,7 @@ report 50220 "Posted Return Receipt STD"
         RecCompany.CALCFIELDS(RecCompany.Picture);
         RecCompany.CALCFIELDS(RecCompany."Invoice Header Picture");
         RecCompany.CALCFIELDS(RecCompany."Invoice Footer Picture");
+        afficherPiedsPage := true;
 
     end;
 

@@ -1911,7 +1911,7 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>2.0648cm</Top>
+            <Top>2.10787cm</Top>
             <Left>0.26878cm</Left>
             <Height>1.27055cm</Height>
             <Width>20.15922cm</Width>
@@ -1923,13 +1923,13 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>4.42264cm</Height>
+        <Height>3.68181cm</Height>
         <Style />
       </Body>
       <Width>20.96338cm</Width>
       <Page>
         <PageHeader>
-          <Height>7.88929cm</Height>
+          <Height>6.43408cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -2068,7 +2068,7 @@
                 </Textbox>
               </ReportItems>
               <KeepTogether>true</KeepTogether>
-              <Top>4.64467cm</Top>
+              <Top>3.05717cm</Top>
               <Left>10.66911cm</Left>
               <Height>3.13878cm</Height>
               <Width>9.74419cm</Width>
@@ -2116,7 +2116,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>5.04035cm</Top>
+              <Top>3.45285cm</Top>
               <Left>3.72272cm</Left>
               <Height>0.92896cm</Height>
               <Width>6.40754cm</Width>
@@ -2151,7 +2151,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>6.72232cm</Top>
+              <Top>5.13482cm</Top>
               <Left>7.32649cm</Left>
               <Height>0.60944cm</Height>
               <Width>2.80378cm</Width>
@@ -2182,7 +2182,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>6.72232cm</Top>
+              <Top>5.13482cm</Top>
               <Left>2.089cm</Left>
               <Height>0.60944cm</Height>
               <Width>3.45618cm</Width>
@@ -2218,7 +2218,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox7</rd:DefaultName>
-              <Top>6.72232cm</Top>
+              <Top>5.13482cm</Top>
               <Left>0.34816cm</Left>
               <Height>0.60944cm</Height>
               <Width>1.63501cm</Width>
@@ -2234,22 +2234,6 @@
                 <PaddingBottom>2pt</PaddingBottom>
               </Style>
             </Textbox>
-            <Image Name="Image1">
-              <Source>Database</Source>
-              <Value>=First(Fields!Picture.Value, "DataSet_Result")</Value>
-              <MIMEType>image/bmp</MIMEType>
-              <Sizing>FitProportional</Sizing>
-              <Top>0.11032in</Top>
-              <Left>0.16832in</Left>
-              <Height>1.01037in</Height>
-              <Width>2.52509in</Width>
-              <ZIndex>5</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-              </Style>
-            </Image>
             <Textbox Name="Num_Bl4">
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -2270,11 +2254,11 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>5.04035cm</Top>
+              <Top>3.45285cm</Top>
               <Left>0.42754cm</Left>
               <Height>0.92896cm</Height>
               <Width>2.91262cm</Width>
-              <ZIndex>6</ZIndex>
+              <ZIndex>5</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2286,6 +2270,25 @@
                 <PaddingBottom>2pt</PaddingBottom>
               </Style>
             </Textbox>
+            <Image Name="PictureCompany">
+              <Source>Database</Source>
+              <Value>=First(Fields!Header.Value, "DataSet_Result")</Value>
+              <MIMEType>image/bmp</MIMEType>
+              <Sizing>Fit</Sizing>
+              <Top>0.15992in</Top>
+              <Left>0.10582in</Left>
+              <Height>2.31438cm</Height>
+              <Width>20.33386cm</Width>
+              <ZIndex>6</ZIndex>
+              <Visibility>
+                <Hidden>=if(Fields!afficherPiedsPage.Value=true,false,true)</Hidden>
+              </Visibility>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Image>
           </ReportItems>
           <Style>
             <Border>
@@ -2293,6 +2296,36 @@
             </Border>
           </Style>
         </PageHeader>
+        <PageFooter>
+          <Height>2.51354cm</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Image Name="Image1">
+              <Source>Database</Source>
+              <Value>=First(Fields!Footer.Value, "DataSet_Result")</Value>
+              <MIMEType>image/bmp</MIMEType>
+              <Sizing>Fit</Sizing>
+              <Top>0.06944in</Top>
+              <Left>0.03218in</Left>
+              <Height>1.40692cm</Height>
+              <Width>20.34626cm</Width>
+              <Visibility>
+                <Hidden>=if(Fields!afficherPiedsPage.Value=true,false,true)</Hidden>
+              </Visibility>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Image>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageFooter>
         <PageHeight>29.7cm</PageHeight>
         <PageWidth>21cm</PageWidth>
         <BottomMargin>0.25cm</BottomMargin>
@@ -2414,6 +2447,9 @@ End Function
         </Field>
         <Field Name="Footer">
           <DataField>Footer</DataField>
+        </Field>
+        <Field Name="afficherPiedsPage">
+          <DataField>afficherPiedsPage</DataField>
         </Field>
         <Field Name="telclient">
           <DataField>telclient</DataField>

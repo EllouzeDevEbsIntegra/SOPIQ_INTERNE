@@ -84,6 +84,12 @@ report 50216 "CrMemoWithEntete"
             column(Footer; RecCompany."Invoice Footer Picture")
             {
             }
+
+            column(afficherPiedsPage; afficherPiedsPage)
+            {
+
+            }
+
             column(telclient; RecGClient."Phone No.")
             {
             }
@@ -316,9 +322,23 @@ report 50216 "CrMemoWithEntete"
 
     requestpage
     {
+        SaveValues = true;
+
         layout
         {
+            area(content)
+            {
+                group(Options)
+                {
 
+                    field(afficherPiedsPage; afficherPiedsPage)
+                    {
+                        ApplicationArea = all;
+                        Caption = 'Afficher entête et pied de page';
+                    }
+
+                }
+            }
         }
 
         actions
@@ -344,6 +364,8 @@ report 50216 "CrMemoWithEntete"
     end;
 
     var
+        afficherPiedsPage: Boolean;
+
         increment: Integer;
         VATAmtLineVAT: Decimal;
         RecGClient: Record Customer;

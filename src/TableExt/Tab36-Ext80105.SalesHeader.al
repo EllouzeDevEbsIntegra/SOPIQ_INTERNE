@@ -40,11 +40,20 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
         // Message('%1', "Posting Description");
     end;
 
+    procedure ignoreStamp(Prec: Record "Sales Header")
+    begin
+        "STApply Stamp Fiscal" := false;
+        "STStamp Amount" := 0.000;
+        // Message('%1', "Posting Description");
+    end;
 
 
     trigger OnInsert()
     begin
         ModifyPostingDesc(rec);
+        if (rec."Document Type" = "Document Type"::"Credit Memo") then
+            // Message('%1', "Document Type");
+        ignoreStamp(rec);
         "Shipping Agent Code" := "External Document No.";
         Validate("Shipping Agent Code");
     end;

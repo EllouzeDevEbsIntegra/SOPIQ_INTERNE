@@ -483,6 +483,7 @@ report 50213 "Service Order OR"
         CompanyInformation.CALCFIELDS(CompanyInformation."Invoice Header Picture");
         ServiceMgtSetupEDMS.GET;
         ServiceMgtSetupEDMS.CALCFIELDS(ServiceMgtSetupEDMS."Picture PDI");
+        afficherPiedsPage := true;
     end;
 
     var

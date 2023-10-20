@@ -10,16 +10,17 @@ pageextension 80119 "Purchase Credit Memo" extends "Purchase Credit Memo"//52
     {
         // Add changes to page actions here
     }
-    trigger OnOpenPage()
-    begin
-
-    end;
-    // Rendre le champs timbre fiscal désactvié par défaut
-    trigger OnAfterGetRecord()
-    begin
-        "STApply Stamp Fiscal" := false;
-        "STStamp Fiscal Amount" := 0.000;
-    end;
+    // trigger OnOpenPage()
+    // begin
+    //     "STApply Stamp Fiscal" := false;
+    //     "STStamp Fiscal Amount" := 0.000;
+    // end;
+    // // Rendre le champs timbre fiscal désactvié par défaut
+    // trigger OnAfterGetRecord()
+    // begin
+    //     "STApply Stamp Fiscal" := false;
+    //     "STStamp Fiscal Amount" := 0.000;
+    // end;
 
     var
         myInt: Integer;

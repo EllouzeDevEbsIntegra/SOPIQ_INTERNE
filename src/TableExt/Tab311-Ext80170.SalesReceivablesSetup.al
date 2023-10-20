@@ -8,10 +8,7 @@ tableextension 80170 "Sales & Receivables Setup" extends "Sales & Receivables Se
             InitValue = false;
         }
 
-        field(80171; "Reservation Obligatoire"; Boolean)
-        {
-            InitValue = true;
-        }
+
     }
 
     var
