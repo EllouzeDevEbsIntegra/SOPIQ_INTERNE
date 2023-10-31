@@ -1,0 +1,4 @@
+
+.vscode/.alcache/*.*
+*.json
+*.app
