@@ -356,6 +356,7 @@ report 50221 "SI Devis  PDR"
     requestpage
     {
 
+        SaveValues = true;
         layout
         {
             area(content)

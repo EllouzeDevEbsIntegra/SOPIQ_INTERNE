@@ -167,6 +167,7 @@ pageextension 80115 "Transit Folder card" extends "Transit Folder card" //50002
                             recSalesPrice."Item No." := lPurchRcptLine."No.";
                             recSalesPrice."Unit of Measure Code" := Unit;
                             recSalesPrice."Starting Date" := Today;
+                            recSalesPrice."Ending Date" := CalcDate('<6M>', Today);
                             recSalesPrice."Unit Price" := lPurchRcptLine."Prix Special Vendor";
                             recSalesPrice."Minimum Quantity" := 1;
                             recSalesPrice.Insert;

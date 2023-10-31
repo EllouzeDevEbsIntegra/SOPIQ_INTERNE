@@ -12,17 +12,20 @@ pageextension 80122 "Item Transactions" extends "Item Transactions"
             action("Item Old Transaction") // On click, afficher la page item info contenant l'image et les attributs  
             {
                 ApplicationArea = All;
-                Caption = 'Historique article 2021';
+                Caption = 'Ancien Historique';
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
-                RunObject = page "Item Transaction 2021";
-                RunPageLink = "Item N°" = field("Item No."), Year = CONST('2021');
+                RunObject = page "Item Old Transaction";
+                RunPageLink = "Item N°" = field("Item No.");
                 ShortcutKey = F9;
+                Image = TransferOrder;
 
 
             }
         }
     }
+
+
 
 }

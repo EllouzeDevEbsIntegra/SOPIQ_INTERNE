@@ -52,6 +52,16 @@ report 50215 "Sales Invoice With Entete"
             column(Picture; RecCompany.Picture)
             {
             }
+            column(Header; RecCompany."Invoice Header Picture")
+            {
+            }
+            column(Footer; RecCompany."Invoice Footer Picture")
+            {
+            }
+            column(afficherPiedsPage; afficherPiedsPage)
+            {
+
+            }
             column(CompanyTva; RecCompany."VAT Registration No.")
             {
 
@@ -475,48 +485,46 @@ report 50215 "Sales Invoice With Entete"
 
     }
 
-    // requestpage
-    // {
+    requestpage
+    {
 
-    //     layout
-    //     {
-    //         area(content)
-    //         {
-    //             group(Option)
-    //             {
-    //                 Caption = 'Option';
-    //                 field(SHOWLOGO; SHOWLOGO)
-    //                 {
-    //                     Caption = 'Afficher logo';
-    //                 }
-    //                 field(RePrintOriginal; RePrintOriginal)
-    //                 {
-    //                     Caption = 'Re-imprimer l''originale';
-    //                     Visible = VisiblePrintOriginal;
-    //                 }
-    //             }
-    //         }
-    //     }
+        layout
+        {
+            area(content)
+            {
+                group(Option)
+                {
+                    field(afficherPiedsPage; afficherPiedsPage)
+                    {
+                        ApplicationArea = all;
+                        Caption = 'Afficher entête et pied de page';
+                    }
+                }
+            }
+        }
 
-    //     actions
-    //     {
-    //     }
+        actions
+        {
+        }
 
 
-    // }
+    }
 
     labels
     {
     }
 
-    // trigger OnInitReport()
-    // begin
-    //     CLEAR(RecCompany);
-    //     RecCompany.GET;
-    //     RecCompany.CALCFIELDS(Picture);
-    // end;
+    trigger OnInitReport()
+    begin
+        CLEAR(RecCompany);
+        RecCompany.GET;
+        RecCompany.CALCFIELDS(RecCompany.Picture);
+        RecCompany.CALCFIELDS(RecCompany."Invoice Header Picture");
+        RecCompany.CALCFIELDS(RecCompany."Invoice Footer Picture");
+    end;
 
     var
+        afficherPiedsPage: Boolean;
         increment: Integer;
         RecGClient: Record 18;
         CodeTVA: Code[20];

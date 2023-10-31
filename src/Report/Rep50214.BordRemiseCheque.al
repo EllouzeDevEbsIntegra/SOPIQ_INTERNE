@@ -209,7 +209,7 @@ report 50214 "Bord Remise Cheque"
 
     requestpage
     {
-
+        SaveValues = true;
         layout
         {
         }

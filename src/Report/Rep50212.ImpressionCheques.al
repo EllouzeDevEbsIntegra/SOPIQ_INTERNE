@@ -105,7 +105,7 @@ report 50212 "Impression Cheques"
 
     requestpage
     {
-
+        SaveValues = true;
         layout
         {
         }

@@ -48,6 +48,18 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
                 end;
             }
 
+            field("Special Order"; "Special Order")
+            {
+                ApplicationArea = All;
+                Editable = false;
+            }
+
+            field("Special Order Sales No."; "Special Order Sales No.")
+            {
+                ApplicationArea = All;
+                Editable = false;
+            }
+
 
 
             field("Prix vente calculé"; "Prix vente calculé")

@@ -76,20 +76,6 @@ tableextension 80103 "Item" extends Item //27
             end;
         }
 
-        field(50102; "Replacement No"; Code[20])
-        {
-            Caption = 'Référence de Remplacement';
-            TableRelation = item;
-            trigger OnValidate()
-            begin
-                if (xRec."Item Replacement No." <> '') AND ("Item Replacement No." <> '') then
-                    DeleteReplacementItem("No.", "Item Replacement No.");
-
-                if (xRec."Item Replacement No." = '') AND ("Item Replacement No." <> '') then
-                    CreateReplacementItem("No.", "Item Replacement No.");
-            end;
-
-        }
         field(50103; "PurshQty20"; integer)
         {
             CalcFormula = sum("Item old transaction"."Purshase Qty" where("Item N°" = field("No."), Year = const('2020')));
@@ -248,112 +234,130 @@ tableextension 80103 "Item" extends Item //27
 
     }
 
+    trigger OnAfterDelete()
     var
-
-    trigger OnAfterInsert()
-    var
-        recVendorByManufacturer: Record "Vendor By Manufacturer";
-        recItemVendor: Record "Item Vendor";
-        recVendor: Record "Vendor";
         recItemMaster: Record "items Master";
     begin
-        recVendorByManufacturer.SetRange("Manufacturer Code", "Manufacturer Code");
-        if recVendorByManufacturer.FindSet() then begin
-            repeat
-
-                recItemVendor.Init();
-                recItemVendor."Item No." := "No.";
-                recItemVendor."Vendor No." := recVendorByManufacturer."Vendor Code";
-                recItemVendor."Vendor Item No." := "No.";
-                if recVendor.Get(recVendorByManufacturer."Vendor Code") then recItemVendor."Lead Time Calculation" := recVendor."Lead Time Calculation";
-                recItemVendor.Insert;
-
-            until recVendorByManufacturer.next = 0;
-
-        end;
-
-
         recItemMaster.Reset();
-        recItemMaster.No := rec."No.";
-        recItemMaster.Company := Database.CompanyName;
-        recitemmaster.Insert();
-
+        recItemMaster.SetRange(No, "No.");
+        recItemMaster.SetRange(Company, Database.CompanyName);
+        recItemMaster.SetRange(Verified, false);
+        if recItemMaster.FindSet() then begin
+            repeat
+                recItemMaster.Delete();
+            until recItemMaster.Next() = 0;
+        end;
     end;
 
     trigger OnAfterModify()
     var
-        recItemMaster: Record "items Master";
+        recItemMaster, recMasterExist : Record "items Master";
+        TypeModif: Text[200];
     begin
-        recItemMaster.SetRange(No, rec."No.");
-        recItemMaster.SetRange(Company, Database.CompanyName);
-        if recItemMaster.FindSet() then begin
-            REPEAT
-                recItemMaster.Famille := rec.Groupe;
-                recItemMaster."Sous Famille" := rec."Sous Groupe";
-                recItemMaster.Master := rec."Reference Origine Lié";
-                recItemMaster.Modify();
-            UNTIL recItemMaster.Next() = 0;
-        end;
-    end;
+        if (rec.Verified = false) then begin
+            // Message('Not verified Item');
+            if (rec.Description <> '') then BEGIN
+                recMasterExist.Reset();
+                recMasterExist.SetRange(Company, Database.CompanyName);
+                recMasterExist.SetRange(Verified, false);
+                recMasterExist.SetRange("No", "No.");
+                if recMasterExist.FindFirst() then begin
+                    // Message('test id : %1', recMasterExist.id);
+                    if (rec.Description <> xRec.Description)
+                        OR (rec."Item Product Code" <> xRec."Item Product Code")
+                        OR (rec."Item Sub Product Code" <> xRec."Item Sub Product Code")
+                        OR (rec."Champs libre" <> xRec."Champs libre")
+                        OR (rec.Produit <> xRec.Produit)
+                        OR (rec."Reference Origine Lié" <> xRec."Reference Origine Lié")
+                        OR (rec."Manufacturer Code" <> xRec."Manufacturer Code")
+                        OR (rec."Make Code" <> xRec."Make Code")
+                    THEN BEGIN
+                        // Message('article dispo et Il y une modification  dans item !');
+                        if (rec."Reference Origine Lié" <> '') THEN
+                            recMasterExist.Master := rec."Reference Origine Lié";
+                        if (rec.Groupe <> '') THEN
+                            recMasterExist.Famille := rec.Groupe;
+                        if (rec."Sous Groupe" <> '') THEN
+                            recMasterExist."Sous Famille" := rec."Sous Groupe";
+                        recMasterExist."Type Ajout" := 'Nouveau';
+                        recMasterExist.modify(true);
+                        Message(recMasterExist."Type Ajout");
+                    END
+                end
+                else begin
+                    // Message('Non Dispo');
+                    if (rec.Description <> xRec.Description)
+                        OR (rec."Item Product Code" <> xRec."Item Product Code")
+                        OR (rec."Item Sub Product Code" <> xRec."Item Sub Product Code")
+                        OR (rec."Champs libre" <> xRec."Champs libre")
+                        OR (rec.Produit <> xRec.Produit)
+                        OR (rec."Reference Origine Lié" <> xRec."Reference Origine Lié")
+                        OR (rec."Manufacturer Code" <> xRec."Manufacturer Code")
+                        OR (rec."Make Code" <> xRec."Make Code")
+                    THEN BEGIN
+                        // Message('Article Non Dispo et il y une modification dans item !');
+                        recItemMaster.Reset();
+                        recItemMaster.Company := Database.CompanyName;
+                        recItemMaster.No := rec."No.";
+                        if (rec."Reference Origine Lié" <> '') THEN
+                            recItemMaster.Master := rec."Reference Origine Lié";
+                        if (rec.Groupe <> '') THEN
+                            recItemMaster.Famille := rec.Groupe;
+                        if (rec."Sous Groupe" <> '') THEN
+                            recItemMaster."Sous Famille" := rec."Sous Groupe";
+                        recItemMaster."Add date" := System.today;
+                        recItemMaster."Add User" := Database.UserId;
+                        recItemMaster."Type Ajout" := 'Nouveau';
+                        recItemMaster.Insert(true);
+                        Message(recMasterExist."Type Ajout");
+                    END
+                end;
+            END;
+        end
+        else begin
 
+            // Message('Vérified - Modification sur un article');
+            // Message('verified Item');
+            if (xRec."No." <> '') then begin
+                TypeModif := 'Champs Modifiés : ';
+                if (rec.Description <> xRec.Description) then TypeModif := TypeModif + '- Description';
+                if (rec."Item Product Code" <> xRec."Item Product Code") then TypeModif := TypeModif + '- Famille';
+                if (rec."Item Sub Product Code" <> xRec."Item Sub Product Code") then TypeModif := TypeModif + '- Sous Famille';
+                if (rec."Champs libre" <> xRec."Champs libre") then TypeModif := TypeModif + '- Champ libre';
+                if (rec.Produit <> xRec.Produit) then TypeModif := TypeModif + '- Est Produit';
+                if (rec."Reference Origine Lié" <> xRec."Reference Origine Lié") then TypeModif := TypeModif + '- Ref Master';
+                if (rec."Manufacturer Code" <> xRec."Manufacturer Code") then TypeModif := TypeModif + '- Fabricant';
+                if (rec."Make Code" <> xRec."Make Code") then TypeModif := TypeModif + '- Marque';
+                //Message(TypeModif);
 
-    procedure CreateReplacementItem(ReplacedNo: Code[20]; ReplacedBy: Code[20])
-    var
-        ItemSubstitution: Record "Item Substitution";
-        Master: record "Nonstock Item";
-        Item: Record Item;
-    begin
-        IF NOT Master.Get(ReplacedNo) then begin
-            If Item.GET(ReplacedNo) then begin
-                Master.Init();
-                Master."Entry No." := ReplacedNo;
-                Master."Item No." := ReplacedNo;
-                Master."Vendor Item No." := ReplacedNo;
-                Master.Description := Item.Description;
-                Master.INSERT;
+                if (rec.Description <> xRec.Description)
+                    OR (rec."Item Product Code" <> xRec."Item Product Code")
+                    OR (rec."Item Sub Product Code" <> xRec."Item Sub Product Code")
+                    OR (rec."Champs libre" <> xRec."Champs libre")
+                    OR (rec.Produit <> xRec.Produit)
+                    OR (rec."Reference Origine Lié" <> xRec."Reference Origine Lié")
+                    OR (rec."Manufacturer Code" <> xRec."Manufacturer Code")
+                    OR (rec."Make Code" <> xRec."Make Code")
+                THEN BEGIN
+                    recItemMaster.Reset();
+                    recItemMaster.Company := Database.CompanyName;
+                    recItemMaster.No := rec."No.";
+                    if (rec."Reference Origine Lié" <> '') THEN
+                        recItemMaster.Master := rec."Reference Origine Lié";
+                    if (rec.Groupe <> '') THEN
+                        recItemMaster.Famille := rec.Groupe;
+                    if (rec."Sous Groupe" <> '') THEN
+                        recItemMaster."Sous Famille" := rec."Sous Groupe";
+                    recItemMaster."Add date" := System.today;
+                    recItemMaster."Add User" := Database.UserId;
+                    recItemMaster."Type Ajout" := TypeModif;
+                    recItemMaster.Insert(true);
+                END
             end;
-        end;
-        IF NOT Master.Get(ReplacedBy) then begin
-            If Item.GET(ReplacedBy) then begin
-                Master.Init();
-                Master."Entry No." := ReplacedBy;
-                Master."Item No." := ReplacedBy;
-                Master."Vendor Item No." := ReplacedBy;
-                Master.Description := Item.Description;
-                Master.INSERT;
-            end;
+
+
+
         end;
 
-        ItemSubstitution.init;
-        ItemSubstitution.Type := ItemSubstitution.Type::"Nonstock Item";
-        ItemSubstitution."No." := ReplacedNo;
-        ItemSubstitution."Entry Type" := ItemSubstitution."Entry Type"::Replacement;
-        ItemSubstitution."Substitute Type" := ItemSubstitution."Substitute Type"::Item;
-        ItemSubstitution."Replacement Info." := ItemSubstitution."Replacement Info."::Replacement;
-        ItemSubstitution."Substitute No." := ReplacedBy;
-        ItemSubstitution.Description := 'Interne';
-        ItemSubstitution."Posting Date" := Today;
-        ItemSubstitution.Validate(Interchangeable, true);
-        Message('%1 - %2 - %3 ', ItemSubstitution."No.", ItemSubstitution."Substitute No.", ItemSubstitution."Posting Date");
-        ItemSubstitution.Insert();
-
-
     end;
-
-    procedure DeleteReplacementItem(ReplacedNo: Code[20]; ReplacedBy: Code[20])
-    var
-        ItemSubstitution: Record "Item Substitution";
-    begin
-        ItemSubstitution.SetRange(Type, ItemSubstitution.Type::Item);
-        ItemSubstitution.SetRange("No.", ReplacedNo);
-        ItemSubstitution.SetRange("Entry Type", ItemSubstitution."Entry Type"::Replacement);
-        ItemSubstitution.SetRange("Substitute Type", ItemSubstitution."Substitute Type"::Item);
-        ItemSubstitution.SetRange("Replacement Info.", ItemSubstitution."Replacement Info."::Replacement);
-        ItemSubstitution.SetRange("Substitute No.", ReplacedBy);
-        IF ItemSubstitution.FindFirst() then
-            ItemSubstitution.Delete();
-
-
-    end;
-
 }

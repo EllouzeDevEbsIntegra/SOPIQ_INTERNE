@@ -2,9 +2,16 @@ table 50020 "items Master"
 {
     DataClassification = ToBeClassified;
     DataPerCompany = false;
+    Permissions = TableData "items Master" = rimd;
+
 
     fields
     {
+        field(1000; id; Integer)
+        {
+            DataClassification = ToBeClassified;
+            AutoIncrement = true;
+        }
         field(1; No; Code[20])
         {
             DataClassification = ToBeClassified;
@@ -41,71 +48,41 @@ table 50020 "items Master"
             InitValue = false;
         }
 
+        field(22; "Add date"; Date)
+        {
+            DataClassification = ToBeClassified;
+        }
+
+        field(23; "Add User"; code[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+
+        field(24; "Validate Date"; Date)
+        {
+            DataClassification = ToBeClassified;
+        }
+
+        field(25; "Validate User"; code[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+
+        field(26; "Type Ajout"; Text[200])
+        {
+            DataClassification = ToBeClassified;
+        }
+
 
     }
 
     keys
     {
-        key(Key1; No, Company)
+        key(Key1; id)
         {
             Clustered = true;
         }
     }
 
-    var
-        myInt: Integer;
-
-
-    // trigger OnModify()
-    // var
-    //     recItem, tempItem : Record Item;
-    //     recCompany: Record Company;
-    //     tempNo, tempFamille : Code[20];
-
-    // begin
-
-    //     recCompany.Reset();
-    //     if recCompany.FindSet() then begin
-    //         REPEAT
-
-    //             recItem.Reset();
-    //             recItem.SetRange("No.", rec.No);
-    //             recItem.ChangeCompany(recCompany.Name);
-    //             if recItem.FindFirst() then begin
-    //                 tempItem := recItem;
-    //                 Message('Modification' + recItem."No." + ' - ' + rec.Famille + Database.CompanyName);
-    //                 recItem."Item Product Code" := rec.Famille;
-    //                 recItem.Modify();
-
-    //             end else begin
-    //                 recItem.Reset();
-    //                 recItem."No." := rec.No;
-    //                 recItem."Item Product Code" := rec.Famille;
-    //                 recItem.Type := recItem.Type::Inventory;
-    //                 recItem."Item Type" := recItem."Item Type"::Item;
-    //                 recItem.Insert();
-    //                 Message('Insertion %1 - %2 - %3 - %4', recItem."No.", recItem."Item Sub Product Code", recItem.Type, Database.CompanyName);
-    //             end;
-
-
-    //         UNTIL recCompany.Next() = 0;
-    //     end;
-
-    //     rec.Verified := true;
-
-
-    // end;
-
-    trigger OnDelete()
-    begin
-
-
-
-    end;
-
-    trigger OnRename()
-    begin
-
-    end;
 
 }

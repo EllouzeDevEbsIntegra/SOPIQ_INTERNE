@@ -2,6 +2,8 @@ tableextension 80160 "Company Information" extends "Company Information" //79
 {
     fields
     {
+
+
         field(80159; "Company"; Text[100])
         {
             TableRelation = Company.Name;

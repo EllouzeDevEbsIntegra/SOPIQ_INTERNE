@@ -388,7 +388,7 @@ report 50211 "Homologation"
 
     requestpage
     {
-
+        SaveValues = true;
         layout
         {
             area(content)

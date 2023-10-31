@@ -214,6 +214,7 @@ report 50219 "ST Remise effets à lescompte"
 
     requestpage
     {
+        SaveValues = true;
 
         layout
         {

@@ -32,7 +32,6 @@ pageextension 80220 "Item Category Card" extends "Item Category Card" //5733
         recCompanyInformation.SetRange("Base Company", true);
         if recCompanyInformation.FindFirst() then begin
 
-
             if (Database.CompanyName = recCompanyInformation.Company) then begin
 
                 recCompany.Reset();
@@ -66,37 +65,4 @@ pageextension 80220 "Item Category Card" extends "Item Category Card" //5733
 
 
     end;
-    // Var
-    //     recCategory: Record "Item Category";
-    //     recCompany: Record Company;
-    //     recCompanyInformation: Record "Company Information";
-    // begin
-
-    //     recCompanyInformation.Reset();
-    //     recCompanyInformation.SetRange("Base Company", true);
-    //     if recCompanyInformation.FindFirst() then begin
-
-
-    //         if (Database.CompanyName = recCompanyInformation.Company) then begin
-
-    //             recCompany.Reset();
-    //             if recCompany.FindSet() then begin
-    //                 REPEAT
-
-    //                     if (recCompany.Name <> recCompanyInformation.Company) then begin
-    //                         recCategory.Reset();
-    //                         recCategory.ChangeCompany(recCompany.Name);
-    //                         recCategory := rec;
-    //                         recCategory.Insert();
-    //                     end
-
-    //                 UNTIL recCompany.Next() = 0;
-    //             end;
-
-
-    //         end
-    //     end;
-
-
-    // end;
 }

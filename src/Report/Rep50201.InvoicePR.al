@@ -392,6 +392,7 @@ report 50201 "Invoice PR"
 
     requestpage
     {
+        SaveValues = true;
 
         layout
         {

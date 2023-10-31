@@ -1,11 +1,11 @@
-page 50102 "Item Transaction 2021"
+page 50102 "Item Old Transaction"
 {
     PageType = List;
     ApplicationArea = All;
     UsageCategory = Lists;
     SourceTable = "Item Old Transaction";
     SourceTableView = sorting("Document date") order(descending);
-    Caption = 'Mouvement articles 2021';
+    Caption = 'Ancien Mouvement Article';
     Editable = false;
     ModifyAllowed = false;
     DeleteAllowed = false;
@@ -27,18 +27,20 @@ page 50102 "Item Transaction 2021"
                     Editable = false;
                 }
 
-                field(PurshQty21; ItemStk.PurshQty21)
+                field(PurshQty; getPurshaseQty()) // ItemStk.PurshQty21
                 {
 
-                    Caption = 'Achat 2021';
+                    // Caption = 'Achat';
+                    CaptionClass = 'Achat ' + GetFilter(Year);
                     Editable = false;
 
                     ApplicationArea = All;
                 }
-                field(SalesQty21; ItemStk.SalesQty21)
+                field(SalesQty; getSalesQty())//ItemStk.SalesQty21
                 {
 
-                    Caption = 'Vente 2021';
+                    //Caption = 'Vente';
+                    CaptionClass = 'Vente ' + GetFilter(Year);
                     Editable = false;
 
                     ApplicationArea = All;
@@ -169,17 +171,17 @@ page 50102 "Item Transaction 2021"
     {
         area(Processing)
         {
-            action("Item Old Transaction")
-            {
-                ApplicationArea = All;
-                Caption = 'Historique article 2020';
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
-                RunObject = page "Item Transaction 2020";
-                RunPageLink = "Item N°" = field("Item N°"), Year = CONST('2020');
-                ShortcutKey = F9;
-            }
+            // action("Item Old Transaction")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Historique article 2020';
+            //     Promoted = true;
+            //     PromotedIsBig = true;
+            //     PromotedCategory = Process;
+            //     RunObject = page "Item Transaction 2020";
+            //     RunPageLink = "Item N°" = field("Item N°"), Year = CONST('2020');
+            //     ShortcutKey = F9;
+            // }
         }
     }
 
@@ -205,6 +207,7 @@ page 50102 "Item Transaction 2021"
         ItemLocal: Record "Item";
         SourceTableName: Text;
         SourceFilter: Text;
+        YearFilter: Text;
     begin
 
         case true of
@@ -212,9 +215,50 @@ page 50102 "Item Transaction 2021"
                 begin
                     SourceTableName := 'Article';
                     SourceFilter := GetFilter("Item N°");
+                    YearFilter := GetFilter(Year);
                 end;
         end;
-        exit(StrSubstNo('%1 %2', SourceTableName, SourceFilter));
+        exit(StrSubstNo('%1 - %2 - %3', SourceTableName, SourceFilter, YearFilter));
+
+    end;
+
+    local procedure getSalesQty(): Integer
+    var
+        recOldTransaction: Record "Item old transaction";
+        SalesQte: Integer;
+    begin
+        SalesQte := 0;
+        recOldTransaction.Reset();
+        recOldTransaction.SetRange("Item N°", GetFilter("Item N°"));
+        recOldTransaction.SetFilter(Year, GetFilter(Year));
+        if recOldTransaction.FindSet() then begin
+            repeat
+                SalesQte := SalesQte + recOldTransaction."Sales Qty"
+            until recOldTransaction.Next() = 0;
+        end;
+
+
+        exit(SalesQte);
+
+    end;
+
+    local procedure getPurshaseQty(): Integer
+    var
+        recOldTransaction: Record "Item old transaction";
+        PurshaseQte: Integer;
+    begin
+        PurshaseQte := 0;
+        recOldTransaction.Reset();
+        recOldTransaction.SetRange("Item N°", GetFilter("Item N°"));
+        recOldTransaction.SetFilter(Year, GetFilter(Year));
+        if recOldTransaction.FindSet() then begin
+            repeat
+                PurshaseQte := PurshaseQte + recOldTransaction."Purshase Qty";
+            until recOldTransaction.Next() = 0;
+        end;
+
+
+        exit(PurshaseQte);
 
     end;
 

@@ -393,7 +393,7 @@ report 50218 "Invoice Services"
 
     requestpage
     {
-
+        SaveValues = true;
         layout
         {
             area(Content)

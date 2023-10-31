@@ -11,6 +11,11 @@ pageextension 80137 "Posted Sales Shipments" extends "Posted Sales Shipments"//1
                 Caption = 'Moyen Jour Paiement';
 
             }
+
+            field("Order No."; "Order No.")
+            {
+                Caption = 'N° Commande';
+            }
         }
     }
 

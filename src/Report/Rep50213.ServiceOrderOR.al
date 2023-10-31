@@ -441,7 +441,7 @@ report 50213 "Service Order OR"
 
     requestpage
     {
-
+        SaveValues = true;
         layout
         {
             area(content)

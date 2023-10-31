@@ -1013,6 +1013,7 @@
                                   <Style>Solid</Style>
                                   <Width>1pt</Width>
                                 </RightBorder>
+                                <BackgroundColor>#e7e7e9</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -1069,6 +1070,7 @@
                                   <Style>Solid</Style>
                                   <Width>1pt</Width>
                                 </RightBorder>
+                                <BackgroundColor>#e7e7e9</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -1123,6 +1125,7 @@
                                   <Style>Solid</Style>
                                   <Width>1pt</Width>
                                 </RightBorder>
+                                <BackgroundColor>#e7e7e9</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -1177,6 +1180,7 @@
                                   <Style>Solid</Style>
                                   <Width>1pt</Width>
                                 </RightBorder>
+                                <BackgroundColor>#e7e7e9</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -1231,6 +1235,7 @@
                                   <Style>Solid</Style>
                                   <Width>1pt</Width>
                                 </RightBorder>
+                                <BackgroundColor>#e7e7e9</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -1285,6 +1290,7 @@
                                   <Style>Solid</Style>
                                   <Width>1pt</Width>
                                 </RightBorder>
+                                <BackgroundColor>#e7e7e9</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -1339,6 +1345,7 @@
                                   <Style>Solid</Style>
                                   <Width>1pt</Width>
                                 </RightBorder>
+                                <BackgroundColor>#e7e7e9</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -1439,7 +1446,7 @@
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
-                                    <TextAlign>Left</TextAlign>
+                                    <TextAlign>Center</TextAlign>
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
@@ -1831,158 +1838,6 @@
               </Border>
             </Style>
           </Rectangle>
-          <Textbox Name="Textbox44">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>="  -  M.F :"+First(Fields!CompanyTva.Value, "DataSet_Result")</Value>
-                    <Style>
-                      <FontFamily>Segoe UI</FontFamily>
-                      <FontSize>8pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                      <Format>#,0.000;(#,0.000)</Format>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Left</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox18</rd:DefaultName>
-            <Top>19.75174cm</Top>
-            <Left>12.0414cm</Left>
-            <Height>0.48094cm</Height>
-            <Width>4.21062cm</Width>
-            <ZIndex>4</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <VerticalAlign>Top</VerticalAlign>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Textbox45">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>="Adresse : "+First(Fields!CompanyAdresse.Value, "DataSet_Result")+", "+First(Fields!CompanyCity.Value, "DataSet_Result")</Value>
-                    <Style>
-                      <FontFamily>Segoe UI</FontFamily>
-                      <FontSize>8pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                      <Format>#,0.000;(#,0.000)</Format>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Left</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox18</rd:DefaultName>
-            <Top>19.75174cm</Top>
-            <Left>0.1323cm</Left>
-            <Height>0.48094cm</Height>
-            <Width>7.93832cm</Width>
-            <ZIndex>5</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <VerticalAlign>Top</VerticalAlign>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Textbox46">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>="  -  Tél "+First(Fields!CompanyTel.Value, "DataSet_Result")</Value>
-                    <Style>
-                      <FontFamily>Segoe UI</FontFamily>
-                      <FontSize>8pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                      <Format>#,0.000;(#,0.000)</Format>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Left</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox18</rd:DefaultName>
-            <Top>19.75174cm</Top>
-            <Left>16.32258cm</Left>
-            <Height>0.48094cm</Height>
-            <Width>3.39112cm</Width>
-            <ZIndex>6</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <VerticalAlign>Top</VerticalAlign>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Textbox47">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>="Email : " + First(Fields!CompanyEmail.Value, "DataSet_Result")</Value>
-                    <Style>
-                      <FontFamily>Segoe UI</FontFamily>
-                      <FontSize>8pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                      <Format>#,0.000;(#,0.000)</Format>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Left</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox18</rd:DefaultName>
-            <Top>19.75174cm</Top>
-            <Left>8.17645cm</Left>
-            <Height>0.48094cm</Height>
-            <Width>3.82967cm</Width>
-            <ZIndex>7</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <VerticalAlign>Top</VerticalAlign>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
         </ReportItems>
         <Height>20.39166cm</Height>
         <Style />
@@ -2131,7 +1986,7 @@
                 </Textbox>
               </ReportItems>
               <KeepTogether>true</KeepTogether>
-              <Top>4.44183cm</Top>
+              <Top>4.40655cm</Top>
               <Left>11.74154cm</Left>
               <Height>3.13878cm</Height>
               <Width>8.00957cm</Width>
@@ -2181,7 +2036,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>4.58437cm</Top>
+              <Top>4.44183cm</Top>
               <Left>0.29496cm</Left>
               <Height>0.92896cm</Height>
               <Width>3.78575cm</Width>
@@ -2216,7 +2071,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>4.58437cm</Top>
+              <Top>4.44183cm</Top>
               <Left>4.15127cm</Left>
               <Height>0.92896cm</Height>
               <Width>4.54644cm</Width>
@@ -2228,22 +2083,6 @@
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
             </Textbox>
-            <Image Name="Image1">
-              <Source>Database</Source>
-              <Value>=First(Fields!Picture.Value, "DataSet_Result")</Value>
-              <MIMEType>image/bmp</MIMEType>
-              <Sizing>FitProportional</Sizing>
-              <Top>0.10489in</Top>
-              <Left>0.11976in</Left>
-              <Height>1.01037in</Height>
-              <Width>2.52509in</Width>
-              <ZIndex>3</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-              </Style>
-            </Image>
             <Textbox Name="Textbox15">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
@@ -2275,7 +2114,7 @@
               <Left>6.8363cm</Left>
               <Height>0.63963cm</Height>
               <Width>4.54644cm</Width>
-              <ZIndex>4</ZIndex>
+              <ZIndex>3</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2310,7 +2149,7 @@
               <Left>0.30419cm</Left>
               <Height>0.63963cm</Height>
               <Width>6.41373cm</Width>
-              <ZIndex>5</ZIndex>
+              <ZIndex>4</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2318,6 +2157,17 @@
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
             </Textbox>
+            <Rectangle Name="Rectangle6">
+              <KeepTogether>true</KeepTogether>
+              <Height>4.37127cm</Height>
+              <Width>19.75111cm</Width>
+              <ZIndex>5</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Rectangle>
           </ReportItems>
           <Style>
             <Border>
@@ -2428,6 +2278,15 @@ End Function</Code>
         </Field>
         <Field Name="Picture">
           <DataField>Picture</DataField>
+        </Field>
+        <Field Name="Header">
+          <DataField>Header</DataField>
+        </Field>
+        <Field Name="Footer">
+          <DataField>Footer</DataField>
+        </Field>
+        <Field Name="afficherPiedsPage">
+          <DataField>afficherPiedsPage</DataField>
         </Field>
         <Field Name="CompanyTva">
           <DataField>CompanyTva</DataField>

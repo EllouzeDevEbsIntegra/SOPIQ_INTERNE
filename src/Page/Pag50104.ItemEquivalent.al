@@ -118,12 +118,12 @@ page 50104 "Item Equivalent"
             action("Item Old Transaction")  // On click, afficher la page historique des articles 2020 - 2021  
             {
                 ApplicationArea = All;
-                Caption = 'Historique article 2021';
+                Caption = 'Ancien Historique';
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
-                RunObject = page "Item Transaction 2021";
-                RunPageLink = "Item N°" = field("No."), Year = CONST('2021');
+                RunObject = page "Item Old Transaction";
+                RunPageLink = "Item N°" = field("No.");
                 ShortcutKey = F8;
             }
 
@@ -200,8 +200,10 @@ page 50104 "Item Equivalent"
                 SETFILTER("Reference Origine Lié", PItemNo);
                 CurrPage.Update();
             end else begin
-                if RecgItem."Reference Origine Lié" <> '' then
+                if RecgItem."Reference Origine Lié" <> '' then begin
                     SETFILTER("Reference Origine Lié", RecgItem."Reference Origine Lié");
+                end;
+
                 CurrPage.Update();
             end;
         end
@@ -218,6 +220,8 @@ page 50104 "Item Equivalent"
 
     trigger OnOpenPage()
     begin
+        //@@@@@@ à voir @@@@@@
         IF FindFirst THEN;
+
     end;
 }

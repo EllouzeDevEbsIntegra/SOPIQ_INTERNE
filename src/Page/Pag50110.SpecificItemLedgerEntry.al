@@ -179,7 +179,7 @@ page 50110 "Specific Item Ledger Entry"
 
             {
                 ApplicationArea = All;
-                Caption = 'Transaction 2022';
+                Caption = 'Transaction Année -1';
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
@@ -213,16 +213,24 @@ page 50110 "Specific Item Ledger Entry"
 
 
 
-            action("Transaction 2021")
+            action("Old Transaction")
             {
                 ApplicationArea = All;
-                Caption = 'Transaction 2021';
+                Caption = 'Ancien Historique';
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
                 ShortcutKey = F8;
-                RunObject = page "Item Transaction 2021";
-                RunPageLink = "Item N°" = field("Item No.");
+                //RunObject = page "Item Old Transaction";
+                //RunPageLink = "Item N°" = field("Item No.");
+                trigger OnAction()
+                var
+                    ItemOldTransaction: Record "Item Old Transaction";
+                begin
+                    ItemOldTransaction.SetRange("Item N°", Rec."Item No.");
+                    Page.Run(Page::"Item Old Transaction", ItemOldTransaction);
+                end;
+
             }
         }
     }
@@ -397,4 +405,5 @@ page 50110 "Specific Item Ledger Entry"
         Item: Record Item;
         nbJourRupture, nbRuptureYear, "nbRuptureYear-1" : Decimal;
         entredonce, isVisible : Boolean;
+        itemFilter: Text;
 }

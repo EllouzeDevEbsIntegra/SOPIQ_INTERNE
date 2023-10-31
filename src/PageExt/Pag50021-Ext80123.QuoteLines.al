@@ -95,12 +95,12 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
             action("Item Old Transaction")
             {
                 ApplicationArea = All;
-                Caption = 'Historique article 2021';
+                Caption = 'Ancien Historique';
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
-                RunObject = page "Item Transaction 2021";
-                RunPageLink = "Item N°" = field("No."), Year = CONST('2021');
+                RunObject = page "Item Old Transaction";
+                RunPageLink = "Item N°" = field("No.");
                 ShortcutKey = F8;
             }
             action(Prices)

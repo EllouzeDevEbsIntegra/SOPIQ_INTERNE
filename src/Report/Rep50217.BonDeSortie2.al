@@ -339,6 +339,7 @@ report 50217 "Bon De Sortie 2"
 
     requestpage
     {
+        SaveValues = true;
         layout
         {
             area(Content)

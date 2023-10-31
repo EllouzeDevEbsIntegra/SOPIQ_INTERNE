@@ -71,46 +71,66 @@ tableextension 80102 "Item Category" extends "Item Category"
     var
         myInt: Integer;
 
-    // trigger OnAfterModify()
-    // Var
-    //     recCategory: Record "Item Category";
-    //     recCompany: Record Company;
-    //     recCompanyInformation: Record "Company Information";
-    // begin
+    trigger OnDelete()
+    Var
+        recCategory, TempCat : Record "Item Category";
+        recCompany: Record Company;
+        recCompanyInformation: Record "Company Information";
+    begin
 
-    //     recCompanyInformation.Reset();
-    //     recCompanyInformation.SetRange("Base Company", true);
-    //     if recCompanyInformation.FindFirst() then begin
+        // Message('%1', Database.CompanyName);
+        recCompanyInformation.Reset();
+        recCompanyInformation.SetRange(Company, Database.CompanyName);
+        if recCompanyInformation.FindFirst() THEN begin
+            // Message('%1 - %2', recCompanyInformation.Company, recCompanyInformation."Base Company");
+            if (recCompanyInformation."Base Company" = false) then begin
+                Error('Vous n''êtes pas autorisé à supprimer une catégorie !');
+            end
+            else begin
+                TempCat.Reset();
+                recCategory.Reset();
+                recCategory.SetRange(Code, rec.Code);
+                if recCategory.FindFirst() then begin
+                    TempCat := recCategory;
+                    // Message('cat Temporaire : %1 --- cat : %2', TempCat.Code, recCategory.Code);
+                end;
+                recCompany.Reset();
+                if recCompany.FindSet() then begin
+                    REPEAT
+
+                        if (recCompany.Name <> recCompanyInformation.Company) then begin
+                            TempCat.ChangeCompany(recCompany.Name);
+                            recCategory.Reset();
+                            recCategory.SetRange(Code, rec.Code);
+                            recCategory.ChangeCompany(recCompany.Name);
+
+                            if recCategory.FindFirst() then begin
+                                recCategory.Delete();
+                                // Message('Category Deleted : %1 Dans société : %2', recCategory.Code, recCompany.Name);
+                            end;
+                        end
+
+                    UNTIL recCompany.Next() = 0;
+                end;
+            end;
+        end;
+
+    end;
 
 
-    //         if (Database.CompanyName = recCompanyInformation.Company) then begin
+    trigger OnBeforeInsert()
+    Var
+        recCompanyInformation: Record "Company Information";
+    begin
 
-    //             recCompany.Reset();
-    //             if recCompany.FindSet() then begin
-    //                 REPEAT
+        recCompanyInformation.SetRange(Company, Database.CompanyName);
+        if recCompanyInformation.FindFirst() THEN begin
 
-    //                     if (recCompany.Name <> recCompanyInformation.Company) then begin
-    //                         recCategory.Reset();
-    //                         recCategory.SetRange(Code, rec.Code);
-    //                         recCategory.ChangeCompany(recCompany.Name);
+            if (recCompanyInformation."Base Company" = false) then begin
+                Error('Vous n''êtes pas autorisé à ajouter une catégorie !');
+            end;
 
-    //                         if recCategory.FindFirst() then begin
-    //                             recCategory := rec;
-    //                             recCategory.Modify();
-    //                             Message('Category Modified : %1 Dans société : %2', recCategory.Code, recCompany.Name);
-    //                         end
-    //                         else begin
-    //                             rec.Insert();
-    //                         end;
-    //                     end
+        end;
 
-    //                 UNTIL recCompany.Next() = 0;
-    //             end;
-
-
-    //         end
-    //     end;
-
-
-    // end;
+    end;
 }

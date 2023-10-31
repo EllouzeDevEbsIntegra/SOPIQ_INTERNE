@@ -174,12 +174,12 @@ page 50106 "Purch. Recept. Lines"
             action("Item Old Transaction")  // On click, afficher la page historique des articles 2020 - 2021  
             {
                 ApplicationArea = All;
-                Caption = 'Historique article 2021';
+                Caption = 'Ancien Historique';
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
-                RunObject = page "Item Transaction 2021";
-                RunPageLink = "Item N°" = field("No."), Year = CONST('2021');
+                RunObject = page "Item Old Transaction";
+                RunPageLink = "Item N°" = field("No.");
                 ShortcutKey = F8;
             }
         }
@@ -205,11 +205,13 @@ page 50106 "Purch. Recept. Lines"
         iscomponent, EntredOnce : Boolean;
         comparedNo: TEXT;
     begin
-        if "Reference Origine Lié" = '' then
+        if "Reference Origine Lié" = '' then begin
             if item.get("No.") then begin
                 "Reference Origine Lié" := Item."Reference Origine Lié";
                 Modify();
             end;
+        end;
+
 
         CurrPage."Equivalent".Page.SetNo("No.");
 
