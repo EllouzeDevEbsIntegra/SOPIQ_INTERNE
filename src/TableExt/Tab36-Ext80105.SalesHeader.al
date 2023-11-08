@@ -26,6 +26,13 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
             end;
         }
         // Add changes to table fields here
+        field(80999; CustVIN; code[50])
+        {
+            Caption = 'VIN';
+            Description = 'Vehicule client';
+            FieldClass = Normal;
+            TableRelation = Vehicle where("Customer No." = field("Bill-to Customer No."));
+        }
 
 
     }

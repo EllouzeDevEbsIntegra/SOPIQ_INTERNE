@@ -59,6 +59,45 @@ pageextension 80116 "Vehicle SO Proc. Activities" extends "Vehicle SO Proc. Acti
                 }
 
             }
+
+            cuegroup("Paiment")
+            {
+                Caption = 'Paiement Client';
+                field("Cheque En Coffre"; "Cheque En Coffre")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Total Cheque En Coffre';
+                    DecimalPlaces = 0 : 0;
+                }
+
+                field("Cheque Impaye"; "Cheque Impaye")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Total Cheque Impayé';
+                    DecimalPlaces = 0 : 0;
+                }
+
+                field("Traite En Coff."; "Traite En Coff.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Total Traite En Coffre';
+                    DecimalPlaces = 0 : 0;
+                }
+
+                field("Traite En Escompte"; "Traite En Escompte")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Total Traite Escompte';
+                    DecimalPlaces = 0 : 0;
+                }
+
+                field("Traite Impaye"; "Traite Impaye")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Total Traite Impayee';
+                    DecimalPlaces = 0 : 0;
+                }
+            }
         }
 
         addafter("Litige +")

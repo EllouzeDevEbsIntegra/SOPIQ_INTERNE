@@ -36,6 +36,8 @@ pageextension 80400 "Sales Quote" extends "Sales Quote" //41
 
             }
         }
+
+
     }
 
     var

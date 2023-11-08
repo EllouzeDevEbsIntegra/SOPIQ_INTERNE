@@ -3,10 +3,25 @@ pageextension 80136 "Sales Order" extends "Sales Order"//42
     layout
     {
         // Add changes to page layout here
+        addafter("Sell-to Customer Name")
+        {
+            field(CustVIN; CustVIN)
+            {
+                ApplicationArea = all;
+                trigger OnValidate()
+                begin
+                    rec."Vehicle Serial No." := CustVIN;
+                    rec.Validate("Vehicle Serial No.");
+                    rec.Modify();
+                end;
+            }
+        }
     }
 
     actions
     {
+
+
         modify(Valider)
         {
             Visible = false;
@@ -40,13 +55,23 @@ pageextension 80136 "Sales Order" extends "Sales Order"//42
                     SalesShipmentHead: Record "Sales Shipment Header";
                     SalesOrder2: Record "Sales Header";
                     FacturerQst: Text[9];
-                    UserSetup: Record "User Setup";
                     recCustomer: Record Customer;
                     CustomerEncour, CreditAutorise : Decimal;
                     nbFactureNPautorise: Integer;
                     Verified: Boolean;
                     Error: Text;
+                    UserSetup: Record "User Setup";
                 begin
+                    // Update Posting date today when user post only today
+                    UserSetup.Reset();
+                    UserSetup.get(UserId);
+                    if (UserSetup."Allow Posting Only Today" = true)
+                    then begin
+                        rec."Posting Date" := System.Today;
+                        rec.Validate("Posting Date");
+                        rec.Modify();
+                    end;
+
                     // Initialisation
                     recCustomer.Reset();
                     CreditAutorise := 0;
@@ -190,4 +215,5 @@ pageextension 80136 "Sales Order" extends "Sales Order"//42
             exit(1);
 
     end;
+
 }

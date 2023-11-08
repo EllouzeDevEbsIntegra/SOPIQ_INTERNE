@@ -177,8 +177,6 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
             DataClassification = ToBeClassified;
             Editable = false;
         }
-
-
     }
 
     var
@@ -206,5 +204,6 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
         end;
 
     end;
+
 
 }

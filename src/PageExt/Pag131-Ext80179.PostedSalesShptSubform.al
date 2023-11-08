@@ -3,6 +3,19 @@ pageextension 80179 "Posted Sales Shpt. Subform" extends "Posted Sales Shpt. Sub
     layout
     {
         // Add changes to page layout here
+        addbefore("Line Amount HT")
+        {
+            field("Unit Price"; "Unit Price")
+            {
+                ApplicationArea = all;
+
+            }
+
+            field("Line Discount %"; "Line Discount %")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
 
     actions

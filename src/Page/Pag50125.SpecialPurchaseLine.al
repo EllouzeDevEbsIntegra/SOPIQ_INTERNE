@@ -1,10 +1,10 @@
-page 50100 "Sales line"
+page 50125 "Special Purchase Line"
 {
     PageType = List;
     ApplicationArea = All;
     UsageCategory = Administration;
-    SourceTable = "Sales Line";
-    // SourceTableView = where("Document Type" = filter(Order | "Return Order"));
+    SourceTable = "Purchase Line";
+    SourceTableView = where("Special Order" = filter(true));
     layout
     {
         area(content)
@@ -18,13 +18,13 @@ page 50100 "Sales line"
                     Editable = false;
                     trigger OnDrillDown()
                     var
-                        SalesPage: Page "Sales Order";
-                        SalesTable: Record "Sales Header";
+                        PurchPage: Page "Purchase Order";
+                        PurchTable: Record "Purchase Header";
                     begin
-                        SalesTable.Reset();
-                        SalesTable.SetRange("No.", rec."Document No.");
-                        SalesPage.SetTableView(SalesTable);
-                        SalesPage.Run();
+                        PurchTable.Reset();
+                        PurchTable.SetRange("No.", rec."Document No.");
+                        PurchPage.SetTableView(PurchTable);
+                        PurchPage.Run();
                     end;
 
                 }
@@ -40,10 +40,17 @@ page 50100 "Sales line"
                     Editable = false;
                 }
 
+                field("Buy-from Vendor No."; "Buy-from Vendor No.")
+                {
+                    ApplicationArea = Basic;
+                    Editable = false;
+                }
+
                 field("Location Code"; "Location Code")
                 {
                     ApplicationArea = Location;
                     Editable = false;
+                    Visible = false;
                 }
                 field("Bin Code"; "Bin Code")
                 {
@@ -57,14 +64,6 @@ page 50100 "Sales line"
                     ApplicationArea = Basic;
                     Editable = false;
                 }
-
-                field("Received Quantity"; "Received Quantity")
-                {
-                    ApplicationArea = Basic;
-                    Editable = false;
-                    Visible = false;
-
-                }
                 field("Unit Cost (LCY)"; "Unit Cost (LCY)")
                 {
                     ApplicationArea = Basic;
@@ -77,18 +76,12 @@ page 50100 "Sales line"
                     Visible = false;
                     Editable = false;
                 }
-                field("Unit Price"; "Unit Price")
+                field("Direct Unit Cost"; "Direct Unit Cost")
                 {
                     ApplicationArea = Basic;
                     BlankZero = true;
                     Editable = false;
                 }
-                field("Initial Price"; "Initial Unit Price")
-                {
-                    ApplicationArea = Basic;
-                    Editable = false;
-                }
-
 
                 field("Tax Group Code"; "Tax Group Code")
                 {
@@ -102,11 +95,6 @@ page 50100 "Sales line"
                     BlankZero = true;
                     Editable = false;
 
-                }
-                field("Initial Discount"; "Initial Discount")
-                {
-                    ApplicationArea = Basic;
-                    Editable = false;
                 }
 
                 field("Line Amount"; "Line Amount")
@@ -125,23 +113,14 @@ page 50100 "Sales line"
                     Editable = false;
 
                 }
-
-                field("Prepmt. Line Amount"; "Prepmt. Line Amount")
+                field("Qty. to Receive"; "Qty. to Receive")
                 {
-                    ApplicationArea = Prepayments;
-                    ToolTip = 'Specifies the prepayment amount of the line in the currency of the sales document if a prepayment percentage is specified for the sales line.';
-                    Visible = false;
+                    ApplicationArea = Basic;
+                    BlankZero = true;
+                    QuickEntry = false;
                     Editable = false;
                 }
-                field("Prepmt. Amt. Inv."; "Prepmt. Amt. Inv.")
-                {
-                    ApplicationArea = Prepayments;
-                    ToolTip = 'Specifies the prepayment amount that has already been invoiced to the customer for this sales line.';
-                    Visible = false;
-                    Editable = false;
-                }
-
-                field("Quantity Shipped"; "Quantity Shipped")
+                field("Qty. Received"; "Qty. Received (Base)")
                 {
                     ApplicationArea = Basic;
                     BlankZero = true;
@@ -160,87 +139,55 @@ page 50100 "Sales line"
                     BlankZero = true;
                     Editable = false;
                 }
-                field("Prepmt Amt Deducted"; "Prepmt Amt Deducted")
-                {
-                    ApplicationArea = Prepayments;
-                    Editable = false;
-                    Visible = false;
-                }
 
-
-                field("Shipment Date"; "Shipment Date")
+                field("Planned Receipt Date"; "Planned Receipt Date")
                 {
                     ApplicationArea = Basic;
                     QuickEntry = false;
                     Editable = false;
 
                 }
-                field("Shipping Agent Code"; "Shipping Agent Code")
-                {
-                    ApplicationArea = Suite;
-                    Editable = false;
-                    Visible = false;
-                }
-                field("Shipping Agent Service Code"; "Shipping Agent Service Code")
-                {
-                    ApplicationArea = Suite;
-                    Editable = false;
-                    Visible = false;
-                }
-                field("Shipping Time"; "Shipping Time")
+
+
+
+
+                field("Special Order Sales No."; "Special Order Sales No.")
                 {
                     ApplicationArea = Basic;
                     Editable = false;
-                    Visible = false;
+                    Visible = true;
+                    trigger OnDrillDown()
+                    var
+                        SalesPage: Page "Sales Order";
+                        SalesTable: Record "Sales Header";
+                    begin
+                        SalesTable.Reset();
+                        SalesTable.SetRange("No.", rec."Special Order Sales No.");
+                        SalesPage.SetTableView(SalesTable);
+                        SalesPage.Run();
+                    end;
                 }
-                field("Work Type Code"; "Work Type Code")
+                field("Special Order Sales Line No."; "Special Order Sales Line No.")
                 {
-                    ApplicationArea = Manufacturing;
+                    ApplicationArea = Basic;
                     Editable = false;
-                    Visible = false;
+                    Visible = true;
                 }
-                field("Whse. Outstanding Qty."; "Whse. Outstanding Qty.")
+
+                field("Special Order Service No."; "Special Order Service No.")
                 {
-                    ApplicationArea = Warehouse;
+                    ApplicationArea = Basic;
                     Editable = false;
-                    Visible = false;
+                    Visible = true;
                 }
-                field("Whse. Outstanding Qty. (Base)"; "Whse. Outstanding Qty. (Base)")
+                field("Special Order Service Line No."; "Special Order Service Line No.")
                 {
-                    ApplicationArea = Warehouse;
+                    ApplicationArea = Basic;
                     Editable = false;
-                    Visible = false;
+                    Visible = true;
                 }
-                field("ATO Whse. Outstanding Qty."; "ATO Whse. Outstanding Qty.")
-                {
-                    ApplicationArea = Warehouse;
-                    Editable = false;
-                    Visible = false;
-                }
-                field("ATO Whse. Outstd. Qty. (Base)"; "ATO Whse. Outstd. Qty. (Base)")
-                {
-                    ApplicationArea = Warehouse;
-                    Editable = false;
-                    Visible = false;
-                }
-                field("Outbound Whse. Handling Time"; "Outbound Whse. Handling Time")
-                {
-                    ApplicationArea = Warehouse;
-                    Editable = false;
-                    Visible = false;
-                }
-                field("Blanket Order No."; "Blanket Order No.")
-                {
-                    ApplicationArea = Suite;
-                    Editable = false;
-                    Visible = false;
-                }
-                field("Blanket Order Line No."; "Blanket Order Line No.")
-                {
-                    ApplicationArea = Suite;
-                    Editable = false;
-                    Visible = false;
-                }
+
+
                 field("FA Posting Date"; "FA Posting Date")
                 {
                     ApplicationArea = FixedAssets;
@@ -271,12 +218,7 @@ page 50100 "Sales line"
                     Editable = false;
                     Visible = false;
                 }
-                field("Appl.-from Item Entry"; "Appl.-from Item Entry")
-                {
-                    ApplicationArea = Basic;
-                    Editable = false;
-                    Visible = false;
-                }
+
                 field("Appl.-to Item Entry"; "Appl.-to Item Entry")
                 {
                     ApplicationArea = Basic;
@@ -291,40 +233,7 @@ page 50100 "Sales line"
                     ToolTip = 'Specifies the line number.';
                     Visible = false;
                 }
-                field("Ctrl Modified Price"; "Ctrl Modified Price")
-                {
 
-
-                }
-
-                field("Ctrl Modified Discount"; "Ctrl Modified Discount")
-                {
-
-
-                }
-
-                field("Special Order Purchase No."; "Special Order Purchase No.")
-                {
-                    ApplicationArea = Basic;
-                    Editable = false;
-                    Visible = false;
-                    trigger OnDrillDown()
-                    var
-                        PurchPage: Page "Purchase Order";
-                        PurchTable: Record "Purchase Header";
-                    begin
-                        PurchTable.Reset();
-                        PurchTable.SetRange("No.", rec."Special Order Purchase No.");
-                        PurchPage.SetTableView(PurchTable);
-                        PurchPage.Run();
-                    end;
-                }
-                field("Special Order Purch. Line No."; "Special Order Purch. Line No.")
-                {
-                    ApplicationArea = Basic;
-                    Editable = false;
-                    Visible = false;
-                }
             }
         }
     }

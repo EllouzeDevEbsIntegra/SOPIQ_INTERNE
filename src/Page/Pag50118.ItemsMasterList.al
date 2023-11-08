@@ -10,6 +10,8 @@ page 50118 "Items Master List"
     InsertAllowed = false;
     ModifyAllowed = false;
 
+    Permissions = tabledata "Item Unit of Measure" = RIMD;
+
     layout
     {
         area(Content)
@@ -103,9 +105,15 @@ page 50118 "Items Master List"
 
                 trigger OnAction();
                 var
-                    recItem, recItem2, tempItem : Record Item;
+                    recItem, recItem2, tempItem, unitItem : Record Item;
                     recCompany: Record Company;
                     recItemMaster: Record "items Master";
+                    tempUnit: Code[10];
+                    UnitOfMeasure: Record "Unit of Measure";
+                    UnitOfMeasureNotExistErr: Label 'The Unit of Measure with Code %1 does not exist.', Comment = '%1 = Code of Unit of measure';
+                    ItemUnitOfMeasure: Record "Item Unit of Measure";
+                    BaseUnitOfMeasureQtyMustBeOneErr: Label 'The quantity per base unit of measure must be 1. %1 is set up with %2 per unit of measure.\\You can change this setup in the Item Units of Measure window.', Comment = '%1 Name of Unit of measure (e.g. BOX, PCS, KG...), %2 Qty. of %1 per base unit of measure ';
+
                 begin
                     tempItem.Reset();
                     recItem.Reset();
@@ -130,22 +138,58 @@ page 50118 "Items Master List"
                                 recItem.ChangeCompany(recCompany.Name);
                                 if recItem.FindFirst() then begin
 
-                                    recItem.Description := tempItem.Description;
-                                    recItem."Item Product Code" := tempItem."Item Product Code";
-                                    recItem."Item Sub Product Code" := tempItem."Item Sub Product Code";
-                                    recItem."Champs libre" := tempItem."Champs libre";
-                                    recItem.Produit := tempItem.Produit;
-                                    recItem."Reference Origine Lié" := tempItem."Reference Origine Lié";
-                                    recItem."Manufacturer Code" := tempItem."Manufacturer Code";
-                                    recItem."Make Code" := tempItem."Make Code";
+                                    recItem.validate(Description, tempItem.Description);
+                                    recItem.validate("Item Product Code", tempItem."Item Product Code");
+                                    recItem.validate("Item Sub Product Code", tempItem."Item Sub Product Code");
+                                    recItem.validate("Champs libre", tempItem."Champs libre");
+                                    recItem.validate(recItem.Produit, tempItem.Produit);
+                                    recItem.validate("Reference Origine Lié", tempItem."Reference Origine Lié");
+                                    recItem.validate("Manufacturer Code", tempItem."Manufacturer Code");
+                                    recItem.validate("Make Code", tempItem."Make Code");
                                     recItem.Modify;
+
                                     // Message('Item Modified : %1 Dans société : %2', recItem."No.", recCompany.Name);
                                 end
                                 else begin
                                     tempItem.Insert;
-                                    // tempItem.Insert(true);
-                                    // tempItem.Validate("No.");
-                                    // tempitem.Validate("Base Unit of Measure");
+                                end;
+
+                                unitItem.Reset();
+                                unitItem.ChangeCompany(recCompany.Name);
+                                unitItem.SetRange("No.", tempItem."No.");
+                                if unitItem.FindFirst() then begin
+
+                                    unitItem."Base Unit of Measure" := tempItem."Base Unit of Measure";
+                                    unitItem.Modify();
+                                    unitItem.UpdateUnitOfMeasureId;
+
+                                    if unitItem."Base Unit of Measure" <> '' then begin
+                                        UnitOfMeasure.ChangeCompany(recCompany.Name);
+                                        if not UnitOfMeasure.Get(unitItem."Base Unit of Measure") then begin
+                                            UnitOfMeasure.SetRange("International Standard Code", unitItem."Base Unit of Measure");
+                                            if not UnitOfMeasure.FindFirst then
+                                                Error(UnitOfMeasureNotExistErr, unitItem."Base Unit of Measure");
+                                            unitItem."Base Unit of Measure" := UnitOfMeasure.Code;
+                                        end;
+
+                                        ItemUnitOfMeasure.ChangeCompany(recCompany.Name);
+                                        if not ItemUnitOfMeasure.Get(unitItem."No.", unitItem."Base Unit of Measure") then begin
+                                            ItemUnitOfMeasure.Init();
+                                            if IsTemporary then
+                                                ItemUnitOfMeasure."Item No." := unitItem."No."
+                                            else
+                                                ItemUnitOfMeasure.Validate("Item No.", unitItem."No.");
+                                            ItemUnitOfMeasure.Validate(Code, unitItem."Base Unit of Measure");
+                                            ItemUnitOfMeasure."Qty. per Unit of Measure" := 1;
+                                            ItemUnitOfMeasure.Insert();
+                                        end else begin
+                                            if ItemUnitOfMeasure."Qty. per Unit of Measure" <> 1 then
+                                                Error(BaseUnitOfMeasureQtyMustBeOneErr, unitItem."Base Unit of Measure", ItemUnitOfMeasure."Qty. per Unit of Measure");
+                                        end;
+                                    end;
+                                    unitItem."Sales Unit of Measure" := unitItem."Base Unit of Measure";
+                                    unitItem."Purch. Unit of Measure" := unitItem."Base Unit of Measure";
+
                                 end;
                             END;
                         UNTIL recCompany.Next() = 0;

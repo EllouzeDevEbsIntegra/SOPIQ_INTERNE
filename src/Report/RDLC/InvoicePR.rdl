@@ -717,9 +717,6 @@
                                               </Paragraph>
                                             </Paragraphs>
                                             <rd:DefaultName>SalesInvoiceLineQte</rd:DefaultName>
-                                            <Visibility>
-                                              <Hidden>=iif(Fields!islabor.Value=true,not(Fields!ShowLabor.Value),false)</Hidden>
-                                            </Visibility>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -796,9 +793,6 @@
                                               </Paragraph>
                                             </Paragraphs>
                                             <rd:DefaultName>SalesInvoiceLineUnitPrice</rd:DefaultName>
-                                            <Visibility>
-                                              <Hidden>=iif(Fields!islabor.Value=true,not(Fields!ShowLabor.Value),false)</Hidden>
-                                            </Visibility>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -870,7 +864,7 @@
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
-                                                      <Format>0.00;(0.00)</Format>
+                                                      <Format>0.00;(0.00);''</Format>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
@@ -900,6 +894,7 @@
                                               <PaddingBottom>2pt</PaddingBottom>
                                             </Style>
                                           </Textbox>
+                                          <rd:Selected>true</rd:Selected>
                                         </CellContents>
                                       </TablixCell>
                                       <TablixCell>
@@ -2299,7 +2294,7 @@
       <Width>20.34626cm</Width>
       <Page>
         <PageHeader>
-          <Height>7.26048cm</Height>
+          <Height>7.29576cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -2543,7 +2538,7 @@
                 </Textbox>
               </ReportItems>
               <KeepTogether>true</KeepTogether>
-              <Top>1.65388in</Top>
+              <Top>1.66777in</Top>
               <Left>0.28289in</Left>
               <Height>1.13513in</Height>
               <Width>3.12916in</Width>
@@ -2675,7 +2670,7 @@
                 </Textbox>
               </ReportItems>
               <KeepTogether>true</KeepTogether>
-              <Top>1.65388in</Top>
+              <Top>1.66777in</Top>
               <Left>4.70521in</Left>
               <Height>1.17125in</Height>
               <Width>3.10833in</Width>
@@ -2728,7 +2723,7 @@
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value>=Fields!NameRecGCustomer.Value</Value>
+                      <Value>=IIF(Fields!ShowNameFromCustomer.Value,Fields!NameRecGCustomer.Value,Fields!NameCustomer.Value)</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>9pt</FontSize>
@@ -2739,7 +2734,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>1.90688in</Top>
+              <Top>1.92077in</Top>
               <Left>4.70521in</Left>
               <Height>0.2in</Height>
               <Width>3.10203in</Width>
@@ -2781,7 +2776,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>2.56432in</Top>
+              <Top>2.57821in</Top>
               <Left>4.70521in</Left>
               <Height>0.2in</Height>
               <Width>3.10203in</Width>
@@ -2830,7 +2825,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>2.13466in</Top>
+              <Top>2.14855in</Top>
               <Left>4.70835in</Left>
               <Height>0.2in</Height>
               <Width>3.09889in</Width>
@@ -2866,7 +2861,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>2.42021cm</Top>
+              <Top>2.45549cm</Top>
               <Left>7.21674cm</Left>
               <Height>0.80207cm</Height>
               <Width>5.89467cm</Width>
@@ -2902,7 +2897,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>3.29284cm</Top>
+              <Top>3.32812cm</Top>
               <Left>7.22301cm</Left>
               <Height>0.73163cm</Height>
               <Width>5.89467cm</Width>
@@ -2943,7 +2938,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox13</rd:DefaultName>
-              <Top>6.51336cm</Top>
+              <Top>6.54864cm</Top>
               <Left>9.30223cm</Left>
               <Height>0.57073cm</Height>
               <Width>2.0997cm</Width>
@@ -3085,6 +3080,9 @@ End Function
         <Field Name="NameRecGCustomer">
           <DataField>NameRecGCustomer</DataField>
         </Field>
+        <Field Name="NameCustomer">
+          <DataField>NameCustomer</DataField>
+        </Field>
         <Field Name="AdrRecGCustomer">
           <DataField>AdrRecGCustomer</DataField>
         </Field>
@@ -3145,8 +3143,8 @@ End Function
         <Field Name="afficherPiedsPage">
           <DataField>afficherPiedsPage</DataField>
         </Field>
-        <Field Name="ShowLabor">
-          <DataField>ShowLabor</DataField>
+        <Field Name="ShowNameFromCustomer">
+          <DataField>ShowNameFromCustomer</DataField>
         </Field>
         <Field Name="TotPiece">
           <DataField>TotPiece</DataField>

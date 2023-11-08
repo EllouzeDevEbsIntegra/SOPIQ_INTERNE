@@ -637,7 +637,7 @@
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <Format>0.00;(0.00)</Format>
+                                                      <Format>0.00;(0.00);''</Format>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
@@ -665,6 +665,7 @@
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
+                                          <rd:Selected>true</rd:Selected>
                                         </CellContents>
                                       </TablixCell>
                                       <TablixCell>

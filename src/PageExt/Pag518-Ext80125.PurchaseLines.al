@@ -5,6 +5,10 @@ pageextension 80125 "Purchase Lines" extends "Purchase Lines" //518
 
         addafter(Quantity)
         {
+            field("Quantity Received"; "Quantity Received")
+            {
+                ApplicationArea = All;
+            }
             field("Order Date"; "Order Date")
             {
                 ApplicationArea = All;

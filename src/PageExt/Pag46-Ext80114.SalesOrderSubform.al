@@ -19,6 +19,13 @@ pageextension 80114 "Sales Order Subform" extends "Sales Order Subform" //46
             {
                 ApplicationArea = All;
             }
+
+            field("Received Quantity"; "Received Quantity")
+            {
+                ApplicationArea = All;
+                DecimalPlaces = 0 : 2;
+                Editable = false;
+            }
         }
     }
 
@@ -71,6 +78,7 @@ pageextension 80114 "Sales Order Subform" extends "Sales Order Subform" //46
     trigger OnAfterGetRecord()
     begin
         FieldStyleQty := SetStyleQte("Stk Mg Principal");
+        CalcFields("Received Quantity");
     end;
 
 }

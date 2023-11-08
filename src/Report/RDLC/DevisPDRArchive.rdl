@@ -652,7 +652,7 @@
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
-                                                      <Format>0;(0);''</Format>
+                                                      <Format>0;(0)</Format>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
@@ -679,7 +679,6 @@
                                               <PaddingBottom>2pt</PaddingBottom>
                                             </Style>
                                           </Textbox>
-                                          <rd:Selected>true</rd:Selected>
                                         </CellContents>
                                       </TablixCell>
                                       <TablixCell>
@@ -1598,9 +1597,6 @@
             <Height>0.9323cm</Height>
             <Width>10.54597cm</Width>
             <ZIndex>1</ZIndex>
-            <Visibility>
-              <Hidden>=Fields!StampAmount.Value &lt;&gt;0</Hidden>
-            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -2558,7 +2554,7 @@
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>1.61397cm</Height>
+          <Height>1.5875cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -2567,8 +2563,7 @@
               <Value>=First(Fields!Footer.Value, "DataSet_Result")</Value>
               <MIMEType>image/bmp</MIMEType>
               <Sizing>Fit</Sizing>
-              <Top>0.066cm</Top>
-              <Left>0.10266cm</Left>
+              <Top>0.07269cm</Top>
               <Height>1.30983cm</Height>
               <Width>20.26277cm</Width>
               <Visibility>
@@ -2756,12 +2751,6 @@ End Function
         </Field>
         <Field Name="InvoiceDiscountAmount_SalesHeaderFormat">
           <DataField>InvoiceDiscountAmount_SalesHeaderFormat</DataField>
-        </Field>
-        <Field Name="StampAmount">
-          <DataField>StampAmount</DataField>
-        </Field>
-        <Field Name="StampAmountFormat">
-          <DataField>StampAmountFormat</DataField>
         </Field>
         <Field Name="TMPBaseCaptionLbl">
           <DataField>TMPBaseCaptionLbl</DataField>

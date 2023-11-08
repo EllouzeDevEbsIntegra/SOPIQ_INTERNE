@@ -16,6 +16,11 @@ pageextension 80118 "item" extends "Item List" //31
                 Caption = 'Qté Stock';
                 ApplicationArea = All;
             }
+            field("Default Bin"; "Default Bin")
+            {
+                Caption = 'Emplacement par défaut';
+                ApplicationArea = All;
+            }
 
         }
 
@@ -190,7 +195,7 @@ pageextension 80118 "item" extends "Item List" //31
 
         end;
 
-        CalcFields(rec.StockMagPrincipal);
+        CalcFields(rec.StockMagPrincipal, "Default Bin");
     end;
 
     trigger OnOpenPage()

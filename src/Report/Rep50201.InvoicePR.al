@@ -41,12 +41,17 @@ report 50201 "Invoice PR"
 
                 //  OptionCaption ='Stamp Tax';
             }
+
             column(NoRecGCustomer; RecGCustomer."No.")
             {
             }
             column(NameRecGCustomer; RecGCustomer.Name)
             {
             }
+            column(NameCustomer; "Sales Invoice Header"."Bill-to Name")
+            {
+            }
+
             column(AdrRecGCustomer; RecGCustomer.Address)
             {
             }
@@ -104,8 +109,10 @@ report 50201 "Invoice PR"
             {
 
             }
-            column(ShowLabor; ShowLabor)
+
+            column(ShowNameFromCustomer; ShowNameFromCustomer)
             {
+
             }
             column(TotPiece; TotPiece)
             {
@@ -392,16 +399,15 @@ report 50201 "Invoice PR"
 
     requestpage
     {
-        SaveValues = true;
 
         layout
         {
             area(Content)
             {
-                field(ShowLabor; ShowLabor)
+                field(ShowNameFromCustomer; ShowNameFromCustomer)
                 {
                     ApplicationArea = all;
-                    Caption = 'Afficher quantité main d''oeuvre';
+                    Caption = 'Afficher nom à partir du fiche client';
                 }
                 field(afficherPiedsPage; afficherPiedsPage)
                 {
@@ -425,6 +431,9 @@ report 50201 "Invoice PR"
         RecGCompany.Get();
         RecCompany.CalcFields("Invoice Footer Picture");
         RecCompany.CalcFields("Invoice Header Picture");
+        ShowNameFromCustomer := false;
+        afficherPiedsPage := true;
+
     end;
 
 
@@ -465,7 +474,7 @@ report 50201 "Invoice PR"
         CustomerPostingGroup: Record 92;
         Text1Footer: Text;
         afficherPiedsPage: Boolean;
-        ShowLabor: Boolean;
+        ShowNameFromCustomer: Boolean;
 
         islabor: Boolean;
 }

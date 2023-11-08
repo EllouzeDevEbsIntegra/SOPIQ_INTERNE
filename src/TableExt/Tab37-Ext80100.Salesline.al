@@ -125,6 +125,14 @@ tableextension 80100 "Sales line" extends "Sales line" //37
             Editable = false;
         }
 
+        field(50210; "Received Quantity"; Decimal)
+        {
+            Caption = 'Qte Receptionnée';
+
+            FieldClass = FlowField;
+            CalcFormula = lookup("Purchase Line"."Quantity Received" where("Special Order" = filter(true), "Document Type" = filter(Order), "Special Order Sales No." = field("Document No."), "Special Order Sales Line No." = field("Line No.")));
+        }
+
     }
 
 

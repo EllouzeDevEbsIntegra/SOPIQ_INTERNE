@@ -186,14 +186,14 @@ page 50102 "Item Old Transaction"
     }
 
 
-    trigger OnAfterGetRecord()
+    // trigger OnAfterGetRecord()
 
-    begin
+    // begin
 
-        if ItemStk.get("Item N°") Then
-            ItemStk.CalcFields(Inventory, PurshQty21, SalesQty21);
+    //     if ItemStk.get("Item N°") Then
+    //         ItemStk.CalcFields(Inventory, PurshQty21, SalesQty21);
 
-    end;
+    // end;
 
     var
         ItemStk: Record Item;

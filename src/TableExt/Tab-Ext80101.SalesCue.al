@@ -108,6 +108,154 @@ tableextension 80101 "Sales Cue" extends "Sales Cue"
             FieldClass = FlowField;
             CalcFormula = count("Item Ledger Entry" where("Entry Type" = filter('''Négatif (ajust.)'''), "Posting Date" = field("First Day Of Year")));
         }
+
+
+        field(70013; "Purchase Special Order Echu"; Integer)
+        {
+            Caption = 'Ligne commande achat spécial échue';
+
+            FieldClass = FlowField;
+            CalcFormula = count("Purchase Line" where("Special Order" = filter(true), "Document Type" = filter(Order), "Quantity Received" = filter(0), "Planned Receipt Date" = field("Date Filter")));
+        }
+
+        field(70014; "Purchase Special Order"; Integer)
+        {
+            Caption = 'Ligne commande achat spécial en attente';
+
+            FieldClass = FlowField;
+            CalcFormula = count("Purchase Line" where("Special Order" = filter(true), "Document Type" = filter(Order), "Quantity Received" = filter(0)));
+        }
+
+        field(70015; "Reci. Purch. Special Order"; Integer)
+        {
+            Caption = 'Ligne commande achat spécial réceptionnée';
+
+            FieldClass = FlowField;
+            CalcFormula = count("Purchase Line" where("Special Order" = filter(true), "Document Type" = filter(Order), "Quantity Received" = filter(<> 0)));
+        }
+
+        field(70016; "Sal. Spec. Order Not Ship."; Integer)
+        {
+            Caption = 'Ligne commande vente spécial non expédiée';
+
+            FieldClass = FlowField;
+            CalcFormula = count("Sales Line" where("Special Order" = filter(true), "Document Type" = filter(Order), "Completely Shipped" = filter(false), "Received Quantity" = filter(0), "Special Order Purchase No." = filter(<> '')));
+        }
+
+        field(70017; "Sal. Spec. Order ready Ship."; Integer)
+        {
+            Caption = 'Ligne commande vente spécial prêt pour expédition';
+
+            FieldClass = FlowField;
+            CalcFormula = count("Sales Line" where("Special Order" = filter(true), "Document Type" = filter(Order), "Completely Shipped" = filter(false), "Received Quantity" = filter(<> 0), "Special Order Purchase No." = filter(<> '')));
+        }
+
+        field(70018; "Spec. Order Not Purch. Order"; Integer)
+        {
+            Caption = 'Ligne commande vente spécial non commandée';
+
+            FieldClass = FlowField;
+            CalcFormula = count("Sales Line" where("Special Order" = filter(true), "Document Type" = filter(Order), "Completely Shipped" = filter(false), "Special Order Purchase No." = filter('')));
+        }
+
+        field(70019; "Sales Order Not Ship."; Integer)
+        {
+            Caption = 'Ligne commande vente non expédiée';
+
+            FieldClass = FlowField;
+            CalcFormula = count("Sales Line" where("Special Order" = filter(false), "Document Type" = filter(Order), "Completely Shipped" = filter(false)));
+        }
+
+        field(70020; "Sales Ship. Not Invoiced"; Integer)
+        {
+            Caption = 'Ligne Bon de livraison vente non facturée';
+
+            FieldClass = FlowField;
+            CalcFormula = count("Sales Shipment Line" where("Quantity Invoiced" = filter(0), "Type" = filter('Article'), "BS" = filter(false)));
+        }
+
+        field(70021; "Sales Return Not Invoiced"; Integer)
+        {
+            Caption = 'Ligne Bon de retour vente non facturée';
+
+            FieldClass = FlowField;
+            CalcFormula = count("Return Receipt Line" where("Quantity Invoiced" = filter(0), "Type" = filter('Article')));
+        }
+
+        field(70022; "unpaid invoice"; Integer)
+        {
+            Caption = 'Facture non réglée';
+
+            FieldClass = FlowField;
+            CalcFormula = count("Cust. Ledger Entry" where("Document Type" = filter('Facture'), "open" = filter(true)));
+        }
+
+
+        field(80210; "Cheque En Coffre"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = - Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_CHEQUE'),
+                                                                 "Account Type" = FILTER(Customer),
+                                                                  "Copied To No." = FILTER('')
+                                                                  , "Status No." = FILTER(21000)
+                                                                 ));
+            Caption = 'Chèque en coffre';
+            Editable = false;
+            FieldClass = FlowField;
+            DecimalPlaces = 0 : 0;
+        }
+
+        field(80211; "Cheque Impaye"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = - Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_CHEQUE'),
+                                                                 "Account Type" = FILTER(Customer),
+                                                                  "Copied To No." = FILTER('')
+                                                                  , "Status No." = FILTER(32000)
+                                                                 ));
+            Caption = 'Chèque Impayé';
+            Editable = false;
+            FieldClass = FlowField;
+
+        }
+
+        field(80212; "Traite En Coff."; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = - Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_TRAITE'),
+                                                                 "Account Type" = FILTER(Customer),
+                                                                  "Copied To No." = FILTER('')
+                                                                  , "Status No." = FILTER(30000)
+                                                                 ));
+            Caption = 'Traite en coffre';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(80213; "Traite En Escompte"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = - Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_TRAITE'),
+                                                                 "Account Type" = FILTER(Customer),
+                                                                 "Copied To No." = FILTER('')
+                                                                , "Status No." = FILTER(50030)
+                                                                 , "Due Date" = filter('>a')));
+            Caption = 'Traite en escompte';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(80214; "Traite Impaye"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = - Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_TRAITE'),
+                                                                 "Account Type" = FILTER(Customer),
+                                                                  "Copied To No." = FILTER('')
+                                                                  , "Status No." = FILTER(40050 | 50070)
+                                                                 ));
+            Caption = 'Traite Impayée';
+            Editable = false;
+            FieldClass = FlowField;
+        }
     }
 
 }

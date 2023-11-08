@@ -221,15 +221,15 @@ page 50110 "Specific Item Ledger Entry"
                 PromotedIsBig = true;
                 PromotedCategory = Process;
                 ShortcutKey = F8;
-                //RunObject = page "Item Old Transaction";
-                //RunPageLink = "Item N°" = field("Item No.");
-                trigger OnAction()
-                var
-                    ItemOldTransaction: Record "Item Old Transaction";
-                begin
-                    ItemOldTransaction.SetRange("Item N°", Rec."Item No.");
-                    Page.Run(Page::"Item Old Transaction", ItemOldTransaction);
-                end;
+                RunObject = page "Item Old Transaction";
+                RunPageLink = "Item N°" = field("Item No.");
+                // trigger OnAction()
+                // var
+                //     ItemOldTransaction: Record "Item Old Transaction";
+                // begin
+                //     ItemOldTransaction.SetRange("Item N°", Rec."Item No.");
+                //     Page.Run(Page::"Item Old Transaction", ItemOldTransaction);
+                // end;
 
             }
         }

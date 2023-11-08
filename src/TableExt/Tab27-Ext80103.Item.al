@@ -68,6 +68,7 @@ tableextension 80103 "Item" extends Item //27
 
         }
 
+
         modify("Vendor Item No.")
         {
             trigger OnAfterValidate()
@@ -76,30 +77,9 @@ tableextension 80103 "Item" extends Item //27
             end;
         }
 
-        field(50103; "PurshQty20"; integer)
+        field(50118; "Default Bin"; code[10])
         {
-            CalcFormula = sum("Item old transaction"."Purshase Qty" where("Item N°" = field("No."), Year = const('2020')));
-            Editable = false;
-            FieldClass = FlowField;
-        }
-
-        field(50104; "PurshQty21"; integer)
-        {
-            CalcFormula = sum("Item old transaction"."Purshase Qty" where("Item N°" = field("No."), Year = const('2021')));
-            Editable = false;
-            FieldClass = FlowField;
-        }
-
-        field(50105; "SalesQty20"; integer)
-        {
-            CalcFormula = sum("Item old transaction"."Sales Qty" where("Item N°" = field("No."), Year = const('2020')));
-            Editable = false;
-            FieldClass = FlowField;
-        }
-
-        field(50106; "SalesQty21"; integer)
-        {
-            CalcFormula = sum("Item old transaction"."Sales Qty" where("Item N°" = field("No."), Year = const('2021')));
+            CalcFormula = lookup("Bin Content"."Bin Code" where("Item No." = field("No."), Default = filter(true), "Location Code" = field("Mg Principal Filter")));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -254,15 +234,83 @@ tableextension 80103 "Item" extends Item //27
         recItemMaster, recMasterExist : Record "items Master";
         TypeModif: Text[200];
     begin
-        if (rec.Verified = false) then begin
-            // Message('Not verified Item');
-            if (rec.Description <> '') then BEGIN
-                recMasterExist.Reset();
-                recMasterExist.SetRange(Company, Database.CompanyName);
-                recMasterExist.SetRange(Verified, false);
-                recMasterExist.SetRange("No", "No.");
-                if recMasterExist.FindFirst() then begin
-                    // Message('test id : %1', recMasterExist.id);
+        if (rec."Small Parts" = false) then begin
+            if (rec.Verified = false) then begin
+                // Message('Not verified Item');
+                if (rec.Description <> '') then BEGIN
+                    recMasterExist.Reset();
+                    recMasterExist.SetRange(Company, Database.CompanyName);
+                    recMasterExist.SetRange(Verified, false);
+                    recMasterExist.SetRange("No", "No.");
+                    if recMasterExist.FindFirst() then begin
+                        // Message('test id : %1', recMasterExist.id);
+                        if (rec.Description <> xRec.Description)
+                            OR (rec."Item Product Code" <> xRec."Item Product Code")
+                            OR (rec."Item Sub Product Code" <> xRec."Item Sub Product Code")
+                            OR (rec."Champs libre" <> xRec."Champs libre")
+                            OR (rec.Produit <> xRec.Produit)
+                            OR (rec."Reference Origine Lié" <> xRec."Reference Origine Lié")
+                            OR (rec."Manufacturer Code" <> xRec."Manufacturer Code")
+                            OR (rec."Make Code" <> xRec."Make Code")
+                        THEN BEGIN
+                            // Message('article dispo et Il y une modification  dans item !');
+                            if (rec."Reference Origine Lié" <> '') THEN
+                                recMasterExist.Master := rec."Reference Origine Lié";
+                            if (rec.Groupe <> '') THEN
+                                recMasterExist.Famille := rec.Groupe;
+                            if (rec."Sous Groupe" <> '') THEN
+                                recMasterExist."Sous Famille" := rec."Sous Groupe";
+                            recMasterExist."Type Ajout" := 'Nouveau';
+                            recMasterExist.modify(true);
+                            // Message(recMasterExist."Type Ajout");
+                        END
+                    end
+                    else begin
+                        // Message('Non Dispo');
+                        if (rec.Description <> xRec.Description)
+                            OR (rec."Item Product Code" <> xRec."Item Product Code")
+                            OR (rec."Item Sub Product Code" <> xRec."Item Sub Product Code")
+                            OR (rec."Champs libre" <> xRec."Champs libre")
+                            OR (rec.Produit <> xRec.Produit)
+                            OR (rec."Reference Origine Lié" <> xRec."Reference Origine Lié")
+                            OR (rec."Manufacturer Code" <> xRec."Manufacturer Code")
+                            OR (rec."Make Code" <> xRec."Make Code")
+                        THEN BEGIN
+                            // Message('Article Non Dispo et il y une modification dans item !');
+                            recItemMaster.Reset();
+                            recItemMaster.Company := Database.CompanyName;
+                            recItemMaster.No := rec."No.";
+                            if (rec."Reference Origine Lié" <> '') THEN
+                                recItemMaster.Master := rec."Reference Origine Lié";
+                            if (rec.Groupe <> '') THEN
+                                recItemMaster.Famille := rec.Groupe;
+                            if (rec."Sous Groupe" <> '') THEN
+                                recItemMaster."Sous Famille" := rec."Sous Groupe";
+                            recItemMaster."Add date" := System.today;
+                            recItemMaster."Add User" := Database.UserId;
+                            recItemMaster."Type Ajout" := 'Nouveau';
+                            recItemMaster.Insert(true);
+                            //Message(recMasterExist."Type Ajout");
+                        END
+                    end;
+                END;
+            end
+            else begin
+
+                // Message('Vérified - Modification sur un article');
+                // Message('verified Item');
+                if (xRec."No." <> '') then begin
+                    TypeModif := 'Champs Modifiés : ';
+                    if (rec.Description <> xRec.Description) then TypeModif := TypeModif + '- Description';
+                    if (rec."Item Product Code" <> xRec."Item Product Code") then TypeModif := TypeModif + '- Famille';
+                    if (rec."Item Sub Product Code" <> xRec."Item Sub Product Code") then TypeModif := TypeModif + '- Sous Famille';
+                    if (rec."Champs libre" <> xRec."Champs libre") then TypeModif := TypeModif + '- Champ libre';
+                    if (rec.Produit <> xRec.Produit) then TypeModif := TypeModif + '- Est Produit';
+                    if (rec."Reference Origine Lié" <> xRec."Reference Origine Lié") then TypeModif := TypeModif + '- Ref Master';
+                    if (rec."Manufacturer Code" <> xRec."Manufacturer Code") then TypeModif := TypeModif + '- Fabricant';
+                    if (rec."Make Code" <> xRec."Make Code") then TypeModif := TypeModif + '- Marque';
+                    //Message(TypeModif);
+
                     if (rec.Description <> xRec.Description)
                         OR (rec."Item Product Code" <> xRec."Item Product Code")
                         OR (rec."Item Sub Product Code" <> xRec."Item Sub Product Code")
@@ -272,30 +320,6 @@ tableextension 80103 "Item" extends Item //27
                         OR (rec."Manufacturer Code" <> xRec."Manufacturer Code")
                         OR (rec."Make Code" <> xRec."Make Code")
                     THEN BEGIN
-                        // Message('article dispo et Il y une modification  dans item !');
-                        if (rec."Reference Origine Lié" <> '') THEN
-                            recMasterExist.Master := rec."Reference Origine Lié";
-                        if (rec.Groupe <> '') THEN
-                            recMasterExist.Famille := rec.Groupe;
-                        if (rec."Sous Groupe" <> '') THEN
-                            recMasterExist."Sous Famille" := rec."Sous Groupe";
-                        recMasterExist."Type Ajout" := 'Nouveau';
-                        recMasterExist.modify(true);
-                        Message(recMasterExist."Type Ajout");
-                    END
-                end
-                else begin
-                    // Message('Non Dispo');
-                    if (rec.Description <> xRec.Description)
-                        OR (rec."Item Product Code" <> xRec."Item Product Code")
-                        OR (rec."Item Sub Product Code" <> xRec."Item Sub Product Code")
-                        OR (rec."Champs libre" <> xRec."Champs libre")
-                        OR (rec.Produit <> xRec.Produit)
-                        OR (rec."Reference Origine Lié" <> xRec."Reference Origine Lié")
-                        OR (rec."Manufacturer Code" <> xRec."Manufacturer Code")
-                        OR (rec."Make Code" <> xRec."Make Code")
-                    THEN BEGIN
-                        // Message('Article Non Dispo et il y une modification dans item !');
                         recItemMaster.Reset();
                         recItemMaster.Company := Database.CompanyName;
                         recItemMaster.No := rec."No.";
@@ -307,57 +331,16 @@ tableextension 80103 "Item" extends Item //27
                             recItemMaster."Sous Famille" := rec."Sous Groupe";
                         recItemMaster."Add date" := System.today;
                         recItemMaster."Add User" := Database.UserId;
-                        recItemMaster."Type Ajout" := 'Nouveau';
+                        recItemMaster."Type Ajout" := TypeModif;
                         recItemMaster.Insert(true);
-                        Message(recMasterExist."Type Ajout");
                     END
                 end;
-            END;
-        end
-        else begin
 
-            // Message('Vérified - Modification sur un article');
-            // Message('verified Item');
-            if (xRec."No." <> '') then begin
-                TypeModif := 'Champs Modifiés : ';
-                if (rec.Description <> xRec.Description) then TypeModif := TypeModif + '- Description';
-                if (rec."Item Product Code" <> xRec."Item Product Code") then TypeModif := TypeModif + '- Famille';
-                if (rec."Item Sub Product Code" <> xRec."Item Sub Product Code") then TypeModif := TypeModif + '- Sous Famille';
-                if (rec."Champs libre" <> xRec."Champs libre") then TypeModif := TypeModif + '- Champ libre';
-                if (rec.Produit <> xRec.Produit) then TypeModif := TypeModif + '- Est Produit';
-                if (rec."Reference Origine Lié" <> xRec."Reference Origine Lié") then TypeModif := TypeModif + '- Ref Master';
-                if (rec."Manufacturer Code" <> xRec."Manufacturer Code") then TypeModif := TypeModif + '- Fabricant';
-                if (rec."Make Code" <> xRec."Make Code") then TypeModif := TypeModif + '- Marque';
-                //Message(TypeModif);
 
-                if (rec.Description <> xRec.Description)
-                    OR (rec."Item Product Code" <> xRec."Item Product Code")
-                    OR (rec."Item Sub Product Code" <> xRec."Item Sub Product Code")
-                    OR (rec."Champs libre" <> xRec."Champs libre")
-                    OR (rec.Produit <> xRec.Produit)
-                    OR (rec."Reference Origine Lié" <> xRec."Reference Origine Lié")
-                    OR (rec."Manufacturer Code" <> xRec."Manufacturer Code")
-                    OR (rec."Make Code" <> xRec."Make Code")
-                THEN BEGIN
-                    recItemMaster.Reset();
-                    recItemMaster.Company := Database.CompanyName;
-                    recItemMaster.No := rec."No.";
-                    if (rec."Reference Origine Lié" <> '') THEN
-                        recItemMaster.Master := rec."Reference Origine Lié";
-                    if (rec.Groupe <> '') THEN
-                        recItemMaster.Famille := rec.Groupe;
-                    if (rec."Sous Groupe" <> '') THEN
-                        recItemMaster."Sous Famille" := rec."Sous Groupe";
-                    recItemMaster."Add date" := System.today;
-                    recItemMaster."Add User" := Database.UserId;
-                    recItemMaster."Type Ajout" := TypeModif;
-                    recItemMaster.Insert(true);
-                END
+
             end;
-
-
-
         end;
+
 
     end;
 }
