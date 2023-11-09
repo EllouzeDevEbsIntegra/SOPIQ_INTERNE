@@ -2,7 +2,6 @@ report 50201 "Invoice PR"
 {
 
     RDLCLayout = './src/report/RDLC/InvoicePR.rdl';
-
     Caption = 'Facture PR';
     PreviewMode = PrintLayout;
     UsageCategory = ReportsAndAnalysis;
@@ -436,8 +435,6 @@ report 50201 "Invoice PR"
 
     end;
 
-
-
     var
         RecGSalesPerson: Record 13;
         RecGCustomer: Record 18;
@@ -475,7 +472,6 @@ report 50201 "Invoice PR"
         Text1Footer: Text;
         afficherPiedsPage: Boolean;
         ShowNameFromCustomer: Boolean;
-
         islabor: Boolean;
 }
 

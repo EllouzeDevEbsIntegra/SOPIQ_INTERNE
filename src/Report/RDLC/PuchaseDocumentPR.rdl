@@ -1987,7 +1987,7 @@
       <Width>20.34626cm</Width>
       <Page>
         <PageHeader>
-          <Height>8.69105cm</Height>
+          <Height>8.08251cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -1998,10 +1998,10 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=IIf(Fields!DemandeAchat.Value,"Demande de prix","Bon de commande")</Value>
+                      <Value>=Fields!typeDocument.Value</Value>
                       <Style>
                         <FontFamily>Verdana</FontFamily>
-                        <FontSize>15pt</FontSize>
+                        <FontSize>16pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -2012,7 +2012,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox12</rd:DefaultName>
-              <Top>3.211cm</Top>
+              <Top>2.8935cm</Top>
               <Left>0.51512cm</Left>
               <Height>0.81167cm</Height>
               <Width>19.22001cm</Width>
@@ -2046,7 +2046,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox14</rd:DefaultName>
-              <Top>4.05795cm</Top>
+              <Top>3.74045cm</Top>
               <Left>0.5456cm</Left>
               <Height>0.7323cm</Height>
               <Width>19.18953cm</Width>
@@ -2067,7 +2067,7 @@
               <MIMEType>image/jpeg</MIMEType>
               <Sizing>Fit</Sizing>
               <Top>0.29104cm</Top>
-              <Height>2.27614cm</Height>
+              <Height>2.40844cm</Height>
               <Width>20.34626cm</Width>
               <ZIndex>2</ZIndex>
               <Visibility>
@@ -2112,7 +2112,7 @@
                   <Top>0.15875cm</Top>
                   <Left>0.08713cm</Left>
                   <Height>0.5cm</Height>
-                  <Width>7cm</Width>
+                  <Width>7.9525cm</Width>
                   <Style>
                     <Border>
                       <Style>None</Style>
@@ -2152,7 +2152,7 @@
                   <Top>0.79986cm</Top>
                   <Left>0.08713cm</Left>
                   <Height>0.5cm</Height>
-                  <Width>7cm</Width>
+                  <Width>7.9525cm</Width>
                   <ZIndex>1</ZIndex>
                   <Style>
                     <Border>
@@ -2197,10 +2197,10 @@
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox13</rd:DefaultName>
-                  <Top>1.44097cm</Top>
+                  <Top>1.56173cm</Top>
                   <Left>0.08713cm</Left>
                   <Height>0.5cm</Height>
-                  <Width>7cm</Width>
+                  <Width>7.9525cm</Width>
                   <ZIndex>2</ZIndex>
                   <Style>
                     <Border>
@@ -2245,10 +2245,10 @@
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox13</rd:DefaultName>
-                  <Top>2.0468cm</Top>
+                  <Top>2.23812cm</Top>
                   <Left>0.08713cm</Left>
                   <Height>0.5cm</Height>
-                  <Width>7cm</Width>
+                  <Width>7.9525cm</Width>
                   <ZIndex>3</ZIndex>
                   <Style>
                     <Border>
@@ -2262,10 +2262,10 @@
                 </Textbox>
               </ReportItems>
               <KeepTogether>true</KeepTogether>
-              <Top>4.93136cm</Top>
+              <Top>4.77261cm</Top>
               <Left>0.5456cm</Left>
-              <Height>2.75359cm</Height>
-              <Width>7.44175cm</Width>
+              <Height>3.00121cm</Height>
+              <Width>8.28842cm</Width>
               <ZIndex>3</ZIndex>
               <Style>
                 <Border>
@@ -2336,7 +2336,7 @@
                   <rd:DefaultName>Textbox13</rd:DefaultName>
                   <Top>0.60082cm</Top>
                   <Left>0.02646cm</Left>
-                  <Height>0.5cm</Height>
+                  <Height>0.64315cm</Height>
                   <Width>8.34361cm</Width>
                   <Style>
                     <Border>
@@ -2388,7 +2388,7 @@
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox13</rd:DefaultName>
-                  <Top>2.82237cm</Top>
+                  <Top>2.42036cm</Top>
                   <Left>0.02646cm</Left>
                   <Height>0.5cm</Height>
                   <Width>8.34361cm</Width>
@@ -2478,7 +2478,7 @@
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox13</rd:DefaultName>
-                  <Top>1.16255cm</Top>
+                  <Top>1.3498cm</Top>
                   <Left>0.02647cm</Left>
                   <Height>0.5cm</Height>
                   <Width>8.34361cm</Width>
@@ -2520,10 +2520,10 @@
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox13</rd:DefaultName>
-                  <Top>1.74397cm</Top>
+                  <Top>1.93122cm</Top>
                   <Left>0.02646cm</Left>
                   <Height>0.5cm</Height>
-                  <Width>8.34361cm</Width>
+                  <Width>3.47528cm</Width>
                   <ZIndex>4</ZIndex>
                   <Style>
                     <Border>
@@ -2562,10 +2562,10 @@
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox13</rd:DefaultName>
-                  <Top>2.28385cm</Top>
-                  <Left>0.02646cm</Left>
+                  <Top>1.88508cm</Top>
+                  <Left>3.67813cm</Left>
                   <Height>0.5cm</Height>
-                  <Width>8.34361cm</Width>
+                  <Width>4.66146cm</Width>
                   <ZIndex>5</ZIndex>
                   <Style>
                     <Border>
@@ -2579,9 +2579,9 @@
                 </Textbox>
               </ReportItems>
               <KeepTogether>true</KeepTogether>
-              <Top>4.9011cm</Top>
+              <Top>4.74235cm</Top>
               <Left>11.39554cm</Left>
-              <Height>3.37543cm</Height>
+              <Height>3.03147cm</Height>
               <Width>8.37008cm</Width>
               <ZIndex>4</ZIndex>
               <Style>
@@ -2639,8 +2639,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox13</rd:DefaultName>
-              <Top>7.7058cm</Top>
-              <Left>8.43536cm</Left>
+              <Top>7.20309cm</Top>
+              <Left>9.11945cm</Left>
               <Height>0.57073cm</Height>
               <Width>2.0997cm</Width>
               <ZIndex>5</ZIndex>
@@ -3036,8 +3036,8 @@ End Function</Code>
         <Field Name="Location">
           <DataField>Location</DataField>
         </Field>
-        <Field Name="DemandeAchat">
-          <DataField>DemandeAchat</DataField>
+        <Field Name="typeDocument">
+          <DataField>typeDocument</DataField>
         </Field>
         <Field Name="Document_No">
           <DataField>Document_No</DataField>

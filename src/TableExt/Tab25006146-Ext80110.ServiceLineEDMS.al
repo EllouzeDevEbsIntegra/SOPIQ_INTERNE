@@ -93,7 +93,7 @@ tableextension 80110 "Service Line EDMS" extends "Service Line EDMS" //25006146
                     // Message('%1 - %2 - %3', rec."Last Price First Vendor", defaultVendor, (1 + (defaultProfit / 100)));
                 end;
 
-                if (rec."Unit Price" < rec."Prix Vente Public") then Message('Attention ! Prix de vente à vérifier SVP !');
+                // if (rec."Unit Price" < rec."Prix Vente Public") then Message('Attention ! Prix de vente à vérifier SVP !');
 
             end;
 
@@ -135,7 +135,7 @@ tableextension 80110 "Service Line EDMS" extends "Service Line EDMS" //25006146
         {
             trigger OnAfterValidate()
             begin
-                if (rec."Unit Price" < rec."Prix Vente Public") then Message('Attention ! Prix de vente à vérifier SVP !');
+                // if (rec."Unit Price" < rec."Prix Vente Public") then Message('Attention ! Prix de vente à vérifier SVP !');
 
             end;
         }

@@ -250,7 +250,7 @@ report 50203 "Puchase Document"
             {
 
             }
-            column(DemandeAchat; DemandeAchat)
+            column(typeDocument; typeDocument)
             {
 
             }
@@ -467,8 +467,12 @@ report 50203 "Puchase Document"
                 if Location.Get("Location Code") then;
 
 
-                if ("Purchase Header"."Document Type" = "Document Type"::Quote) then DemandeAchat := true;
-                if ("Purchase Header"."Document Type" = "Document Type"::Order) then DemandeAchat := false;
+                // if ("Purchase Header"."Document Type" = "Document Type"::Quote) then DemandeAchat := true;
+                // if ("Purchase Header"."Document Type" = "Document Type"::Order) then DemandeAchat := false;
+                if ("Purchase Header"."Document Type" = "Document Type"::Quote) then typeDocument := typeDocument::"Demande de prix";
+                if ("Purchase Header"."Document Type" = "Document Type"::Order) then typeDocument := typeDocument::"Bon de commande";
+                if ("Purchase Header"."Document Type" = "Document Type"::"Return Order") then typeDocument := typeDocument::"Retour Achat";
+
 
 
             end;
@@ -597,6 +601,6 @@ report 50203 "Puchase Document"
         PaymentMethodDescription: Text[100];
         Text1Footer: Text;
         Location: Record Location;
-        DemandeAchat: Boolean;
+        typeDocument: Option "Demande de prix","Bon de commande","Retour Achat";
 }
 
