@@ -2,6 +2,23 @@ pageextension 80116 "Vehicle SO Proc. Activities" extends "Vehicle SO Proc. Acti
 {
     layout
     {
+        addafter(factureNonReg)
+        {
+            field(TotalfactureNonReg; TotalFactureNonReglee)
+            {
+                Caption = 'Total Facture non réglée';
+                ApplicationArea = All;
+                trigger OnDrillDown()
+                var
+                    CustomerLedEntries: Record "Cust. Ledger Entry";
+                begin
+                    CustomerLedEntries.Reset();
+                    CustomerLedEntries.SetRange("Document Type", CustomerLedEntries."Document Type"::Invoice);
+                    CustomerLedEntries.SetRange(Open, true);
+                    Page.Run(Page::"Customer Ledger Entries", CustomerLedEntries);
+                end;
+            }
+        }
 
         addbefore(B2B)
         {
@@ -166,9 +183,27 @@ pageextension 80116 "Vehicle SO Proc. Activities" extends "Vehicle SO Proc. Acti
 
     end;
 
+    local procedure TotalFactureNonReglee(): Decimal
+    var
+        CustomerLedEntries: Record "Cust. Ledger Entry";
+    begin
+        sumNotPaiedInvoice := 0;
+        CustomerLedEntries.Reset();
+        CustomerLedEntries.SetRange("Document Type", CustomerLedEntries."Document Type"::Invoice);
+        CustomerLedEntries.SetRange(Open, true);
+        if CustomerLedEntries.FindSet() then begin
+            repeat
+                CustomerLedEntries.CalcFields("Remaining Amount");
+                sumNotPaiedInvoice := sumNotPaiedInvoice + CustomerLedEntries."Remaining Amount";
+            until CustomerLedEntries.Next() = 0;
+        end;
+        exit(sumNotPaiedInvoice);
+    end;
+
     var
         Vente3, achat : Decimal;
         StatPurchaseCA: Boolean;
         StartingDate, debutMois, FinMois : Date;
         userSetup: Record "User Setup";
+        sumNotPaiedInvoice: Decimal;
 }

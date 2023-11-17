@@ -8,7 +8,7 @@ pageextension 80137 "Posted Sales Shipments" extends "Posted Sales Shipments"//1
         {
             field("Montant Ouvert"; "Montant Ouvert")
             {
-                Caption = 'Moyen Jour Paiement';
+                Caption = 'Montant ouvert';
 
             }
 

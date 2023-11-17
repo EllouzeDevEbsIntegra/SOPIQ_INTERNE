@@ -41,10 +41,12 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
                 ApplicationArea = All;
                 trigger OnValidate()
                 begin
-                    rec."Prix vente calculé" := Round((rec."Direct Unit Cost" / (1 - rec.Marge / 100)) *
-                                                                (1 + CalcVAT),
-                                                                GLSetup."Unit-Amount Rounding Precision");
-                    // rec.Modify();
+                    if (rec.Marge <= 50) then
+                        rec."Prix vente calculé" := Round((rec."Direct Unit Cost" / (1 - rec.Marge / 100)) *
+                                                                    (1 + CalcVAT),
+                                                                    GLSetup."Unit-Amount Rounding Precision")
+                    else
+                        error('Marge ne doit pas dépasser 50%');
                 end;
             }
 
@@ -120,6 +122,7 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
+                Image = UpdateUnitCost;
                 trigger OnAction()
 
                 var
@@ -147,16 +150,21 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
                                         //     (recItem."Unit Cost" / (1 - recItem."Profit %" / 100)) *
                                         //     (1 + CalcVAT),
                                         //     GLSetup."Unit-Amount Rounding Precision");
-                                         Round(
+                                        Round(
                                             (recPurshLine."Direct Unit Cost" / (1 - recItem."Profit %" / 100)) *
                                             (1 + CalcVAT),
                                             GLSetup."Unit-Amount Rounding Precision");
-                                    end;
 
-
+                                        recItem.Modify();
+                                        recPurshLine.margeUpdate := true;
+                                        recPurshLine.Modify();
+                                    end
+                                    else
+                                        Error('Marge ne doit pas dépasser 50% !');
                                     ;
-                                    recItem.Modify();
-                                end
+
+                                end;
+
                             UNTIL recPurshLine.NEXT = 0;
                     end
                 end;

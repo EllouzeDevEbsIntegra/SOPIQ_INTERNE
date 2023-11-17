@@ -19,12 +19,12 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>19.57981cm</Width>
+                  <Width>19.60627cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>4.57093cm</Height>
+                  <Height>4.70322cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -40,7 +40,7 @@
                                     <Width>3.76172cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>6.65667cm</Width>
+                                    <Width>6.15897cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
                                     <Width>1.25169cm</Width>
@@ -58,7 +58,7 @@
                                     <Width>1.96929cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>1.31027cm</Width>
+                                    <Width>1.77215cm</Width>
                                   </TablixColumn>
                                 </TablixColumns>
                                 <TablixRows>
@@ -111,7 +111,7 @@
                                                     <Value>Article</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
+                                                      <FontSize>9pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
                                                     </Style>
                                                   </TextRun>
@@ -151,7 +151,7 @@
                                                     <Value>Désignation</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
+                                                      <FontSize>9pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
                                                     </Style>
                                                   </TextRun>
@@ -187,7 +187,7 @@
                                                     <Value>Unité</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
+                                                      <FontSize>9pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
                                                     </Style>
                                                   </TextRun>
@@ -223,7 +223,7 @@
                                                     <Value>Qté</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
+                                                      <FontSize>9pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
                                                     </Style>
                                                   </TextRun>
@@ -259,7 +259,7 @@
                                                     <Value>P.U.H.T</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
+                                                      <FontSize>9pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
                                                     </Style>
                                                   </TextRun>
@@ -295,7 +295,7 @@
                                                     <Value>Rem.%</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
+                                                      <FontSize>9pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
                                                     </Style>
                                                   </TextRun>
@@ -331,7 +331,7 @@
                                                     <Value EvaluationMode="Constant">Total H.T</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
+                                                      <FontSize>9pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
                                                     </Style>
                                                   </TextRun>
@@ -367,7 +367,7 @@
                                                     <Value>=Fields!VATAmountLineCaptionLbl.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
+                                                      <FontSize>9pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
                                                     </Style>
                                                   </TextRun>
@@ -447,7 +447,7 @@
                                                     <Value>=IIF(First(Fields!PrintItemNo.Value, "DataSet_Result"),Fields!No_SalesShipmentLine.Value, "")</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
+                                                      <FontSize>9pt</FontSize>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
@@ -488,7 +488,7 @@
                                                     <Value>=Fields!Description_SalesShipmentLine.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
+                                                      <FontSize>9pt</FontSize>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
@@ -527,7 +527,7 @@
                                                     <Value>=Fields!UnitofMeasure_SalesLine.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
+                                                      <FontSize>9pt</FontSize>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
@@ -568,7 +568,7 @@
                                                     <Value>=Microsoft.VisualBasic.Interaction.IIF(Fields!No_SalesShipmentLine.Value = "", Microsoft.VisualBasic.Strings.replace(Fields!Quantity_SalesShipmentLine.Value, 0, ""), System.Math.Round(Fields!Quantity_SalesShipmentLine.Value, 3))</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
+                                                      <FontSize>9pt</FontSize>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
@@ -609,8 +609,8 @@
                                                     <Value>=Microsoft.VisualBasic.Interaction.IIF(Fields!No_SalesShipmentLine.Value = "", Microsoft.VisualBasic.Strings.replace(Fields!UnitPrice_SalesShipmentLine.Value, 0, ""), System.Math.Round(Fields!UnitPrice_SalesShipmentLine.Value, 3))</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
-                                                      <Format>n2</Format>
+                                                      <FontSize>9pt</FontSize>
+                                                      <Format>#,0.000;(#,0.000);''</Format>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
@@ -648,11 +648,11 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Code.BlankZero(round(Fields!LineDiscount_SalesLine.Value))</Value>
+                                                    <Value>=Fields!LineDiscount_SalesLine.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
-                                                      <Format>0;(0);''</Format>
+                                                      <FontSize>9pt</FontSize>
+                                                      <Format>0.00;(0.00);''</Format>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
@@ -679,7 +679,6 @@
                                               <PaddingBottom>2pt</PaddingBottom>
                                             </Style>
                                           </Textbox>
-                                          <rd:Selected>true</rd:Selected>
                                         </CellContents>
                                       </TablixCell>
                                       <TablixCell>
@@ -694,8 +693,8 @@
                                                     <Value>=Fields!LineAmount_SalesLine.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
-                                                      <Format>n2</Format>
+                                                      <FontSize>9pt</FontSize>
+                                                      <Format>#,0.000;(#,0.000);''</Format>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
@@ -736,8 +735,8 @@
                                                     <Value>=IIF(Fields!No_SalesShipmentLine.Value= "",replace(Fields!VAT_SalesShipmentLine.Value,0,""),Round(Fields!VAT_SalesShipmentLine.Value,3))</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
-                                                      <Format>#,0;(#,0)</Format>
+                                                      <FontSize>9pt</FontSize>
+                                                      <Format>#,0;(#,0);''</Format>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
@@ -853,10 +852,10 @@
                                 </TablixMembers>
                               </TablixRowHierarchy>
                               <DataSetName>DataSet_Result</DataSetName>
-                              <Top>3.22424cm</Top>
-                              <Left>0.0482cm</Left>
+                              <Top>3.38074cm</Top>
+                              <Left>0.07466cm</Left>
                               <Height>1.16501cm</Height>
-                              <Width>19.53161cm</Width>
+                              <Width>19.49579cm</Width>
                               <Style>
                                 <Border>
                                   <Style>None</Style>
@@ -874,7 +873,6 @@
                                           <Value>Client : </Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <FontWeight>Bold</FontWeight>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
@@ -883,7 +881,6 @@
                                           <Value>=Fields!BilltoName_SalesShipmentHeader.Value</Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
                                         </TextRun>
@@ -893,9 +890,9 @@
                                       </Style>
                                     </Paragraph>
                                   </Paragraphs>
-                                  <Top>0.07938cm</Top>
+                                  <Top>0.07056cm</Top>
                                   <Left>0.2734cm</Left>
-                                  <Height>0.45272cm</Height>
+                                  <Height>0.51248cm</Height>
                                   <Width>8.71168cm</Width>
                                   <Style>
                                     <Border>
@@ -913,7 +910,6 @@
                                           <Value>ADRESSE : </Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <FontWeight>Bold</FontWeight>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
@@ -922,7 +918,6 @@
                                           <Value>=Fields!BilltoAddress_SalesShipmentHeader.Value</Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
                                         </TextRun>
@@ -932,9 +927,9 @@
                                       </Style>
                                     </Paragraph>
                                   </Paragraphs>
-                                  <Top>0.5321cm</Top>
+                                  <Top>0.58304cm</Top>
                                   <Left>0.2734cm</Left>
-                                  <Height>0.45272cm</Height>
+                                  <Height>0.52328cm</Height>
                                   <Width>8.71168cm</Width>
                                   <ZIndex>1</ZIndex>
                                   <Style>
@@ -953,7 +948,6 @@
                                           <Value>NIF/CIN : </Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <FontWeight>Bold</FontWeight>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
@@ -962,7 +956,6 @@
                                           <Value>=Fields!VATRegistrationNo_SalesHeader.Value</Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
                                         </TextRun>
@@ -972,9 +965,9 @@
                                       </Style>
                                     </Paragraph>
                                   </Paragraphs>
-                                  <Top>1.0201cm</Top>
+                                  <Top>1.21215cm</Top>
                                   <Left>0.2734cm</Left>
-                                  <Height>0.45272cm</Height>
+                                  <Height>0.60169cm</Height>
                                   <Width>8.71168cm</Width>
                                   <ZIndex>2</ZIndex>
                                   <Style>
@@ -993,7 +986,6 @@
                                           <Value>Tél : </Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <FontWeight>Bold</FontWeight>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
@@ -1002,7 +994,6 @@
                                           <Value>=Fields!telclient.Value</Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
                                         </TextRun>
@@ -1012,10 +1003,10 @@
                                       </Style>
                                     </Paragraph>
                                   </Paragraphs>
-                                  <Top>1.54338cm</Top>
+                                  <Top>1.84912cm</Top>
                                   <Left>0.2734cm</Left>
-                                  <Height>0.45272cm</Height>
-                                  <Width>3.04438cm</Width>
+                                  <Height>0.5321cm</Height>
+                                  <Width>8.62421cm</Width>
                                   <ZIndex>3</ZIndex>
                                   <Style>
                                     <Border>
@@ -1033,7 +1024,6 @@
                                           <Value>E-mail : </Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <FontWeight>Bold</FontWeight>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
@@ -1042,7 +1032,6 @@
                                           <Value>=Fields!EMail.Value</Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
                                         </TextRun>
@@ -1052,10 +1041,10 @@
                                       </Style>
                                     </Paragraph>
                                   </Paragraphs>
-                                  <Top>1.54338cm</Top>
-                                  <Left>3.49417cm</Left>
-                                  <Height>0.45272cm</Height>
-                                  <Width>5.49091cm</Width>
+                                  <Top>2.48705cm</Top>
+                                  <Left>0.2734cm</Left>
+                                  <Height>0.50564cm</Height>
+                                  <Width>8.62421cm</Width>
                                   <ZIndex>4</ZIndex>
                                   <Style>
                                     <Border>
@@ -1067,8 +1056,8 @@
                               </ReportItems>
                               <KeepTogether>true</KeepTogether>
                               <Top>0.10583cm</Top>
-                              <Left>10.59473cm</Left>
-                              <Height>2.09508cm</Height>
+                              <Left>10.51621cm</Left>
+                              <Height>3.09852cm</Height>
                               <Width>8.98508cm</Width>
                               <ZIndex>1</ZIndex>
                               <Style>
@@ -1088,7 +1077,6 @@
                                           <Value>Commercial :</Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <FontWeight>Bold</FontWeight>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
@@ -1097,7 +1085,6 @@
                                           <Value xml:space="preserve"> </Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
                                         </TextRun>
@@ -1105,7 +1092,6 @@
                                           <Value>=Fields!SalespersonCode_SalesHeader.Value</Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
                                         </TextRun>
@@ -1115,9 +1101,9 @@
                                       </Style>
                                     </Paragraph>
                                   </Paragraphs>
-                                  <Top>0.49682cm</Top>
+                                  <Top>0.77707cm</Top>
                                   <Left>0.15404cm</Left>
-                                  <Height>0.45272cm</Height>
+                                  <Height>0.52328cm</Height>
                                   <Width>8cm</Width>
                                   <Style>
                                     <Border>
@@ -1135,7 +1121,6 @@
                                           <Value>Tél :  </Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <FontWeight>Bold</FontWeight>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
@@ -1144,7 +1129,6 @@
                                           <Value>=Fields!Tel.Value</Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <FontWeight>Normal</FontWeight>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
@@ -1155,9 +1139,9 @@
                                       </Style>
                                     </Paragraph>
                                   </Paragraphs>
-                                  <Top>1.01128cm</Top>
+                                  <Top>1.40617cm</Top>
                                   <Left>0.12758cm</Left>
-                                  <Height>0.45272cm</Height>
+                                  <Height>0.64086cm</Height>
                                   <Width>8cm</Width>
                                   <ZIndex>1</ZIndex>
                                   <Style>
@@ -1176,7 +1160,6 @@
                                           <Value>Date devis :</Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <FontWeight>Bold</FontWeight>
                                             <Format>d</Format>
                                             <TextDecoration>None</TextDecoration>
@@ -1186,7 +1169,6 @@
                                           <Value xml:space="preserve">  </Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <Format>d</Format>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
@@ -1195,7 +1177,6 @@
                                           <Value>=Fields!PostingDate_SalesShipmentHeader.Value</Value>
                                           <Style>
                                             <FontFamily>Segoe UI</FontFamily>
-                                            <FontSize>9pt</FontSize>
                                             <Format>d</Format>
                                             <TextDecoration>None</TextDecoration>
                                           </Style>
@@ -1206,9 +1187,9 @@
                                       </Style>
                                     </Paragraph>
                                   </Paragraphs>
-                                  <Top>0.00882cm</Top>
+                                  <Top>0.05094cm</Top>
                                   <Left>0.15404cm</Left>
-                                  <Height>0.52328cm</Height>
+                                  <Height>0.62911cm</Height>
                                   <Width>8cm</Width>
                                   <ZIndex>2</ZIndex>
                                   <Style>
@@ -1220,8 +1201,9 @@
                                 </Textbox>
                               </ReportItems>
                               <KeepTogether>true</KeepTogether>
-                              <Top>0.17639cm</Top>
-                              <Height>1.6541cm</Height>
+                              <Top>0.10583cm</Top>
+                              <Left>0.11667cm</Left>
+                              <Height>2.14602cm</Height>
                               <Width>8.21779cm</Width>
                               <ZIndex>2</ZIndex>
                               <Style>
@@ -1269,8 +1251,8 @@
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
             <Left>0.49312cm</Left>
-            <Height>4.57093cm</Height>
-            <Width>19.57981cm</Width>
+            <Height>4.70322cm</Height>
+            <Width>19.60627cm</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1303,10 +1285,10 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!VATBaseCaptionLbl.Value</Value>
+                                  <Value>Base TVA</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1337,6 +1319,7 @@
                               <Width>1pt</Width>
                             </RightBorder>
                             <BackgroundColor>LightGrey</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1350,10 +1333,10 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!VATCaptionLbl.Value</Value>
+                                  <Value>Taux TVA</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1384,6 +1367,7 @@
                               <Width>1pt</Width>
                             </RightBorder>
                             <BackgroundColor>LightGrey</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1401,10 +1385,10 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!VATAmtCaptionLbl.Value</Value>
+                                  <Value>Montant TVA</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1433,7 +1417,7 @@
                               <Color>Black</Color>
                             </RightBorder>
                             <BackgroundColor>LightGrey</BackgroundColor>
-                            <VerticalAlign>Top</VerticalAlign>
+                            <VerticalAlign>Middle</VerticalAlign>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1452,11 +1436,11 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!VATBaseAmount_SalesShipmentLine.Value, "DataSet_Result")</Value>
+                                  <Value>=Sum(Fields!VATBaseAmount_SalesShipmentLine.Value)</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <Format>n2</Format>
+                                    <FontSize>9pt</FontSize>
+                                    <Format>#,0.000;(#,0.000);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1468,21 +1452,9 @@
                           <rd:DefaultName>Textbox7</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                            </LeftBorder>
                             <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
                             <VerticalAlign>Top</VerticalAlign>
@@ -1502,7 +1474,8 @@
                                   <Value>=Fields!VAT_SalesShipmentLine.Value</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
+                                    <Format>0;(0);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1521,7 +1494,6 @@
                             </LeftBorder>
                             <RightBorder>
                               <Color>Black</Color>
-                              <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
                             <VerticalAlign>Top</VerticalAlign>
@@ -1541,8 +1513,8 @@
                                   <Value>=Sum(Fields!VATBaseAmount_SalesShipmentLine.Value * (Fields!VAT_SalesShipmentLine.Value / 100))</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <Format>n2</Format>
+                                    <FontSize>9pt</FontSize>
+                                    <Format>#,0.000;(#,0.000);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1593,14 +1565,11 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>4.74732cm</Top>
-            <Left>0.49312cm</Left>
+            <Top>4.99904cm</Top>
+            <Left>0.48376cm</Left>
             <Height>0.9323cm</Height>
             <Width>10.54597cm</Width>
             <ZIndex>1</ZIndex>
-            <Visibility>
-              <Hidden>=Fields!StampAmount.Value &lt;&gt;0</Hidden>
-            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1641,8 +1610,8 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>7.52152cm</Top>
-            <Left>0.49312cm</Left>
+            <Top>7.77324cm</Top>
+            <Left>0.48376cm</Left>
             <Height>0.86797cm</Height>
             <Width>12.22914cm</Width>
             <ZIndex>2</ZIndex>
@@ -1673,8 +1642,8 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>6.94533cm</Top>
-            <Left>0.49312cm</Left>
+            <Top>7.19705cm</Top>
+            <Left>0.48376cm</Left>
             <Height>0.50563cm</Height>
             <Width>12.22914cm</Width>
             <ZIndex>3</ZIndex>
@@ -1719,10 +1688,10 @@
               </Textbox>
             </ReportItems>
             <KeepTogether>true</KeepTogether>
-            <Top>8.74334cm</Top>
-            <Left>13.99114cm</Left>
+            <Top>8.35096cm</Top>
+            <Left>13.08009cm</Left>
             <Height>1.99359cm</Height>
-            <Width>5.97681cm</Width>
+            <Width>6.98348cm</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
@@ -1755,7 +1724,7 @@
                                   <Value> Total H.T :</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
@@ -1797,8 +1766,8 @@
                                   <Value>=sum(Fields!Quantity_SalesShipmentLine.Value * replace(Fields!UnitPrice_SalesShipmentLine.Value,"",0))</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <Format>n2</Format>
+                                    <FontSize>9pt</FontSize>
+                                    <Format>#,0.000;(#,0.000)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -1840,7 +1809,7 @@
                                   <Value> Remise :</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
@@ -1883,8 +1852,8 @@
                                   <Value>=Code.BlankZero(sum(Fields!RemiseLigne.Value)+First(Fields!InvoiceDiscountAmount_SalesHeader.Value, "DataSet_Result"))</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <Format>n2</Format>
+                                    <FontSize>9pt</FontSize>
+                                    <Format>#,0.000;(#,0.000);''</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -1926,7 +1895,7 @@
                                   <Value> Total Net H.T :</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
@@ -1969,8 +1938,8 @@
                                   <Value>=sum(Fields!Quantity_SalesShipmentLine.Value * replace(Fields!UnitPrice_SalesShipmentLine.Value,"",0))-sum(Fields!RemiseLigne.Value)-First(Fields!InvoiceDiscountAmount_SalesHeader.Value, "DataSet_Result")</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <Format>n2</Format>
+                                    <FontSize>9pt</FontSize>
+                                    <Format>#,0.000;(#,0.000)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -2009,19 +1978,10 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value xml:space="preserve"> </Value>
+                                  <Value> Total TVA :</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value>=iif(Fields!TMP.Value=true,Fields!TMPAmtCaptionLbl.Value,Fields!VATAmtCaptionLbl.Value)</Value>
-                                  <Style>
-                                    <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
@@ -2064,8 +2024,8 @@
                                   <Value>=Sum(Fields!Montant_TVA.Value)</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <Format>n2</Format>
+                                    <FontSize>9pt</FontSize>
+                                    <Format>#,0.000;(#,0.000)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -2094,7 +2054,100 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.43616cm</Height>
+                  <Height>0.49285cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox3">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value> Timbre Fiscal :</Value>
+                                  <Style>
+                                    <FontFamily>Segoe UI</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox3</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <BackgroundColor>LightGrey</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="StampAmount">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!StampAmount.Value</Value>
+                                  <Style>
+                                    <FontFamily>Segoe UI</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <Format>#,0.000;(#,0.000);'-'</Format>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>StampAmount</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>1pt</PaddingLeft>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.70074cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2104,10 +2157,10 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value> Montant TTC:</Value>
+                                  <Value>Net à payer :</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
@@ -2142,11 +2195,12 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=sum(Fields!AmountIncludingVAT_SalesInvoiceLine.Value)</Value>
+                                  <Value>=Fields!NetAPayer.Value</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <Format>n2</Format>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.000;(#,0.000)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -2188,12 +2242,13 @@
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
+                <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>4.77731cm</Top>
-            <Left>13.08945cm</Left>
-            <Height>2.1808cm</Height>
+            <Top>5.02903cm</Top>
+            <Left>13.08009cm</Left>
+            <Height>2.93823cm</Height>
             <Width>6.98348cm</Width>
             <ZIndex>5</ZIndex>
             <Style>
@@ -2253,8 +2308,8 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>8.54133cm</Top>
-            <Left>0.49312cm</Left>
+            <Top>8.79305cm</Top>
+            <Left>0.48376cm</Left>
             <Height>0.50563cm</Height>
             <Width>12.2385cm</Width>
             <ZIndex>6</ZIndex>
@@ -2279,7 +2334,7 @@
                     <Value>=Last(Fields!TexteLettre.Value)</Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
-                      <FontSize>8pt</FontSize>
+                      <FontSize>9pt</FontSize>
                       <FontWeight>Normal</FontWeight>
                     </Style>
                   </TextRun>
@@ -2288,8 +2343,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox13</rd:DefaultName>
-            <Top>6.25018cm</Top>
-            <Left>0.49312cm</Left>
+            <Top>6.5019cm</Top>
+            <Left>0.48376cm</Left>
             <Height>0.5cm</Height>
             <Width>12.2385cm</Width>
             <ZIndex>7</ZIndex>
@@ -2419,8 +2474,8 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>9.69283cm</Top>
-            <Left>4.72855cm</Left>
+            <Top>9.94455cm</Top>
+            <Left>4.71919cm</Left>
             <Height>0.4cm</Height>
             <Width>7.30098cm</Width>
             <ZIndex>8</ZIndex>
@@ -2454,13 +2509,13 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>11.02797cm</Height>
+        <Height>10.98865cm</Height>
         <Style />
       </Body>
       <Width>20.36543cm</Width>
       <Page>
         <PageHeader>
-          <Height>3.42848cm</Height>
+          <Height>4.69848cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -2470,7 +2525,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Devis </Value>
+                      <Value>Commande / Devis</Value>
                       <Style>
                         <FontFamily>Verdana</FontFamily>
                         <FontSize>16pt</FontSize>
@@ -2480,14 +2535,14 @@
                     </TextRun>
                   </TextRuns>
                   <Style>
-                    <TextAlign>Left</TextAlign>
+                    <TextAlign>Center</TextAlign>
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>2.46424cm</Top>
-              <Left>5.57312cm</Left>
+              <Top>2.52306cm</Top>
+              <Left>0.49312cm</Left>
               <Height>0.92896cm</Height>
-              <Width>2.41511cm</Width>
+              <Width>19.57045cm</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2505,24 +2560,24 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!No_SalesShipmentHeader.Value, "DataSet_Result")</Value>
+                      <Value>="N° "+Fields!No_SalesShipmentHeader.Value</Value>
                       <Style>
                         <FontFamily>Verdana</FontFamily>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>14pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                         <TextDecoration>None</TextDecoration>
                       </Style>
                     </TextRun>
                   </TextRuns>
                   <Style>
-                    <TextAlign>Left</TextAlign>
+                    <TextAlign>Center</TextAlign>
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>2.46424cm</Top>
-              <Left>8.12934cm</Left>
+              <Top>3.59313cm</Top>
+              <Left>0.49312cm</Left>
               <Height>0.92896cm</Height>
-              <Width>5.715cm</Width>
+              <Width>19.57045cm</Width>
               <ZIndex>1</ZIndex>
               <Style>
                 <Border>
@@ -2537,9 +2592,9 @@
               <MIMEType>image/bmp</MIMEType>
               <Sizing>Fit</Sizing>
               <Top>0in</Top>
-              <Left>0in</Left>
+              <Left>0.19046in</Left>
               <Height>2.31438cm</Height>
-              <Width>19.90694cm</Width>
+              <Width>19.57981cm</Width>
               <ZIndex>2</ZIndex>
               <Visibility>
                 <Hidden>=if(Fields!afficherPiedsPage.Value=true,false,true)</Hidden>
@@ -2744,6 +2799,12 @@ End Function
         </Field>
         <Field Name="TexteLettre">
           <DataField>TexteLettre</DataField>
+        </Field>
+        <Field Name="NetAPayer">
+          <DataField>NetAPayer</DataField>
+        </Field>
+        <Field Name="NetAPayerFormat">
+          <DataField>NetAPayerFormat</DataField>
         </Field>
         <Field Name="PaymentTermsDescription">
           <DataField>PaymentTermsDescription</DataField>

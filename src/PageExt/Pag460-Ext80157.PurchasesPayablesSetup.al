@@ -16,6 +16,12 @@ pageextension 80157 "Purchases & Payables Setup" extends "Purchases & Payables S
                 ApplicationArea = All;
                 Caption = 'MF Fournisseur Obligatoire';
             }
+
+            field(UpdateProfitOblogatoire; UpdateProfitOblogatoire)
+            {
+                ApplicationArea = All;
+                Caption = 'Mise à jour marge CA obligatoire';
+            }
         }
     }
 

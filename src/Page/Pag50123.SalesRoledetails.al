@@ -155,7 +155,7 @@ page 50123 "Sales Role details"
                 action("Posted Sales Invoices")
                 {
                     ApplicationArea = Basic, Suite;
-                    Caption = 'Factures vente enregistrées';
+                    Caption = 'Facture vente enregistrée';
                     RunObject = Page "Posted Sales Invoices";
                     ToolTip = 'Open the list of posted sales invoices.';
                 }

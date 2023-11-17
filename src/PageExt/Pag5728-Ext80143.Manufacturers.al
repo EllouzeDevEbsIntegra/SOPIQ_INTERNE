@@ -9,6 +9,12 @@ pageextension 80143 "Manufacturers" extends "Manufacturers"//5728
                 ApplicationArea = All;
                 Caption = 'Actif';
             }
+
+            field(IsSpecific; IsSpecific)
+            {
+                ApplicationArea = All;
+                Caption = 'Fabricant Spécifique';
+            }
         }
     }
 

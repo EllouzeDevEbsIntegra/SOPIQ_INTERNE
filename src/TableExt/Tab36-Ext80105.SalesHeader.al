@@ -34,6 +34,14 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
             TableRelation = Vehicle where("Customer No." = field("Bill-to Customer No."));
         }
 
+        field(80100;Acopmpte;Decimal)
+        {
+            Caption = 'Total Acompte';
+
+            FieldClass = FlowField;
+            CalcFormula = sum("Payment Line"."Credit Amount" where("STOrder No." = field("No."), "Account No."=field("Sell-to Customer No."), Posted=filter(true)));
+        }
+
 
     }
 

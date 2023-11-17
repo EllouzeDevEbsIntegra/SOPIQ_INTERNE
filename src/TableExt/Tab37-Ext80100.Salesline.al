@@ -5,12 +5,20 @@ tableextension 80100 "Sales line" extends "Sales line" //37
         modify("No.")
         {
             trigger OnAfterValidate()
-
+            var
+                SalesInvoiceLine: Record "Sales Invoice Line";
             begin
                 "Initial Unit Price" := "Unit Price";
                 "Initial Discount" := "Line Discount %";
 
-
+                SalesInvoiceLine.Reset();
+                SalesInvoiceLine.SetRange("Sell-to Customer No.", rec."Sell-to Customer No.");
+                SalesInvoiceLine.SetRange("No.", rec."No.");
+                if SalesInvoiceLine.FindLast() then begin
+                    lastSalesPrice := SalesInvoiceLine."Unit Price";
+                    lastSalesDate := SalesInvoiceLine."Posting Date";
+                    lastSalesDiscount := SalesInvoiceLine."Line Discount %";
+                end;
             end;
 
 
@@ -131,6 +139,24 @@ tableextension 80100 "Sales line" extends "Sales line" //37
 
             FieldClass = FlowField;
             CalcFormula = lookup("Purchase Line"."Quantity Received" where("Special Order" = filter(true), "Document Type" = filter(Order), "Special Order Sales No." = field("Document No."), "Special Order Sales Line No." = field("Line No.")));
+        }
+
+        field(50211; lastSalesDate; Date)
+        {
+            Caption = 'Dernière Date Vente';
+            DataClassification = ToBeClassified;
+        }
+
+        field(50212; lastSalesPrice; Decimal)
+        {
+            Caption = 'Dernier prix Vente';
+            DataClassification = ToBeClassified;
+        }
+
+        field(50213; lastSalesDiscount; Decimal)
+        {
+            Caption = 'Dernière remise Vente';
+            DataClassification = ToBeClassified;
         }
 
     }

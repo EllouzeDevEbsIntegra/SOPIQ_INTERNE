@@ -1,4 +1,4 @@
-tableextension 80101 "Sales Cue" extends "Sales Cue"
+tableextension 80101 "Sales Cue" extends "Sales Cue" //9053
 
 {
     fields
@@ -189,7 +189,6 @@ tableextension 80101 "Sales Cue" extends "Sales Cue"
             FieldClass = FlowField;
             CalcFormula = count("Cust. Ledger Entry" where("Document Type" = filter('Facture'), "open" = filter(true)));
         }
-
 
         field(80210; "Cheque En Coffre"; Decimal)
         {

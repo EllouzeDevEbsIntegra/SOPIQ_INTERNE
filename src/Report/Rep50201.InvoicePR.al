@@ -109,6 +109,11 @@ report 50201 "Invoice PR"
 
             }
 
+            column(afficherCodeArticle; afficherCodeArticle)
+            {
+
+            }
+
             column(ShowNameFromCustomer; ShowNameFromCustomer)
             {
 
@@ -413,6 +418,11 @@ report 50201 "Invoice PR"
                     ApplicationArea = all;
                     Caption = 'Afficher entête et pied de page';
                 }
+                field(afficherCodeArticle; afficherCodeArticle)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Afficher code article';
+                }
             }
         }
 
@@ -432,6 +442,7 @@ report 50201 "Invoice PR"
         RecCompany.CalcFields("Invoice Header Picture");
         ShowNameFromCustomer := false;
         afficherPiedsPage := true;
+        afficherCodeArticle := true;
 
     end;
 
@@ -471,6 +482,7 @@ report 50201 "Invoice PR"
         CustomerPostingGroup: Record 92;
         Text1Footer: Text;
         afficherPiedsPage: Boolean;
+        afficherCodeArticle: Boolean;
         ShowNameFromCustomer: Boolean;
         islabor: Boolean;
 }

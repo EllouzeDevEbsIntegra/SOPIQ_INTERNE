@@ -26,6 +26,24 @@ pageextension 80114 "Sales Order Subform" extends "Sales Order Subform" //46
                 DecimalPlaces = 0 : 2;
                 Editable = false;
             }
+
+            field(lastSalesPrice; lastSalesPrice)
+            {
+                ApplicationArea = all;
+                Editable = false;
+            }
+
+            field(lastSalesDate; lastSalesDate)
+            {
+                ApplicationArea = all;
+                Editable = false;
+            }
+
+            field(lastSalesDiscount; lastSalesDiscount)
+            {
+                ApplicationArea = all;
+                Editable = false;
+            }
         }
     }
 

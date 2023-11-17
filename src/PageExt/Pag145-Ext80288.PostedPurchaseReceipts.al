@@ -6,6 +6,12 @@ pageextension 80288 "Posted Purchase Receipts" extends "Posted Purchase Receipts
         // Add changes to page layout here
         addafter("Buy-from Vendor Name")
         {
+            field("Vendor Order No."; "Vendor Order No.")
+            {
+                Caption = 'N° Cmd Frs';
+                ApplicationArea = all;
+                Editable = false;
+            }
             field("Order No."; "Order No.")
             {
                 ApplicationArea = All;

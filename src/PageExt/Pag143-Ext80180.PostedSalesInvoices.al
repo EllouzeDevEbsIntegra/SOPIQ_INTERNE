@@ -75,7 +75,7 @@ pageextension 80180 "Posted Sales Invoices" extends "Posted Sales Invoices"//143
                 THEN begin
                 end
                 ELSE begin
-                    if totalPaiement <> 0
+                    if (totalPaiement <> 0) AND (PaymentLine."Due Date" >= rec."Posting Date")
                     THEN
                         CumulJourPaiement := CumulJourPaiement + ((-PaymentLine."STMontant Initial DS" / totalPaiement) * (PaymentLine."Due Date" - rec."Posting Date"))
                 end;

@@ -32,6 +32,8 @@ pageextension 80456 "Purchase Order" extends "Purchase Order" //50
                 var
                     PurchLine: Record "Purchase Line";
                     SalesLine: Record "Sales Line";
+                    isUpdate: Boolean;
+                    PurchSetup: Record "Purchases & Payables Setup";
                 begin
 
                     // Update Posting date today when user post only today
@@ -43,7 +45,31 @@ pageextension 80456 "Purchase Order" extends "Purchase Order" //50
                         rec.Validate("Posting Date");
                         rec.Modify();
                     end;
-                    PostDocument(CODEUNIT::"Purch.-Post (Yes/No)", NavigateAfterPost::"Posted Document");
+
+                    PurchSetup.Get();
+                    if (PurchSetup.UpdateProfitOblogatoire = true) then begin
+                        isUpdate := false;
+                        purchLine.reset();
+                        purchLine.SetRange("Document No.", "No.");
+                        if PurchLine.FindSet() then begin
+                            repeat
+                                if (PurchLine.margeUpdate = false) then begin
+                                    isUpdate := false;
+                                    break;
+                                end
+                                else begin
+                                    isUpdate := true;
+                                end;
+                            until PurchLine.Next() = 0;
+                        end;
+                        if (isUpdate = false) then
+                            Error('Vous devez appliquer les marges avant de valider !') else
+                            PostDocument(CODEUNIT::"Purch.-Post (Yes/No)", NavigateAfterPost::"Posted Document");
+
+                    end else
+                        PostDocument(CODEUNIT::"Purch.-Post (Yes/No)", NavigateAfterPost::"Posted Document");
+
+
                 end;
             }
         }

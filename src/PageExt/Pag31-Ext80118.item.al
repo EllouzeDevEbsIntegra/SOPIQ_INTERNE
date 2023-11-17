@@ -50,6 +50,13 @@ pageextension 80118 "item" extends "Item List" //31
 
             }
 
+            // field(etatStkFrsBase; etatStkFrsBase)
+            // {
+            //     StyleExpr = FieldEtatStyle;
+            //     CaptionClass = '3,' + 'Etat Stock (' + Parvente."Société base analyseur prix" + ' )';
+
+            // }
+
         }
     }
 
@@ -184,6 +191,11 @@ pageextension 80118 "item" extends "Item List" //31
     var
         filterDate: text;
         recInventorySetup: Record "Inventory Setup";
+        recItem: Record Item;
+        Parvente: Record "Sales & Receivables Setup";
+        FieldEtatStyle: Text[50];
+
+
 
     trigger OnAfterGetRecord()
     var
@@ -196,11 +208,39 @@ pageextension 80118 "item" extends "Item List" //31
         end;
 
         CalcFields(rec.StockMagPrincipal, "Default Bin");
+
+        // recItem.ChangeCompany(Parvente."Société base analyseur prix");
+        // IF recItem.GET("No.") then begin
+        //     recItem.CalcFields(StockQty, ImportQty);
+        //     if (recItem.StockQty > 0) then rec.etatStkFrsBase := etatStkFrsBase::"En Stock";
+        //     if (recItem.StockQty = 0) AND (recItem.ImportQty = 0) then rec.etatStkFrsBase := etatStkFrsBase::Rupture;
+        //     if (recItem.StockQty = 0) AND (recItem.ImportQty > 0) then rec.etatStkFrsBase := etatStkFrsBase::"En arrivage";
+        //     // rec.Modify();
+        // end;
+        // SetEtatStyle();
     end;
 
     trigger OnOpenPage()
     begin
+        Parvente.get;
+        if Parvente."Activer analyseur de prix" then begin
+            Parvente.TestField("Société base analyseur prix");
 
+        end;
     end;
+
+    // procedure SetEtatStyle()
+    // begin
+    //     IF etatStkFrsBase = etatStkFrsBase::Rupture THEN begin
+    //         FieldEtatStyle := 'Attention';
+    //     end else begin
+    //         if etatStkFrsBase = etatStkFrsBase::"En arrivage" THEN begin
+    //             FieldEtatStyle := 'StandardAccent';
+    //         end else begin
+    //             FieldEtatStyle := 'Favorable';
+    //         end;
+
+    //     end;
+    // end;
 
 }

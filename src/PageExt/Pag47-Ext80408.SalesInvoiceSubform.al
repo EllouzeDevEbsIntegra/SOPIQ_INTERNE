@@ -1,19 +1,8 @@
-pageextension 80224 "Sales Quote Subform" extends "Sales Quote Subform"//95
+pageextension 80408 "Sales Invoice Subform" extends "Sales Invoice Subform" //47
 {
     layout
     {
         // Add changes to page layout here
-        addafter("Unit Price") // Ajout du champ prix initial dans ligne vente
-        {
-            field("Stk Mg Principal"; "Stk Mg Principal")
-            {
-                ApplicationArea = All;
-                Editable = false;
-                StyleExpr = FieldStyleQty;
-                DecimalPlaces = 0 : 2;
-
-            }
-        }
 
         modify("Unit Price")
         {
@@ -238,7 +227,7 @@ pageextension 80224 "Sales Quote Subform" extends "Sales Quote Subform"//95
     begin
         TTCInitial := 0;
 
-        if lsalesheader.get(lsalesheader."Document Type"::Quote, "Document No.") then
+        if lsalesheader.get(lsalesheader."Document Type"::Invoice, "Document No.") then
             lsalesline.setrange("Document Type", "Document Type");
         lsalesline.setrange("Document No.", "Document No.");
         lsalesline.setrange(Type, lsalesline.Type::Item);
@@ -263,7 +252,7 @@ pageextension 80224 "Sales Quote Subform" extends "Sales Quote Subform"//95
         lsalesheader: Record "Sales Header";
     begin
         TTCInitial := 0;
-        if lsalesheader.get(lsalesheader."Document Type"::Quote, "Document No.") then
+        if lsalesheader.get(lsalesheader."Document Type"::Invoice, "Document No.") then
             lsalesheader.CalcFields("Amount Including VAT");
         lsalesheader."Old Amount Including VAT" := lsalesheader."Amount Including VAT";
         lsalesheader.modify;

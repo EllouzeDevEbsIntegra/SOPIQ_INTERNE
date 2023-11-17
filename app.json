@@ -12,6 +12,13 @@
   "logo": "",
   "target":"OnPrem",
   "dependencies": [
+    
+    {
+      "id": "d1d4beeb-5858-4da7-9cff-d769daef05f8",
+      "publisher": "Default publisher",
+      "name": "SOPIQ SMS",
+      "version": "1.0.0.0"
+    },
     {
       "id": "ad36f199-c652-4e8e-9c9a-ca851e424760",
       "publisher": "Default publisher",
@@ -40,7 +47,7 @@
       "id": "437dbf0e-84ff-417a-965d-ed2bb9650972",
       "publisher": "Microsoft",
       "name": "Base Application",
-      "version": "16.0.11240.12076"
+      "version": "16.0.11240.12077"
     }
   ],
   "screenshots": [],

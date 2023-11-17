@@ -2,6 +2,14 @@ pageextension 80136 "Sales Order" extends "Sales Order"//42
 {
     layout
     {
+        addafter("Prepmt. Payment Terms Code")
+        {
+            field(Acopmpte; Acopmpte)
+            {
+                ApplicationArea = all;
+                Editable = false;
+            }
+        }
         // Add changes to page layout here
         addafter("Sell-to Customer Name")
         {
@@ -61,137 +69,143 @@ pageextension 80136 "Sales Order" extends "Sales Order"//42
                     Verified: Boolean;
                     Error: Text;
                     UserSetup: Record "User Setup";
+                    SalesReceivablesSetup: Record "Sales & Receivables Setup";
                 begin
-                    // Update Posting date today when user post only today
-                    UserSetup.Reset();
-                    UserSetup.get(UserId);
-                    if (UserSetup."Allow Posting Only Today" = true)
-                    then begin
-                        rec."Posting Date" := System.Today;
-                        rec.Validate("Posting Date");
-                        rec.Modify();
-                    end;
+                    // Vérification code vendeur si c'est obligatoire dans paramètre vente
+                    SalesReceivablesSetup.get();
+                    if (SalesReceivablesSetup.VendorCodeRequired) AND (rec."Salesperson Code" = '') then
+                        Error('Code vendeur obligatoire !')
+                    else begin
+                        // Update Posting date today when user post only today
+                        UserSetup.Reset();
+                        UserSetup.get(UserId);
+                        if (UserSetup."Allow Posting Only Today" = true)
+                        then begin
+                            rec."Posting Date" := System.Today;
+                            rec.Validate("Posting Date");
+                            rec.Modify();
+                        end;
 
-                    // Initialisation
-                    recCustomer.Reset();
-                    CreditAutorise := 0;
-                    CustomerEncour := 0;
-                    Verified := false;
-                    Error := 'Client bloqué : \';
+                        // Initialisation
+                        recCustomer.Reset();
+                        CreditAutorise := 0;
+                        CustomerEncour := 0;
+                        Verified := false;
+                        Error := 'Client bloqué : \';
 
 
 
-                    if (Status = Status::Open) then
-                        Error('Statut doit être égal à %1 dans En-tête vente: Type document= %2, N°=%3. La valeur actuelle est %4', Status::Released, rec."Document Type", rec."No.", rec.Status::Open) else begin
-                        recCustomer.SetRange("No.", "Sell-to Customer No.");
-                        if recCustomer.FindFirst() then begin
-                            recCustomer.CalcFields("Opened Invoice", "Shipped Not Invoiced BL", "Return Receipts Not Invoiced");
+                        if (Status = Status::Open) then
+                            Error('Statut doit être égal à %1 dans En-tête vente: Type document= %2, N°=%3. La valeur actuelle est %4', Status::Released, rec."Document Type", rec."No.", rec.Status::Open) else begin
+                            recCustomer.SetRange("No.", "Sell-to Customer No.");
+                            if recCustomer.FindFirst() then begin
+                                recCustomer.CalcFields("Opened Invoice", "Shipped Not Invoiced BL", "Return Receipts Not Invoiced");
 
-                            // Message('%1', rec."Old Amount Including VAT");
-                            // Message('No. : %1 - Sell-to Customer No. : %2', recCustomer."No.", "Sell-to Customer No.");
-                            nbFactureNPautorise := recCustomer."Nb Facture NP";
-                            CreditAutorise := recCustomer."Credit Limit (LCY)";
-                            CustomerEncour := recCustomer."Opened Invoice" + recCustomer."Shipped Not Invoiced BL" + rec."Old Amount Including VAT" + recCustomer."Return Receipts Not Invoiced";
+                                // Message('%1', rec."Old Amount Including VAT");
+                                // Message('No. : %1 - Sell-to Customer No. : %2', recCustomer."No.", "Sell-to Customer No.");
+                                nbFactureNPautorise := recCustomer."Nb Facture NP";
+                                CreditAutorise := recCustomer."Credit Limit (LCY)";
+                                CustomerEncour := recCustomer."Opened Invoice" + recCustomer."Shipped Not Invoiced BL" + rec."Old Amount Including VAT" + recCustomer."Return Receipts Not Invoiced";
 
-                            if (CustomerEncour < CreditAutorise) then
-                                Verified := true else
-                                Error := Error + '* Crédit autorisé du client est dépassé ! \';
+                                if (CustomerEncour < CreditAutorise) then
+                                    Verified := true else
+                                    Error := Error + '* Crédit autorisé du client est dépassé ! \';
 
-                            if ("Nbr factures impayées" > "nbFactureNPautorise") THEN begin
-                                Verified := false;
-                                Error := Error + '* Nombre de factures non réglées du client est dépassé ! \';
+                                if ("Nbr factures impayées" > "nbFactureNPautorise") THEN begin
+                                    Verified := false;
+                                    Error := Error + '* Nombre de factures non réglées du client est dépassé ! \';
+                                end;
+
+
+
                             end;
 
 
+                            if (Verified) then begin
+                                FacturerQst := 'Facturer';
+                                UserSetup.Get(UserId);
+                                TestField(Status, Status::Released);
+                                TypeExped := format("Expédition type");
+                                if UserSetup."Allow Invoice Option" then
+                                    options := TypeExped + ',' + FacturerQst
+                                else
+                                    options := TypeExped;
+                                CASE STRMENU(Options, ExpeditionOrInvoice(Rec), Choix) OF
+                                    1:
+                                        begin
 
-                        end;
-
-
-                        if (Verified) then begin
-                            FacturerQst := 'Facturer';
-                            UserSetup.Get(UserId);
-                            TestField(Status, Status::Released);
-                            TypeExped := format("Expédition type");
-                            if UserSetup."Allow Invoice Option" then
-                                options := TypeExped + ',' + FacturerQst
-                            else
-                                options := TypeExped;
-                            CASE STRMENU(Options, ExpeditionOrInvoice(Rec), Choix) OF
-                                1:
-                                    begin
-
-                                        case "Expédition type" of
-                                            "Expédition type"::" ":
-                                                begin
-                                                    error(TypeextVide);
-                                                end;
-
-                                            "Expédition type"::"Bon de sortie":
-                                                begin
-                                                    //  If Confirm(confirmation, True, False) then begin
-                                                    SalesOrder := rec;
-                                                    SalesSetup.get;
-                                                    SalesSetup.TestField("Posted BC");
-                                                    // ShipNo := NoSeriesMgt.GetNextNo(SalesSetup."Posted BC", SalesOrder."Posting Date", true);
-                                                    // SalesOrder."Shipping No." := ShipNo;
-                                                    SalesOrder.BS := true;
-                                                    SalesOrder.Ship := true;
-                                                    SalesOrder.MODIFY;
-                                                    CODEUNIT.Run(CODEUNIT::"Sales-Post", SalesOrder);
-                                                    // ArchiveBS(SalesOrder."Shipping No.");
-                                                    SalesOrder.bs := false;
-                                                    SalesOrder.Ship := false;
-                                                    SalesOrder.MODIFY;
-                                                    SalesShipmentHead.Reset();
-                                                    SalesShipmentHead.SetRange("Order No.", SalesOrder."No.");
-                                                    IF SalesShipmentHead.FindLast() then begin
-                                                        page.Run(130, SalesShipmentHead);
-                                                        SalesOrder."Statut B2B" := SalesOrder."Statut B2B"::"Livré";
-                                                        SalesOrder.Modify();
+                                            case "Expédition type" of
+                                                "Expédition type"::" ":
+                                                    begin
+                                                        error(TypeextVide);
                                                     end;
-                                                    // end else begin
-                                                    //     message(confirmationcanceled);
-                                                    // end;
-                                                end;
-                                            "Expédition type"::"Expédition":
-                                                begin
-                                                    // If Confirm(confirmation1, True, False) then begin
-                                                    SalesOrder := rec;
-                                                    SalesSetup.get;
-                                                    // ShipNo := NoSeriesMgt.GetNextNo(SalesSetup."Posted Shipment Nos.", SalesOrder."Posting Date", true);
-                                                    // SalesOrder."Shipping No." := ShipNo;
-                                                    SalesOrder.Ship := true;
-                                                    SalesOrder.MODIFY;
-                                                    CODEUNIT.Run(CODEUNIT::"Sales-Post", SalesOrder);
-                                                    SalesOrder.Ship := false;
-                                                    SalesOrder.MODIFY;
-                                                    SalesShipmentHead.Reset();
-                                                    SalesShipmentHead.SetRange("Order No.", SalesOrder."No.");
-                                                    IF SalesShipmentHead.FindLast() then begin
-                                                        page.Run(130, SalesShipmentHead);
-                                                        SalesOrder."Statut B2B" := SalesOrder2."Statut B2B"::"Livré";
-                                                        SalesOrder.Modify();
+
+                                                "Expédition type"::"Bon de sortie":
+                                                    begin
+                                                        //  If Confirm(confirmation, True, False) then begin
+                                                        SalesOrder := rec;
+                                                        SalesSetup.get;
+                                                        SalesSetup.TestField("Posted BC");
+                                                        // ShipNo := NoSeriesMgt.GetNextNo(SalesSetup."Posted BC", SalesOrder."Posting Date", true);
+                                                        // SalesOrder."Shipping No." := ShipNo;
+                                                        SalesOrder.BS := true;
+                                                        SalesOrder.Ship := true;
+                                                        SalesOrder.MODIFY;
+                                                        CODEUNIT.Run(CODEUNIT::"Sales-Post", SalesOrder);
+                                                        // ArchiveBS(SalesOrder."Shipping No.");
+                                                        SalesOrder.bs := false;
+                                                        SalesOrder.Ship := false;
+                                                        SalesOrder.MODIFY;
+                                                        SalesShipmentHead.Reset();
+                                                        SalesShipmentHead.SetRange("Order No.", SalesOrder."No.");
+                                                        IF SalesShipmentHead.FindLast() then begin
+                                                            page.Run(130, SalesShipmentHead);
+                                                            SalesOrder."Statut B2B" := SalesOrder."Statut B2B"::"Livré";
+                                                            SalesOrder.Modify();
+                                                        end;
+                                                        // end else begin
+                                                        //     message(confirmationcanceled);
+                                                        // end;
                                                     end;
-                                                    // end else begin
-                                                    //     message(confirmationcanceled);
-                                                    // end;
-                                                end;
+                                                "Expédition type"::"Expédition":
+                                                    begin
+                                                        // If Confirm(confirmation1, True, False) then begin
+                                                        SalesOrder := rec;
+                                                        SalesSetup.get;
+                                                        // ShipNo := NoSeriesMgt.GetNextNo(SalesSetup."Posted Shipment Nos.", SalesOrder."Posting Date", true);
+                                                        // SalesOrder."Shipping No." := ShipNo;
+                                                        SalesOrder.Ship := true;
+                                                        SalesOrder.MODIFY;
+                                                        CODEUNIT.Run(CODEUNIT::"Sales-Post", SalesOrder);
+                                                        SalesOrder.Ship := false;
+                                                        SalesOrder.MODIFY;
+                                                        SalesShipmentHead.Reset();
+                                                        SalesShipmentHead.SetRange("Order No.", SalesOrder."No.");
+                                                        IF SalesShipmentHead.FindLast() then begin
+                                                            page.Run(130, SalesShipmentHead);
+                                                            SalesOrder."Statut B2B" := SalesOrder2."Statut B2B"::"Livré";
+                                                            SalesOrder.Modify();
+                                                        end;
+                                                        // end else begin
+                                                        //     message(confirmationcanceled);
+                                                        // end;
+                                                    end;
+                                            end;
+                                        end;///livraion/facture
+                                    2:
+                                        begin
+                                            SalesOrder := rec;
+                                            SalesOrder.Invoice := true;
+                                            SalesOrder.MODIFY;
+                                            CODEUNIT.Run(CODEUNIT::"Sales-Post", SalesOrder);
                                         end;
-                                    end;///livraion/facture
-                                2:
-                                    begin
-                                        SalesOrder := rec;
-                                        SalesOrder.Invoice := true;
-                                        SalesOrder.MODIFY;
-                                        CODEUNIT.Run(CODEUNIT::"Sales-Post", SalesOrder);
-                                    end;
+                                end;
+                            end
+                            else begin
+                                Message(Error);
                             end;
-                        end
-                        else begin
-                            Message(Error);
                         end;
                     end;
-
 
                 end;
             }
@@ -214,6 +228,11 @@ pageextension 80136 "Sales Order" extends "Sales Order"//42
             exit(2) else
             exit(1);
 
+    end;
+
+    trigger OnAfterGetRecord()
+    begin
+        rec.CalcFields(Acopmpte);
     end;
 
 }

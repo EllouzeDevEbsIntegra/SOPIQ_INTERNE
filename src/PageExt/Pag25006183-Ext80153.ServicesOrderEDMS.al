@@ -1,4 +1,4 @@
-pageextension 80153 "Service Order EDMS" extends "Service Order EDMS"
+pageextension 80153 "Services Order EDMS" extends "Service Order EDMS"//25006183
 {
     layout
     {

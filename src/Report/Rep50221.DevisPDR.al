@@ -124,6 +124,10 @@ report 50221 "SI Devis  PDR"
             column(TexteLettre; TexteLettre)
             {
             }
+            column(NetAPayer; NetAPayer)
+            {
+
+            }
             column(PaymentTermsDescription; PaymentTerms.Description)
             {
             }
@@ -261,6 +265,7 @@ report 50221 "SI Devis  PDR"
             var
                 LGenBusinessPostingGroup: Record 250;
             begin
+                MTTIMBRE := "Sales Header"."STStamp Amount";
                 IF AfficherClause THEN Clause := STRSUBSTNO(Text001, Clause);
                 increment := 0;
                 CLEAR(CodeTVA);
@@ -305,7 +310,7 @@ report 50221 "SI Devis  PDR"
                 END;
 
 
-
+                NetAPayer := 0;
                 MontantRemiseGlobal := 0;
                 // Montant en toute lettre
                 MontantGloblal := 0;
@@ -332,9 +337,10 @@ report 50221 "SI Devis  PDR"
                             MontantRemiseLigne := 0;
                         END;
                     UNTIL SalesLine.NEXT = 0;
-                //TOTALNET := (MontantLigneGlobal-MontantRemiseGlobal) + MTBaseTVA + MTTIMBRE ; delta ht 170821
-
-                CU_MntLettre."Montant en texte"(TexteLettre, (MontantLigneGlobal - MontantRemiseGlobal) + MTBaseTVA);
+                MTBaseTVA := Round(MTBaseTVA, 0.001, '=');
+                NetAPayer := (MontantLigneGlobal - MontantRemiseGlobal) + MTBaseTVA + MTTIMBRE;
+                NetAPayer := ROUND(NetAPayer, 0.001, '=');
+                CU_MntLettre."Montant en texte"(TexteLettre, NetAPayer);
                 MontantLigneTVAGlobal := ROUND(MontantLigneTVA, 0.001, '<');
                 // END Montant
                 IF Salesperson.GET("Sales Header"."Salesperson Code") THEN;
@@ -421,7 +427,7 @@ report 50221 "SI Devis  PDR"
         Ttoalremise: Decimal;
         MontantRemiseGlobal: Decimal;
         MontantLigneTVAGlobal: Decimal;
-        TOTALNET: Decimal;
+        NetAPayer: Decimal;
         MTBaseTVA: Decimal;
         MontantLigneGlobal: Decimal;
         Salesperson: Record 13;

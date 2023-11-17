@@ -211,6 +211,11 @@ tableextension 80103 "Item" extends Item //27
             Caption = 'Prix Revendeur';
         }
 
+        field(50133; etatStkFrsBase; Option)
+        {
+            OptionMembers = "En Stock","Rupture","En arrivage";
+        }
+
 
     }
 

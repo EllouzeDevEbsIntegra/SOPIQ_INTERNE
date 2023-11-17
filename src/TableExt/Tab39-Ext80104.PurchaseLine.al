@@ -157,6 +157,14 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
             Editable = true;
         }
 
+        field(80106; margeUpdate; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Marge à jour';
+            Editable = false;
+            InitValue = false;
+        }
+
         field(80119; "Prix vente calculé"; Decimal)
         {
             DataClassification = ToBeClassified;
