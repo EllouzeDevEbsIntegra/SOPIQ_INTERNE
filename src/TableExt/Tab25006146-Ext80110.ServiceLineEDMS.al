@@ -2,6 +2,13 @@ tableextension 80110 "Service Line EDMS" extends "Service Line EDMS" //25006146
 {
     fields
     {
+        field(80108; "Available Qty"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+            Caption = 'Stock Disponible';
+        }
+
         field(80109; "Prix Vente Public"; Decimal)
         {
 
@@ -131,17 +138,23 @@ tableextension 80110 "Service Line EDMS" extends "Service Line EDMS" //25006146
 
         }
 
-        modify("Unit Price")
-        {
-            trigger OnAfterValidate()
-            begin
-                // if (rec."Unit Price" < rec."Prix Vente Public") then Message('Attention ! Prix de vente à vérifier SVP !');
-
-            end;
-        }
-
     }
 
     var
         myInt: Integer;
+
+    trigger OnAfterInsert()
+    var
+        recItem: Record Item;
+    begin
+
+        recItem.Reset();
+        recItem.SetRange("No.", rec."No.");
+        if recItem.FindFirst() then begin
+            recItem.CalcFields("Available Inventory");
+            rec."Available Qty" := recItem."Available Inventory";
+            rec.Modify();
+        end;
+
+    end;
 }

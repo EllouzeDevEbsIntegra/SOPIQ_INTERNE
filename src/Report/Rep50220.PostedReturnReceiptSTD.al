@@ -123,10 +123,6 @@ report 50220 "Posted Return Receipt STD"
                 column(Amount_Including_VAT; "Amount Including VAT")
                 {
                 }
-
-
-
-
                 column(Quantity_SalesShipmentLine; Quantity)
                 {
                 }
@@ -160,9 +156,10 @@ report 50220 "Posted Return Receipt STD"
                 column(MTBaseTVA; MTBaseTVA)
                 {
                 }
+                column(MontantLigne; MontantLigne)
+                {
 
-
-
+                }
 
                 trigger OnAfterGetRecord()
                 begin
@@ -173,16 +170,16 @@ report 50220 "Posted Return Receipt STD"
                     MontantLigne := 0;
                     MontantRemiseLigne := 0;
                     MontantLigneTVA := 0;
+                    MTBaseTVA := 0;
 
-                    IF Type = Type::Item THEN
-                        MontantLigne := ReturnReceiptLine.Quantity * ReturnReceiptLine."Unit Price";
-                    //  MontantRemiseLigne := Amount *( ReturnReceiptLine."Line Discount %" / 100);
-                    MontantRemiseLigne := MontantRemiseLigne + ((Amount) * ("Line Discount %" / 100));
-                    MontantLigneTVA += (Amount - MontantRemiseLigne) * (1 + (ReturnReceiptLine."VAT %" / 100));
-                    //MontantLigneTVA := ROUND((SalesShipLine."VAT %" * SalesShipLine."VAT Base Amount"))/100;
-
-                    MTBaseTVA += (Amount - MontantRemiseLigne) * (ReturnReceiptLine."VAT %" / 100);
-
+                    IF Type = Type::Item THEN begin
+                        MontantLigne := "Unit Price" * Quantity;
+                        MontantRemiseLigne := MontantLigne * ("Line Discount %" / 100);
+                        //MontantRemiseLigne := MontantRemiseLigne + ((Amount) * ("Line Discount %" / 100));
+                        MTBaseTVA := Amount;
+                        //MontantLigneTVA := ROUND((SalesShipLine."VAT %" * SalesShipLine."VAT Base Amount"))/100;
+                        MontantLigneTVA := (Amount * ("VAT %" / 100));
+                    end;
 
 
 

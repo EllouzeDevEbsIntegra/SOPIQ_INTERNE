@@ -49,6 +49,7 @@
       "name": "Base Application",
       "version": "16.0.11240.12077"
     }
+
   ],
   "screenshots": [],
   "platform": "1.0.0.0",
@@ -59,6 +60,7 @@
     }
   ],
   "showMyCode": true,
-  "runtime": "5.0"
+  "runtime": "5.0",
+  "features": [ "TranslationFile"]
 
 }

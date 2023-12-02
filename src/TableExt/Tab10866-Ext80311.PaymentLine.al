@@ -86,9 +86,6 @@ tableextension 80311 "Payment Line" extends "Payment Line" //10866
         // Add changes to field groups here
     }
 
-    var
-        myInt: Integer;
-
     procedure updateComment(PaimentLine: Record "Payment Line")
     var
         param, param1, param2 : Text;
@@ -109,7 +106,7 @@ tableextension 80311 "Payment Line" extends "Payment Line" //10866
             else begin
                 param := ' Acompte/' + "STOrder No." + ' ';
             end;
-            if ("External Document No." <> '') then param1 := ' N°' + "External Document No." + ' ';
+            if ("External Document No." <> '') then param1 := "External Document No." + ' ';
             if ("Type réglement" = 'ENC_TRAITE') OR ("Type réglement" = 'DEC_TRAITE') then param2 := ' ' + Format("Due Date") + ' ';
 
             STCommentaires := "AbreviationPaimentType" + param2 + param1 + param + ' ' + STLibellé;
@@ -121,6 +118,19 @@ tableextension 80311 "Payment Line" extends "Payment Line" //10866
     trigger OnAfterModify()
     begin
         updateComment(rec);
+        if (postedModified = true) then rec.Posted := true;
         rec.Modify();
+
     end;
+
+    trigger OnBeforeModify()
+    begin
+        if (rec."Due Date" <> xrec."Due Date") AND (Posted = true) AND ("Copied To No." = '') then begin
+            rec.Posted := false;
+            postedModified := true;
+        end;
+    end;
+
+    var
+        postedModified: Boolean;
 }

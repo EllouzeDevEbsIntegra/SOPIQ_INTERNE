@@ -74,7 +74,7 @@ page 50112 "Purchase Quote Check"
                     Caption = 'Prix de vente (Calculé)';
                     Editable = false;
                 }
-                field("StockQty"; ItemStk.StockQty)
+                field("Available Inventory"; ItemStk."Available Inventory")
                 {
                     Caption = 'Stock';
                     ApplicationArea = All;
@@ -281,8 +281,8 @@ page 50112 "Purchase Quote Check"
     begin
 
         if ItemStk.get("No.") Then
-            ItemStk.CalcFields("Last starting Date", "Last Curr. Price.", "Qty. on Purch. Order", "Last Date", "Last Ending Date", StockQty, ImportQty, "First Reception Date", "Pre Last Curr. Price.");
-        FieldStyleQty := SetStyleQte(ItemStk.StockQty);
+            ItemStk.CalcFields("Last starting Date", "Last Curr. Price.", "Qty. on Purch. Order", "Last Date", "Last Ending Date", "Available Inventory", ImportQty, "First Reception Date", "Pre Last Curr. Price.");
+        FieldStyleQty := SetStyleQte(ItemStk."Available Inventory");
         FieldStyleImportQty := SetStyleQte(ItemStk.ImportQty);
         FieldStyleOnPurchQty := SetStyleQte(ItemStk."Qty. on Purch. Order");
         FieldStyleDernierPUHT := SetStylePrix(ItemStk."Unit Price");

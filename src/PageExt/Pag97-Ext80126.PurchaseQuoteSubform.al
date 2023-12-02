@@ -5,7 +5,7 @@ pageextension 80126 "Purchase Quote Subform" extends "Purchase Quote Subform" //
 
         addafter(Quantity)
         {
-            field(Stock; Itemstk."StockQty")
+            field("Available Inventory"; Itemstk."Available Inventory")
             {
                 Caption = 'Stock actuel';
                 ApplicationArea = All;
@@ -90,7 +90,7 @@ pageextension 80126 "Purchase Quote Subform" extends "Purchase Quote Subform" //
     begin
 
         if ItemStk.get("No.") Then
-            ItemStk.CalcFields("Qty. on Purch. Order", "StockQty");
+            ItemStk.CalcFields("Qty. on Purch. Order", "Available Inventory");
 
         FieldStyleQty := SetStyle(ItemStk.Inventory);
         FieldStyleOnOrdQty := SetStyle(ItemStk."Qty. on Purch. Order");

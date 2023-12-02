@@ -7,7 +7,9 @@ page 50105 "Item Kit"
     ModifyAllowed = false;
     Editable = true;
     Caption = 'Produit Kit';
-    SourceTableView = sorting("StockQty", "ImportQty", "Qty. on Purch. Order") order(descending) where(Produit = const(FALSE));
+    //SourceTableView = sorting("Available Inventory", "ImportQty", "Qty. on Purch. Order") order(descending) where(Produit = const(FALSE));
+    SourceTableView = sorting("Qty Stock", "Qty Import", "Qty. on Purch. Order") order(descending) where(Produit = const(FALSE), "Fabricant Is Actif" = filter(true));
+
     layout
     {
         area(content)
@@ -36,14 +38,14 @@ page 50105 "Item Kit"
                     Editable = false;
                     Style = strong;
                 }
-                field("StockQty"; StockQty)
+                field("Qty Stock"; "Qty Stock")
                 {
                     Caption = 'Stock';
                     ApplicationArea = All;
                     StyleExpr = FieldStyleQty;
 
                 }
-                field("ImportQty"; ImportQty)
+                field("Qty Import"; "Qty Import")
                 {
                     Caption = 'Import';
                     ApplicationArea = All;
@@ -154,15 +156,20 @@ page 50105 "Item Kit"
         [InDataSet]
         FieldStyleQty, FieldStyleImportQty, FieldStyleOnPurchQty : Text[50];
 
+    trigger OnOpenPage()
+    begin
+
+    end;
 
     trigger OnAfterGetRecord()
     var
 
     begin
 
-        CalcFields("Last Curr. Price.", "Qty. on Purch. Order", "Last Date", StockQty, ImportQty);
-        FieldStyleQty := SetStyleQte(StockQty);
-        FieldStyleImportQty := SetStyleQte(ImportQty);
+        CalcFields("Last Curr. Price.", "Qty. on Purch. Order", "Last Date", "Qty Stock", "Qty Import");
+
+        FieldStyleQty := SetStyleQte("Qty Stock");
+        FieldStyleImportQty := SetStyleQte("Qty Import");
         FieldStyleOnPurchQty := SetStyleQte("Qty. on Purch. Order");
     end;
 
@@ -259,15 +266,6 @@ page 50105 "Item Kit"
         SetFilter("No.", '''''');
         CurrPage.Update();
     end;
-
-
-
-
-
-
-
-
-
 
     //////////////////////////////////////////////////////// ?! A VERIFIER
 

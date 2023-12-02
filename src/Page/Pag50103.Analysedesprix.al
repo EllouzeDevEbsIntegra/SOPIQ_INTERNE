@@ -139,10 +139,10 @@ page 50103 "Analyse des prix"
 
         recItem.ChangeCompany(Parvente."Société base analyseur prix");
         IF recItem.GET("No.") then begin
-            recItem.CalcFields(StockQty, ImportQty);
-            if (recItem.StockQty > 0) then rec.etatStkFrsBase := etatStkFrsBase::"En Stock";
-            if (recItem.StockQty = 0) AND (recItem.ImportQty = 0) then rec.etatStkFrsBase := etatStkFrsBase::Rupture;
-            if (recItem.StockQty = 0) AND (recItem.ImportQty > 0) then rec.etatStkFrsBase := etatStkFrsBase::"En arrivage";
+            recItem.CalcFields("Available Inventory", ImportQty);
+            if (recItem."Available Inventory" > 0) then rec.etatStkFrsBase := etatStkFrsBase::"En Stock";
+            if (recItem."Available Inventory" = 0) AND (recItem.ImportQty = 0) then rec.etatStkFrsBase := etatStkFrsBase::Rupture;
+            if (recItem."Available Inventory" = 0) AND (recItem.ImportQty > 0) then rec.etatStkFrsBase := etatStkFrsBase::"En arrivage";
             // rec.Modify();
         end;
         SetEtatStyle();

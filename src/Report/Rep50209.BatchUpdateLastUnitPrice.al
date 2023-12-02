@@ -3,7 +3,7 @@ report 50209 "Batch Update Last Unit Price"
     UsageCategory = ReportsAndAnalysis;
     ApplicationArea = All;
     Caption = 'Mise à jour des derniers prix achat calculé en Devise société';
-    Permissions = tabledata Item = rimd; // Permission pour l'utilsateur de lire / ecrire / modofier / inserer dans une table 'Artcle' dans ce cas
+    Permissions = tabledata Item = rimd, tabledata "Purchases & Payables Setup" = rimd; // Permission pour l'utilsateur de lire / ecrire / modofier / inserer dans une table 'Artcle' dans ce cas
     ProcessingOnly = true;  // Pour dire que just c'est un traitement en arrière plan
     dataset
     {
@@ -96,7 +96,19 @@ report 50209 "Batch Update Last Unit Price"
     end;
 
     trigger OnPostReport()
+    var
+        PurchasesPayablesSetup: Record "Purchases & Payables Setup";
+        currentYear, lastYear : Integer;
     begin
+        if PurchasesPayablesSetup.get() then begin
+            currentYear := DATE2DMY(Today, 3);
+            lastYear := currentYear - 1;
+            if (PurchasesPayablesSetup."Current Year" <> currentYear) then begin
+                PurchasesPayablesSetup."Current Year" := currentYear;
+                PurchasesPayablesSetup."Last Year" := lastYear;
+                PurchasesPayablesSetup.Modify();
+            end;
+        end;
 
 
     end;

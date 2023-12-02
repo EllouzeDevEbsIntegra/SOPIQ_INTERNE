@@ -24,6 +24,16 @@ tableextension 80121 "Purchases & Payables Setup" extends "Purchases & Payables 
             InitValue = false;
             DataClassification = ToBeClassified;
         }
+
+        field(80123; "Current Year"; Integer)
+        {
+            DataClassification = ToBeClassified;
+        }
+
+        field(80124; "Last Year"; Integer)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     var

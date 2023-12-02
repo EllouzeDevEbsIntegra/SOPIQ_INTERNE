@@ -250,7 +250,6 @@ table 50023 "Specific Item Ledger Entry"
                 end;
             end;
         }
-
     }
 
 }

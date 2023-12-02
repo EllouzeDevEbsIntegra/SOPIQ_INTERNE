@@ -193,7 +193,7 @@ pageextension 80408 "Sales Invoice Subform" extends "Sales Invoice Subform" //47
     var
         myInt: Integer;
     begin
-        FieldStyleQty := SetStyleQte("Stk Mg Principal");
+        FieldStyleQty := SetStyleQte("Available Qty");
         salesheader.get("Document Type", "Document No.");
         TTCInitial := salesheader."Old Amount Including VAT";
         StampAmount := salesheader."STStamp Amount";

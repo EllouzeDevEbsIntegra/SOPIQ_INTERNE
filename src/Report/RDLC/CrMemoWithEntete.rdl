@@ -43,10 +43,10 @@
                                     <Width>3.16463cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>1.95301cm</Width>
+                                    <Width>1.21218cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>6.9415cm</Width>
+                                    <Width>7.69703cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
                                     <Width>2.03976cm</Width>
@@ -774,7 +774,6 @@
                                               <PaddingBottom>2pt</PaddingBottom>
                                             </Style>
                                           </Textbox>
-                                          <rd:Selected>true</rd:Selected>
                                         </CellContents>
                                       </TablixCell>
                                       <TablixCell>
@@ -1273,7 +1272,7 @@
                               <DataSetName>DataSet_Result</DataSetName>
                               <Left>0.24571cm</Left>
                               <Height>1.30959cm</Height>
-                              <Width>20.14452cm</Width>
+                              <Width>20.15922cm</Width>
                               <Style>
                                 <Border>
                                   <Style>Solid</Style>
@@ -2185,7 +2184,7 @@
                       <Style>
                         <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
-                        <Format>d MMMM yyyy</Format>
+                        <Format>d</Format>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -2197,7 +2196,7 @@
               <Top>6.40482cm</Top>
               <Left>2.089cm</Left>
               <Height>0.60944cm</Height>
-              <Width>3.45618cm</Width>
+              <Width>3.80014cm</Width>
               <ZIndex>3</ZIndex>
               <Style>
                 <Border>

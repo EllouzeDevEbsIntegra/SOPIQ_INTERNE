@@ -1,7 +1,7 @@
 report 50204 "Phys Invt Recording"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report/RDLC/PhysInvtRecording.rdl';
+    RDLCLayout = './src/report/RDLC/PhysInvtRecords.rdl';
     ApplicationArea = Warehouse;
     Caption = 'Phys. Invt. Recording';
     UsageCategory = ReportsAndAnalysis;
@@ -16,6 +16,10 @@ report 50204 "Phys Invt Recording"
             {
             }
             column(Phys__Invt__Recording_Header_Recording_No_; "Recording No.")
+            {
+            }
+
+            column(AfficherQte; AfficherQte)
             {
             }
             dataitem(PageCounter; "Integer")
@@ -176,6 +180,11 @@ report 50204 "Phys Invt Recording"
                     {
                     }
 
+                    trigger OnAfterGetRecord()
+                    begin
+                        CalcFields("Phys. Invt. Record Line"."Qte Prevu");
+                    end;
+
                 }
             }
         }
@@ -187,6 +196,15 @@ report 50204 "Phys Invt Recording"
 
         layout
         {
+            area(Content)
+            {
+                group(Options)
+                {
+                    field("Afficher Quantité Prévue"; AfficherQte)
+                    {
+                    }
+                }
+            }
         }
 
         actions
@@ -201,5 +219,6 @@ report 50204 "Phys Invt Recording"
     var
         CurrReport_PAGENOCaptionLbl: Label 'Page';
         Phys__Inventory_RecordingCaptionLbl: Label 'Phys. Inventory Recording';
+        AfficherQte: Boolean;
 }
 

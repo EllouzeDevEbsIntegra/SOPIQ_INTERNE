@@ -6,9 +6,10 @@ pageextension 80114 "Sales Order Subform" extends "Sales Order Subform" //46
 
         addafter("Unit Price") // Ajout du champ prix initial dans ligne vente
         {
-            field("Stk Mg Principal"; "Stk Mg Principal")
+            field("Available Qty"; "Available Qty")
             {
                 ApplicationArea = All;
+                Caption = 'Stock Disponible';
                 Editable = false;
                 StyleExpr = FieldStyleQty;
                 DecimalPlaces = 0 : 2;
@@ -95,7 +96,7 @@ pageextension 80114 "Sales Order Subform" extends "Sales Order Subform" //46
 
     trigger OnAfterGetRecord()
     begin
-        FieldStyleQty := SetStyleQte("Stk Mg Principal");
+        FieldStyleQty := SetStyleQte("Available Qty");
         CalcFields("Received Quantity");
     end;
 

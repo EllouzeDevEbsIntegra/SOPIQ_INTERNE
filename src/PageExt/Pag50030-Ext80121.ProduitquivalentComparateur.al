@@ -55,7 +55,7 @@ pageextension 80121 "Produit équivalent Comparateur" extends "Produit équivale
 
         addafter("Import Inventory")
         {
-            field("StockQty"; StockQty)
+            field("Available Inventory"; "Available Inventory")
             {
                 Caption = 'Stock actuel';
                 ApplicationArea = All;
@@ -197,7 +197,7 @@ pageextension 80121 "Produit équivalent Comparateur" extends "Produit équivale
     begin
 
         CalcFields("Last Curr. Price.");
-        FieldStyleQty := SetStyleQte(StockQty);
+        FieldStyleQty := SetStyleQte("Available Inventory");
         FieldStyleQtyImport := SetStyleQte(ImportQty);
 
     end;

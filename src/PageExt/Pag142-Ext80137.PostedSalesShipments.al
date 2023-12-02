@@ -16,6 +16,11 @@ pageextension 80137 "Posted Sales Shipments" extends "Posted Sales Shipments"//1
             {
                 Caption = 'N° Commande';
             }
+
+            field(Acopmpte; Acopmpte)
+            {
+                Caption = 'Acompte';
+            }
         }
     }
 
@@ -29,6 +34,6 @@ pageextension 80137 "Posted Sales Shipments" extends "Posted Sales Shipments"//1
 
     trigger OnAfterGetRecord()
     begin
-        CalcFields("Montant Ouvert");
+        CalcFields("Montant Ouvert", Acopmpte);
     end;
 }

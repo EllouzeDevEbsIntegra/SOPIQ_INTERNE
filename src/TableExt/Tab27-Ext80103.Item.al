@@ -2,50 +2,62 @@ tableextension 80103 "Item" extends Item //27
 {
     fields
     {
-        field(80103; "Sales Qty 'Year'"; Decimal)
+
+        field(80100; "Available Inventory"; Decimal)
         {
-            CalcFormula = - Sum("Value Entry"."Invoiced Quantity" WHERE("Item Ledger Entry Type" = CONST(Sale),
-                                                                        "Item No." = FIELD("No."),
-                                                                        "Global Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
-                                                                        "Global Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
-                                                                        "Location Code" = FIELD("Location Filter"),
-                                                                        "Drop Shipment" = FIELD("Drop Shipment Filter"),
-                                                                        "Variant Code" = FIELD("Variant Filter"),
-                                                                        "Posting Date" = FIELD("Date filter 'Year'")));
-            Caption = 'Sales (Qty.)';
+            CalcFormula = Sum("Item Ledger Entry".Quantity WHERE("Item No." = FIELD("No."),
+                                                                  "isLocationExclu" = const(false),
+                                                                  "Global Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
+                                                                  "Global Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
+                                                                  "Location Code" = FIELD("Location Filter"),
+                                                                  "Drop Shipment" = FIELD("Drop Shipment Filter"),
+                                                                  "Variant Code" = FIELD("Variant Filter"),
+                                                                  "Lot No." = FIELD("Lot No. Filter"),
+                                                                  "Serial No." = FIELD("Serial No. Filter"),
+                                                                  "Unit of Measure Code" = FIELD("Unit of Measure Filter")));
+            Caption = 'Stock Disponible';
             DecimalPlaces = 0 : 5;
             Editable = false;
             FieldClass = FlowField;
         }
 
-        field(80104; "Sales Qty 'Year-1'"; Decimal)
+        field(80101; "ImportQty"; Decimal)
         {
-            CalcFormula = - Sum("Value Entry"."Invoiced Quantity" WHERE("Item Ledger Entry Type" = CONST(Sale),
-                                                                        "Item No." = FIELD("No."),
-                                                                        "Global Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
-                                                                        "Global Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
-                                                                        "Location Code" = FIELD("Location Filter"),
-                                                                        "Drop Shipment" = FIELD("Drop Shipment Filter"),
-                                                                        "Variant Code" = FIELD("Variant Filter"),
-                                                                        "Posting Date" = FIELD("Date filter 'Year-1'")));
-            Caption = 'Sales (Qty.)';
+            CalcFormula = Sum("Item Ledger Entry".Quantity WHERE("Item No." = FIELD("No."),
+                                                                  isImportLocation = const(true),
+                                                                  "Global Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
+                                                                  "Global Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
+                                                                  "Location Code" = FIELD("Location Filter"),
+                                                                  "Drop Shipment" = FIELD("Drop Shipment Filter"),
+                                                                  "Variant Code" = FIELD("Variant Filter"),
+                                                                  "Lot No." = FIELD("Lot No. Filter"),
+                                                                  "Serial No." = FIELD("Serial No. Filter"),
+                                                                  "Unit of Measure Code" = FIELD("Unit of Measure Filter")));
+            Caption = 'Stock Import';
             DecimalPlaces = 0 : 5;
             Editable = false;
             FieldClass = FlowField;
         }
 
-        field(80105; "Date filter 'Year'"; Date)
+        field(50119; "Qty Import"; Decimal)
         {
-
+            CalcFormula = sum("Item Ledger Entry".Quantity where("Item No." = field("No."), "Location Code" = filter('IMPORT')));
+            Editable = false;
+            FieldClass = FlowField;
+            DecimalPlaces = 0 : 5;
         }
-        field(80106; "Date filter 'Year-1'"; Date)
-        {
 
+        field(50120; "Qty Stock"; Decimal)
+        {
+            CalcFormula = sum("Item Ledger Entry".Quantity where("Item No." = field("No."), "Location Code" = filter('<>IMPORT&<>LITIGE')));
+            Editable = false;
+            FieldClass = FlowField;
+            DecimalPlaces = 0 : 5;
         }
 
-        field(80107; "Mg Principal Filter"; code[20])
+        field(80107; "Mg Principal Filter"; code[100])
         {
-
+            DataClassification = ToBeClassified;
         }
 
         modify(Reserve)
@@ -83,33 +95,6 @@ tableextension 80103 "Item" extends Item //27
             Editable = false;
             FieldClass = FlowField;
         }
-
-
-        field(50119; "ImportQty"; Decimal)
-        {
-            CalcFormula = sum("Item Ledger Entry".Quantity where("Item No." = field("No."), "Location Code" = filter('IMPORT')));
-            Editable = false;
-            FieldClass = FlowField;
-            DecimalPlaces = 0 : 5;
-        }
-
-        field(50120; "StockQty"; Decimal)
-        {
-            CalcFormula = sum("Item Ledger Entry".Quantity where("Item No." = field("No."), "Location Code" = filter('<>IMPORT&<>LITIGE')));
-            Editable = false;
-            FieldClass = FlowField;
-            DecimalPlaces = 0 : 5;
-        }
-
-        field(50220; "StockMagPrincipal"; Decimal)
-        {
-            CalcFormula = sum("Item Ledger Entry".Quantity where("Item No." = field("No."), "Location Code" = field("Mg Principal Filter")));
-            Editable = false;
-            FieldClass = FlowField;
-            DecimalPlaces = 0 : 5;
-        }
-
-
 
 
         field(50111; "Last Date"; Date)
@@ -214,11 +199,32 @@ tableextension 80103 "Item" extends Item //27
         field(50133; etatStkFrsBase; Option)
         {
             OptionMembers = "En Stock","Rupture","En arrivage";
+            DataClassification = ToBeClassified;
+        }
+
+        field(50134; "Current Year"; Integer)
+        {
+            CalcFormula = lookup("Purchases & Payables Setup"."Current Year");
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(50135; "Last Year"; Integer)
+        {
+            CalcFormula = lookup("Purchases & Payables Setup"."Last Year");
+            Editable = false;
+            FieldClass = FlowField;
         }
 
 
     }
 
+    keys
+    {
+        // key(keySorting; "Qty Stock", "Qty Import")
+        // {
+        // }
+    }
     trigger OnAfterDelete()
     var
         recItemMaster: Record "items Master";

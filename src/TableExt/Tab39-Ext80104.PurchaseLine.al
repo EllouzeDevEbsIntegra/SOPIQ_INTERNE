@@ -200,11 +200,12 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
         recItem.Reset();
         recItem.SetRange("No.", rec."No.");
         if recItem.FindFirst() then begin
-            recInventorySetup.get();
-            recItem."Mg Principal Filter" := recInventorySetup."Magasin Central";
-            recItem.Modify();
-            recItem.CalcFields(StockMagPrincipal);
-            "Stk Mg Principal" := recItem.StockMagPrincipal;
+            // recInventorySetup.get();
+            // recItem."Mg Principal Filter" := recInventorySetup."Magasin Central";
+            // recItem.Modify();
+            // recItem.CalcFields(StockMagPrincipal);
+            recItem.CalcFields("Available Inventory");
+            rec."Stk Mg Principal" := recItem."Available Inventory";
             // Message('Mg Principal Setup : %1 - Mg Principal Item :%2', recInventorySetup."Magasin Central", recItem."Mg Principal Filter");
             // Message('NO %1 - QteMgP %2 - SalesStkMgP %3', recItem."No.", recItem.StockMagPrincipal, "Stk Mg Principal");
             rec.Modify();

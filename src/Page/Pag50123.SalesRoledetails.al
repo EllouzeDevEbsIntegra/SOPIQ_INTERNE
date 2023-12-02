@@ -113,7 +113,15 @@ page 50123 "Sales Role details"
                     RunObject = Page "Sales Order List";
                     ToolTip = 'Record your agreements with customers to sell certain products on certain delivery and payment terms. Sales orders, unlike sales invoices, allow you to ship partially, deliver directly from your vendor to your customer, initiate warehouse handling, and print various customer-facing documents. Sales invoicing is integrated in the sales order process.';
                 }
+                action("Etat Vente")
+                {
+                    ApplicationArea = BasicEU;
+                    Caption = 'Etat de vente journalier';
+                    Image = Bank;
+                    RunObject = report 50232;
+                    ToolTip = 'Etat de vente journalier';
 
+                }
                 action("Blanket Sales Orders")
                 {
                     ApplicationArea = Suite;

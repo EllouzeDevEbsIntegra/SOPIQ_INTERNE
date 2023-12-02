@@ -127,10 +127,11 @@ tableextension 80100 "Sales line" extends "Sales line" //37
             Editable = false;
         }
 
-        field(50200; "Stk Mg Principal"; Decimal)
+        field(50200; "Available Qty"; Decimal)
         {
             DataClassification = ToBeClassified;
             Editable = false;
+            Caption = 'Stock Disponible';
         }
 
         field(50210; "Received Quantity"; Decimal)
@@ -165,22 +166,14 @@ tableextension 80100 "Sales line" extends "Sales line" //37
     trigger OnAfterInsert()
     var
         recItem: Record Item;
-        recInventorySetup: Record "Inventory Setup";
-
     begin
 
         recItem.Reset();
         recItem.SetRange("No.", rec."No.");
         if recItem.FindFirst() then begin
-            recInventorySetup.get();
-            recItem."Mg Principal Filter" := recInventorySetup."Magasin Central";
-            recItem.Modify();
-            recItem.CalcFields(StockMagPrincipal);
-            "Stk Mg Principal" := recItem.StockMagPrincipal;
-            // Message('Mg Principal Setup : %1 - Mg Principal Item :%2', recInventorySetup."Magasin Central", recItem."Mg Principal Filter");
-            // Message('NO %1 - QteMgP %2 - SalesStkMgP %3', recItem."No.", recItem.StockMagPrincipal, "Stk Mg Principal");
+            recItem.CalcFields("Available Inventory");
+            rec."Available Qty" := recItem."Available Inventory";
             rec.Modify();
-
         end;
 
     end;

@@ -1064,7 +1064,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>=Sum(Fields!Amount.Value)</Value>
+                        <Value>=Sum(Fields!MontantLigne.Value)</Value>
                         <Style>
                           <Format>#,0.000;(#,0.000)</Format>
                         </Style>
@@ -1075,7 +1075,7 @@
                 </Paragraphs>
                 <rd:DefaultName>Textbox49</rd:DefaultName>
                 <Top>0.14775cm</Top>
-                <Left>3.53413cm</Left>
+                <Left>3.49885cm</Left>
                 <Height>0.54193cm</Height>
                 <Width>3.53936cm</Width>
                 <ZIndex>5</ZIndex>
@@ -1128,7 +1128,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>=Sum(Fields!Amount.Value)-Sum(Fields!RemiseLigne.Value)</Value>
+                        <Value>=Sum(Fields!Amount.Value)</Value>
                         <Style>
                           <Format>#,0.000;(#,0.000)</Format>
                         </Style>
@@ -1221,7 +1221,7 @@
               </Textbox>
             </ReportItems>
             <KeepTogether>true</KeepTogether>
-            <Top>3.27058cm</Top>
+            <Top>1.77141cm</Top>
             <Left>12.58672cm</Left>
             <Height>3.53284cm</Height>
             <Width>7.33262cm</Width>
@@ -1254,7 +1254,7 @@
             </Style>
           </Rectangle>
         </ReportItems>
-        <Height>7.9783cm</Height>
+        <Height>5.57059cm</Height>
         <Style />
       </Body>
       <Width>19.91934cm</Width>
@@ -1970,6 +1970,12 @@ Kv6MZxJVLDe2pG2/n0ruOBzhrBx5uwz8Hv6YaVZDAR94Xn3qVHlzj4q/0YXhT4+vleblHjyQd676/gdd
         </Field>
         <Field Name="MTBaseTVAFormat">
           <DataField>MTBaseTVAFormat</DataField>
+        </Field>
+        <Field Name="MontantLigne">
+          <DataField>MontantLigne</DataField>
+        </Field>
+        <Field Name="MontantLigneFormat">
+          <DataField>MontantLigneFormat</DataField>
         </Field>
         <Field Name="Number">
           <DataField>Number</DataField>

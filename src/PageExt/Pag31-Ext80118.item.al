@@ -4,16 +4,16 @@ pageextension 80118 "item" extends "Item List" //31
     layout
     {
 
-        addafter(InventoryField) // Ajout du champ prix initial dans ligne vente
+        addafter(InventoryField)
         {
             field("ImportQty"; ImportQty)
             {
                 Caption = 'Qté Import';
                 ApplicationArea = All;
             }
-            field("StockQty"; StockQty)
+            field("Available Inventory"; "Available Inventory")
             {
-                Caption = 'Qté Stock';
+                Caption = 'Qté Disponible';
                 ApplicationArea = All;
             }
             field("Default Bin"; "Default Bin")
@@ -22,15 +22,6 @@ pageextension 80118 "item" extends "Item List" //31
                 ApplicationArea = All;
             }
 
-        }
-
-        addlast(Control1)
-        {
-            field("stockMagPrincipal"; StockMagPrincipal)
-            {
-                Caption = 'Stk Mg Principal';
-                ApplicationArea = All;
-            }
         }
 
         addafter("Search Description")
@@ -45,6 +36,12 @@ pageextension 80118 "item" extends "Item List" //31
                 Caption = 'Nb Jour Rupture';
                 ApplicationArea = All;
             }
+
+            field("Last. Pursh. Date"; "Last. Pursh. Date")
+            {
+                Caption = 'Date Dernier Achat';
+                ApplicationArea = all;
+            }
             field("LastPurchPricePrincipalVendor"; "LastPurchPricePrincipalVendor")
             {
 
@@ -58,6 +55,8 @@ pageextension 80118 "item" extends "Item List" //31
             // }
 
         }
+
+
     }
 
     actions
@@ -183,6 +182,14 @@ pageextension 80118 "item" extends "Item List" //31
                 end;
             }
 
+            action("Purchase Vendor price Compare")
+            {
+                ApplicationArea = All;
+                Caption = 'Comparateur Prix Fournisseur';
+                RunObject = page "PurchaseItemCompare";
+                Image = CompareCost;
+            }
+
 
         }
 
@@ -194,20 +201,28 @@ pageextension 80118 "item" extends "Item List" //31
         recItem: Record Item;
         Parvente: Record "Sales & Receivables Setup";
         FieldEtatStyle: Text[50];
+        Location: Record Location;
 
 
 
     trigger OnAfterGetRecord()
     var
+        entredOnce: Boolean;
+        textFiltreExclureStock: Text;
+        textFilterMagasinImport: Text;
+        StartingDate: Date;
     begin
         recInventorySetup.Reset();
         if recInventorySetup.FindFirst() then begin
-
             "Mg Principal Filter" := recInventorySetup."Magasin Central";
-
         end;
 
-        CalcFields(rec.StockMagPrincipal, "Default Bin");
+        CalcFields(rec."Available Inventory", rec."Default Bin");
+
+
+
+
+
 
         // recItem.ChangeCompany(Parvente."Société base analyseur prix");
         // IF recItem.GET("No.") then begin
@@ -225,7 +240,6 @@ pageextension 80118 "item" extends "Item List" //31
         Parvente.get;
         if Parvente."Activer analyseur de prix" then begin
             Parvente.TestField("Société base analyseur prix");
-
         end;
     end;
 

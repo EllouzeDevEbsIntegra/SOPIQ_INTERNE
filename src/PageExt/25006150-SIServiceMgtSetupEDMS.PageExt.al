@@ -13,5 +13,18 @@ pageextension 80150 "Service Mgt. Setup EDMS" extends "Service Mgt. Setup EDMS" 
                 ApplicationArea = All;
             }
         }
+
+        addafter("Statut Waiting Invoicing")
+        {
+            field("Statut Vehicule Pret"; "Statut Vehicule Pret")
+            {
+                ApplicationArea = All;
+            }
+
+            field("Statut Vehicule Receptionne"; "Statut Vehicule Receptionne")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
 }

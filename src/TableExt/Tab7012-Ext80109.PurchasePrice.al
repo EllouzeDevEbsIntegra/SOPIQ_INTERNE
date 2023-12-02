@@ -1,7 +1,6 @@
 tableextension 80109 "Purchase Price" extends "Purchase Price"//7012
 {
 
-
     DrillDownPageID = "Purchase Prices";
     LookupPageID = "Purchase Prices";
     fields
@@ -88,6 +87,66 @@ tableextension 80109 "Purchase Price" extends "Purchase Price"//7012
             Editable = false;
             FieldClass = FlowField;
             DecimalPlaces = 2 : 2;
+        }
+
+        field(80122; "Current Year"; Integer)
+        {
+            CalcFormula = lookup("Purchases & Payables Setup"."Current Year");
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(80123; "Last Year"; Integer)
+        {
+            CalcFormula = lookup("Purchases & Payables Setup"."Last Year");
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(80124; "Purch. Qty Curr. Year frs"; Decimal)
+        {
+            CalcFormula = Sum("Item Ledger Entry"."Invoiced Quantity" WHERE("Entry Type" = CONST(Purchase),
+                                                                             "Item No." = FIELD("No."),
+                                                                            year = field("Current Year")
+                                                                            ));
+            Caption = 'Purch. Qty Curr. Year frs';
+            DecimalPlaces = 0 : 5;
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(80125; "Purch. Qty Last Year frs"; Decimal)
+        {
+            CalcFormula = Sum("Item Ledger Entry"."Invoiced Quantity" WHERE("Entry Type" = CONST(Purchase),
+                                                                             "Item No." = FIELD("No."),
+                                                                            year = field("Last Year")
+                                                                            ));
+            Caption = 'Purch. Qty Curr. Year frs';
+            DecimalPlaces = 0 : 5;
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(80126; "Purch. Qty Curr. Year Vendor"; Decimal)
+        {
+            CalcFormula = Sum("Item Ledger Entry"."Invoiced Quantity" WHERE("Entry Type" = CONST(Purchase),
+                                                                             "Item No." = FIELD("Item No."),
+                                                                            year = field("Current Year")
+                                                                            ));
+            Caption = 'Purch. Qty Curr. Year Vendor';
+            DecimalPlaces = 0 : 5;
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(80127; "Purch. Qty Last Year Vendor"; Decimal)
+        {
+            CalcFormula = Sum("Item Ledger Entry"."Invoiced Quantity" WHERE("Entry Type" = CONST(Purchase),
+                                                                             "Item No." = FIELD("Item No."),
+                                                                            year = field("Last Year")
+                                                                            ));
+            Caption = 'Purch. Qty Curr. Year Vendor';
+            DecimalPlaces = 0 : 5;
+            Editable = false;
+            FieldClass = FlowField;
         }
 
 

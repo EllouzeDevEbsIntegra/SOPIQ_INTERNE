@@ -275,7 +275,8 @@ report 50207 "Sales - Shipment Valorise"
                     {
                         DataItemLink = "Document No." = FIELD("No.");
                         DataItemLinkReference = "Sales Shipment Header";
-                        DataItemTableView = SORTING("Document No.", "Line No.");
+
+                        DataItemTableView = SORTING("Document No.", "Line No.") WHERE(Quantity = filter(> 0));
                         column(Description_SalesShptLine; Description)
                         {
                         }

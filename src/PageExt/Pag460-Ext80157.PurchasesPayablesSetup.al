@@ -22,6 +22,18 @@ pageextension 80157 "Purchases & Payables Setup" extends "Purchases & Payables S
                 ApplicationArea = All;
                 Caption = 'Mise à jour marge CA obligatoire';
             }
+            field("Current Year"; "Current Year")
+            {
+                ApplicationArea = All;
+                Caption = 'Année courante';
+                Editable = false;
+            }
+            field("Last Year"; "Last Year")
+            {
+                ApplicationArea = All;
+                Caption = 'Année précédente';
+                Editable = false;
+            }
         }
     }
 

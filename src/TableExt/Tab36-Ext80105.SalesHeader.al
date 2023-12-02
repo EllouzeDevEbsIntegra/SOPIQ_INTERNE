@@ -34,12 +34,12 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
             TableRelation = Vehicle where("Customer No." = field("Bill-to Customer No."));
         }
 
-        field(80100;Acopmpte;Decimal)
+        field(80100; Acopmpte; Decimal)
         {
             Caption = 'Total Acompte';
 
             FieldClass = FlowField;
-            CalcFormula = sum("Payment Line"."Credit Amount" where("STOrder No." = field("No."), "Account No."=field("Sell-to Customer No."), Posted=filter(true)));
+            CalcFormula = sum("Payment Line"."Credit Amount" where("STOrder No." = field("No."), "Account No." = field("Sell-to Customer No."), Posted = filter(true)));
         }
 
 
@@ -66,7 +66,7 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
     trigger OnInsert()
     begin
         ModifyPostingDesc(rec);
-        if (rec."Document Type" = "Document Type"::"Credit Memo") then
+        if (rec."Document Type" = "Document Type"::"Credit Memo") OR (rec."Document Type" = "Document Type"::"Return Order") then
             // Message('%1', "Document Type");
         ignoreStamp(rec);
         "Shipping Agent Code" := "External Document No.";

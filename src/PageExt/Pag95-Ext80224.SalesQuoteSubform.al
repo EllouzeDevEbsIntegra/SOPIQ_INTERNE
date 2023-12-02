@@ -5,9 +5,10 @@ pageextension 80224 "Sales Quote Subform" extends "Sales Quote Subform"//95
         // Add changes to page layout here
         addafter("Unit Price") // Ajout du champ prix initial dans ligne vente
         {
-            field("Stk Mg Principal"; "Stk Mg Principal")
+            field("Available Qty"; "Available Qty")
             {
                 ApplicationArea = All;
+                Caption = 'Stock Disponible';
                 Editable = false;
                 StyleExpr = FieldStyleQty;
                 DecimalPlaces = 0 : 2;
@@ -204,7 +205,7 @@ pageextension 80224 "Sales Quote Subform" extends "Sales Quote Subform"//95
     var
         myInt: Integer;
     begin
-        FieldStyleQty := SetStyleQte("Stk Mg Principal");
+        FieldStyleQty := SetStyleQte("Available Qty");
         salesheader.get("Document Type", "Document No.");
         TTCInitial := salesheader."Old Amount Including VAT";
         StampAmount := salesheader."STStamp Amount";

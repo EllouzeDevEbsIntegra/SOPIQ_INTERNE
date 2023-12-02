@@ -3,36 +3,45 @@ pageextension 80165 "Service Quote Subform EDMS" extends "Service Quote Subform 
     layout
     {
         // Add changes to page layout here
-        addafter(UnitPrice)
+        addafter(Quantity)
         {
-            field("Prix Vente Public"; "Prix Vente Public")
-            {
-                ApplicationArea = All;
-                Caption = 'Prix Vente Public';
-                Editable = false;
-                style = Unfavorable;
-            }
 
-            field("Last Price First Vendor"; "Last Price First Vendor")
+            field("Available Qty"; "Available Qty")
             {
-                ApplicationArea = All;
-                Caption = 'Dernier Prix Frs Principal';
+                ApplicationArea = all;
+                Caption = 'Stock Disponible';
                 Editable = false;
+                StyleExpr = FieldStyleQty;
+                DecimalPlaces = 0 : 2;
             }
+            // field("Prix Vente Public"; "Prix Vente Public")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Prix Vente Public';
+            //     Editable = false;
+            //     style = Unfavorable;
+            // }
 
-            field("Last Price Date"; "Last Price Date")
-            {
-                ApplicationArea = All;
-                Caption = 'Date Prix Frs Principal';
-                Editable = false;
-            }
+            // field("Last Price First Vendor"; "Last Price First Vendor")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Dernier Prix Frs Principal';
+            //     Editable = false;
+            // }
 
-            field("Last Document Type"; "Last Document Type")
-            {
-                ApplicationArea = All;
-                Caption = 'Type Doc Prix Frs Principal';
-                Editable = false;
-            }
+            // field("Last Price Date"; "Last Price Date")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Date Prix Frs Principal';
+            //     Editable = false;
+            // }
+
+            // field("Last Document Type"; "Last Document Type")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Type Doc Prix Frs Principal';
+            //     Editable = false;
+            // }
 
         }
     }
@@ -43,5 +52,15 @@ pageextension 80165 "Service Quote Subform EDMS" extends "Service Quote Subform 
     }
 
     var
-        myInt: Integer;
+        FieldStyleQty: Text[50];
+
+    procedure SetStyleQte(PDecimal: Decimal): Text[50]
+    begin
+        IF PDecimal <= 0 THEN exit('Unfavorable') ELSE exit('Favorable');
+    end;
+
+    trigger OnAfterGetRecord()
+    begin
+        FieldStyleQty := SetStyleQte("Available Qty");
+    end;
 }

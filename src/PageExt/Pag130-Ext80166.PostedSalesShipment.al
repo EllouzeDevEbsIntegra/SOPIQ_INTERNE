@@ -3,6 +3,19 @@ pageextension 80166 "Posted Sales Shipment" extends "Posted Sales Shipment"//130
     layout
     {
         // Add changes to page layout here
+        addafter(Billing)
+        {
+            group(Paiement)
+            {
+                Caption = 'Paiement';
+                field(Acopmpte; Acopmpte)
+                {
+                    Caption = 'Acompte';
+                    ApplicationArea = all;
+                }
+            }
+        }
+
     }
 
     actions
@@ -77,6 +90,8 @@ pageextension 80166 "Posted Sales Shipment" extends "Posted Sales Shipment"//130
                 end;
             until recSalesShpLine.next = 0;
         end;
+
+        rec.CalcFields(Acopmpte);
     end;
 
 }

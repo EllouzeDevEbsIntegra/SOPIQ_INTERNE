@@ -437,7 +437,7 @@
                                             </Paragraphs>
                                             <ZIndex>33</ZIndex>
                                             <Visibility>
-                                              <Hidden>=IIF((Fields!Type_SalesShptLine.Value = "1") AND (NOT Fields!ShowInternalInfo.Value),True,False)</Hidden>
+                                              <Hidden>=IIF(Fields!Qty_SalesShptLine.Value&gt;0,false,true)</Hidden>
                                             </Visibility>
                                             <DataElementOutput>NoOutput</DataElementOutput>
                                             <Style>
@@ -477,6 +477,9 @@
                                               </Paragraph>
                                             </Paragraphs>
                                             <ZIndex>32</ZIndex>
+                                            <Visibility>
+                                              <Hidden>=IIF(Fields!Qty_SalesShptLine.Value&gt;0,false,true)</Hidden>
+                                            </Visibility>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -519,6 +522,9 @@
                                               </Paragraph>
                                             </Paragraphs>
                                             <ZIndex>31</ZIndex>
+                                            <Visibility>
+                                              <Hidden>=IIF(Fields!Qty_SalesShptLine.Value&gt;0,false,true)</Hidden>
+                                            </Visibility>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -561,6 +567,9 @@
                                               </Paragraph>
                                             </Paragraphs>
                                             <ZIndex>30</ZIndex>
+                                            <Visibility>
+                                              <Hidden>=IIF(Fields!Qty_SalesShptLine.Value&gt;0,false,true)</Hidden>
+                                            </Visibility>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -604,6 +613,9 @@
                                               </Paragraph>
                                             </Paragraphs>
                                             <rd:DefaultName>UnitPrice</rd:DefaultName>
+                                            <Visibility>
+                                              <Hidden>=IIF(Fields!Qty_SalesShptLine.Value&gt;0,false,true)</Hidden>
+                                            </Visibility>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -647,6 +659,9 @@
                                               </Paragraph>
                                             </Paragraphs>
                                             <rd:DefaultName>Textbox41</rd:DefaultName>
+                                            <Visibility>
+                                              <Hidden>=IIF(Fields!Qty_SalesShptLine.Value&gt;0,false,true)</Hidden>
+                                            </Visibility>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -665,7 +680,6 @@
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <rd:Selected>true</rd:Selected>
                                         </CellContents>
                                       </TablixCell>
                                       <TablixCell>
@@ -691,6 +705,9 @@
                                               </Paragraph>
                                             </Paragraphs>
                                             <rd:DefaultName>Textbox81</rd:DefaultName>
+                                            <Visibility>
+                                              <Hidden>=IIF(Fields!Qty_SalesShptLine.Value&gt;0,false,true)</Hidden>
+                                            </Visibility>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -734,6 +751,9 @@
                                               </Paragraph>
                                             </Paragraphs>
                                             <rd:DefaultName>Textbox88</rd:DefaultName>
+                                            <Visibility>
+                                              <Hidden>=IIF(Fields!Qty_SalesShptLine.Value&gt;0,false,true)</Hidden>
+                                            </Visibility>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>

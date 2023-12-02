@@ -3,6 +3,24 @@ tableextension 80106 "Item Ledger Entry" extends "Item Ledger Entry"//32
     fields
     {
         // Add changes to table fields here
+        field(80106; isLocationExclu; Boolean)
+        {
+            CalcFormula = lookup(Location."ExculreStock" where("Code" = field("Location Code")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(80107; isImportLocation; Boolean)
+        {
+            CalcFormula = lookup(Location.Import where("Code" = field("Location Code")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(80108; year; Integer)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     var
@@ -67,5 +85,10 @@ tableextension 80106 "Item Ledger Entry" extends "Item Ledger Entry"//32
         recSpecItemLeadEntry.Insert();
 
 
+    end;
+
+    trigger OnAfterInsert()
+    begin
+        year := DATE2DMY("Posting Date", 3);
     end;
 }

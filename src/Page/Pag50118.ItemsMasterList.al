@@ -139,6 +139,7 @@ page 50118 "Items Master List"
                                 if recItem.FindFirst() then begin
 
                                     recItem.validate(Description, tempItem.Description);
+                                    recItem.Validate("Item Category Code", tempItem."Item Category Code");
                                     recItem.validate("Item Product Code", tempItem."Item Product Code");
                                     recItem.validate("Item Sub Product Code", tempItem."Item Sub Product Code");
                                     recItem.validate("Champs libre", tempItem."Champs libre");

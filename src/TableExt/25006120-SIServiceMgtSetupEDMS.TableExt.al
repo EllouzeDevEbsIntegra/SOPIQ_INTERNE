@@ -15,5 +15,19 @@ tableextension 80150 "Service Mgt. Setup EDMS" extends "Service Mgt. Setup EDMS"
             TableRelation = "Standard Text";
         }
 
+        field(80002; "Statut Vehicule Pret"; code[20])
+        {
+            Caption = 'Statut Vehicule Pret';
+            DataClassification = ToBeClassified;
+            TableRelation = "Document Status".Code;
+        }
+
+        field(80003; "Statut Vehicule Receptionne"; code[20])
+        {
+            Caption = 'Statut Vehicule Réceptionné';
+            DataClassification = ToBeClassified;
+            TableRelation = "Document Status".Code;
+        }
+
     }
 }

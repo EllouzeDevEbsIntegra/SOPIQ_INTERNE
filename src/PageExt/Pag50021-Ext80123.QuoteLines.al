@@ -13,7 +13,7 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
 
         addafter(Quantity)
         {
-            field("StockQty"; recItem.StockQty)
+            field("Available Inventory"; recItem."Available Inventory")
             {
                 Caption = 'Stock';
                 ApplicationArea = All;
@@ -136,8 +136,8 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
         recItem.Reset();
         recItem.get("No.");
         if recItem.get("No.") then begin
-            recItem.CalcFields(StockQty);
-            FieldStyleQty := SetStyleQte(recItem.StockQty)
+            recItem.CalcFields("Available Inventory");
+            FieldStyleQty := SetStyleQte(recItem."Available Inventory")
         end;
         styleExpr := SetStyleDate(recItem."Last. Pursh. Date");
     end;

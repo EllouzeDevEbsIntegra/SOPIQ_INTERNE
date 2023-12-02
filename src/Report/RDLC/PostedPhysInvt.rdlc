@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="Posted_Phys__Invt__Rec__Header_Order_No_">
+          <DataField>Posted_Phys__Invt__Rec__Header_Order_No_</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header_Recording_No_">
+          <DataField>Posted_Phys__Invt__Rec__Header_Recording_No_</DataField>
+        </Field>
+        <Field Name="USERID">
+          <DataField>USERID</DataField>
+        </Field>
+        <Field Name="COMPANYNAME">
+          <DataField>COMPANYNAME</DataField>
+        </Field>
+        <Field Name="FORMAT_TODAY_0_4_">
+          <DataField>FORMAT_TODAY_0_4_</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header___Order_No__">
+          <DataField>Posted_Phys__Invt__Rec__Header___Order_No__</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header__Status">
+          <DataField>Posted_Phys__Invt__Rec__Header__Status</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header___Person_Responsible_">
+          <DataField>Posted_Phys__Invt__Rec__Header___Person_Responsible_</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header___Recording_No__">
+          <DataField>Posted_Phys__Invt__Rec__Header___Recording_No__</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header__Description">
+          <DataField>Posted_Phys__Invt__Rec__Header__Description</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header___Time_Recorded_">
+          <DataField>Posted_Phys__Invt__Rec__Header___Time_Recorded_</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header___Date_Recorded_">
+          <DataField>Posted_Phys__Invt__Rec__Header___Date_Recorded_</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header___Person_Recorded_">
+          <DataField>Posted_Phys__Invt__Rec__Header___Person_Recorded_</DataField>
+        </Field>
+        <Field Name="PageCounter_Number">
+          <DataField>PageCounter_Number</DataField>
+        </Field>
+        <Field Name="CurrReport_PAGENOCaption">
+          <DataField>CurrReport_PAGENOCaption</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Inventory_RecordingCaption">
+          <DataField>Posted_Phys__Inventory_RecordingCaption</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header___Order_No__Caption">
+          <DataField>Posted_Phys__Invt__Rec__Header___Order_No__Caption</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header__StatusCaption">
+          <DataField>Posted_Phys__Invt__Rec__Header__StatusCaption</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header___Person_Responsible_Caption">
+          <DataField>Posted_Phys__Invt__Rec__Header___Person_Responsible_Caption</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header___Recording_No__Caption">
+          <DataField>Posted_Phys__Invt__Rec__Header___Recording_No__Caption</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header__DescriptionCaption">
+          <DataField>Posted_Phys__Invt__Rec__Header__DescriptionCaption</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header___Time_Recorded_Caption">
+          <DataField>Posted_Phys__Invt__Rec__Header___Time_Recorded_Caption</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header___Date_Recorded_Caption">
+          <DataField>Posted_Phys__Invt__Rec__Header___Date_Recorded_Caption</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Header___Person_Recorded_Caption">
+          <DataField>Posted_Phys__Invt__Rec__Header___Person_Recorded_Caption</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line__Item_No__">
+          <DataField>Posted_Phys__Invt__Rec__Line__Item_No__</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line__Location_Code_">
+          <DataField>Posted_Phys__Invt__Rec__Line__Location_Code_</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line__Bin_Code_">
+          <DataField>Posted_Phys__Invt__Rec__Line__Bin_Code_</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line_Description">
+          <DataField>Posted_Phys__Invt__Rec__Line_Description</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line__Unit_of_Measure_Code_">
+          <DataField>Posted_Phys__Invt__Rec__Line__Unit_of_Measure_Code_</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line__Variant_Code_">
+          <DataField>Posted_Phys__Invt__Rec__Line__Variant_Code_</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line_Quantity">
+          <DataField>Posted_Phys__Invt__Rec__Line_Quantity</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line_QuantityFormat">
+          <DataField>Posted_Phys__Invt__Rec__Line_QuantityFormat</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line_Order_No_">
+          <DataField>Posted_Phys__Invt__Rec__Line_Order_No_</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line_Recording_No_">
+          <DataField>Posted_Phys__Invt__Rec__Line_Recording_No_</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line_Line_No_">
+          <DataField>Posted_Phys__Invt__Rec__Line_Line_No_</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line__Item_No__Caption">
+          <DataField>Posted_Phys__Invt__Rec__Line__Item_No__Caption</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line__Location_Code_Caption">
+          <DataField>Posted_Phys__Invt__Rec__Line__Location_Code_Caption</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line__Bin_Code_Caption">
+          <DataField>Posted_Phys__Invt__Rec__Line__Bin_Code_Caption</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line_DescriptionCaption">
+          <DataField>Posted_Phys__Invt__Rec__Line_DescriptionCaption</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line__Unit_of_Measure_Code_Caption">
+          <DataField>Posted_Phys__Invt__Rec__Line__Unit_of_Measure_Code_Caption</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line__Variant_Code_Caption">
+          <DataField>Posted_Phys__Invt__Rec__Line__Variant_Code_Caption</DataField>
+        </Field>
+        <Field Name="Posted_Phys__Invt__Rec__Line_QuantityCaption">
+          <DataField>Posted_Phys__Invt__Rec__Line_QuantityCaption</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

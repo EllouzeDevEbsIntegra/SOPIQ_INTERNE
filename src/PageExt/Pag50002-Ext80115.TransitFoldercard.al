@@ -2,6 +2,7 @@ pageextension 80115 "Transit Folder card" extends "Transit Folder card" //50002
 {
     layout
     {
+
         modify("Item Price Updated")
         {
             Editable = false;
@@ -177,4 +178,7 @@ pageextension 80115 "Transit Folder card" extends "Transit Folder card" //50002
             UNTIL lPurchRcptLine.NEXT = 0;
 
     end;
+
+    var
+        TransitFolderFunctions: Codeunit TransitFolderHook;
 }

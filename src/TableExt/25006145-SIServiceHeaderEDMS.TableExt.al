@@ -2,6 +2,36 @@ tableextension 80250 "Service Header EDMS" extends "Service Header EDMS" //25006
 {
     fields
     {
+        field(80250; "Vehicule Prete"; boolean)
+        {
+            caption = 'Vehicule Prête';
+            DataClassification = ToBeClassified;
+            InitValue = false;
+        }
+        // modify("Vehicle Serial No.")
+        // {
+        //     trigger OnAfterValidate()
+        //     var
+        //         DocumentStatus: Record "Document Status";
+        //         TextMessage: Text;
+        //     begin
+        //         TextMessage := '';
+        //         DocumentStatus.Reset();
+        //         DocumentStatus.SetRange(Code, rec."Document Status");
+        //         DocumentStatus.SetRange("Document Type", "Document Type"::Order);
+        //         DocumentStatus.SetRange("Document Profile", DocumentStatus."Document Profile"::Service);
+        //         if DocumentStatus.FindFirst() then begin
+        //             // Message('here ! %1 - %2 - %3', rec."Document Status", DocumentStatus.SendMsg, DocumentStatus.Message);
+        //             if (DocumentStatus.SendMsg = true) then begin
+        //                 TextMessage := DocumentStatus.Message.Replace('%MAT%', rec."Vehicle Registration No.");
+        //                 //Message(TextMessage);
+        //                 SendMessage(rec, TextMessage);
+
+        //             end;
+        //         end;
+
+        //     end;
+        // }
 
     }
     procedure SI_InsertServPackage()
@@ -79,6 +109,65 @@ tableextension 80250 "Service Header EDMS" extends "Service Header EDMS" //25006
 
 
 
+
+    procedure SendMessage(Var SrvHeadEdms: Record "Service Header EDMS"; Message: Text)
+    var
+        SendSMS: Page "Sopiq Send SMS Message";
+        UserSetup: Record "User Setup";
+        SalespersonCode: Code[10];
+        SMSManagement: Codeunit "Sopiq SMS Management";
+        FillPhoneNoErr: label 'Please fill in recipient Phone No.';
+        FillMessageErr: label 'Message body is empty.';
+        NoSalespersonCode: label 'Please set up Salesperson code.';
+        SmsQueuedMsg: label 'Message envoyé au client.';
+
+    begin
+        UserSetup.Get(UserId);
+        if UserSetup."Salespers./Purch. Code" <> '' then
+            SalespersonCode := UserSetup."Salespers./Purch. Code"
+        else
+            SalespersonCode := SrvHeadEdms."Service Advisor";
+
+
+        if SrvHeadEdms."Bill-to Contact Phone No." = '' then
+            Error(FillPhoneNoErr);
+
+        if Message = '' then
+            Error(FillMessageErr);
+
+        if SalespersonCode = '' then
+            Error(NoSalespersonCode);
+
+        SMSManagement.SetContactNo(SrvHeadEdms."Sell-to Contact No.");
+        SMSManagement.SetSalespersonCode(SalespersonCode);
+        SMSManagement.SetDocumentNo := SrvHeadEdms."No.";
+        SMSManagement.SetDocumentType := SrvHeadEdms."Document Type";
+        SMSManagement.AddSMSToQueue(SrvHeadEdms."Bill-to Contact Phone No.", Message);
+        Message(SmsQueuedMsg);
+    end;
+
     VAR
         SI_VehicleServicePlanStageTmp_CS: Record "Vehicle Service Plan Stage" temporary;
+
+    trigger OnAfterModify()
+    var
+        DocumentStatus: Record "Document Status";
+        TextMessage: Text;
+    begin
+        if rec."Document Status" <> xRec."Document Status" then begin
+            TextMessage := '';
+            DocumentStatus.Reset();
+            DocumentStatus.SetRange(Code, rec."Document Status");
+            DocumentStatus.SetRange("Document Type", "Document Type"::Order);
+            DocumentStatus.SetRange("Document Profile", DocumentStatus."Document Profile"::Service);
+            if DocumentStatus.FindFirst() then begin
+                //Message('here ! %1 - %2 - %3 - %4 - %5', rec."No.", xRec."Document Status", rec."Document Status", DocumentStatus.SendMsg, DocumentStatus.Message);
+                if (DocumentStatus.SendMsg = true) then begin
+                    TextMessage := DocumentStatus.Message.Replace('%MAT%', rec."Vehicle Registration No.");
+                    //Message(TextMessage);
+                    SendMessage(rec, TextMessage);
+                end;
+            end;
+        end;
+    end;
 }

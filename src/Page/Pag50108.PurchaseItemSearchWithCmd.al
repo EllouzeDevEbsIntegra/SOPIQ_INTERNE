@@ -41,7 +41,7 @@ page 50108 "Purchase Item Search With Cmd"
                     Editable = false;
                     Style = strong;
                 }
-                field("StockQty"; StockQty)
+                field("Available Inventory"; "Available Inventory")
                 {
                     Caption = 'Stock';
                     ApplicationArea = All;
@@ -163,8 +163,8 @@ page 50108 "Purchase Item Search With Cmd"
 
     begin
 
-        CalcFields("Last Curr. Price.", "Qty. on Purch. Order", "Last Date", StockQty, ImportQty, "First Reception Date");
-        FieldStyleQty := SetStyleQte(StockQty);
+        CalcFields("Last Curr. Price.", "Qty. on Purch. Order", "Last Date", "Available Inventory", ImportQty, "First Reception Date");
+        FieldStyleQty := SetStyleQte("Available Inventory");
         FieldStyleImportQty := SetStyleQte(ImportQty);
         FieldStyleOnPurchQty := SetStyleQte("Qty. on Purch. Order");
 
