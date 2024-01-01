@@ -9,11 +9,11 @@ tableextension 80145 "User Setup" extends "User Setup" //91
             DataClassification = ToBeClassified;
         }
 
-        field(80146; "Follow Up Controler"; Boolean)
-        {
-            InitValue = false;
-            DataClassification = ToBeClassified;
-        }
+        // field(80146; "Follow Up Controler"; Boolean)
+        // {
+        //     InitValue = false;
+        //     DataClassification = ToBeClassified;
+        // }
 
         field(80147; "A Valid. Jrnl. line"; Boolean)
         {

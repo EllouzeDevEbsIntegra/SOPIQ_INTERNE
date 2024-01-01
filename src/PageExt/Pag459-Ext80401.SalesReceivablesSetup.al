@@ -43,6 +43,15 @@ pageextension 80401 "Sales & Receivables Setup" extends "Sales & Receivables Set
                 DecimalPlaces = 0 : 2;
             }
         }
+
+        addafter("Posted BC")
+        {
+            field("Reçu Caisse Serie"; "Reçu Caisse Serie")
+            {
+                Caption = 'N° Reçu de caisse';
+                ApplicationArea = all;
+            }
+        }
         modify("Price Analy. % Average Disc.")
         {
             Visible = false;

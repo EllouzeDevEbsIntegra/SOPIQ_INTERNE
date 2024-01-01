@@ -32,6 +32,12 @@ tableextension 80170 "Sales & Receivables Setup" extends "Sales & Receivables Se
             DecimalPlaces = 0 : 2;
         }
 
+        field(80175; "Reçu Caisse Serie"; code[10])
+        {
+            Caption = 'N° Reçu de caisse';
+            DataClassification = ToBeClassified;
+            TableRelation = "No. Series";
+        }
 
     }
 

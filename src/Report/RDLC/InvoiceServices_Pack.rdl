@@ -19,7 +19,7 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>22.34641cm</Width>
+                  <Width>19.84639cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1740,7 +1740,7 @@
             <DataSetName>DataSet_Result</DataSetName>
             <Top>0.02117cm</Top>
             <Height>2.7141cm</Height>
-            <Width>22.34641cm</Width>
+            <Width>19.84639cm</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -2555,7 +2555,7 @@
               </Textbox>
             </ReportItems>
             <KeepTogether>true</KeepTogether>
-            <Top>2.57686in</Top>
+            <Top>2.45186in</Top>
             <Left>5.42351in</Left>
             <Height>0.84098in</Height>
             <Width>6.00715cm</Width>
@@ -2626,7 +2626,7 @@
               </Textbox>
             </ReportItems>
             <KeepTogether>true</KeepTogether>
-            <Top>2.5838in</Top>
+            <Top>2.4588in</Top>
             <Left>0.26515in</Left>
             <Height>0.84098in</Height>
             <Width>6.00715cm</Width>
@@ -2658,14 +2658,14 @@
             </Style>
           </Rectangle>
         </ReportItems>
-        <Height>8.69895cm</Height>
+        <Height>8.48728cm</Height>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
         </Style>
       </Body>
-      <Width>22.34641cm</Width>
+      <Width>20.34626cm</Width>
       <Page>
         <PageHeader>
           <Height>7.03633cm</Height>
@@ -3319,7 +3319,7 @@
               <Top>0in</Top>
               <Left>0.00488in</Left>
               <Height>2.455cm</Height>
-              <Width>20.33386cm</Width>
+              <Width>20.08506cm</Width>
               <ZIndex>4</ZIndex>
               <Visibility>
                 <Hidden>=if(Fields!afficherPiedsPage.Value=true,false,true)</Hidden>
@@ -3383,7 +3383,7 @@
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>2.22143cm</Height>
+          <Height>1.90393cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>

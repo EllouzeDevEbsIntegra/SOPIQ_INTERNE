@@ -1,16 +1,15 @@
-tableextension 80277 "Item Journal Line" extends "Item Journal Line" //83
+tableextension 80321 Vendor extends Vendor //23
 {
     fields
     {
         // Add changes to table fields here
-        field(80277; validate; Boolean)
+        field(80321; "Default Marge"; Decimal)
         {
             DataClassification = ToBeClassified;
-            InitValue = false;
         }
-        field(80278; "LM Ready For Validation"; boolean)
+
+        field(80322; "Default Discount"; Decimal)
         {
-            Caption = 'Prêt à la validation';
             DataClassification = ToBeClassified;
         }
     }

@@ -31,6 +31,7 @@ report 50223 "Batch Update Customer Price"
                 recCustomer: Record Customer;
                 recProfitAdd: Record "Customer Additional Profit";
                 recSalesPrice: Record "Sales Price";
+                recSalesDiscount: Record "Sales Line Discount";
 
             begin
 
@@ -47,10 +48,18 @@ report 50223 "Batch Update Customer Price"
                                 recSalesPrice.Delete(true);
                             until recSalesPrice.Next() = 0;
                         end;
+
+                        recSalesDiscount.Reset();
+                        recSalesDiscount.SetRange("Sales Code", recCustomer."No.");
+                        if recSalesDiscount.FindSet() then begin
+                            repeat
+                                recSalesDiscount.Delete(true);
+                            until recSalesDiscount.Next() = 0;
+                        end;
                     until recCustomer.Next() = 0;
                 end;
 
-                //Ajouter les prix spécifiques dans la table Sales Price
+                //Ajouter les prix spécifiques dans la table Sales Price et les remises spécifiques dans la table Sales Discount line
                 recProfitAdd.Reset();
                 if recProfitAdd.FindSet() then begin
                     repeat
@@ -61,23 +70,36 @@ report 50223 "Batch Update Customer Price"
                             repeat
                                 recItem.CalcFields(Inventory);
                                 if (recItem.Inventory > 0) then begin
-                                    recSalesPrice.Init();
-                                    recSalesPrice."Sales Type" := recSalesPrice."Sales Type"::Customer;
-                                    recSalesPrice."Sales Code" := recProfitAdd.Customers;
-                                    recSalesPrice."Item No." := recItem."No.";
-                                    recSalesPrice."Starting Date" := Today;
-                                    recSalesPrice."Ending Date" := CalcDate('<1M>', Today);
                                     case recProfitAdd.Type of
                                         recProfitAdd.Type::"Marge Additionnelle":
-                                            recSalesPrice."Unit Price" := recItem."Unit Price" * (1 + recProfitAdd.Taux / 100);
+                                            begin
+                                                recSalesPrice.Init();
+                                                recSalesPrice."Sales Type" := recSalesPrice."Sales Type"::Customer;
+                                                recSalesPrice."Sales Code" := recProfitAdd.Customers;
+                                                recSalesPrice."Item No." := recItem."No.";
+                                                recSalesPrice."Starting Date" := Today;
+                                                recSalesPrice."Ending Date" := CalcDate('<1M>', Today);
+                                                recSalesPrice."Unit Price" := recItem."Unit Price" * (1 + recProfitAdd.Taux / 100);
+                                                recSalesPrice."Minimum Quantity" := 1;
+                                                recSalesPrice."Unit of Measure Code" := recItem."Sales Unit of Measure";
+                                                recSalesPrice.Insert;
+                                            end;
                                         recProfitAdd.Type::"Remise Exceptionnelle":
-                                            recSalesPrice."Unit Price" := recItem."Unit Price" * (1 - recProfitAdd.Taux / 100);
+                                            begin
+                                                recSalesDiscount.Init();
+                                                recSalesDiscount."Sales Type" := recSalesDiscount."Sales Type"::Customer;
+                                                recSalesDiscount."Sales Code" := recProfitAdd.Customers;
+                                                recSalesDiscount.Type := recSalesDiscount.Type::Item;
+                                                recSalesDiscount."code" := recItem."No.";
+                                                recSalesDiscount."Unit of Measure Code" := recItem."Sales Unit of Measure";
+                                                recSalesDiscount."Minimum Quantity" := 1;
+                                                recSalesDiscount."Line Discount %" := recProfitAdd.Taux;
+                                                recSalesDiscount."Starting Date" := Today;
+                                                recSalesDiscount."Ending Date" := CalcDate('<1M>', Today);
+                                                recSalesDiscount.Insert;
+                                            end;
                                     end;
-                                    // if (recProfitAdd.Type = recProfitAdd.Type::"Marge Additionnelle") THEN recSalesPrice."Unit Price" := recItem."Unit Price" * (1 + recProfitAdd.Taux / 100);
-                                    // if (recProfitAdd.Type = recProfitAdd.Type::"Remise Exceptionnelle") THEN recSalesPrice."Unit Price" := recItem."Unit Price" * (1 - recProfitAdd.Taux / 100);
-                                    recSalesPrice."Minimum Quantity" := 1;
-                                    recSalesPrice."Unit of Measure Code" := recItem."Sales Unit of Measure";
-                                    recSalesPrice.Insert;
+
                                 end;
 
 

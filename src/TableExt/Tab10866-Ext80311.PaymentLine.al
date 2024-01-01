@@ -106,10 +106,12 @@ tableextension 80311 "Payment Line" extends "Payment Line" //10866
             else begin
                 param := ' Acompte/' + "STOrder No." + ' ';
             end;
-            if ("External Document No." <> '') then param1 := "External Document No." + ' ';
-            if ("Type réglement" = 'ENC_TRAITE') OR ("Type réglement" = 'DEC_TRAITE') then param2 := ' ' + Format("Due Date") + ' ';
+            if ("External Document No." <> '') AND (("Type réglement" = 'ENC_CHEQUE') OR ("Type réglement" = 'DEC_CHEQUE')) then param1 := "External Document No." + ' ';
+            if ("Type réglement" = 'ENC_TRAITE') then param2 := ' ' + Format("Due Date") + ' ';
+            if ("Type réglement" = 'DEC_TRAITE') then param2 := 'EFF' + Format("Due Date") + ' ';
 
-            STCommentaires := "AbreviationPaimentType" + param2 + param1 + param + ' ' + STLibellé;
+
+            STCommentaires := "AbreviationPaimentType" + param1 + ' ' + STLibellé + param + param2;
         end;
 
 
@@ -117,7 +119,9 @@ tableextension 80311 "Payment Line" extends "Payment Line" //10866
 
     trigger OnAfterModify()
     begin
-        updateComment(rec);
+        if (rec."Applies-to Invoices Nos." <> xrec."Applies-to Invoices Nos.") then begin
+            updateComment(rec);
+        end;
         if (postedModified = true) then rec.Posted := true;
         rec.Modify();
 

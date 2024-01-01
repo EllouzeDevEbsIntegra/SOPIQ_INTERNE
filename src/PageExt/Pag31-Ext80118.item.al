@@ -1,3 +1,4 @@
+
 pageextension 80118 "item" extends "Item List" //31
 {
 
@@ -19,6 +20,11 @@ pageextension 80118 "item" extends "Item List" //31
             field("Default Bin"; "Default Bin")
             {
                 Caption = 'Emplacement par défaut';
+                ApplicationArea = All;
+            }
+            field("Small Parts"; "Small Parts")
+            {
+                Caption = 'Petite Fourniture';
                 ApplicationArea = All;
             }
 
@@ -190,6 +196,19 @@ pageextension 80118 "item" extends "Item List" //31
                 Image = CompareCost;
             }
 
+            // Test de consommer un API configurer déja dans code unit API
+            action("Test API")
+            {
+                trigger OnAction()
+                var
+                    API: Codeunit API;
+                    jObject: JsonObject;
+                    jtitleToken: JsonToken;
+                begin
+                    jObject.ReadFrom(API.GetRequest());
+                    if jObject.Get('title', jtitleToken) then Message(jtitleToken.AsValue().AsText());
+                end;
+            }
 
         }
 
@@ -241,6 +260,7 @@ pageextension 80118 "item" extends "Item List" //31
         if Parvente."Activer analyseur de prix" then begin
             Parvente.TestField("Société base analyseur prix");
         end;
+
     end;
 
     // procedure SetEtatStyle()
@@ -256,5 +276,7 @@ pageextension 80118 "item" extends "Item List" //31
 
     //     end;
     // end;
+
+
 
 }

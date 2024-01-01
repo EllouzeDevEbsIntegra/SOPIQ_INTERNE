@@ -17,14 +17,14 @@ pageextension 80181 "User Setup Card" extends "User Setup Card" //25006075
             }
         }
 
-        addlast(Service)
-        {
-            field("Follow Up Controler"; "Follow Up Controler")
-            {
-                ApplicationArea = All;
-                Caption = 'Autoriser clôture Fiche Suivi';
-            }
-        }
+        // addlast(Service)
+        // {
+        //     field("Follow Up Controler"; "Follow Up Controler")
+        //     {
+        //         ApplicationArea = All;
+        //         Caption = 'Autoriser clôture Fiche Suivi';
+        //     }
+        // }
     }
 
     actions

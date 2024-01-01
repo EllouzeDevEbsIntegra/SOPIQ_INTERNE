@@ -9,6 +9,15 @@ tableextension 80140 "Sales Invoice Header" extends "Sales Invoice Header"//112
             Caption = 'Moyen Jour Paiement';
             DecimalPlaces = 0 : 2;
         }
+
+        field(80141; "DiscountAmount"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = sum("Sales Invoice Line"."Line Discount Amount" WHERE("Document No." = field("No.")));
+            Caption = 'Type MO';
+            Editable = false;
+            FieldClass = FlowField;
+        }
     }
 
     var

@@ -41,12 +41,12 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
                 ApplicationArea = All;
                 trigger OnValidate()
                 begin
-                    if (rec.Marge <= 50) then
+                    if (rec.Marge <= 100) then
                         rec."Prix vente calculé" := Round((rec."Direct Unit Cost" / (1 - rec.Marge / 100)) *
                                                                     (1 + CalcVAT),
                                                                     GLSetup."Unit-Amount Rounding Precision")
                     else
-                        error('Marge ne doit pas dépasser 50%');
+                        error('Marge ne doit pas dépasser 100%');
                 end;
             }
 

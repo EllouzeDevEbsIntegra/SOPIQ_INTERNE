@@ -3,6 +3,18 @@ pageextension 80199 "Vendor Cards" extends "Vendor Card"//26
     layout
     {
         // Add changes to page layout here
+        addafter(Coefficient)
+        {
+            field("Default Marge"; "Default Marge")
+            {
+                Caption = 'Marque Par défaut en %';
+            }
+
+            field("Default Discount"; "Default Discount")
+            {
+                Caption = 'Remise Par défaut en %';
+            }
+        }
 
     }
 

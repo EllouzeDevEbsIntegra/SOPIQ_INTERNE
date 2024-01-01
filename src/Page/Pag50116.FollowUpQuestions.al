@@ -1,61 +1,61 @@
 page 50116 "Follow Up Questions"
 {
-    PageType = List;
-    ApplicationArea = All;
-    UsageCategory = Lists;
-    SourceTable = "Follow Up Questions";
+    // PageType = List;
+    // ApplicationArea = All;
+    // UsageCategory = Lists;
+    // SourceTable = "Follow Up Questions";
 
-    layout
-    {
-        area(Content)
-        {
-            repeater(GroupName)
-            {
-                field("Line No"; "Line No")
-                {
+    // layout
+    // {
+    //     area(Content)
+    //     {
+    //         repeater(GroupName)
+    //         {
+    //             field("Line No"; "Line No")
+    //             {
 
-                }
+    //             }
 
-                field("Question Order"; "Question Order")
-                {
+    //             field("Question Order"; "Question Order")
+    //             {
 
-                }
+    //             }
 
-                field(Question; Question)
-                {
+    //             field(Question; Question)
+    //             {
 
-                }
+    //             }
 
-                field(weight; weight)
-                {
+    //             field(weight; weight)
+    //             {
 
-                }
+    //             }
 
-                field("Type Follow Up"; "Type Follow Up")
-                {
+    //             field("Type Follow Up"; "Type Follow Up")
+    //             {
 
-                }
-            }
-        }
-        area(Factboxes)
-        {
+    //             }
+    //         }
+    //     }
+    //     area(Factboxes)
+    //     {
 
-        }
-    }
+    //     }
+    // }
 
-    actions
-    {
-        area(Processing)
-        {
-            action(ActionName)
-            {
-                ApplicationArea = All;
+    // actions
+    // {
+    //     area(Processing)
+    //     {
+    //         action(ActionName)
+    //         {
+    //             ApplicationArea = All;
 
-                trigger OnAction();
-                begin
+    //             trigger OnAction();
+    //             begin
 
-                end;
-            }
-        }
-    }
+    //             end;
+    //         }
+    //     }
+    // }
 }

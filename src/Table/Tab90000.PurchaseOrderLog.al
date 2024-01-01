@@ -1,48 +1,38 @@
-table 50025 "Follow Up Questions"
+table 90000 "Purchase Order Log"
 {
     DataClassification = ToBeClassified;
 
     fields
     {
-        field(50025; "Line No"; Integer)
+        field(50023; "Entry No."; BigInteger)
         {
             DataClassification = ToBeClassified;
             AutoIncrement = true;
         }
-        field(1; "Question Order"; Integer)
+        field(50024; Filter; TEXT[200])
         {
             DataClassification = ToBeClassified;
-
         }
 
-        field(2; "Question"; Text[250])
+        field(50025; "Vendor No."; Code[20])
         {
             DataClassification = ToBeClassified;
-
         }
 
-        field(3; "Type Follow Up"; Enum "Follow Up Type")
+        field(50026; "Demande Achat No."; code[20])
         {
             DataClassification = ToBeClassified;
-
         }
 
-        field(4; "weight"; Decimal)
+        field(50027; "Demande Achat Date"; Date)
         {
             DataClassification = ToBeClassified;
-            InitValue = 10;
-            MinValue = 10;
-            trigger OnValidate()
-            begin
-                if weight = 0 then Error('Valeur doit être different de zéro (0) !');
-            end;
-
         }
     }
 
     keys
     {
-        key(Key1; "Line No")
+        key("Entry No."; "Entry No.")
         {
             Clustered = true;
         }
