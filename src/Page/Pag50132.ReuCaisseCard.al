@@ -134,6 +134,18 @@ page 50132 "Recu Caisse Card"
                     REPORT.RUNMODAL(REPORT::"Recu Caisse", TRUE, FALSE, recuCaisse);
                 end;
             }
+
+            action("Modifier Client")
+            {
+                ApplicationArea = All;
+                Image = Customer;
+
+                trigger OnAction()
+
+                begin
+                    modifCustomer := true;
+                end;
+            }
         }
     }
 

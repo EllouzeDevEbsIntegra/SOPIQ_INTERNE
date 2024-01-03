@@ -1,8 +1,8 @@
-report 50236 "Recu Caisse"
+report 50238 "Etat Recu Caisse"
 {
 
-    RDLCLayout = './src/report/RDLC/recuCaisse.rdl';
-    Caption = 'Reçu de caisse';
+    RDLCLayout = './src/report/RDLC/etatRecuCaisse.rdl';
+    Caption = 'Etat Reçu de caisse';
     PreviewMode = PrintLayout;
     UsageCategory = ReportsAndAnalysis;
     ApplicationArea = ALL;

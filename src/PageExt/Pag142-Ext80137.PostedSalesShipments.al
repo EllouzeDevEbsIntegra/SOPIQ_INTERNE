@@ -21,6 +21,26 @@ pageextension 80137 "Posted Sales Shipments" extends "Posted Sales Shipments"//1
             {
                 Caption = 'Acompte';
             }
+
+            field(custNameImprime; custNameImprime)
+            {
+
+            }
+
+            field(custAdresseImprime; custAdresseImprime)
+            {
+
+            }
+
+            field(custMFImprime; custMFImprime)
+            {
+
+            }
+
+            field(custVINImprime; custVINImprime)
+            {
+
+            }
         }
     }
 

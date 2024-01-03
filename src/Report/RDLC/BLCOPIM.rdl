@@ -1040,7 +1040,6 @@
                                               <PaddingBottom>2pt</PaddingBottom>
                                             </Style>
                                           </Textbox>
-                                          <rd:Selected>true</rd:Selected>
                                         </CellContents>
                                       </TablixCell>
                                       <TablixCell>
@@ -1061,6 +1060,9 @@
                                               </Paragraph>
                                             </Paragraphs>
                                             <rd:DefaultName>Textbox19</rd:DefaultName>
+                                            <Visibility>
+                                              <Hidden>=Not(Fields!showReference.Value)</Hidden>
+                                            </Visibility>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -1188,6 +1190,9 @@
                                               </Paragraph>
                                             </Paragraphs>
                                             <rd:DefaultName>Textbox56</rd:DefaultName>
+                                            <Visibility>
+                                              <Hidden>=IIF(Fields!masquerRemiseColumn.Value=true,true,Not(Fields!showDiscount.Value))</Hidden>
+                                            </Visibility>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -1198,6 +1203,7 @@
                                               <PaddingBottom>2pt</PaddingBottom>
                                             </Style>
                                           </Textbox>
+                                          <rd:Selected>true</rd:Selected>
                                         </CellContents>
                                       </TablixCell>
                                       <TablixCell>
@@ -1242,7 +1248,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!MTHT.Value</Value>
+                                                    <Value>=IIF(Fields!showDiscount.Value=true,Fields!NETHT.Value,Fields!MTHT.Value)</Value>
                                                     <Style>
                                                       <Format>#,0.000;(#,0.000);''</Format>
                                                     </Style>
@@ -1790,7 +1796,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>=sum(Fields!TotRemise.Value)</Value>
+                        <Value>=IIF(Fields!showDiscount.Value=true,sum(Fields!Remise.Value),"")</Value>
                         <Style>
                           <FontSize>11pt</FontSize>
                           <FontWeight>Bold</FontWeight>
@@ -1827,7 +1833,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>=sum(Fields!MTHT.Value)</Value>
+                        <Value>=sum(IIF(Fields!showDiscount.Value=true,Fields!NETHT.Value,Fields!MTHT.Value))</Value>
                         <Style>
                           <FontSize>11pt</FontSize>
                           <FontWeight>Bold</FontWeight>
@@ -1864,7 +1870,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>=sum(Fields!MontantTVA.Value)</Value>
+                        <Value>=sum(IIF(Fields!showDiscount.Value=true,Fields!MntTVAR.Value,Fields!MontantTVA.Value))</Value>
                         <Style>
                           <FontSize>11pt</FontSize>
                           <FontWeight>Bold</FontWeight>
@@ -1914,7 +1920,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=sum(Fields!MontTTC.Value)</Value>
+                    <Value>=sum(IIF(Fields!showDiscount.Value=true,Fields!MntTTCR.Value,Fields!MontTTC.Value))</Value>
                     <Style>
                       <FontSize>14pt</FontSize>
                       <FontWeight>Bold</FontWeight>
@@ -2079,6 +2085,7 @@
                 <Border>
                   <Style>None</Style>
                 </Border>
+                <VerticalAlign>Middle</VerticalAlign>
                 <PaddingLeft>2pt</PaddingLeft>
                 <PaddingRight>2pt</PaddingRight>
                 <PaddingTop>2pt</PaddingTop>
@@ -2091,7 +2098,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!BilltoName_SalesShipmentHeader.Value</Value>
+                      <Value>=UCase(IIf(Fields!editCustInfo.Value=true,Fields!custNameImp.Value,Fields!BilltoName_SalesShipmentHeader.Value))</Value>
                       <Style>
                         <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -2126,7 +2133,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=ReportItems!BillToAddress.Value</Value>
+                      <Value>=UCase(IIf(Fields!editCustInfo.Value=true,Fields!custAdressImp.Value,ReportItems!BillToAddress.Value))</Value>
                       <Style>
                         <FontSize>11pt</FontSize>
                       </Style>
@@ -2159,7 +2166,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!CodeTva.Value</Value>
+                      <Value>=UCase("M.F. :   " &amp; IIf(Fields!editCustInfo.Value=true,Fields!custMFImp.Value,Fields!CodeTva.Value))</Value>
                       <Style>
                         <FontSize>11pt</FontSize>
                       </Style>
@@ -2176,6 +2183,9 @@
               <Height>0.57353cm</Height>
               <Width>9.19558cm</Width>
               <ZIndex>6</ZIndex>
+              <Visibility>
+                <Hidden>=IIF(IIf(Fields!editCustInfo.Value=true,Fields!custMFImp.Value,Fields!CodeTva.Value)="",true,false)</Hidden>
+              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2231,14 +2241,16 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>BON DE LIVRAISON N°</Value>
+                      <Value>=IIf(Fields!BS.Value=true,"BL N°","BON DE LIVRAISON N°")</Value>
                       <Style>
                         <FontSize>15pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
                   </TextRuns>
-                  <Style />
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox5</rd:DefaultName>
@@ -2315,6 +2327,30 @@ End Function
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
+        <Field Name="showReference">
+          <DataField>showReference</DataField>
+        </Field>
+        <Field Name="showDiscount">
+          <DataField>showDiscount</DataField>
+        </Field>
+        <Field Name="masquerRemiseColumn">
+          <DataField>masquerRemiseColumn</DataField>
+        </Field>
+        <Field Name="editCustInfo">
+          <DataField>editCustInfo</DataField>
+        </Field>
+        <Field Name="custNameImp">
+          <DataField>custNameImp</DataField>
+        </Field>
+        <Field Name="custAdressImp">
+          <DataField>custAdressImp</DataField>
+        </Field>
+        <Field Name="custMFImp">
+          <DataField>custMFImp</DataField>
+        </Field>
+        <Field Name="custVINImp">
+          <DataField>custVINImp</DataField>
+        </Field>
         <Field Name="Caption_MF_CIN">
           <DataField>Caption_MF_CIN</DataField>
         </Field>
@@ -2426,6 +2462,9 @@ End Function
         <Field Name="ImgEntete">
           <DataField>ImgEntete</DataField>
         </Field>
+        <Field Name="BS">
+          <DataField>BS</DataField>
+        </Field>
         <Field Name="No_SalesShipmentLine">
           <DataField>No_SalesShipmentLine</DataField>
         </Field>
@@ -2471,6 +2510,48 @@ End Function
         <Field Name="MTHTFormat">
           <DataField>MTHTFormat</DataField>
         </Field>
+        <Field Name="NETHT">
+          <DataField>NETHT</DataField>
+        </Field>
+        <Field Name="NETHTFormat">
+          <DataField>NETHTFormat</DataField>
+        </Field>
+        <Field Name="Remise">
+          <DataField>Remise</DataField>
+        </Field>
+        <Field Name="RemiseFormat">
+          <DataField>RemiseFormat</DataField>
+        </Field>
+        <Field Name="MntTVAR">
+          <DataField>MntTVAR</DataField>
+        </Field>
+        <Field Name="MntTVARFormat">
+          <DataField>MntTVARFormat</DataField>
+        </Field>
+        <Field Name="MontantTVA">
+          <DataField>MontantTVA</DataField>
+        </Field>
+        <Field Name="MontantTVAFormat">
+          <DataField>MontantTVAFormat</DataField>
+        </Field>
+        <Field Name="MontTTC">
+          <DataField>MontTTC</DataField>
+        </Field>
+        <Field Name="MontTTCFormat">
+          <DataField>MontTTCFormat</DataField>
+        </Field>
+        <Field Name="MntTTCR">
+          <DataField>MntTTCR</DataField>
+        </Field>
+        <Field Name="MntTTCRFormat">
+          <DataField>MntTTCRFormat</DataField>
+        </Field>
+        <Field Name="TauxTVA">
+          <DataField>TauxTVA</DataField>
+        </Field>
+        <Field Name="TauxTVAFormat">
+          <DataField>TauxTVAFormat</DataField>
+        </Field>
         <Field Name="TotHT">
           <DataField>TotHT</DataField>
         </Field>
@@ -2482,24 +2563,6 @@ End Function
         </Field>
         <Field Name="TotRemiseFormat">
           <DataField>TotRemiseFormat</DataField>
-        </Field>
-        <Field Name="MontantTVA">
-          <DataField>MontantTVA</DataField>
-        </Field>
-        <Field Name="MontantTVAFormat">
-          <DataField>MontantTVAFormat</DataField>
-        </Field>
-        <Field Name="TauxTVA">
-          <DataField>TauxTVA</DataField>
-        </Field>
-        <Field Name="TauxTVAFormat">
-          <DataField>TauxTVAFormat</DataField>
-        </Field>
-        <Field Name="MontTTC">
-          <DataField>MontTTC</DataField>
-        </Field>
-        <Field Name="MontTTCFormat">
-          <DataField>MontTTCFormat</DataField>
         </Field>
         <Field Name="LineDiscount_SalesShipmentLine">
           <DataField>LineDiscount_SalesShipmentLine</DataField>

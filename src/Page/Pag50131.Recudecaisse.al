@@ -67,13 +67,16 @@ page 50131 "Recu de caisse"
     {
         area(Processing)
         {
-            action(ActionName)
+            action("Imprimer Etat Recette")
             {
                 ApplicationArea = All;
+                Image = Print;
 
                 trigger OnAction()
+                var
+                    reportRecette: Report 50238;
                 begin
-
+                    reportRecette.Run();
                 end;
             }
         }

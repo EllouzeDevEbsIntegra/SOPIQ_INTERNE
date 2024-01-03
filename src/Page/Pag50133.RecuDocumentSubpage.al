@@ -86,10 +86,18 @@ page 50133 "Recu Document Subpage"
             action("Add BS")
             {
                 ApplicationArea = All;
-                Caption = 'Ajouter BS / BL';
+                Caption = 'Ajouter Bon de Sortie';
+                // RunObject = Page "Sales Invoice To Pay";
+                // RunPageView = where("Remaining Amount" = filter(> 0));
                 trigger OnAction()
+                var
+                    SalesInvoiceToPay: Page "Liste archive Bon de sortie";
+                    recSalesInvoice: Record "Entete archive BS";
                 begin
-
+                    recSalesInvoice.SetRange("Bill-to Customer No.", custNo);
+                    SalesInvoiceToPay.SetTableView(recSalesInvoice);
+                    SalesInvoiceToPay.setRecuCaisse(rec);
+                    SalesInvoiceToPay.RunModal();
                 end;
             }
         }

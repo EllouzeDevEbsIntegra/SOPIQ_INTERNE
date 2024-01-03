@@ -91,6 +91,7 @@ page 50134 "Sales Invoice To Pay"
 
     var
         recuCaisseDoc: Record "Recu Caisse Document";
+
         recSalesHeaderDoc: Record "Sales Invoice Header";
         brutHT, totalHt, totalTTC, TotalRemise, Remise : decimal;
 
@@ -129,7 +130,7 @@ page 50134 "Sales Invoice To Pay"
         if recSalesHeaderDoc.FindSet() then
             repeat
                 CreateInvLines(recSalesHeaderDoc);
-                Message(recSalesHeaderDoc."No.");
+            //Message(recSalesHeaderDoc."No.");
             until recSalesHeaderDoc.Next() = 0;
     end;
 
@@ -142,7 +143,7 @@ page 50134 "Sales Invoice To Pay"
         recuCaisseDoc."Customer No" := SalesInvHeader."Bill-to Customer No.";
         recuCaisseDoc."Line No" := recuCaisseDoc.incrementNo(recuCaisseDoc."No Recu");
         recuCaisseDoc.Insert();
-        Message('test %1', recuCaisseDoc."No Recu");
+        //Message('test %1', recuCaisseDoc."No Recu");
     end;
 
     procedure setRecuCaisse(var recuCaisseParam: Record "Recu Caisse Document")

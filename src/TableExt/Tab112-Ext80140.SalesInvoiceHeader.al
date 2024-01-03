@@ -18,6 +18,26 @@ tableextension 80140 "Sales Invoice Header" extends "Sales Invoice Header"//112
             Editable = false;
             FieldClass = FlowField;
         }
+
+        field(80101; custNameImprime; Text[200])
+        {
+            Caption = 'Nom Client Imprimé';
+        }
+
+        field(80102; custAdresseImprime; Text[200])
+        {
+            Caption = 'Adresse Client Imprimé';
+        }
+
+        field(80103; custMFImprime; Text[200])
+        {
+            Caption = 'Matricule Fiscal Imprimé';
+        }
+
+        field(80104; custVINImprime; Text[200])
+        {
+            Caption = 'Vin Client Imprimé';
+        }
     }
 
     var

@@ -1,16 +1,10 @@
-pageextension 80256 "Sales Order List" extends "Sales Order List"//9305
+pageextension 80478 "Liste bon de sortie" extends "Liste bon de sortie" //50012
 {
     layout
     {
         // Add changes to page layout here
-        addafter("Montant réglement")
+        addafter("No. Printed")
         {
-            field(Acopmpte; Acopmpte)
-            {
-                ApplicationArea = all;
-                Editable = false;
-            }
-
             field(custNameImprime; custNameImprime)
             {
 
@@ -31,11 +25,6 @@ pageextension 80256 "Sales Order List" extends "Sales Order List"//9305
 
             }
         }
-
-        modify("Montant réglement")
-        {
-            Visible = false;
-        }
     }
 
     actions
@@ -45,9 +34,4 @@ pageextension 80256 "Sales Order List" extends "Sales Order List"//9305
 
     var
         myInt: Integer;
-
-    trigger OnAfterGetRecord()
-    begin
-        rec.CalcFields(Acopmpte);
-    end;
 }

@@ -1,15 +1,11 @@
-pageextension 80256 "Sales Order List" extends "Sales Order List"//9305
+pageextension 80417 "Sales Quotes" extends "Sales Quotes"//9300
 {
     layout
     {
+
         // Add changes to page layout here
-        addafter("Montant réglement")
+        addafter("Document Profile")
         {
-            field(Acopmpte; Acopmpte)
-            {
-                ApplicationArea = all;
-                Editable = false;
-            }
 
             field(custNameImprime; custNameImprime)
             {
@@ -31,11 +27,6 @@ pageextension 80256 "Sales Order List" extends "Sales Order List"//9305
 
             }
         }
-
-        modify("Montant réglement")
-        {
-            Visible = false;
-        }
     }
 
     actions
@@ -45,9 +36,4 @@ pageextension 80256 "Sales Order List" extends "Sales Order List"//9305
 
     var
         myInt: Integer;
-
-    trigger OnAfterGetRecord()
-    begin
-        rec.CalcFields(Acopmpte);
-    end;
 }

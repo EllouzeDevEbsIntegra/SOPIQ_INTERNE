@@ -8,6 +8,7 @@ report 50235 "BL COPIM"
     ApplicationArea = All;
     RDLCLayout = './src/report/RDLC/BLCOPIM.rdl';
     PreviewMode = PrintLayout;
+    Permissions = TableData 110 = rm;
 
 
     dataset
@@ -15,6 +16,40 @@ report 50235 "BL COPIM"
         dataitem(DataItem1000000001; "Sales Shipment Header")
         {
             RequestFilterFields = "No.";
+            column(showReference; showReference)
+            {
+
+            }
+            column(showDiscount; showDiscount)
+            {
+
+            }
+
+            column(masquerRemiseColumn; masquerRemiseColumn)
+            {
+
+            }
+            column(editCustInfo; editCustInfo)
+            {
+
+            }
+            column(custNameImp; custNameImp)
+            {
+
+            }
+            column(custAdressImp; custAdressImp)
+            {
+
+            }
+            column(custMFImp; custMFImp)
+            {
+
+            }
+            column(custVINImp; custVINImp)
+            {
+
+            }
+
             column(Caption_MF_CIN; Caption_MF_CIN)
             {
             }
@@ -78,7 +113,7 @@ report 50235 "BL COPIM"
             column(BilltoCustomerNo_SalesShipmentHeader; "Bill-to Customer No.")
             {
             }
-            column(BilltoName_SalesShipmentHeader; "Ship-to Name")
+            column(BilltoName_SalesShipmentHeader; "Bill-to Name")
             {
             }
             column(Sell_to_Customer_Name; "Sell-to Customer Name")
@@ -126,6 +161,11 @@ report 50235 "BL COPIM"
             column(ImgEntete; RecCompany."Invoice Header Picture")
             {
             }
+
+            column(BS; BS)
+            {
+
+            }
             dataitem(DataItem1000000002; "Sales Shipment Line")
             {
                 DataItemLink = "Document No." = FIELD("No.");
@@ -164,6 +204,36 @@ report 50235 "BL COPIM"
                 {
 
                 }
+                column(NETHT; NETHT)
+                {
+
+                }
+                column(Remise; Remise)
+                {
+
+                }
+
+                column(MntTVAR; MntTVAR)
+                {
+
+                }
+                column(MontantTVA; MontantTVA)
+                {
+
+                }
+
+                column(MontTTC; MontTTC)
+                {
+
+                }
+                column(MntTTCR; MntTTCR)
+                {
+
+                }
+                column(TauxTVA; TauxTVA)
+                {
+
+                }
                 column(TotHT; TotHT)
                 {
 
@@ -172,18 +242,7 @@ report 50235 "BL COPIM"
                 {
 
                 }
-                column(MontantTVA; MontantTVA)
-                {
 
-                }
-                column(TauxTVA; TauxTVA)
-                {
-
-                }
-                column(MontTTC; MontTTC)
-                {
-
-                }
                 column(LineDiscount_SalesShipmentLine; "% Discount")
                 {
                 }
@@ -199,33 +258,40 @@ report 50235 "BL COPIM"
                     // IF Type = Type::Item THEN
                     increment := increment + 1;
                     MTHT := 0;
+                    NETHT := 0;
+                    Remise := 0;
+                    MntTVAR := 0;
+                    MntTTCR := 0;
+                    MontTTC := 0;
                     TotRemise := 0;
                     CalcFields(BS);
-                    if BS then begin
-                        // PrixVente := "Prix Vente 1";
-                        //PrixVente := "Unit Price";
+                    //if BS then begin
+                    // PrixVente := "Prix Vente 1";
+                    //PrixVente := "Unit Price";
 
-                        // MTHT := (PrixVente * Quantity) - (((PrixVente * Quantity) * ("Line Discount %" / 100)));
-                        MTHT := ("Unit Price" * Quantity);
-                        TotHT := TotHT + MTHT;
-                        TotRemise := TotRemise + ((PrixVente * Quantity) * ("Line Discount %" / 100));
-                        MontantTVA := MTHT * (("VAT %" / 100));
-                        // MontTTC := TotHT + MontantTVA;
-                        MontTTC := MTHT + MontantTVA;
-                        TauxTVA := "VAT %";
+                    // MTHT := (PrixVente * Quantity) - (((PrixVente * Quantity) * ("Line Discount %" / 100)));
+                    MTHT := ("Unit Price" * Quantity);
+                    NETHT := ("Unit Price" * Quantity) - ((("Unit Price" * Quantity) * ("% Discount" / 100)));
+                    Remise := (("Unit Price" * Quantity) * ("% Discount" / 100));
+                    MntTVAR := NETHT * (("VAT %" / 100));
+                    MontantTVA := MTHT * (("VAT %" / 100));
+                    // MontTTC := TotHT + MontantTVA;
+                    MontTTC := MTHT + MontantTVA;
+                    MntTTCR := NETHT + MntTVAR;
+                    TauxTVA := "VAT %";
 
-                    end else begin
-                        PrixVente := "Unit Price";
+                    //end else begin
+                    //     PrixVente := "Unit Price";
 
-                        MTHT := (PrixVente * Quantity) - (((PrixVente * Quantity) * ("% Discount" / 100)));
-                        TotHT := TotHT + MTHT;
-                        TotRemise := TotRemise + ((PrixVente * Quantity) * ("% Discount" / 100));
-                        MontantTVA := MTHT * (("VAT %" / 100));
-                        // MontTTC := TotHT + MontantTVA;
-                        MontTTC := MTHT + MontantTVA;
-                        TauxTVA := "VAT %";
+                    //     MTHT := (PrixVente * Quantity) - (((PrixVente * Quantity) * ("% Discount" / 100)));
+                    //     TotHT := TotHT + MTHT;
+                    //     TotRemise := TotRemise + ((PrixVente * Quantity) * ("% Discount" / 100));
+                    //     MontantTVA := MTHT * (("VAT %" / 100));
+                    //     // MontTTC := TotHT + MontantTVA;
+                    //     MontTTC := MTHT + MontantTVA;
+                    //     TauxTVA := "VAT %";
 
-                    end;
+                    // end;
                     IF Type <> Type::Item THEN
                         CurrReport.SKIP;
 
@@ -320,24 +386,66 @@ report 50235 "BL COPIM"
         {
             area(content)
             {
-                group(Display)
+                group(Option)
                 {
-                    Caption = 'Affichage';
-                    field(Valoriser; Valoriser)
+                    Caption = 'Option';
+
+                    field(ShowReference; ShowReference)
                     {
-                        ApplicationArea = all;
-                        Visible = false;
+                        Caption = 'Afficher référence';
                     }
-                    field(DisplayLanguage; DisplayLanguage)
+
+                    field(showDiscount; showDiscount)
                     {
-                        ApplicationArea = all;
-                        Caption = 'Language';
-                        TableRelation = Language;
+                        Caption = 'Afficher Remise';
                     }
-                    field(UseVendorLanguage; UseVendorLanguage)
+                    field(masquerRemiseColumn; masquerRemiseColumn)
                     {
-                        ApplicationArea = all;
-                        Caption = 'Use Customer Language';
+                        Caption = 'Masquer Colonne Remise';
+                    }
+
+
+                }
+                group(CustInfo)
+                {
+                    Caption = 'Information client';
+
+                    field(editCustInfo; editCustInfo)
+                    {
+                        Caption = 'Modifier information client à imprimer';
+                        trigger OnValidate()
+                        var
+                            recSalesShipHeader: Record "Sales Shipment Header";
+                        begin
+                            recSalesShipHeader.reset();
+                            recSalesShipHeader.SetRange("No.", DataItem1000000001.GetFilter("No."));
+                            if recSalesShipHeader.FindFirst() then begin
+                                custNameImp := recSalesShipHeader.custNameImprime;
+                                custAdressImp := recSalesShipHeader.custAdresseImprime;
+                                custMFImp := recSalesShipHeader.custMFImprime;
+                                custVINImp := recSalesShipHeader.custVINImprime;
+                            end;
+                        end;
+
+                    }
+
+                    field(custNameImp; custNameImp)
+                    {
+                        Caption = 'Nom Client à imprimer';
+                    }
+
+                    field(custAdressImp; custAdressImp)
+                    {
+                        Caption = 'Adresse Client à imprimer';
+                    }
+
+                    field(custMFImp; custMFImp)
+                    {
+                        Caption = 'MF Client à imprimer';
+                    }
+                    field(custVINImp; custVINImp)
+                    {
+                        Caption = 'VIN Client à imprimer';
                     }
                 }
             }
@@ -375,9 +483,29 @@ report 50235 "BL COPIM"
         END;
     end;
 
+    trigger OnPostReport()
     var
+        recSalesShipHeader: Record "Sales Shipment Header";
+    begin
+        recSalesShipHeader.reset();
+        recSalesShipHeader.SetRange("No.", DataItem1000000001."No.");
+        if recSalesShipHeader.FindFirst() then begin
+            recSalesShipHeader.custNameImprime := custNameImp;
+            recSalesShipHeader.custAdresseImprime := custAdressImp;
+            recSalesShipHeader.custMFImprime := custMFImp;
+            recSalesShipHeader.custVINImprime := custVINImp;
+            recSalesShipHeader.Modify();
+        end;
+    end;
+
+    var
+        showReference: Boolean;
+        masquerRemiseColumn: Boolean;
+        showDiscount: Boolean;
+        editCustInfo: Boolean;
+        custNameImp, custAdressImp, custMFImp, custVINImp : text;
         PrixVente: Decimal;
-        MTHT: Decimal;
+        MTHT, NETHT, Remise, MntTVAR, MntTTCR : Decimal;
         TotHT: Decimal;
         TotRemise: Decimal;
         TauxTVA: Decimal;

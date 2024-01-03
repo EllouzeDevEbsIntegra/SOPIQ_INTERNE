@@ -14,6 +14,26 @@ pageextension 80180 "Posted Sales Invoices" extends "Posted Sales Invoices"//143
             // {
             //     caption = 'Condition Paiement';
             // }
+
+            field(custNameImprime; custNameImprime)
+            {
+
+            }
+
+            field(custAdresseImprime; custAdresseImprime)
+            {
+
+            }
+
+            field(custMFImprime; custMFImprime)
+            {
+
+            }
+
+            field(custVINImprime; custVINImprime)
+            {
+
+            }
         }
     }
 
