@@ -23,6 +23,10 @@ report 50238 "Etat Recu Caisse"
             {
 
             }
+            column(dateRecu; dateRecu)
+            {
+
+            }
             column(user; user)
             {
 

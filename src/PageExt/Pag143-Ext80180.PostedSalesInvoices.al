@@ -10,6 +10,25 @@ pageextension 80180 "Posted Sales Invoices" extends "Posted Sales Invoices"//143
                 Caption = 'Moyen Jour Paiement';
             }
 
+            field("Montant reçu caisse"; "Montant reçu caisse")
+            {
+                Caption = 'Montant reçu caisse';
+                trigger OnDrillDown()
+                begin
+                    DoDrillDown;
+                end;
+            }
+            field("No reçu caisse"; "No reçu caisse")
+            {
+                ApplicationArea = all;
+                trigger OnDrillDown()
+                var
+                    recuCaisse: Record "Recu Caisse";
+                begin
+                    recuCaisse.SetRange("No", rec."No reçu caisse");
+                    PAGE.Run(PAGE::"Recu de caisse", recuCaisse);
+                end;
+            }
             // field("Payment Terms Code"; "Payment Terms Code")
             // {
             //     caption = 'Condition Paiement';
@@ -108,4 +127,11 @@ pageextension 80180 "Posted Sales Invoices" extends "Posted Sales Invoices"//143
         exit(MoyJourPaiement);
     end;
 
+    local procedure DoDrillDown()
+    var
+        SalesInvoiceHeader: Record "Recu Caisse Document";
+    begin
+        SalesInvoiceHeader.SetRange("Document No", rec."No.");
+        PAGE.Run(PAGE::"Recu Document List", SalesInvoiceHeader);
+    end;
 }

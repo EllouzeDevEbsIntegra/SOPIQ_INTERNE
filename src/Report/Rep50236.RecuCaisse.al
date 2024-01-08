@@ -1,6 +1,5 @@
 report 50236 "Recu Caisse"
 {
-
     RDLCLayout = './src/report/RDLC/recuCaisse.rdl';
     Caption = 'Reçu de caisse';
     PreviewMode = PrintLayout;
@@ -20,6 +19,10 @@ report 50236 "Recu Caisse"
 
             }
             column(Date_Time; dateTime)
+            {
+
+            }
+            column(dateRecu; dateRecu)
             {
 
             }
@@ -72,9 +75,8 @@ report 50236 "Recu Caisse"
 
             dataitem("Recu Caisse Paiement"; "Recu Caisse Paiement")
             {
-                // DataItemTableView = where("Small Parts" = const(false));
+                DataItemTableView = where(type = filter('<>0'));
                 DataItemLink = "No Recu" = FIELD("No");
-
 
                 column(No_Recu; "No Recu")
                 {
@@ -82,6 +84,31 @@ report 50236 "Recu Caisse"
                 }
 
                 column(Paiment_No; "Paiment No")
+                {
+
+                }
+                column(Name; Name)
+                {
+
+                }
+
+                column(type; type)
+                {
+
+                }
+                column(Montant; Montant)
+                {
+
+                }
+                column(Montant_Calcul; "Montant Calcul")
+                {
+
+                }
+                column(banque; banque)
+                {
+
+                }
+                column(Echeance; Echeance)
                 {
 
                 }
@@ -119,7 +146,12 @@ report 50236 "Recu Caisse"
             // }
 
             trigger OnAfterGetRecord()
+            var
+                char13, char10 : char;
+                libelleNoPaiement: text;
             begin
+                char10 := 10;
+                char13 := 13;
                 Clear(recRecuCaisseLigne);
                 LibelleTicket := '';
                 LibellePaiement := '';
@@ -136,10 +168,11 @@ report 50236 "Recu Caisse"
                 recRecuPaiement.SetRange("No Recu", "Recu Caisse".No);
                 if recRecuPaiement.FindSet() then begin
                     repeat
+                        if (recRecuPaiement."Paiment No" <> '') then libelleNoPaiement := 'N°';
                         if (LibellePaiement = '') then
-                            LibellePaiement := Format(recRecuPaiement.type) + ' ' + Format(recRecuPaiement.banque) + ' ' + Format(recRecuPaiement."Paiment No") + ' ' + Format(recRecuPaiement.Montant) + ' ' + Format(recRecuPaiement.Echeance) + ' ' + Format(recRecuPaiement.Name)
+                            LibellePaiement := '* ' + Format(recRecuPaiement.type) + ' ' + Format(recRecuPaiement.banque) + ' ' + libelleNoPaiement + Format(recRecuPaiement."Paiment No") + ' ' + Format(recRecuPaiement.Montant, 0, '<Precision,3:3><Standard Format,3>') + ' ' + Format(recRecuPaiement.Echeance) + ' ' + Format(recRecuPaiement.Name)
                         else
-                            LibellePaiement := LibellePaiement + ' / ' + Format(recRecuPaiement.type) + ' ' + Format(recRecuPaiement.banque) + ' ' + Format(recRecuPaiement."Paiment No") + ' ' + Format(recRecuPaiement.Montant) + ' ' + Format(recRecuPaiement.Echeance) + ' ' + Format(recRecuPaiement.Name);
+                            LibellePaiement := LibellePaiement + FORMAT(char13) + FORMAT(char10) + '* ' + Format(recRecuPaiement.type) + ' ' + Format(recRecuPaiement.banque) + ' ' + libelleNoPaiement + Format(recRecuPaiement."Paiment No") + ' ' + Format(recRecuPaiement.Montant, 0, '<Precision,3:3><Standard Format,3>') + ' ' + Format(recRecuPaiement.Echeance) + ' ' + Format(recRecuPaiement.Name);
                     until recRecuPaiement.Next() = 0;
                 end;
 
@@ -170,6 +203,13 @@ report 50236 "Recu Caisse"
     begin
         LibelleTicket := '';
         LibellePaiement := '';
+    end;
+
+    trigger OnPostReport()
+    var
+        recCaisse: Record "Recu Caisse";
+    begin
+        recCaisse.setPrinted("Recu Caisse");
     end;
 
     var

@@ -1,13 +1,12 @@
-page 50134 "Sales Invoice To Pay"
+page 50136 "Bon Sortie Archive To Pay"
 {
     Editable = false;
     PageType = List;
     UsageCategory = Lists;
     ApplicationArea = all;
-    SourceTable = "Sales Invoice Header";
+    SourceTable = "Entete archive BS";
     SourceTableView = where(solde = filter(false));
-    Caption = 'Liste Facture à payer';
-
+    Caption = 'Liste Bon Sortie à payer';
 
     layout
     {
@@ -19,15 +18,16 @@ page 50134 "Sales Invoice To Pay"
                 {
                     ApplicationArea = All;
                 }
-
                 field("Bill-to Customer No."; "Bill-to Customer No.")
                 {
 
                 }
-                field("Remaining Amount"; "Remaining Amount")
+
+                field("Montant TTC"; "Montant TTC")
                 {
 
                 }
+
                 field("Montant reçu caisse"; "Montant reçu caisse")
                 {
                     Visible = false;
@@ -39,8 +39,7 @@ page 50134 "Sales Invoice To Pay"
             }
             group(Totalisation)
             {
-
-                field(TotalTTC; totalTTC)
+                field("Total TTC"; totalTTC)
                 {
                     ApplicationArea = All;
                     Style = Strong;
@@ -61,21 +60,10 @@ page 50134 "Sales Invoice To Pay"
 
     var
         recuCaisseDoc: Record "Recu Caisse Document";
-
-        recSalesHeaderDoc: Record "Sales Invoice Header";
-        totalTTC: decimal;
         restePayer: Decimal;
+        recSalesHeaderDoc: Record "Entete archive BS";
+        totalTTC: decimal;
 
-
-    trigger OnAfterGetRecord()
-    begin
-        rec.CalcFields("Remaining Amount", "Montant reçu caisse");
-        restePayer := "Remaining Amount" - "Montant reçu caisse";
-        // if (restePayer < 1) then begin
-        //     rec.solde := true;
-        //     rec.Modify();
-        // end;
-    end;
 
     trigger OnAfterGetCurrRecord()
     begin
@@ -86,12 +74,13 @@ page 50134 "Sales Invoice To Pay"
             totalTTC := 0;
 
             repeat
-                recSalesHeaderDoc.CalcFields(Amount, "Amount Including VAT");
-                totalTTC := totalTTC + recSalesHeaderDoc."Amount Including VAT" + recSalesHeaderDoc."STStamp Amount";
+                recSalesHeaderDoc.CalcFields("Montant TTC");
+                totalTTC := totalTTC + recSalesHeaderDoc."Montant TTC";
             until recSalesHeaderDoc.Next() = 0;
         end;
 
     end;
+
 
     trigger OnQueryClosePage(CloseAction: Action): Boolean
     begin
@@ -113,17 +102,17 @@ page 50134 "Sales Invoice To Pay"
     end;
 
 
-    procedure CreateInvLines(var SalesInvHeader: Record "Sales Invoice Header")
+    procedure CreateInvLines(var SalesInvHeader: Record "Entete archive BS")
     var
 
     begin
-        SalesInvHeader.CalcFields(Amount, "Amount Including VAT", DiscountAmount, "Remaining Amount");
+        SalesInvHeader.CalcFields("Montant TTC");
         recuCaisseDoc."Document No" := SalesInvHeader."No.";
-        recuCaisseDoc.type := recuCaisseDoc.type::Invoice;
+        recuCaisseDoc.type := recuCaisseDoc.type::BS;
         recuCaisseDoc."Customer No" := SalesInvHeader."Bill-to Customer No.";
         recuCaisseDoc."Line No" := recuCaisseDoc.incrementNo(recuCaisseDoc."No Recu");
-        recuCaisseDoc."Total TTC" := SalesInvHeader."Amount Including VAT";
-        recuCaisseDoc."Montant Reglement" := SalesInvHeader."Amount Including VAT" + SalesInvHeader."STStamp Amount";
+        recuCaisseDoc."Total TTC" := SalesInvHeader."Montant TTC";
+        recuCaisseDoc."Montant Reglement" := SalesInvHeader."Montant TTC";
         recuCaisseDoc.Insert();
         updateSumRecuCaisse(recuCaisseDoc."No Recu");
     end;
@@ -135,8 +124,6 @@ page 50134 "Sales Invoice To Pay"
         recuCaisse.Reset();
         recuCaisse.SetRange(No, recuCaisseNo);
         if recuCaisse.FindFirst() then begin
-            // recuCaisse.totalDocToPay := recuCaisse.totalDocToPay + totalTTC;
-            // recuCaisse.Modify();
             recuCaisse.CalcFields(totalDocToPay, "totalReçu");
         end;
 
@@ -147,4 +134,13 @@ page 50134 "Sales Invoice To Pay"
         recuCaisseDoc := recuCaisseParam;
     end;
 
+    trigger OnAfterGetRecord()
+    begin
+        rec.CalcFields("Montant TTC", "Montant reçu caisse");
+        restePayer := "Montant TTC" - "Montant reçu caisse";
+        // if (restePayer < 1) then begin
+        //     rec.solde := true;
+        //     rec.Modify();
+        // end;
+    end;
 }

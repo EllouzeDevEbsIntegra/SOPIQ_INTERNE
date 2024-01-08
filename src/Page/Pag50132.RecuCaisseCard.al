@@ -11,6 +11,7 @@ page 50132 "Recu Caisse Card"
         {
             group(General)
             {
+                Editable = NOT (Printed);
                 field(No; No)
                 {
                     Caption = 'N° Reçu';
@@ -37,6 +38,7 @@ page 50132 "Recu Caisse Card"
                             if recSeries.FindLast() then begin
                                 rec.No := recSeries.GetNextSequenceNo(true);
                                 rec.dateTime := System.CurrentDateTime;
+                                rec.dateRecu := System.Today;
                             end;
                         end;
 
@@ -44,8 +46,10 @@ page 50132 "Recu Caisse Card"
                         recCust.Reset();
                         if recCust.get("Customer No") then rec.custName := recCust.Name;
                         modifCustomer := false;
+                        isCreated := true;
                         CurrPage.Document.Page.setFilter(rec);
                         CurrPage.Paiement.Page.setFilter(rec);
+
                     end;
                 }
 
@@ -65,11 +69,18 @@ page 50132 "Recu Caisse Card"
                     Editable = false;
                 }
 
+                field(dateRecu; dateRecu)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Date Reçu';
+                    Editable = modifCustomer;
+                }
+
                 field(user; user)
                 {
                     ApplicationArea = all;
                     Caption = 'Code Vendeur';
-                    Editable = modifCustomer;
+                    Editable = isCreated;
                 }
                 field(isAcompte; isAcompte)
                 {
@@ -83,7 +94,9 @@ page 50132 "Recu Caisse Card"
                 Caption = 'Document à payer';
                 UpdatePropagation = SubPart;
                 ApplicationArea = All;
-                Visible = NOT (modifCustomer);
+                Visible = isCreated;
+                Editable = NOT (Printed);
+
             }
 
             part("Paiement"; "Recu Paiement Subpage")
@@ -91,22 +104,38 @@ page 50132 "Recu Caisse Card"
                 Caption = 'Liste Paiements';
                 UpdatePropagation = SubPart;
                 ApplicationArea = All;
-                Visible = NOT (modifCustomer);
+                Visible = isCreated;
+                Editable = NOT (Printed);
+
             }
 
             group(Totaux)
             {
+                Editable = NOT (Printed);
                 Visible = NOT (modifCustomer);
+
+                field("totalReçu"; "totalReçu")
+                {
+                    ApplicationArea = all;
+                    Caption = 'Total Paiement';
+                    Editable = false;
+                }
+                field(totalDepense; totalDepense)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Total Dépense';
+                    Editable = false;
+                }
                 field(totalDocToPay; totalDocToPay)
                 {
                     ApplicationArea = all;
                     Caption = 'Total document à payer';
                     Editable = false;
                 }
-                field("totalReçu"; "totalReçu")
+                field("totalRéglement"; "totalRéglement")
                 {
                     ApplicationArea = all;
-                    Caption = 'Total Paiement';
+                    Caption = 'Total Réglement';
                     Editable = false;
                 }
             }
@@ -124,14 +153,19 @@ page 50132 "Recu Caisse Card"
             {
                 ApplicationArea = All;
                 Image = Print;
-
                 trigger OnAction()
                 VAR
                     recuCaisse: Record "Recu Caisse";
-
                 begin
-                    CurrPage.SETSELECTIONFILTER(recuCaisse);
-                    REPORT.RUNMODAL(REPORT::"Recu Caisse", TRUE, FALSE, recuCaisse);
+                    Message('%1 - %2 - %3', rec.totalDocToPay, rec."totalReçu", rec.totalDepense);
+                    //CurrPage.SetTableView(recuCaisse);
+                    if (user = '') then
+                        Error('Vous devez sélectionner le code vendeur !') else begin
+                        CurrPage.SETSELECTIONFILTER(recuCaisse);
+                        CurrPage.Update(true);
+                        REPORT.RUNMODAL(REPORT::"Recu Caisse", TRUE, FALSE, recuCaisse);
+                    end;
+
                 end;
             }
 
@@ -146,23 +180,43 @@ page 50132 "Recu Caisse Card"
                     modifCustomer := true;
                 end;
             }
+
+            action("Modifier Reçu")
+            {
+                ApplicationArea = All;
+                Image = DocumentEdit;
+
+                trigger OnAction()
+
+                begin
+                    Printed := false;
+                    CurrPage.Update(true);
+                end;
+            }
         }
     }
 
     var
-        modifCustomer: Boolean;
+        modifCustomer, isCreated : Boolean;
 
     trigger OnOpenPage()
     begin
+        if (Printed = true) then CurrPage.Editable := false;
+
         CurrPage.Document.Page.setFilter(rec);
         CurrPage.Paiement.Page.setFilter(rec);
         modifCustomer := true;
         if (rec."Customer No" <> '') then modifCustomer := false;
+        rec.CalcFields(totalDocToPay, "totalReçu", totalDepense, "totalRéglement");
+
+        if (No <> '') then isCreated := true;
     end;
 
     trigger OnAfterGetRecord()
     begin
         CurrPage.Document.Page.setFilter(rec);
         CurrPage.Paiement.Page.setFilter(rec);
+        rec.CalcFields(totalDocToPay, "totalReçu", totalDepense, "totalRéglement");
     end;
+
 }

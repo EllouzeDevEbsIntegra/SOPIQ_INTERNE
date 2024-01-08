@@ -1,12 +1,12 @@
-page 50134 "Sales Invoice To Pay"
+page 50138 "Sales Cr Memo To Pay"
 {
     Editable = false;
     PageType = List;
     UsageCategory = Lists;
     ApplicationArea = all;
-    SourceTable = "Sales Invoice Header";
+    SourceTable = "Sales Cr.Memo Header";
     SourceTableView = where(solde = filter(false));
-    Caption = 'Liste Facture à payer';
+    Caption = 'Liste Avoir à payer';
 
 
     layout
@@ -62,7 +62,7 @@ page 50134 "Sales Invoice To Pay"
     var
         recuCaisseDoc: Record "Recu Caisse Document";
 
-        recSalesHeaderDoc: Record "Sales Invoice Header";
+        recSalesHeaderDoc: Record "Sales Cr.Memo Header";
         totalTTC: decimal;
         restePayer: Decimal;
 
@@ -87,7 +87,8 @@ page 50134 "Sales Invoice To Pay"
 
             repeat
                 recSalesHeaderDoc.CalcFields(Amount, "Amount Including VAT");
-                totalTTC := totalTTC + recSalesHeaderDoc."Amount Including VAT" + recSalesHeaderDoc."STStamp Amount";
+
+                totalTTC := totalTTC + recSalesHeaderDoc."Amount Including VAT";
             until recSalesHeaderDoc.Next() = 0;
         end;
 
@@ -113,17 +114,17 @@ page 50134 "Sales Invoice To Pay"
     end;
 
 
-    procedure CreateInvLines(var SalesInvHeader: Record "Sales Invoice Header")
+    procedure CreateInvLines(var SalesInvHeader: Record "Sales Cr.Memo Header")
     var
 
     begin
-        SalesInvHeader.CalcFields(Amount, "Amount Including VAT", DiscountAmount, "Remaining Amount");
+        SalesInvHeader.CalcFields(Amount, "Amount Including VAT", "Remaining Amount");
         recuCaisseDoc."Document No" := SalesInvHeader."No.";
         recuCaisseDoc.type := recuCaisseDoc.type::Invoice;
         recuCaisseDoc."Customer No" := SalesInvHeader."Bill-to Customer No.";
         recuCaisseDoc."Line No" := recuCaisseDoc.incrementNo(recuCaisseDoc."No Recu");
         recuCaisseDoc."Total TTC" := SalesInvHeader."Amount Including VAT";
-        recuCaisseDoc."Montant Reglement" := SalesInvHeader."Amount Including VAT" + SalesInvHeader."STStamp Amount";
+        recuCaisseDoc."Montant Reglement" := SalesInvHeader."Amount Including VAT";
         recuCaisseDoc.Insert();
         updateSumRecuCaisse(recuCaisseDoc."No Recu");
     end;

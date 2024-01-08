@@ -12,7 +12,7 @@ table 70012 "Recu Caisse Document"
         {
             DataClassification = ToBeClassified;
         }
-        field(70014; type; Enum "Sales Document Type")
+        field(70014; type; Enum "Document Caisse Type")
         {
             DataClassification = ToBeClassified;
         }
@@ -28,22 +28,12 @@ table 70012 "Recu Caisse Document"
             DataClassification = ToBeClassified;
         }
 
-        field(70017; "Total HT"; Decimal)
-        {
-            DataClassification = ToBeClassified;
-        }
-
-        field(70018; "Total Remise"; Decimal)
-        {
-            DataClassification = ToBeClassified;
-        }
-
         field(70019; "Total TTC"; Decimal)
         {
             DataClassification = ToBeClassified;
         }
 
-        field(70020; "Montant Ouvert"; Decimal)
+        field(70020; "Montant Reglement"; Decimal)
         {
             DataClassification = ToBeClassified;
         }

@@ -3,6 +3,29 @@ pageextension 80396 "Liste archive Bon de sortie" extends "Liste archive Bon de 
     layout
     {
         // Add changes to page layout here
+        addafter("Montant TTC")
+        {
+            field("Montant reçu caisse"; "Montant reçu caisse")
+            {
+                ApplicationArea = all;
+                trigger OnDrillDown()
+                begin
+                    DoDrillDown;
+                end;
+            }
+
+            field("No reçu caisse"; "No reçu caisse")
+            {
+                ApplicationArea = all;
+                trigger OnDrillDown()
+                var
+                    recuCaisse: Record "Recu Caisse";
+                begin
+                    recuCaisse.SetRange("No", rec."No reçu caisse");
+                    PAGE.Run(PAGE::"Recu de caisse", recuCaisse);
+                end;
+            }
+        }
     }
 
     actions
@@ -11,56 +34,17 @@ pageextension 80396 "Liste archive Bon de sortie" extends "Liste archive Bon de 
     }
 
     var
-        recuCaisseDoc: Record "Recu Caisse Document";
-        recSalesHeaderDoc: Record "Entete archive BS";
-        brutHT, totalHt, totalTTC, TotalRemise, Remise : decimal;
 
-    trigger OnAfterGetCurrRecord()
+    trigger OnAfterGetRecord()
     begin
-        recSalesHeaderDoc.Reset();
-        CurrPage.SetSelectionFilter(recSalesHeaderDoc);
-        if recSalesHeaderDoc.FindSet() then begin
-            brutHT := 0;
-            totalHt := 0;
-            totalTTC := 0;
-            TotalRemise := 0;
-            Remise := 0;
-            repeat
-
-            until recSalesHeaderDoc.Next() = 0;
-        end;
-
+        rec.CalcFields("Montant reçu caisse");
     end;
 
-    trigger OnQueryClosePage(CloseAction: Action): Boolean
-    begin
-        if CloseAction in [ACTION::OK, ACTION::LookupOK] then
-            CreateLines;
-    end;
-
-    procedure CreateLines()
-    begin
-        recSalesHeaderDoc.Reset();
-        CurrPage.SetSelectionFilter(recSalesHeaderDoc);
-        if recSalesHeaderDoc.FindSet() then
-            repeat
-                CreateInvLines(recSalesHeaderDoc);
-            until recSalesHeaderDoc.Next() = 0;
-    end;
-
-
-    procedure CreateInvLines(var SalesInvHeader: Record "Entete archive BS")
+    local procedure DoDrillDown()
     var
-
+        SalesInvoiceHeader: Record "Recu Caisse Document";
     begin
-        recuCaisseDoc."Document No" := SalesInvHeader."No.";
-        recuCaisseDoc."Customer No" := SalesInvHeader."Bill-to Customer No.";
-        recuCaisseDoc."Line No" := recuCaisseDoc.incrementNo(recuCaisseDoc."No Recu");
-        recuCaisseDoc.Insert();
-    end;
-
-    procedure setRecuCaisse(var recuCaisseParam: Record "Recu Caisse Document")
-    begin
-        recuCaisseDoc := recuCaisseParam;
+        SalesInvoiceHeader.SetRange("Document No", rec."No.");
+        PAGE.Run(PAGE::"Recu Document List", SalesInvoiceHeader);
     end;
 }

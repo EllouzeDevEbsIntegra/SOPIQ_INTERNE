@@ -22,25 +22,42 @@ enum 50055 "Paiment Caisse Type"
     {
         Caption = 'TPE';
     }
-
-    value(5; Remise)
-    {
-        Caption = 'Remise';
-    }
-
-    value(6; ResteCheque)
-    {
-        Caption = 'Reste Cheque';
-    }
-
-    value(7; Virement)
+    value(5; Virement)
     {
         Caption = 'Virement';
     }
 
-    value(8; RS)
+    value(6; Remise)
+    {
+        Caption = 'Remise';
+    }
+
+    value(7; ResteCheque)
+    {
+        Caption = 'Reste Cheque';
+    }
+    value(8; AvoirEsp)
+    {
+        Caption = 'Avoir Espèce';
+    }
+    value(9; RS)
     {
         Caption = 'Retenue';
+    }
+
+    value(10; Depense)
+    {
+        Caption = 'Dépense';
+    }
+
+    value(11; retourBS)
+    {
+        Caption = 'Retour BS';
+    }
+
+    value(12; Transport)
+    {
+        Caption = 'Transport';
     }
 
 }

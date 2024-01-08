@@ -4,7 +4,13 @@ page 50131 "Recu de caisse"
     ApplicationArea = All;
     UsageCategory = Lists;
     SourceTable = "Recu Caisse";
+    SourceTableView = sorting(No) order(descending);
     CardPageId = "Recu Caisse Card";
+    Editable = false;
+    InsertAllowed = false;
+    DeleteAllowed = false;
+    ModifyAllowed = false;
+
 
     layout
     {
@@ -29,7 +35,14 @@ page 50131 "Recu de caisse"
                 field(dateTime; dateTime)
                 {
                     ApplicationArea = all;
-                    Caption = 'Date et Heure';
+                    Caption = 'Date d''Ajout';
+                    Editable = false;
+                }
+
+                field(dateRecu; dateRecu)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Date Reçu';
                     Editable = false;
                 }
 
@@ -37,7 +50,7 @@ page 50131 "Recu de caisse"
                 {
                     ApplicationArea = all;
                     Caption = 'Code Vendeur';
-                    Editable = true;
+                    Editable = false;
                 }
                 field(totalDocToPay; totalDocToPay)
                 {
@@ -53,10 +66,30 @@ page 50131 "Recu de caisse"
                     Editable = false;
                 }
 
+                field(totalDepense; totalDepense)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Total Dépense';
+                    Editable = false;
+
+                }
+
+                field("totalRéglement"; "totalRéglement")
+                {
+                    ApplicationArea = all;
+                    Caption = 'Total Réglement';
+                    Editable = false;
+                }
                 field(isAcompte; isAcompte)
                 {
                     ApplicationArea = all;
                     Caption = 'Is Acompte';
+                    Editable = false;
+                }
+                field(Printed; Printed)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Imprimé';
                     Editable = false;
                 }
             }
@@ -84,4 +117,9 @@ page 50131 "Recu de caisse"
 
     var
         myInt: Integer;
+
+    trigger OnAfterGetRecord()
+    begin
+        rec.CalcFields(totalDocToPay, "totalReçu", totalDepense, "totalRéglement");
+    end;
 }

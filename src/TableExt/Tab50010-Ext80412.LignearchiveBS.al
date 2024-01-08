@@ -1,7 +1,8 @@
-tableextension 80422 "Sales Shipment Line" extends "Sales Shipment Line" //111
+tableextension 80412 "Ligne archive BS" extends "Ligne archive BS"//50010
 {
     fields
     {
+        // Add changes to table fields here
 
     }
 
@@ -17,6 +18,7 @@ tableextension 80422 "Sales Shipment Line" extends "Sales Shipment Line" //111
 
     var
         myInt: Integer;
+
 
 
 

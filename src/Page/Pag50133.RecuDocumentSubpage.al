@@ -15,42 +15,49 @@ page 50133 "Recu Document Subpage"
                 {
                     ApplicationArea = All;
                     TableRelation = "Recu Caisse";
+                    // Visible = false;
                 }
                 field("Line No"; "Line No")
                 {
                     ApplicationArea = all;
+                    //Visible = false;
                 }
                 field(type; type)
                 {
                     ApplicationArea = all;
+                    //Editable = false;
+                    trigger OnValidate()
+                    begin
+                        "Customer No" := custNo;
+                    end;
+
                 }
 
                 field("Customer No"; "Customer No")
                 {
                     ApplicationArea = all;
+                    Editable = false;
                 }
 
                 field("Document No"; "Document No")
                 {
                     ApplicationArea = all;
-                }
+                    //Editable = false;                 
+                    TableRelation = if (type = const(Invoice)) "Sales Invoice Header" where("Bill-to Customer No." = field("Customer No"))
+                    else
+                    if (type = const(BS)) "Entete archive BS" where("Bill-to Customer No." = field("Customer No"))
+                    else
+                    if (type = const(CreditMemo)) "Sales Cr.Memo Header" where("Bill-to Customer No." = field("Customer No"));
 
-                field("Total HT"; "Total HT")
-                {
-                    ApplicationArea = all;
-                }
 
-                field("Total Remise"; "Total Remise")
-                {
-                    ApplicationArea = all;
                 }
-
                 field("Total TTC"; "Total TTC")
                 {
                     ApplicationArea = all;
+                    Editable = false;
                 }
 
-                field("Montant Ouvert"; "Montant Ouvert")
+                field("Montant Reglement"; "Montant Reglement")
                 {
                     ApplicationArea = all;
                 }
@@ -91,7 +98,7 @@ page 50133 "Recu Document Subpage"
                 // RunPageView = where("Remaining Amount" = filter(> 0));
                 trigger OnAction()
                 var
-                    SalesInvoiceToPay: Page "Liste archive Bon de sortie";
+                    SalesInvoiceToPay: Page "Bon Sortie Archive To Pay";
                     recSalesInvoice: Record "Entete archive BS";
                 begin
                     recSalesInvoice.SetRange("Bill-to Customer No.", custNo);
@@ -113,6 +120,5 @@ page 50133 "Recu Document Subpage"
         CurrPage.Update();
         custNo := recuCaisse."Customer No";
     end;
-
 
 }

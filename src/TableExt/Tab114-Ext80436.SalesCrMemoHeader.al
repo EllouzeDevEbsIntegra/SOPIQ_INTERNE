@@ -1,24 +1,9 @@
-tableextension 80140 "Sales Invoice Header" extends "Sales Invoice Header"//112
+tableextension 80436 "Sales Cr.Memo Header" extends "Sales Cr.Memo Header" //114
 {
     fields
     {
+
         // Add changes to table fields here
-        field(80140; "Moy Jour Paiement"; Decimal)
-        {
-            DataClassification = ToBeClassified;
-            Caption = 'Moyen Jour Paiement';
-            DecimalPlaces = 0 : 2;
-        }
-
-        field(80141; "DiscountAmount"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = sum("Sales Invoice Line"."Line Discount Amount" WHERE("Document No." = field("No.")));
-            Caption = 'Type MO';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-
         field(80101; custNameImprime; Text[200])
         {
             Caption = 'Nom Client Imprimé';
@@ -55,11 +40,20 @@ tableextension 80140 "Sales Invoice Header" extends "Sales Invoice Header"//112
             CalcFormula = lookup("Recu Caisse Document"."No Recu" WHERE("Document No" = field("No.")));
             Editable = false;
         }
-
-        field(80413; solde; Boolean)
+        field(80436; solde; Boolean)
         {
             DataClassification = ToBeClassified;
         }
+    }
+
+    keys
+    {
+        // Add changes to keys here
+    }
+
+    fieldgroups
+    {
+        // Add changes to field groups here
     }
 
     var

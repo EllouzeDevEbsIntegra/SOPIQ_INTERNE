@@ -47,4 +47,41 @@ codeunit 50019 SubscriberEventProcedure
             UNTIL recSalesLine.Next() = 0;
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Undo Sales Shipment Line", 'OnAfterNewSalesShptLineInsert', '', true, true)]
+
+    local procedure OnAfterNewSalesShptLineInsert(var NewSalesShipmentLine: Record "Sales Shipment Line"; OldSalesShipmentLine: Record "Sales Shipment Line")
+    VAR
+        PostArchivShipLine: Record "Ligne archive BS";
+
+    begin
+        // Message('OLD -->  %1  *** %2', OldSalesShipmentLine."Document No.", OldSalesShipmentLine."Line No.");
+        // Message('NEW -->  %1  *** %2', NewSalesShipmentLine."Document No.", NewSalesShipmentLine."Line No.");
+
+        AddArchiveLigneBS(NewSalesShipmentLine, OldSalesShipmentLine);
+
+        PostArchivShipLine.Reset();
+        PostArchivShipLine.SetRange("Document No.", OldSalesShipmentLine."Document No.");
+        PostArchivShipLine.SetRange("Line No.", OldSalesShipmentLine."Line No.");
+        if PostArchivShipLine.FindFirst() then begin
+            PostArchivShipLine."Qty. Invoiced (Base)" := OldSalesShipmentLine."Quantity (Base)";
+            PostArchivShipLine."Quantity Invoiced" := OldSalesShipmentLine.Quantity;
+            PostArchivShipLine."Qty. Shipped Not Invoiced" := 0;
+            PostArchivShipLine.Correction := true;
+            PostArchivShipLine.Modify();
+        end;
+    end;
+
+    procedure AddArchiveLigneBS(NewSalesShipmentLine: Record "Sales Shipment Line"; OldSalesShipmentLine: Record "Sales Shipment Line")
+    var
+        PostShipLineArchiv: Record "Ligne archive BS";
+    begin
+        PostShipLineArchiv.Reset();
+        PostShipLineArchiv.TransferFields(NewSalesShipmentLine);
+        PostShipLineArchiv."Line Amount" := -PostShipLineArchiv."Line Amount";
+        PostShipLineArchiv."Line Amount HT" := -PostShipLineArchiv."Line Amount HT";
+        // Message('enregistre %1 *** archive %2 //  enregistre %3  *** archive %4 // enregistre %5 *** archive %6', NewSalesShipmentLine."Document No.", PostShipLineArchiv."Document No.", NewSalesShipmentLine."Line Amount", PostShipLineArchiv."Line Amount", NewSalesShipmentLine."Line Amount HT", PostShipLineArchiv."Line Amount HT");
+        PostShipLineArchiv.Insert;
+    end;
+
+
 }

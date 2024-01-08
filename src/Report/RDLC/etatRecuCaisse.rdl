@@ -906,6 +906,9 @@ End Function
         <Field Name="Date_Time">
           <DataField>Date_Time</DataField>
         </Field>
+        <Field Name="dateRecu">
+          <DataField>dateRecu</DataField>
+        </Field>
         <Field Name="user">
           <DataField>user</DataField>
         </Field>
