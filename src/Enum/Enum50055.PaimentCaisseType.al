@@ -8,6 +8,7 @@ enum 50055 "Paiment Caisse Type"
     value(1; Espece)
     {
         Caption = 'Espece';
+
     }
     value(2; "Cheque")
     {
@@ -58,6 +59,16 @@ enum 50055 "Paiment Caisse Type"
     value(12; Transport)
     {
         Caption = 'Transport';
+    }
+
+    value(13; Complement)
+    {
+        Caption = 'Complément';
+    }
+
+    value(14; Divers)
+    {
+        Caption = 'Divers';
     }
 
 }

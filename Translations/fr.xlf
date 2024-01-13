@@ -10602,19 +10602,19 @@
         </trans-unit>
         <trans-unit id="TableExtension 3171687522 - Field 2983779778 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2574427010">
           <source>Dernière Date Vente</source>
-          <target state="needs-translation"></target>
+          <target state="translated">Dernière Date Vente</target>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales line - Field lastSalesDate - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3171687522 - Field 1765702177 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2574427010">
           <source>Dernière remise Vente</source>
-          <target state="needs-translation"></target>
+           <target state="translated">Dernière remise Vente</target>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales line - Field lastSalesDiscount - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3171687522 - Field 856175985 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2574427010">
           <source>Dernier prix Vente</source>
-          <target state="needs-translation"></target>
+         <target state="translated">Dernier prix Vente</target>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales line - Field lastSalesPrice - Property Caption</note>
         </trans-unit>

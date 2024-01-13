@@ -56,7 +56,7 @@
   "idRanges": [
     {
       "from": 50000,
-      "to": 100000
+      "to": 25009999
     }
   ],
   "showMyCode": true,

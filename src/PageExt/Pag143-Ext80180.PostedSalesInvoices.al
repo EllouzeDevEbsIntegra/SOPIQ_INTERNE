@@ -7,28 +7,35 @@ pageextension 80180 "Posted Sales Invoices" extends "Posted Sales Invoices"//143
         {
             field("Moy Jour Paiement"; MoyJourPaiement(rec))
             {
+                ApplicationArea = all;
                 Caption = 'Moyen Jour Paiement';
             }
 
             field("Montant reçu caisse"; "Montant reçu caisse")
             {
+                ApplicationArea = all;
                 Caption = 'Montant reçu caisse';
                 trigger OnDrillDown()
                 begin
                     DoDrillDown;
                 end;
             }
-            field("No reçu caisse"; "No reçu caisse")
+            field(solde; solde)
             {
                 ApplicationArea = all;
-                trigger OnDrillDown()
-                var
-                    recuCaisse: Record "Recu Caisse";
-                begin
-                    recuCaisse.SetRange("No", rec."No reçu caisse");
-                    PAGE.Run(PAGE::"Recu de caisse", recuCaisse);
-                end;
+                Caption = 'Soldé';
             }
+            // field("No reçu caisse"; "No reçu caisse")
+            // {
+            //     ApplicationArea = all;
+            //     trigger OnDrillDown()
+            //     var
+            //         recuCaisse: Record "Recu Caisse";
+            //     begin
+            //         recuCaisse.SetRange("No", rec."No reçu caisse");
+            //         PAGE.Run(PAGE::"Recu de caisse", recuCaisse);
+            //     end;
+            // }
             // field("Payment Terms Code"; "Payment Terms Code")
             // {
             //     caption = 'Condition Paiement';

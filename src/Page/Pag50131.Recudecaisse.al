@@ -11,7 +11,6 @@ page 50131 "Recu de caisse"
     DeleteAllowed = false;
     ModifyAllowed = false;
 
-
     layout
     {
         area(content)
@@ -107,7 +106,7 @@ page 50131 "Recu de caisse"
 
                 trigger OnAction()
                 var
-                    reportRecette: Report 50238;
+                    reportRecette: Report "Etat Recu Caisse";
                 begin
                     reportRecette.Run();
                 end;

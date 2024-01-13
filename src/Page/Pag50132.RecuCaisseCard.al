@@ -46,9 +46,7 @@ page 50132 "Recu Caisse Card"
                         recCust.Reset();
                         if recCust.get("Customer No") then rec.custName := recCust.Name;
                         modifCustomer := false;
-                        isCreated := true;
-                        CurrPage.Document.Page.setFilter(rec);
-                        CurrPage.Paiement.Page.setFilter(rec);
+
 
                     end;
                 }
@@ -80,7 +78,13 @@ page 50132 "Recu Caisse Card"
                 {
                     ApplicationArea = all;
                     Caption = 'Code Vendeur';
-                    Editable = isCreated;
+                    trigger OnValidate()
+                    begin
+                        CurrPage.Document.Page.setFilter(rec);
+                        CurrPage.Paiement.Page.setFilter(rec);
+                        isCreated := true;
+
+                    end;
                 }
                 field(isAcompte; isAcompte)
                 {
@@ -156,16 +160,68 @@ page 50132 "Recu Caisse Card"
                 trigger OnAction()
                 VAR
                     recuCaisse: Record "Recu Caisse";
+                    recuPaiement: Record "Recu Caisse Paiement";
                 begin
-                    Message('%1 - %2 - %3', rec.totalDocToPay, rec."totalReçu", rec.totalDepense);
-                    //CurrPage.SetTableView(recuCaisse);
-                    if (user = '') then
-                        Error('Vous devez sélectionner le code vendeur !') else begin
-                        CurrPage.SETSELECTIONFILTER(recuCaisse);
-                        CurrPage.Update(true);
-                        REPORT.RUNMODAL(REPORT::"Recu Caisse", TRUE, FALSE, recuCaisse);
-                    end;
+                    CurrPage.Update(true);
+                    if (totalDocToPay <> "totalRéglement") AND (isAcompte = false)
+                    then begin
+                        if (totalDocToPay > "totalRéglement") then begin
+                            if Confirm('Une différence de paiement de %1 TND, voulez vous considèrer cette différence comme remise ?', false, "totalRéglement" - totalDocToPay) then begin
+                                recuPaiement.Reset();
+                                recuPaiement."No Recu" := No;
+                                recuPaiement."Line No" := recuPaiement.incrementNo(No);
+                                recuPaiement.type := recuPaiement.type::"Remise";
+                                recuPaiement.Montant := totalDocToPay - "totalRéglement";
+                                recuPaiement."Montant Calcul" := totalDocToPay - "totalRéglement";
+                                recuPaiement.Insert();
+                                CurrPage.Paiement.Page.Update();
+                                Commit();
+                                setDocumentSolde(rec);
+                                if (user = '') then
+                                    Error('Vous devez sélectionner le code vendeur !') else begin
+                                    CurrPage.Update(true);
+                                    CurrPage.SETSELECTIONFILTER(recuCaisse);
+                                    REPORT.RUNMODAL(REPORT::"Recu Caisse", TRUE, TRUE, recuCaisse);
+                                end;
+                            end
+                            else begin
+                                Error('Veuillez vérifier le montant total des règlements (doit être égal à %1)', totalDocToPay);
+                            end;
 
+                        end
+                        else begin
+                            if Confirm('Une différence de paiement de %1 TND, voulez vous considèrer cette différence comme complément de paiement ?', false, "totalRéglement" - totalDocToPay) then begin
+                                recuPaiement.Reset();
+                                recuPaiement."No Recu" := No;
+                                recuPaiement."Line No" := recuPaiement.incrementNo(No);
+                                recuPaiement.type := recuPaiement.type::"Complement";
+                                recuPaiement.Montant := "totalRéglement" - totalDocToPay;
+                                recuPaiement."Montant Calcul" := totalDocToPay - "totalRéglement";
+                                recuPaiement.Insert();
+                                CurrPage.Paiement.Page.Update();
+                                Commit();
+                                setDocumentSolde(rec);
+                                if (user = '') then
+                                    Error('Vous devez sélectionner le code vendeur !') else begin
+                                    CurrPage.Update(true);
+                                    CurrPage.SETSELECTIONFILTER(recuCaisse);
+                                    REPORT.RUNMODAL(REPORT::"Recu Caisse", TRUE, TRUE, recuCaisse);
+                                end;
+                            end
+                            else begin
+                                Error('Veuillez vérifier le montant total des règlements (doit être égal à %1)', totalDocToPay);
+                            end;
+                        end;
+                    end else begin
+                        Commit();
+                        setDocumentSolde(rec);
+                        if (user = '') then
+                            Error('Vous devez sélectionner le code vendeur !') else begin
+                            CurrPage.Update(true);
+                            CurrPage.SETSELECTIONFILTER(recuCaisse);
+                            REPORT.RUNMODAL(REPORT::"Recu Caisse", TRUE, TRUE, recuCaisse);
+                        end;
+                    end;
                 end;
             }
 
@@ -185,6 +241,7 @@ page 50132 "Recu Caisse Card"
             {
                 ApplicationArea = All;
                 Image = DocumentEdit;
+                Visible = false;
 
                 trigger OnAction()
 
@@ -201,8 +258,10 @@ page 50132 "Recu Caisse Card"
 
     trigger OnOpenPage()
     begin
-        if (Printed = true) then CurrPage.Editable := false;
-
+        if (Printed = true) then begin
+            CurrPage.Editable := false;
+            isCreated := true;
+        end;
         CurrPage.Document.Page.setFilter(rec);
         CurrPage.Paiement.Page.setFilter(rec);
         modifCustomer := true;
@@ -217,6 +276,59 @@ page 50132 "Recu Caisse Card"
         CurrPage.Document.Page.setFilter(rec);
         CurrPage.Paiement.Page.setFilter(rec);
         rec.CalcFields(totalDocToPay, "totalReçu", totalDepense, "totalRéglement");
+    end;
+
+    procedure setDocumentSolde(recRecu: Record "Recu Caisse")
+    var
+        recRecuDoc: Record "Recu Caisse Document";
+        recBs: Record "Entete archive BS";
+        recInvoice: Record "Sales Invoice Header";
+        recCrMemo: Record "Sales Cr.Memo Header";
+    begin
+        recRecuDoc.Reset();
+        recRecuDoc.SetRange("No Recu", recRecu.No);
+        if recRecuDoc.FindSet() then begin
+            repeat
+                case recRecuDoc.type of
+                    "Document Caisse Type"::BS:
+                        begin
+                            recBs.Reset();
+                            recbs.get(recRecuDoc."Document No");
+                            if recBs.Find() then begin
+                                recbs.Solde := true;
+                                recBs.Modify();
+                            end;
+                            Commit();
+                        end;
+                    "Document Caisse Type"::Invoice:
+                        begin
+                            recInvoice.Reset();
+                            recInvoice.get(recRecuDoc."Document No");
+                            if recInvoice.Find() then begin
+                                recInvoice.Solde := true;
+                                recInvoice.Modify();
+                            end;
+                            Commit();
+                        end;
+                    "Document Caisse Type"::CreditMemo:
+                        begin
+                            recCrMemo.Reset();
+                            recCrMemo.get(recRecuDoc."Document No");
+                            if recCrMemo.Find() then begin
+                                recCrMemo.Solde := true;
+                                recCrMemo.Modify();
+                            end;
+                            Commit();
+                        end;
+                end;
+            until recRecuDoc.Next() = 0;
+        end
+    end;
+
+    procedure setSubPartVisible(recuPage: page "Recu Caisse Card")
+    begin
+        isCreated := true;
+        recuPage.Update();
     end;
 
 }

@@ -19,7 +19,7 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>3.18361cm</Width>
+                  <Width>3.60694cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -85,15 +85,12 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.66147cm</Height>
+                  <Height>0.09729cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Montant_Calcul">
                           <CanGrow>true</CanGrow>
-                          <ToggleImage>
-                            <InitialState>true</InitialState>
-                          </ToggleImage>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -101,7 +98,8 @@
                                 <TextRun>
                                   <Value>=Sum(Fields!Montant_Calcul.Value)</Value>
                                   <Style>
-                                    <FontSize>14pt</FontSize>
+                                    <FontSize>12pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
                                     <Format>#,0.000;-#,0.000;''</Format>
                                   </Style>
                                 </TextRun>
@@ -113,7 +111,7 @@
                           </Paragraphs>
                           <rd:DefaultName>Montant_Calcul</rd:DefaultName>
                           <Visibility>
-                            <Hidden>=IIF(Sum(Fields!Montant_Calcul.Value)=0,true,false)</Hidden>
+                            <Hidden>=IIf(Sum(Fields!Montant_Calcul.Value, "DataSet_Result")=0,true,false)</Hidden>
                           </Visibility>
                           <Style>
                             <Border>
@@ -145,7 +143,7 @@
                                 <TextRun>
                                   <Value>=Sum(Fields!Montant_Calcul.Value)</Value>
                                   <Style>
-                                    <FontSize>14pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.000;-#,0.000;''</Format>
                                   </Style>
@@ -184,7 +182,7 @@
               <TablixMembers>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>3.73738cm</Size>
+                    <Size>3.49926cm</Size>
                     <CellContents>
                       <Textbox Name="Textbox3">
                         <CanGrow>true</CanGrow>
@@ -250,27 +248,23 @@
                   </Group>
                   <SortExpressions>
                     <SortExpression>
-                      <Value>=Fields!typeRegIndex.Value</Value>
+                      <Value>=Fields!typeReg.Value</Value>
                     </SortExpression>
                   </SortExpressions>
                   <TablixHeader>
-                    <Size>3.73738cm</Size>
+                    <Size>3.49926cm</Size>
                     <CellContents>
                       <Textbox Name="typeReg">
                         <CanGrow>true</CanGrow>
-                        <ToggleImage>
-                          <InitialState>true</InitialState>
-                        </ToggleImage>
                         <KeepTogether>true</KeepTogether>
                         <Paragraphs>
                           <Paragraph>
                             <TextRuns>
                               <TextRun>
-                                <Value>=
-
-UCase(Fields!typeReg.Value)</Value>
+                                <Value>=UCase(Fields!typeReg.Value)</Value>
                                 <Style>
                                   <FontSize>12pt</FontSize>
+                                  <FontWeight>Bold</FontWeight>
                                 </Style>
                               </TextRun>
                             </TextRuns>
@@ -279,7 +273,7 @@ UCase(Fields!typeReg.Value)</Value>
                         </Paragraphs>
                         <rd:DefaultName>typeReg</rd:DefaultName>
                         <Visibility>
-                          <Hidden>=IIF(Sum(Fields!Montant_Calcul.Value)=0,true,false)</Hidden>
+                          <Hidden>=IIf(Sum(Fields!Montant_Calcul.Value, "DataSet_Result")=0,true,false)</Hidden>
                         </Visibility>
                         <Style>
                           <Border>
@@ -318,13 +312,10 @@ UCase(Fields!typeReg.Value)</Value>
                   <TablixMembers>
                     <TablixMember />
                   </TablixMembers>
-                  <Visibility>
-                    <Hidden>=IIF(Sum(Fields!Montant_Calcul.Value)=0,true,false)</Hidden>
-                  </Visibility>
                 </TablixMember>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>3.73738cm</Size>
+                    <Size>3.49926cm</Size>
                     <CellContents>
                       <Textbox Name="Textbox7">
                         <CanGrow>true</CanGrow>
@@ -384,15 +375,10 @@ UCase(Fields!typeReg.Value)</Value>
             </TablixRowHierarchy>
             <KeepTogether>true</KeepTogether>
             <DataSetName>DataSet_Result</DataSetName>
-            <SortExpressions>
-              <SortExpression>
-                <Value>=Fields!typeReg.Value</Value>
-              </SortExpression>
-            </SortExpressions>
             <Top>2.12191cm</Top>
-            <Left>12.94199cm</Left>
-            <Height>2.07313cm</Height>
-            <Width>6.92099cm</Width>
+            <Left>12.75678cm</Left>
+            <Height>1.50895cm</Height>
+            <Width>7.1062cm</Width>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -426,16 +412,16 @@ UCase(Fields!typeReg.Value)</Value>
                   <Width>2cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.15cm</Width>
+                  <Width>1.9cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.155cm</Width>
+                  <Width>1.9cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>4.1cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>8.1cm</Width>
+                  <Width>8.5cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -526,7 +512,7 @@ UCase(Fields!typeReg.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox12">
+                        <Textbox Name="Textbox43">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -543,7 +529,7 @@ UCase(Fields!typeReg.Value)</Value>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox12</rd:DefaultName>
+                          <rd:DefaultName>Textbox43</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -595,49 +581,6 @@ UCase(Fields!typeReg.Value)</Value>
                               <Width>0.25pt</Width>
                             </TopBorder>
                             <RightBorder>
-                              <Style>Dashed</Style>
-                              <Width>0.5pt</Width>
-                            </RightBorder>
-                            <BackgroundColor>White</BackgroundColor>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox6">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value />
-                                  <Style>
-                                    <FontSize>9pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox6</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>None</Style>
-                            </Border>
-                            <TopBorder>
-                              <Style>Solid</Style>
-                              <Width>0.25pt</Width>
-                            </TopBorder>
-                            <RightBorder>
                               <Style>Solid</Style>
                               <Width>1.5pt</Width>
                             </RightBorder>
@@ -648,8 +591,10 @@ UCase(Fields!typeReg.Value)</Value>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <ColSpan>2</ColSpan>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell />
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
@@ -788,11 +733,6 @@ UCase(Fields!typeReg.Value)</Value>
                             <Border>
                               <Style>None</Style>
                             </Border>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Dashed</Style>
-                              <Width>0.5pt</Width>
-                            </RightBorder>
                             <BackgroundColor>White</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -854,7 +794,6 @@ UCase(Fields!typeReg.Value)</Value>
                                 <TextRun>
                                   <Value>=Right(Fields!Customer_No.Value, 3)&amp;" "&amp;Fields!custName.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -863,51 +802,6 @@ UCase(Fields!typeReg.Value)</Value>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox33</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>None</Style>
-                            </Border>
-                            <TopBorder>
-                              <Style>Dashed</Style>
-                              <Width>0.5pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </BottomBorder>
-                            <BackgroundColor>White</BackgroundColor>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                        <ColSpan>2</ColSpan>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell />
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="isACPTOrREG">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!isACPTOrREG.Value</Value>
-                                  <Style>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Right</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>isACPTOrREG</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -931,8 +825,11 @@ UCase(Fields!typeReg.Value)</Value>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <ColSpan>3</ColSpan>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox38">
@@ -944,7 +841,6 @@ UCase(Fields!typeReg.Value)</Value>
                                 <TextRun>
                                   <Value>OBS </Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1197,7 +1093,7 @@ UCase(Fields!typeReg.Value)</Value>
               <TablixMembers>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.1cm</Size>
+                    <Size>1.2cm</Size>
                     <CellContents>
                       <Textbox Name="Textbox24">
                         <CanGrow>true</CanGrow>
@@ -1257,7 +1153,7 @@ UCase(Fields!typeReg.Value)</Value>
                     </SortExpression>
                   </SortExpressions>
                   <TablixHeader>
-                    <Size>1.1cm</Size>
+                    <Size>1.2cm</Size>
                     <CellContents>
                       <Textbox Name="recuNo11">
                         <CanGrow>true</CanGrow>
@@ -1308,7 +1204,7 @@ UCase(Fields!typeReg.Value)</Value>
                 </TablixMember>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.1cm</Size>
+                    <Size>1.2cm</Size>
                     <CellContents>
                       <Textbox Name="Textbox30">
                         <CanGrow>true</CanGrow>
@@ -1362,7 +1258,7 @@ UCase(Fields!typeReg.Value)</Value>
             <Top>0.01764cm</Top>
             <Left>0.26298cm</Left>
             <Height>1.79781cm</Height>
-            <Width>19.605cm</Width>
+            <Width>19.6cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -1508,8 +1404,8 @@ UCase(Fields!typeReg.Value)</Value>
                   <TextRun>
                     <Value>VERIFICATION &amp; CONTROLE</Value>
                     <Style>
+                      <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <TextDecoration>Underline</TextDecoration>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1522,20 +1418,7 @@ UCase(Fields!typeReg.Value)</Value>
                   <TextRun>
                     <Value>PAR SI FATHI</Value>
                     <Style>
-                      <FontWeight>Bold</FontWeight>
-                      <TextDecoration>Underline</TextDecoration>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Center</TextAlign>
-                </Style>
-              </Paragraph>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value />
-                    <Style>
+                      <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -1549,6 +1432,7 @@ UCase(Fields!typeReg.Value)</Value>
                   <TextRun>
                     <Value>Signature</Value>
                     <Style>
+                      <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -1562,7 +1446,7 @@ UCase(Fields!typeReg.Value)</Value>
             <Top>2.12191cm</Top>
             <Left>7.63354cm</Left>
             <Height>4.01368cm</Height>
-            <Width>5.20261cm</Width>
+            <Width>5.05269cm</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
@@ -1840,7 +1724,7 @@ UCase(Fields!typeReg.Value)</Value>
               <ReportItems>
                 <Line Name="Line1">
                   <Top>0.74083cm</Top>
-                  <Left>1.1cm</Left>
+                  <Left>1.2cm</Left>
                   <Height>-0.74083cm</Height>
                   <Width>0cm</Width>
                   <Style>
@@ -1851,7 +1735,7 @@ UCase(Fields!typeReg.Value)</Value>
                 </Line>
                 <Line Name="Line2">
                   <Top>0.82021cm</Top>
-                  <Left>3.1cm</Left>
+                  <Left>3.2cm</Left>
                   <Height>-0.74083cm</Height>
                   <Width>0cm</Width>
                   <ZIndex>1</ZIndex>
@@ -1863,7 +1747,7 @@ UCase(Fields!typeReg.Value)</Value>
                 </Line>
                 <Line Name="Line3">
                   <Top>0.74083cm</Top>
-                  <Left>5.25cm</Left>
+                  <Left>5.1cm</Left>
                   <Height>-0.74083cm</Height>
                   <Width>0cm</Width>
                   <ZIndex>2</ZIndex>
@@ -1874,8 +1758,8 @@ UCase(Fields!typeReg.Value)</Value>
                   </Style>
                 </Line>
                 <Line Name="Line4">
-                  <Top>0.76729cm</Top>
-                  <Left>7.395cm</Left>
+                  <Top>0.74083cm</Top>
+                  <Left>7cm</Left>
                   <Height>-0.74083cm</Height>
                   <Width>0cm</Width>
                   <ZIndex>3</ZIndex>
@@ -1892,8 +1776,9 @@ UCase(Fields!typeReg.Value)</Value>
                     <Paragraph>
                       <TextRuns>
                         <TextRun>
-                          <Value>N° RC   DATE         T. REG          T. DOC                                                             LIBELLE</Value>
+                          <Value>N° RC       DATE             T. REG             T. DOC                                                                            LIBELLE</Value>
                           <Style>
+                            <FontSize>9pt</FontSize>
                             <FontWeight>Bold</FontWeight>
                           </Style>
                         </TextRun>
@@ -2018,9 +1903,6 @@ End Function
         <Field Name="DateFilter">
           <DataField>DateFilter</DataField>
         </Field>
-        <Field Name="isACPTOrREG">
-          <DataField>isACPTOrREG</DataField>
-        </Field>
         <Field Name="recuNo">
           <DataField>recuNo</DataField>
         </Field>
@@ -2089,9 +1971,6 @@ End Function
         </Field>
         <Field Name="typeReg">
           <DataField>typeReg</DataField>
-        </Field>
-        <Field Name="typeRegIndex">
-          <DataField>typeRegIndex</DataField>
         </Field>
         <Field Name="Montant_Calcul">
           <DataField>Montant_Calcul</DataField>

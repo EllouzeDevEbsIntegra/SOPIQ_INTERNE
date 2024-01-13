@@ -5,7 +5,7 @@ enum 50057 "Document Caisse Type"
     {
         Caption = ' ';
     }
-    value(1; "BS")
+    value(1; BS)
     {
         Caption = 'Bon de sortie';
     }

@@ -1,4 +1,4 @@
-report 50236 "Recu Caisse"
+report 25006029 "Recu Caisse"
 {
     RDLCLayout = './src/report/RDLC/recuCaisse.rdl';
     Caption = 'Reçu de caisse';
@@ -149,7 +149,10 @@ report 50236 "Recu Caisse"
             var
                 char13, char10 : char;
                 libelleNoPaiement: text;
+                isACPTOrREG: Text;
             begin
+                isACPTOrREG := '';
+                if ("Recu Caisse".isAcompte = true) then isACPTOrREG := 'ACPT ' else isACPTOrREG := 'REG ';
                 char10 := 10;
                 char13 := 13;
                 Clear(recRecuCaisseLigne);
@@ -159,9 +162,9 @@ report 50236 "Recu Caisse"
                 if recRecuCaisseLigne.FindSet() then begin
                     repeat
                         if (LibelleTicket = '') then
-                            LibelleTicket := recRecuCaisseLigne."Document No"
+                            LibelleTicket := isACPTOrREG + '/ ' + recRecuCaisseLigne."Document No"
                         else
-                            LibelleTicket := LibelleTicket + ' / ' + recRecuCaisseLigne."Document No";
+                            LibelleTicket := LibelleTicket + ' & ' + recRecuCaisseLigne."Document No";
                     until recRecuCaisseLigne.Next() = 0;
                 end;
 
@@ -170,9 +173,9 @@ report 50236 "Recu Caisse"
                     repeat
                         if (recRecuPaiement."Paiment No" <> '') then libelleNoPaiement := 'N°';
                         if (LibellePaiement = '') then
-                            LibellePaiement := '* ' + Format(recRecuPaiement.type) + ' ' + Format(recRecuPaiement.banque) + ' ' + libelleNoPaiement + Format(recRecuPaiement."Paiment No") + ' ' + Format(recRecuPaiement.Montant, 0, '<Precision,3:3><Standard Format,3>') + ' ' + Format(recRecuPaiement.Echeance) + ' ' + Format(recRecuPaiement.Name)
+                            LibellePaiement := '* ' + Format(recRecuPaiement.type) + ' ' + Format(recRecuPaiement.banque) + ' ' + libelleNoPaiement + Format(recRecuPaiement."Paiment No") + ' ' + Format(recRecuPaiement.Montant, 0, '<Precision,3:3><Standard Format,0>') + ' ' + Format(recRecuPaiement.Echeance) + ' ' + Format(recRecuPaiement.Name)
                         else
-                            LibellePaiement := LibellePaiement + FORMAT(char13) + FORMAT(char10) + '* ' + Format(recRecuPaiement.type) + ' ' + Format(recRecuPaiement.banque) + ' ' + libelleNoPaiement + Format(recRecuPaiement."Paiment No") + ' ' + Format(recRecuPaiement.Montant, 0, '<Precision,3:3><Standard Format,3>') + ' ' + Format(recRecuPaiement.Echeance) + ' ' + Format(recRecuPaiement.Name);
+                            LibellePaiement := LibellePaiement + FORMAT(char13) + FORMAT(char10) + '* ' + Format(recRecuPaiement.type) + ' ' + Format(recRecuPaiement.banque) + ' ' + libelleNoPaiement + Format(recRecuPaiement."Paiment No") + ' ' + Format(recRecuPaiement.Montant, 0, '<Precision,3:3><Standard Format,0>') + ' ' + Format(recRecuPaiement.Echeance) + ' ' + Format(recRecuPaiement.Name);
                     until recRecuPaiement.Next() = 0;
                 end;
 

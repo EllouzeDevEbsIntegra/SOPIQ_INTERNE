@@ -19,6 +19,18 @@ page 50137 "Recu Document List"
                     ApplicationArea = All;
                     TableRelation = "Recu Caisse";
                     Visible = true;
+                    trigger OnDrillDown()
+                    var
+                        recuPage: Page "Recu Caisse Card";
+                        recuTable: Record "Recu Caisse";
+                    begin
+                        recuTable.Reset();
+                        recuTable.SetRange(No, rec."No Recu");
+                        recuPage.SetTableView(recuTable);
+                        recuPage.Editable := false;
+                        recuPage.setSubPartVisible(recuPage);
+                        recuPage.Run();
+                    end;
                 }
                 field("Line No"; "Line No")
                 {

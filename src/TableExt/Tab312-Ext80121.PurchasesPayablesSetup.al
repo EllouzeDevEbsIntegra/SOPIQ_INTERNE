@@ -34,6 +34,20 @@ tableextension 80121 "Purchases & Payables Setup" extends "Purchases & Payables 
         {
             DataClassification = ToBeClassified;
         }
+
+        field(80125; PurchaserCodeRequired; Boolean)
+        {
+            Caption = 'Code acheteur obligatoire';
+            InitValue = false;
+            DataClassification = ToBeClassified;
+        }
+
+        field(80126; controlePurshOrder; Boolean)
+        {
+            Caption = 'Contrôle Commande Achat';
+            InitValue = false;
+            DataClassification = ToBeClassified;
+        }
     }
 
     var

@@ -4723,6 +4723,181 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page KPI vente Détails - Action Set Up Cues - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 4233825723 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Panier BS à facturer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 3244334840 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the item ledger entry that the document or journal line is applied to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Appl.-to Item Entry - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 2814799924 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the bin where the items are picked or put away.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Bin Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 3083748138 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies that this sales shipment line has been posted as a corrective entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Correction - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 2168672665 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the cross-referenced item number. If you enter a cross reference between yours and your vendor's or customer's item number, then this number will override the standard item number when you enter the cross-reference number on a sales or purchase document.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Cross-Reference No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies a description of the record.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 1908272084 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the related job.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Job No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 561421623 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the related job task.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Job Task No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 1369027531 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spécifie si on garde les prix initiaux ou non.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Keep Init. Prices - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 2161572060 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the location from where inventory items to the customer on the sales document are to be shipped by default.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Location Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 4200184881 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the involved entry or record, according to the specified number series.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 1562764323 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies a date formula for the time it takes to get items ready to ship from this location. The time element is used in the calculation of the delivery date as follows: Shipment Date + Outbound Warehouse Handling Time = Planned Shipment Date + Shipping Time = Planned Delivery Date.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Outbound Whse. Handling Time - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 3260337296 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the planned date that the shipment will be delivered at the customer's address. If the customer requests a delivery date, the program calculates whether the items will be available for delivery on this date. If the items are available, the planned delivery date will be the same as the requested delivery date. If not, the program calculates the date that the items are available for delivery and enters this date in the Planned Delivery Date field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Planned Delivery Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 433370900 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the date that the shipment should ship from the warehouse. If the customer requests a delivery date, the program calculates the planned shipment date by subtracting the shipping time from the requested delivery date. If the customer does not request a delivery date or the requested delivery date cannot be met, the program calculates the content of this field by adding the shipment time to the shipping date.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Planned Shipment Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 70558618 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Prix Vente 1 (coût + 20%)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Prix Vente 1 - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 2452436063 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Prix Vente remise (Prix Vente 1 - 10%</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Prix Vente 2 - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 436997413 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the date that you have promised to deliver the order, as a result of the Order Promising function.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Promised Delivery Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 641667003 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the quantity of the shipped item that has been posted as shipped but that has not yet been posted as invoiced.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Qty. Shipped Not Invoiced - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 2704404533 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of units of the item specified on the line.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Quantity - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 61616130 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how many units of the item on the line have been posted as invoiced.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Quantity Invoiced - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 135600996 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the date that the customer has asked for the order to be delivered.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Requested Delivery Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 1576505637 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code explaining why the item was returned.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Return Reason Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 4112852368 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies when items on the document are shipped or were shipped. A shipment date is usually calculated from a requested delivery date plus lead time.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Shipment Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 1913523417 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how long it takes from when the items are shipped from the warehouse to when they are delivered.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Shipping Time - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 1878130204 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the line type.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Type - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 1920046521 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the item or resource's unit of measure, such as piece or hour.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Unit of Measure - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 2385270358 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how each unit of the item or resource is measured, such as in pieces or hours. By default, the value in the Base Unit of Measure field on the item or resource card is inserted.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Unit of Measure Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Control 3450651614 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the variant of the item on the line.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Control Variant Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Action 813315441 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Modifier garder prix initiaux</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Action keepInitPrices - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Action 2292260717 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Liste des BL</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Action Liste des BL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Action 978928008 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Liste des BS</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Action Liste des BS - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Action 245426702 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Calculer total</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Action Total - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Action 2690896667 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transformer les bon de sortie en bon de livraison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Action TransformtoBL - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Action 2690896667 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transformer en BL</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Action TransformtoBL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4233825723 - Action 2690896667 - Method 1377591017 - NamedType 1084176789" size-unit="char" translate="yes" xml:space="preserve">
+          <source>pas de bon sortie sélectionné</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS solde - Action TransformtoBL - Method OnAction - NamedType txtmessage</note>
+        </trans-unit>
         <trans-unit id="Page 2712241465 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Liste dossier import</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -5958,6 +6133,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Special Purchase Line - Control Line No. - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="Page 8671898 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Customer Statistics</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Cust. Stat. FactBox - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 8671898 - Control 1082028268 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>BS non soldé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Cust. Stat. FactBox - Control FindNoTInvoicedLines - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3021677304 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Ecriture Comptable Article Spécifique</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -6842,6 +7027,11 @@
           <source>Etat Reçu de caisse</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report Etat Recu Caisse - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1586683101 - NamedType 2705272723" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Merci de renseigner la date de filtre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Recu Caisse - NamedType DatFilterError</note>
         </trans-unit>
         <trans-unit id="Report 2210065303 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Liste Retour</source>
@@ -8813,6 +9003,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purchase Receipts - Control Vendor Shipment No. - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 2557560783 - Control 117901444 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2557560783">
+          <source>Montant reçu caisse</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Credit Memos - Control Montant reçu caisse - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2557560783 - Control 1749222251 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2557560783">
+          <source>Soldé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Credit Memos - Control solde - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 2420212404 - Action 1886137269 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2420212404">
           <source>Imprimer PR</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -8837,6 +9037,11 @@
           <source>Moyen Jour Paiement</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoices - Control Moy Jour Paiement - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3434938165 - Control 1749222251 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3434938165">
+          <source>Soldé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoices - Control solde - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 3373253667 - Action 3698879524 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3373253667">
           <source>Imprimer BL Agence</source>
@@ -8943,6 +9148,11 @@
           <note from="Developer" annotates="general" priority="2">%1 = posted document number</note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Purchase Order - NamedType OpenPostedPurchaseOrderQst</note>
         </trans-unit>
+        <trans-unit id="PageExtension 387971303 - Action 776841790 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 387971303">
+          <source>Contrôler</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Purchase Order - Action Controle - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 387971303 - Action 3767122910 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 387971303">
           <source>Finalize the document or journal by posting the amounts and quantities to the related accounts in your company books.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -9043,6 +9253,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Purchase Quote Subform - Control negotiated qty - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 3921990236 - Control 2428107076 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3921990236">
+          <source>Contrôle Commande Achat</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Purchases &amp; Payables Setup - Control controlePurshOrder - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 3921990236 - Control 3373563234 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3921990236">
           <source>Année courante</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -9062,6 +9277,11 @@
           <source>MF Fournisseur Obligatoire</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Purchases &amp; Payables Setup - Control MF obligatoire - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3921990236 - Control 1084897575 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3921990236">
+          <source>Code acheteur obligatoire</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Purchases &amp; Payables Setup - Control PurchaserCodeRequired - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 3921990236 - Control 2968960238 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3921990236">
           <source>Mise à jour marge CA obligatoire</source>
@@ -9393,6 +9613,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension User Setup Card - Control A Valid. Jrnl. line - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 1033396230 - Control 2549275597 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1033396230">
+          <source>Contrôleur Cmd Achat</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension User Setup Card - Control Contrôleur Cmd Achat - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 1033396230 - Control 798303856 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1033396230">
           <source>Afficher Stat CA Achat</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -9582,11 +9807,6 @@
           <source>Montant reçu caisse</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Entete archive BS - Field Montant reçu caisse - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="TableExtension 3163414884 - Field 3677658310 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3163414884">
-          <source>No reçu caisse</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Entete archive BS - Field No reçu caisse - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3053695341 - Field 3009599457 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3053695341">
           <source>Chèque en coffre</source>
@@ -9838,6 +10058,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Phys. Invt. Record Line - Field Qte Prevu - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 1052755578 - Field 776841790 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1052755578">
+          <source>Contrôlé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purch. Rcpt. Header - Field Controle - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 959319265 - Field 3886292122 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 959319265">
           <source>Prix Special Vendor</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -9847,6 +10072,11 @@
           <source>Vendor Doc No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purch. Rcpt. Line - Field Vendor Doc No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2072992664 - Field 776841790 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2072992664">
+          <source>Contrôlé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchase Header - Field Controle - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 2072992664 - Field 634271410 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2072992664">
           <source>Etat Demande Prix</source>
@@ -9862,6 +10092,11 @@
           <source>Qté demandé</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchase Line - Field asking qty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1519909599 - Field 776841790 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1519909599">
+          <source>Contrôlé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchase Line - Field Controle - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 1519909599 - Field 529744049 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1519909599">
           <source>Prix Initial Vendeur</source>
@@ -10003,6 +10238,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchase Price - Field Sous Famille - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3921990236 - Field 2428107076 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3921990236">
+          <source>Contrôle Commande Achat</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchases &amp; Payables Setup - Field controlePurshOrder - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3921990236 - Field 3373563234 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3921990236">
           <source>Current Year</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -10022,6 +10262,11 @@
           <source>MF Fournisseur Obligatoire</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchases &amp; Payables Setup - Field MF obligatoire - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3921990236 - Field 1084897575 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3921990236">
+          <source>Code acheteur obligatoire</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchases &amp; Payables Setup - Field PurchaserCodeRequired - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3921990236 - Field 2968960238 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3921990236">
           <source>Mise à jour marge Obligatoire</source>
@@ -10082,11 +10327,6 @@
           <source>Montant reçu caisse</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Cr.Memo Header - Field Montant reçu caisse - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="TableExtension 552782286 - Field 3677658310 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 552782286">
-          <source>No reçu caisse</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Cr.Memo Header - Field No reçu caisse - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 552782286 - Field 1749222251 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 552782286">
           <source>solde</source>
@@ -10288,11 +10528,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Invoice Header - Field Moy Jour Paiement - Property Caption</note>
         </trans-unit>
-        <trans-unit id="TableExtension 809936682 - Field 3677658310 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 809936682">
-          <source>No reçu caisse</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Invoice Header - Field No reçu caisse - Property Caption</note>
-        </trans-unit>
         <trans-unit id="TableExtension 809936682 - Field 1749222251 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 809936682">
           <source>solde</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -10412,6 +10647,11 @@
           <source>Montant  Ouvert</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Shipment Header - Field Montant Ouvert - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1114148978 - Field 1749222251 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1114148978">
+          <source>solde</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Shipment Line - Field solde - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 4120991665 - Field 3192175264 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4120991665">
           <source>Date</source>
@@ -10562,6 +10802,11 @@
           <source>A Valid. Jrnl. line</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension User Setup - Field A Valid. Jrnl. line - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 337631938 - Field 2549275597 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 337631938">
+          <source>Contrôleur Cmd Achat</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension User Setup - Field Contrôleur Cmd Achat - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 337631938 - Field 1024650357 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 337631938">
           <source>Purchase Stat CA</source>
@@ -10783,10 +11028,20 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum Paiment Caisse Type - EnumValue Cheque - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Enum 608388792 - EnumValue 49812790 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Complément</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Paiment Caisse Type - EnumValue Complement - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Enum 608388792 - EnumValue 2983251736 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Dépense</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum Paiment Caisse Type - EnumValue Depense - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 608388792 - EnumValue 1044169425 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Divers</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Paiment Caisse Type - EnumValue Divers - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 608388792 - EnumValue 1172401639 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Espece</source>

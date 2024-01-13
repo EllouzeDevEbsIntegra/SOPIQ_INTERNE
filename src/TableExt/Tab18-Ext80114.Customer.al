@@ -2,11 +2,13 @@ tableextension 80114 "Customer" extends "Customer" //18
 {
     fields
     {
+
         field(80113; "Dep Enc Princ."; Decimal)
         {
             AutoFormatType = 1;
             Caption = 'Dépassement Encour Principal';
         }
+
         // Add changes to table fields here
         field(80114; "Opened Invoice"; Decimal)
         {

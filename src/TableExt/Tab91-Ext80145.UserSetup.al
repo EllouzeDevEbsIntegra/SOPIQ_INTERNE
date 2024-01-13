@@ -20,6 +20,11 @@ tableextension 80145 "User Setup" extends "User Setup" //91
             DataClassification = ToBeClassified;
         }
 
+        field(80148; "Contrôleur Cmd Achat"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+
     }
 
     var

@@ -16,19 +16,29 @@ page 50135 "Recu Paiement Subpage"
                 {
                     ApplicationArea = All;
                     TableRelation = "Recu Caisse";
-                    //Visible = false;
+                    Visible = false;
                 }
                 field("Line No"; "Line No")
                 {
                     ApplicationArea = all;
-                    //Visible = false;
+                    Visible = false;
                 }
                 field(type; type)
                 {
                     ApplicationArea = all;
                     trigger OnValidate()
                     begin
-                        if (type = type::null) then isEditable := false else isEditable := true;
+                        if (type = type::null) then begin
+                            Error('Vous devez spécifier le type de règlement !');
+                            isEditable := false;
+                        end else begin
+                            isEditable := true;
+                            if (isDecaissement = true) then "Montant Calcul" := -Montant else "Montant Calcul" := Montant;
+                        end;
+                        Montant := 0;
+                        "Montant Calcul" := 0;
+                        isDecaissement := setIsDeciassement(type);
+                        // Modify(true);
                     end;
                 }
 

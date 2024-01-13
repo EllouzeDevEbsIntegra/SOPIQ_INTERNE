@@ -2,6 +2,45 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
 {
     layout
     {
+        modify("No.")
+        {
+            trigger OnAfterValidate()
+            var
+                recVendor: Record Vendor;
+                marge, remise : Decimal;
+                recBin: Record "Bin Content";
+                recLocation: Record Location;
+            begin
+                recVendor.Reset();
+                recVendor.Get("Buy-from Vendor No.");
+                if recVendor.Find() then begin
+                    if recVendor."Default Marge" > 0 then begin
+                        marge := recVendor."Default Marge";
+                        rec.Validate(Marge, marge);
+                    end;
+
+                    if recVendor."Default Discount" > 0 then begin
+                        remise := recVendor."Default Discount";
+                        rec.Validate("Line Discount %", remise);
+                    end;
+
+                end;
+
+                recBin.Reset();
+                recBin.SetRange("Item No.", "No.");
+                if recbin.IsEmpty then begin
+                    recLocation.Reset();
+                    recLocation.get("Location Code");
+                    if recLocation.Find() then begin
+                        if recLocation."Default reception location" <> '' then begin
+                            rec.Validate("Bin Code", recLocation."Default reception location");
+                        end
+                    end;
+
+                end;
+
+            end;
+        }
 
 
         modify("Quantity")

@@ -1,6 +1,3 @@
-/// <summary>
-/// Page Sales Role details (ID 50123).
-/// </summary>
 page 50123 "Sales Role details"
 {
     Caption = 'Rôle Commercial détails', Comment = '{Dependency=Match,"ProfileDescription_ORDERPROCESSOR"}';

@@ -32,14 +32,14 @@ tableextension 80436 "Sales Cr.Memo Header" extends "Sales Cr.Memo Header" //114
             CalcFormula = sum("Recu Caisse Document"."Montant Reglement" WHERE("Document No" = field("No.")));
             Editable = false;
         }
-        field(80412; "No reçu caisse"; code[20])
-        {
-            Caption = 'No reçu caisse';
+        // field(80412; "No reçu caisse"; code[20])
+        // {
+        //     Caption = 'No reçu caisse';
 
-            FieldClass = FlowField;
-            CalcFormula = lookup("Recu Caisse Document"."No Recu" WHERE("Document No" = field("No.")));
-            Editable = false;
-        }
+        //     FieldClass = FlowField;
+        //     CalcFormula = lookup("Recu Caisse Document"."No Recu" WHERE("Document No" = field("No.")));
+        //     Editable = false;
+        // }
         field(80436; solde; Boolean)
         {
             DataClassification = ToBeClassified;

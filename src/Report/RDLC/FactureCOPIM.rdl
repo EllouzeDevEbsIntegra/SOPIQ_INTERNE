@@ -2005,24 +2005,15 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>="Code :    " &amp;Fields!BilltoCustomerNo_SalesShipmentHeader.Value</Value>
+                      <Value>=Fields!BilltoCustomerNo_SalesShipmentHeader.Value</Value>
                       <Style>
-                        <FontSize>11pt</FontSize>
-                        <FontWeight>Bold</FontWeight>
+                        <FontSize>9pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value xml:space="preserve">       </Value>
+                      <Value xml:space="preserve">               </Value>
                       <Style>
-                        <FontSize>11pt</FontSize>
-                        <FontWeight>Normal</FontWeight>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value xml:space="preserve">        </Value>
-                      <Style>
-                        <FontSize>11pt</FontSize>
-                        <FontWeight>Bold</FontWeight>
+                        <FontSize>9pt</FontSize>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -2036,9 +2027,6 @@
               <Height>0.49152cm</Height>
               <Width>8.32761cm</Width>
               <ZIndex>8</ZIndex>
-              <Visibility>
-                <Hidden>true</Hidden>
-              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>

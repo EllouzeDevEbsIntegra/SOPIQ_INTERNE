@@ -7,6 +7,7 @@ table 70013 "Recu Caisse Paiement"
         field(70012; "No Recu"; code[10])
         {
             DataClassification = ToBeClassified;
+            TableRelation = "Recu Caisse";
         }
         field(70013; "Line No"; Integer)
         {
@@ -18,7 +19,7 @@ table 70013 "Recu Caisse Paiement"
             trigger OnValidate()
 
             begin
-                "Line No" := incrementNo("No Recu");
+                if xRec.type = type::null then "Line No" := incrementNo("No Recu");
             end;
         }
 
@@ -37,10 +38,9 @@ table 70013 "Recu Caisse Paiement"
             DataClassification = ToBeClassified;
             trigger OnValidate()
             begin
-                if (type = type::null) then
-                    Error('Vous devez spécifier le type de règlement !') else begin
-                    if (isDecaissement = true) then "Montant Calcul" := -Montant else "Montant Calcul" := Montant;
-                end;
+
+                if xRec.type = type::null then "Line No" := incrementNo("No Recu");
+
             end;
         }
 
@@ -92,16 +92,10 @@ table 70013 "Recu Caisse Paiement"
     trigger OnModify()
     begin
         //"Text For Print" := Format(type) + ' ' + Format("Paiment No") + ' ' + Format(Name) + ' ' + Format(Echeance) + ' ' + Format(Montant, 12, 3);
-        if (type = type::AvoirEsp) OR (type = type::Depense) OR (type = type::retourBS) OR (type = type::Transport) OR (type = type::ResteCheque) then begin
-            isDecaissement := true;
-            "Montant Calcul" := -Montant;
-
-        end
-        else begin
-            isDecaissement := false;
+        if isDecaissement = true then
+            "Montant Calcul" := -Montant
+        else
             "Montant Calcul" := Montant;
-        end;
-
     end;
 
     trigger OnDelete()
@@ -129,8 +123,13 @@ table 70013 "Recu Caisse Paiement"
 
     end;
 
-
-
+    procedure setIsDeciassement(typePaiement: Enum "Paiment Caisse Type"): Boolean
+    begin
+        if (typePaiement = typePaiement::"AvoirEsp") OR (typePaiement = typePaiement::"Depense") OR (typePaiement = typePaiement::"retourBS") OR (typePaiement = typePaiement::"Transport") OR (typePaiement = typePaiement::"ResteCheque") then
+            exit(true)
+        else
+            exit(false);
+    end;
 
 
 }

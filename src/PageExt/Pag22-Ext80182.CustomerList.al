@@ -47,6 +47,14 @@ pageextension 80182 "Customer List" extends "Customer List"//22
             // }
         }
         // Add changes to page layout here
+        addafter(CustomerStatisticsFactBox)
+        {
+            part(SpecificCustStatFactbox; "Specific Cust. Stat. FactBox")
+            {
+                ApplicationArea = Basic, Suite;
+                SubPageLink = "No." = FIELD("No.");
+            }
+        }
     }
 
     actions

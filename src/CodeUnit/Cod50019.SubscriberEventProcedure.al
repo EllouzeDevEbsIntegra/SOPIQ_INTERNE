@@ -52,6 +52,7 @@ codeunit 50019 SubscriberEventProcedure
     local procedure OnAfterNewSalesShptLineInsert(var NewSalesShipmentLine: Record "Sales Shipment Line"; OldSalesShipmentLine: Record "Sales Shipment Line")
     VAR
         PostArchivShipLine: Record "Ligne archive BS";
+        recBS: Record "Entete archive BS";
 
     begin
         // Message('OLD -->  %1  *** %2', OldSalesShipmentLine."Document No.", OldSalesShipmentLine."Line No.");
@@ -63,6 +64,13 @@ codeunit 50019 SubscriberEventProcedure
         PostArchivShipLine.SetRange("Document No.", OldSalesShipmentLine."Document No.");
         PostArchivShipLine.SetRange("Line No.", OldSalesShipmentLine."Line No.");
         if PostArchivShipLine.FindFirst() then begin
+            recBS.Reset();
+            recBS.Get(PostArchivShipLine."Document No.");
+            if recBS.Find() then begin
+                recBS.Solde := false;
+                recBS.Modify();
+                Commit();
+            end;
             PostArchivShipLine."Qty. Invoiced (Base)" := OldSalesShipmentLine."Quantity (Base)";
             PostArchivShipLine."Quantity Invoiced" := OldSalesShipmentLine.Quantity;
             PostArchivShipLine."Qty. Shipped Not Invoiced" := 0;

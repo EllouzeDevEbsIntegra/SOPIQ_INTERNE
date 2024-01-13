@@ -22,6 +22,17 @@ pageextension 80157 "Purchases & Payables Setup" extends "Purchases & Payables S
                 ApplicationArea = All;
                 Caption = 'Mise à jour marge CA obligatoire';
             }
+            field(PurchaserCodeRequired; PurchaserCodeRequired)
+            {
+                ApplicationArea = all;
+                Caption = 'Code acheteur obligatoire';
+            }
+
+            field(controlePurshOrder; controlePurshOrder)
+            {
+                ApplicationArea = all;
+                Caption = 'Contrôle Commande Achat';
+            }
             field("Current Year"; "Current Year")
             {
                 ApplicationArea = All;

@@ -7,6 +7,7 @@ table 70012 "Recu Caisse Document"
         field(70012; "No Recu"; code[10])
         {
             DataClassification = ToBeClassified;
+            TableRelation = "Recu Caisse";
         }
         field(70013; "Line No"; Integer)
         {
@@ -15,6 +16,11 @@ table 70012 "Recu Caisse Document"
         field(70014; type; Enum "Document Caisse Type")
         {
             DataClassification = ToBeClassified;
+            trigger OnValidate()
+
+            begin
+                if xRec.type = type::null then "Line No" := incrementNo("No Recu");
+            end;
         }
 
         field(70015; "Customer No"; code[20])
@@ -26,6 +32,7 @@ table 70012 "Recu Caisse Document"
         field(70016; "Document No"; Code[20])
         {
             DataClassification = ToBeClassified;
+
         }
 
         field(70019; "Total TTC"; Decimal)
@@ -90,5 +97,7 @@ table 70012 "Recu Caisse Document"
         end;
 
     end;
+
+
 
 }

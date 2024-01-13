@@ -31,6 +31,12 @@ tableextension 80111 "Purchase Header" extends "Purchase Header" //38
             Caption = 'Etat Demande Prix';
             Editable = false;
         }
+
+        field(80150; "Controle"; Boolean)
+        {
+            Caption = 'Contrôlé';
+            Editable = false;
+        }
     }
 
     var

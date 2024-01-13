@@ -111,6 +111,12 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
             InitValue = ' ';
         }
 
+        field(80150; "Controle"; Boolean)
+        {
+            Caption = 'Contrôlé';
+            Editable = false;
+        }
+
         modify("Vendor Unit Cost")
         {
             trigger OnAfterValidate()

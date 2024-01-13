@@ -2,6 +2,10 @@ pageextension 80396 "Liste archive Bon de sortie" extends "Liste archive Bon de 
 {
     layout
     {
+        modify(Solde)
+        {
+            Editable = false;
+        }
         // Add changes to page layout here
         addafter("Montant TTC")
         {
@@ -14,17 +18,17 @@ pageextension 80396 "Liste archive Bon de sortie" extends "Liste archive Bon de 
                 end;
             }
 
-            field("No reçu caisse"; "No reçu caisse")
-            {
-                ApplicationArea = all;
-                trigger OnDrillDown()
-                var
-                    recuCaisse: Record "Recu Caisse";
-                begin
-                    recuCaisse.SetRange("No", rec."No reçu caisse");
-                    PAGE.Run(PAGE::"Recu de caisse", recuCaisse);
-                end;
-            }
+            // field("No reçu caisse"; "No reçu caisse")
+            // {
+            //     ApplicationArea = all;
+            //     trigger OnDrillDown()
+            //     var
+            //         recuCaisse: Record "Recu Caisse";
+            //     begin
+            //         recuCaisse.SetRange("No", rec."No reçu caisse");
+            //         PAGE.Run(PAGE::"Recu de caisse", recuCaisse);
+            //     end;
+            // }
         }
     }
 
