@@ -75,6 +75,33 @@ page 50118 "Items Master List"
     {
         area(Processing)
         {
+            action("Ignore Item")
+            {
+                ApplicationArea = All;
+                Caption = 'Ignorer article';
+                Image = DisableBreakpoint;
+
+                trigger OnAction();
+                var
+                    recItemMaster: Record "items Master";
+                    itemCard: Page "Item Card";
+                begin
+                    recItemMaster.Reset();
+                    recItemMaster.SetRange(No, rec.No);
+                    recItemMaster.SetRange(Verified, false);
+                    if recItemMaster.FindSet() then begin
+                        REPEAT
+                            recItemMaster.Verified := true;
+                            recItemMaster."Type Ajout" := 'Article ignoré';
+                            recItemMaster."Validate date" := System.today;
+                            recItemMaster."Validate User" := Database.UserId;
+                            recItemMaster.Modify();
+                        UNTIL recItemMaster.Next() = 0;
+                    end;
+
+
+                end;
+            }
             action("Modify Item Information")
             {
                 ApplicationArea = All;

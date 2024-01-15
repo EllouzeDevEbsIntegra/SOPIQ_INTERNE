@@ -22,6 +22,13 @@ tableextension 80116 "Purch. Rcpt. Line" extends "Purch. Rcpt. Line"//121
             end;
         }
 
+        field(80118; "Actuel Unit Price"; Decimal)
+        {
+            CalcFormula = lookup(Item."Unit Price" where("No." = field("No.")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
     }
 
 

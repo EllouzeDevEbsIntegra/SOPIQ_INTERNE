@@ -26,18 +26,21 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
 
                 end;
 
-                recBin.Reset();
-                recBin.SetRange("Item No.", "No.");
-                if recbin.IsEmpty then begin
-                    recLocation.Reset();
-                    recLocation.get("Location Code");
-                    if recLocation.Find() then begin
-                        if recLocation."Default reception location" <> '' then begin
-                            rec.Validate("Bin Code", recLocation."Default reception location");
-                        end
-                    end;
+                if ("Location Code" <> '') then begin
+                    recBin.Reset();
+                    recBin.SetRange("Item No.", "No.");
+                    if recbin.IsEmpty then begin
+                        recLocation.Reset();
+                        recLocation.get("Location Code");
+                        if recLocation.Find() then begin
+                            if recLocation."Default reception location" <> '' then begin
+                                rec.Validate("Bin Code", recLocation."Default reception location");
+                            end
+                        end;
 
+                    end;
                 end;
+
 
             end;
         }

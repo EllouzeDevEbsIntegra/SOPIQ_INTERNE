@@ -23,7 +23,7 @@ table 70013 "Recu Caisse Paiement"
             end;
         }
 
-        field(70015; "Name"; code[20])
+        field(70015; "Name"; code[100])
         {
             DataClassification = ToBeClassified;
         }

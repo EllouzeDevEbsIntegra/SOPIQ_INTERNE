@@ -707,6 +707,9 @@ End Function
         <Field Name="Document_No">
           <DataField>Document_No</DataField>
         </Field>
+        <Field Name="Libelle">
+          <DataField>Libelle</DataField>
+        </Field>
         <Field Name="No_Recu">
           <DataField>No_Recu</DataField>
         </Field>

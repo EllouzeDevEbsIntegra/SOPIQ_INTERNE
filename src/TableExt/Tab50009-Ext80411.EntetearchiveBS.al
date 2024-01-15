@@ -2,6 +2,14 @@ tableextension 80411 "Entete archive BS" extends "Entete archive BS" //50009
 {
     fields
     {
+        field(80410; "Montant Brut HT"; Decimal)
+        {
+            // DataClassification = ToBeClassified;
+            Caption = 'Montant TTC';
+            FieldClass = FlowField;
+            CalcFormula = SUM("Ligne archive BS"."Line Amount" where("Document No." = field("No.")));
+            Editable = false;
+        }
         // Add changes to table fields here
         field(80411; "Montant reçu caisse"; Decimal)
         {

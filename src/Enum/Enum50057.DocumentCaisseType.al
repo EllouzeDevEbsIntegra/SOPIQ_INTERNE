@@ -17,6 +17,10 @@ enum 50057 "Document Caisse Type"
     {
         Caption = 'Avoir';
     }
+    value(4; Divers)
+    {
+        Caption = 'Divers';
+    }
 
 
 }

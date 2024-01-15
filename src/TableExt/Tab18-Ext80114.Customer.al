@@ -2,6 +2,11 @@ tableextension 80114 "Customer" extends "Customer" //18
 {
     fields
     {
+        field(80112; "Is Divers"; Boolean)
+        {
+            AutoFormatType = 1;
+            Caption = 'Client Divers';
+        }
 
         field(80113; "Dep Enc Princ."; Decimal)
         {

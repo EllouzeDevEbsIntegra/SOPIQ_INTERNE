@@ -64,6 +64,12 @@ pageextension 80138 "Customer Card" extends "Customer Card"//21
                 ApplicationArea = All;
                 Caption = 'Client Spécial';
             }
+
+            field("Is Divers"; "Is Divers")
+            {
+                ApplicationArea = all;
+                Caption = 'Client Divers';
+            }
         }
     }
 

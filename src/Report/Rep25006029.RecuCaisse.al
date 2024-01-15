@@ -64,6 +64,10 @@ report 25006029 "Recu Caisse"
                 {
 
                 }
+                column(Libelle; Libelle)
+                {
+
+                }
 
 
 
@@ -162,9 +166,9 @@ report 25006029 "Recu Caisse"
                 if recRecuCaisseLigne.FindSet() then begin
                     repeat
                         if (LibelleTicket = '') then
-                            LibelleTicket := isACPTOrREG + '/ ' + recRecuCaisseLigne."Document No"
+                            LibelleTicket := isACPTOrREG + '/ ' + recRecuCaisseLigne."Document No" + recRecuCaisseLigne."Libelle"
                         else
-                            LibelleTicket := LibelleTicket + ' & ' + recRecuCaisseLigne."Document No";
+                            LibelleTicket := LibelleTicket + ' & ' + recRecuCaisseLigne."Document No" + recRecuCaisseLigne."Libelle";
                     until recRecuCaisseLigne.Next() = 0;
                 end;
 

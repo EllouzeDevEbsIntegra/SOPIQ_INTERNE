@@ -80,6 +80,7 @@ page 50132 "Recu Caisse Card"
                     Caption = 'Code Vendeur';
                     trigger OnValidate()
                     begin
+                        CurrPage.Document.Page.setDiversCustomer(rec);
                         CurrPage.Document.Page.setFilter(rec);
                         CurrPage.Paiement.Page.setFilter(rec);
                         isCreated := true;

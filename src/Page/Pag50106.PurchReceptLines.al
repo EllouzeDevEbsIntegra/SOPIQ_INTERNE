@@ -121,10 +121,10 @@ page 50106 "Purch. Recept. Lines"
                 }
 
 
-                field(" old Unit Price"; " old Unit Price")
+                field("Actuel Unit Price"; "Actuel Unit Price")
                 {
                     ApplicationArea = all;
-                    Editable = false;
+                    Caption = 'Prix Vente Actuel';
                 }
                 field("sales price choice"; "sales price choice")
                 {
@@ -193,6 +193,7 @@ page 50106 "Purch. Recept. Lines"
         BuyfromVendorNoOnFormat;
 
         Boolavoir := AvoirExist;
+        rec.CalcFields("Actuel Unit Price");
     end;
 
     trigger OnAfterGetCurrRecord()

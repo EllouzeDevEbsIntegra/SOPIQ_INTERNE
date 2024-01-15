@@ -53,7 +53,7 @@ page 50133 "Recu Document Subpage"
                 field("Document No"; "Document No")
                 {
                     ApplicationArea = all;
-
+                    Visible = NOT (libelleVisible);
                     TableRelation = if (type = const(Invoice)) "Sales Invoice Header" where("Bill-to Customer No." = field("Customer No"), solde = filter('Non'))
                     else
                     if (type = const(BS)) "Entete archive BS" where("Bill-to Customer No." = field("Customer No"), solde = filter('Non'))
@@ -109,6 +109,12 @@ page 50133 "Recu Document Subpage"
                     end;
 
                 }
+
+                field(Libelle; Libelle)
+                {
+                    ApplicationArea = all;
+                    Visible = libelleVisible;
+                }
                 field("Total TTC"; "Total TTC")
                 {
                     ApplicationArea = all;
@@ -138,7 +144,7 @@ page 50133 "Recu Document Subpage"
                 trigger OnAction()
                 var
                     SalesInvoiceToPay: Page "Sales Invoice To Pay";
-                                           recSalesInvoice: Record "Sales Invoice Header";
+                    recSalesInvoice: Record "Sales Invoice Header";
                 begin
                     recSalesInvoice.SetFilter("Remaining Amount", '>0');
                     recSalesInvoice.SetRange("Bill-to Customer No.", custNo);
@@ -156,7 +162,7 @@ page 50133 "Recu Document Subpage"
                 trigger OnAction()
                 var
                     SalesInvoiceToPay: Page "Bon Sortie Archive To Pay";
-                                           recSalesInvoice: Record "Entete archive BS";
+                    recSalesInvoice: Record "Entete archive BS";
                 begin
                     recSalesInvoice.SetRange("Bill-to Customer No.", custNo);
                     SalesInvoiceToPay.SetTableView(recSalesInvoice);
@@ -171,6 +177,7 @@ page 50133 "Recu Document Subpage"
         custNo: code[20];
         totalDoc: Decimal;
         nbDoc: Integer;
+        libelleVisible: Boolean;
 
     procedure setFilter(recuCaisse: Record "Recu Caisse")
     begin
@@ -178,6 +185,22 @@ page 50133 "Recu Document Subpage"
         SetFilter("Customer No", recuCaisse."Customer No");
         CurrPage.Update();
         custNo := recuCaisse."Customer No";
+    end;
+
+    procedure setDiversCustomer(recuCaisse: Record "Recu Caisse")
+    var
+        recCust: Record Customer;
+    begin
+        recCust.Reset();
+        recCust.Get(recuCaisse."Customer No");
+        if recCust.Find() then begin
+            if recCust."Is Divers" = true then begin
+                libelleVisible := true;
+                CurrPage.Update();
+            end
+
+        end;
+
     end;
 
 

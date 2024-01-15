@@ -35,6 +35,11 @@ table 70012 "Recu Caisse Document"
 
         }
 
+        field(70017; "Libelle"; Text[100])
+        {
+            DataClassification = ToBeClassified;
+        }
+
         field(70019; "Total TTC"; Decimal)
         {
             DataClassification = ToBeClassified;
