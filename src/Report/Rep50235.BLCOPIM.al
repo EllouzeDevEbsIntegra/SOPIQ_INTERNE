@@ -417,13 +417,22 @@ report 50235 "BL COPIM"
                         var
                             recSalesShipHeader: Record "Sales Shipment Header";
                         begin
-                            recSalesShipHeader.reset();
-                            recSalesShipHeader.SetRange("No.", DataItem1000000001.GetFilter("No."));
-                            if recSalesShipHeader.FindFirst() then begin
-                                custNameImp := recSalesShipHeader.custNameImprime;
-                                custAdressImp := recSalesShipHeader.custAdresseImprime;
-                                custMFImp := recSalesShipHeader.custMFImprime;
-                                custVINImp := recSalesShipHeader.custVINImprime;
+                            if editCustInfo = true then begin
+                                recSalesShipHeader.reset();
+                                recSalesShipHeader.SetRange("No.", DataItem1000000001.GetFilter("No."));
+                                if recSalesShipHeader.FindFirst() then begin
+                                    custNameImp := recSalesShipHeader.custNameImprime;
+                                    custAdressImp := recSalesShipHeader.custAdresseImprime;
+                                    custMFImp := recSalesShipHeader.custMFImprime;
+                                    custVINImp := recSalesShipHeader.custVINImprime;
+                                end;
+                            end
+
+                            else begin
+                                custNameImp := '';
+                                custAdressImp := '';
+                                custMFImp := '';
+                                custVINImp := '';
                             end;
                         end;
 
@@ -487,14 +496,16 @@ report 50235 "BL COPIM"
     var
         recSalesShipHeader: Record "Sales Shipment Header";
     begin
-        recSalesShipHeader.reset();
-        recSalesShipHeader.SetRange("No.", DataItem1000000001."No.");
-        if recSalesShipHeader.FindFirst() then begin
-            recSalesShipHeader.custNameImprime := custNameImp;
-            recSalesShipHeader.custAdresseImprime := custAdressImp;
-            recSalesShipHeader.custMFImprime := custMFImp;
-            recSalesShipHeader.custVINImprime := custVINImp;
-            recSalesShipHeader.Modify();
+        if (editCustInfo = true) then begin
+            recSalesShipHeader.reset();
+            recSalesShipHeader.SetRange("No.", DataItem1000000001."No.");
+            if recSalesShipHeader.FindFirst() then begin
+                recSalesShipHeader.custNameImprime := custNameImp;
+                recSalesShipHeader.custAdresseImprime := custAdressImp;
+                recSalesShipHeader.custMFImprime := custMFImp;
+                recSalesShipHeader.custVINImprime := custVINImp;
+                recSalesShipHeader.Modify();
+            end;
         end;
     end;
 

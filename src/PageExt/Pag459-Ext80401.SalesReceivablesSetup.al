@@ -51,6 +51,21 @@ pageextension 80401 "Sales & Receivables Setup" extends "Sales & Receivables Set
                 Caption = 'N° Reçu de caisse';
                 ApplicationArea = all;
             }
+
+            field("Retour BS"; "Retour BS")
+            {
+                Caption = 'Retour BS';
+                ApplicationArea = all;
+            }
+
+
+            field("Retour BS Enregistré"; "Retour BS Enregistré")
+            {
+                Caption = 'Retour BS Enregistré';
+                ApplicationArea = all;
+            }
+
+
         }
         modify("Price Analy. % Average Disc.")
         {

@@ -7,6 +7,11 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
             trigger OnAfterValidate()
             begin
                 ModifyPostingDesc(rec);
+                GetCust("Sell-to Customer No.");
+                Cust.CheckBlockedCustOnDocs(Cust, "Document Type", false, false);
+                // if not ApplicationAreaMgmt.IsSalesTaxEnabled then
+                //    Cust.TestField("Gen. Bus. Posting Group");
+                //OnAfterCheckSellToCust(Rec, xRec, Cust);
             end;
         }
 
@@ -65,7 +70,7 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
     }
 
     var
-        myInt: Integer;
+        Cust: Record Customer;
 
     procedure ModifyPostingDesc(Prec: Record "Sales Header")
     begin
@@ -90,6 +95,26 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
         ignoreStamp(rec);
         "Shipping Agent Code" := "External Document No.";
         Validate("Shipping Agent Code");
+    end;
+
+    // Function for BS Return
+    procedure GetPstdBSLinesToRevere()
+    var
+        SalesPostedDocLines: Page "Posted BS Lines";
+    begin
+        //GetCust("Sell-to Customer No.");
+        if not (("Document Type" = "Document Type"::Quote) and ("Sell-to Customer No." = '')) then begin
+            if "Sell-to Customer No." <> Cust."No." then
+                Cust.Get("Sell-to Customer No.");
+        end else
+            Clear(Cust);
+        SalesPostedDocLines.SetToSalesHeader(Rec);
+        SalesPostedDocLines.SetRecord(Cust);
+        SalesPostedDocLines.LookupMode := true;
+        if SalesPostedDocLines.RunModal = ACTION::LookupOK then
+            SalesPostedDocLines.CopyLineToDoc;
+
+        Clear(SalesPostedDocLines);
     end;
 
 }

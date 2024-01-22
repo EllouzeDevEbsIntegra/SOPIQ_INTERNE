@@ -2,6 +2,13 @@ tableextension 80114 "Customer" extends "Customer" //18
 {
     fields
     {
+        field(80110; "No. of Pstd. BS"; Integer)
+        {
+            CalcFormula = Count("Sales Shipment Header" WHERE("Sell-to Customer No." = FIELD("No."), BS = filter(true)));
+            Caption = 'No. of Pstd. BS';
+            Editable = false;
+            FieldClass = FlowField;
+        }
         field(80112; "Is Divers"; Boolean)
         {
             AutoFormatType = 1;

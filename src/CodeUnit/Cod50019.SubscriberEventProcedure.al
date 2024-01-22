@@ -2,13 +2,35 @@ codeunit 50019 SubscriberEventProcedure
 {
     EventSubscriberInstance = StaticAutomatic;
 
+
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforePostSalesDoc', '', false, false)]
+    local procedure OnBeforePostSalesDoc(var SalesHeader: Record "Sales Header")
+    var
+        UserSetup: Record "User Setup";
+    begin
+        // UserSetup.Get(UserId);
+        // if SalesHeader."Document Type" = SalesHeader."Document Type"::"Return Order" then
+        //     if SalesHeader.BS then
+        //         UserSetup.TestField("Allow BS Invoicing");
+        Message('OnBeforePostSalesDoc');
+    end;
+
+
+
+
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post (Yes/No)", 'OnBeforeConfirmSalesPost', '', true, true)]
-    procedure OnBeforeConfirmSalesPost(salesHeader: Record "Sales Header");
+    procedure OnBeforeConfirmSalesPost(salesHeader: Record "Sales Header"; HideDialog: Boolean; IsHandled: Boolean; DefaultOption: Integer; PostAndSend: Boolean);
     var
         recSalesLine: Record "Sales Line";
         recSalesHeader: Record "Sales Shipment Header";
         recCrSalesHeader: Record "Return Receipt Header";
         numDoc: TEXT[50];
+        SalesFunctions: Codeunit 50021;
 
     begin
         if (salesHeader."Document Type" = salesHeader."Document Type"::"Credit Memo") then begin
@@ -45,6 +67,15 @@ codeunit 50019 SubscriberEventProcedure
                     end;
                 END
             UNTIL recSalesLine.Next() = 0;
+
+
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        // if (salesHeader."Document Type" = salesHeader."Document Type"::"Return Order") AND (salesHeader.BS = true) then begin
+        //     Message('This document is BS Return');
+        //     SalesFunctions.ConfirmBSPOST(SalesHeader, 1);
+        //     IsHandled := true;
+        // end;
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     end;
 
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Undo Sales Shipment Line", 'OnAfterNewSalesShptLineInsert', '', true, true)]
@@ -91,5 +122,33 @@ codeunit 50019 SubscriberEventProcedure
         PostShipLineArchiv.Insert;
     end;
 
+
+
+
+
+    [EventSubscriber(ObjectType::Table, 36, 'OnAfterGetNoSeriesCode', '', true, true)]
+    procedure OnAfterGetNoSeriesCode(var SalesHeader: Record "Sales Header"; SalesReceivablesSetup: Record "Sales & Receivables Setup"; var NoSeriesCode: Code[20])
+    var
+        SalesSetup: Record "Sales & Receivables Setup";
+    begin
+        if SalesHeader.BS = true then begin
+            SalesSetup.Get();
+            NoSeriesCode := SalesSetup."Retour BS";
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::table, 36, 'OnAfterInitRecord', '', true, true)]
+    local procedure OnAfterInitRecord(var SalesHeader: Record "Sales Header")
+    var
+        SalesSetup: Record "Sales & Receivables Setup";
+    begin
+        if (SalesHeader.BS = true) then begin
+
+            SalesSetup.Get();
+            SalesHeader."Return Receipt No. Series" := SalesSetup."Retour BS Enregistré";
+            //Message('%1', SalesHeader."Return Receipt No. Series");
+        end;
+
+    end;
 
 }

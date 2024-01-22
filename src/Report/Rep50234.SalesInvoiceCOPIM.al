@@ -523,13 +523,21 @@ report 50234 "Sales Invoice COPIM"
                         var
                             recSalesInvHeader: Record "Sales Invoice Header";
                         begin
-                            recSalesInvHeader.reset();
-                            recSalesInvHeader.SetRange("No.", "Sales Invoice Header".GetFilter("No."));
-                            if recSalesInvHeader.FindFirst() then begin
-                                custNameImp := recSalesInvHeader.custNameImprime;
-                                custAdressImp := recSalesInvHeader.custAdresseImprime;
-                                custMFImp := recSalesInvHeader.custMFImprime;
-                                custVINImp := recSalesInvHeader.custVINImprime;
+                            if editCustInfo = true then begin
+                                recSalesInvHeader.reset();
+                                recSalesInvHeader.SetRange("No.", "Sales Invoice Header".GetFilter("No."));
+                                if recSalesInvHeader.FindFirst() then begin
+                                    custNameImp := recSalesInvHeader.custNameImprime;
+                                    custAdressImp := recSalesInvHeader.custAdresseImprime;
+                                    custMFImp := recSalesInvHeader.custMFImprime;
+                                    custVINImp := recSalesInvHeader.custVINImprime;
+                                end;
+                            end
+                            else begin
+                                custNameImp := '';
+                                custAdressImp := '';
+                                custMFImp := '';
+                                custVINImp := '';
                             end;
                         end;
 
@@ -579,14 +587,18 @@ report 50234 "Sales Invoice COPIM"
     var
         recSalesInvHeader: Record "Sales Invoice Header";
     begin
-        recSalesInvHeader.reset();
-        recSalesInvHeader.SetRange("No.", "Sales Invoice Header"."No.");
-        if recSalesInvHeader.FindFirst() then begin
-            recSalesInvHeader.custNameImprime := custNameImp;
-            recSalesInvHeader.custAdresseImprime := custAdressImp;
-            recSalesInvHeader.custMFImprime := custMFImp;
-            recSalesInvHeader.custVINImprime := custVINImp;
-            recSalesInvHeader.Modify();
+        if (editCustInfo = true) then begin
+            recSalesInvHeader.reset();
+            recSalesInvHeader.SetRange("No.", "Sales Invoice Header"."No.");
+            if recSalesInvHeader.FindFirst() then begin
+
+                recSalesInvHeader.custNameImprime := custNameImp;
+                recSalesInvHeader.custAdresseImprime := custAdressImp;
+                recSalesInvHeader.custMFImprime := custMFImp;
+                recSalesInvHeader.custVINImprime := custVINImp;
+                recSalesInvHeader.Modify();
+
+            end;
         end;
     end;
 

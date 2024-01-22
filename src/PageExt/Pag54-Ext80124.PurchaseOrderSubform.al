@@ -83,12 +83,12 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
                 ApplicationArea = All;
                 trigger OnValidate()
                 begin
-                    if (rec.Marge <= 100) then
+                    if (rec.Marge <= 75) then
                         rec."Prix vente calculé" := Round((rec."Direct Unit Cost" / (1 - rec.Marge / 100)) *
                                                                     (1 + CalcVAT),
                                                                     GLSetup."Unit-Amount Rounding Precision")
                     else
-                        error('Marge ne doit pas dépasser 100%');
+                        error('Marge ne doit pas dépasser 75%');
                 end;
             }
 
@@ -185,7 +185,7 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
                                     recItem."Price/Profit Calculation New" := recItem."Price/Profit Calculation New"::"No Relationship";
                                     recItem."Price/Profit Calculation" := recItem."Price/Profit Calculation"::"No Relationship";
                                     recItem."Last Direct Cost" := recPurshLine."Direct Unit Cost";
-                                    if recItem."Profit %" <= 50 then begin
+                                    if recItem."Profit %" <= 75 then begin
                                         GetGLSetup;
                                         recItem."Unit Price" :=
                                         //   Round(
@@ -202,7 +202,7 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
                                         recPurshLine.Modify();
                                     end
                                     else
-                                        Error('Marge ne doit pas dépasser 50% !');
+                                        Error('Marge ne doit pas dépasser 75% !');
                                     ;
 
                                 end;

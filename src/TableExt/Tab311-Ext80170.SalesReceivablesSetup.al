@@ -38,6 +38,18 @@ tableextension 80170 "Sales & Receivables Setup" extends "Sales & Receivables Se
             DataClassification = ToBeClassified;
             TableRelation = "No. Series";
         }
+        field(80176; "Retour BS"; code[10])
+        {
+            Caption = 'Retour BS';
+            DataClassification = ToBeClassified;
+            TableRelation = "No. Series";
+        }
+        field(80177; "Retour BS Enregistré"; code[10])
+        {
+            Caption = 'Retour BS Enregistré';
+            DataClassification = ToBeClassified;
+            TableRelation = "No. Series";
+        }
 
     }
 

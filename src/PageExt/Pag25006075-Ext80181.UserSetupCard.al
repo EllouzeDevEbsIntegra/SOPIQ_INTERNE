@@ -5,6 +5,11 @@ pageextension 80181 "User Setup Card" extends "User Setup Card" //25006075
         // Add changes to page layout here
         addafter(RegisterStatistics)
         {
+            field(isRCModify; isRCModify)
+            {
+                ApplicationArea = all;
+                Caption = 'Autoriser Modif. RC';
+            }
             field("Contrôleur Cmd Achat"; "Contrôleur Cmd Achat")
             {
                 ApplicationArea = all;

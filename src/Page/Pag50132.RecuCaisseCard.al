@@ -242,7 +242,7 @@ page 50132 "Recu Caisse Card"
             {
                 ApplicationArea = All;
                 Image = DocumentEdit;
-                Visible = false;
+                Visible = userSetupModifRC;
 
                 trigger OnAction()
 
@@ -255,12 +255,20 @@ page 50132 "Recu Caisse Card"
     }
 
     var
-        modifCustomer, isCreated : Boolean;
+        modifCustomer, isCreated, userSetupModifRC : Boolean;
 
     trigger OnOpenPage()
+    var
+        recUserSetup: Record "User Setup";
     begin
+        recUserSetup.Reset();
+        // recUserSetup.SetFilter("User ID", UserId);
+        recUserSetup.Get(UserId);
+        userSetupModifRC := recUserSetup.isRCModify;
+        CurrPage.Update();
         if (Printed = true) then begin
-            CurrPage.Editable := false;
+            // if recUserSetup.isRCModify = false then
+            CurrPage.Editable := recUserSetup.isRCModify;
             isCreated := true;
         end;
         CurrPage.Document.Page.setFilter(rec);

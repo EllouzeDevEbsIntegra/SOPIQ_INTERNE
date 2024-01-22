@@ -426,13 +426,20 @@ report 25006030 "DEVIS COPIM"
                         var
                             recSalesHeader: Record "Sales Header";
                         begin
-                            recSalesHeader.reset();
-                            recSalesHeader.SetRange("No.", "Sales Header".GetFilter("No."));
-                            if recSalesHeader.FindFirst() then begin
-                                custNameImp := recSalesHeader.custNameImprime;
-                                custAdressImp := recSalesHeader.custAdresseImprime;
-                                custMFImp := recSalesHeader.custMFImprime;
-                                custVINImp := recSalesHeader.custVINImprime;
+                            if editCustInfo = true then begin
+                                recSalesHeader.reset();
+                                recSalesHeader.SetRange("No.", "Sales Header".GetFilter("No."));
+                                if recSalesHeader.FindFirst() then begin
+                                    custNameImp := recSalesHeader.custNameImprime;
+                                    custAdressImp := recSalesHeader.custAdresseImprime;
+                                    custMFImp := recSalesHeader.custMFImprime;
+                                    custVINImp := recSalesHeader.custVINImprime;
+                                end;
+                            end else begin
+                                custNameImp := '';
+                                custAdressImp := '';
+                                custMFImp := '';
+                                custVINImp := '';
                             end;
                         end;
 
@@ -485,14 +492,16 @@ report 25006030 "DEVIS COPIM"
     var
         recSalesHeader: Record "Sales Header";
     begin
-        recSalesHeader.reset();
-        recSalesHeader.SetRange("No.", "Sales Header"."No.");
-        if recSalesHeader.FindFirst() then begin
-            recSalesHeader.custNameImprime := custNameImp;
-            recSalesHeader.custAdresseImprime := custAdressImp;
-            recSalesHeader.custMFImprime := custMFImp;
-            recSalesHeader.custVINImprime := custVINImp;
-            recSalesHeader.Modify();
+        if (editCustInfo = true) then begin
+            recSalesHeader.reset();
+            recSalesHeader.SetRange("No.", "Sales Header"."No.");
+            if recSalesHeader.FindFirst() then begin
+                recSalesHeader.custNameImprime := custNameImp;
+                recSalesHeader.custAdresseImprime := custAdressImp;
+                recSalesHeader.custMFImprime := custMFImp;
+                recSalesHeader.custVINImprime := custVINImp;
+                recSalesHeader.Modify();
+            end;
         end;
     end;
 
