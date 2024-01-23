@@ -37,9 +37,6 @@ page 50133 "Recu Document Subpage"
                                 "Total TTC" := 0;
                             end
                         end;
-
-
-
                     end;
 
                 }
@@ -58,7 +55,9 @@ page 50133 "Recu Document Subpage"
                     else
                     if (type = const(BS)) "Entete archive BS" where("Bill-to Customer No." = field("Customer No"), solde = filter('Non'))
                     else
-                    if (type = const(CreditMemo)) "Sales Cr.Memo Header" where("Bill-to Customer No." = field("Customer No"), solde = filter('Non'));
+                    if (type = const(CreditMemo)) "Sales Cr.Memo Header" where("Bill-to Customer No." = field("Customer No"), solde = filter('Non'))
+                    else
+                    if (type = const(RetourBS)) "Return Receipt Header" where("Bill-to Customer No." = field("Customer No"), BS = filter('Oui'), solde = filter('Non'));
 
                     trigger OnValidate()
 
@@ -66,6 +65,7 @@ page 50133 "Recu Document Subpage"
                         recBs: Record "Entete archive BS";
                         recInvoice: Record "Sales Invoice Header";
                         recCrMemo: Record "Sales Cr.Memo Header";
+                        recRetourBS: Record "Return Receipt Header";
 
                     begin
 
@@ -85,24 +85,34 @@ page 50133 "Recu Document Subpage"
                                 end;
                             end
                             else
-                                if (rec.type = type::Invoice) then begin
-                                    recInvoice.SetRange("No.", "Document No");
-                                    if recInvoice.FindFirst() then begin
-                                        recInvoice.CalcFields("Amount Including VAT");
-                                        "Montant Reglement" := recInvoice."STStamp Amount" + recInvoice."Amount Including VAT" - recInvoice."Montant reçu caisse";
-                                        "Total TTC" := recInvoice."Amount Including VAT" + recInvoice."STStamp Amount";
+                                if (rec.type = type::RetourBS) then begin
+                                    recRetourBS.SetRange("No.", "Document No");
+                                    if recRetourBS.FindFirst() then begin
+                                        recRetourBS.CalcFields("Line Amount HT", "Line Amount", "Montant reçu caisse");
+                                        "Montant Reglement" := -recRetourBS."Line Amount";
+                                        "Total TTC" := -recRetourBS."Line Amount";
                                         Modify(true);
                                     end
                                 end
-                                else begin
-                                    recCrMemo.SetRange("No.", "Document No");
-                                    if recCrMemo.FindFirst() then begin
-                                        recCrMemo.CalcFields("Amount Including VAT");
-                                        "Montant Reglement" := -recCrMemo."Amount Including VAT";
-                                        "Total TTC" := -recCrMemo."Amount Including VAT";
-                                        Modify(true);
+                                else
+                                    if (rec.type = type::Invoice) then begin
+                                        recInvoice.SetRange("No.", "Document No");
+                                        if recInvoice.FindFirst() then begin
+                                            recInvoice.CalcFields("Amount Including VAT");
+                                            "Montant Reglement" := recInvoice."STStamp Amount" + recInvoice."Amount Including VAT" - recInvoice."Montant reçu caisse";
+                                            "Total TTC" := recInvoice."Amount Including VAT" + recInvoice."STStamp Amount";
+                                            Modify(true);
+                                        end
+                                    end
+                                    else begin
+                                        recCrMemo.SetRange("No.", "Document No");
+                                        if recCrMemo.FindFirst() then begin
+                                            recCrMemo.CalcFields("Amount Including VAT");
+                                            "Montant Reglement" := -recCrMemo."Amount Including VAT";
+                                            "Total TTC" := -recCrMemo."Amount Including VAT";
+                                            Modify(true);
+                                        end;
                                     end;
-                                end;
                         end;
 
 
@@ -136,40 +146,7 @@ page 50133 "Recu Document Subpage"
     {
         area(Processing)
         {
-            action("Add Sales Invoice")
-            {
-                ApplicationArea = All;
-                Caption = 'Ajouter Factures';
-                Visible = false;
-                trigger OnAction()
-                var
-                    SalesInvoiceToPay: Page "Sales Invoice To Pay";
-                    recSalesInvoice: Record "Sales Invoice Header";
-                begin
-                    recSalesInvoice.SetFilter("Remaining Amount", '>0');
-                    recSalesInvoice.SetRange("Bill-to Customer No.", custNo);
-                    SalesInvoiceToPay.SetTableView(recSalesInvoice);
-                    SalesInvoiceToPay.setRecuCaisse(rec);
-                    SalesInvoiceToPay.RunModal();
-                end;
-            }
 
-            action("Add BS")
-            {
-                ApplicationArea = All;
-                Caption = 'Ajouter Bon de Sortie';
-                Visible = false;
-                trigger OnAction()
-                var
-                    SalesInvoiceToPay: Page "Bon Sortie Archive To Pay";
-                    recSalesInvoice: Record "Entete archive BS";
-                begin
-                    recSalesInvoice.SetRange("Bill-to Customer No.", custNo);
-                    SalesInvoiceToPay.SetTableView(recSalesInvoice);
-                    SalesInvoiceToPay.setRecuCaisse(rec);
-                    SalesInvoiceToPay.RunModal();
-                end;
-            }
         }
     }
 

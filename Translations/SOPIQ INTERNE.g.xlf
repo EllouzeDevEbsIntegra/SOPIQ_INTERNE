@@ -6478,6 +6478,446 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Posted BS Lines - Control ShowRevLine - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 391239911 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Réception Retour Enregsitrée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 4064815791 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the contact person at the customer's billing address.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Bill-to Contact - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 2096911897 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the country/region code of the customer's billing address.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Bill-to Country/Region Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 2965034906 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the customer that you send or sent the invoice or credit memo to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Bill-to Customer No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 240204966 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the customer that you send or sent the invoice or credit memo to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Bill-to Name - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 675862156 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the postal code of the customer's billing address.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Bill-to Post Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 4198939294 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the currency that is used on the entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Currency Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 580412389 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the date when the related document was created.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Document Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 3582421358 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Montant  TTC field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Line Amount - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 3495755210 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Montant HT field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Line Amount HT - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 2161572060 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the location from where inventory items to the customer on the sales document are to be shipped by default.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Location Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 4200184881 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the involved entry or record, according to the specified number series.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 2682724073 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how many times the document has been printed.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control No. Printed - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 1115434830 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the shipping agent's package number.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Package Tracking No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 3710982960 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the entry's posting date.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Posting Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 553464652 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies which salesperson is associated with the posted return receipts.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Salesperson Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 1006519668 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the contact person at the customer's main address.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Sell-to Contact - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 3434865006 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the country/region code of the customer's main address.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Sell-to Country/Region Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 1474036805 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the customer.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Sell-to Customer Name - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 1225278069 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the customer.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Sell-to Customer No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 709296807 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the postal code of the customer's main address.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Sell-to Post Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 993414011 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies a code for an alternate shipment address if you want to ship to another address than the one that has been entered automatically. This field is also used in case of drop shipment.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Ship-to Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 929198632 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the contact person at the address that the items are shipped to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Ship-to Contact - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 3354576322 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the country/region code of the address that the items are shipped to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Ship-to Country/Region Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 2743501653 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the customer at the address that the items are shipped to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Ship-to Name - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 3172878019 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the postal code of the address that the items are shipped to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Ship-to Post Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 4112852368 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies when items on the document are shipped or were shipped. A shipment date is usually calculated from a requested delivery date plus lead time.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Shipment Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 2205104606 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the delivery conditions of the related shipment, such as free on board (FOB).</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Shipment Method Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 4045368290 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code for the shipping agent who is transporting the items.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Shipping Agent Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 1577567912 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code for Shortcut Dimension 1, which is one of two global dimension codes that you set up in the General Ledger Setup window.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Shortcut Dimension 1 Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Control 1003760969 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code for Shortcut Dimension 2, which is one of two global dimension codes that you set up in the General Ledger Setup window.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Control Shortcut Dimension 2 Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Action 638075865 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>&amp;Return Rcpt.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Action &amp;Return Rcpt. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Action 3000180178 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>View or add comments for the record.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Action Co&amp;mments - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Action 3000180178 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Co&amp;mments</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Action Co&amp;mments - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Action 2173385693 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>View or edit dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Action Dimensions - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Action 2173385693 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dimensions</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Action Dimensions - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Action 84074407 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>View statistical information, such as the value of posted entries, for the record.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Action Statistics - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Action 84074407 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Statistics</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Action Statistics - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Action 1405007275 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Find all entries and documents that exist for the document number and posting date on the selected entry or document.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Action &amp;Navigate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Action 1405007275 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>&amp;Navigate</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Action &amp;Navigate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Action 1344672713 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Prepare to print the document. A report request window for the document opens where you can specify what to include on the print-out.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Action &amp;Print - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Action 1344672713 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>&amp;Print</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Action &amp;Print - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Action 1282942290 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Add new information that is relevant to the document, such as information from the shipping agent. You can only edit a few fields because the document has already been posted.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Action Update Document - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 391239911 - Action 1282942290 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Update Document</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipt List - Action Update Document - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Retour Bon Sortie Enregistré</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 4064815791 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the contact person at the customer's billing address.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Bill-to Contact - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 2096911897 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the country/region code of the customer's billing address.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Bill-to Country/Region Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 2965034906 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the customer that you send or sent the invoice or credit memo to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Bill-to Customer No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 240204966 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the customer that you send or sent the invoice or credit memo to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Bill-to Name - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 675862156 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the postal code of the customer's billing address.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Bill-to Post Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 4198939294 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the currency that is used on the entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Currency Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 580412389 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the date when the related document was created.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Document Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 3582421358 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Montant  TTC field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Line Amount - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 3495755210 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Montant HT field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Line Amount HT - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 2161572060 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the location from where inventory items to the customer on the sales document are to be shipped by default.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Location Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 4200184881 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the involved entry or record, according to the specified number series.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 2682724073 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how many times the document has been printed.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control No. Printed - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 1115434830 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the shipping agent's package number.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Package Tracking No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 3710982960 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the entry's posting date.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Posting Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 553464652 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies which salesperson is associated with the posted return receipts.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Salesperson Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 1006519668 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the contact person at the customer's main address.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Sell-to Contact - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 3434865006 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the country/region code of the customer's main address.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Sell-to Country/Region Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 1474036805 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the customer.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Sell-to Customer Name - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 1225278069 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the customer.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Sell-to Customer No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 709296807 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the postal code of the customer's main address.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Sell-to Post Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 993414011 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies a code for an alternate shipment address if you want to ship to another address than the one that has been entered automatically. This field is also used in case of drop shipment.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Ship-to Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 929198632 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the contact person at the address that the items are shipped to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Ship-to Contact - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 3354576322 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the country/region code of the address that the items are shipped to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Ship-to Country/Region Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 2743501653 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the customer at the address that the items are shipped to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Ship-to Name - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 3172878019 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the postal code of the address that the items are shipped to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Ship-to Post Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 4112852368 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies when items on the document are shipped or were shipped. A shipment date is usually calculated from a requested delivery date plus lead time.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Shipment Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 2205104606 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the delivery conditions of the related shipment, such as free on board (FOB).</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Shipment Method Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 4045368290 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code for the shipping agent who is transporting the items.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Shipping Agent Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 1577567912 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code for Shortcut Dimension 1, which is one of two global dimension codes that you set up in the General Ledger Setup window.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Shortcut Dimension 1 Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Control 1003760969 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code for Shortcut Dimension 2, which is one of two global dimension codes that you set up in the General Ledger Setup window.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Control Shortcut Dimension 2 Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Action 638075865 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>&amp;Return Rcpt.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Action &amp;Return Rcpt. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Action 3000180178 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>View or add comments for the record.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Action Co&amp;mments - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Action 3000180178 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Co&amp;mments</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Action Co&amp;mments - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Action 2173385693 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>View or edit dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Action Dimensions - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Action 2173385693 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dimensions</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Action Dimensions - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Action 84074407 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>View statistical information, such as the value of posted entries, for the record.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Action Statistics - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Action 84074407 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Statistics</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Action Statistics - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Action 1405007275 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Find all entries and documents that exist for the document number and posting date on the selected entry or document.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Action &amp;Navigate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Action 1405007275 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>&amp;Navigate</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Action &amp;Navigate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Action 1344672713 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Prepare to print the document. A report request window for the document opens where you can specify what to include on the print-out.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Action &amp;Print - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Action 1344672713 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>&amp;Print</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Action &amp;Print - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Action 1282942290 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Add new information that is relevant to the document, such as information from the shipping agent. You can only edit a few fields because the document has already been posted.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Action Update Document - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2604354615 - Action 1282942290 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Update Document</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Action Update Document - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1220862000 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Ligne Reception Achat</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -7098,20 +7538,15 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Recu Document Subpage - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 821516379 - Action 1415712876 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Ajouter Bon de Sortie</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Document Subpage - Action Add BS - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Page 821516379 - Action 3585800964 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Ajouter Factures</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Document Subpage - Action Add Sales Invoice - Property Caption</note>
-        </trans-unit>
         <trans-unit id="Page 3454346139 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Liste Paiements</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Recu Paiement Subpage - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3454346139 - Control 1512414681 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Mnt Calculé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Paiement Subpage - Control Montant Calcul - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3914454212 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Liste Avoir à payer</source>
@@ -7523,6 +7958,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales Role details - Action Posted Sales Invoices - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 2661476762 - Action 1042390222 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Réceptions retour Bon Sortie</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Role details - Action Posted Sales Return BS - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 2661476762 - Action 2974556624 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Open the list of posted sales return receipts.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -7582,6 +8022,11 @@
           <source>Devis vente</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales Role details - Action Sales Quotes - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2661476762 - Action 1664354997 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Retours Bon Sortie</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Role details - Action Sales Return BS - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2661476762 - Action 3507632001 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Compensate your customers for incorrect or damaged items that you sent to them and received payment for. Sales return orders enable you to receive items from multiple sales documents with one sales return, automatically create related sales credit memos or other return-related documents, such as a replacement sales order, and support warehouse documents for the item handling. Note: If an erroneous sale has not been paid yet, you can simply cancel the posted sales invoice to automatically revert the financial transaction.</source>
@@ -7672,6 +8117,11 @@
           <source>Expéditions retour achat enregistrées</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales Role details - Action Action87 - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2661476762 - Action 1298532662 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Réceptions retour Bon Sortie</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Role details - Action Posted Return BS - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2661476762 - Action 699376808 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Open the list of posted return receipts.</source>
@@ -11908,6 +12358,21 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchases &amp; Payables Setup - Field UpdateProfitOblogatoire - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 2925931323 - Field 235994859 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2925931323">
+          <source>BS</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Return Receipt Header - Field BS - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2925931323 - Field 117901444 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2925931323">
+          <source>Montant reçu caisse</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Return Receipt Header - Field Montant reçu caisse - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2925931323 - Field 1749222251 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2925931323">
+          <source>solde</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Return Receipt Header - Field solde - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 4145206282 - Field 1389256266 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4145206282">
           <source>Marge Fabricant Spécifique</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -12543,6 +13008,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum Banque Caisse - EnumValue null - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Enum 1567262030 - EnumValue 1320839951 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>POSTE</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Banque Caisse - EnumValue POSTE - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Enum 1567262030 - EnumValue 3551917319 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>QNB</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -12602,6 +13072,11 @@
           <source> </source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum Document Caisse Type - EnumValue null - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 3267310699 - EnumValue 3925712310 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Retour Bon Sortie</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Document Caisse Type - EnumValue RetourBS - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 1892004759 - EnumValue 674739461 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>En attente validation</source>

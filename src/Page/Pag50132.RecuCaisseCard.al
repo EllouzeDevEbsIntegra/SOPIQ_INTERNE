@@ -251,6 +251,17 @@ page 50132 "Recu Caisse Card"
                     CurrPage.Update(true);
                 end;
             }
+
+            action("Update Totaux")
+            {
+                ApplicationArea = all;
+                Image = NewSum;
+                trigger OnAction()
+                begin
+                    rec.CalcFields(totalDocToPay, "totalReçu", totalDepense, "totalRéglement");
+                    CurrPage.Update();
+                end;
+            }
         }
     }
 
@@ -293,6 +304,7 @@ page 50132 "Recu Caisse Card"
         recBs: Record "Entete archive BS";
         recInvoice: Record "Sales Invoice Header";
         recCrMemo: Record "Sales Cr.Memo Header";
+        recRetourBS: Record "Return Receipt Header";
     begin
         recRecuDoc.Reset();
         recRecuDoc.SetRange("No Recu", recRecu.No);
@@ -304,8 +316,11 @@ page 50132 "Recu Caisse Card"
                             recBs.Reset();
                             recbs.get(recRecuDoc."Document No");
                             if recBs.Find() then begin
-                                recbs.Solde := true;
-                                recBs.Modify();
+                                recBs.CalcFields("Montant TTC", "Montant reçu caisse");
+                                if recBs."Montant TTC" = recBs."Montant reçu caisse" then begin
+                                    recbs.Solde := true;
+                                    recBs.Modify();
+                                end
                             end;
                             Commit();
                         end;
@@ -314,8 +329,11 @@ page 50132 "Recu Caisse Card"
                             recInvoice.Reset();
                             recInvoice.get(recRecuDoc."Document No");
                             if recInvoice.Find() then begin
-                                recInvoice.Solde := true;
-                                recInvoice.Modify();
+                                recInvoice.CalcFields("Amount Including VAT", "Montant reçu caisse");
+                                if recInvoice."Amount Including VAT" + recInvoice."STStamp Amount" = recInvoice."Montant reçu caisse" then begin
+                                    recInvoice.Solde := true;
+                                    recInvoice.Modify();
+                                end
                             end;
                             Commit();
                         end;
@@ -324,8 +342,25 @@ page 50132 "Recu Caisse Card"
                             recCrMemo.Reset();
                             recCrMemo.get(recRecuDoc."Document No");
                             if recCrMemo.Find() then begin
-                                recCrMemo.Solde := true;
-                                recCrMemo.Modify();
+                                recCrMemo.CalcFields("Amount Including VAT", "Montant reçu caisse");
+                                if recCrMemo."Amount Including VAT" = -recCrMemo."Montant reçu caisse" then begin
+                                    recCrMemo.Solde := true;
+                                    recCrMemo.Modify();
+                                end
+                            end;
+                            Commit();
+                        end;
+                    "Document Caisse Type"::RetourBS:
+                        begin
+                            recRetourBS.Reset();
+                            recRetourBS.get(recRecuDoc."Document No");
+                            if recRetourBS.Find() then begin
+                                recRetourBS.CalcFields("Line Amount", "Montant reçu caisse");
+                                if recRetourBS."Line Amount" = -recRetourBS."Montant reçu caisse" then begin
+                                    recRetourBS.Solde := true;
+                                    recRetourBS.Modify();
+                                end
+
                             end;
                             Commit();
                         end;

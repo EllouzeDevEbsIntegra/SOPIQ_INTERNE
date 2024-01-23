@@ -147,6 +147,14 @@ page 50123 "Sales Role details"
                     RunObject = Page "Sales Return Order List";
                     ToolTip = 'Compensate your customers for incorrect or damaged items that you sent to them and received payment for. Sales return orders enable you to receive items from multiple sales documents with one sales return, automatically create related sales credit memos or other return-related documents, such as a replacement sales order, and support warehouse documents for the item handling. Note: If an erroneous sale has not been paid yet, you can simply cancel the posted sales invoice to automatically revert the financial transaction.';
                 }
+                action("Sales Return BS")
+                {
+                    ApplicationArea = SalesReturnOrder;
+                    Caption = 'Retours Bon Sortie';
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    RunObject = Page "BS Return List";
+                }
                 action("Sales Credit Memos")
                 {
                     ApplicationArea = Basic, Suite;
@@ -175,8 +183,14 @@ page 50123 "Sales Role details"
                 {
                     ApplicationArea = SalesReturnOrder;
                     Caption = 'Réceptions retour vente enregistrées';
-                    RunObject = Page "Posted Return Receipts";
+                    RunObject = Page "Posted Return Receipt List";
                     ToolTip = 'Open the list of posted sales return receipts.';
+                }
+                action("Posted Sales Return BS")
+                {
+                    ApplicationArea = SalesReturnOrder;
+                    Caption = 'Réceptions retour Bon Sortie';
+                    RunObject = Page "Posted Return Receipts BS";
                 }
                 action("Posted Sales Shipments")
                 {
@@ -373,8 +387,14 @@ page 50123 "Sales Role details"
                     ApplicationArea = SalesReturnOrder;
                     Caption = 'Réceptions retour enregistrées';
                     Image = PostedReturnReceipt;
-                    RunObject = Page "Posted Return Receipts";
+                    RunObject = Page "Posted Return Receipt List";
                     ToolTip = 'Open the list of posted return receipts.';
+                }
+                action("Posted Return BS")
+                {
+                    ApplicationArea = SalesReturnOrder;
+                    Caption = 'Réceptions retour Bon Sortie';
+                    RunObject = Page "Posted Return Receipts BS";
                 }
                 action(Action40)
                 {

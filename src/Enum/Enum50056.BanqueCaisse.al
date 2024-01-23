@@ -87,4 +87,9 @@ enum 50056 "Banque Caisse"
         Caption = 'TSB';
     }
 
+    value(22; POSTE)
+    {
+        Caption = 'POSTE';
+    }
+
 }

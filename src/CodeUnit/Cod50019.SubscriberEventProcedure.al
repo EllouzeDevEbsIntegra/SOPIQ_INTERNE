@@ -3,26 +3,6 @@ codeunit 50019 SubscriberEventProcedure
     EventSubscriberInstance = StaticAutomatic;
 
 
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-
-
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforePostSalesDoc', '', false, false)]
-    local procedure OnBeforePostSalesDoc(var SalesHeader: Record "Sales Header")
-    var
-        UserSetup: Record "User Setup";
-    begin
-        // UserSetup.Get(UserId);
-        // if SalesHeader."Document Type" = SalesHeader."Document Type"::"Return Order" then
-        //     if SalesHeader.BS then
-        //         UserSetup.TestField("Allow BS Invoicing");
-        Message('OnBeforePostSalesDoc');
-    end;
-
-
-
-
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post (Yes/No)", 'OnBeforeConfirmSalesPost', '', true, true)]
     procedure OnBeforeConfirmSalesPost(salesHeader: Record "Sales Header"; HideDialog: Boolean; IsHandled: Boolean; DefaultOption: Integer; PostAndSend: Boolean);
     var
@@ -72,8 +52,11 @@ codeunit 50019 SubscriberEventProcedure
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         // if (salesHeader."Document Type" = salesHeader."Document Type"::"Return Order") AND (salesHeader.BS = true) then begin
         //     Message('This document is BS Return');
-        //     SalesFunctions.ConfirmBSPOST(SalesHeader, 1);
+
         //     IsHandled := true;
+        //     HideDialog := true;
+        //     DefaultOption := 1;
+        //     SalesFunctions.ConfirmBSPOST(SalesHeader, 1);
         // end;
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     end;

@@ -17,7 +17,11 @@ enum 50057 "Document Caisse Type"
     {
         Caption = 'Avoir';
     }
-    value(4; Divers)
+    value(4; RetourBS)
+    {
+        Caption = 'Retour Bon Sortie';
+    }
+    value(5; Divers)
     {
         Caption = 'Divers';
     }

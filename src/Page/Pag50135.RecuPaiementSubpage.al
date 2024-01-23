@@ -59,7 +59,16 @@ page 50135 "Recu Paiement Subpage"
                 {
                     ApplicationArea = all;
                     Editable = isEditable;
-
+                    trigger OnValidate()
+                    begin
+                        if (type = type::AvoirEsp) OR (type = type::Depense) OR (type = type::retourBS)
+                         OR (type = type::ResteCheque) OR (type = type::Transport)
+                         then
+                            "Montant Calcul" := -Montant
+                        else
+                            "Montant Calcul" := Montant;
+                        Modify();
+                    end;
                 }
 
                 field(Echeance; Echeance)
@@ -73,6 +82,13 @@ page 50135 "Recu Paiement Subpage"
                 {
                     ApplicationArea = all;
                     Editable = isEditable;
+                }
+
+                field("Montant Calcul"; "Montant Calcul")
+                {
+                    ApplicationArea = all;
+                    Caption = 'Mnt Calculé';
+                    Editable = false;
                 }
 
 
