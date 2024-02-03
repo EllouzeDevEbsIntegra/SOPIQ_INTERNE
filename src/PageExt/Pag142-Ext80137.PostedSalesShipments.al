@@ -11,6 +11,15 @@ pageextension 80137 "Posted Sales Shipments" extends "Posted Sales Shipments"//1
                 Caption = 'Montant ouvert';
 
             }
+            field(solde; solde)
+            {
+                ApplicationArea = all;
+            }
+
+            field("Montant reçu caisse"; "Montant reçu caisse")
+            {
+                ApplicationArea = all;
+            }
 
             field("Order No."; "Order No.")
             {
@@ -54,6 +63,6 @@ pageextension 80137 "Posted Sales Shipments" extends "Posted Sales Shipments"//1
 
     trigger OnAfterGetRecord()
     begin
-        CalcFields("Montant Ouvert", Acopmpte);
+        CalcFields("Montant Ouvert", Acopmpte, "Montant reçu caisse");
     end;
 }

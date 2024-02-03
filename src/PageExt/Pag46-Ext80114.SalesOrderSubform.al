@@ -15,10 +15,15 @@ pageextension 80114 "Sales Order Subform" extends "Sales Order Subform" //46
                 DecimalPlaces = 0 : 2;
 
             }
-            field("Prix Initial";
-            rec."Initial Unit Price")
+            field("Prix Initial"; rec."Initial Unit Price")
             {
                 ApplicationArea = All;
+            }
+
+            field("Amount Including VAT"; "Amount Including VAT")
+            {
+                ApplicationArea = all;
+                Caption = 'Mnt TTC';
             }
 
             field("Received Quantity"; "Received Quantity")

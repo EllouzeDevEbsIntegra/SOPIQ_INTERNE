@@ -193,6 +193,14 @@ page 50145 "Posted Return Receipt List"
                     ToolTip = 'Specifies the value of the Montant  TTC field.';
                     ApplicationArea = All;
                 }
+                field(solde; solde)
+                {
+                    ApplicationArea = all;
+                }
+                field("Montant reçu caisse"; "Montant reçu caisse")
+                {
+                    ApplicationArea = all;
+                }
             }
         }
         area(factboxes)

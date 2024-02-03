@@ -89,7 +89,7 @@ tableextension 80103 "Item" extends Item //27
             end;
         }
 
-        field(50118; "Default Bin"; code[10])
+        field(50118; "Default Bin"; code[20])
         {
             CalcFormula = lookup("Bin Content"."Bin Code" where("Item No." = field("No."), Default = filter(true), "Location Code" = field("Mg Principal Filter")));
             Editable = false;
@@ -216,14 +216,19 @@ tableextension 80103 "Item" extends Item //27
             FieldClass = FlowField;
         }
 
+        field(50136; "Last Year-1"; Integer)
+        {
+            CalcFormula = lookup("Purchases & Payables Setup"."Last Year-1");
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
 
     }
 
     keys
     {
-        // key(keySorting; "Qty Stock", "Qty Import")
-        // {
-        // }
+
     }
     trigger OnAfterDelete()
     var

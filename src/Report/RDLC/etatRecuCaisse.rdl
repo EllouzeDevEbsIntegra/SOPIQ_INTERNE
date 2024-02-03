@@ -11,6 +11,112 @@
       <rd:DataSourceID>2295c68d-ea1e-48e4-8fff-147ac5a33974</rd:DataSourceID>
     </DataSource>
   </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+      <Fields>
+        <Field Name="CompanyInfoName">
+          <DataField>CompanyInfoName</DataField>
+        </Field>
+        <Field Name="DateFilter">
+          <DataField>DateFilter</DataField>
+        </Field>
+        <Field Name="isACPTOrREG">
+          <DataField>isACPTOrREG</DataField>
+        </Field>
+        <Field Name="recuNo">
+          <DataField>recuNo</DataField>
+        </Field>
+        <Field Name="Date_Time">
+          <DataField>Date_Time</DataField>
+        </Field>
+        <Field Name="dateRecu">
+          <DataField>dateRecu</DataField>
+        </Field>
+        <Field Name="user">
+          <DataField>user</DataField>
+        </Field>
+        <Field Name="Customer_No">
+          <DataField>Customer_No</DataField>
+        </Field>
+        <Field Name="custName">
+          <DataField>custName</DataField>
+        </Field>
+        <Field Name="LibelleTicket">
+          <DataField>LibelleTicket</DataField>
+        </Field>
+        <Field Name="LibellePaiement">
+          <DataField>LibellePaiement</DataField>
+        </Field>
+        <Field Name="isAcompte">
+          <DataField>isAcompte</DataField>
+        </Field>
+        <Field Name="TotalDoc">
+          <DataField>TotalDoc</DataField>
+        </Field>
+        <Field Name="TotalDocFormat">
+          <DataField>TotalDocFormat</DataField>
+        </Field>
+        <Field Name="TotalReglement">
+          <DataField>TotalReglement</DataField>
+        </Field>
+        <Field Name="TotalReglementFormat">
+          <DataField>TotalReglementFormat</DataField>
+        </Field>
+        <Field Name="NoRecu">
+          <DataField>NoRecu</DataField>
+        </Field>
+        <Field Name="Document_No">
+          <DataField>Document_No</DataField>
+        </Field>
+        <Field Name="Montant_Reglement">
+          <DataField>Montant_Reglement</DataField>
+        </Field>
+        <Field Name="Montant_ReglementFormat">
+          <DataField>Montant_ReglementFormat</DataField>
+        </Field>
+        <Field Name="typeDoc">
+          <DataField>typeDoc</DataField>
+        </Field>
+        <Field Name="Total_TTC">
+          <DataField>Total_TTC</DataField>
+        </Field>
+        <Field Name="Total_TTCFormat">
+          <DataField>Total_TTCFormat</DataField>
+        </Field>
+        <Field Name="No_Recu">
+          <DataField>No_Recu</DataField>
+        </Field>
+        <Field Name="Paiment_No">
+          <DataField>Paiment_No</DataField>
+        </Field>
+        <Field Name="typeReg">
+          <DataField>typeReg</DataField>
+        </Field>
+        <Field Name="typeRegIndex">
+          <DataField>typeRegIndex</DataField>
+        </Field>
+        <Field Name="Montant_Calcul">
+          <DataField>Montant_Calcul</DataField>
+        </Field>
+        <Field Name="Montant_CalculFormat">
+          <DataField>Montant_CalculFormat</DataField>
+        </Field>
+        <Field Name="Name">
+          <DataField>Name</DataField>
+        </Field>
+        <Field Name="Echeance">
+          <DataField>Echeance</DataField>
+        </Field>
+        <Field Name="banque">
+          <DataField>banque</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -99,7 +205,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!Montant_Calcul.Value)</Value>
+                                  <Value>=Abs(Sum(Fields!Montant_Calcul.Value))</Value>
                                   <Style>
                                     <FontSize>14pt</FontSize>
                                     <Format>#,0.000;-#,0.000;''</Format>
@@ -1594,11 +1700,146 @@ UCase(Fields!typeReg.Value)</Value>
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
+          <Textbox Name="Textbox47">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value />
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                      <TextDecoration>Underline</TextDecoration>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox45</rd:DefaultName>
+            <Top>6.1647cm</Top>
+            <Left>0.26298cm</Left>
+            <Height>2.08222cm</Height>
+            <Width>12.57317cm</Width>
+            <ZIndex>4</ZIndex>
+            <Style>
+              <Border>
+                <Style>Solid</Style>
+              </Border>
+              <TopBorder>
+                <Color>Black</Color>
+                <Style>Solid</Style>
+                <Width>1pt</Width>
+              </TopBorder>
+              <BottomBorder>
+                <Color>Black</Color>
+                <Style>Solid</Style>
+                <Width>1pt</Width>
+              </BottomBorder>
+              <LeftBorder>
+                <Color>Black</Color>
+                <Style>Solid</Style>
+                <Width>1pt</Width>
+              </LeftBorder>
+              <RightBorder>
+                <Color>Black</Color>
+                <Style>Solid</Style>
+                <Width>1pt</Width>
+              </RightBorder>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Line Name="Line5">
+            <Top>6.89406cm</Top>
+            <Left>0.31432cm</Left>
+            <Height>0cm</Height>
+            <Width>12.52183cm</Width>
+            <ZIndex>5</ZIndex>
+            <Style>
+              <Border>
+                <Style>Solid</Style>
+              </Border>
+            </Style>
+          </Line>
+          <Line Name="Line6">
+            <Top>6.20615cm</Top>
+            <Left>3.36298cm</Left>
+            <Height>2.04078cm</Height>
+            <Width>0cm</Width>
+            <ZIndex>6</ZIndex>
+            <Style>
+              <Border>
+                <Style>Solid</Style>
+              </Border>
+            </Style>
+          </Line>
+          <Line Name="Line7">
+            <Top>6.20615cm</Top>
+            <Left>6.73042cm</Left>
+            <Height>2.04078cm</Height>
+            <Width>0cm</Width>
+            <ZIndex>7</ZIndex>
+            <Style>
+              <Border>
+                <Style>Solid</Style>
+              </Border>
+            </Style>
+          </Line>
+          <Line Name="Line8">
+            <Top>6.1647cm</Top>
+            <Left>9.82451cm</Left>
+            <Height>2.04078cm</Height>
+            <Width>0cm</Width>
+            <ZIndex>8</ZIndex>
+            <Style>
+              <Border>
+                <Style>Solid</Style>
+              </Border>
+            </Style>
+          </Line>
+          <Textbox Name="Textbox15">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Espèce                Espèce                    Espèce                Espèce</Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox15</rd:DefaultName>
+            <Top>6.20615cm</Top>
+            <Left>1.36298cm</Left>
+            <Height>0.6cm</Height>
+            <Width>10.94021cm</Width>
+            <ZIndex>9</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
-        <Height>6.42223cm</Height>
+        <Height>8.61469cm</Height>
         <Style />
       </Body>
-      <Width>19.96652cm</Width>
+      <Width>20.27726cm</Width>
       <Page>
         <PageHeader>
           <Height>3.53cm</Height>
@@ -1970,6 +2211,12 @@ UCase(Fields!typeReg.Value)</Value>
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -2009,110 +2256,4 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Fields>
-        <Field Name="CompanyInfoName">
-          <DataField>CompanyInfoName</DataField>
-        </Field>
-        <Field Name="DateFilter">
-          <DataField>DateFilter</DataField>
-        </Field>
-        <Field Name="isACPTOrREG">
-          <DataField>isACPTOrREG</DataField>
-        </Field>
-        <Field Name="recuNo">
-          <DataField>recuNo</DataField>
-        </Field>
-        <Field Name="Date_Time">
-          <DataField>Date_Time</DataField>
-        </Field>
-        <Field Name="dateRecu">
-          <DataField>dateRecu</DataField>
-        </Field>
-        <Field Name="user">
-          <DataField>user</DataField>
-        </Field>
-        <Field Name="Customer_No">
-          <DataField>Customer_No</DataField>
-        </Field>
-        <Field Name="custName">
-          <DataField>custName</DataField>
-        </Field>
-        <Field Name="LibelleTicket">
-          <DataField>LibelleTicket</DataField>
-        </Field>
-        <Field Name="LibellePaiement">
-          <DataField>LibellePaiement</DataField>
-        </Field>
-        <Field Name="isAcompte">
-          <DataField>isAcompte</DataField>
-        </Field>
-        <Field Name="TotalDoc">
-          <DataField>TotalDoc</DataField>
-        </Field>
-        <Field Name="TotalDocFormat">
-          <DataField>TotalDocFormat</DataField>
-        </Field>
-        <Field Name="TotalReglement">
-          <DataField>TotalReglement</DataField>
-        </Field>
-        <Field Name="TotalReglementFormat">
-          <DataField>TotalReglementFormat</DataField>
-        </Field>
-        <Field Name="NoRecu">
-          <DataField>NoRecu</DataField>
-        </Field>
-        <Field Name="Document_No">
-          <DataField>Document_No</DataField>
-        </Field>
-        <Field Name="Montant_Reglement">
-          <DataField>Montant_Reglement</DataField>
-        </Field>
-        <Field Name="Montant_ReglementFormat">
-          <DataField>Montant_ReglementFormat</DataField>
-        </Field>
-        <Field Name="typeDoc">
-          <DataField>typeDoc</DataField>
-        </Field>
-        <Field Name="Total_TTC">
-          <DataField>Total_TTC</DataField>
-        </Field>
-        <Field Name="Total_TTCFormat">
-          <DataField>Total_TTCFormat</DataField>
-        </Field>
-        <Field Name="No_Recu">
-          <DataField>No_Recu</DataField>
-        </Field>
-        <Field Name="Paiment_No">
-          <DataField>Paiment_No</DataField>
-        </Field>
-        <Field Name="typeReg">
-          <DataField>typeReg</DataField>
-        </Field>
-        <Field Name="typeRegIndex">
-          <DataField>typeRegIndex</DataField>
-        </Field>
-        <Field Name="Montant_Calcul">
-          <DataField>Montant_Calcul</DataField>
-        </Field>
-        <Field Name="Montant_CalculFormat">
-          <DataField>Montant_CalculFormat</DataField>
-        </Field>
-        <Field Name="Name">
-          <DataField>Name</DataField>
-        </Field>
-        <Field Name="Echeance">
-          <DataField>Echeance</DataField>
-        </Field>
-        <Field Name="banque">
-          <DataField>banque</DataField>
-        </Field>
-      </Fields>
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-    </DataSet>
-  </DataSets>
 </Report>

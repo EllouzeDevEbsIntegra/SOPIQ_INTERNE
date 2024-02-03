@@ -119,6 +119,27 @@ page 50110 "Specific Item Ledger Entry"
                     Editable = false;
                 }
 
+                field("N° Doc Frs"; "N° Doc Frs")
+                {
+                    ApplicationArea = all;
+                    Editable = false;
+                    DrillDown = false;
+                }
+
+                field("Cmd Achat"; "Cmd Achat")
+                {
+                    ApplicationArea = all;
+                    Editable = false;
+                    DrillDown = false;
+                }
+
+                field("Cmd Vente"; "Cmd Vente")
+                {
+                    ApplicationArea = all;
+                    Editable = false;
+                    DrillDown = false;
+                }
+
                 field("Invoiced Qty"; "Invoiced Quantity")
                 {
                     Caption = 'Qté Facturée';
@@ -145,6 +166,12 @@ page 50110 "Specific Item Ledger Entry"
                     ApplicationArea = All;
                     StyleExpr = FieldStyle;
                     Editable = false;
+                }
+
+                field("Client Imprime"; getClientImprime(rec))
+                {
+                    ApplicationArea = all;
+                    Caption = 'Client Imprimé';
                 }
 
                 field("Cost HT"; "Cost Amount (Actual)")
@@ -179,7 +206,7 @@ page 50110 "Specific Item Ledger Entry"
 
             {
                 ApplicationArea = All;
-                Caption = 'Transaction Année -1';
+                Caption = 'Changer l''Année';
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
@@ -188,24 +215,35 @@ page 50110 "Specific Item Ledger Entry"
 
                 trigger OnAction()
                 begin
-                    if (entredonce = false) then begin
+                    if (yearFilter = 0) then begin
                         SetFilter("Posting Date", '%1..%2', FirstDayLastYear - 1, StartingDate - 1);
-                        entredonce := true;
+                        yearFilter := 1;
                         "In" := "InYear-1";
                         Out := "OutYear-1";
                         nbJourRupture := "nbRuptureYear-1";
                         CurrPage.Update();
 
                     end
-                    else begin
-                        Setfilter("Posting Date", '%1..', StartingDate);
-                        entredonce := false;
-                        "In" := "InYear";
-                        Out := "OutYear";
-                        nbJourRupture := "nbRuptureYear";
-                        CurrPage.Update();
+                    else
+                        if (yearFilter = 1) then begin
+                            SetFilter("Posting Date", '%1..%2', "FirstDayLastYear-1" - 1, FirstDayLastYear - 1);
+                            yearFilter := 2;
+                            "In" := "InYear-2";
+                            Out := "OutYear-2";
+                            nbJourRupture := "nbRuptureYear-2";
+                            CurrPage.Update();
 
-                    end;
+                        end
+                        else begin
+                            Setfilter("Posting Date", '%1..', StartingDate);
+                            entredonce := false;
+                            yearFilter := 0;
+                            "In" := "InYear";
+                            Out := "OutYear";
+                            nbJourRupture := "nbRuptureYear";
+                            CurrPage.Update();
+
+                        end;
 
 
                 end;
@@ -247,9 +285,11 @@ page 50110 "Specific Item Ledger Entry"
     begin
         StartingDate := System.DMY2Date(1, 1, System.Date2DMY(Today, 3));
         FirstDayLastYear := System.DMY2Date(1, 1, System.Date2DMY(Today, 3) - 1);
+        "FirstDayLastYear-1" := System.DMY2Date(1, 1, System.Date2DMY(Today, 3) - 2);
 
         Setfilter("Posting Date", '%1..', StartingDate);
         entredonce := false;
+        yearFilter := 0;
 
         if Item.get("Item No.") then BEGIN
             Item.CalcFields(Inventory);
@@ -314,6 +354,37 @@ page 50110 "Specific Item Ledger Entry"
                         begin
 
                             "nbRuptureYear-1" := "nbRuptureYear-1" + SPLeadgerEntry.Quantity;
+                            // Message('Year -1  : Qte %1 / Rupture %2', SPLeadgerEntry.Quantity, "nbRuptureYear-1");
+                        end;
+
+                end;
+            until SPLeadgerEntry.next = 0;
+        end;
+
+        "InYear-2" := 0;
+        "OutYear-2" := 0;
+        "nbRuptureYear-2" := 0;
+
+        SPLeadgerEntry.Reset();
+        SPLeadgerEntry.SetFilter("Posting Date", '%1..%2', "FirstDayLastYear-1" - 1, FirstDayLastYear - 1);
+        SPLeadgerEntry.SetFilter("Item No.", "Item No.");
+        SPLeadgerEntry.SetFilter("Document No.", '<>''RECTR STK 2022''');
+        if SPLeadgerEntry.FindSet() then begin
+            repeat
+
+                Case SPLeadgerEntry."Entry Type" Of
+                    SPLeadgerEntry."Entry Type"::"Negative Adjmt.":
+                        "InYear-2" := "InYear-2" + SPLeadgerEntry.Quantity;
+                    SPLeadgerEntry."Entry Type"::Sale:
+                        "InYear-2" := "InYear-2" + SPLeadgerEntry.Quantity;
+                    SPLeadgerEntry."Entry Type"::"Positive Adjmt.":
+                        "OutYear-2" := "OutYear-2" + SPLeadgerEntry.Quantity;
+                    SPLeadgerEntry."Entry Type"::Purchase:
+                        "OutYear-2" := "OutYear-2" + SPLeadgerEntry.Quantity;
+                    SPLeadgerEntry."Entry Type"::Rupture:
+                        begin
+
+                            "nbRuptureYear-2" := "nbRuptureYear-2" + SPLeadgerEntry.Quantity;
                             // Message('Year -1  : Qte %1 / Rupture %2', SPLeadgerEntry.Quantity, "nbRuptureYear-1");
                         end;
 
@@ -399,11 +470,45 @@ page 50110 "Specific Item Ledger Entry"
     end;
 
     var
-        In, Out, "InYear", "OutYear", "InYear-1", "OutYear-1" : Decimal;
+        In, Out, "InYear", "OutYear", "InYear-1", "OutYear-1", "InYear-2", "OutYear-2" : Decimal;
         FieldStyle, Caption : Text[50];
-        StartingDate, FirstDayLastYear : Date;
+        StartingDate, FirstDayLastYear, "FirstDayLastYear-1" : Date;
         Item: Record Item;
-        nbJourRupture, nbRuptureYear, "nbRuptureYear-1" : Decimal;
+        nbJourRupture, nbRuptureYear, "nbRuptureYear-1", "nbRuptureYear-2" : Decimal;
         entredonce, isVisible : Boolean;
         itemFilter: Text;
+        yearFilter: Integer;
+
+
+    procedure getClientImprime(itemLeadgerEntry: Record "Specific Item Ledger Entry"): Text
+    var
+        clientImprime: Text;
+        salesShipHeader: Record "Sales Shipment Header";
+        archiveBS: Record "Entete archive BS";
+    begin
+        if itemLeadgerEntry."Entry Type" = "Entry Type"::Sale then begin
+            salesShipHeader.Reset();
+            salesShipHeader.SetRange("No.", itemLeadgerEntry."Document No.");
+            if salesShipHeader.FindFirst() then begin
+                if salesShipHeader.BS = false then begin
+                    if salesShipHeader.custNameImprime <> '' then
+                        clientImprime := salesShipHeader.custNameImprime else begin
+
+                    end;
+                end
+                else begin
+                    archiveBS.Reset();
+                    archiveBS.SetRange("No.", salesShipHeader."No.");
+                    if archiveBS.FindFirst() then begin
+                        clientImprime := archiveBS.custNameImprime
+                    end
+                end;
+            end
+            else
+                ;
+            // Message('Not Fount !');
+        end;
+
+        exit(clientImprime);
+    end;
 }

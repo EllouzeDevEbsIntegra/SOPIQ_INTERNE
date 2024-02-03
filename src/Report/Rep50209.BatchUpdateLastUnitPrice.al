@@ -98,14 +98,17 @@ report 50209 "Batch Update Last Unit Price"
     trigger OnPostReport()
     var
         PurchasesPayablesSetup: Record "Purchases & Payables Setup";
-        currentYear, lastYear : Integer;
+        currentYear, lastYear, "lastYear-1" : Integer;
     begin
         if PurchasesPayablesSetup.get() then begin
             currentYear := DATE2DMY(Today, 3);
             lastYear := currentYear - 1;
+            "lastYear-1" := currentYear - 2;
+
             if (PurchasesPayablesSetup."Current Year" <> currentYear) then begin
                 PurchasesPayablesSetup."Current Year" := currentYear;
                 PurchasesPayablesSetup."Last Year" := lastYear;
+                PurchasesPayablesSetup."Last Year-1" := "lastYear-1";
                 PurchasesPayablesSetup.Modify();
             end;
         end;

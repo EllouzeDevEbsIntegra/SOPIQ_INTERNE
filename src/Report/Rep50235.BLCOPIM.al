@@ -495,6 +495,7 @@ report 50235 "BL COPIM"
     trigger OnPostReport()
     var
         recSalesShipHeader: Record "Sales Shipment Header";
+        recBsArchiveHeader: Record "Entete archive BS";
     begin
         if (editCustInfo = true) then begin
             recSalesShipHeader.reset();
@@ -505,6 +506,16 @@ report 50235 "BL COPIM"
                 recSalesShipHeader.custMFImprime := custMFImp;
                 recSalesShipHeader.custVINImprime := custVINImp;
                 recSalesShipHeader.Modify();
+            end;
+
+            recBsArchiveHeader.reset();
+            recBsArchiveHeader.SetRange("No.", DataItem1000000001."No.");
+            if recBsArchiveHeader.FindFirst() then begin
+                recBsArchiveHeader.custNameImprime := custNameImp;
+                recBsArchiveHeader.custAdresseImprime := custAdressImp;
+                recBsArchiveHeader.custMFImprime := custMFImp;
+                recBsArchiveHeader.custVINImprime := custVINImp;
+                recBsArchiveHeader.Modify();
             end;
         end;
     end;

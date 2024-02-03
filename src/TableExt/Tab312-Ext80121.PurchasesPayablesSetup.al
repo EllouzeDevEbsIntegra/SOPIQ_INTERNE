@@ -35,6 +35,11 @@ tableextension 80121 "Purchases & Payables Setup" extends "Purchases & Payables 
             DataClassification = ToBeClassified;
         }
 
+        field(80000; "Last Year-1"; Integer)
+        {
+            DataClassification = ToBeClassified;
+        }
+
         field(80125; PurchaserCodeRequired; Boolean)
         {
             Caption = 'Code acheteur obligatoire';

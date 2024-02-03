@@ -37,6 +37,19 @@ tableextension 80115 "Sales Shipment Header" extends "Sales Shipment Header" //1
         {
             Caption = 'Vin Client Imprimé';
         }
+
+        field(80105; solde; Boolean)
+        {
+            Caption = 'Soldé';
+        }
+        field(80411; "Montant reçu caisse"; Decimal)
+        {
+            Caption = 'Montant reçu caisse';
+
+            FieldClass = FlowField;
+            CalcFormula = sum("Recu Caisse Document"."Montant Reglement" WHERE("Document No" = field("No.")));
+            Editable = false;
+        }
     }
 
     var

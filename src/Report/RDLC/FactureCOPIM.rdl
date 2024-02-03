@@ -1038,6 +1038,7 @@
                                 <PaddingBottom>2pt</PaddingBottom>
                               </Style>
                             </Textbox>
+                            <rd:Selected>true</rd:Selected>
                           </CellContents>
                         </TablixCell>
                         <TablixCell>
@@ -1392,7 +1393,7 @@
                             <TablixMember />
                           </TablixMembers>
                           <Visibility>
-                            <Hidden>=IIF(Fields!Nombreligne.Value&lt;&gt;0, false,true)</Hidden>
+                            <Hidden>=IIF((Fields!Nombreligne.Value&lt;&gt;0)AND((Fields!Quantity_SalesShipmentLine.Value&gt;0)OR(Fields!PrintNoBL.Value=true)),false,true)</Hidden>
                           </Visibility>
                         </TablixMember>
                       </TablixMembers>
@@ -2244,6 +2245,9 @@ End Function</Code>
         </Field>
         <Field Name="Invoice_Discount_AmountFormat">
           <DataField>Invoice_Discount_AmountFormat</DataField>
+        </Field>
+        <Field Name="PrintNoBL">
+          <DataField>PrintNoBL</DataField>
         </Field>
         <Field Name="showReference">
           <DataField>showReference</DataField>

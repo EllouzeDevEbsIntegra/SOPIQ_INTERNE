@@ -262,9 +262,23 @@ report 50236 "Etat Recu Caisse"
                     repeat
                         TotalDoc := TotalDoc + recRecuCaisseLigne."Montant Reglement";
                         if (LibelleTicket = '') then
-                            LibelleTicket := '* ' + recRecuCaisseLigne."Document No" + ' / ' + Format(recRecuCaisseLigne."Total TTC", 0, '<Precision,3:3><Standard Format,0>')
-                        else
-                            LibelleTicket := LibelleTicket + FORMAT(char13) + FORMAT(char10) + '* ' + recRecuCaisseLigne."Document No" + ' / ' + Format(recRecuCaisseLigne."Total TTC", 0, '<Precision,3:3><Standard Format,0>');
+                            if recRecuCaisseLigne.type = recRecuCaisseLigne.type::Divers then begin
+                                LibelleTicket := '* ' + recRecuCaisseLigne.Libelle + ' / ' + Format(recRecuCaisseLigne."Montant Reglement", 0, '<Precision,3:3><Standard Format,0>')
+                            end
+                            else begin
+                                LibelleTicket := '* ' + recRecuCaisseLigne."Document No" + ' / ' + Format(recRecuCaisseLigne."Total TTC", 0, '<Precision,3:3><Standard Format,0>')
+
+                            end
+                        else begin
+                            if recRecuCaisseLigne.type = recRecuCaisseLigne.type::Divers then begin
+                                LibelleTicket := LibelleTicket + FORMAT(char13) + FORMAT(char10) + '* ' + recRecuCaisseLigne.Libelle + ' / ' + Format(recRecuCaisseLigne."Montant Reglement", 0, '<Precision,3:3><Standard Format,0>');
+
+                            end
+                            else begin
+                                LibelleTicket := LibelleTicket + FORMAT(char13) + FORMAT(char10) + '* ' + recRecuCaisseLigne."Document No" + ' / ' + Format(recRecuCaisseLigne."Total TTC", 0, '<Precision,3:3><Standard Format,0>');
+                            end
+                        end;
+
                     until recRecuCaisseLigne.Next() = 0;
                 end;
 

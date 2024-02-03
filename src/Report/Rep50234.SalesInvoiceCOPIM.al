@@ -121,11 +121,12 @@ report 50234 "Sales Invoice COPIM"
             // column(DuplicataPicture; RecCompany."Duplicata Picture")
             // {
             // }
-            // column(RePrintOriginal; RePrintOriginal)
-            // {
-            // }
 
             // COPIM
+            column(PrintNoBL; PrintNoBL)
+            {
+
+            }
             column(showReference; showReference)
             {
 
@@ -506,10 +507,9 @@ report 50234 "Sales Invoice COPIM"
                         Caption = 'Afficher Remise';
                     }
 
-                    field(RePrintOriginal; RePrintOriginal)
+                    field(PrintNoBL; PrintNoBL)
                     {
-                        Caption = 'Re-imprimer l''originale';
-                        //Visible = VisiblePrintOriginal;
+                        Caption = 'Imprimer N° BL';
                     }
                 }
                 group(CustInfo)
@@ -633,7 +633,7 @@ report 50234 "Sales Invoice COPIM"
         MontantLigneGlobal: Decimal;
         Salesperson: Record 13;
         // SHOWLOGO: Boolean;
-        RePrintOriginal, showReference : Boolean;
+        PrintNoBL, showReference : Boolean;
         // [InDataSet]
         // VisiblePrintOriginal: Boolean;
         InvoiceIsPrinted: Boolean;

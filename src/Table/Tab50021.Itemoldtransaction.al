@@ -136,9 +136,14 @@ table 50021 "Item old transaction"
 
     keys
     {
-        // key(Key1; "Document N°")
+        // key(Key1; "Document N°", "Item N°")
         // {
         //     Clustered = true;
+        // }
+
+        // key(date; "Document date")
+        // {
+
         // }
     }
 

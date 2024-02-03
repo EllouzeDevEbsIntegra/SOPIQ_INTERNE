@@ -25,6 +25,13 @@ enum 50057 "Document Caisse Type"
     {
         Caption = 'Divers';
     }
-
+    value(6; BL)
+    {
+        Caption = 'Bon de Livraison';
+    }
+    value(7; RetourBL)
+    {
+        Caption = 'Retour Bon Livraison';
+    }
 
 }

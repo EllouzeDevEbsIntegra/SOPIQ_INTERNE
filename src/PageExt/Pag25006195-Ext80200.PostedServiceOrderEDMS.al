@@ -44,34 +44,6 @@ pageextension 80200 "Posted Service Order EDMS" extends "Posted Service Order ED
         WorkDes := GetWorkDesc();
     end;
 
-    procedure GetWorkRecommendation(): Text
-    Var
-        TypeHelper: Codeunit "Type Helper";
-        InStreamData: InStream;
-        Description: Text;
-    Begin
-        CALCFIELDS("Work Recommendation");
-        //   IF NOT "dlt Work Recommendation".HASVALUE THEN
-        //       EXIT('');
-        "Work Recommendation".CreateInstream(InStreamData, Textencoding::UTF8);
-        exit(TypeHelper.ReadAsTextWithSeparator(InStreamData, TypeHelper.LFSeparator));
-        //InStreamData.ReadText(Description);
-        //exit(Description);
-
-    end;
-
-
-    procedure GetWorkDesc(): Text
-    Var
-        TypeHelper: Codeunit "Type Helper";
-        InStreamData: InStream;
-        Description: Text;
-    Begin
-        CALCFIELDS("Work Description");
-        "Work Description".CreateInstream(InStreamData, Textencoding::UTF8);
-        exit(TypeHelper.ReadAsTextWithSeparator(InStreamData, TypeHelper.LFSeparator));
-
-    end;
 
     var
         WorkRecommendation: Text;

@@ -90,7 +90,7 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
                 ShortcutKey = F9;
                 // Visible = false;
                 RunObject = page "Specific Item Ledger Entry";
-                RunPageLink = "Item No." = field("No."), "Posting Date" = filter('01012023..');
+                RunPageLink = "Item No." = field("No.");
             }
             action("Item Old Transaction")
             {

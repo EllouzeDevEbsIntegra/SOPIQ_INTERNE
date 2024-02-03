@@ -73,7 +73,7 @@ codeunit 50019 SubscriberEventProcedure
         // Message('NEW -->  %1  *** %2', NewSalesShipmentLine."Document No.", NewSalesShipmentLine."Line No.");
 
         AddArchiveLigneBS(NewSalesShipmentLine, OldSalesShipmentLine);
-
+        // AJOUTER CONDITION SI BON SORTIE
         PostArchivShipLine.Reset();
         PostArchivShipLine.SetRange("Document No.", OldSalesShipmentLine."Document No.");
         PostArchivShipLine.SetRange("Line No.", OldSalesShipmentLine."Line No.");
@@ -90,6 +90,21 @@ codeunit 50019 SubscriberEventProcedure
             PostArchivShipLine."Qty. Shipped Not Invoiced" := 0;
             PostArchivShipLine.Correction := true;
             PostArchivShipLine.Modify();
+        end;
+
+        recBS.Reset();
+        recBS.Get(PostArchivShipLine."Document No.");
+        if recBS.Find() then begin
+            recBS.CalcFields("Montant reçu caisse", "Montant TTC");
+            if (recBS."Montant TTC" = recBS."Montant reçu caisse")
+            then begin
+                recBS.Solde := true;
+            end
+            else begin
+                recBS.Solde := false;
+            end;
+            recBS.Modify();
+            Commit();
         end;
     end;
 

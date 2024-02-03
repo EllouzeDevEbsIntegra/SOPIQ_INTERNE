@@ -250,6 +250,42 @@ table 50023 "Specific Item Ledger Entry"
                 end;
             end;
         }
+        field(50023; Year; Integer)
+        {
+            DataClassification = ToBeClassified;
+        }
+
+        field(50024; "N° Doc Frs"; code[35])
+        {
+            AutoFormatType = 1;
+            CalcFormula = lookup("Purch. Rcpt. Header"."Vendor Shipment No." where("No." = field("Document No.")));
+            Caption = 'N° Doc Frs';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(50025; "Cmd Achat"; code[35])
+        {
+            AutoFormatType = 1;
+            CalcFormula = lookup("Purch. Rcpt. Header"."Order No." where("No." = field("Document No.")));
+            Caption = 'Cmd Achat';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(50026; "Cmd Vente"; code[35])
+        {
+            AutoFormatType = 1;
+            CalcFormula = lookup("Sales Shipment Header"."Order No." where("No." = field("Document No.")));
+            Caption = 'Cmd Vente';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+    }
+
+    keys
+    {
+
     }
 
 }

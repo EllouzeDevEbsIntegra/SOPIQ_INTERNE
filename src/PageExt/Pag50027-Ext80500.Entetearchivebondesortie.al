@@ -1,13 +1,9 @@
-pageextension 80396 "Liste archive Bon de sortie" extends "Liste archive Bon de sortie" //50026
+pageextension 80500 "Entete archive bon de sortie" extends "Entete archive bon de sortie" //50027
 {
     layout
     {
-        modify(Solde)
-        {
-            Editable = false;
-        }
         // Add changes to page layout here
-        addafter("Montant TTC")
+        addbefore("Montant TTC")
         {
             field("Montant reçu caisse"; "Montant reçu caisse")
             {
@@ -35,15 +31,6 @@ pageextension 80396 "Liste archive Bon de sortie" extends "Liste archive Bon de 
                 ApplicationArea = all;
                 Caption = 'Rem. Moy.';
             }
-
-            field(custNameImprime; custNameImprime)
-            {
-                ApplicationArea = all;
-                Caption = 'Client Imprimé';
-            }
-
-
-
         }
     }
 
@@ -100,6 +87,5 @@ pageextension 80396 "Liste archive Bon de sortie" extends "Liste archive Bon de 
         end;
         exit(mntNetHt);
     end;
-
 
 }

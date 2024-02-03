@@ -53,7 +53,7 @@ enum 50055 "Paiment Caisse Type"
 
     value(11; retourBS)
     {
-        Caption = 'Retour BS';
+        Caption = 'Retour BS / BL';
     }
 
     value(12; Transport)

@@ -102,6 +102,12 @@ tableextension 80109 "Purchase Price" extends "Purchase Price"//7012
             Editable = false;
             FieldClass = FlowField;
         }
+        field(80100; "Last Year-1"; Integer)
+        {
+            CalcFormula = lookup("Purchases & Payables Setup"."Last Year-1");
+            Editable = false;
+            FieldClass = FlowField;
+        }
 
         field(80124; "Purch. Qty Curr. Year frs"; Decimal)
         {

@@ -305,6 +305,8 @@ page 50132 "Recu Caisse Card"
         recInvoice: Record "Sales Invoice Header";
         recCrMemo: Record "Sales Cr.Memo Header";
         recRetourBS: Record "Return Receipt Header";
+        recBL: Record "Sales Shipment Header";
+        recRetourBL: Record "Return Receipt Header";
     begin
         recRecuDoc.Reset();
         recRecuDoc.SetRange("No Recu", recRecu.No);
@@ -319,8 +321,11 @@ page 50132 "Recu Caisse Card"
                                 recBs.CalcFields("Montant TTC", "Montant reçu caisse");
                                 if recBs."Montant TTC" = recBs."Montant reçu caisse" then begin
                                     recbs.Solde := true;
-                                    recBs.Modify();
+
                                 end
+                                else
+                                    recBs.Solde := false;
+                                recBs.Modify();
                             end;
                             Commit();
                         end;
@@ -332,8 +337,11 @@ page 50132 "Recu Caisse Card"
                                 recInvoice.CalcFields("Amount Including VAT", "Montant reçu caisse");
                                 if recInvoice."Amount Including VAT" + recInvoice."STStamp Amount" = recInvoice."Montant reçu caisse" then begin
                                     recInvoice.Solde := true;
-                                    recInvoice.Modify();
+
                                 end
+                                else
+                                    recInvoice.solde := false;
+                                recInvoice.Modify();
                             end;
                             Commit();
                         end;
@@ -345,8 +353,11 @@ page 50132 "Recu Caisse Card"
                                 recCrMemo.CalcFields("Amount Including VAT", "Montant reçu caisse");
                                 if recCrMemo."Amount Including VAT" = -recCrMemo."Montant reçu caisse" then begin
                                     recCrMemo.Solde := true;
-                                    recCrMemo.Modify();
+
                                 end
+                                else
+                                    recCrMemo.solde := false;
+                                recCrMemo.Modify();
                             end;
                             Commit();
                         end;
@@ -358,8 +369,44 @@ page 50132 "Recu Caisse Card"
                                 recRetourBS.CalcFields("Line Amount", "Montant reçu caisse");
                                 if recRetourBS."Line Amount" = -recRetourBS."Montant reçu caisse" then begin
                                     recRetourBS.Solde := true;
-                                    recRetourBS.Modify();
+
                                 end
+                                else
+                                    recRetourBS.solde := false;
+                                recRetourBS.Modify();
+
+                            end;
+                            Commit();
+                        end;
+                    "Document Caisse Type"::BL:
+                        begin
+                            recBL.Reset();
+                            recBL.get(recRecuDoc."Document No");
+                            if recBL.Find() then begin
+                                recBL.CalcFields("Line Amount", "Montant reçu caisse");
+                                if recBL."Line Amount" = recBL."Montant reçu caisse" then begin
+                                    recBL.Solde := true;
+                                end
+                                else
+                                    recBL.solde := false;
+                                recBL.Modify();
+
+                            end;
+                            Commit();
+                        end;
+                    "Document Caisse Type"::RetourBL:
+                        begin
+                            recRetourBL.Reset();
+                            recRetourBL.get(recRecuDoc."Document No");
+                            if recRetourBL.Find() then begin
+                                recRetourBL.CalcFields("Line Amount", "Montant reçu caisse");
+                                if recRetourBL."Line Amount" = -recRetourBL."Montant reçu caisse" then begin
+                                    recRetourBL.Solde := true;
+
+                                end
+                                else
+                                    recRetourBL.solde := false;
+                                recRetourBL.Modify();
 
                             end;
                             Commit();

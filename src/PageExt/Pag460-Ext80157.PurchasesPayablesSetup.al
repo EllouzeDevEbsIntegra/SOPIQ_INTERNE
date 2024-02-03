@@ -45,6 +45,12 @@ pageextension 80157 "Purchases & Payables Setup" extends "Purchases & Payables S
                 Caption = 'Année précédente';
                 Editable = false;
             }
+            field("Last Year-1"; "Last Year-1")
+            {
+                ApplicationArea = All;
+                Caption = 'Année avant précédente';
+                Editable = false;
+            }
         }
     }
 

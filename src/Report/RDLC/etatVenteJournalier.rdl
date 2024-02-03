@@ -462,7 +462,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Left(Fields!ItemName.Value,32)</Value>
+                                  <Value>=Left(Fields!itemDescriptionStructure.Value,32)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -492,6 +492,7 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -1078,6 +1079,9 @@ End Function
         </Field>
         <Field Name="ItemName">
           <DataField>ItemName</DataField>
+        </Field>
+        <Field Name="itemDescriptionStructure">
+          <DataField>itemDescriptionStructure</DataField>
         </Field>
         <Field Name="Magasin">
           <DataField>Magasin</DataField>

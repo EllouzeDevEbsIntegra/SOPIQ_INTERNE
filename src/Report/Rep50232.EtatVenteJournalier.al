@@ -58,6 +58,11 @@ report 50232 "Etat Vente Journalier"
             {
 
             }
+
+            column(itemDescriptionStructure; GItem."Description structurée")
+            {
+
+            }
             column(Magasin; "Location Code")
             {
 
@@ -257,4 +262,6 @@ report 50232 "Etat Vente Journalier"
         fab: Record Manufacturer;
         RecCompany: record "Company Information";
         BinCOntent, BinCOntent1 : Record "Bin Content";
+
+
 }

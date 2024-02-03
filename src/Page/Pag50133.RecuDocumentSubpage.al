@@ -57,7 +57,11 @@ page 50133 "Recu Document Subpage"
                     else
                     if (type = const(CreditMemo)) "Sales Cr.Memo Header" where("Bill-to Customer No." = field("Customer No"), solde = filter('Non'))
                     else
-                    if (type = const(RetourBS)) "Return Receipt Header" where("Bill-to Customer No." = field("Customer No"), BS = filter('Oui'), solde = filter('Non'));
+                    if (type = const(RetourBS)) "Return Receipt Header" where("Bill-to Customer No." = field("Customer No"), BS = filter('Oui'), solde = filter('Non'))
+                    else
+                    if (type = const(BL)) "Sales Shipment Header" where("Bill-to Customer No." = field("Customer No"), solde = filter('Non'))
+                    else
+                    if (type = const(RetourBL)) "Return Receipt Header" where("Bill-to Customer No." = field("Customer No"), solde = filter('Non'));
 
                     trigger OnValidate()
 
@@ -66,6 +70,8 @@ page 50133 "Recu Document Subpage"
                         recInvoice: Record "Sales Invoice Header";
                         recCrMemo: Record "Sales Cr.Memo Header";
                         recRetourBS: Record "Return Receipt Header";
+                        recBL: Record "Sales Shipment Header";
+                        recRetourBL: Record "Return Receipt Header";
 
                     begin
 
@@ -104,15 +110,37 @@ page 50133 "Recu Document Subpage"
                                             Modify(true);
                                         end
                                     end
-                                    else begin
-                                        recCrMemo.SetRange("No.", "Document No");
-                                        if recCrMemo.FindFirst() then begin
-                                            recCrMemo.CalcFields("Amount Including VAT");
-                                            "Montant Reglement" := -recCrMemo."Amount Including VAT";
-                                            "Total TTC" := -recCrMemo."Amount Including VAT";
-                                            Modify(true);
-                                        end;
-                                    end;
+                                    else
+                                        if (rec.type = type::CreditMemo) then begin
+
+                                            recCrMemo.SetRange("No.", "Document No");
+                                            if recCrMemo.FindFirst() then begin
+                                                recCrMemo.CalcFields("Amount Including VAT");
+                                                "Montant Reglement" := -recCrMemo."Amount Including VAT";
+                                                "Total TTC" := -recCrMemo."Amount Including VAT";
+                                                Modify(true);
+                                            end;
+                                        end
+                                        else
+                                            if (rec.type = type::BL) then begin
+                                                recBL.SetRange("No.", "Document No");
+                                                if recBL.FindFirst() then begin
+                                                    recBL.CalcFields("Total line amount", "Line Amount", "Montant reçu caisse");
+                                                    "Montant Reglement" := recBL."Line Amount" - recBL."Montant reçu caisse";
+                                                    "Total TTC" := recBL."Line Amount";
+                                                    Modify(true);
+                                                end;
+                                            end
+                                            else
+                                                if (rec.type = type::RetourBL) then begin
+                                                    recRetourBL.SetRange("No.", "Document No");
+                                                    if recRetourBL.FindFirst() then begin
+                                                        recRetourBL.CalcFields("Line Amount", "Montant reçu caisse");
+                                                        "Montant Reglement" := -recRetourBL."Line Amount";
+                                                        "Total TTC" := -recRetourBL."Line Amount";
+                                                    end;
+
+                                                end;
                         end;
 
 
@@ -180,6 +208,20 @@ page 50133 "Recu Document Subpage"
 
     end;
 
+    // trigger OnOpenPage()
+    // var
+    //     recCust: Record Customer;
+    // begin
+    //     recCust.Reset();
+    //     recCust.Get(GetFilter("Customer No"));
+    //     if recCust.Find() then begin
+    //         if recCust."Is Divers" = true then begin
+    //             libelleVisible := true;
+    //             CurrPage.Update();
+    //         end
 
+    //     end;
+
+    // end;
 
 }
