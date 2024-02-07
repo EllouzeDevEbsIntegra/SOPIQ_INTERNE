@@ -200,6 +200,8 @@ page 50145 "Posted Return Receipt List"
                 field("Montant reçu caisse"; "Montant reçu caisse")
                 {
                     ApplicationArea = all;
+                    DrillDown = true;
+                    DrillDownPageId = "Recu Document List";
                 }
             }
         }

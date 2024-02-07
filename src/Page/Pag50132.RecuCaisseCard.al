@@ -30,17 +30,46 @@ page 50132 "Recu Caisse Card"
                         recSalesSetup: Record "Sales & Receivables Setup";
                         recSeries: Record "No. Series Line";
                         recCust: Record Customer;
+                        serieNoMgt: Codeunit NoSeriesManagement;
+                        recuDocument: Record "Recu Caisse Document";
+                        recuPaiment: Record "Recu Caisse Paiement";
                     begin
                         if (xRec."Customer No" = '') then begin
                             recSalesSetup.Get;
-                            recSeries.Reset();
-                            recSeries.SetRange("Series Code", recSalesSetup."Reçu Caisse Serie");
-                            if recSeries.FindLast() then begin
-                                rec.No := recSeries.GetNextSequenceNo(true);
-                                rec.dateTime := System.CurrentDateTime;
-                                rec.dateRecu := System.Today;
+                            // recSeries.Reset();
+                            // recSeries.SetRange("Series Code", recSalesSetup."Reçu Caisse Serie");
+                            // if recSeries.FindLast() then begin
+                            //     rec.No := recSeries.GetNextSequenceNo(true);
+                            //     rec.dateTime := System.CurrentDateTime;
+                            //     rec.dateRecu := System.Today;
+                            // end;
+                            rec.dateTime := System.CurrentDateTime;
+                            rec.dateRecu := System.Today;
+                            rec.No := serieNoMgt.GetNextNo(recSalesSetup."Reçu Caisse Serie", dateRecu, true);
+
+
+                        end
+                        else
+                            if (xRec."Customer No" <> rec."Customer No") then begin
+                                recuDocument.Reset();
+                                recuDocument.SetRange("No Recu", rec.No);
+                                if recuDocument.FindSet() then begin
+                                    repeat
+                                        recuDocument.Delete();
+                                    until recuDocument.Next() = 0;
+                                end;
+
+                                recuPaiment.Reset();
+                                recuPaiment.SetRange("No Recu", rec.No);
+                                if recuPaiment.FindSet() then begin
+                                    repeat
+                                        recuPaiment.Delete();
+                                    until recuPaiment.Next() = 0;
+                                end;
+
+                                CurrPage.Document.Page.setFilter(rec);
+                                CurrPage.Paiement.Page.setFilter(rec);
                             end;
-                        end;
 
 
                         recCust.Reset();

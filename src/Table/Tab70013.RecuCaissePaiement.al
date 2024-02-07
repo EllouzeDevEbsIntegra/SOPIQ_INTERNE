@@ -99,7 +99,17 @@ table 70013 "Recu Caisse Paiement"
     end;
 
     trigger OnDelete()
+    var
+        recUserSetup: Record "User Setup";
+        recuCaisse: Record "Recu Caisse";
     begin
+        recUserSetup.Reset();
+        recUserSetup.Get(UserId);
+        recuCaisse.Reset();
+        recuCaisse.get(rec."No Recu");
+        if (recUserSetup.isRCModify = false) AND (recuCaisse.Printed = true) then begin
+            Error('Vous ne pouvez pas supprmier la ligne !');
+        end
 
     end;
 

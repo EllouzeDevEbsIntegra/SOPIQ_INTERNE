@@ -5,6 +5,10 @@ report 25006029 "Recu Caisse"
     PreviewMode = PrintLayout;
     UsageCategory = ReportsAndAnalysis;
     ApplicationArea = ALL;
+    Permissions = TableData 110 = rm,
+                  tabledata "Sales Invoice Header" = rm,
+                  tabledata 114 = rm,
+                  tabledata 50009 = rm;
 
     dataset
     {

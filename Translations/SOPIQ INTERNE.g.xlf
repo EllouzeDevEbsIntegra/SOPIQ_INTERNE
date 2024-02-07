@@ -6498,6 +6498,106 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Posted BS Lines - Control ShowRevLine - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 2957546737 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Panier Retour BS à Acheter</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Control 3244334840 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the item ledger entry that the document or journal line is applied to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Control Appl.-to Item Entry - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies either the name of or the description of the item, general ledger account or item charge.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Control Description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Control 486908828 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the related document.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Control Document No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Control 1908272084 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the related job.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Control Job No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Control 2161572060 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the location from where inventory items to the customer on the sales document are to be shipped by default.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Control Location Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Control 4200184881 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the involved entry or record, according to the specified number series.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Control No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Control 2704404533 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of units of the item, general ledger account, or item charge on the line.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Control Quantity - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Control 61616130 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how many units of the item on the line have been posted as invoiced.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Control Quantity Invoiced - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Control 1577567912 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code for Shortcut Dimension 1, which is one of two global dimension codes that you set up in the General Ledger Setup window.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Control Shortcut Dimension 1 Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Control 1003760969 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code for Shortcut Dimension 2, which is one of two global dimension codes that you set up in the General Ledger Setup window.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Control Shortcut Dimension 2 Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Control 1878130204 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the line type.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Control Type - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Control 1920046521 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the item or resource's unit of measure, such as piece or hour.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Control Unit of Measure - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Control 2385270358 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how each unit of the item or resource is measured, such as in pieces or hours. By default, the value in the Base Unit of Measure field on the item or resource card is inserted.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Control Unit of Measure Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Control 3450651614 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the variant of the item on the line.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Control Variant Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Action 1402615620 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>&amp;Line</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Action &amp;Line - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Action 2173385693 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>View or edit dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Action Dimensions - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Action 2173385693 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dimensions</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Action Dimensions - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Action 1107476520 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Open the document that the selected line exists on.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Action Show Document - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2957546737 - Action 1107476520 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Show Document</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return BS Lines - Action Show Document - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 391239911 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Réception Retour Enregsitrée</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -9477,6 +9577,141 @@
           <source>Starting Date</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report Invent. Val. - Control StartingDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Evaluation Stock SI</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 1053609028" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Base UoM</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType BoM_TextLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 1987762555" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Page</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType CurrReport_PAGENOCaptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 3967659737" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Decreases (LCY)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType DecreaseInvoicedQtyCaptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 91039267" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Expected Cost Included</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType Expected_Cost_IncludedCaptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 792922504" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Expected Cost Included Total</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType Expected_Cost_Included_TotalCaptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 312202637" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Expected Cost Total</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType Expected_Cost_TotalCaptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 1384714579" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Increases (LCY)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType IncreaseInvoicedQtyCaptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 1416128363" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cost Posted to G/L</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType InvCostPostedToGL_Control53CaptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 1004673518" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inventory Valuation</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType Inventory_ValuationCaptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 3246368361" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType QuantityCaptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 1600494191" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType QuantityCaption_Control31Lbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 3246371741" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType QuantityCaption_Control40Lbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 2078679118" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType QuantityCaption_Control58Lbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 1370456556" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Au %1</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType Text005</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 1880002016" size-unit="char" translate="yes" xml:space="preserve">
+          <source>This report includes entries that have been posted with expected costs.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType This_report_includes_entries_that_have_been_posted_with_expected_costs_CaptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 1583171122" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType TotalCaptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - NamedType 2228918273" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Value</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - NamedType ValueCaptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - ReportLabel 1500056072" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Expected Cost</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - ReportLabel Expected_CostCaption</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - ReportLabel 1507541069" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inventory Posting Group Name</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - ReportLabel Inventory_Posting_Group_NameCaption</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - Control 2346885236 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Options</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - Control Options - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - Control 3592094765 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the date to which the report or batch job processes information.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - Control EndingDate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - Control 3592094765 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ending Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - Control EndingDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - Control 198878435 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies if you want the report to also show entries that only have expected costs.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - Control IncludeExpectedCost - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - Control 198878435 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Include Expected Cost</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - Control IncludeExpectedCost - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - Control 543275552 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the date from which the report or batch job processes information.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - Control StartingDate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Report 2990639872 - Control 543275552 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Starting Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Inventory Evaluation - Control StartingDate - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 1122603701 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Facture PR</source>
@@ -12708,6 +12943,31 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Return Receipt Header - Field solde - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 1173465396 - Field 235994859 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1173465396">
+          <source>BS</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Return Receipt Line - Field BS - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1173465396 - Field 2320229561 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1173465396">
+          <source>Document No BS Inverse</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Return Receipt Line - Field Document No BS Inverse - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1173465396 - Field 3328802018 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1173465396">
+          <source>Line No BS Inverse</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Return Receipt Line - Field Line No BS Inverse - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1173465396 - Field 2344130367 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1173465396">
+          <source>Qty BS To Purchase</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Return Receipt Line - Field Qty BS To Purchase - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1173465396 - Field 1749222251 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1173465396">
+          <source>solde</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Return Receipt Line - Field solde - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 4145206282 - Field 1389256266 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4145206282">
           <source>Marge Fabricant Spécifique</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -13102,6 +13362,21 @@
           <source>Soldé</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Shipment Header - Field solde - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1114148978 - Field 2320229561 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1114148978">
+          <source>Document No BS Inverse</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Shipment Line - Field Document No BS Inverse - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1114148978 - Field 3328802018 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1114148978">
+          <source>Line No BS Inverse</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Shipment Line - Field Line No BS Inverse - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1114148978 - Field 4044337449 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1114148978">
+          <source>Qty BS To Invoice</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Shipment Line - Field Qty BS To Invoice - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 1114148978 - Field 553464652 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1114148978">
           <source>Code Vendeur</source>

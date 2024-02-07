@@ -19,6 +19,8 @@ pageextension 80137 "Posted Sales Shipments" extends "Posted Sales Shipments"//1
             field("Montant reçu caisse"; "Montant reçu caisse")
             {
                 ApplicationArea = all;
+                DrillDown = true;
+                DrillDownPageId = "Recu Document List";
             }
 
             field("Order No."; "Order No.")

@@ -197,6 +197,8 @@ page 50144 "Posted Return Receipts BS"
                 field("Montant reçu caisse"; "Montant reçu caisse")
                 {
                     ApplicationArea = all;
+                    DrillDown = true;
+                    DrillDownPageId = "Recu Document List";
                 }
                 field(solde; solde)
                 {

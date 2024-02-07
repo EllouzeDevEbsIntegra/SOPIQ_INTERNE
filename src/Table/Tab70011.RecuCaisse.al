@@ -108,8 +108,9 @@ table 70011 "Recu Caisse"
     end;
 
     trigger OnDelete()
+    var
     begin
-
+        Error('Vous ne pouvez pas supprmier ce document !');
     end;
 
     trigger OnRename()
