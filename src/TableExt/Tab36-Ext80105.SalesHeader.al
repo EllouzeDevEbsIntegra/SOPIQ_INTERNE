@@ -2,6 +2,23 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
 {
     fields
     {
+        modify("Shipping Agent Code")
+        {
+            trigger OnAfterValidate()
+            begin
+                shippingAgentCode := "Shipping Agent Code";
+            end;
+        }
+        field(50100; shippingAgentCode; Code[10])
+        {
+            AccessByPermission = TableData "Shipping Agent Services" = R;
+            Caption = 'Shipping Agent Code';
+            TableRelation = "Shipping Agent".Code;
+            trigger OnValidate()
+            begin
+                Validate("Shipping Agent Code", shippingAgentCode);
+            end;
+        }
         modify("Sell-to Customer No.")
         {
             trigger OnAfterValidate()
@@ -71,6 +88,7 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
 
     var
         Cust: Record Customer;
+        shippingAgentCode: Code[10];
 
     procedure ModifyPostingDesc(Prec: Record "Sales Header")
     begin

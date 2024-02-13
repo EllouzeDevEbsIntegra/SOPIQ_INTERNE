@@ -169,6 +169,7 @@ report 25006029 "Recu Caisse"
                 recRecuCaisseLigne.SetRange("No Recu", "Recu Caisse".No);
                 if recRecuCaisseLigne.FindSet() then begin
                     repeat
+                        if recRecuCaisseLigne.type = recRecuCaisseLigne.type::Acompte then isACPTOrREG := 'Acompte Personnel';
                         if (LibelleTicket = '') then
                             LibelleTicket := isACPTOrREG + '/ ' + recRecuCaisseLigne."Document No" + recRecuCaisseLigne."Libelle"
                         else

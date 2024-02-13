@@ -64,7 +64,9 @@ page 50133 "Recu Document Subpage"
                     else
                     if (type = const(BL)) "Sales Shipment Header" where("Bill-to Customer No." = field("Customer No"), solde = filter('Non'))
                     else
-                    if (type = const(RetourBL)) "Return Receipt Header" where("Bill-to Customer No." = field("Customer No"), solde = filter('Non'));
+                    if (type = const(RetourBL)) "Return Receipt Header" where("Bill-to Customer No." = field("Customer No"), solde = filter('Non'))
+                    else
+                    if (type = const(Acompte)) "Salesperson/Purchaser";
 
                     trigger OnValidate()
 

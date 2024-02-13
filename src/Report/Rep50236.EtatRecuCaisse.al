@@ -265,18 +265,27 @@ report 50236 "Etat Recu Caisse"
                             if recRecuCaisseLigne.type = recRecuCaisseLigne.type::Divers then begin
                                 LibelleTicket := '* ' + recRecuCaisseLigne.Libelle + ' / ' + Format(recRecuCaisseLigne."Montant Reglement", 0, '<Precision,3:3><Standard Format,0>')
                             end
-                            else begin
-                                LibelleTicket := '* ' + recRecuCaisseLigne."Document No" + ' / ' + Format(recRecuCaisseLigne."Total TTC", 0, '<Precision,3:3><Standard Format,0>')
+                            else
+                                if recRecuCaisseLigne.type = recRecuCaisseLigne.type::Acompte then begin
+                                    LibelleTicket := '* Acompte Personnel > ' + recRecuCaisseLigne."Document No" + ' / ' + Format(recRecuCaisseLigne."Montant Reglement", 0, '<Precision,3:3><Standard Format,0>')
+                                end
+                                else begin
+                                    LibelleTicket := '* ' + recRecuCaisseLigne."Document No" + ' / ' + Format(recRecuCaisseLigne."Total TTC", 0, '<Precision,3:3><Standard Format,0>')
 
-                            end
+                                end
                         else begin
                             if recRecuCaisseLigne.type = recRecuCaisseLigne.type::Divers then begin
                                 LibelleTicket := LibelleTicket + FORMAT(char13) + FORMAT(char10) + '* ' + recRecuCaisseLigne.Libelle + ' / ' + Format(recRecuCaisseLigne."Montant Reglement", 0, '<Precision,3:3><Standard Format,0>');
 
                             end
-                            else begin
-                                LibelleTicket := LibelleTicket + FORMAT(char13) + FORMAT(char10) + '* ' + recRecuCaisseLigne."Document No" + ' / ' + Format(recRecuCaisseLigne."Total TTC", 0, '<Precision,3:3><Standard Format,0>');
-                            end
+                            else
+                                if recRecuCaisseLigne.type = recRecuCaisseLigne.type::Acompte then begin
+                                    LibelleTicket := LibelleTicket + FORMAT(char13) + FORMAT(char10) + '* Acompte Personnel > ' + recRecuCaisseLigne."Document No" + ' / ' + Format(recRecuCaisseLigne."Montant Reglement", 0, '<Precision,3:3><Standard Format,0>');
+
+                                end
+                                else begin
+                                    LibelleTicket := LibelleTicket + FORMAT(char13) + FORMAT(char10) + '* ' + recRecuCaisseLigne."Document No" + ' / ' + Format(recRecuCaisseLigne."Total TTC", 0, '<Precision,3:3><Standard Format,0>');
+                                end
                         end;
 
                     until recRecuCaisseLigne.Next() = 0;

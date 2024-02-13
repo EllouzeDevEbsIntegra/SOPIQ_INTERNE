@@ -33,5 +33,9 @@ enum 50057 "Document Caisse Type"
     {
         Caption = 'Retour Bon Livraison';
     }
+    value(8; Acompte)
+    {
+        Caption = 'Acompte Personnel';
+    }
 
 }

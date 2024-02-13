@@ -93,8 +93,8 @@ codeunit 50019 SubscriberEventProcedure
         end;
 
         recBS.Reset();
-        recBS.Get(PostArchivShipLine."Document No.");
-        if recBS.Find() then begin
+        recBS.SetRange("No.", PostArchivShipLine."Document No.");
+        if recBS.FindFirst() then begin
             recBS.CalcFields("Montant reçu caisse", "Montant TTC");
             if (recBS."Montant TTC" = recBS."Montant reçu caisse")
             then begin

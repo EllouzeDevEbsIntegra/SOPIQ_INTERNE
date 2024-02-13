@@ -7703,6 +7703,31 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales line - Control Prepmt. Line Amount - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="Page 2272133841 - NamedType 3550849197" size-unit="char" translate="yes" xml:space="preserve">
+          <source>You do not have permissions to read Sales Orders.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Order Entity SI - NamedType SalesOrderPermissionsErr</note>
+        </trans-unit>
+        <trans-unit id="Page 2272133841 - Control 2950861020 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the billing address of the Sales Invoice.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Order Entity SI - Control billingPostalAddress - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2272133841 - Control 476472346 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shipping Agent Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Order Entity SI - Control shippingAgentCode - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2272133841 - Control 998393528 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the status of the Sales Invoice (cancelled, paid, on hold, created).</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Order Entity SI - Control status - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2272133841 - Control 4101803605 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the total tax amount for the sales invoice.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Order Entity SI - Control totalTaxAmount - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Page 2661476762 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Rôle Commercial détails</source>
           <note from="Developer" annotates="general" priority="2">{Dependency=Match,"ProfileDescription_ORDERPROCESSOR"}</note>
@@ -9417,6 +9442,11 @@
           <source>Masquer les détails</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report Etat Retour Facturation - Control afficherDetail - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1395862759 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Etat Stock Valorise</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Stock Valorise - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 3325472121 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Etat de vente Journalier</source>
@@ -13198,6 +13228,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Header - Field custVINImprime - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 1192395785 - Field 476472346 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1192395785">
+          <source>Shipping Agent Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Header - Field shippingAgentCode - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 809936682 - Field 3220209923 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 809936682">
           <source>Adresse Client Imprimé</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -13322,6 +13357,11 @@
           <source>Qte Receptionnée</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales line - Field Received Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1423389335 - Field 476472346 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1423389335">
+          <source>Shipping Agent Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Order Entity Buffer - Field shippingAgentCode - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3118382297 - Field 3749225123 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3118382297">
           <source>Total Acompte</source>
@@ -13667,6 +13707,11 @@
           <source>ZTIOUNA</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum Banque Caisse - EnumValue ZB - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 3267310699 - EnumValue 230503443 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Acompte Personnel</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Document Caisse Type - EnumValue Acompte - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 3267310699 - EnumValue 404903882 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Bon de Livraison</source>
