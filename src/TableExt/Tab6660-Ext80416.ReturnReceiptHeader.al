@@ -2,6 +2,13 @@ tableextension 80416 "Return Receipt Header" extends "Return Receipt Header" //6
 {
     fields
     {
+        field(80113; "Montant Ouvert"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = Sum("Return Receipt Line"."Amount Including VAT" WHERE("Document No." = FIELD("No."), "Return Qty. Rcd. Not Invd." = Filter('>0')));
+            Caption = 'Montant  Ouvert';
+            Editable = false;
+        }
         // Add changes to table fields here
         field(80416; BS; Boolean)
         {
@@ -19,6 +26,10 @@ tableextension 80416 "Return Receipt Header" extends "Return Receipt Header" //6
         field(80418; solde; Boolean)
         {
             DataClassification = ToBeClassified;
+        }
+        field(80101; custNameImprime; Text[200])
+        {
+            Caption = 'Nom Client Imprimé';
         }
     }
 

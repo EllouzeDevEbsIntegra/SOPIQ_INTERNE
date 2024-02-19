@@ -2,6 +2,11 @@ tableextension 80160 "Company Information" extends "Company Information" //79
 {
     fields
     {
+        // Gestion des BS
+        field(80158; "BS"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
 
 
         field(80159; "Company"; Text[100])

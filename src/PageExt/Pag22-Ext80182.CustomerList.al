@@ -60,6 +60,18 @@ pageextension 80182 "Customer List" extends "Customer List"//22
     actions
     {
         // Add changes to page actions here
+        addafter("Customer - Sales List")
+        {
+            action(SoldeClient)
+            {
+                ApplicationArea = BasicEU;
+                Caption = 'Etat Soldes Clients';
+                Image = PrintVAT;
+                RunObject = report 25006118;
+                Promoted = true;
+                PromotedCategory = Report;
+            }
+        }
     }
 
     var

@@ -16,6 +16,11 @@ pageextension 80210 "Company Information" extends "Company Information" // 1
                 ApplicationArea = Basic;
                 Caption = 'Société de base';
             }
+            field(BS; BS)
+            {
+                ApplicationArea = Basic;
+                Caption = 'Gestion BS';
+            }
 
 
         }

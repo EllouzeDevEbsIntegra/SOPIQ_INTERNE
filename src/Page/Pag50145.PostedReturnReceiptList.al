@@ -193,6 +193,10 @@ page 50145 "Posted Return Receipt List"
                     ToolTip = 'Specifies the value of the Montant  TTC field.';
                     ApplicationArea = All;
                 }
+                field("Montant Ouvert"; "Montant Ouvert")
+                {
+                    ApplicationArea = All;
+                }
                 field(solde; solde)
                 {
                     ApplicationArea = all;
@@ -323,7 +327,7 @@ page 50145 "Posted Return Receipt List"
     }
     trigger OnAfterGetRecord()
     begin
-        rec.CalcFields("Montant reçu caisse", "Line Amount", "Line Amount HT")
+        rec.CalcFields("Montant reçu caisse", "Line Amount", "Line Amount HT", "Montant Ouvert")
     end;
 
     trigger OnOpenPage()
