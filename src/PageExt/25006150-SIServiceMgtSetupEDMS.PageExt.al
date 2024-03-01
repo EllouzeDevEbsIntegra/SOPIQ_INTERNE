@@ -2,6 +2,31 @@ pageextension 80150 "Service Mgt. Setup EDMS" extends "Service Mgt. Setup EDMS" 
 {
     layout
     {
+        addafter("Quantity Labor Mandatory")
+        {
+            field("Global Ress. Mondata"; "Global Ress. Mondata")
+            {
+                ApplicationArea = all;
+                trigger OnValidate()
+                begin
+                    if xrec."Global Ress. Mondata" = false
+                    then begin
+                        "Quantity Labor Mandatory" := false;
+                    end;
+                end;
+            }
+        }
+        modify("Quantity Labor Mandatory")
+        {
+            trigger OnAfterValidate()
+            begin
+                if xrec."Quantity Labor Mandatory" = false
+                then begin
+                    "Global Ress. Mondata" := false;
+                end;
+            end;
+        }
+
         addafter(ControlMechanicTimeEntry)
         {
             field("Begin Pack"; "Begin Pack")

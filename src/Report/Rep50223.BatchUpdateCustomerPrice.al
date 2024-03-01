@@ -86,6 +86,7 @@ report 50223 "Batch Update Customer Price"
                                             end;
                                         recProfitAdd.Type::"Remise Exceptionnelle":
                                             begin
+                                                //Message(recItem."No.");
                                                 recSalesDiscount.Init();
                                                 recSalesDiscount."Sales Type" := recSalesDiscount."Sales Type"::Customer;
                                                 recSalesDiscount."Sales Code" := recProfitAdd.Customers;
@@ -97,6 +98,7 @@ report 50223 "Batch Update Customer Price"
                                                 recSalesDiscount."Starting Date" := Today;
                                                 recSalesDiscount."Ending Date" := CalcDate('<1M>', Today);
                                                 recSalesDiscount.Insert;
+
                                             end;
                                     end;
 
@@ -126,12 +128,12 @@ report 50223 "Batch Update Customer Price"
 
     trigger OnPostReport()
     begin
-
+        Message('Traitement terminé avec succès !');
     end;
 
     trigger OnPreReport()
     begin
-        Message('Traitement terminé avec succès !');
+
     end;
 
     var

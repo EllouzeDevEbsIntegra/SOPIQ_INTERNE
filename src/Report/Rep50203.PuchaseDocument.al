@@ -13,6 +13,14 @@ report 50203 "Puchase Document"
         dataitem("Purchase Header"; 38)
         {
             RequestFilterFields = "No.";
+            column(showBin; showBin)
+            {
+
+            }
+            column(Vendor_Shipment_No_; "Vendor Shipment No.")
+            {
+
+            }
             column(PurchaseHeader_No; "Purchase Header"."No.")
             {
             }
@@ -352,9 +360,24 @@ report 50203 "Puchase Document"
                 column(PaymentMethodDescription; PaymentMethodDescription)
                 {
                 }
+                column(bin; bin)
+                {
+
+                }
 
                 trigger OnAfterGetRecord()
+                var
+                    recitem: Record item;
                 begin
+                    recitem.Reset();
+                    bin := '';
+                    recitem.SetRange("No.", "No.");
+                    if recitem.FindFirst() then begin
+                        recitem.setMgPrincipalFilter(recitem);
+                        recitem.CalcFields("Default Bin", "Available Inventory");
+                        bin := recitem."Default Bin";
+                        //Message('item No %1 - bin %2 - default bin %3 - Qty %4', recitem."No.", bin, recitem."Default Bin", recitem."Available Inventory");
+                    end;
                     Desc := '';
                     Nunarticle := '';
                     IF "Line Type" = "Line Type"::Vehicle THEN BEGIN
@@ -496,6 +519,11 @@ report 50203 "Puchase Document"
                         Caption = 'Afficher l''entête et le pied de page';
                         ApplicationArea = all;
                     }
+                    field(showBin; showBin)
+                    {
+                        Caption = 'Afficher casier';
+                        ApplicationArea = all;
+                    }
                 }
             }
         }
@@ -530,6 +558,7 @@ report 50203 "Puchase Document"
     end;
 
     var
+        bin: Code[20];
         AfficherEntetePiedPage: Boolean;
         GCommandService: Record 25006146;
         Companyinfo: Record 79;
@@ -603,5 +632,6 @@ report 50203 "Puchase Document"
         Location: Record Location;
         DemandeAchat: Boolean;
         typeDocument: Option "Demande de prix","Bon de commande","Retour Achat";
+        showBin: Boolean;
 }
 

@@ -103,6 +103,7 @@ page 50104 "Item Equivalent"
             }
 
         }
+
     }
 
     actions
@@ -140,6 +141,30 @@ page 50104 "Item Equivalent"
                 RunPageView = SORTING("Item No.");
                 ToolTip = 'View or set up different prices for the item. An item price is automatically granted on invoice lines when the specified criteria are met, such as vendor, quantity, or ending date.';
                 ShortcutKey = F7;
+            }
+            action(verifyItem)
+            {
+                ApplicationArea = All;
+                Caption = 'Article à vérifier';
+                Image = ChangeStatus;
+                trigger OnAction()
+
+                begin
+                    if Dialog.Confirm('Voulez vous vérifier article N° %1', true, "No.")
+                    then begin
+                        rec."To verify" := true;
+                        rec.Modify();
+                    end;
+                end;
+            }
+            action("Item Info")
+            {
+                Caption = 'Information article';
+                ShortcutKey = 'Ctrl+F8';
+                Image = Picture;
+                // Visible = false;
+                RunObject = page "Item Info";
+                RunPageLink = "No." = field("No.");
             }
         }
     }

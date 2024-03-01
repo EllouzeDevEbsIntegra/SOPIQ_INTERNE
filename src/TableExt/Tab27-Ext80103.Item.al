@@ -222,6 +222,11 @@ tableextension 80103 "Item" extends Item //27
             Editable = false;
             FieldClass = FlowField;
         }
+        field(50137; "To verify"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
 
 
     }
@@ -357,6 +362,17 @@ tableextension 80103 "Item" extends Item //27
             end;
         end;
 
+
+    end;
+
+    procedure setMgPrincipalFilter(recitem: Record item)
+    var
+        recInventorySetup: Record "Inventory Setup";
+    begin
+        recInventorySetup.Reset();
+        if recInventorySetup.FindFirst() then begin
+            "Mg Principal Filter" := recInventorySetup."Magasin Central";
+        end;
 
     end;
 }

@@ -3,6 +3,14 @@ pageextension 80501 "Item Ledger Entries" extends "Item Ledger Entries" //38
     layout
     {
         // Add changes to page layout here
+        addafter("Item No.")
+        {
+            field(itemDescription; itemDescription)
+            {
+                Caption = 'Désignation Article';
+                ApplicationArea = all;
+            }
+        }
         addafter(Quantity)
         {
             field("N° Doc Frs"; "N° Doc Frs")

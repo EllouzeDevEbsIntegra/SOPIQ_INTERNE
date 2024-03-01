@@ -6,9 +6,16 @@ pageextension 80153 "Services Order EDMS" extends "Service Order EDMS"//25006183
         modify("Control Performed")
         {
             trigger OnAfterValidate()
+            var
+                parService: Record "Service Mgt. Setup EDMS";
             begin
-                VehiculePretEditable := true;
-                CurrPage.Update();
+                parService.get();
+                if parService."Global Ress. Mondata" then begin
+                    verifyGlobalQtyFini(rec);
+                    VehiculePretEditable := true;
+                    CurrPage.Update();
+                end;
+
             end;
         }
 
@@ -131,6 +138,26 @@ pageextension 80153 "Services Order EDMS" extends "Service Order EDMS"//25006183
         if ("Vehicule Prete" = false) then VehiculePretEditable := rec."Control Performed" else VehiculePretEditable := false;
     end;
 
+    procedure verifyGlobalQtyFini(ServiceHeaderEDMS: Record "Service Header EDMS")
+    var
+        ServiceLineEDMS: Record "Service Line EDMS";
+        ServLaborAlloc: Record "Serv. Labor Alloc. Application";
+        SumQty: Decimal;
+        Text001: label 'Quantité finie ne doit pas être égale à 0';
+
+    begin
+        ServiceLineEDMS.SetRange("Document No.", ServiceHeaderEDMS."No.");
+        ServiceLineEDMS.SetRange(Type, ServiceLineEDMS.Type::Labor);
+        if ServiceLineEDMS.Count > 0 then begin
+            ServLaborAlloc.Reset();
+            ServLaborAlloc.SetRange("Document No.", ServiceHeaderEDMS."No.");
+            ServLaborAlloc.SetRange("Document Type", ServLaborAlloc."Document Type"::Order);
+            ServLaborAlloc.SetRange("Document Line No.", 0);
+            ServLaborAlloc.CalcSums("Finished Quantity (Hours)");
+            if ServLaborAlloc."Finished Quantity (Hours)" = 0 then
+                Error(Text001);
+        end;
+    end;
 
     var
         VehiculePretEditable: Boolean;

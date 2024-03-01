@@ -2,6 +2,11 @@ tableextension 80150 "Service Mgt. Setup EDMS" extends "Service Mgt. Setup EDMS"
 {
     fields
     {
+        field(79999; "Global Ress. Mondata"; Boolean)
+        {
+            caption = 'Ressource Global Obligatoire';
+            dataClassification = ToBeClassified;
+        }
         field(80000; "Begin Pack"; code[20])
         {
             Caption = 'Début package';

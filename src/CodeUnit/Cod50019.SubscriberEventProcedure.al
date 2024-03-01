@@ -67,6 +67,7 @@ codeunit 50019 SubscriberEventProcedure
     VAR
         PostArchivShipLine: Record "Ligne archive BS";
         recBS: Record "Entete archive BS";
+        recBL: Record "Sales Shipment Header";
 
     begin
         // Message('OLD -->  %1  *** %2', OldSalesShipmentLine."Document No.", OldSalesShipmentLine."Line No.");
@@ -104,6 +105,15 @@ codeunit 50019 SubscriberEventProcedure
                 recBS.Solde := false;
             end;
             recBS.Modify();
+            Commit();
+        end;
+
+        recBL.Reset();
+        recBL.SetRange("No.", OldSalesShipmentLine."Document No.");
+        if recBL.FindFirst() then begin
+            recbl.CalcFields("Montant reçu caisse", "Line Amount");
+            if recBL."Line Amount" = recBL."Montant reçu caisse" then recBL.solde := true else recBL.solde := false;
+            recBL.Modify();
             Commit();
         end;
     end;
@@ -149,4 +159,45 @@ codeunit 50019 SubscriberEventProcedure
 
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, 80, 'OnAfterPostSalesDoc', '', true, true)]
+    // local procedure OnAfterSalesShptLineInsert(var SalesShipmentLine: Record "Sales Shipment Line"; SalesLine: Record "Sales Line"; ItemShptLedEntryNo: Integer; WhseShip: Boolean; WhseReceive: Boolean; CommitIsSuppressed: Boolean; SalesInvoiceHeader: Record "Sales Invoice Header")
+    // begin
+
+    //     Message('here !!!!');
+    //     SalesShipmentLine."% Discount" := SalesShipmentLine."Line Discount %";
+    //     if SalesShipmentLine.Quantity > 0 then begin
+    //         SalesShipmentLine."Line Amount" := SalesShipmentLine.Quantity * SalesShipmentLine."Unit Price" * (1 - SalesShipmentLine."Line Discount %" / 100) * (1 + SalesShipmentLine."VAT %" / 100);
+    //         SalesShipmentLine."Line Amount HT" := SalesShipmentLine.Quantity * SalesShipmentLine."Unit Price" * (1 - SalesShipmentLine."Line Discount %" / 100);
+    //     end;
+    //     SalesShipmentLine.Modify();
+    //     Commit();
+    // end;
+    //  [IntegrationEvent(false, false)]
+    local procedure OnAfterPostSalesDoc(var SalesHeader: Record "Sales Header"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; SalesShptHdrNo: Code[20]; RetRcpHdrNo: Code[20]; SalesInvHdrNo: Code[20]; SalesCrMemoHdrNo: Code[20]; CommitIsSuppressed: Boolean; InvtPickPutaway: Boolean)
+    var
+        salesShipLine: Record "Sales Shipment Line";
+        salesShipHeader: Record "Sales Shipment Header";
+    begin
+
+        salesShipHeader.SetRange("No.", SalesShptHdrNo);
+        salesShipHeader.SetRange(BS, false);
+        if salesShipHeader.FindFirst() then begin
+            salesShipLine.Reset();
+            salesShipLine.SetRange("Document No.", salesShipHeader."No.");
+            salesShipLine.SetRange("Line Amount", 0);
+            if salesShipLine.FindSet() then begin
+                repeat
+                    // Message('here !!!! %1', salesShipLine."Document No.");
+                    salesShipLine."% Discount" := salesShipLine."Line Discount %";
+                    if salesShipLine.Quantity > 0 then begin
+                        salesShipLine."Line Amount" := salesShipLine.Quantity * salesShipLine."Unit Price" * (1 - salesShipLine."Line Discount %" / 100) * (1 + salesShipLine."VAT %" / 100);
+                        salesShipLine."Line Amount HT" := salesShipLine.Quantity * salesShipLine."Unit Price" * (1 - salesShipLine."Line Discount %" / 100);
+                    end;
+                    salesShipLine.Modify();
+                    Commit();
+                until salesShipLine.Next() = 0;
+            end
+        end;
+
+    end;
 }

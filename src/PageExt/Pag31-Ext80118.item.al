@@ -216,7 +216,6 @@ pageextension 80118 "item" extends "Item List" //31
 
     var
         filterDate: text;
-        recInventorySetup: Record "Inventory Setup";
         recItem: Record Item;
         Parvente: Record "Sales & Receivables Setup";
         FieldEtatStyle: Text[50];
@@ -231,10 +230,11 @@ pageextension 80118 "item" extends "Item List" //31
         textFilterMagasinImport: Text;
         StartingDate: Date;
     begin
-        recInventorySetup.Reset();
-        if recInventorySetup.FindFirst() then begin
-            "Mg Principal Filter" := recInventorySetup."Magasin Central";
-        end;
+        // recInventorySetup.Reset();
+        // if recInventorySetup.FindFirst() then begin
+        //     "Mg Principal Filter" := recInventorySetup."Magasin Central";
+        // end;
+        rec.setMgPrincipalFilter(rec);
 
         CalcFields(rec."Available Inventory", rec."Default Bin");
 

@@ -11,322 +11,6 @@
       <rd:DataSourceID>f6a12791-7372-4cc4-8495-c9e5e20c6368</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="custNo">
-          <DataField>custNo</DataField>
-        </Field>
-        <Field Name="companyName">
-          <DataField>companyName</DataField>
-        </Field>
-        <Field Name="CompanyBS">
-          <DataField>CompanyBS</DataField>
-        </Field>
-        <Field Name="custName">
-          <DataField>custName</DataField>
-        </Field>
-        <Field Name="Tax_Area_Code">
-          <DataField>Tax_Area_Code</DataField>
-        </Field>
-        <Field Name="zone">
-          <DataField>zone</DataField>
-        </Field>
-        <Field Name="Phone_No_">
-          <DataField>Phone_No_</DataField>
-        </Field>
-        <Field Name="Address">
-          <DataField>Address</DataField>
-        </Field>
-        <Field Name="City">
-          <DataField>City</DataField>
-        </Field>
-        <Field Name="includeBL">
-          <DataField>includeBL</DataField>
-        </Field>
-        <Field Name="includeBS">
-          <DataField>includeBS</DataField>
-        </Field>
-        <Field Name="includeFV">
-          <DataField>includeFV</DataField>
-        </Field>
-        <Field Name="includeCV">
-          <DataField>includeCV</DataField>
-        </Field>
-        <Field Name="dateDebut">
-          <DataField>dateDebut</DataField>
-        </Field>
-        <Field Name="dateFin">
-          <DataField>dateFin</DataField>
-        </Field>
-        <Field Name="totalByZone">
-          <DataField>totalByZone</DataField>
-        </Field>
-        <Field Name="showTotalBelow">
-          <DataField>showTotalBelow</DataField>
-        </Field>
-        <Field Name="showDetails">
-          <DataField>showDetails</DataField>
-        </Field>
-        <Field Name="numCV">
-          <DataField>numCV</DataField>
-        </Field>
-        <Field Name="date_CV">
-          <DataField>date_CV</DataField>
-        </Field>
-        <Field Name="custImprime_CV">
-          <DataField>custImprime_CV</DataField>
-        </Field>
-        <Field Name="custCvNo">
-          <DataField>custCvNo</DataField>
-        </Field>
-        <Field Name="soldeCV">
-          <DataField>soldeCV</DataField>
-        </Field>
-        <Field Name="soldeCVFormat">
-          <DataField>soldeCVFormat</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseCV">
-          <DataField>mntRecuCaisseCV</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseCVFormat">
-          <DataField>mntRecuCaisseCVFormat</DataField>
-        </Field>
-        <Field Name="mntTTC_CV">
-          <DataField>mntTTC_CV</DataField>
-        </Field>
-        <Field Name="mntTTC_CVFormat">
-          <DataField>mntTTC_CVFormat</DataField>
-        </Field>
-        <Field Name="numRV">
-          <DataField>numRV</DataField>
-        </Field>
-        <Field Name="date_RV">
-          <DataField>date_RV</DataField>
-        </Field>
-        <Field Name="custImprime_RV">
-          <DataField>custImprime_RV</DataField>
-        </Field>
-        <Field Name="custRvNo">
-          <DataField>custRvNo</DataField>
-        </Field>
-        <Field Name="soldeRV">
-          <DataField>soldeRV</DataField>
-        </Field>
-        <Field Name="soldeRVFormat">
-          <DataField>soldeRVFormat</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseRV">
-          <DataField>mntRecuCaisseRV</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseRVFormat">
-          <DataField>mntRecuCaisseRVFormat</DataField>
-        </Field>
-        <Field Name="mntTTC_RV">
-          <DataField>mntTTC_RV</DataField>
-        </Field>
-        <Field Name="mntTTC_RVFormat">
-          <DataField>mntTTC_RVFormat</DataField>
-        </Field>
-        <Field Name="numBL">
-          <DataField>numBL</DataField>
-        </Field>
-        <Field Name="date_BL">
-          <DataField>date_BL</DataField>
-        </Field>
-        <Field Name="custImprime_BL">
-          <DataField>custImprime_BL</DataField>
-        </Field>
-        <Field Name="custBlNo">
-          <DataField>custBlNo</DataField>
-        </Field>
-        <Field Name="soldeBL">
-          <DataField>soldeBL</DataField>
-        </Field>
-        <Field Name="soldeBLFormat">
-          <DataField>soldeBLFormat</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseBL">
-          <DataField>mntRecuCaisseBL</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseBLFormat">
-          <DataField>mntRecuCaisseBLFormat</DataField>
-        </Field>
-        <Field Name="mntTTC_BL">
-          <DataField>mntTTC_BL</DataField>
-        </Field>
-        <Field Name="mntTTC_BLFormat">
-          <DataField>mntTTC_BLFormat</DataField>
-        </Field>
-        <Field Name="mntTTC_BL_companyBS">
-          <DataField>mntTTC_BL_companyBS</DataField>
-        </Field>
-        <Field Name="mntTTC_BL_companyBSFormat">
-          <DataField>mntTTC_BL_companyBSFormat</DataField>
-        </Field>
-        <Field Name="numRetour_BL">
-          <DataField>numRetour_BL</DataField>
-        </Field>
-        <Field Name="date_Retour_BL">
-          <DataField>date_Retour_BL</DataField>
-        </Field>
-        <Field Name="custImprime_Retour_BL">
-          <DataField>custImprime_Retour_BL</DataField>
-        </Field>
-        <Field Name="custRetour_BL">
-          <DataField>custRetour_BL</DataField>
-        </Field>
-        <Field Name="soldeRetour_BL">
-          <DataField>soldeRetour_BL</DataField>
-        </Field>
-        <Field Name="soldeRetour_BLFormat">
-          <DataField>soldeRetour_BLFormat</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseRetour_BL">
-          <DataField>mntRecuCaisseRetour_BL</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseRetour_BLFormat">
-          <DataField>mntRecuCaisseRetour_BLFormat</DataField>
-        </Field>
-        <Field Name="mntTTCRetour_BL">
-          <DataField>mntTTCRetour_BL</DataField>
-        </Field>
-        <Field Name="mntTTCRetour_BLFormat">
-          <DataField>mntTTCRetour_BLFormat</DataField>
-        </Field>
-        <Field Name="mntTTCRetour_BL_companyBS">
-          <DataField>mntTTCRetour_BL_companyBS</DataField>
-        </Field>
-        <Field Name="mntTTCRetour_BL_companyBSFormat">
-          <DataField>mntTTCRetour_BL_companyBSFormat</DataField>
-        </Field>
-        <Field Name="numRetour_BS">
-          <DataField>numRetour_BS</DataField>
-        </Field>
-        <Field Name="date_Retour_BS">
-          <DataField>date_Retour_BS</DataField>
-        </Field>
-        <Field Name="custImprime_Retour_BS">
-          <DataField>custImprime_Retour_BS</DataField>
-        </Field>
-        <Field Name="custRetour_BS">
-          <DataField>custRetour_BS</DataField>
-        </Field>
-        <Field Name="soldeRetour_BS">
-          <DataField>soldeRetour_BS</DataField>
-        </Field>
-        <Field Name="soldeRetour_BSFormat">
-          <DataField>soldeRetour_BSFormat</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseRetour_BS">
-          <DataField>mntRecuCaisseRetour_BS</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseRetour_BSFormat">
-          <DataField>mntRecuCaisseRetour_BSFormat</DataField>
-        </Field>
-        <Field Name="mntTTCRetour_BS">
-          <DataField>mntTTCRetour_BS</DataField>
-        </Field>
-        <Field Name="mntTTCRetour_BSFormat">
-          <DataField>mntTTCRetour_BSFormat</DataField>
-        </Field>
-        <Field Name="numBS">
-          <DataField>numBS</DataField>
-        </Field>
-        <Field Name="custImprime_BS">
-          <DataField>custImprime_BS</DataField>
-        </Field>
-        <Field Name="date_BS">
-          <DataField>date_BS</DataField>
-        </Field>
-        <Field Name="custBsNo">
-          <DataField>custBsNo</DataField>
-        </Field>
-        <Field Name="soldeBS">
-          <DataField>soldeBS</DataField>
-        </Field>
-        <Field Name="soldeBSFormat">
-          <DataField>soldeBSFormat</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseBS">
-          <DataField>mntRecuCaisseBS</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseBSFormat">
-          <DataField>mntRecuCaisseBSFormat</DataField>
-        </Field>
-        <Field Name="mntTTC_BS">
-          <DataField>mntTTC_BS</DataField>
-        </Field>
-        <Field Name="mntTTC_BSFormat">
-          <DataField>mntTTC_BSFormat</DataField>
-        </Field>
-        <Field Name="numFV">
-          <DataField>numFV</DataField>
-        </Field>
-        <Field Name="custImprime_FV">
-          <DataField>custImprime_FV</DataField>
-        </Field>
-        <Field Name="date_FV">
-          <DataField>date_FV</DataField>
-        </Field>
-        <Field Name="custFVNo">
-          <DataField>custFVNo</DataField>
-        </Field>
-        <Field Name="soldeFV">
-          <DataField>soldeFV</DataField>
-        </Field>
-        <Field Name="soldeFVFormat">
-          <DataField>soldeFVFormat</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseFV">
-          <DataField>mntRecuCaisseFV</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseFVFormat">
-          <DataField>mntRecuCaisseFVFormat</DataField>
-        </Field>
-        <Field Name="mntTTC_FV">
-          <DataField>mntTTC_FV</DataField>
-        </Field>
-        <Field Name="mntTTC_FVFormat">
-          <DataField>mntTTC_FVFormat</DataField>
-        </Field>
-        <Field Name="numAV">
-          <DataField>numAV</DataField>
-        </Field>
-        <Field Name="custImprime_AV">
-          <DataField>custImprime_AV</DataField>
-        </Field>
-        <Field Name="date_AV">
-          <DataField>date_AV</DataField>
-        </Field>
-        <Field Name="custAVNo">
-          <DataField>custAVNo</DataField>
-        </Field>
-        <Field Name="soldeAV">
-          <DataField>soldeAV</DataField>
-        </Field>
-        <Field Name="soldeAVFormat">
-          <DataField>soldeAVFormat</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseAV">
-          <DataField>mntRecuCaisseAV</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseAVFormat">
-          <DataField>mntRecuCaisseAVFormat</DataField>
-        </Field>
-        <Field Name="mntTTC_AV">
-          <DataField>mntTTC_AV</DataField>
-        </Field>
-        <Field Name="mntTTC_AVFormat">
-          <DataField>mntTTC_AVFormat</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -355,7 +39,7 @@
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.86458cm</Height>
+                  <Height>0.72cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -461,7 +145,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -797,7 +481,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -947,7 +631,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1093,7 +777,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1372,7 +1056,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1475,7 +1159,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1757,7 +1441,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1860,7 +1544,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2142,7 +1826,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2245,7 +1929,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2511,7 +2195,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2614,7 +2298,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2880,7 +2564,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2983,7 +2667,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3249,7 +2933,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3352,7 +3036,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3618,7 +3302,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3721,7 +3405,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3987,7 +3671,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -4090,7 +3774,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.81167cm</Height>
+                  <Height>0.72cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -4192,7 +3876,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -4668,7 +4351,7 @@
             <DataSetName>DataSet_Result</DataSetName>
             <Top>0.14993cm</Top>
             <Left>0.11857cm</Left>
-            <Height>20.15625cm</Height>
+            <Height>18.02cm</Height>
             <Width>19.52681cm</Width>
             <Style>
               <Border>
@@ -4677,7 +4360,7 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>20.6766cm</Height>
+        <Height>18.4541cm</Height>
         <Style />
       </Body>
       <Width>19.77411cm</Width>
@@ -4898,12 +4581,6 @@
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParametersLayout>
-    <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
-    </GridLayoutDefinition>
-  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -4943,4 +4620,320 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="custNo">
+          <DataField>custNo</DataField>
+        </Field>
+        <Field Name="companyName">
+          <DataField>companyName</DataField>
+        </Field>
+        <Field Name="CompanyBS">
+          <DataField>CompanyBS</DataField>
+        </Field>
+        <Field Name="custName">
+          <DataField>custName</DataField>
+        </Field>
+        <Field Name="Tax_Area_Code">
+          <DataField>Tax_Area_Code</DataField>
+        </Field>
+        <Field Name="zone">
+          <DataField>zone</DataField>
+        </Field>
+        <Field Name="Phone_No_">
+          <DataField>Phone_No_</DataField>
+        </Field>
+        <Field Name="Address">
+          <DataField>Address</DataField>
+        </Field>
+        <Field Name="City">
+          <DataField>City</DataField>
+        </Field>
+        <Field Name="includeBL">
+          <DataField>includeBL</DataField>
+        </Field>
+        <Field Name="includeBS">
+          <DataField>includeBS</DataField>
+        </Field>
+        <Field Name="includeFV">
+          <DataField>includeFV</DataField>
+        </Field>
+        <Field Name="includeCV">
+          <DataField>includeCV</DataField>
+        </Field>
+        <Field Name="dateDebut">
+          <DataField>dateDebut</DataField>
+        </Field>
+        <Field Name="dateFin">
+          <DataField>dateFin</DataField>
+        </Field>
+        <Field Name="totalByZone">
+          <DataField>totalByZone</DataField>
+        </Field>
+        <Field Name="showTotalBelow">
+          <DataField>showTotalBelow</DataField>
+        </Field>
+        <Field Name="showDetails">
+          <DataField>showDetails</DataField>
+        </Field>
+        <Field Name="numCV">
+          <DataField>numCV</DataField>
+        </Field>
+        <Field Name="date_CV">
+          <DataField>date_CV</DataField>
+        </Field>
+        <Field Name="custImprime_CV">
+          <DataField>custImprime_CV</DataField>
+        </Field>
+        <Field Name="custCvNo">
+          <DataField>custCvNo</DataField>
+        </Field>
+        <Field Name="soldeCV">
+          <DataField>soldeCV</DataField>
+        </Field>
+        <Field Name="soldeCVFormat">
+          <DataField>soldeCVFormat</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseCV">
+          <DataField>mntRecuCaisseCV</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseCVFormat">
+          <DataField>mntRecuCaisseCVFormat</DataField>
+        </Field>
+        <Field Name="mntTTC_CV">
+          <DataField>mntTTC_CV</DataField>
+        </Field>
+        <Field Name="mntTTC_CVFormat">
+          <DataField>mntTTC_CVFormat</DataField>
+        </Field>
+        <Field Name="numRV">
+          <DataField>numRV</DataField>
+        </Field>
+        <Field Name="date_RV">
+          <DataField>date_RV</DataField>
+        </Field>
+        <Field Name="custImprime_RV">
+          <DataField>custImprime_RV</DataField>
+        </Field>
+        <Field Name="custRvNo">
+          <DataField>custRvNo</DataField>
+        </Field>
+        <Field Name="soldeRV">
+          <DataField>soldeRV</DataField>
+        </Field>
+        <Field Name="soldeRVFormat">
+          <DataField>soldeRVFormat</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseRV">
+          <DataField>mntRecuCaisseRV</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseRVFormat">
+          <DataField>mntRecuCaisseRVFormat</DataField>
+        </Field>
+        <Field Name="mntTTC_RV">
+          <DataField>mntTTC_RV</DataField>
+        </Field>
+        <Field Name="mntTTC_RVFormat">
+          <DataField>mntTTC_RVFormat</DataField>
+        </Field>
+        <Field Name="numBL">
+          <DataField>numBL</DataField>
+        </Field>
+        <Field Name="date_BL">
+          <DataField>date_BL</DataField>
+        </Field>
+        <Field Name="custImprime_BL">
+          <DataField>custImprime_BL</DataField>
+        </Field>
+        <Field Name="custBlNo">
+          <DataField>custBlNo</DataField>
+        </Field>
+        <Field Name="soldeBL">
+          <DataField>soldeBL</DataField>
+        </Field>
+        <Field Name="soldeBLFormat">
+          <DataField>soldeBLFormat</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseBL">
+          <DataField>mntRecuCaisseBL</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseBLFormat">
+          <DataField>mntRecuCaisseBLFormat</DataField>
+        </Field>
+        <Field Name="mntTTC_BL">
+          <DataField>mntTTC_BL</DataField>
+        </Field>
+        <Field Name="mntTTC_BLFormat">
+          <DataField>mntTTC_BLFormat</DataField>
+        </Field>
+        <Field Name="mntTTC_BL_companyBS">
+          <DataField>mntTTC_BL_companyBS</DataField>
+        </Field>
+        <Field Name="mntTTC_BL_companyBSFormat">
+          <DataField>mntTTC_BL_companyBSFormat</DataField>
+        </Field>
+        <Field Name="numRetour_BL">
+          <DataField>numRetour_BL</DataField>
+        </Field>
+        <Field Name="date_Retour_BL">
+          <DataField>date_Retour_BL</DataField>
+        </Field>
+        <Field Name="custImprime_Retour_BL">
+          <DataField>custImprime_Retour_BL</DataField>
+        </Field>
+        <Field Name="custRetour_BL">
+          <DataField>custRetour_BL</DataField>
+        </Field>
+        <Field Name="soldeRetour_BL">
+          <DataField>soldeRetour_BL</DataField>
+        </Field>
+        <Field Name="soldeRetour_BLFormat">
+          <DataField>soldeRetour_BLFormat</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseRetour_BL">
+          <DataField>mntRecuCaisseRetour_BL</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseRetour_BLFormat">
+          <DataField>mntRecuCaisseRetour_BLFormat</DataField>
+        </Field>
+        <Field Name="mntTTCRetour_BL">
+          <DataField>mntTTCRetour_BL</DataField>
+        </Field>
+        <Field Name="mntTTCRetour_BLFormat">
+          <DataField>mntTTCRetour_BLFormat</DataField>
+        </Field>
+        <Field Name="mntTTCRetour_BL_companyBS">
+          <DataField>mntTTCRetour_BL_companyBS</DataField>
+        </Field>
+        <Field Name="mntTTCRetour_BL_companyBSFormat">
+          <DataField>mntTTCRetour_BL_companyBSFormat</DataField>
+        </Field>
+        <Field Name="numRetour_BS">
+          <DataField>numRetour_BS</DataField>
+        </Field>
+        <Field Name="date_Retour_BS">
+          <DataField>date_Retour_BS</DataField>
+        </Field>
+        <Field Name="custImprime_Retour_BS">
+          <DataField>custImprime_Retour_BS</DataField>
+        </Field>
+        <Field Name="custRetour_BS">
+          <DataField>custRetour_BS</DataField>
+        </Field>
+        <Field Name="soldeRetour_BS">
+          <DataField>soldeRetour_BS</DataField>
+        </Field>
+        <Field Name="soldeRetour_BSFormat">
+          <DataField>soldeRetour_BSFormat</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseRetour_BS">
+          <DataField>mntRecuCaisseRetour_BS</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseRetour_BSFormat">
+          <DataField>mntRecuCaisseRetour_BSFormat</DataField>
+        </Field>
+        <Field Name="mntTTCRetour_BS">
+          <DataField>mntTTCRetour_BS</DataField>
+        </Field>
+        <Field Name="mntTTCRetour_BSFormat">
+          <DataField>mntTTCRetour_BSFormat</DataField>
+        </Field>
+        <Field Name="numBS">
+          <DataField>numBS</DataField>
+        </Field>
+        <Field Name="custImprime_BS">
+          <DataField>custImprime_BS</DataField>
+        </Field>
+        <Field Name="date_BS">
+          <DataField>date_BS</DataField>
+        </Field>
+        <Field Name="custBsNo">
+          <DataField>custBsNo</DataField>
+        </Field>
+        <Field Name="soldeBS">
+          <DataField>soldeBS</DataField>
+        </Field>
+        <Field Name="soldeBSFormat">
+          <DataField>soldeBSFormat</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseBS">
+          <DataField>mntRecuCaisseBS</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseBSFormat">
+          <DataField>mntRecuCaisseBSFormat</DataField>
+        </Field>
+        <Field Name="mntTTC_BS">
+          <DataField>mntTTC_BS</DataField>
+        </Field>
+        <Field Name="mntTTC_BSFormat">
+          <DataField>mntTTC_BSFormat</DataField>
+        </Field>
+        <Field Name="numFV">
+          <DataField>numFV</DataField>
+        </Field>
+        <Field Name="custImprime_FV">
+          <DataField>custImprime_FV</DataField>
+        </Field>
+        <Field Name="date_FV">
+          <DataField>date_FV</DataField>
+        </Field>
+        <Field Name="custFVNo">
+          <DataField>custFVNo</DataField>
+        </Field>
+        <Field Name="soldeFV">
+          <DataField>soldeFV</DataField>
+        </Field>
+        <Field Name="soldeFVFormat">
+          <DataField>soldeFVFormat</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseFV">
+          <DataField>mntRecuCaisseFV</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseFVFormat">
+          <DataField>mntRecuCaisseFVFormat</DataField>
+        </Field>
+        <Field Name="mntTTC_FV">
+          <DataField>mntTTC_FV</DataField>
+        </Field>
+        <Field Name="mntTTC_FVFormat">
+          <DataField>mntTTC_FVFormat</DataField>
+        </Field>
+        <Field Name="numAV">
+          <DataField>numAV</DataField>
+        </Field>
+        <Field Name="custImprime_AV">
+          <DataField>custImprime_AV</DataField>
+        </Field>
+        <Field Name="date_AV">
+          <DataField>date_AV</DataField>
+        </Field>
+        <Field Name="custAVNo">
+          <DataField>custAVNo</DataField>
+        </Field>
+        <Field Name="soldeAV">
+          <DataField>soldeAV</DataField>
+        </Field>
+        <Field Name="soldeAVFormat">
+          <DataField>soldeAVFormat</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseAV">
+          <DataField>mntRecuCaisseAV</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseAVFormat">
+          <DataField>mntRecuCaisseAVFormat</DataField>
+        </Field>
+        <Field Name="mntTTC_AV">
+          <DataField>mntTTC_AV</DataField>
+        </Field>
+        <Field Name="mntTTC_AVFormat">
+          <DataField>mntTTC_AVFormat</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

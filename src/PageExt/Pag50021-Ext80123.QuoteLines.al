@@ -2,6 +2,8 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
 {
     layout
     {
+
+
         modify("No.")
         {
             StyleExpr = styleExpr;
@@ -76,6 +78,7 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
         }
     }
 
+
     actions
     {
         modify(ItemTransaction)
@@ -113,6 +116,36 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
                 RunPageView = SORTING("Item No.");
                 ToolTip = 'View or set up different prices for the item. An item price is automatically granted on invoice lines when the specified criteria are met, such as vendor, quantity, or ending date.';
                 ShortcutKey = F7;
+            }
+            action(verifyItem)
+            {
+                ApplicationArea = All;
+                Caption = 'Article à vérifier';
+                Image = ChangeStatus;
+                trigger OnAction()
+                var
+                    recitem: Record Item;
+                begin
+                    if Dialog.Confirm('Voulez vous vérifier article N° %1', true, "No.")
+                    then begin
+                        recitem.SetRange("No.", "No.");
+                        if recitem.FindFirst() then begin
+                            recitem."To verify" := true;
+                            recitem.Modify();
+                        end;
+                    end
+
+                end;
+            }
+
+            action("Item Info")
+            {
+                Caption = 'Information article';
+                ShortcutKey = 'Ctrl+F8';
+                Image = Picture;
+                // Visible = false;
+                RunObject = page "Item Info";
+                RunPageLink = "No." = field("No.");
             }
         }
     }

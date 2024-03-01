@@ -72,12 +72,12 @@ tableextension 80422 "Sales Shipment Line" extends "Sales Shipment Line" //111
                 else begin
                     rec."Qty BS To Invoice" := rec.Quantity;
                 end;
-                rec.Modify(true);
+                rec.Modify();
             end;
+
 
         end;
     end;
 
-
-
 }
+

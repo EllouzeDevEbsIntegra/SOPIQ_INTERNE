@@ -3,6 +3,173 @@ pageextension 80342 "Sales Return Order Subform" extends "Sales Return Order Sub
     layout
     {
         // Add changes to page layout here
+        modify("Unit Price")
+        {
+            Editable = EditPrice;
+            trigger OnAfterValidate()
+            var
+                myInt: Integer;
+            begin
+                CurrPage.SaveRecord();
+                getTTC();
+                //TTCInitial := 0;
+                NewTTCAmount := 0;
+                NewTHAmount := 0;
+                RemiseCalculated := 0;
+                CurrPage.Update();
+            end;
+        }
+        modify("Line Amount")
+        {
+            Editable = EditPrice;
+        }
+        modify(Quantity)
+        {
+            trigger OnAfterValidate()
+            var
+                myInt: Integer;
+            begin
+                getTTC();
+                //TTCInitial := 0;
+                NewTTCAmount := 0;
+                NewTHAmount := 0;
+                RemiseCalculated := 0;
+                CurrPage.Update();
+            end;
+        }
+        modify("Line Discount %")
+        {
+            Editable = Editdiscount;
+            trigger OnAfterValidate()
+            var
+                myInt: Integer;
+            begin
+                CurrPage.SaveRecord();
+                getTTC();
+                //TTCInitial := 0;
+                NewTTCAmount := 0;
+                NewTHAmount := 0;
+                RemiseCalculated := 0;
+                NewTTCAmount := 0;
+                CurrPage.Update();
+            end;
+        }
+        modify("Invoice Discount Amount")
+        {
+            Editable = false;
+
+
+        }
+
+        modify("Invoice Disc. Pct.")
+        {
+            Editable = false;
+
+        }
+        addafter("Total Amount Incl. VAT")
+        {
+            field(StampAmount; StampAmount)
+            {
+                ApplicationArea = All;
+                caption = 'Montant Timbre';
+                Style = Attention;
+                Editable = false;
+            }
+            field(TTCInitial; TTCInitial)
+            {
+                ApplicationArea = All;
+                Caption = 'Total TTC INITIAL';
+                Editable = false;
+                Style = Attention;
+            }
+
+            field(NewTTCAmount; NewTTCAmount)
+            {
+                ApplicationArea = All;
+                caption = 'Total TTC souhaité';
+                Style = Strong;
+                Editable = ModifAmountInvoice;
+                trigger OnValidate()
+                var
+                    myInt: Integer;
+                    lsalesline: Record "Sales Line";
+                    lsalesheader: Record "Sales Header";
+                    Appliquer: label 'Appliquer les nouveaux valeurs ? ';
+                begin
+
+                    if lsalesheader.get("Document Type", "Document No.") then begin
+                        lsalesheader.CalcFields("Total line amount", "Amount Including VAT");
+                        // lsalesheader."Old Amount Including VAT" := lsalesheader."Amount Including VAT" + lsalesheader."Stamp Amount";
+                        // lsalesheader.modify;
+                        TTCInitial := lsalesheader."Old Amount Including VAT";
+                        lsalesline.setrange("Document Type", "Document Type");
+                        lsalesline.setrange("Document No.", "Document No.");
+                        lsalesline.setrange(Type, lsalesline.Type::Item);
+                        if lsalesline.FindFirst then;
+
+
+                        IF (NewTTCAmount <> 0) and (lsalesheader."Amount Including VAT" <> 0) THEN begin
+                            //getInitialTTC();
+                            /// Si déja saisie 
+                            IF lsalesheader."Old Amount Including VAT" > 0 then begin
+                                if (lsalesheader."Old Amount Including VAT" - NewTTCAmount) > UserSetup."Ajuster montant facture à" then begin
+                                    Message(Autorisationdepassed, UserSetup."Ajuster montant facture à", (lsalesheader."Old Amount Including VAT" - NewTTCAmount) - UserSetup."Ajuster montant facture à");
+                                    error('Montant dépassé');
+                                end;
+                                //Première arroundissement
+                            end else begin
+                                if (lsalesheader."Amount Including VAT" - NewTTCAmount) > UserSetup."Ajuster montant facture à" then begin
+                                    Message(Autorisationdepassed, UserSetup."Ajuster montant facture à", (lsalesheader."Amount Including VAT" - NewTTCAmount) - UserSetup."Ajuster montant facture à");
+                                    error('Montant dépassé');
+                                end;
+                            end;
+
+
+                            IF lsalesheader."Old Amount Including VAT" = 0 THEN begin
+                                //getInitialTTC();
+                                lsalesheader."Old Amount Including VAT" := lsalesheader."Amount Including VAT" + lsalesheader."STStamp Amount";
+                                lsalesheader.modify;
+                                TTCInitial := lsalesheader."Old Amount Including VAT";
+                            end;
+                            if lsalesline."VAT %" > 0 then
+                                NewTHAmount := NewTTCAmount / (1 + (lsalesline."VAT %" / 100)) else
+                                NewTHAmount := NewTTCAmount;
+                            RemiseCalculated := (1 - (NewTHAmount / lsalesheader."Total line amount")) * 100;
+                            CurrPage.Update(true);
+                            // IF CONFIRM(Appliquer, true) then begin
+                            lsalesline.setrange("Document Type", "Document Type");
+                            lsalesline.setrange("Document No.", "Document No.");
+                            lsalesline.setrange(Type, lsalesline.Type::Item);
+                            lsalesline.SetFilter("Line Amount", '>%1', 0);
+                            if lsalesline.Findset then begin
+                                repeat
+                                    lsalesline.validate("Line Amount", lsalesline."Line Amount" * (1 - (RemiseCalculated / 100)));
+                                    lsalesline.modify;
+                                UNTIL lsalesline.NEXT = 0;
+
+                            end;
+                            // end;
+
+                        end;
+                    end;
+
+                end;
+            }
+            field(NewTHAmount; NewTHAmount)
+            {
+                ApplicationArea = All;
+                caption = 'Total HT souhaité';
+                Style = Favorable;
+                Editable = false;
+            }
+            field(RemiseCalculated; RemiseCalculated)
+            {
+                ApplicationArea = All;
+                caption = 'Remise calculé';
+                Style = AttentionAccent;
+                Editable = false;
+            }
+        }
     }
 
     actions
@@ -33,9 +200,118 @@ pageextension 80342 "Sales Return Order Subform" extends "Sales Return Order Sub
 
                 end;
             }
+
+            action(CalculateInitialPrice)
+            {
+                Caption = 'Calculer prix initial';
+                Image = Calculate;
+                trigger OnAction()
+                begin
+                    CurrPage.SaveRecord();
+                    getTTC();
+                    //TTCInitial := 0;
+                    NewTTCAmount := 0;
+                    NewTHAmount := 0;
+                    RemiseCalculated := 0;
+                    NewTTCAmount := 0;
+                    CurrPage.Update();
+                end;
+            }
         }
     }
 
     var
         myInt: Integer;
+
+    trigger OnAfterGetRecord()
+    var
+        myInt: Integer;
+    begin
+        salesheader.get("Document Type", "Document No.");
+        TTCInitial := salesheader."Old Amount Including VAT";
+        StampAmount := salesheader."STStamp Amount";
+        // TTCInitial := salesheader."Old Amount Including VAT" + salesheader."Stamp Amount";
+        // getInitialTTC();
+    end;
+
+
+    trigger OnOpenPage()
+    var
+        myInt: Integer;
+
+    begin
+
+        if UserSetup.get(UserId) then;
+        EditPrice := UserSetup."Allow Modify Price";
+        Editdiscount := UserSetup."Allow Modify discount";
+        ModifAmountInvoice := UserSetup."Allow modify amount invoice";
+        AdjaustAmntInvoice := UserSetup."Ajuster montant facture à";
+        if salesheader.get("Document Type", "Document No.") then
+            TTCInitial := salesheader."Old Amount Including VAT";
+
+        //getInitialTTC();
+        StampAmount := salesheader."STStamp Amount";
+    end;
+
+    local procedure getInitialTTC()
+    var
+        myInt: Integer;
+        lsalesline: Record "Sales Line";
+        lsalesheader: Record "Sales Header";
+    begin
+        TTCInitial := 0;
+
+        if lsalesheader.get(lsalesheader."Document Type"::"Return Order", "Document No.") then
+            lsalesline.setrange("Document Type", "Document Type");
+        lsalesline.setrange("Document No.", "Document No.");
+        lsalesline.setrange(Type, lsalesline.Type::Item);
+        lsalesline.SetFilter("Line Amount", '>%1', 0);
+        if lsalesline.Findset then begin
+            repeat
+                TTCInitial += (lsalesline.Quantity * lsalesline."Unit Price") * (1 - lsalesline."Line Discount %" / 100)
+                * (1 + (lsalesline."VAT %" / 100));
+            //TTCInitial += lsalesline."Amount Including VAT";
+            UNTIL lsalesline.NEXT = 0;
+            TTCInitial := TTCInitial + lsalesheader."STStamp Amount";
+            lsalesheader."Old Amount Including VAT" := TTCInitial;
+            lsalesheader.modify;
+
+        end;
+    end;
+
+    local procedure getTTC()
+    var
+        myInt: Integer;
+        lsalesline: Record "Sales Line";
+        lsalesheader: Record "Sales Header";
+    begin
+        TTCInitial := 0;
+        if lsalesheader.get(lsalesheader."Document Type"::"Return Order", "Document No.") then
+            lsalesheader.CalcFields("Amount Including VAT");
+        lsalesheader."Old Amount Including VAT" := lsalesheader."Amount Including VAT";
+        lsalesheader.modify;
+        TTCInitial := lsalesheader."Old Amount Including VAT";
+
+        //message('%1 %2', lsalesheader."Amount Including VAT", lsalesheader."Stamp Amount");
+        //lsalesheader."Old Amount Including VAT" := TTCInitial;
+        //lsalesheader.modify;
+
+    end;
+
+    var
+        UpdateAmount: Boolean;
+        NewTTCAmount: Decimal;
+        TTCInitial: Decimal;
+        StampAmount: Decimal;
+        NewTHAmount: Decimal;
+        RemiseCalculated: Decimal;
+        UserSetup: Record "User Setup";
+        EditPrice: Boolean;
+        Editdiscount: Boolean;
+        ModifAmountInvoice: Boolean;
+        AdjaustAmntInvoice: Decimal;
+        salesheader: Record "Sales Header";
+        Autorisationdepassed: label 'Montant ajustement facture dépassé \Montant permis : %1\ dépassement : %2';
+
+
 }

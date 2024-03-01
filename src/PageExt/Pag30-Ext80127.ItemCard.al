@@ -29,6 +29,20 @@ pageextension 80127 "Item Card" extends "Item Card"//30
 
     actions
     {
+        addafter("Item Reclassification Journal")
+        {
+            action(verifyItem)
+            {
+                ApplicationArea = All;
+                Caption = 'Article vérifié';
+                Image = Approve;
+                trigger OnAction()
+                begin
+                    rec."To verify" := false;
+                    rec.Modify();
+                end;
+            }
+        }
 
     }
 

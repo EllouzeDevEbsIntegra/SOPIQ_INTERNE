@@ -30,6 +30,7 @@ report 50208 "Batch Update Item Class"
                 recCustomer: Record Customer;
                 recProfitAdd: Record "Customer Additional Profit";
                 recSalesPrice: Record "Sales Price";
+                recCategory: Record "Item Category";
 
             begin
                 // Mise à jour classe article
@@ -39,7 +40,13 @@ report 50208 "Batch Update Item Class"
                     "Item Class" := RecItemClass."Item Class";
                     Modify();
                 end;
-                Message('Traitement terminé avec succès !');
+
+
+                recCategory.SetRange(Code, "Item Sub Product Code");
+                if recCategory.FindFirst() then begin
+                    "Item Product Code" := recCategory."Parent Category";
+                    Modify();
+                end;
 
 
             end;
@@ -56,7 +63,7 @@ report 50208 "Batch Update Item Class"
 
     trigger OnPostReport()
     begin
-
+        Message('Traitement terminé avec succès !');
     end;
 
     trigger OnPreReport()
