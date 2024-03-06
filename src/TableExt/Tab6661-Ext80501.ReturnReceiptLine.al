@@ -62,6 +62,7 @@ tableextension 80501 "Return Receipt Line" extends "Return Receipt Line" //6661
     var
         SalesShipmentLine: Record "Sales Shipment Line";
         ReturnReceiptHeader: Record "Return Receipt Header";
+        retourRecLine: Record "Return Receipt Line";
     begin
         ReturnReceiptHeader.Reset();
         if ReturnReceiptHeader.get(rec."Document No.") then begin
@@ -85,7 +86,23 @@ tableextension 80501 "Return Receipt Line" extends "Return Receipt Line" //6661
                     rec."Qty BS To Purchase" := rec.Quantity;
                 end;
                 rec.Modify(true);
+            end
+            else begin
+                retourRecLine.Reset();
+                retourRecLine.SetRange("Document No.", ReturnReceiptHeader."No.");
+                retourRecLine.SetRange(Type, retourRecLine.Type::Item);
+                if retourRecLine.FindSet() then begin
+                    repeat
+                        if Amount = 0 then begin
+                            Amount := ("Unit Price" * Quantity) * (1 - ("Line Discount %" / 100));
+                            "Amount Including VAT" := ("Unit Price" * Quantity) * (1 - ("Line Discount %" / 100)) * (1 + ("VAT %" / 100));
+                            retourRecLine.Modify();
+                        end
+                    until retourRecLine.Next() = 0;
+                end
+
             end;
         end;
+
     end;
 }

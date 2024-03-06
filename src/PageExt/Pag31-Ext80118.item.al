@@ -52,6 +52,11 @@ pageextension 80118 "item" extends "Item List" //31
             {
 
             }
+            field("Total Vendu"; "Total Vendu")
+            {
+                Caption = 'Total Vente';
+                ApplicationArea = all;
+            }
 
             // field(etatStkFrsBase; etatStkFrsBase)
             // {
@@ -236,7 +241,7 @@ pageextension 80118 "item" extends "Item List" //31
         // end;
         rec.setMgPrincipalFilter(rec);
 
-        CalcFields(rec."Available Inventory", rec."Default Bin");
+        CalcFields(rec."Available Inventory", rec."Default Bin", "Total Vendu");
 
 
 

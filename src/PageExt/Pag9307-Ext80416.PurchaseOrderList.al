@@ -11,6 +11,13 @@ pageextension 80416 "Purchase Order List" extends "Purchase Order List"//9307
                 ApplicationArea = all;
                 Editable = false;
             }
+
+            field("Vendor Shipment No."; "Vendor Shipment No.")
+            {
+                Caption = 'N° BL Frs';
+                ApplicationArea = all;
+                Editable = false;
+            }
         }
     }
 

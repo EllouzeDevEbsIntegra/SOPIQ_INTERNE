@@ -119,6 +119,15 @@ page 50123 "Sales Role details"
                     ToolTip = 'Etat de vente journalier';
 
                 }
+                action("Etat Doc Vente")
+                {
+                    ApplicationArea = BasicEU;
+                    Caption = 'Etat Document de vente';
+                    Image = Bank;
+                    RunObject = report "Etat Vente";
+                    ToolTip = 'Etat Document de vente Commande, Retour, Expédition, Réception retour, Bon de sortie, Retour Bon de sortie, Facture et Avoir';
+
+                }
                 action("Blanket Sales Orders")
                 {
                     ApplicationArea = Suite;

@@ -207,6 +207,20 @@ page 50145 "Posted Return Receipt List"
                     DrillDown = true;
                     DrillDownPageId = "Recu Document List";
                 }
+                field(custNameImprime; custNameImprime)
+                {
+                    ApplicationArea = all;
+                }
+
+                field(custAdresseImprime; custAdresseImprime)
+                {
+                    ApplicationArea = all;
+                }
+
+                field(custMFImprime; custMFImprime)
+                {
+                    ApplicationArea = all;
+                }
             }
         }
         area(factboxes)

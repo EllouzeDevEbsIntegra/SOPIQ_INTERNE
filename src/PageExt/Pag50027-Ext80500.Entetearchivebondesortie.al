@@ -37,6 +37,30 @@ pageextension 80500 "Entete archive bon de sortie" extends "Entete archive bon d
     actions
     {
         // Add changes to page actions here
+        addafter("Imprimer Bon de sortie")
+        {
+            action("Imprimer Bon de sortie COPIM")
+            {
+                ApplicationArea = all;
+                Caption = 'Imprimer BS COPIM';
+                Image = Print;
+                // Visible = BS;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Report;
+                trigger OnAction()
+                var
+                    reportBonSortieArchive: Report "BS COPIM";
+                    BSArchive: Record "Entete archive BS";
+
+                begin
+
+                    CurrPage.SetSelectionFilter(BSArchive);
+                    reportBonSortieArchive.SetTableView(BSArchive);
+                    reportBonSortieArchive.Run();
+                end;
+            }
+        }
     }
 
     var

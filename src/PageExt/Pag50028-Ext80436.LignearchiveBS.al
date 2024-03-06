@@ -17,6 +17,15 @@ pageextension 80436 "Ligne archive BS" extends "Ligne archive BS"//50028
             }
         }
 
+        addafter("Document No.")
+        {
+            field(custNameImprime; custNameImprime)
+            {
+                ApplicationArea = all;
+                Editable = false;
+            }
+        }
+
 
     }
 
@@ -27,4 +36,6 @@ pageextension 80436 "Ligne archive BS" extends "Ligne archive BS"//50028
 
     var
         myInt: Integer;
+
+
 }

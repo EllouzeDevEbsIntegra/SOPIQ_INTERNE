@@ -3,13 +3,7 @@ pageextension 80504 "Detailed Vendor Ledg. Entries2" extends "Detailed Vendor Le
     layout
     {
         // Add changes to page layout here
-        addafter("Document No.")
-        {
-            field("Document Date"; "Document Date")
-            {
-                ApplicationArea = all;
-            }
-        }
+
     }
 
     actions
@@ -22,6 +16,5 @@ pageextension 80504 "Detailed Vendor Ledg. Entries2" extends "Detailed Vendor Le
 
     trigger OnAfterGetRecord()
     begin
-        CalcFields("Document Date");
     end;
 }

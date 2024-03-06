@@ -122,12 +122,15 @@ codeunit 50019 SubscriberEventProcedure
     var
         PostShipLineArchiv: Record "Ligne archive BS";
     begin
-        PostShipLineArchiv.Reset();
-        PostShipLineArchiv.TransferFields(NewSalesShipmentLine);
-        PostShipLineArchiv."Line Amount" := -PostShipLineArchiv."Line Amount";
-        PostShipLineArchiv."Line Amount HT" := -PostShipLineArchiv."Line Amount HT";
-        // Message('enregistre %1 *** archive %2 //  enregistre %3  *** archive %4 // enregistre %5 *** archive %6', NewSalesShipmentLine."Document No.", PostShipLineArchiv."Document No.", NewSalesShipmentLine."Line Amount", PostShipLineArchiv."Line Amount", NewSalesShipmentLine."Line Amount HT", PostShipLineArchiv."Line Amount HT");
-        PostShipLineArchiv.Insert;
+        if (NewSalesShipmentLine.BS = true) then begin
+            PostShipLineArchiv.Reset();
+            PostShipLineArchiv.TransferFields(NewSalesShipmentLine);
+            PostShipLineArchiv."Line Amount" := -PostShipLineArchiv."Line Amount";
+            PostShipLineArchiv."Line Amount HT" := -PostShipLineArchiv."Line Amount HT";
+            // Message('enregistre %1 *** archive %2 //  enregistre %3  *** archive %4 // enregistre %5 *** archive %6', NewSalesShipmentLine."Document No.", PostShipLineArchiv."Document No.", NewSalesShipmentLine."Line Amount", PostShipLineArchiv."Line Amount", NewSalesShipmentLine."Line Amount HT", PostShipLineArchiv."Line Amount HT");
+            PostShipLineArchiv.Insert;
+        end;
+
     end;
 
 

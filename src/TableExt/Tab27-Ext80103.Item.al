@@ -55,6 +55,14 @@ tableextension 80103 "Item" extends Item //27
             DecimalPlaces = 0 : 5;
         }
 
+        field(50121; "Total Vendu"; Decimal)
+        {
+            CalcFormula = - sum("Item Ledger Entry".Quantity where("Item No." = field("No."), "Entry Type" = filter('Sale')));
+            Editable = false;
+            FieldClass = FlowField;
+            DecimalPlaces = 0 : 5;
+        }
+
         field(80107; "Mg Principal Filter"; code[100])
         {
             DataClassification = ToBeClassified;

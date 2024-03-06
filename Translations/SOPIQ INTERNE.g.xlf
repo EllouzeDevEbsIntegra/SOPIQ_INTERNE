@@ -6073,6 +6073,221 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page ItemCopyAPI - Control SubGroup - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3738696838 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Ledger Entries</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 1911896441 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies whether there is one or more applied entries, which need to be adjusted.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control AppliedEntrytoAdjust - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 2272528281 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies if the posting represents an assemble-to-order sale.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control AssembletoOrder - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 344856075 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies if the entry has been fully invoiced or if more posted invoices are expected. Only completely invoiced entries can be revalued.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control CompletelyInvoiced - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 2929189203 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the adjusted cost, in LCY, of the quantity posting.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control CostAmountActual - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 4123990958 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the adjusted cost of the entry, in the additional reporting currency.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control CostAmountActualACY - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 1576803899 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the expected cost, in LCY, of the quantity posting.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control CostAmountExpected - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 2442250822 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the expected cost, in ACY, of the quantity posting.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control CostAmountExpectedACY - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 2029162621 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the adjusted non-inventoriable cost, that is an item charge assigned to an outbound entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control CostAmountNonInvtbl - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 285136436 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the adjusted non-inventoriable cost, that is, an item charge assigned to an outbound entry in the additional reporting currency.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control CostAmountNonInvtblACY - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies a description of the entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control Description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 3817350449 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies a reference to a combination of dimension values. The actual values are stored in the Dimension Set Entry table.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control DimensionSetID - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 4066289460 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the line on the posted document that corresponds to the item ledger entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control DocumentLineNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 3117834186 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the document number on the entry. The document is the voucher that the entry was based on, for example, a receipt.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control DocumentNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 4237283545 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies what type of document was posted to create the item ledger entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control DocumentType - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 1390049907 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies if your vendor ships the items directly to your customer.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control DropShipment - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 1016130111 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the entry, as assigned from the specified number series when the entry was created.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control EntryNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 404483104 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies which type of transaction that the entry is created from.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control EntryType - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 3361401265 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the last date that the item on the line can be used.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control ExpirationDate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 3603748441 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code for the global dimension that is linked to the record or entry for analysis purposes. Two global dimensions, typically for the company's most important activities, are available on all cards, documents, reports, and lists.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control GlobalDimension1Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 992642944 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code for the global dimension that is linked to the record or entry for analysis purposes. Two global dimensions, typically for the company's most important activities, are available on all cards, documents, reports, and lists.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control GlobalDimension2Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 2398799890 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how many units of the item on the line have been invoiced.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control InvoicedQuantity - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 332802016 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the item in the entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control ItemNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 331903282 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the related job.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control JobNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 1207394189 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the related job task.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control JobTaskNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 39415292 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code for the location that the entry is linked to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control LocationCode - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 3523677570 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies a lot number if the posted item carries such a number.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control LotNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 4259830144 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies whether the entry has been fully applied to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control Open - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 4248105707 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the line number of the order that created the entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control OrderLineNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 681009761 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the order that created the entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control OrderNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 3874136290 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies which type of order that the entry was created in.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control OrderType - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 3037438984 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the posting date for the entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control PostingDate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 4168324499 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the line number of the production order component.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control ProdOrderCompLineNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 164360944 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the quantity per item unit of measure.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control QtyperUnitofMeasure - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 2704404533 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of units of the item in the item entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control Quantity - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 1523797681 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the quantity in the Quantity field that remains to be processed.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control RemainingQuantity - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 4088611489 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how many units of the item on the line have been reserved.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control ReservedQuantity - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 3675520245 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code explaining why the item was returned.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control ReturnReasonCode - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 4294523174 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the sales amount, in LCY.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control SalesAmountActual - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 2949368078 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the expected sales amount, in LCY.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control SalesAmountExpected - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 2164308859 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies a serial number if the posted item carries such a number.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control SerialNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 2883163947 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the quantity for this item ledger entry that was shipped and has not yet been returned.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control ShippedQtyNotReturned - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 3798681774 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the variant of the item on the line.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control VariantCode - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Page 4145419452 - Control 1465975551 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Date Ajout</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -7713,11 +7928,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales Cr Memo To Pay - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 1788160435 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>sales Invoices Headers</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Property Caption</note>
-        </trans-unit>
         <trans-unit id="Page 2190856366 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Liste Facture à payer</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -8112,6 +8322,16 @@
           <source>Commandes cadres vente</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales Role details - Action Blanket Sales Orders - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2661476762 - Action 3099089988 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Etat Document de vente Commande, Retour, Expédition, Réception retour, Bon de sortie, Retour Bon de sortie, Facture et Avoir</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Role details - Action Etat Doc Vente - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2661476762 - Action 3099089988 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Etat Document de vente</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Role details - Action Etat Doc Vente - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2661476762 - Action 1471868276 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Etat de vente journalier</source>
@@ -9023,6 +9243,141 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report Bord Remise Cheque Agence - NamedType CstG025</note>
         </trans-unit>
+        <trans-unit id="Report 4107520275 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>BS COPIM</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - NamedType 2299131926" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Customer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - NamedType Caption-Cust</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - NamedType 4186568721" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Address </source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - NamedType Caption_Address</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - NamedType 2947316416" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Customer Signature</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - NamedType Caption_CustSignature</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - NamedType 296800029" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - NamedType Caption_Descrip</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - NamedType 4153400003" size-unit="char" translate="yes" xml:space="preserve">
+          <source>VAT Reg. No/NIC.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - NamedType Caption_MF_CIN</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - NamedType 1158772897" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Order Type</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - NamedType Caption_OdrerType</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - NamedType 2752790333" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Order Date </source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - NamedType Caption_OrderDate</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - NamedType 2226698578" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Order No</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - NamedType Caption_OrderNo</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - NamedType 3123845119" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Qty </source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - NamedType Caption_Qty</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - NamedType 310394828" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ref. </source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - NamedType Caption_Ref</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - NamedType 751250223" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shipment Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - NamedType Caption_ShipmentDate</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - NamedType 3431382811" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Stamp and Signature</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - NamedType Caption_StampSign</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - NamedType 1988229008" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Phone No </source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - NamedType Caption_Tel</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - NamedType 1384387315" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spare Parts Shipment N°</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - NamedType Caption_Tilte</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - NamedType 372371538" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unit Of Measure</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - NamedType Caption_UnitOfmeasure</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - NamedType 933185466" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Vente en suspension de la TVA suivant décision N° %1 du %2 .</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - NamedType TXTSUSPENION</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - Control 711943561 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Information client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - Control CustInfo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - Control 4151027921 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Adresse Client à imprimer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - Control custAdressImp - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - Control 1806746882 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>MF Client à imprimer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - Control custMFImp - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - Control 1657523150 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nom Client à imprimer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - Control custNameImp - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - Control 3356410312 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>VIN Client à imprimer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - Control custVINImp - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - Control 1299534501 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Modifier information client à imprimer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - Control editCustInfo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - Control 828292189 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Option</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - Control Option - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - Control 390051537 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Masquer Colonne Remise</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - Control masquerRemiseColumn - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - Control 1272357322 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Afficher Remise</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - Control showDiscount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 4107520275 - Control 2284252348 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Afficher référence</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report BS COPIM - Control ShowReference - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Report 3031920494 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Avoir</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -9542,6 +9897,46 @@
           <source>Etat Stock Valorise</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report Etat Stock Valorise - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1471868276 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Etat de vente</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1471868276 - Control 2346885236 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source></source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente - Control Options - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1471868276 - Control 526631466 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date Début</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente - Control dateDebut - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1471868276 - Control 2673469895 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date Fin</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente - Control dateFin - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1471868276 - Control 4290942750 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inclure BL et Retour BL</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente - Control IncludeBL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1471868276 - Control 2246883351 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inclure BS et Retour BS</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente - Control IncludeBS - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1471868276 - Control 4256663475 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inclure Commande et Reour</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente - Control includeCV - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1471868276 - Control 1585508288 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inclure Facture et Avoir</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente - Control includeFV - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 3325472121 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Etat de vente Journalier</source>
@@ -10538,6 +10933,141 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report Recu Caisse - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Report 2147451765 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Retour BL/BS COPIM</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - NamedType 2299131926" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Customer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - NamedType Caption-Cust</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - NamedType 4186568721" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Address </source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - NamedType Caption_Address</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - NamedType 2947316416" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Customer Signature</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - NamedType Caption_CustSignature</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - NamedType 296800029" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - NamedType Caption_Descrip</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - NamedType 4153400003" size-unit="char" translate="yes" xml:space="preserve">
+          <source>VAT Reg. No/NIC.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - NamedType Caption_MF_CIN</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - NamedType 1158772897" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Order Type</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - NamedType Caption_OdrerType</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - NamedType 2752790333" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Order Date </source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - NamedType Caption_OrderDate</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - NamedType 2226698578" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Order No</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - NamedType Caption_OrderNo</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - NamedType 3123845119" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Qty </source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - NamedType Caption_Qty</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - NamedType 310394828" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ref. </source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - NamedType Caption_Ref</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - NamedType 751250223" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shipment Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - NamedType Caption_ShipmentDate</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - NamedType 3431382811" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Stamp and Signature</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - NamedType Caption_StampSign</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - NamedType 1988229008" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Phone No </source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - NamedType Caption_Tel</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - NamedType 1384387315" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spare Parts Shipment N°</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - NamedType Caption_Tilte</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - NamedType 372371538" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unit Of Measure</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - NamedType Caption_UnitOfmeasure</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - NamedType 933185466" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Vente en suspension de la TVA suivant décision N° %1 du %2 .</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - NamedType TXTSUSPENION</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - Control 711943561 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Information client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - Control CustInfo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - Control 4151027921 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Adresse Client à imprimer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - Control custAdressImp - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - Control 1806746882 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>MF Client à imprimer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - Control custMFImp - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - Control 1657523150 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nom Client à imprimer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - Control custNameImp - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - Control 3356410312 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>VIN Client à imprimer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - Control custVINImp - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - Control 1299534501 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Modifier information client à imprimer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - Control editCustInfo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - Control 828292189 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Option</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - Control Option - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - Control 390051537 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Masquer Colonne Remise</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - Control masquerRemiseColumn - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - Control 1272357322 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Afficher Remise</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - Control showDiscount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2147451765 - Control 2284252348 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Afficher référence</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Retour COPIM - Control ShowReference - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Report 3382831776 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Sales - Shipment Valorise</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -10702,6 +11232,61 @@
           <source>Show Internal Information</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report Sales - Shipment Valorise - Control ShowInternalInfo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1932899005 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Avoir COPIM</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Sales Cr Memo COPIM - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1932899005 - Control 711943561 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Information client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Sales Cr Memo COPIM - Control CustInfo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1932899005 - Control 4151027921 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Adresse Client à imprimer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Sales Cr Memo COPIM - Control custAdressImp - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1932899005 - Control 1806746882 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>MF Client à imprimer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Sales Cr Memo COPIM - Control custMFImp - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1932899005 - Control 1657523150 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nom Client à imprimer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Sales Cr Memo COPIM - Control custNameImp - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1932899005 - Control 3356410312 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>VIN Client à imprimer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Sales Cr Memo COPIM - Control custVINImp - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1932899005 - Control 1299534501 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Modifier information client à imprimer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Sales Cr Memo COPIM - Control editCustInfo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1932899005 - Control 828292189 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Option</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Sales Cr Memo COPIM - Control Option - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1932899005 - Control 3213445042 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Imprimer N° BL</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Sales Cr Memo COPIM - Control PrintNoBL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1932899005 - Control 1272357322 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Afficher Remise</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Sales Cr Memo COPIM - Control showDiscount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1932899005 - Control 2284252348 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Afficher référence</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Sales Cr Memo COPIM - Control ShowReference - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 1518085827 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Facture COPIM</source>
@@ -11218,11 +11803,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report SI Devis  PDR - Control PrintItemNo - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Report 4212529717 - Control 1633140692 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Précision Montant</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report SI Grand livre fournisseur - Control devise - Property Caption</note>
-        </trans-unit>
         <trans-unit id="Report 1232536881 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Remise effets à l'escompte</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -11493,6 +12073,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Document Status List - Control SendMsg - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 1800797591 - Action 4076648939 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1800797591">
+          <source>Imprimer BS COPIM</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Entete archive bon de sortie - Action Imprimer Bon de sortie COPIM - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 1800797591 - Control 865289546 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1800797591">
           <source>Mnt Brut HT</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -11582,6 +12167,11 @@
           <source>Nb Jour Rupture</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Control NbJourRupture - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 979344903 - Control 173493946 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
+          <source>Total Vente</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Control Total Vendu - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 4260588318 - Control 1673260710 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4260588318">
           <source>Nombre emplacement</source>
@@ -11702,6 +12292,16 @@
           <source>NB Ecart</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Phys. Inventory Recording List - Control NB Ecart - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2410131092 - Control 397862003 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2410131092">
+          <source>Net à payer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Invoice Subform - Control NetAPayer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2410131092 - Control 3947030945 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2410131092">
+          <source>Timbre Fiscal</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Invoice Subform - Control TimbreFiscal - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 1116965951 - Action 2629715986 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1116965951">
           <source>Modifier N° BL Frs</source>
@@ -11888,6 +12488,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Purchase Order List - Control Vendor Order No. - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 3195034673 - Control 556062453 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3195034673">
+          <source>N° BL Frs</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Purchase Order List - Control Vendor Shipment No. - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 526152577 - NamedType 2008153173" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 526152577">
           <source>Prices including VAT cannot be calculated when %1 is %2.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -11902,6 +12507,11 @@
           <source>Voulez vous vraiment mettre à jour les marges défini sur cette commande dans fiche article !</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Purchase Order Subform - Action Item Profit update - Method OnAction - NamedType messageValidate</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 526152577 - Action 2386408979 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 526152577">
+          <source>Prix de vente calculé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Purchase Order Subform - Action UpdateSalesCalcPrice - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 526152577 - Action 1287277092 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 526152577">
           <source>Transactions articles</source>
@@ -12117,6 +12727,51 @@
           <source>N° Reçu de caisse</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales &amp; Receivables Setup - Control Reçu Caisse Serie - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1056066689 - NamedType 1206930125" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 1056066689">
+          <source>Montant ajustement facture dépassé \Montant permis : %1\ dépassement : %2</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Cr. Memo Subform - NamedType Autorisationdepassed</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1056066689 - Action 597458379 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1056066689">
+          <source>Appliquer Emplacement</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Cr. Memo Subform - Action ApplyLocation - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1056066689 - Action 2323821281 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1056066689">
+          <source>Calculer prix initial</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Cr. Memo Subform - Action CalculateInitialPrice - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1056066689 - Control 3476513704 - Property 3830149458" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1056066689">
+          <source>Total HT souhaité</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Cr. Memo Subform - Control NewTHAmount - Property caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1056066689 - Control 2395652437 - Property 3830149458" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1056066689">
+          <source>Total TTC souhaité</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Cr. Memo Subform - Control NewTTCAmount - Property caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1056066689 - Control 2395652437 - Method 2126772001 - NamedType 178020753" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 1056066689">
+          <source>Appliquer les nouveaux valeurs ? </source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Cr. Memo Subform - Control NewTTCAmount - Method OnValidate - NamedType Appliquer</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1056066689 - Control 930600839 - Property 3830149458" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1056066689">
+          <source>Remise calculé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Cr. Memo Subform - Control RemiseCalculated - Property caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1056066689 - Control 1570450233 - Property 3830149458" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1056066689">
+          <source>Montant Timbre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Cr. Memo Subform - Control StampAmount - Property caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1056066689 - Control 2103240671 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1056066689">
+          <source>Total TTC INITIAL</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Cr. Memo Subform - Control TTCInitial - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 3689007477 - NamedType 1206930125" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 3689007477">
           <source>Montant ajustement facture dépassé \Montant permis : %1\ dépassement : %2</source>
@@ -12608,11 +13263,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Customer - Field Traite Impaye - Property Caption</note>
         </trans-unit>
-        <trans-unit id="TableExtension 1910049904 - Field 580412389 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1910049904">
-          <source>Document Date</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Detailed Vendor Ledg. Entry - Field Document Date - Property Caption</note>
-        </trans-unit>
         <trans-unit id="TableExtension 3536168541 - Field 3080618677 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3536168541">
           <source>Message</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -12803,6 +13453,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field To verify - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3276313895 - Field 173493946 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Total Vendu</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Total Vendu - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3615053921 - Field 765219741 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3615053921">
           <source>Code Fabricant</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -12877,6 +13532,11 @@
           <source>Last. Price. Date</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Vendor - Field Last. Price. Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4040440750 - Field 4204456523 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4040440750">
+          <source>Nom Client Imprimé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Ligne archive BS - Field custNameImprime - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3891454143 - Field 693362068 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3891454143">
           <source>ExculreStock</source>
@@ -13163,10 +13823,25 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Return Receipt Header - Field BS - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 2925931323 - Field 3220209923 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2925931323">
+          <source>Adresse Client Imprimé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Return Receipt Header - Field custAdresseImprime - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2925931323 - Field 136620735 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2925931323">
+          <source>Matricule Fiscal Imprimé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Return Receipt Header - Field custMFImprime - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 2925931323 - Field 4204456523 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2925931323">
           <source>Nom Client Imprimé</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Return Receipt Header - Field custNameImprime - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2925931323 - Field 2353467465 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2925931323">
+          <source>Vin Client Imprimé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Return Receipt Header - Field custVINImprime - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 2925931323 - Field 6738032 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2925931323">
           <source>Montant  Ouvert</source>

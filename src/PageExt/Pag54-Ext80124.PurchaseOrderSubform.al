@@ -215,6 +215,29 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
 
             }
 
+            action(UpdateSalesCalcPrice)
+            {
+                Caption = 'Prix de vente calculé';
+                Image = CalculateRegenerativePlan;
+                trigger OnAction()
+                var
+                    PurchaseLine: Record "Purchase Line";
+                begin
+                    PurchaseLine.Reset();
+                    PurchaseLine.SetRange("Document No.", rec."Document No.");
+                    if PurchaseLine.FindSet() then begin
+                        repeat
+                            PurchaseLine."Prix vente calculé" := Round((PurchaseLine."Direct Unit Cost" / (1 - PurchaseLine.Marge / 100)) *
+                                                                (1 + CalcVAT),
+                                                                GLSetup."Unit-Amount Rounding Precision");
+                            PurchaseLine.Modify();
+                        until PurchaseLine.Next() = 0;
+                    end;
+                    CurrPage.Update();
+
+                end;
+            }
+
 
         }
 

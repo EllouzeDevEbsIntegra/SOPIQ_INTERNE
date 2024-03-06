@@ -205,6 +205,20 @@ page 50144 "Posted Return Receipts BS"
                     ApplicationArea = all;
 
                 }
+                field(custNameImprime; custNameImprime)
+                {
+                    ApplicationArea = all;
+                }
+
+                field(custAdresseImprime; custAdresseImprime)
+                {
+                    ApplicationArea = all;
+                }
+
+                field(custMFImprime; custMFImprime)
+                {
+                    ApplicationArea = all;
+                }
             }
         }
         area(factboxes)
