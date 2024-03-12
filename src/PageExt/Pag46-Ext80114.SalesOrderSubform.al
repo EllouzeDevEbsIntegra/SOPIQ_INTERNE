@@ -83,6 +83,36 @@ pageextension 80114 "Sales Order Subform" extends "Sales Order Subform" //46
 
             }
         }
+        addafter(ApplyDiscount)
+        {
+            action("Reserve All")
+            {
+                Caption = 'Réserver Tous';
+                Image = ItemReservation;
+                trigger OnAction()
+                var
+                    messageValidate: Label 'Voulez vous vraiment réserver tous les articles de cette commande !';
+                    SalesLine: Record "Sales Line";
+                begin
+
+                    if Confirm(messageValidate) then begin
+                        SalesLine.Reset();
+                        SalesLine.SetRange("Document No.", rec."Document No.");
+                        if SalesLine.FindSet() then begin
+                            repeat
+                                SalesLine.Reserve := Reserve::Always;
+                                SalesLine.Modify();
+                                // SalesLine.Validate("Reserved Quantity", "Outstanding Quantity");
+                                SalesLine.AutoReserve();
+                            until SalesLine.Next() = 0;
+                        end
+
+                    end;
+                    CurrPage.Update();
+                end;
+
+            }
+        }
     }
 
     var

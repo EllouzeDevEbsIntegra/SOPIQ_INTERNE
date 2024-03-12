@@ -373,6 +373,7 @@ tableextension 80103 "Item" extends Item //27
 
     end;
 
+
     procedure setMgPrincipalFilter(recitem: Record item)
     var
         recInventorySetup: Record "Inventory Setup";

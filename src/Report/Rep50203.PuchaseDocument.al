@@ -495,6 +495,7 @@ report 50203 "Puchase Document"
                 if ("Purchase Header"."Document Type" = "Document Type"::Quote) then typeDocument := typeDocument::"Demande de prix";
                 if ("Purchase Header"."Document Type" = "Document Type"::Order) then typeDocument := typeDocument::"Bon de commande";
                 if ("Purchase Header"."Document Type" = "Document Type"::"Return Order") then typeDocument := typeDocument::"Retour Achat";
+                if ("Purchase Header"."Document Type" = "Document Type"::Invoice) then typeDocument := typeDocument::"Facture Achat";
 
 
 
@@ -631,7 +632,7 @@ report 50203 "Puchase Document"
         Text1Footer: Text;
         Location: Record Location;
         DemandeAchat: Boolean;
-        typeDocument: Option "Demande de prix","Bon de commande","Retour Achat";
+        typeDocument: Option "Demande de prix","Bon de commande","Retour Achat","Facture Achat";
         showBin: Boolean;
 }
 

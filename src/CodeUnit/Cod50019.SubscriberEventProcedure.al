@@ -203,4 +203,45 @@ codeunit 50019 SubscriberEventProcedure
         end;
 
     end;
+
+
+    [EventSubscriber(ObjectType::Codeunit, 730, 'OnAfterCopyItem', '', true, true)]
+
+    local procedure OnAfterCopyItem(var CopyItemBuffer: Record "Copy Item Buffer"; SourceItem: Record Item; var TargetItem: Record Item)
+    var
+        recItemMaster, recMasterExist : Record "items Master";
+        TypeModif: Text[200];
+    begin
+        if (TargetItem.Description <> '') then BEGIN
+            recMasterExist.Reset();
+            recMasterExist.SetRange(Company, Database.CompanyName);
+            recMasterExist.SetRange(Verified, false);
+            recMasterExist.SetRange("No", TargetItem."No.");
+            if recMasterExist.FindFirst() then begin
+                if (TargetItem."Reference Origine Lié" <> '') THEN
+                    recMasterExist.Master := TargetItem."Reference Origine Lié";
+                if (TargetItem.Groupe <> '') THEN
+                    recMasterExist.Famille := TargetItem.Groupe;
+                if (TargetItem."Sous Groupe" <> '') THEN
+                    recMasterExist."Sous Famille" := TargetItem."Sous Groupe";
+                recMasterExist."Type Ajout" := 'Copie de l''article ' + SourceItem."No.";
+                recMasterExist.modify(true);
+            end
+            else begin
+                recItemMaster.Reset();
+                recItemMaster.Company := Database.CompanyName;
+                recItemMaster.No := TargetItem."No.";
+                if (TargetItem."Reference Origine Lié" <> '') THEN
+                    recItemMaster.Master := TargetItem."Reference Origine Lié";
+                if (TargetItem.Groupe <> '') THEN
+                    recItemMaster.Famille := TargetItem.Groupe;
+                if (TargetItem."Sous Groupe" <> '') THEN
+                    recItemMaster."Sous Famille" := TargetItem."Sous Groupe";
+                recItemMaster."Add date" := System.today;
+                recItemMaster."Add User" := Database.UserId;
+                recItemMaster."Type Ajout" := 'Copie de l''article ' + SourceItem."No.";
+                recItemMaster.Insert(true);
+            end;
+        END;
+    end;
 }

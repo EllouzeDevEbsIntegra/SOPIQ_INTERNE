@@ -12858,6 +12858,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Order Subform - Action Sales Price Update - Method OnAction - NamedType messageValidate</note>
         </trans-unit>
+        <trans-unit id="PageExtension 2026081320 - Action 3801233139 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2026081320">
+          <source>Réserver Tous</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Order Subform - Action Reserve All - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2026081320 - Action 3801233139 - Method 1377591017 - NamedType 2606647647" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 2026081320">
+          <source>Voulez vous vraiment réserver tous les articles de cette commande !</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Order Subform - Action Reserve All - Method OnAction - NamedType messageValidate</note>
+        </trans-unit>
         <trans-unit id="PageExtension 2026081320 - Control 1650118938 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2026081320">
           <source>Mnt TTC</source>
           <note from="Developer" annotates="general" priority="2"></note>
