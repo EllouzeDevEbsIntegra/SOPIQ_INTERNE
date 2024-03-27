@@ -1,5 +1,13 @@
 codeunit 50019 SubscriberEventProcedure
 {
+    Permissions = tabledata "Sales Header" = rimd,
+                    tabledata "Sales Line" = rimd,
+                    tabledata "Entete archive BS" = rimd,
+                    tabledata "Ligne archive BS" = rimd,
+                    tabledata "items Master" = rimd,
+                    tabledata "Sales Shipment Header" = rimd;
+
+
     EventSubscriberInstance = StaticAutomatic;
 
 
@@ -226,6 +234,7 @@ codeunit 50019 SubscriberEventProcedure
                     recMasterExist."Sous Famille" := TargetItem."Sous Groupe";
                 recMasterExist."Type Ajout" := 'Copie de l''article ' + SourceItem."No.";
                 recMasterExist.modify(true);
+                Commit();
             end
             else begin
                 recItemMaster.Reset();
@@ -241,6 +250,7 @@ codeunit 50019 SubscriberEventProcedure
                 recItemMaster."Add User" := Database.UserId;
                 recItemMaster."Type Ajout" := 'Copie de l''article ' + SourceItem."No.";
                 recItemMaster.Insert(true);
+                Commit();
             end;
         END;
     end;

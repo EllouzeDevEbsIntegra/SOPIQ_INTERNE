@@ -4,7 +4,6 @@ pageextension 80118 "item" extends "Item List" //31
 
     layout
     {
-
         addafter(InventoryField)
         {
             field("ImportQty"; ImportQty)
@@ -260,6 +259,7 @@ pageextension 80118 "item" extends "Item List" //31
     end;
 
     trigger OnOpenPage()
+
     begin
         Parvente.get;
         if Parvente."Activer analyseur de prix" then begin

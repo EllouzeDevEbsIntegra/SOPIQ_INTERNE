@@ -248,7 +248,7 @@ page 50104 "Item Equivalent"
 
     trigger OnOpenPage()
     begin
-        //@@@@@@ à voir @@@@@@
+        // @@@@@@ TO VERIFY
         IF FindFirst THEN;
     end;
 }

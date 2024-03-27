@@ -4,6 +4,13 @@ table 70013 "Recu Caisse Paiement"
 
     fields
     {
+        field(70011; "Date Reçu"; Date)
+        {
+            CalcFormula = lookup("Recu Caisse".dateRecu where(No = field("No Recu")));
+            Caption = 'Date Reçu';
+            Editable = false;
+            FieldClass = FlowField;
+        }
         field(70012; "No Recu"; code[10])
         {
             DataClassification = ToBeClassified;

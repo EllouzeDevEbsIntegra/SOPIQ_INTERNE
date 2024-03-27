@@ -28,6 +28,17 @@ page 50100 "Sales line"
                     end;
 
                 }
+
+                field("Sell-to Customer No."; "Sell-to Customer No.")
+                {
+                    ApplicationArea = Basic;
+                    Editable = false;
+                }
+                field("Sell-to Customer Name"; "Sell-to Customer Name")
+                {
+                    ApplicationArea = Basic;
+                    Editable = false;
+                }
                 field("No."; "No.")
                 {
                     ApplicationArea = Basic;

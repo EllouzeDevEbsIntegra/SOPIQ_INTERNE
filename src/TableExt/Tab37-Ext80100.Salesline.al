@@ -7,17 +7,74 @@ tableextension 80100 "Sales line" extends "Sales line" //37
             trigger OnAfterValidate()
             var
                 SalesInvoiceLine: Record "Sales Invoice Line";
+                salesLine: Record "Sales Line";
+                archiveLineBS: Record "Ligne archive BS";
+                salesShipLine: Record "Sales Shipment Line";
+                dateToCompare: Date;
+                cmdVenteNo: Code[20];
             begin
                 "Initial Unit Price" := "Unit Price";
                 "Initial Discount" := "Line Discount %";
 
+                dateToCompare := 19770101D;
                 SalesInvoiceLine.Reset();
                 SalesInvoiceLine.SetRange("Sell-to Customer No.", rec."Sell-to Customer No.");
                 SalesInvoiceLine.SetRange("No.", rec."No.");
                 if SalesInvoiceLine.FindLast() then begin
+                    //Message('Facrure %1 - %2', SalesInvoiceLine."Posting Date", dateToCompare);
+                    dateToCompare := SalesInvoiceLine."Posting Date";
                     lastSalesPrice := SalesInvoiceLine."Unit Price";
                     lastSalesDate := SalesInvoiceLine."Posting Date";
                     lastSalesDiscount := SalesInvoiceLine."Line Discount %";
+                    lastSalesDocType := lastSalesDocType::FV;
+                end;
+
+                salesShipLine.Reset();
+                salesShipLine.SetRange("Sell-to Customer No.", rec."Sell-to Customer No.");
+                salesShipLine.SetRange("No.", rec."No.");
+                salesShipLine.SetRange(BS, false);
+                if salesShipLine.FindLast() then begin
+                    //Message('BL %1 - %2', salesShipLine."Posting Date", dateToCompare);
+                    if salesShipLine."Posting Date" > dateToCompare then begin
+                        // Message('BL 2 %1 - %2', salesShipLine."Posting Date", dateToCompare);
+                        dateToCompare := salesShipLine."Posting Date";
+                        lastSalesPrice := salesShipLine."Unit Price";
+                        lastSalesDate := salesShipLine."Posting Date";
+                        lastSalesDiscount := salesShipLine."% Discount";
+                        lastSalesDocType := lastSalesDocType::BL;
+                        cmdVenteNo := salesShipLine."Order No.";
+                    end;
+                end;
+
+                archiveLineBS.Reset();
+                archiveLineBS.SetRange("Sell-to Customer No.", rec."Sell-to Customer No.");
+                archiveLineBS.SetRange("No.", rec."No.");
+                if archiveLineBS.FindLast() then begin
+                    //Message('BS %1 - %2', archiveLineBS."Posting Date", dateToCompare);
+                    if archiveLineBS."Posting Date" > dateToCompare then begin
+                        //Message('BS 2 %1 - %2', archiveLineBS."Posting Date", dateToCompare);
+                        dateToCompare := archiveLineBS."Posting Date";
+                        lastSalesPrice := archiveLineBS."Unit Price";
+                        lastSalesDate := archiveLineBS."Posting Date";
+                        lastSalesDiscount := archiveLineBS."% Discount";
+                        lastSalesDocType := lastSalesDocType::BS;
+                        cmdVenteNo := archiveLineBS."Order No.";
+                    end;
+                end;
+
+                salesLine.Reset();
+                salesLine.SetRange("Sell-to Customer No.", rec."Sell-to Customer No.");
+                salesLine.SetRange("No.", rec."No.");
+                if salesLine.FindLast() then begin
+                    // Message('CMD %1 - %2', salesLine."Shipment Date", dateToCompare);
+                    if (salesLine."Shipment Date" > dateToCompare) AND (salesLine."Document No." <> cmdVenteNo) then begin
+                        //Message('CMD 2 %1 - %2', salesLine."Posting Date", dateToCompare);
+                        dateToCompare := salesLine."Shipment Date";
+                        lastSalesPrice := salesLine."Unit Price";
+                        lastSalesDate := salesLine."Shipment Date";
+                        lastSalesDiscount := salesLine."Line Discount %";
+                        lastSalesDocType := lastSalesDocType::CmdDevis;
+                    end;
                 end;
             end;
 
@@ -142,6 +199,7 @@ tableextension 80100 "Sales line" extends "Sales line" //37
             CalcFormula = lookup("Purchase Line"."Quantity Received" where("Special Order" = filter(true), "Document Type" = filter(Order), "Special Order Sales No." = field("Document No."), "Special Order Sales Line No." = field("Line No.")));
         }
 
+
         field(50211; lastSalesDate; Date)
         {
             Caption = 'Dernière Date Vente';
@@ -159,7 +217,13 @@ tableextension 80100 "Sales line" extends "Sales line" //37
             Caption = 'Dernière remise Vente';
             DataClassification = ToBeClassified;
         }
-
+        field(50214; lastSalesDocType; Option)
+        {
+            OptionCaption = 'Facture vente, Bon de livraison, Bon de sortie, Cmd / Devis';
+            OptionMembers = FV,BL,BS,CmdDevis;
+            Caption = 'Dernière Type Document vente';
+            DataClassification = ToBeClassified;
+        }
     }
 
 

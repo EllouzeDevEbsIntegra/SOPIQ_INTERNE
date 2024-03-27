@@ -243,7 +243,7 @@ report 50235 "BL COPIM"
 
                 }
 
-                column(LineDiscount_SalesShipmentLine; "% Discount")
+                column(LineDiscount_SalesShipmentLine; ligneBLDiscount)
                 {
                 }
                 column(VATBaseAmount; "Item Charge Base Amount")
@@ -264,6 +264,7 @@ report 50235 "BL COPIM"
                     MntTTCR := 0;
                     MontTTC := 0;
                     TotRemise := 0;
+                    ligneBLDiscount := 0;
                     CalcFields(BS);
                     //if BS then begin
                     // PrixVente := "Prix Vente 1";
@@ -271,8 +272,16 @@ report 50235 "BL COPIM"
 
                     // MTHT := (PrixVente * Quantity) - (((PrixVente * Quantity) * ("Line Discount %" / 100)));
                     MTHT := ("Unit Price" * Quantity);
-                    NETHT := ("Unit Price" * Quantity) - ((("Unit Price" * Quantity) * ("% Discount" / 100)));
-                    Remise := (("Unit Price" * Quantity) * ("% Discount" / 100));
+                    if ("Old Document" = '') then begin
+                        ligneBLDiscount := "% Discount";
+                        NETHT := ("Unit Price" * Quantity) - ((("Unit Price" * Quantity) * ("% Discount" / 100)));
+                        Remise := (("Unit Price" * Quantity) * ("% Discount" / 100));
+                    end
+                    else begin
+                        ligneBLDiscount := "Line Discount %";
+                        NETHT := ("Unit Price" * Quantity) - ((("Unit Price" * Quantity) * ("Line Discount %" / 100)));
+                        Remise := (("Unit Price" * Quantity) * ("Line Discount %" / 100));
+                    end;
                     MntTVAR := NETHT * (("VAT %" / 100));
                     MontantTVA := MTHT * (("VAT %" / 100));
                     // MontTTC := TotHT + MontantTVA;
@@ -576,5 +585,6 @@ report 50235 "BL COPIM"
         Caption_OdrerType: Label 'Order Type';
         Caption_ShipmentDate: Label 'Shipment Date';
         Caption_StampSign: Label 'Stamp and Signature';
+        ligneBLDiscount: Decimal;
 }
 

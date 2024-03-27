@@ -33,6 +33,11 @@ pageextension 80114 "Sales Order Subform" extends "Sales Order Subform" //46
                 Editable = false;
             }
 
+            field(lastSalesDocType; lastSalesDocType)
+            {
+                ApplicationArea = all;
+                Editable = false;
+            }
             field(lastSalesPrice; lastSalesPrice)
             {
                 ApplicationArea = all;

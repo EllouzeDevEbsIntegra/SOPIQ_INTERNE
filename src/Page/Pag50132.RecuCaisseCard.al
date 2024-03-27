@@ -4,6 +4,11 @@ page 50132 "Recu Caisse Card"
     ApplicationArea = All;
     UsageCategory = Administration;
     SourceTable = "Recu Caisse";
+    Permissions = tabledata "Sales Invoice Header" = rm,
+                    tabledata "Entete archive BS" = rm,
+                    tabledata "Sales Cr.Memo Header" = rm,
+                    tabledata "Return Receipt Header" = rm,
+                    tabledata "Sales Shipment Header" = rm;
 
     layout
     {

@@ -195,7 +195,7 @@ report 25006118 "Etat Solde Client"
                 {
 
                 }
-                column(custImprime_BL; custNameImprime)
+                column(custImprime_BL; nomClientBL) //custNameImprime
                 {
                 }
                 column(custBlNo; "Bill-to Customer No.")
@@ -222,6 +222,8 @@ report 25006118 "Etat Solde Client"
                 }
                 trigger OnAfterGetRecord()
                 begin
+                    nomClientBL := '';
+                    if RecCompany.BS = true then nomClientBL := listeBonLiv.custNameImprime else nomClientBL := listeBonLiv."Bill-to Name";
                     mntNonSolde_BL := 0;
                     listeBonLiv.CalcFields("Montant reçu caisse", "Montant Ouvert", "Line Amount");
                     if RecCompany.BS then
@@ -578,6 +580,7 @@ report 25006118 "Etat Solde Client"
     begin
         Clear(RecCompany);
         RecCompany.Get();
+
     end;
 
     var
@@ -587,4 +590,5 @@ report 25006118 "Etat Solde Client"
         includeCV, includeBL, includeBS, includeFV, totalByZone : Boolean;
         RecCompany: Record "Company Information";
         showTotalBelow, showDetails : Boolean;
+        nomClientBL: Text;
 }

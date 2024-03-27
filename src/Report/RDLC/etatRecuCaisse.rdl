@@ -1377,7 +1377,7 @@ UCase(Fields!typeReg.Value)</Value>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>A COMPTE PERSONNEL </Value>
+                    <Value>ESPECES</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                     </Style>

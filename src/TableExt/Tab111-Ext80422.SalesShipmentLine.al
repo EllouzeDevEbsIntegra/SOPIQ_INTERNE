@@ -1,5 +1,6 @@
 tableextension 80422 "Sales Shipment Line" extends "Sales Shipment Line" //111
 {
+
     fields
     {
         field(80422; solde; Boolean)
@@ -45,38 +46,12 @@ tableextension 80422 "Sales Shipment Line" extends "Sales Shipment Line" //111
     var
         myInt: Integer;
 
-
+    // @@@@@@ TO VERIFY
     trigger OnafterInsert()
     var
-        ReturnReceiptLine: Record "Return Receipt Line";
-        SalesShipmentHeader: Record "Sales Shipment Header";
+        salesCodeUnit: Codeunit SISalesCodeUnit;
     begin
-        SalesShipmentHeader.Reset();
-        if SalesShipmentHeader.get(rec."Document No.") then begin
-            if SalesShipmentHeader.BS = true then begin
-                ReturnReceiptLine.Reset();
-                ReturnReceiptLine.SetRange("No.", rec."No.");
-                ReturnReceiptLine.SetRange(BS, true);
-                ReturnReceiptLine.SetRange("Quantity Invoiced", 0);
-                ReturnReceiptLine.SetRange(Quantity, rec.Quantity);
-                ReturnReceiptLine.SetFilter("Qty BS To Purchase", '>%1', 0);
-                if ReturnReceiptLine.FindFirst() then begin
-                    ReturnReceiptLine."Qty BS To Purchase" := 0;
-                    ReturnReceiptLine."Document No BS Inverse" := rec."Document No.";
-                    ReturnReceiptLine."Line No BS Inverse" := rec."Line No.";
-                    rec."Qty BS To Invoice" := 0;
-                    rec."Document No BS Inverse" := ReturnReceiptLine."Document No.";
-                    rec."Line No BS Inverse" := ReturnReceiptLine."Line No.";
-                    ReturnReceiptLine.Modify();
-                end
-                else begin
-                    rec."Qty BS To Invoice" := rec.Quantity;
-                end;
-                rec.Modify();
-            end;
-
-
-        end;
+        salesCodeUnit.afterInsertSalesShipLine(rec);
     end;
 
 }

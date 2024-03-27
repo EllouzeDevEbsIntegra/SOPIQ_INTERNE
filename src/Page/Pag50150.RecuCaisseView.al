@@ -1,28 +1,27 @@
-page 50131 "Recu de caisse"
+page 50150 "Recu Caisse View"
 {
-    PageType = List;
+    PageType = Card;
     ApplicationArea = All;
-    UsageCategory = Lists;
+    UsageCategory = Administration;
     SourceTable = "Recu Caisse";
-    SourceTableView = sorting(No) order(descending);
-    CardPageId = "Recu Caisse Card";
-    Editable = false;
     InsertAllowed = false;
-    DeleteAllowed = false;
     ModifyAllowed = false;
-
+    DeleteAllowed = false;
+    Editable = false;
     layout
     {
-        area(content)
+        area(Content)
         {
-            repeater(Control1)
+            group(General)
             {
+                Editable = false;
                 field(No; No)
                 {
-                    ApplicationArea = All;
                     Caption = 'N° Reçu';
                     Editable = false;
+                    ApplicationArea = All;
                 }
+
 
                 field("Customer No"; "Customer No")
                 {
@@ -31,10 +30,17 @@ page 50131 "Recu de caisse"
                     Editable = false;
                 }
 
+                field(custName; custName)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Nom Client';
+                    Editable = false;
+                }
+
                 field(dateTime; dateTime)
                 {
                     ApplicationArea = all;
-                    Caption = 'Date d''Ajout';
+                    Caption = 'Date et Heure';
                     Editable = false;
                 }
 
@@ -51,13 +57,36 @@ page 50131 "Recu de caisse"
                     Caption = 'Code Vendeur';
                     Editable = false;
                 }
-
-                field(totalDocToPay; totalDocToPay)
+                field(isAcompte; isAcompte)
                 {
-                    ApplicationArea = all;
-                    Caption = 'Total document à payer';
+                    Caption = 'Is Acompte';
                     Editable = false;
                 }
+
+            }
+
+            part("Document"; "Recu Document Subpage")
+            {
+                Caption = 'Document à payer';
+                UpdatePropagation = SubPart;
+                ApplicationArea = All;
+                Visible = true;
+                Editable = false;
+            }
+
+            part("Paiement"; "Recu Paiement Subpage")
+            {
+                Caption = 'Liste Paiements';
+                UpdatePropagation = SubPart;
+                ApplicationArea = All;
+                Visible = true;
+                Editable = false;
+
+            }
+
+            group(Totaux)
+            {
+                Editable = false;
 
                 field("totalReçu"; "totalReçu")
                 {
@@ -65,74 +94,48 @@ page 50131 "Recu de caisse"
                     Caption = 'Total Paiement';
                     Editable = false;
                 }
-
                 field(totalDepense; totalDepense)
                 {
                     ApplicationArea = all;
                     Caption = 'Total Dépense';
                     Editable = false;
                 }
-
+                field(totalDocToPay; totalDocToPay)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Total document à payer';
+                    Editable = false;
+                }
                 field("totalRéglement"; "totalRéglement")
                 {
                     ApplicationArea = all;
                     Caption = 'Total Réglement';
                     Editable = false;
                 }
-
-                field(isAcompte; isAcompte)
-                {
-                    ApplicationArea = all;
-                    Caption = 'Is Acompte';
-                    Editable = false;
-                }
-
-                field(Printed; Printed)
-                {
-                    ApplicationArea = all;
-                    Caption = 'Imprimé';
-                    Editable = false;
-                }
             }
+
+
         }
     }
 
-    actions
-    {
-        area(Processing)
-        {
-            action("Imprimer Etat Recette")
-            {
-                ApplicationArea = All;
-                Image = Print;
 
-                trigger OnAction()
-                var
-                    reportRecette: Report "Etat Recu Caisse";
-                begin
-                    reportRecette.Run();
-                end;
-            }
-            action("Liste Paiements Caisse")
-            {
-                ApplicationArea = all;
-                Image = Payment;
-                RunObject = page "Liste Paiement Caisse";
-            }
-            action("Liste Documents Caisse")
-            {
-                ApplicationArea = all;
-                Image = Documents;
-                RunObject = page "Liste document Caisse";
-            }
-        }
-    }
 
+    trigger OnOpenPage()
     var
-        myInt: Integer;
+        recUserSetup: Record "User Setup";
+    begin
+        CurrPage.Document.Page.setFilter(rec);
+        CurrPage.Paiement.Page.setFilter(rec);
+        rec.CalcFields(totalDocToPay, "totalReçu", totalDepense, "totalRéglement");
+    end;
 
     trigger OnAfterGetRecord()
     begin
+        CurrPage.Document.Page.setFilter(rec);
+        CurrPage.Paiement.Page.setFilter(rec);
         rec.CalcFields(totalDocToPay, "totalReçu", totalDepense, "totalRéglement");
     end;
+
+
+
 }
