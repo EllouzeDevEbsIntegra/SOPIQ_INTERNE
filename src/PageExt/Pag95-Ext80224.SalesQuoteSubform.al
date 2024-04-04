@@ -15,6 +15,13 @@ pageextension 80224 "Sales Quote Subform" extends "Sales Quote Subform"//95
 
             }
         }
+        addafter("Location Code")
+        {
+            field("Bin Code"; "Bin Code")
+            {
+                ApplicationArea = all;
+            }
+        }
 
         modify("Unit Price")
         {

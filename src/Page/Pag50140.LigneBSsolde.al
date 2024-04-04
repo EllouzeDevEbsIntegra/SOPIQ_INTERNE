@@ -9,6 +9,7 @@ page 50140 "Ligne BS solde"
     ApplicationArea = all;
     SourceTable = "Sales Shipment Line";
     SourceTableView = sorting("Document No.", "Line No.") where(BS = const(true), "Quantity Invoiced" = filter(= 0), solde = filter(true), "Qty BS To Invoice" = filter(> 0));
+    Permissions = tabledata "Sales Shipment Line" = rm;
 
     layout
     {

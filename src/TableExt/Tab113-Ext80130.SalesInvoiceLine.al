@@ -3,6 +3,13 @@ tableextension 80130 "Sales Invoice Line" extends "Sales Invoice Line" //113
     fields
     {
         // Add changes to table fields here
+        field(80129; "Cust Name Imprime"; Code[200])
+        {
+            CalcFormula = lookup("Sales Invoice Header".custNameImprime WHERE("No." = field("Document No.")));
+            Caption = 'Client Imprimé';
+            Editable = false;
+            FieldClass = FlowField;
+        }
         field(80130; "Labor Groupe Code"; Code[50])
         {
             AutoFormatType = 1;

@@ -74,11 +74,11 @@ report 25006123 "Batch Delete Purch. Line"
                                             Window.Update(7, ItemLedgerEntry."Entry No.");
                                             SLEEP(20);
                                             ItemLedgerEntry.Delete();
-                                            Commit();
+                                            //Commit();
                                         end;
 
                                         PurchRcptLine.Delete();
-                                        Commit();
+                                        //Commit();
                                     end;
                                 end else begin
                                     PurchRcptLine.SetRange("Line No.", PurchInvLine."Receipt Line No.");
@@ -92,11 +92,11 @@ report 25006123 "Batch Delete Purch. Line"
                                             Window.Update(7, ItemLedgerEntry."Entry No.");
                                             SLEEP(20);
                                             ItemLedgerEntry.Delete();
-                                            Commit();
+                                            //Commit();
                                         end;
 
                                         PurchRcptLine.Delete();
-                                        Commit();
+                                        //Commit();
                                     end;
                                     PurchRcptHeader.Reset();
                                     PurchRcptHeader.SetRange("No.", PurchRcptLine."Document No.");
@@ -104,7 +104,7 @@ report 25006123 "Batch Delete Purch. Line"
                                         Window.Update(3, PurchRcptHeader."No.");
                                         SLEEP(20);
                                         PurchRcptHeader.Delete();
-                                        Commit();
+                                        //Commit();
                                     end;
                                 end;
 
@@ -117,7 +117,7 @@ report 25006123 "Batch Delete Purch. Line"
                                         Window.Update(6, PurchaseLine."Line No.");
                                         SLEEP(20);
                                         PurchaseLine.Delete();
-                                        Commit();
+                                        //Commit();
                                     end;
                                 end else begin
                                     PurchaseLine.SetRange("Line No.", PurchInvLine."Order Line No.");
@@ -125,7 +125,7 @@ report 25006123 "Batch Delete Purch. Line"
                                         Window.Update(6, PurchaseLine."Line No.");
                                         SLEEP(20);
                                         PurchaseLine.Delete();
-                                        Commit();
+                                        //Commit();
                                     end;
                                     PurchaseHeader.Reset();
                                     PurchaseHeader.SetRange("No.", PurchaseLine."Document No.");
@@ -133,12 +133,12 @@ report 25006123 "Batch Delete Purch. Line"
                                         Window.Update(5, PurchaseHeader."No.");
                                         SLEEP(20);
                                         PurchaseHeader.Delete();
-                                        Commit();
+                                        //Commit();
                                     end;
                                 end;
 
                                 PurchInvLine.Delete();
-                                Commit();
+                                //Commit();
                             end;
                         until PurchInvLine.Next() = 0;
                     end;
@@ -152,7 +152,7 @@ report 25006123 "Batch Delete Purch. Line"
                         Window.Update(9, PurchCrMemoLine."Line No.");
                         SLEEP(20);
                         PurchCrMemoLine.Delete();
-                        Commit();
+                    //Commit();
                     until PurchCrMemoLine.Next() = 0;
                 end;
 
@@ -163,7 +163,7 @@ report 25006123 "Batch Delete Purch. Line"
                         Window.Update(8, PurchCrMemoHdr."No.");
                         SLEEP(20);
                         PurchCrMemoHdr.Delete();
-                        Commit();
+                    //Commit();
                     until PurchCrMemoHdr.Next() = 0;
                 end;
 
@@ -187,7 +187,7 @@ report 25006123 "Batch Delete Purch. Line"
                                     DetailedVendorLedgEntry."Credit Amount" := "Amount Including VAT";
                                     DetailedVendorLedgEntry."Credit Amount (LCY)" := "Amount Including VAT";
                                     DetailedVendorLedgEntry.Modify();
-                                    Commit();
+                                    //Commit();
                                     Window.Update(11, DetailedVendorLedgEntry."Entry No.");
                                     SLEEP(20);
                                 end;
@@ -195,7 +195,7 @@ report 25006123 "Batch Delete Purch. Line"
                                 Window.Update(11, DetailedVendorLedgEntry."Entry No.");
                                 SLEEP(20);
                                 DetailedVendorLedgEntry.Delete();
-                                Commit();
+                                //Commit();
                             end;
 
 
@@ -223,7 +223,7 @@ report 25006123 "Batch Delete Purch. Line"
                                     VendorLedgerEntry."Credit Amount" := "Amount Including VAT";
                                     VendorLedgerEntry."Credit Amount (LCY)" := "Amount Including VAT";
                                     VendorLedgerEntry.Modify();
-                                    Commit();
+                                    //Commit();
                                     Window.Update(10, VendorLedgerEntry."Entry No.");
                                     SLEEP(20);
                                 end;
@@ -233,7 +233,7 @@ report 25006123 "Batch Delete Purch. Line"
                         if VendorLedgerEntry."Remaining Amount" = 0 then begin
                             //Message('Here %1', VendorLedgerEntry."Entry No.");
                             VendorLedgerEntry.Delete();
-                            Commit();
+                            //Commit();
                         end;
                         VendorLedgerEntry.Open := true;
                     until VendorLedgerEntry.Next() = 0;
@@ -244,7 +244,7 @@ report 25006123 "Batch Delete Purch. Line"
                 if PaymentLine.FindSet() then begin
                     repeat
                         PaymentLine.Delete();
-                        Commit();
+                    //Commit();
                     until PaymentLine.Next() = 0;
                 end;
 

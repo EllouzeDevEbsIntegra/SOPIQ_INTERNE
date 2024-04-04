@@ -23,7 +23,7 @@ codeunit 50019 SubscriberEventProcedure
     begin
         if (salesHeader."Document Type" = salesHeader."Document Type"::"Credit Memo") then begin
             salesHeader.ignoreStamp(salesHeader);
-            salesHeader.Modify(true);
+            salesHeader.Modify();
         end;
         recSalesLine.Reset();
         recSalesLine.SetRange("Document No.", salesHeader."No.");
@@ -92,7 +92,7 @@ codeunit 50019 SubscriberEventProcedure
             if recBS.Find() then begin
                 recBS.Solde := false;
                 recBS.Modify();
-                Commit();
+                //Commit();
             end;
             PostArchivShipLine."Qty. Invoiced (Base)" := OldSalesShipmentLine."Quantity (Base)";
             PostArchivShipLine."Quantity Invoiced" := OldSalesShipmentLine.Quantity;
@@ -113,7 +113,7 @@ codeunit 50019 SubscriberEventProcedure
                 recBS.Solde := false;
             end;
             recBS.Modify();
-            Commit();
+            //Commit();
         end;
 
         recBL.Reset();
@@ -122,7 +122,7 @@ codeunit 50019 SubscriberEventProcedure
             recbl.CalcFields("Montant reçu caisse", "Line Amount");
             if recBL."Line Amount" = recBL."Montant reçu caisse" then recBL.solde := true else recBL.solde := false;
             recBL.Modify();
-            Commit();
+            //Commit();
         end;
     end;
 
@@ -205,7 +205,7 @@ codeunit 50019 SubscriberEventProcedure
                         salesShipLine."Line Amount HT" := salesShipLine.Quantity * salesShipLine."Unit Price" * (1 - salesShipLine."Line Discount %" / 100);
                     end;
                     salesShipLine.Modify();
-                    Commit();
+                //Commit();
                 until salesShipLine.Next() = 0;
             end
         end;
@@ -233,8 +233,8 @@ codeunit 50019 SubscriberEventProcedure
                 if (TargetItem."Sous Groupe" <> '') THEN
                     recMasterExist."Sous Famille" := TargetItem."Sous Groupe";
                 recMasterExist."Type Ajout" := 'Copie de l''article ' + SourceItem."No.";
-                recMasterExist.modify(true);
-                Commit();
+                recMasterExist.modify();
+                //Commit();
             end
             else begin
                 recItemMaster.Reset();
@@ -250,7 +250,7 @@ codeunit 50019 SubscriberEventProcedure
                 recItemMaster."Add User" := Database.UserId;
                 recItemMaster."Type Ajout" := 'Copie de l''article ' + SourceItem."No.";
                 recItemMaster.Insert(true);
-                Commit();
+                //Commit();
             end;
         END;
     end;

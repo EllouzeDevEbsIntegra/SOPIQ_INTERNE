@@ -120,7 +120,7 @@ pageextension 80456 "Purchase Order" extends "Purchase Order" //50
 
                             Controle := true;
                             rec.Modify();
-                            Commit();
+                            //Commit();
 
                             PurchLine.Reset();
                             PurchLine.SetRange("Document No.", rec."No.");

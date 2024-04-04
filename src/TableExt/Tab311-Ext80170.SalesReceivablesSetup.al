@@ -3,6 +3,10 @@ tableextension 80170 "Sales & Receivables Setup" extends "Sales & Receivables Se
     fields
     {
         // Add changes to table fields here
+        field(80169; "Same Price Order/BS"; Boolean)
+        {
+            InitValue = false;
+        }
         field(80170; "UndoShipment"; Boolean)
         {
             InitValue = false;

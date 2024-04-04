@@ -81,6 +81,7 @@ page 50139 "Specific Cust. Stat. FactBox"
         RetourNonSolde := 0;
         retourBS.Reset();
         retourBS.SetRange("Bill-to Customer No.", recCustomer."No.");
+        retourBS.SetFilter(BS, '%1', true);
         retourBS.SetRange(Solde, false);
         if retourBS.FindSet() then begin
             repeat

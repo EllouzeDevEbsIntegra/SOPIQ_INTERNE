@@ -2,6 +2,14 @@ tableextension 80116 "Purch. Rcpt. Line" extends "Purch. Rcpt. Line"//121
 {
     fields
     {
+        field(80114; "Line Amount HT"; decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(80115; "Line Amount"; decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
         field(80116; "Prix Special Vendor"; Decimal)
         {
             DataClassification = ToBeClassified;
@@ -43,4 +51,12 @@ tableextension 80116 "Purch. Rcpt. Line" extends "Purch. Rcpt. Line"//121
 
     var
         myInt: Integer;
+
+    trigger OnAfterInsert()
+    begin
+        "Line Amount HT" := "Unit Cost" * Quantity;
+        if ("VAT %" <> 0) then
+            "Line Amount" := "Unit Cost" * Quantity * (1 + ("VAT %" / 100)) else
+            "Line Amount" := "Unit Cost" * Quantity;
+    end;
 }

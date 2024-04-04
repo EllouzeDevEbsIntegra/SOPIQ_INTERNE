@@ -47,6 +47,18 @@ pageextension 80288 "Posted Purchase Receipts" extends "Posted Purchase Receipts
                 end;
 
             }
+            field("Total HT"; "Total HT")
+            {
+                ApplicationArea = all;
+            }
+            field("Total TTC"; "Total TTC")
+            {
+                ApplicationArea = all;
+            }
+            field("Montant Ouvert"; "Montant Ouvert")
+            {
+                ApplicationArea = all;
+            }
         }
 
         Modify("No.")
@@ -174,4 +186,9 @@ pageextension 80288 "Posted Purchase Receipts" extends "Posted Purchase Receipts
 
     var
         myInt: Integer;
+
+    trigger OnAfterGetRecord()
+    begin
+        CalcFields("Montant Ouvert", "Total HT", "Total TTC")
+    end;
 }

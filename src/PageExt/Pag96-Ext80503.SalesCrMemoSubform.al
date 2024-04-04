@@ -196,7 +196,7 @@ pageextension 80503 "Sales Cr. Memo Subform" extends "Sales Cr. Memo Subform" //
                         repeat
                             salesLine2.Validate("Location Code", salesLine."Location Code");
                             salesLine2.Validate("Bin Code", SalesLine."Bin Code");
-                            salesLine2.Modify(true);
+                            salesLine2.Modify();
                         until salesLine2.Next() = 0;
 
                 end;

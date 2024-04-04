@@ -4,6 +4,13 @@ tableextension 80501 "Return Receipt Line" extends "Return Receipt Line" //6661
     fields
     {
         // Add changes to table fields here
+        field(80129; "Cust Name Imprime"; Code[200])
+        {
+            CalcFormula = lookup("Return Receipt Header".custNameImprime WHERE("Bill-to Customer No." = field("Bill-to Customer No.")));
+            Caption = 'Client Imprimé';
+            Editable = false;
+            FieldClass = FlowField;
+        }
         field(80415; solde; Boolean)
         {
             CalcFormula = lookup("Return Receipt Header".solde where("No." = field("Document No.")));

@@ -62,6 +62,27 @@ tableextension 80103 "Item" extends Item //27
             FieldClass = FlowField;
             DecimalPlaces = 0 : 5;
         }
+        field(50122; "Total Achete"; Decimal)
+        {
+            CalcFormula = sum("Item Ledger Entry".Quantity where("Item No." = field("No."), "Entry Type" = filter('Purchase')));
+            Editable = false;
+            FieldClass = FlowField;
+            DecimalPlaces = 0 : 5;
+        }
+        field(50123; "Total Ajust+"; Decimal)
+        {
+            CalcFormula = sum("Item Ledger Entry".Quantity where("Item No." = field("No."), "Entry Type" = filter('Positive Adjmt.')));
+            Editable = false;
+            FieldClass = FlowField;
+            DecimalPlaces = 0 : 5;
+        }
+        field(50124; "Total Ajust-"; Decimal)
+        {
+            CalcFormula = - sum("Item Ledger Entry".Quantity where("Item No." = field("No."), "Entry Type" = filter('Negative Adjmt.')));
+            Editable = false;
+            FieldClass = FlowField;
+            DecimalPlaces = 0 : 5;
+        }
 
         field(80107; "Mg Principal Filter"; code[100])
         {
@@ -290,7 +311,7 @@ tableextension 80103 "Item" extends Item //27
                             if (rec."Sous Groupe" <> '') THEN
                                 recMasterExist."Sous Famille" := rec."Sous Groupe";
                             recMasterExist."Type Ajout" := 'Nouveau';
-                            recMasterExist.modify(true);
+                            recMasterExist.modify();
                             // Message(recMasterExist."Type Ajout");
                         END
                     end

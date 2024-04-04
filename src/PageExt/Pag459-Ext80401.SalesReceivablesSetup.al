@@ -71,6 +71,14 @@ pageextension 80401 "Sales & Receivables Setup" extends "Sales & Receivables Set
         {
             Visible = false;
         }
+        addafter("Prix de vente 1 % remise")
+        {
+            field("Same Price Order/BS"; "Same Price Order/BS")
+            {
+                ApplicationArea = all;
+                Caption = 'Garder prix initial';
+            }
+        }
     }
 
     actions

@@ -39,7 +39,7 @@ report 50222 "ModifyBillToCustomer"
                     "Tax Area Code" := Customer."Tax Area Code";
                     "Tax Liable" := Customer."Tax Liable";
                     "VAT Registration No." := Customer."VAT Registration No.";
-                    Modify(true);
+                    Modify();
                 end;
 
 
@@ -72,7 +72,7 @@ report 50222 "ModifyBillToCustomer"
                         recSalesShpLine."Gen. Bus. Posting Group" := "Sales Shipment Header"."Gen. Bus. Posting Group";
                         recSalesShpLine."VAT Bus. Posting Group" := "Sales Shipment Header"."VAT Bus. Posting Group";
                         recSalesShpLine."VAT %" := GetVat(recSalesShpLine."VAT Bus. Posting Group", recSalesShpLine."VAT Prod. Posting Group");
-                        recSalesShpLine.MODIFY(true);
+                        recSalesShpLine.MODIFY();
 
 
                         //@@@@ MODIFICATION CLIENT FACTURE ET DONNEUR D ORDRE

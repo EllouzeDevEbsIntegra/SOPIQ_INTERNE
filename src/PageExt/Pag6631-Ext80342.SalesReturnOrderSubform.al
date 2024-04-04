@@ -195,7 +195,7 @@ pageextension 80342 "Sales Return Order Subform" extends "Sales Return Order Sub
                         repeat
                             salesLine2.Validate("Location Code", salesLine."Location Code");
                             salesLine2.Validate("Bin Code", SalesLine."Bin Code");
-                            salesLine2.Modify(true);
+                            salesLine2.Modify();
                         until salesLine2.Next() = 0;
 
                 end;

@@ -83,7 +83,7 @@ page 50133 "Recu Document Subpage"
                         if (rec."Document No" <> xrec."Document No") then begin
                             "Montant Reglement" := 0;
                             "Total TTC" := 0;
-                            Modify(true);
+                            Modify();
                             case rec.type of
                                 type::BS:
                                     begin
@@ -93,7 +93,7 @@ page 50133 "Recu Document Subpage"
                                             recBs.CalcFields("Montant reçu caisse", "Montant TTC");
                                             "Montant Reglement" := recBs."Montant TTC" - recBs."Montant reçu caisse";
                                             "Total TTC" := recBs."Montant TTC";
-                                            Modify(true);
+                                            Modify();
                                         end;
                                     end;
                                 type::Invoice:
@@ -103,7 +103,7 @@ page 50133 "Recu Document Subpage"
                                             recInvoice.CalcFields("Amount Including VAT", "Montant reçu caisse");
                                             "Montant Reglement" := recInvoice."STStamp Amount" + recInvoice."Amount Including VAT" - recInvoice."Montant reçu caisse";
                                             "Total TTC" := recInvoice."Amount Including VAT" + recInvoice."STStamp Amount";
-                                            Modify(true);
+                                            Modify();
                                         end
                                     end;
                                 type::RetourBS:
@@ -113,7 +113,7 @@ page 50133 "Recu Document Subpage"
                                             recRetourBS.CalcFields("Line Amount HT", "Line Amount", "Montant reçu caisse");
                                             "Montant Reglement" := -recRetourBS."Line Amount";
                                             "Total TTC" := -recRetourBS."Line Amount";
-                                            Modify(true);
+                                            Modify();
                                         end
                                     end;
                                 type::CreditMemo:
@@ -124,7 +124,7 @@ page 50133 "Recu Document Subpage"
                                             recCrMemo.CalcFields("Amount Including VAT", "Montant reçu caisse");
                                             "Montant Reglement" := -recCrMemo."Amount Including VAT";
                                             "Total TTC" := -recCrMemo."Amount Including VAT";
-                                            Modify(true);
+                                            Modify();
                                         end;
                                     end;
                                 type::BL:
@@ -134,7 +134,7 @@ page 50133 "Recu Document Subpage"
                                             recBL.CalcFields("Total line amount", "Line Amount", "Montant reçu caisse");
                                             "Montant Reglement" := recBL."Line Amount" - recBL."Montant reçu caisse";
                                             "Total TTC" := recBL."Line Amount";
-                                            Modify(true);
+                                            Modify();
                                         end;
                                     end;
                                 type::RetourBL:
