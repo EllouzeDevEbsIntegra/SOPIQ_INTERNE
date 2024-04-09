@@ -2,6 +2,14 @@ pageextension 80127 "Item Card" extends "Item Card"//30
 {
     layout
     {
+        addafter("No.")
+        {
+            field("No. 2"; "No. 2")
+            {
+                ApplicationArea = all;
+                Caption = 'Réf. Imp.';
+            }
+        }
 
         addafter("Last Purchase Date")
         {

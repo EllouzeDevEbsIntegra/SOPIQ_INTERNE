@@ -1,7 +1,11 @@
-tableextension 80102 "Item Category" extends "Item Category"
+tableextension 80102 "Item Category" extends "Item Category" //5722
 {
     fields
     {
+        field(80102; "Category BI"; Enum "Category BI")
+        {
+            DataClassification = ToBeClassified;
+        }
         // Mettre à jour tous les libellé Groupe / sous groupe en cas de changement au niveau du descrption du sous catégories
         modify(Description)
         {

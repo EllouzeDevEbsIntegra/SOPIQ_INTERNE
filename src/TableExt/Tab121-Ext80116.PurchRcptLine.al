@@ -50,13 +50,17 @@ tableextension 80116 "Purch. Rcpt. Line" extends "Purch. Rcpt. Line"//121
 
 
     var
-        myInt: Integer;
+        SISalesCodeUnit: Codeunit SISalesCodeUnit;
 
     trigger OnAfterInsert()
     begin
-        "Line Amount HT" := "Unit Cost" * Quantity;
-        if ("VAT %" <> 0) then
-            "Line Amount" := "Unit Cost" * Quantity * (1 + ("VAT %" / 100)) else
-            "Line Amount" := "Unit Cost" * Quantity;
+        // "Line Amount HT" := "Unit Cost" * Quantity;
+        // Message('%1', "Line Amount HT");
+        // if ("VAT %" <> 0) then
+        //     "Line Amount" := "Unit Cost" * Quantity * (1 + ("VAT %" / 100)) else
+        //     "Line Amount" := "Unit Cost" * Quantity;
+        // // @@@@@@ TO VERIFY
+        // rec.Modify();
+        SISalesCodeUnit.afterInsertRecptLine(rec);
     end;
 }

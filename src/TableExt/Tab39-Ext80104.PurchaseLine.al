@@ -196,26 +196,6 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
     var
         myInt: Integer;
 
-
-    trigger OnInsert()
-    var
-        ItemVendor: Record "Item Vendor";
-    begin
-        //Message('here OnInsert !');
-
-        if rec."Document Type" = "Document Type"::Quote then begin
-            ItemVendor.Reset();
-            ItemVendor.SetRange("Vendor No.", "Buy-from Vendor No.");
-            ItemVendor.SetRange("Item No.", "No.");
-            if ItemVendor.FindFirst() then begin
-                //Message('here !');
-                rec."Vendor Item No." := ItemVendor."Vendor Item No.";
-                rec.Modify();
-                //Commit();
-            end;
-        end;
-    end;
-
     trigger OnAfterInsert()
     var
         recItem: Record Item;
@@ -225,17 +205,17 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
     begin
         //Message('here OnAfterInsert !');
 
-        if rec."Document Type" = "Document Type"::Quote then begin
-            ItemVendor.Reset();
-            ItemVendor.SetRange("Vendor No.", "Buy-from Vendor No.");
-            ItemVendor.SetRange("Item No.", "No.");
-            if ItemVendor.FindFirst() then begin
-                //Message('here !');
-                rec."Vendor Item No." := ItemVendor."Vendor Item No.";
-                rec.Modify();
-                //Commit();
-            end;
-        end;
+        // if rec."Document Type" = "Document Type"::Quote then begin
+        //     ItemVendor.Reset();
+        //     ItemVendor.SetRange("Vendor No.", "Buy-from Vendor No.");
+        //     ItemVendor.SetRange("Item No.", "No.");
+        //     if ItemVendor.FindFirst() then begin
+        //         //Message('here !');
+        //         rec."Vendor Item No." := ItemVendor."Vendor Item No.";
+        //         rec.Modify();
+        //         Commit();
+        //     end;
+        // end;
 
 
         recItem.Reset();

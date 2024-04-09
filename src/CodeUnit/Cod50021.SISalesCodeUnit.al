@@ -8,7 +8,8 @@ codeunit 50021 SISalesCodeUnit
                     tabledata "Sales Shipment Line" = rimd,
                     tabledata "Return Receipt Header" = rimd,
                     tabledata "Return Receipt Line" = rimd,
-                    tabledata "Sales Shipment Header" = rimd;
+                    tabledata "Sales Shipment Header" = rimd,
+                    tabledata "Purch. Rcpt. Line" = rimd;
     procedure ConfirmBSPOST(var SalesHeader: Record "Sales Header"; DefaultOption: Integer): Boolean
     var
         ConfirmManagement: Codeunit "Confirm Management";
@@ -107,6 +108,11 @@ codeunit 50021 SISalesCodeUnit
     var
         ReturnReceiptLine: Record "Return Receipt Line";
         SalesShipmentHeader: Record "Sales Shipment Header";
+        SalesLine: Record 37;
+        SalesShipmLine: Record 111;
+        Contreremboursement: Record "Contre remboursement";
+        SalesShipmHead: Record 110;
+        salessetup: Record "Sales & Receivables Setup";
     begin
         SalesShipmentHeader.Reset();
         if SalesShipmentHeader.get(rec."Document No.") then begin
@@ -134,58 +140,16 @@ codeunit 50021 SISalesCodeUnit
                 //Commit();
             end;
         end;
+
     end;
 
-
-
-
-
-    // Garder prix initial dans la facturation des lignes BS
-    [EventSubscriber(ObjectType::Table, Database::"Sales Shipment Line", 'OnAfterInsertEvent', '', false, false)]
-    local procedure OnAfterInsertEventSalesShipLine(var Rec: Record "Sales Shipment Line"; RunTrigger: Boolean)
-    Var
-        SalesLine: Record 37;
-        SalesShipmLine: Record 111;
-        Contreremboursement: Record "Contre remboursement";
-        SalesShipmHead: Record 110;
-        salessetup: Record "Sales & Receivables Setup";
+    procedure afterInsertRecptLine(var rec: Record "Purch. Rcpt. Line")
     begin
-        salessetup.get;
-        salessetup.TestField("Prix de vente 1 % remise");
-        salessetup.TestField("Prix de vente 2 % remise");
-        SalesShipmLine := Rec;
-        SalesLine.RESET;
-        SalesLine.setrange("Document No.", SalesShipmLine."Order No.");
-        SalesLine.setrange("Line No.", SalesShipmLine."Order Line No.");
-        IF SalesLine.FindFirst THEN
-            SalesShipmLine.CalcFields(BS);
-        IF SalesShipmLine.BS then begin
-            if (salessetup."Same Price Order/BS" = true) OR (SalesLine."Unit Cost" = 0) then begin
-                SalesShipmLine."Prix Vente 1" := SalesLine."Unit Price";
-                SalesShipmLine."Prix Vente 2" := SalesLine."Unit Price" * (1 - (SalesLine."Line Discount %" / 100));
-                SalesShipmLine."Line Discount %" := SalesLine."Line Discount %";
-                SalesShipmLine."Montant ligne HT BS" := SalesLine.Amount;
-                SalesShipmLine."Montant ligne TTC BS" := SalesLine."Amount Including VAT";
-            end else begin
-                SalesShipmLine."Prix Vente 1" := SalesShipmLine."Unit Cost" * (1 + (salessetup."Prix de vente 1 % remise" / 100));
-                SalesShipmLine."Prix Vente 2" := SalesShipmLine."Prix Vente 1" * (1 - (salessetup."Prix de vente 2 % remise" / 100));
-                SalesShipmLine."Line Discount %" := SalesSetup."Prix de vente 2 % remise";
-                SalesShipmLine."Montant ligne HT BS" := (SalesShipmLine."Prix Vente 2" * SalesShipmLine.Quantity);
-                IF SalesShipmLine."VAT %" > 0 then
-                    SalesShipmLine."Montant ligne TTC BS" := (SalesShipmLine."Prix Vente 2" * SalesShipmLine.Quantity) * (1 + (SalesShipmLine."VAT %" / 100)) else
-                    SalesShipmLine."Montant ligne TTC BS" := (SalesShipmLine."Prix Vente 2" * SalesShipmLine.Quantity);
-            end;
-            SalesShipmLine."Line Amount Order" := SalesLine."Line Amount";
-            SalesShipmLine."Quantity Order" := SalesLine.Quantity;
-        end;
+        rec."Line Amount HT" := rec."Unit Cost" * rec.Quantity;
+        if (rec."VAT %" <> 0) then
+            rec."Line Amount" := rec."Unit Cost" * rec.Quantity * (1 + (rec."VAT %" / 100)) else
+            rec."Line Amount" := rec."Unit Cost" * rec.Quantity;
+        rec.Modify();
+    end;
 
-        SalesShipmLine."% Discount" := SalesLine."Line Discount %";
-        IF SalesLine.Quantity > SalesShipmLine.Quantity then
-            SalesShipmLine."Line Amount" := (SalesLine."Amount Including VAT" / SalesLine.Quantity) * SalesShipmLine.Quantity else
-            SalesShipmLine."Line Amount" := SalesLine."Amount Including VAT";
-        IF SalesLine."VAT %" <> 0 then
-            SalesShipmLine."Line Amount HT" := SalesShipmLine."Line Amount" / (1 + (SalesLine."VAT %" / 100)) else
-            SalesShipmLine."Line Amount HT" := SalesShipmLine."Line Amount";
-        SalesShipmLine.Modify;
-    END;
 }

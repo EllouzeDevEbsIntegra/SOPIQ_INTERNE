@@ -193,6 +193,10 @@ Query 25006650 "Edms Ledger Entry"
                         {
 
                         }
+                        column(Category_BI; "Category BI")
+                        {
+
+                        }
                         dataitem(Customer; Customer)
                         {
                             DataItemLink = "No." = Service_Ledger_Entry_EDMS."Customer No.";
@@ -207,6 +211,15 @@ Query 25006650 "Edms Ledger Entry"
                                 {
 
                                 }
+                                dataitem(Service_Labor; "Service Labor")
+                                {
+                                    DataItemLink = "No." = Service_Ledger_Entry_EDMS."No.";
+                                    column(TypeMO; "Group Code")
+                                    {
+
+                                    }
+                                }
+
                             }
                         }
 

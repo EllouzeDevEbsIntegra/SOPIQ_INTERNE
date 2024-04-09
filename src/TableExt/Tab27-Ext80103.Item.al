@@ -257,6 +257,14 @@ tableextension 80103 "Item" extends Item //27
             Editable = false;
         }
 
+        modify("No.")
+        {
+            trigger OnAfterValidate()
+            begin
+                "No. 2" := "No.";
+            end;
+        }
+
 
     }
 
@@ -277,6 +285,31 @@ tableextension 80103 "Item" extends Item //27
                 recItemMaster.Delete();
             until recItemMaster.Next() = 0;
         end;
+    end;
+
+    trigger OnAfterInsert()
+    begin
+        "No. 2" := "No.";
+    end;
+
+    trigger OnAfterRename()
+    begin
+        "No. 2" := "No.";
+    end;
+
+    trigger OnInsert()
+    begin
+        "No. 2" := "No.";
+    end;
+
+    trigger OnModify()
+    begin
+        "No. 2" := "No.";
+    end;
+
+    trigger OnRename()
+    begin
+        "No. 2" := "No.";
     end;
 
     trigger OnAfterModify()

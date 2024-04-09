@@ -4,6 +4,14 @@ pageextension 80118 "item" extends "Item List" //31
 
     layout
     {
+        addafter("No.")
+        {
+            field("No. 2"; "No. 2")
+            {
+                ApplicationArea = all;
+                Caption = 'Réf. Imp.';
+            }
+        }
         addafter(InventoryField)
         {
             field("ImportQty"; ImportQty)
