@@ -186,37 +186,46 @@ Query 25006650 "Edms Ledger Entry"
 
                     }
 
-                    dataitem(Item_Category; "Item Category")
+
+                    dataitem(Customer; Customer)
                     {
-                        DataItemLink = Code = Service_Ledger_Entry_EDMS."Item Product Code";
-                        column(FamilleArticle; Description)
+                        DataItemLink = "No." = Service_Ledger_Entry_EDMS."Customer No.";
+                        column(Name; Name)
                         {
-
                         }
-                        column(Category_BI; "Category BI")
-                        {
 
-                        }
-                        dataitem(Customer; Customer)
+                        dataitem(Vehicle; Vehicle)
                         {
-                            DataItemLink = "No." = Service_Ledger_Entry_EDMS."Customer No.";
-                            column(Name; Name)
+                            DataItemLink = "Serial No." = Service_Ledger_Entry_EDMS."Vehicle Serial No.";
+                            column(First_Registration_Date; "First Registration Date")
                             {
+
                             }
-
-                            dataitem(Vehicle; Vehicle)
+                            dataitem(Service_Labor; "Service Labor")
                             {
-                                DataItemLink = "Serial No." = Service_Ledger_Entry_EDMS."Vehicle Serial No.";
-                                column(First_Registration_Date; "First Registration Date")
+                                DataItemLink = "No." = Service_Ledger_Entry_EDMS."No.";
+                                column(TypeMO; "Group Code")
                                 {
 
                                 }
-                                dataitem(Service_Labor; "Service Labor")
+                                dataitem(Item; Item)
                                 {
                                     DataItemLink = "No." = Service_Ledger_Entry_EDMS."No.";
-                                    column(TypeMO; "Group Code")
+                                    column(itemGroupe; "Item Product Code")
                                     {
 
+                                    }
+                                    dataitem(Item_Category; "Item Category")
+                                    {
+                                        DataItemLink = Code = Item."Item Product Code";
+                                        column(FamilleArticle; Description)
+                                        {
+
+                                        }
+                                        column(Category_BI; "Category BI")
+                                        {
+
+                                        }
                                     }
                                 }
 

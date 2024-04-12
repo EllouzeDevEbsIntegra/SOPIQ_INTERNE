@@ -159,6 +159,7 @@ page 50118 "Items Master List"
                             // Message('Parcours de la société : %1', recCompany.Name);
                             IF recCompany.Name <> rec.Company THEN BEGIN
                                 tempItem.ChangeCompany(recCompany.Name);
+                                tempItem."No. 2" := tempItem."No.";
                                 // Message('Société : %1 -- Item Temp : %2', recCompany.Name, tempItem."No.");
                                 recItem.Reset();
                                 recItem.SetFilter("No.", tempItem."No.");
@@ -174,6 +175,7 @@ page 50118 "Items Master List"
                                     recItem.validate("Reference Origine Lié", tempItem."Reference Origine Lié");
                                     recItem.validate("Manufacturer Code", tempItem."Manufacturer Code");
                                     recItem.validate("Make Code", tempItem."Make Code");
+                                    recItem.Validate("No. 2", tempItem."No.");
                                     recItem.Modify;
 
                                     // Message('Item Modified : %1 Dans société : %2', recItem."No.", recCompany.Name);
@@ -233,6 +235,48 @@ page 50118 "Items Master List"
                             recItemMaster."Validate User" := Database.UserId;
                             recItemMaster.Modify();
                         UNTIL recItemMaster.Next() = 0;
+                    end;
+                end;
+            }
+            action("Create Master")
+            {
+                Caption = 'Créer MASTER';
+                Image = ChangeLog;
+                trigger OnAction()
+                var
+                    recItem, recMaster, recVerifItem : Record Item;
+                    recCompany: Record Company;
+                    varExist: Boolean;
+                begin
+                    recItem.Reset();
+                    recItem.SetRange("No.", rec.No);
+                    recItem.ChangeCompany(rec.Company);
+                    if recItem.FindFirst() then begin
+                        recMaster := recItem;
+                        //Message('Old %1', recMaster."No.");
+                        recMaster.Validate("No.", 'MASTER' + recMaster."No.");
+                        recMaster.Validate(Produit, true);
+                        recMaster."Reference Origine Lié" := recMaster."No.";
+                        //Message('New %1', recMaster."Reference Origine Lié");
+
+                        recCompany.Reset();
+                        if recCompany.FindSet() then begin
+                            REPEAT
+                                recMaster.ChangeCompany(recCompany.Name);
+                                recVerifItem.Reset();
+                                recVerifItem.SetRange("No.", recMaster."No.");
+                                recVerifItem.ChangeCompany(recCompany.Name);
+                                if recVerifItem.FindFirst() then begin
+                                end
+                                else
+                                    recMaster.Insert();
+
+                            UNTIL recCompany.Next() = 0;
+                            Message('Master %1 ajouté avec succées !', recMaster."No.");
+                        end;
+                        recItem.Validate("Reference Origine Lié", recMaster."No.");
+                        recItem.Modify();
+
                     end;
                 end;
             }

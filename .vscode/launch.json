@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "SOPIQ INTERNE",
             "request": "launch",
@@ -59,6 +60,7 @@
             "server": "http://192.168.1.5",
             "serverInstance": "BC160",
             "authentication": "Windows",
+            //"authentication": "UserPassword",
             "breakOnError": true,
             "launchBrowser": true,
             "enableLongRunningSqlStatements": true,

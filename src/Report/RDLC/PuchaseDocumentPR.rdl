@@ -1628,6 +1628,7 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -2027,6 +2028,14 @@
                 <TablixMember />
                 <TablixMember>
                   <Group Name="Details1" />
+                  <SortExpressions>
+                    <SortExpression>
+                      <Value>=Fields!bin.Value</Value>
+                    </SortExpression>
+                    <SortExpression>
+                      <Value>=Fields!No_PurchaseLine.Value</Value>
+                    </SortExpression>
+                  </SortExpressions>
                   <TablixMembers>
                     <TablixMember />
                   </TablixMembers>

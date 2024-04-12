@@ -317,6 +317,7 @@ tableextension 80103 "Item" extends Item //27
         recItemMaster, recMasterExist : Record "items Master";
         TypeModif: Text[200];
     begin
+        "No. 2" := "No.";
         if (rec."Small Parts" = false) then begin
             if (rec.Verified = false) then begin
                 // Message('Not verified Item');

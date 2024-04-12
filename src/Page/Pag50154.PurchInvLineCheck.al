@@ -113,6 +113,12 @@ page 50154 "Purch. Inv. Line Check"
                     ApplicationArea = all;
                     Editable = false;
                 }
+                field(inventory; inventory)
+                {
+                    Caption = 'STK';
+                    ApplicationArea = all;
+                    Editable = false;
+                }
                 field("Unit Cost"; "Unit Cost")
                 {
                     Caption = 'Prix HT';
