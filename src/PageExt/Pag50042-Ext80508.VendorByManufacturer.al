@@ -5,13 +5,19 @@ pageextension 80508 "Vendor By Manufacturer" extends "Vendor By Manufacturer" //
         // Add changes to page layout here
         addbefore("Default Vendor")
         {
+            field(fabricant; fabricant)
+            {
+                Caption = 'Fabricant';
+                ApplicationArea = all;
+
+            }
             field("Vendor No Format"; "Vendor No Format")
             {
                 Caption = 'Format Référence Furnisseur';
                 ApplicationArea = all;
                 trigger OnValidate()
                 begin
-                    // @@@@@@ TO VERIFY
+                    // @@@@@@@@ TO VERIFY
                 end;
             }
         }

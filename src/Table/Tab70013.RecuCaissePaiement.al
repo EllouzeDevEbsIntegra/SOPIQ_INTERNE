@@ -142,7 +142,8 @@ table 70013 "Recu Caisse Paiement"
 
     procedure setIsDeciassement(typePaiement: Enum "Paiment Caisse Type"): Boolean
     begin
-        if (typePaiement = typePaiement::"AvoirEsp") OR (typePaiement = typePaiement::"Depense") OR (typePaiement = typePaiement::"retourBS") OR (typePaiement = typePaiement::"Transport") OR (typePaiement = typePaiement::"ResteCheque") then
+        if (typePaiement = typePaiement::"AvoirEsp") OR (typePaiement = typePaiement::"Depense") OR (typePaiement = typePaiement::"retourBS") OR (typePaiement = typePaiement::"Transport") OR (typePaiement = typePaiement::"ResteCheque")
+        OR (typePaiement = typePaiement::DecCheq) OR (typePaiement = typePaiement::DecEsp) OR (typePaiement = typePaiement::DecTrt) OR (typePaiement = typePaiement::DecVers) OR (typePaiement = typePaiement::DecVir) then
             exit(true)
         else
             exit(false);

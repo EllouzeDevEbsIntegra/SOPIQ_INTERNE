@@ -1,15 +1,8 @@
-pageextension 80506 "Posted Purchase Credit Memos" extends "Posted Purchase Credit Memos" //147
+pageextension 80509 "Posted Purchase Invoices" extends "Posted Purchase Invoices" //146
 {
     layout
     {
         // Add changes to page layout here
-        addafter(Paid)
-        {
-            field("Vendor Cr. Memo No."; "Vendor Cr. Memo No.")
-            {
-                ApplicationArea = all;
-            }
-        }
         addafter("Amount Including VAT")
         {
             field(solde; solde)
@@ -26,6 +19,8 @@ pageextension 80506 "Posted Purchase Credit Memos" extends "Posted Purchase Cred
                 end;
             }
         }
+
+
     }
 
 

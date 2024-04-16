@@ -66,7 +66,11 @@ page 50133 "Recu Document Subpage"
                     else
                     if (type = const(RetourBL)) "Return Receipt Header" where("Bill-to Customer No." = field("Customer No"), solde = filter('Non'))
                     else
-                    if (type = const(Acompte)) "Salesperson/Purchaser";
+                    if (type = const(Acompte)) "Salesperson/Purchaser"
+                    else
+                    if (type = const(FA)) "Purch. Inv. Header" where(solde = filter('Non'))
+                    else
+                    if (type = const(AVA)) "Purch. Cr. Memo Hdr." where(solde = filter('Non'));
 
                     trigger OnValidate()
 
@@ -77,6 +81,8 @@ page 50133 "Recu Document Subpage"
                         recRetourBS: Record "Return Receipt Header";
                         recBL: Record "Sales Shipment Header";
                         recRetourBL: Record "Return Receipt Header";
+                        recPurchInv: Record "Purch. Inv. Header";
+                        recPurchCrMemo: Record "Purch. Cr. Memo Hdr.";
 
                     begin
 
@@ -146,6 +152,25 @@ page 50133 "Recu Document Subpage"
                                             "Total TTC" := -recRetourBL."Line Amount";
                                         end;
 
+                                    end;
+                                type::FA:
+                                    begin
+                                        recPurchInv.SetRange("No.", "Document No");
+                                        if recPurchInv.FindFirst() then begin
+                                            recPurchInv.CalcFields("Amount Including VAT", "Montant reçu caisse");
+                                            "Montant Reglement" := -(recPurchInv."Amount Including VAT" + recPurchInv."STStamp Fiscal Amount" - recPurchInv."Montant reçu caisse");
+                                            "Total TTC" := (recPurchInv."Amount Including VAT" + recPurchInv."STStamp Fiscal Amount");
+                                        end;
+
+                                    end;
+                                type::AVA:
+                                    begin
+                                        recPurchCrMemo.SetRange("No.", "Document No");
+                                        if recPurchCrMemo.FindFirst() then begin
+                                            recPurchCrMemo.CalcFields("Amount Including VAT", "Montant reçu caisse");
+                                            "Montant Reglement" := (recPurchCrMemo."Amount Including VAT" - recPurchCrMemo."Montant reçu caisse");
+                                            "Total TTC" := recPurchCrMemo."Amount Including VAT";
+                                        end;
                                     end;
                                 else begin
 

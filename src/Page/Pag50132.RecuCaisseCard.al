@@ -8,7 +8,9 @@ page 50132 "Recu Caisse Card"
                     tabledata "Entete archive BS" = rm,
                     tabledata "Sales Cr.Memo Header" = rm,
                     tabledata "Return Receipt Header" = rm,
-                    tabledata "Sales Shipment Header" = rm;
+                    tabledata "Sales Shipment Header" = rm,
+                    tabledata "Purch. Cr. Memo Hdr." = rm,
+                    tabledata "Purch. Inv. Header" = rm;
 
     layout
     {
@@ -341,6 +343,8 @@ page 50132 "Recu Caisse Card"
         recRetourBS: Record "Return Receipt Header";
         recBL: Record "Sales Shipment Header";
         recRetourBL: Record "Return Receipt Header";
+        recPurchInvHead: Record "Purch. Inv. Header";
+        recCrMemoHead: Record "Purch. Cr. Memo Hdr.";
     begin
         recRecuDoc.Reset();
         recRecuDoc.SetRange("No Recu", recRecu.No);
@@ -442,6 +446,36 @@ page 50132 "Recu Caisse Card"
                                     recRetourBL.solde := false;
                                 recRetourBL.Modify();
 
+                            end;
+                            Commit();
+                        end;
+                    "Document Caisse Type"::FA:
+                        begin
+                            recPurchInvHead.Reset();
+                            recPurchInvHead.Get(recRecuDoc."Document No");
+                            if recPurchInvHead.Find() then begin
+                                recPurchInvHead.CalcFields("Amount Including VAT", "Montant reçu caisse");
+                                if ((recPurchInvHead."Amount Including VAT" + recPurchInvHead."STStamp Fiscal Amount") = -recPurchInvHead."Montant reçu caisse") then begin
+                                    recPurchInvHead.solde := true;
+                                end
+                                else
+                                    recPurchInvHead.solde := false;
+                                recPurchInvHead.Modify();
+                            end;
+                            Commit();
+                        end;
+                    "Document Caisse Type"::AVA:
+                        begin
+                            recCrMemoHead.Reset();
+                            recCrMemoHead.get(recRecuDoc."Document No");
+                            if recCrMemoHead.Find() then begin
+                                recCrMemoHead.CalcFields("Amount Including VAT", "Montant reçu caisse");
+                                if (recCrMemoHead."Amount Including VAT" = recCrMemoHead."Montant reçu caisse") then begin
+                                    recCrMemoHead.solde := true;
+                                end
+                                else
+                                    recCrMemoHead.solde := false;
+                                recCrMemoHead.Modify();
                             end;
                             Commit();
                         end;

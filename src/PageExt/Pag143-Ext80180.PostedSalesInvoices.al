@@ -136,9 +136,9 @@ pageextension 80180 "Posted Sales Invoices" extends "Posted Sales Invoices"//143
 
     local procedure DoDrillDown()
     var
-        SalesInvoiceHeader: Record "Recu Caisse Document";
+        recuCaisseDoc: Record "Recu Caisse Document";
     begin
-        SalesInvoiceHeader.SetRange("Document No", rec."No.");
-        PAGE.Run(PAGE::"Recu Document List", SalesInvoiceHeader);
+        recuCaisseDoc.SetRange("Document No", rec."No.");
+        PAGE.Run(PAGE::"Recu Document List", recuCaisseDoc);
     end;
 }

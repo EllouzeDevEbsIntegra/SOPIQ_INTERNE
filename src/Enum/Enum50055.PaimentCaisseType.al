@@ -39,7 +39,7 @@ enum 50055 "Paiment Caisse Type"
     }
     value(8; AvoirEsp)
     {
-        Caption = 'Avoir Espèce';
+        Caption = 'Avoir Esp/Cheque';
     }
     value(9; RS)
     {
@@ -69,6 +69,30 @@ enum 50055 "Paiment Caisse Type"
     value(14; Divers)
     {
         Caption = 'Divers';
+    }
+    value(15; Versement)
+    {
+        Caption = 'Versement';
+    }
+    value(16; DecCheq)
+    {
+        Caption = 'Décaissement Chèque';
+    }
+    value(17; DecTrt)
+    {
+        Caption = 'Décaissement Traite';
+    }
+    value(18; DecEsp)
+    {
+        Caption = 'Décaissement Espèce';
+    }
+    value(19; DecVir)
+    {
+        Caption = 'Décaissement Virement';
+    }
+    value(20; DecVers)
+    {
+        Caption = 'Décaissement Versement';
     }
 
 }

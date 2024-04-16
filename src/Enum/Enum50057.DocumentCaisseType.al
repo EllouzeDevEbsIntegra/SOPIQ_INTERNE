@@ -37,5 +37,13 @@ enum 50057 "Document Caisse Type"
     {
         Caption = 'Acompte Personnel';
     }
+    value(9; FA)
+    {
+        Caption = 'Facture Achat';
+    }
+    value(10; AVA)
+    {
+        Caption = 'Avoir Achat';
+    }
 
 }

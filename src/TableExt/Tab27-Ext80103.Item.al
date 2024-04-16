@@ -257,6 +257,12 @@ tableextension 80103 "Item" extends Item //27
             Editable = false;
         }
 
+        field(50138; "Error Format Vendor No"; Text[100])
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
+
         modify("No.")
         {
             trigger OnAfterValidate()
