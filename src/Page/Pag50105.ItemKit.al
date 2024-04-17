@@ -59,6 +59,18 @@ page 50105 "Item Kit"
                     StyleExpr = FieldStyleOnPurchQty;
 
                 }
+                field(SalesQty; "Total Vendu")
+                {
+                    Caption = 'Total Vendu';
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field(PurchQty; "Total Achete")
+                {
+                    Caption = 'Total Acheté';
+                    ApplicationArea = All;
+                    Editable = false;
+                }
                 field("Last Pursh. Cost DS"; rec."Last. Pursh. cost DS")
                 {
                     Caption = 'Cout Calculé';

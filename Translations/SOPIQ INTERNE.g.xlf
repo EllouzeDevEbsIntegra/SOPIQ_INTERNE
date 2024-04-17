@@ -5798,6 +5798,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Item Equivalent - Control No. - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1833399987 - Control 3961399556 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Acheté</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Item Equivalent - Control PurchQty - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1833399987 - Control 2991223347 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Import</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -5812,6 +5817,11 @@
           <source>Qté Cmdé</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Item Equivalent - Control Qty. on Purch. Order - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1833399987 - Control 3226109488 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Vendu</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Item Equivalent - Control SalesQty - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 1833399987 - Control 2937233469 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>PUHT</source>
@@ -5913,6 +5923,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Item Kit - Control No. - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1694490565 - Control 3961399556 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Acheté</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Item Kit - Control PurchQty - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1694490565 - Control 2991223347 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Import</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -5927,6 +5942,11 @@
           <source>Qté Cmdé</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Item Kit - Control Qty. on Purch. Order - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1694490565 - Control 3226109488 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Vendu</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Item Kit - Control SalesQty - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 1694490565 - Control 2937233469 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>PUHT</source>
@@ -8783,6 +8803,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Quote Check - Control PrixDeVenteCalcule - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 193927665 - Control 3961399556 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Acheté</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Quote Check - Control PurchQty - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 193927665 - Control 3420811913 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Qté Cmdé</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -8797,6 +8822,11 @@
           <source>Raison Qte Cmdé</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Quote Check - Control Quote Line Reason - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 193927665 - Control 3226109488 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Vendu</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Quote Check - Control SalesQty - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 193927665 - Control 1527594213 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Frs</source>

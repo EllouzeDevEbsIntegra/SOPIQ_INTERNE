@@ -202,7 +202,6 @@ codeunit 50022 SIStockCodeUnit
     var
         VendorByManufacturer: Record "Vendor By Manufacturer";
         ItemVendor: Record "Item Vendor";
-        Fitems: Record Item;
         Vendor: Record Vendor;
         ItemCrossReference: Record "Item Cross Reference";
     begin
@@ -222,9 +221,7 @@ codeunit 50022 SIStockCodeUnit
         Vendor.get(recVendor);
         ItemVendor."Lead Time Calculation" := Vendor."Lead Time Calculation"; //
         ItemVendor."Vendor Item No." := vendorNo;
-        if ItemVendor.Insert() then begin
-            Rec."Error Format Vendor No" := rec."Error Format Vendor No" + ' - ' + 'Item Vendor Insert !';
-        end;
+        ItemVendor.Insert();
 
 
         ItemCrossReference.Init();
@@ -233,11 +230,7 @@ codeunit 50022 SIStockCodeUnit
         ItemCrossReference."Cross-Reference Type No." := recVendor;
         ItemCrossReference."Cross-Reference No." := vendorNo;
         ItemCrossReference."Unit of Measure" := rec."Purch. Unit of Measure";
-        if ItemCrossReference.Insert() then begin
-            Rec."Error Format Vendor No" := rec."Error Format Vendor No" + ' - ' + 'Item Cross Insert !'
-        end;
-
-        rec.Modify;
+        ItemCrossReference.Insert();
 
     end;
 

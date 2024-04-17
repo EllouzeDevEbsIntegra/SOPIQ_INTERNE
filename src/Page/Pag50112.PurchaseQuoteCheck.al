@@ -107,6 +107,19 @@ page 50112 "Purchase Quote Check"
                         Page.Run(518, PurchLine);
                     end;
                 }
+                field(SalesQty; ItemStk."Total Vendu")
+                {
+                    Caption = 'Total Vendu';
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field(PurchQty; ItemStk."Total Achete")
+                {
+                    Caption = 'Total Acheté';
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+
                 field("Vendor Qty"; "Vendor Quantity")
                 {
                     Caption = 'Vendor Qty';
@@ -281,7 +294,7 @@ page 50112 "Purchase Quote Check"
     begin
 
         if ItemStk.get("No.") Then
-            ItemStk.CalcFields("Last starting Date", "Last Curr. Price.", "Qty. on Purch. Order", "Last Date", "Last Ending Date", "Available Inventory", ImportQty, "First Reception Date", "Pre Last Curr. Price.");
+            ItemStk.CalcFields("Last starting Date", "Last Curr. Price.", "Qty. on Purch. Order", "Last Date", "Last Ending Date", "Available Inventory", ImportQty, "First Reception Date", "Pre Last Curr. Price.", "Total Vendu", "Total Achete");
         FieldStyleQty := SetStyleQte(ItemStk."Available Inventory");
         FieldStyleImportQty := SetStyleQte(ItemStk.ImportQty);
         FieldStyleOnPurchQty := SetStyleQte(ItemStk."Qty. on Purch. Order");
