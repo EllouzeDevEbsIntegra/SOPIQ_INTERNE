@@ -64,7 +64,7 @@ report 50223 "Batch Update Customer Price"
                 if recProfitAdd.FindSet() then begin
                     repeat
                         recItem.reset();
-                        if (recProfitAdd."Item Manufacturer" <> 'ALLFAB') THEN recitem.SetRange("Manufacturer Code", recProfitAdd."Item Manufacturer");
+                        if (recProfitAdd."Item Manufacturer" <> 'XALLFAB') THEN recitem.SetRange("Manufacturer Code", recProfitAdd."Item Manufacturer");
                         if (recProfitAdd."Item Group" <> 'PR') THEN recitem.SetRange("Item Product Code", recProfitAdd."Item Group");
                         if recItem.FindSet() then begin
                             repeat

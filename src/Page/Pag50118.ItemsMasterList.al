@@ -20,7 +20,8 @@ page 50118 "Items Master List"
             {
                 field(No; No)
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = all;
+
                 }
 
                 field(Famille; Famille)

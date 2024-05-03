@@ -185,6 +185,11 @@ Query 25006650 "Edms Ledger Entry"
                     {
 
                     }
+                    column(Phone_No_; "Phone No.")
+                    {
+
+                    }
+
 
 
                     dataitem(Customer; Customer)
@@ -192,6 +197,10 @@ Query 25006650 "Edms Ledger Entry"
                         DataItemLink = "No." = Service_Ledger_Entry_EDMS."Customer No.";
                         column(Name; Name)
                         {
+                        }
+                        column(Cust_Phone_No; "Phone No.")
+                        {
+
                         }
 
                         dataitem(Vehicle; Vehicle)

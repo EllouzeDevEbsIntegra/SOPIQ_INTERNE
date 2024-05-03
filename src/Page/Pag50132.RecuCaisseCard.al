@@ -93,6 +93,12 @@ page 50132 "Recu Caisse Card"
                     Caption = 'Nom Client';
                     Editable = false;
                 }
+                field(Printed; Printed)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Imprimé';
+                    Editable = false;
+                }
 
 
 
@@ -271,6 +277,18 @@ page 50132 "Recu Caisse Card"
 
                 begin
                     modifCustomer := true;
+                    if (Printed = true) then begin
+                        if (testForModifPrinted < 3) then begin
+                            testForModifPrinted := testForModifPrinted + 1;
+                        end
+                        else
+                            if (testForModifPrinted = 3) then begin
+                                Printed := false;
+                                CurrPage.Update(true);
+                                testForModifPrinted := 0;
+                            end;
+                    end;
+
                 end;
             }
 
@@ -303,11 +321,13 @@ page 50132 "Recu Caisse Card"
 
     var
         modifCustomer, isCreated, userSetupModifRC : Boolean;
+        testForModifPrinted: Integer;
 
     trigger OnOpenPage()
     var
         recUserSetup: Record "User Setup";
     begin
+        testForModifPrinted := 0;
         recUserSetup.Reset();
         // recUserSetup.SetFilter("User ID", UserId);
         recUserSetup.Get(UserId);

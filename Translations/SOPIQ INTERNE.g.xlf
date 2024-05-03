@@ -8913,6 +8913,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Card - Control No - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3528027965 - Control 1668868500 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Imprimé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Card - Control Printed - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3528027965 - Control 1627817627 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Code Vendeur</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -9112,6 +9117,31 @@
           <source>Specifies the prepayment amount of the line in the currency of the sales document if a prepayment percentage is specified for the sales line.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales line - Control Prepmt. Line Amount - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2398269430 - NamedType 983217553" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The order cannot be found.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Order EBS - NamedType CannotFindOrderErr</note>
+        </trans-unit>
+        <trans-unit id="Page 2398269430 - NamedType 3550849197" size-unit="char" translate="yes" xml:space="preserve">
+          <source>You do not have permissions to read Sales Orders.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Order EBS - NamedType SalesOrderPermissionsErr</note>
+        </trans-unit>
+        <trans-unit id="Page 2398269430 - Control 2950861020 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the billing address of the Sales Invoice.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Order EBS - Control billingPostalAddress - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2398269430 - Control 998393528 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the status of the Sales Invoice (cancelled, paid, on hold, created).</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Order EBS - Control status - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2398269430 - Control 4101803605 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the total tax amount for the sales invoice.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Order EBS - Control totalTaxAmount - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 2272133841 - NamedType 3550849197" size-unit="char" translate="yes" xml:space="preserve">
           <source>You do not have permissions to read Sales Orders.</source>
@@ -13223,6 +13253,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Query Edms Ledger Entry - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Query 1554554962 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Items</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query Items - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Query 3118849963 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Purchase Credit Memo Lines</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -14207,6 +14242,11 @@
           <source>Voulez vous vraiment réserver tous les articles de cette commande !</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Order Subform - Action Reserve All - Method OnAction - NamedType messageValidate</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2026081320 - Control 580853677 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2026081320">
+          <source>Specifies the number of a general ledger account, item, resource, additional cost, or fixed asset, depending on the contents of the Type field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Order Subform - Control No2 - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="PageExtension 2026081320 - Control 1650118938 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2026081320">
           <source>Mnt TTC</source>
@@ -15962,6 +16002,11 @@
           <source>Contrôleur Cmd Achat</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension User Setup - Field Contrôleur Cmd Achat - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 337631938 - Field 2204557438 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 337631938">
+          <source>Initial Allow Post. Only Today</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension User Setup - Field Initial Allow Post. Only Today - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 337631938 - Field 4087196453 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 337631938">
           <source>isRCModify</source>

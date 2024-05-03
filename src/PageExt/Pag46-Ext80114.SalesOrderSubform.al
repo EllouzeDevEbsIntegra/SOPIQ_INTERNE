@@ -4,6 +4,20 @@ pageextension 80114 "Sales Order Subform" extends "Sales Order Subform" //46
 
     {
 
+        addbefore("No.")
+        {
+            field("No2"; "No.")
+            {
+                ApplicationArea = Basic, Suite;
+                ShowMandatory = NOT IsCommentLine;
+                ToolTip = 'Specifies the number of a general ledger account, item, resource, additional cost, or fixed asset, depending on the contents of the Type field.';
+
+                trigger OnValidate()
+                begin
+                    Validate("No.");
+                end;
+            }
+        }
         addafter("Unit Price") // Ajout du champ prix initial dans ligne vente
         {
             field("Available Qty"; "Available Qty")

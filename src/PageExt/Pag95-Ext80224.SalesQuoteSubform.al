@@ -2,6 +2,7 @@ pageextension 80224 "Sales Quote Subform" extends "Sales Quote Subform"//95
 {
     layout
     {
+
         // Add changes to page layout here
         addafter("Unit Price") // Ajout du champ prix initial dans ligne vente
         {
@@ -285,6 +286,7 @@ pageextension 80224 "Sales Quote Subform" extends "Sales Quote Subform"//95
 
 
     var
+        LookUpMgt: Codeunit LookUpManagement;
         FieldStyleQty: Text[50];
         myInt: Integer;
         UpdateAmount: Boolean;

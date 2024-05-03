@@ -8,6 +8,10 @@ tableextension 80145 "User Setup" extends "User Setup" //91
             InitValue = false;
             DataClassification = ToBeClassified;
         }
+        field(80146; "Initial Allow Post. Only Today"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
 
         // field(80146; "Follow Up Controler"; Boolean)
         // {
