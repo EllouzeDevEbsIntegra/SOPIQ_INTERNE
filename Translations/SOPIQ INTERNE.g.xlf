@@ -13273,6 +13273,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Query Purchases Dashboard - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Query 3215042660 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Service Labor</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query ServLabor - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 3470244815 - Action 2297996449 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3470244815">
           <source>Grand Livre Client 2</source>
           <note from="Developer" annotates="general" priority="2"></note>

@@ -51,9 +51,21 @@ query 25006651 Items
             {
 
             }
+            column(Item_Product_Code; "Item Product Code")
+            {
+
+            }
+            dataitem(Item_Category; "Item Category")
+            {
+                DataItemLink = code = Item."Item Product Code";
+                column(Category_BI; "Category BI")
+                {
+
+                }
 
 
 
+            }
         }
     }
 
