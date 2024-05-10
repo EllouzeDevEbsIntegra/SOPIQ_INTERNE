@@ -37,6 +37,13 @@ tableextension 80111 "Purchase Header" extends "Purchase Header" //38
             Caption = 'Contrôlé';
             Editable = false;
         }
+        field(80151; "Total Line"; Integer)
+        {
+            Caption = 'Total Line';
+            FieldClass = FlowField;
+            Editable = false;
+            CalcFormula = count("Purchase Line" where("Document No." = field("No.")));
+        }
     }
 
     var

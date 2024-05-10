@@ -74,20 +74,25 @@ page 50161 "ItemCopyAPI"
         recFabricant: Record Manufacturer;
         recItemUnit: Record "Item Unit of Measure";
         fabricant: Text[100];
+        // Item By Vendor & Item Cross Reference
+        ItemVendor: Record "Item Vendor";
+        Vendor: Record Vendor;
+        ItemCrossReference: Record "Item Cross Reference";
     begin
         if "No." = '' then
             Error(NotProvidedCustomerNameErr);
 
         recFabricant.Reset();
         If recFabricant.get(rec."Fabricant WS") then fabricant := recFabricant.Name;
-
         //Add item unit
         recItemUnit.Init();
-        recItemUnit."Item No." := rec."No.";
-        recItemUnit.code := 'PCS';
-        recItemUnit."Qty. per Unit of Measure" := 1;
-        recItemUnit.Insert;
-
+        recItemUnit.SetRange("Item No.", rec."No.");
+        if not recItemUnit.FindFirst() then begin
+            recItemUnit."Item No." := rec."No.";
+            recItemUnit.code := 'PCS';
+            recItemUnit."Qty. per Unit of Measure" := 1;
+            recItemUnit.Insert;
+        end;
 
         rec."Base Unit of Measure" := 'PCS';
         rec."Sales Unit of Measure" := 'PCS';
@@ -105,6 +110,26 @@ page 50161 "ItemCopyAPI"
         rec."Profit %" := 20;
 
         rec."Manufacturer Code" := rec."Fabricant WS";
+
+
+        // Add item vendor & item cross ref 
+        ItemVendor.Init();
+        ItemVendor."Item No." := Rec."No.";
+        ItemVendor."Vendor No." := "Vendor No.";
+        Vendor.get("Vendor No.");
+        ItemVendor."Lead Time Calculation" := Vendor."Lead Time Calculation"; //
+        ItemVendor."Vendor Item No." := "Vendor Item No.";
+        ItemVendor.Insert();
+
+
+        ItemCrossReference.Init();
+        ItemCrossReference."Item No." := rec."No.";
+        ItemCrossReference."Cross-Reference Type" := ItemCrossReference."Cross-Reference Type"::Vendor;
+        ItemCrossReference."Cross-Reference Type No." := "Vendor No.";
+        ItemCrossReference."Cross-Reference No." := "Vendor Item No.";
+        ItemCrossReference."Unit of Measure" := rec."Purch. Unit of Measure";
+        ItemCrossReference.Insert();
+
 
         Item.SetRange("No.", "No.");
 
@@ -124,5 +149,4 @@ page 50161 "ItemCopyAPI"
 
     var
         NotProvidedCustomerNameErr: Label '"No." must be provided.', Locked = true;
-
 }

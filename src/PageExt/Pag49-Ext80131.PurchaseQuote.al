@@ -12,6 +12,15 @@ pageextension 80131 "Purchase Quote" extends "Purchase Quote" //49
 
             }
         }
+        addafter("Import Vendor Response Date")
+        {
+            field("Total Line"; "Total Line")
+            {
+                ApplicationArea = all;
+                Editable = false;
+                Caption = 'Nb Lignes';
+            }
+        }
     }
 
     actions
@@ -75,7 +84,6 @@ pageextension 80131 "Purchase Quote" extends "Purchase Quote" //49
             }
         }
     }
-
 
 
 

@@ -13923,6 +13923,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Purchase Quote - Action Validate Pursh. Qty - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 3321822267 - Control 3911216056 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3321822267">
+          <source>Nb Lignes</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Purchase Quote - Control Total Line - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 997943925 - Control 696722477 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 997943925">
           <source>Stock actuel</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -13957,6 +13962,11 @@
           <source>Qté négocié</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Purchase Quote Subform - Control negotiated qty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1819353702 - Control 3911216056 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1819353702">
+          <source>Nb Lignes</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Purchase Quotes - Control Total Line - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 3921990236 - Control 2428107076 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3921990236">
           <source>Contrôle Commande Achat</source>
@@ -14062,6 +14072,11 @@
           <source>Prix Devise Consulté</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Quote Lines - Control Last Unit Price - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2459894850 - Control 2465911856 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2459894850">
+          <source>Nombre de lignes</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Req. Worksheet - Control TotalLine - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 4145206282 - Control 1355526596 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4145206282">
           <source>Autoriser annuler expédition</source>
@@ -15118,6 +15133,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchase Header - Field Etat Demande - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 2072992664 - Field 3911216056 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2072992664">
+          <source>Total Line</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchase Header - Field Total Line - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 1519909599 - Field 617486952 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1519909599">
           <source>Prix demandé</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -15317,6 +15337,11 @@
           <source>Mise à jour marge Obligatoire</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchases &amp; Payables Setup - Field UpdateProfitOblogatoire - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3755718006 - Field 3911216056 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3755718006">
+          <source>Total Line</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Requisition Line - Field Total Line - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 2925931323 - Field 235994859 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2925931323">
           <source>BS</source>
