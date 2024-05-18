@@ -1,4 +1,4 @@
-page 50161 "ItemCopyAPI"
+page 50167 "ItemCopyAPI"
 {
     PageType = API;
     Caption = 'Item Copy API';

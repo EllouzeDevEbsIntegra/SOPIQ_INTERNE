@@ -40,7 +40,9 @@ page 50132 "Recu Caisse Card"
                         serieNoMgt: Codeunit NoSeriesManagement;
                         recuDocument: Record "Recu Caisse Document";
                         recuPaiment: Record "Recu Caisse Paiement";
+
                     begin
+                        updateStat(rec."Customer No");
                         if (xRec."Customer No" = '') then begin
                             recSalesSetup.Get;
                             // recSeries.Reset();
@@ -126,6 +128,8 @@ page 50132 "Recu Caisse Card"
                         CurrPage.Document.Page.setFilter(rec);
                         CurrPage.Paiement.Page.setFilter(rec);
                         isCreated := true;
+                        modifCustomer := false;
+
 
                     end;
                 }
@@ -135,6 +139,62 @@ page 50132 "Recu Caisse Card"
                 }
 
             }
+            // group(Nombre)
+            // {
+            grid(Stat)
+            {
+                Caption = 'Statistiques';
+
+                field(nbBS; nbBS)
+                {
+                    ApplicationArea = all;
+                    Caption = 'BS';
+                    Editable = false;
+                }
+                field(nbRetBS; nbRetBS)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Retour BS';
+                    Editable = false;
+                }
+                field(nbBL; nbBL)
+                {
+                    ApplicationArea = all;
+                    Caption = 'BL';
+                    Editable = false;
+                }
+                field(nbRetBL; nbRetBL)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Retour BL';
+                    Editable = false;
+                }
+                field(nbFac; nbFac)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Facture';
+                    Editable = false;
+                }
+                field(nbAv; nbAv)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Avoir';
+                    Editable = false;
+                }
+            }
+            // }
+            // group(Statistique)
+            // {
+            //     grid(Montant)
+            //     {
+            //         field(TotalBS; TotalBS)
+            //         {
+            //             ApplicationArea = all;
+            //             Caption = 'Total BS';
+            //             Editable = false;
+            //         }
+            //     }
+            // }
 
             part("Document"; "Recu Document Subpage")
             {
@@ -313,6 +373,7 @@ page 50132 "Recu Caisse Card"
                 trigger OnAction()
                 begin
                     rec.CalcFields(totalDocToPay, "totalReçu", totalDepense, "totalRéglement");
+                    modifCustomer := false;
                     CurrPage.Update();
                 end;
             }
@@ -322,11 +383,16 @@ page 50132 "Recu Caisse Card"
     var
         modifCustomer, isCreated, userSetupModifRC : Boolean;
         testForModifPrinted: Integer;
+        nbBS, nbBL, nbRetBS, nbRetBL, nbFac, nbAv : Integer;
+        TotalBS, TotalBL, TotalRetBS, TotalRetBL, TotalFac, TotalAv : decimal;
 
     trigger OnOpenPage()
     var
         recUserSetup: Record "User Setup";
+
     begin
+
+        updateStat(rec."Customer No");
         testForModifPrinted := 0;
         recUserSetup.Reset();
         // recUserSetup.SetFilter("User ID", UserId);
@@ -508,6 +574,71 @@ page 50132 "Recu Caisse Card"
     begin
         isCreated := true;
         recuPage.Update();
+    end;
+
+    procedure updateStat(custNo: code[20])
+    var
+        recArchiveBS: Record "Entete archive BS";
+        recRetourBS, recRetourBL : Record "Return Receipt Header";
+        recBL: Record "Sales Shipment Header";
+        recInv: Record "Sales Invoice Header";
+        recCrMemo: Record "Sales Cr.Memo Header";
+    begin
+
+        nbBS := 0;
+        TotalBS := 0;
+        nbBL := 0;
+        TotalBL := 0;
+        nbRetBS := 0;
+        TotalRetBS := 0;
+        nbRetBL := 0;
+        TotalRetBL := 0;
+        nbFac := 0;
+        TotalFac := 0;
+        nbAv := 0;
+        TotalAv := 0;
+
+        recArchiveBS.Reset();
+        recArchiveBS.SetRange(Solde, false);
+        recArchiveBS.SetRange("Bill-to Customer No.", custNo);
+        nbBS := recArchiveBS.Count;
+        if recArchiveBS.FindSet() then begin
+            repeat
+                recArchiveBS.CalcFields("Montant TTC", "Montant reçu caisse");
+                TotalBS := TotalBS + recArchiveBS."Montant TTC" - recArchiveBS."Montant reçu caisse";
+            until recArchiveBS.Next() = 0;
+        end;
+
+
+        recRetourBS.Reset();
+        recRetourBS.SetRange(BS, true);
+        recRetourBS.SetRange(solde, false);
+        recRetourBS.SetRange("Bill-to Customer No.", custNo);
+        nbRetBS := recRetourBS.Count;
+
+        recBL.Reset();
+        recBL.SetRange(BS, false);
+        recBL.SetRange(solde, false);
+        recBL.SetRange("Bill-to Customer No.", custNo);
+        nbBL := recBL.Count;
+
+        recRetourBL.Reset();
+        recRetourBL.SetRange(BS, false);
+        recRetourBL.SetRange(solde, false);
+        recRetourBL.SetRange("Bill-to Customer No.", custNo);
+        nbRetBL := recRetourBL.count;
+
+        recInv.Reset();
+        recInv.SetRange(solde, false);
+        recInv.SetRange("Bill-to Customer No.", custNo);
+        nbFac := recInv.count;
+
+        recCrMemo.Reset();
+        recCrMemo.SetRange(solde, false);
+        recCrMemo.SetRange("Bill-to Customer No.", custNo);
+        nbAv := recCrMemo.count;
+
+
     end;
 
 }

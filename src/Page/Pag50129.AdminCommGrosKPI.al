@@ -225,6 +225,101 @@ page 50129 "Admin Comm. Gros KPI"
             //         end;
             //     }
             // }
+            cuegroup("Reglement Reçu de caisse")
+            {
+                Caption = 'Non Réglée Reçu de caisse';
+                field(TotalFactNonRegleeRC; TotalFactureNonRegleeRC)
+                {
+                    Caption = 'Factures Non Reg RC';
+                    ApplicationArea = all;
+                    trigger OnDrillDown()
+                    var
+                        salesInvoice: Record "Sales Invoice Header";
+                    begin
+                        salesInvoice.Reset();
+                        salesInvoice.SetRange(solde, false);
+                        Page.Run(Page::"Posted Sales Invoices", salesInvoice);
+
+                    end;
+                }
+                field(TotalAVNonRegleeRC; -TotalAvoirNonRegleeRC)
+                {
+                    Caption = 'Avoir Non Reg RC';
+                    ApplicationArea = all;
+                    trigger OnDrillDown()
+                    var
+                        salesCrMemo: Record "Sales Cr.Memo Header";
+                    begin
+                        salesCrMemo.Reset();
+                        salesCrMemo.SetRange(solde, false);
+                        Page.Run(Page::"Posted Sales Credit Memos", salesCrMemo);
+
+                    end;
+                }
+
+                field(TotalBSNonRegleRC; TotalBSNonRegleeRC)
+                {
+                    Caption = 'BS Non Reg RC';
+                    ApplicationArea = all;
+                    trigger OnDrillDown()
+                    var
+                        salesBS: Record "Entete archive BS";
+                    begin
+                        salesBS.Reset();
+                        salesBS.SetRange(solde, false);
+                        Page.Run(Page::"Liste archive Bon de sortie", salesBS);
+
+                    end;
+                }
+
+                field(TotalRetourBSNonRegleRC; -TotalRetourBSNonRegleeRC)
+                {
+                    Caption = 'Retour BS Non Reg RC';
+                    ApplicationArea = all;
+                    trigger OnDrillDown()
+                    var
+                        salesReturnBS: Record "Return Receipt Header";
+                    begin
+                        salesReturnBS.Reset();
+                        salesReturnBS.SetRange(solde, false);
+                        salesReturnBS.SetRange(bs, true);
+                        Page.Run(Page::"Posted Return Receipts BS", salesReturnBS);
+
+                    end;
+                }
+
+                field(TotalBLNonRegleRC; TotalBLNonRegleeRC)
+                {
+                    Caption = 'BL Non Reg RC';
+                    ApplicationArea = all;
+                    trigger OnDrillDown()
+                    var
+                        salesBL: Record "Sales Shipment Header";
+                    begin
+                        salesBL.Reset();
+                        salesBL.SetRange(solde, false);
+                        salesBL.SetRange(bs, false);
+                        Page.Run(Page::"Posted Sales Shipments", salesBL);
+
+                    end;
+                }
+
+                field(TotalReturnBLNonRegleRC; -TotalRetourBLNonRegleeRC)
+                {
+                    Caption = 'Retour BL Non Reg RC';
+                    ApplicationArea = all;
+                    trigger OnDrillDown()
+                    var
+                        salesReturnBL: Record "Return Receipt Header";
+                    begin
+                        salesReturnBL.Reset();
+                        salesReturnBL.SetRange(solde, false);
+                        salesReturnBL.SetRange(bs, false);
+                        Page.Run(Page::"Posted Return Receipt List", salesReturnBL);
+
+                    end;
+                }
+            }
             cuegroup(FactureNonRegle)
             {
                 Caption = 'Factures';
@@ -927,6 +1022,105 @@ page 50129 "Admin Comm. Gros KPI"
             until CustomerLedEntries.Next() = 0;
         end;
         exit(sumNotPaiedInvoice);
+    end;
+
+    local procedure TotalFactureNonRegleeRC(): Decimal
+    var
+        salesInvoice: Record "Sales Invoice Header";
+        sumInvNotPaidRC: Decimal;
+    begin
+        sumInvNotPaidRC := 0;
+        salesInvoice.SetRange(solde, false);
+        if salesInvoice.FindSet() then begin
+            repeat
+                salesInvoice.CalcFields("Amount Including VAT", "Montant reçu caisse");
+                sumInvNotPaidRC := sumInvNotPaidRC + salesInvoice."Amount Including VAT" + salesInvoice."STStamp Amount" - salesInvoice."Montant reçu caisse";
+            until salesInvoice.Next() = 0;
+        end;
+        exit(sumInvNotPaidRC);
+    end;
+
+    local procedure TotalAvoirNonRegleeRC(): Decimal
+    var
+        salesCrMemo: Record "Sales Cr.Memo Header";
+        sumCrMemoNotPaidRC: Decimal;
+    begin
+        sumCrMemoNotPaidRC := 0;
+        salesCrMemo.SetRange(solde, false);
+        if salesCrMemo.FindSet() then begin
+            repeat
+                salesCrMemo.CalcFields("Amount Including VAT", "Montant reçu caisse");
+                sumCrMemoNotPaidRC := sumCrMemoNotPaidRC + salesCrMemo."Amount Including VAT" - salesCrMemo."Montant reçu caisse";
+            until salesCrMemo.Next() = 0;
+        end;
+        exit(sumCrMemoNotPaidRC);
+    end;
+
+    local procedure TotalBLNonRegleeRC(): Decimal
+    var
+        salesShipment: Record "Sales Shipment Header";
+        sumShipNotPaidRC: Decimal;
+    begin
+        sumShipNotPaidRC := 0;
+        salesShipment.SetRange(solde, false);
+        salesShipment.SetRange(BS, false);
+        if salesShipment.FindSet() then begin
+            repeat
+                salesShipment.CalcFields("Line Amount", "Montant reçu caisse");
+                sumShipNotPaidRC := sumShipNotPaidRC + salesShipment."Line Amount" - salesShipment."Montant reçu caisse";
+            until salesShipment.Next() = 0;
+        end;
+        exit(sumShipNotPaidRC);
+    end;
+
+    local procedure TotalBSNonRegleeRC(): Decimal
+    var
+        salesShipment: Record "Entete archive BS";
+        sumShipNotPaidRC: Decimal;
+    begin
+        sumShipNotPaidRC := 0;
+        salesShipment.SetRange(solde, false);
+        if salesShipment.FindSet() then begin
+            repeat
+                salesShipment.CalcFields("Montant TTC", "Montant reçu caisse");
+                sumShipNotPaidRC := sumShipNotPaidRC + salesShipment."Montant TTC" - salesShipment."Montant reçu caisse";
+            until salesShipment.Next() = 0;
+        end;
+        exit(sumShipNotPaidRC);
+    end;
+
+    local procedure TotalRetourBLNonRegleeRC(): Decimal
+    var
+        salesReturnShip: Record "Return Receipt Header";
+        sumReturnShipNotPaidRC: Decimal;
+    begin
+        sumReturnShipNotPaidRC := 0;
+        salesReturnShip.SetRange(solde, false);
+        salesReturnShip.SetRange(BS, false);
+        if salesReturnShip.FindSet() then begin
+            repeat
+                salesReturnShip.CalcFields("Line Amount", "Montant reçu caisse");
+                sumReturnShipNotPaidRC := sumReturnShipNotPaidRC + salesReturnShip."Line Amount" - salesReturnShip."Montant reçu caisse";
+            until salesReturnShip.Next() = 0;
+        end;
+        exit(sumReturnShipNotPaidRC);
+    end;
+
+    local procedure TotalRetourBSNonRegleeRC(): Decimal
+    var
+        salesReturnShip: Record "Return Receipt Header";
+        sumReturnShipNotPaidRC: Decimal;
+    begin
+        sumReturnShipNotPaidRC := 0;
+        salesReturnShip.SetRange(solde, false);
+        salesReturnShip.SetRange(BS, true);
+        if salesReturnShip.FindSet() then begin
+            repeat
+                salesReturnShip.CalcFields("Line Amount", "Montant reçu caisse");
+                sumReturnShipNotPaidRC := sumReturnShipNotPaidRC + salesReturnShip."Line Amount" - salesReturnShip."Montant reçu caisse";
+            until salesReturnShip.Next() = 0;
+        end;
+        exit(sumReturnShipNotPaidRC);
     end;
 
     var

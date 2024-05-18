@@ -1738,6 +1738,41 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control PanierBS - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 994521915 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Non Réglée Reçu de caisse</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control Reglement Reçu de caisse - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 3270088577 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Avoir Non Reg RC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control TotalAVNonRegleeRC - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 1826225861 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>BL Non Reg RC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control TotalBLNonRegleRC - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 3130525520 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>BS Non Reg RC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control TotalBSNonRegleRC - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 4114485108 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Factures Non Reg RC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control TotalFactNonRegleeRC - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 3023859785 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Retour BS Non Reg RC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control TotalRetourBSNonRegleRC - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 291963307 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Retour BL Non Reg RC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control TotalReturnBLNonRegleRC - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3667168034 - Action 742001001 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Set up the cues (status tiles) related to the role.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -1797,6 +1832,66 @@
           <source>Liste Bon Sortie à payer</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Bon Sortie Archive To Pay - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 114120010 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Réglement Bon Srotie</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BS Paiement - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 114120010 - Control 3090661100 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Filtre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BS Paiement - Control Filter - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 114120010 - Control 1605316942 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Montant à régler BS Sélectionnés</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BS Paiement - Control totalRegSelectedBS - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 114120010 - Control 1746019582 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total BS Sélectionnés</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BS Paiement - Control totalSelectedBS - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 114120010 - Control 2417678619 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total BS Non Soldé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BS Paiement - Control totalTTC - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 114120010 - Control 1997932534 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Liste Bon Sortie</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BS Paiement - Control Liste Bon Sortie - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 114120010 - Control 4204456523 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Client Imprimé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BS Paiement - Control custNameImprime - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 114120010 - Control 865289546 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Mnt Brut HT</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BS Paiement - Control Montant Brut HT - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 114120010 - Control 187188724 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Mnt Net HT</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BS Paiement - Control Montant Net HT - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 114120010 - Control 2959957434 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Rem. Moy.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BS Paiement - Control Remise Moyenne - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 114120010 - Action 2299888141 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Créer Reçu Caisse</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BS Paiement - Action Create Recu Caisse - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 114120010 - Action 2906152614 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Update Totaux</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BS Paiement - Action Update Totaux - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 4226019397 - Property 2019332006" size-unit="char" translate="yes" xml:space="preserve">
           <source>New,Process,Report,Approve,Release,Posting,Prepare,Invoice,Request Approval,Print/Send,Return Order,Navigate</source>
@@ -3377,6 +3472,11 @@
           <source>Factures</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Commerce de Gros KPI - Control FactureNonRegle - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2082978657 - Control 1473691584 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Avoir non réglée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Commerce de Gros KPI - Control AvoirNonReg - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2082978657 - Control 1397400935 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Facture non réglée</source>
@@ -8927,6 +9027,41 @@
           <source>Liste Paiements</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Card - Control Paiement - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3528027965 - Control 763161158 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Statistiques</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Card - Control Stat - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3528027965 - Control 4051316365 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Avoir</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Card - Control nbAv - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3528027965 - Control 620248134 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>BL</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Card - Control nbBL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3528027965 - Control 1257944751 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>BS</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Card - Control nbBS - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3528027965 - Control 2374426172 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Facture</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Card - Control nbFac - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3528027965 - Control 78282795 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Retour BL</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Card - Control nbRetBL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3528027965 - Control 247191818 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Retour BS</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Card - Control nbRetBS - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3528027965 - Control 1815183202 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Total Dépense</source>

@@ -251,6 +251,20 @@ page 50127 "Commerce de Gros KPI"
                         Page.Run(Page::"Customer Ledger Entries", CustomerLedEntries);
                     end;
                 }
+                field(AvoirNonReg; AvoirNonReglee)
+                {
+                    Caption = 'Avoir non réglée';
+                    ApplicationArea = All;
+                    trigger OnDrillDown()
+                    var
+                        CustomerLedEntries: Record "Cust. Ledger Entry";
+                    begin
+                        CustomerLedEntries.Reset();
+                        CustomerLedEntries.SetRange("Document Type", CustomerLedEntries."Document Type"::"Credit Memo");
+                        CustomerLedEntries.SetRange(Open, true);
+                        Page.Run(Page::"Customer Ledger Entries", CustomerLedEntries);
+                    end;
+                }
                 // field(TotalfactureNonReg; TotalFactureNonReglee)
                 // {
                 //     Caption = 'Total Facture non réglée';
@@ -917,6 +931,16 @@ page 50127 "Commerce de Gros KPI"
     begin
         CustomerLedEntries.Reset();
         CustomerLedEntries.SetRange("Document Type", CustomerLedEntries."Document Type"::Invoice);
+        CustomerLedEntries.SetRange(Open, true);
+        exit(CustomerLedEntries.Count);
+    end;
+
+    local procedure AvoirNonReglee(): Integer
+    var
+        CustomerLedEntries: Record "Cust. Ledger Entry";
+    begin
+        CustomerLedEntries.Reset();
+        CustomerLedEntries.SetRange("Document Type", CustomerLedEntries."Document Type"::"Credit Memo");
         CustomerLedEntries.SetRange(Open, true);
         exit(CustomerLedEntries.Count);
     end;

@@ -193,8 +193,10 @@ pageextension 80342 "Sales Return Order Subform" extends "Sales Return Order Sub
                     salesLine2.SetRange(Type, salesLine2.Type::Item);
                     if salesLine2.FindSet() then
                         repeat
-                            salesLine2.Validate("Location Code", salesLine."Location Code");
-                            salesLine2.Validate("Bin Code", SalesLine."Bin Code");
+                            // salesLine2.Validate("Location Code", salesLine."Location Code");
+                            // salesLine2.Validate("Bin Code", SalesLine."Bin Code");
+                            salesLine2."Location Code" := salesLine."Location Code";
+                            salesLine2."Bin Code" := salesLine."Bin Code";
                             salesLine2.Modify();
                         until salesLine2.Next() = 0;
 

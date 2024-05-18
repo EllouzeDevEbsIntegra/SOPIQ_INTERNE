@@ -255,6 +255,7 @@ tableextension 80101 "Sales Cue" extends "Sales Cue" //9053
             Editable = false;
             FieldClass = FlowField;
         }
+
     }
 
 }

@@ -166,6 +166,10 @@ report 25006120 "BS COPIM"
             {
 
             }
+            column(Montant_TTC; "Montant TTC")
+            {
+
+            }
             dataitem(DataItem1000000002; "Ligne archive BS")
             {
                 DataItemLink = "Document No." = FIELD("No.");
@@ -403,8 +407,6 @@ report 25006120 "BS COPIM"
                     {
                         Caption = 'Masquer Colonne Remise';
                     }
-
-
                 }
                 group(CustInfo)
                 {

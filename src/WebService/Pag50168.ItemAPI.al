@@ -1,4 +1,4 @@
-page 50160 "ItemAPI"
+page 50168 "ItemAPI"
 {
     PageType = API;
     Caption = 'Item API';

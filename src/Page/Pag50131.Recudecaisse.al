@@ -10,6 +10,7 @@ page 50131 "Recu de caisse"
     InsertAllowed = false;
     DeleteAllowed = false;
     ModifyAllowed = false;
+    Permissions = tabledata "Recu Caisse Document" = rimd;
 
     layout
     {
@@ -109,7 +110,16 @@ page 50131 "Recu de caisse"
                 trigger OnAction()
                 var
                     reportRecette: Report "Etat Recu Caisse";
+                    recuDocument: Record "Recu Caisse Document";
                 begin
+                    recuDocument.SetRange(type, 0);
+                    recuDocument.SetRange("Customer No", '');
+                    if recuDocument.FindSet() then begin
+                        repeat
+                            recuDocument.Delete();
+                        until recuDocument.Next() = 0;
+                    end;
+                    Commit();
                     reportRecette.Run();
                 end;
             }
@@ -124,6 +134,12 @@ page 50131 "Recu de caisse"
                 ApplicationArea = all;
                 Image = Documents;
                 RunObject = page "Liste document Caisse";
+            }
+            action("Régler Plusieurs BS")
+            {
+                ApplicationArea = all;
+                Image = PaymentJournal;
+                RunObject = page "BS Paiement";
             }
         }
     }
