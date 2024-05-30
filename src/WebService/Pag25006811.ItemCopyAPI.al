@@ -1,15 +1,14 @@
-page 50168 "ItemAPI"
+page 25006811 "ItemCopyAPI"
 {
     PageType = API;
-    Caption = 'Item API';
+    Caption = 'Item Copy API';
     APIPublisher = 'sopiq';
     APIGroup = 'interne';
     APIVersion = 'v1.0';
-    EntityName = 'Item';
-    EntitySetName = 'Item';
+    EntityName = 'ItemCopy';
+    EntitySetName = 'ItemCopy';
     SourceTable = Item;
     DelayedInsert = true;
-    // InsertAllowed = true;
 
     layout
     {
@@ -19,8 +18,21 @@ page 50168 "ItemAPI"
             {
                 field(ref; "No.")
                 {
-                    Caption = 'Référence Master';
+                    Caption = 'Référence SOPIQ';
+                }
 
+                field(frs; "Vendor No.")
+                {
+                    Caption = 'Code Fournisseur';
+                }
+                field(refTecdoc; "Vendor Item No.")
+                {
+                    Caption = 'Référence Tecdoc';
+                }
+
+                field(refMaster; "Reference Origine Lié")
+                {
+                    Caption = 'Reference Origine Lié';
                 }
                 field(category; "Item Category Code")
                 {
@@ -46,7 +58,6 @@ page 50168 "ItemAPI"
                     Caption = 'Fabricant';
                 }
 
-
                 field(marque; "Make Code")
                 {
                     Caption = 'Marque';
@@ -62,65 +73,80 @@ page 50168 "ItemAPI"
         item: Record Item;
         recFabricant: Record Manufacturer;
         recItemUnit: Record "Item Unit of Measure";
-        fabricant, reference : Text[100];
+        fabricant: Text[100];
+        // Item By Vendor & Item Cross Reference
+        ItemVendor: Record "Item Vendor";
+        Vendor: Record Vendor;
+        ItemCrossReference: Record "Item Cross Reference";
     begin
         if "No." = '' then
             Error(NotProvidedCustomerNameErr);
 
         recFabricant.Reset();
         If recFabricant.get(rec."Fabricant WS") then fabricant := recFabricant.Name;
-
-
-        reference := rec."No.";
-        rec."No." := 'MASTER' + rec."No.";
-
-
-
+        //Add item unit
         recItemUnit.Init();
-        recItemUnit."Item No." := rec."No.";
-        recItemUnit.code := 'PCS';
-        recItemUnit."Qty. per Unit of Measure" := 1;
-        recItemUnit.Insert;
+        recItemUnit.SetRange("Item No.", rec."No.");
+        if not recItemUnit.FindFirst() then begin
+            recItemUnit."Item No." := rec."No.";
+            recItemUnit.code := 'PCS';
+            recItemUnit."Qty. per Unit of Measure" := 1;
+            recItemUnit.Insert;
+        end;
 
-
-        rec."Reference Origine Lié" := rec."No.";
         rec."Base Unit of Measure" := 'PCS';
         rec."Sales Unit of Measure" := 'PCS';
         rec."Purch. Unit of Measure" := 'PCS';
         rec."Item Type" := "Item Type"::Item;
-        rec.Produit := true;
+        rec.Produit := false;
         rec."Search Description2" := rec."No." + ' - ' + rec."Description structurée" + ' - ' + fabricant;
         rec."Gen. Prod. Posting Group" := 'MARCH_19';
         rec."VAT Prod. Posting Group" := 'TVA_19';
         rec."Inventory Posting Group" := 'MARCHANDISES';
-        rec."Vendor No." := '401230';
-        rec."Vendor Item No." := reference;
-        rec."Item Class" := "Item Class"::Original;
+        rec."Item Class" := "Item Class"::Adaptable;
         rec.Reserve := Reserve::Always;
         rec."Price/Profit Calculation" := "Price/Profit Calculation"::"No Relationship";
         rec."VAT Bus. Posting Gr. (Price)" := 'LOCAL';
+        rec."Profit %" := 20;
 
         rec."Manufacturer Code" := rec."Fabricant WS";
+
+
+        // Add item vendor & item cross ref 
+        ItemVendor.Init();
+        ItemVendor."Item No." := Rec."No.";
+        ItemVendor."Vendor No." := "Vendor No.";
+        Vendor.get("Vendor No.");
+        ItemVendor."Lead Time Calculation" := Vendor."Lead Time Calculation"; //
+        ItemVendor."Vendor Item No." := "Vendor Item No.";
+        ItemVendor.Insert();
+
+
+        ItemCrossReference.Init();
+        ItemCrossReference."Item No." := rec."No.";
+        ItemCrossReference."Cross-Reference Type" := ItemCrossReference."Cross-Reference Type"::Vendor;
+        ItemCrossReference."Cross-Reference Type No." := "Vendor No.";
+        ItemCrossReference."Cross-Reference No." := "Vendor Item No.";
+        ItemCrossReference."Unit of Measure" := rec."Purch. Unit of Measure";
+        ItemCrossReference.Insert();
+
 
         Item.SetRange("No.", "No.");
 
         if not Item.IsEmpty then
             Insert;
 
+
         Insert(true);
 
         Modify(true);
-
 
         exit(false);
 
 
 
-
     end;
-
 
     var
         NotProvidedCustomerNameErr: Label '"No." must be provided.', Locked = true;
-
 }

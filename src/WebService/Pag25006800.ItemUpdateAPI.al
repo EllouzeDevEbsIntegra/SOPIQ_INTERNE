@@ -1,4 +1,4 @@
-page 50164 "ItemUpdateAPI"
+page 25006800 "ItemUpdateAPI"
 {
     PageType = API;
     Caption = 'Item Update API';

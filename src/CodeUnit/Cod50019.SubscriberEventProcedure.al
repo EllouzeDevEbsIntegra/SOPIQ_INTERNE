@@ -6,7 +6,8 @@ codeunit 50019 SubscriberEventProcedure
                     tabledata "Entete archive BS" = rimd,
                     tabledata "Ligne archive BS" = rimd,
                     tabledata "items Master" = rimd,
-                    tabledata "Sales Shipment Header" = rimd;
+                    tabledata "Sales Shipment Header" = rimd,
+                    tabledata "User Setup" = m;
 
 
     EventSubscriberInstance = StaticAutomatic;
@@ -57,18 +58,29 @@ codeunit 50019 SubscriberEventProcedure
                 END
             UNTIL recSalesLine.Next() = 0;
 
-
-        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        // if (salesHeader."Document Type" = salesHeader."Document Type"::"Return Order") AND (salesHeader.BS = true) then begin
-        //     Message('This document is BS Return');
-
-        //     IsHandled := true;
-        //     HideDialog := true;
-        //     DefaultOption := 1;
-        //     SalesFunctions.ConfirmBSPOST(SalesHeader, 1);
-        // end;
-        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     end;
+
+    // Autoriser utilisateur à annuler une expédétion même "si Allow Posting Only Today" est true  -- Tratitement Avant
+    [EventSubscriber(ObjectType::Page, 131, 'OnBeforeUndoShipmentPosting', '', true, true)]
+    local procedure OnBeforeUndoShipmentPosting(SalesShipmentLine: Record "Sales Shipment Line"; var IsHandled: Boolean)
+    var
+        userSetup: Record "User Setup";
+    begin
+
+
+        if SalesShipmentLine.Correction = false then begin
+            userSetup.SetFilter("User ID", UserId);
+            if userSetup.FindFirst() then begin
+                userSetup."Initial Allow Post. Only Today" := userSetup."Allow Posting Only Today";
+                userSetup."Allow Posting Only Today" := false;
+                userSetup.Modify();
+                //Message('OnBeforeUndoShipmentPosting');
+            end;
+
+        end;
+    end;
+    // ----------------------------------------------------------------------------------------------------------------
+
 
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Undo Sales Shipment Line", 'OnAfterNewSalesShptLineInsert', '', true, true)]
 
@@ -77,10 +89,21 @@ codeunit 50019 SubscriberEventProcedure
         PostArchivShipLine: Record "Ligne archive BS";
         recBS: Record "Entete archive BS";
         recBL: Record "Sales Shipment Header";
+        userSetup: Record "User Setup";
+
 
     begin
-        // Message('OLD -->  %1  *** %2', OldSalesShipmentLine."Document No.", OldSalesShipmentLine."Line No.");
-        // Message('NEW -->  %1  *** %2', NewSalesShipmentLine."Document No.", NewSalesShipmentLine."Line No.");
+        // Autoriser utilisateur à annuler une expédétion même "si Allow Posting Only Today" est true  -- Tratitement Aprés
+        userSetup.SetFilter("User ID", UserId);
+        if userSetup.FindFirst() then begin
+            userSetup."Allow Posting Only Today" := userSetup."Initial Allow Post. Only Today";
+            userSetup.Modify();
+            //Message('OnAfterNewSalesShptLineInsert');
+        end;
+        // ----------------------------------------------------------------------------------------------------------------
+
+
+
 
         AddArchiveLigneBS(NewSalesShipmentLine, OldSalesShipmentLine);
         // AJOUTER CONDITION SI BON SORTIE
@@ -261,6 +284,45 @@ codeunit 50019 SubscriberEventProcedure
     end;
 
 
+    // Autoriser utilisateur à annuler une réception même "si Allow Posting Only Today" est true  -- Tratitement Avant
+    [EventSubscriber(ObjectType::Codeunit, 5813, 'OnBeforeOnRun', '', true, true)]
+    local procedure OnBeforeOnRun(var PurchRcptLine: Record "Purch. Rcpt. Line"; var IsHandled: Boolean; var SkipTypeCheck: Boolean)
+    var
+        userSetup: Record "User Setup";
+    begin
+
+        if (PurchRcptLine.Correction = false) AND (PurchRcptLine."Quantity Invoiced" = 0) then begin
+            userSetup.SetFilter("User ID", UserId);
+            if userSetup.FindFirst() then begin
+                userSetup."Initial Allow Post. Only Today" := userSetup."Allow Posting Only Today";
+                userSetup."Allow Posting Only Today" := false;
+                userSetup.Modify();
+                //Message('OnBeforeOnRun');
+            end;
+        end;
+    end;
+    // ----------------------------------------------------------------------------------------------------------------
+
+
+
+    // Autoriser utilisateur à annuler une réception même "si Allow Posting Only Today" est true  -- Tratitement Aprés
+    [EventSubscriber(ObjectType::Codeunit, 5813, 'OnAfterNewPurchRcptLineInsert', '', true, true)]
+    local procedure OnAfterNewPurchRcptLineInsert(var NewPurchRcptLine: Record "Purch. Rcpt. Line"; OldPurchRcptLine: Record "Purch. Rcpt. Line")
+    var
+        userSetup: Record "User Setup";
+    begin
+        userSetup.SetFilter("User ID", UserId);
+        if userSetup.FindFirst() then begin
+            userSetup."Allow Posting Only Today" := userSetup."Initial Allow Post. Only Today";
+            userSetup.Modify();
+            //Message('OnAfterNewPurchRcptLineInsert');
+        end;
+    end;
+    // ----------------------------------------------------------------------------------------------------------------
+
+
+
+
 
     // Garder prix initial dans la facturation des lignes BS
     // [EventSubscriber(ObjectType::Table, Database::"Sales Shipment Line", 'OnAfterInsertEvent', '', false, false)]
@@ -310,4 +372,5 @@ codeunit 50019 SubscriberEventProcedure
     //     SalesShipmLine."Line Amount HT" := SalesShipmLine."Line Amount";
     // SalesShipmLine.Modify;
     // END;
+
 }

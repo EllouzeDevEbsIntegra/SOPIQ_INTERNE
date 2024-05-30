@@ -24,6 +24,7 @@ pageextension 80179 "Posted Sales Shpt. Subform" extends "Posted Sales Shpt. Sub
         {
             Visible = UndoShipment;
         }
+
     }
 
     var
@@ -45,4 +46,5 @@ pageextension 80179 "Posted Sales Shpt. Subform" extends "Posted Sales Shpt. Sub
         end;
 
     end;
+
 }

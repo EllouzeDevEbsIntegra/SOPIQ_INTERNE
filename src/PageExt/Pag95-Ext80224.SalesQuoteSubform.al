@@ -194,6 +194,25 @@ pageextension 80224 "Sales Quote Subform" extends "Sales Quote Subform"//95
     actions
     {
         // Add changes to page actions here
+        addafter(ApplyDiscount)
+        {
+            action(CalculateInitialPrice)
+            {
+                Caption = 'Calculer prix initial';
+                Image = Calculate;
+                trigger OnAction()
+                begin
+                    CurrPage.SaveRecord();
+                    getInitialTTC();
+                    //TTCInitial := 0;
+                    NewTTCAmount := 0;
+                    NewTHAmount := 0;
+                    RemiseCalculated := 0;
+                    NewTTCAmount := 0;
+                    CurrPage.Update();
+                end;
+            }
+        }
 
     }
     procedure SetStyleQte(PDecimal: Decimal): Text[50]

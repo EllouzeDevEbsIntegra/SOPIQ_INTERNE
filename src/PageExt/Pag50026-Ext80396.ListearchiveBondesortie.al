@@ -63,10 +63,10 @@ pageextension 80396 "Liste archive Bon de sortie" extends "Liste archive Bon de 
 
     local procedure DoDrillDown()
     var
-        SalesInvoiceHeader: Record "Recu Caisse Document";
+        recuCaisseDoc: Record "Recu Caisse Document";
     begin
-        SalesInvoiceHeader.SetRange("Document No", rec."No.");
-        PAGE.Run(PAGE::"Recu Document List", SalesInvoiceHeader);
+        recuCaisseDoc.SetRange("Document No", rec."No.");
+        PAGE.Run(PAGE::"Recu Document List", recuCaisseDoc);
     end;
 
     procedure getMntBrutHT(BsHeader: Record "Entete archive BS"): Decimal

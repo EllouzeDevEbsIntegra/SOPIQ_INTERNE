@@ -2,6 +2,10 @@ tableextension 80114 "Customer" extends "Customer" //18
 {
     fields
     {
+        field(80109; "Cust. Doc. Trans. Filter"; Boolean)
+        {
+
+        }
         field(80110; "No. of Pstd. BS"; Integer)
         {
             CalcFormula = Count("Sales Shipment Header" WHERE("Sell-to Customer No." = FIELD("No."), BS = filter(true)));

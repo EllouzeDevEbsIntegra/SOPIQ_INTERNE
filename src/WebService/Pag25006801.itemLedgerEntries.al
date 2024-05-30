@@ -1,4 +1,4 @@
-page 50165 "itemLedgerEntries"
+page 25006801 "itemLedgerEntries"
 {
     PageType = API;
     Caption = 'Item Ledger Entries';

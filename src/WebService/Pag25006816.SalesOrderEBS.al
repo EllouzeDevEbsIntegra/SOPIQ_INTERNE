@@ -1,4 +1,4 @@
-page 50166 "Sales Order EBS"
+page 25006816 "Sales Order EBS"
 {
     Caption = 'salesOrdersEBS', Locked = true;
     ChangeTrackingAllowed = true;

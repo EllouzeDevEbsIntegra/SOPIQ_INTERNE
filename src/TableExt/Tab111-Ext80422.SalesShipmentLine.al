@@ -36,6 +36,10 @@ tableextension 80422 "Sales Shipment Line" extends "Sales Shipment Line" //111
         {
             DataClassification = ToBeClassified;
         }
+        field(80420; "Selected line"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
 
     }
 
