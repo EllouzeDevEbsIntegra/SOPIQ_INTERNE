@@ -3,12 +3,12 @@
     "configurations": [
 
         {
-            "name": "SOPIQ INTERNE",
+            "name": "SOPIQ TEST",
             "request": "launch",
             "type": "al",
             "environmentType": "OnPrem",
-            "server": "http://localhost",
-            "serverInstance": "BC160",
+            "server":  "http://192.168.1.5",
+            "serverInstance": "BC160TEST",
             "authentication": "Windows",
             "breakOnError": true,
             "launchBrowser": true,
@@ -16,7 +16,7 @@
             "enableSqlInformationDebugger": true,
             "tenant": "default",
             "schemaUpdateMode": "ForceSync",
-            "port": 7049
+            "port": 9049
         }
         // ,
         // {

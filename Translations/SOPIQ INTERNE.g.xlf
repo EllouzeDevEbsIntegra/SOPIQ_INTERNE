@@ -6463,6 +6463,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Item Transaction - Control purchOrderCount - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3522386683 - Control 191542926 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Rcpt Achat</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Item Transaction - Control purchRcptCount - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3522386683 - Control 4041229874 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Ret BL</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -6503,6 +6508,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Item Transaction - Control Ref - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3522386683 - Control 1339806490 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Année</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Item Transaction - Control selectedYear - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3522386683 - Control 1975406438 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Stock Départ</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Item Transaction - Control stkDepart - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3522386683 - Control 3153743028 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Stock</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -6537,6 +6552,21 @@
           <source>PUHT</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Item Transaction - Control Unit Price - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3522386683 - Action 2571532123 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transactions articles</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Item Transaction - Action ItemTransaction - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3522386683 - Action 1219381855 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Année Précédente</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Item Transaction - Action LastYear - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3522386683 - Action 1787218844 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Année Suivante</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Item Transaction - Action NextYear - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 611500511 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Item API</source>
@@ -7093,6 +7123,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BL Subform - Control % Discount - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3199799295 - Control 2965034906 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BL Subform - Control Bill-to Customer No. - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3199799295 - Control 2814799924 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the bin where the items are picked or put away.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -7132,6 +7167,11 @@
           <source>Specifies the number of the involved entry or record, according to the specified number series.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BL Subform - Control No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3199799295 - Control 3710982960 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BL Subform - Control Posting Date - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3199799295 - Control 641667003 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the quantity of the shipped item that has been posted as shipped but that has not yet been posted as invoiced.</source>
@@ -7388,6 +7428,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS Subform - Control % Discount - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 477026070 - Control 2965034906 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS Subform - Control Bill-to Customer No. - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 477026070 - Control 2814799924 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the bin where the items are picked or put away.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -7397,6 +7442,11 @@
           <source>Casier</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS Subform - Control Bin Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 477026070 - Control 4204456523 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Client Imprimé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS Subform - Control custNameImprime - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 477026070 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies a description of the record.</source>
@@ -7432,6 +7482,11 @@
           <source>BL. Lié</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS Subform - Control No. BL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 477026070 - Control 3710982960 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS Subform - Control Posting Date - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 477026070 - Control 641667003 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the quantity of the shipped item that has been posted as shipped but that has not yet been posted as invoiced.</source>
@@ -7488,6 +7543,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Ligne Cr.Memo Subform - Control Amount Including VAT - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3823475970 - Control 2965034906 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne Cr.Memo Subform - Control Bill-to Customer No. - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3823475970 - Control 2814799924 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the bin where the items are picked or put away.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -7538,6 +7598,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Ligne Cr.Memo Subform - Control Order No. - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3823475970 - Control 3710982960 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne Cr.Memo Subform - Control Posting Date - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3823475970 - Control 2704404533 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the number of units of the item specified on the line.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -7577,6 +7642,11 @@
           <source>Total TTC</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Ligne Invoice Subform - Control Amount Including VAT - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3726649830 - Control 2965034906 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne Invoice Subform - Control Bill-to Customer No. - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3726649830 - Control 2814799924 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the bin where the items are picked or put away.</source>
@@ -7628,6 +7698,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Ligne Invoice Subform - Control Order No. - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3726649830 - Control 3710982960 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne Invoice Subform - Control Posting Date - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3726649830 - Control 2704404533 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the number of units of the item specified on the line.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -7673,6 +7748,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Ligne Ret BL - Control Amount Including VAT - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1463449424 - Control 2965034906 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne Ret BL - Control Bill-to Customer No. - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1463449424 - Control 2814799924 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the bin where the items are picked or put away.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -7707,6 +7787,11 @@
           <source>Specifies the number of the involved entry or record, according to the specified number series.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Ligne Ret BL - Control No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1463449424 - Control 3710982960 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne Ret BL - Control Posting Date - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 1463449424 - Control 2704404533 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the number of units of the item specified on the line.</source>
@@ -7768,6 +7853,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Ligne Ret BS - Control Amount Including VAT - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1163570853 - Control 2965034906 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne Ret BS - Control Bill-to Customer No. - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1163570853 - Control 2814799924 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the bin where the items are picked or put away.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -7802,6 +7892,11 @@
           <source>Specifies the number of the involved entry or record, according to the specified number series.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Ligne Ret BS - Control No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1163570853 - Control 3710982960 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne Ret BS - Control Posting Date - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 1163570853 - Control 2704404533 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the number of units of the item specified on the line.</source>
@@ -8608,6 +8703,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Order Subform - Control Bin Code - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 2378761306 - Control 3792369418 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N° Frs</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Order Subform - Control Buy-from Vendor No. - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 2378761306 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies a description of the entry of the product to be purchased. To add a non-transactional text line, fill in the Description field only.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -8668,10 +8768,20 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Order Subform - Control Location Code - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 2378761306 - Control 457244448 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Marge</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Order Subform - Control Marge - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 2378761306 - Control 4200184881 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the number of a general ledger account, item, additional cost, or fixed asset, depending on what you selected in the Type field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Order Subform - Control No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2378761306 - Control 2632124822 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Order Subform - Control Order Date - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2378761306 - Control 714568894 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the quantity of items that remains to be received.</source>
@@ -8737,6 +8847,146 @@
           <source>Specifies the price, in LCY, for one unit of the item.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Order Subform - Control Unit Price (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Lignes Réception Achat</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 2814799924 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the bin where the items are picked or put away.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Bin Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 2814799924 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Casier</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Bin Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 3792369418 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N° Frs</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Buy-from Vendor No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies a description of the entry of the product to be purchased. To add a non-transactional text line, fill in the Description field only.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 4187992892 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the cost of one unit of the selected item or resource.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Direct Unit Cost - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 4187992892 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Prix</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Direct Unit Cost - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 486908828 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the document number.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Document No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 3299657368 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the percentage of the item's last purchase cost that includes indirect costs, such as freight that is associated with the purchase of the item.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Indirect Cost % - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 3582421358 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the net amount, excluding any invoice discount amount, that must be paid for products on the line.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Line Amount - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 3582421358 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total TTC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Line Amount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 3495755210 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total HT</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Line Amount HT - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 2702998682 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the discount percentage that is granted for the item on the line.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Line Discount % - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 2702998682 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Rem%</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Line Discount % - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 1206454073 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the discount amount that is granted for the item on the line.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Line Discount Amount - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 2161572060 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies a code for the location where you want the items to be placed when they are received.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Location Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 2161572060 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Magasin</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Location Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 4200184881 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of a general ledger account, item, additional cost, or fixed asset, depending on what you selected in the Type field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 3710982960 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Posting Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 2704404533 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of units of the item specified on the line.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Quantity - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 2704404533 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Qte</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 61616130 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how many units of the item on the line have been posted as invoiced.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Quantity Invoiced - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 61616130 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Qte Facturée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Quantity Invoiced - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 68186622 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the unit cost of the item on the line.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Unit Cost (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 1920046521 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the unit of measure.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Unit of Measure - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 2385270358 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how each unit of the item or resource is measured, such as in pieces or hours. By default, the value in the Base Unit of Measure field on the item or resource card is inserted.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Unit of Measure Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 2385270358 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unité</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Unit of Measure Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1927632821 - Control 1708449288 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the price, in LCY, for one unit of the item.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Rcpt Line Subform - Control Unit Price (LCY) - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 1220862000 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Ligne Reception Achat</source>
@@ -10233,6 +10483,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Slaes Order Subform - Control Amount Including VAT - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3711550560 - Control 2965034906 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Slaes Order Subform - Control Bill-to Customer No. - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3711550560 - Control 2814799924 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the bin where the items are picked or put away.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -10292,6 +10547,11 @@
           <source>Specifies the number of a general ledger account, item, additional cost, or fixed asset, depending on what you selected in the Type field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Slaes Order Subform - Control No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3711550560 - Control 3710982960 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Slaes Order Subform - Control Posting Date - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3711550560 - Control 641667003 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Qte Livrée Non Facturée</source>
@@ -16232,6 +16492,11 @@
           <source>Ctrl Modified Price</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales line - Field Ctrl Modified Price - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3171687522 - Field 414163329 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2574427010">
+          <source>Description Structuré</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales line - Field Description Structuré - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3171687522 - Field 3316347336 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2574427010">
           <source>Discount modified</source>

@@ -4,7 +4,7 @@ page 50153 "Purch. Order Subform"
     LinksAllowed = false;
     PageType = ListPart;
     SourceTable = "Purchase Line";
-    SourceTableView = WHERE("Document Type" = FILTER(Order));
+    SourceTableView = WHERE("Document Type" = FILTER(Order), "Qty. to Receive" = filter(> 0));
 
     layout
     {
@@ -14,6 +14,11 @@ page 50153 "Purch. Order Subform"
             {
                 ShowCaption = false;
                 Editable = false;
+                field("Order Date"; "Order Date")
+                {
+                    ApplicationArea = all;
+                    Caption = 'Date';
+                }
                 field("Document No."; "Document No.")
                 {
                     ApplicationArea = Suite;
@@ -72,6 +77,12 @@ page 50153 "Purch. Order Subform"
                     Editable = false;
                     Caption = 'Prix';
                     ToolTip = 'Specifies the cost of one unit of the selected item or resource.';
+                }
+                field(Marge; Marge)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Marge';
+                    Editable = false;
                 }
                 field("Indirect Cost %"; "Indirect Cost %")
                 {
@@ -145,9 +156,20 @@ page 50153 "Purch. Order Subform"
                     Caption = 'Qte Facturée';
                     ToolTip = 'Specifies how many units of the item on the line have been posted as invoiced.';
                 }
+                field("Buy-from Vendor No."; "Buy-from Vendor No.")
+                {
+                    ApplicationArea = all;
+                    Caption = 'N° Frs';
+                }
             }
 
         }
     }
+
+    procedure setDate(firstDay: date; lastDate: date)
+    begin
+        SetRange("Order Date", firstDay, lastDate);
+        CurrPage.Update();
+    end;
 
 }

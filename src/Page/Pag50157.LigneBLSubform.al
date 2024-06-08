@@ -13,6 +13,11 @@ page 50157 "Ligne BL Subform"
             {
                 ShowCaption = false;
                 Editable = false;
+                field("Posting Date"; "Posting Date")
+                {
+                    ApplicationArea = all;
+                    Caption = 'Date';
+                }
                 field("Document No."; "Document No.")
                 {
                     ApplicationArea = All;
@@ -109,6 +114,11 @@ page 50157 "Ligne BL Subform"
                     ApplicationArea = All;
                     Caption = 'Cmd Liée';
                 }
+                field("Bill-to Customer No."; "Bill-to Customer No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Client';
+                }
             }
         }
     }
@@ -118,5 +128,10 @@ page 50157 "Ligne BL Subform"
         CalcFields(CustDivers);
     end;
 
+    procedure setDate(firstDay: date; lastDate: date)
+    begin
+        SetRange("Posting Date", firstDay, lastDate);
+        CurrPage.Update();
+    end;
 }
 

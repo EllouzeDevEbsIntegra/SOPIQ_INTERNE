@@ -12,6 +12,11 @@ page 50158 "Ligne Invoice Subform"
             {
                 ShowCaption = false;
                 Editable = false;
+                field("Posting Date"; "Posting Date")
+                {
+                    ApplicationArea = all;
+                    Caption = 'Date';
+                }
                 field("Document No."; "Document No.")
                 {
                     ApplicationArea = All;
@@ -99,7 +104,11 @@ page 50158 "Ligne Invoice Subform"
                     ApplicationArea = all;
                     Caption = 'BL liée';
                 }
-
+                field("Bill-to Customer No."; "Bill-to Customer No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Client';
+                }
 
             }
         }
@@ -110,5 +119,10 @@ page 50158 "Ligne Invoice Subform"
         CalcFields("Cust Name Imprime");
     end;
 
+    procedure setDate(firstDay: date; lastDate: date)
+    begin
+        SetRange("Posting Date", firstDay, lastDate);
+        CurrPage.Update();
+    end;
 }
 

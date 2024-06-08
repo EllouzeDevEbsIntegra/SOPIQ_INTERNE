@@ -224,6 +224,12 @@ tableextension 80100 "Sales line" extends "Sales line" //37
             Caption = 'Dernière Type Document vente';
             DataClassification = ToBeClassified;
         }
+        field(50215; "Description Structuré"; Text[200])
+        {
+            Caption = 'Description Structuré';
+            FieldClass = FlowField;
+            CalcFormula = lookup(Item."Description structurée" where("No." = field("No.")));
+        }
     }
 
 

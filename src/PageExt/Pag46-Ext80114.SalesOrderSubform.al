@@ -3,6 +3,13 @@ pageextension 80114 "Sales Order Subform" extends "Sales Order Subform" //46
     layout
 
     {
+        addafter(Description)
+        {
+            field("Description Structuré"; "Description Structuré")
+            {
+                ApplicationArea = all;
+            }
+        }
 
         addbefore("No.")
         {
@@ -151,7 +158,7 @@ pageextension 80114 "Sales Order Subform" extends "Sales Order Subform" //46
     trigger OnAfterGetRecord()
     begin
         FieldStyleQty := SetStyleQte("Available Qty");
-        CalcFields("Received Quantity");
+        CalcFields("Received Quantity", "Description Structuré");
     end;
 
 }

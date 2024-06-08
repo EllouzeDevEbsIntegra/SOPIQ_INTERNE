@@ -13,6 +13,11 @@ page 50115 "Ligne Ret BL"
             {
                 ShowCaption = false;
                 Editable = false;
+                field("Posting Date"; "Posting Date")
+                {
+                    ApplicationArea = all;
+                    Caption = 'Date';
+                }
                 field("Document No."; "Document No.")
                 {
                     ApplicationArea = All;
@@ -103,9 +108,18 @@ page 50115 "Ligne Ret BL"
                     ApplicationArea = all;
                     Caption = 'Client Imprimé';
                 }
+                field("Bill-to Customer No."; "Bill-to Customer No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Client';
+                }
             }
         }
     }
-
+    procedure setDate(firstDay: date; lastDate: date)
+    begin
+        SetRange("Posting Date", firstDay, lastDate);
+        CurrPage.Update();
+    end;
 }
 

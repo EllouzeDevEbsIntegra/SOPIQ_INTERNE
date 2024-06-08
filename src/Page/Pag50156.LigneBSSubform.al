@@ -13,9 +13,19 @@ page 50156 "Ligne BS Subform"
             {
                 ShowCaption = false;
                 Editable = false;
+                field("Posting Date"; "Posting Date")
+                {
+                    ApplicationArea = all;
+                    Caption = 'Date';
+                }
                 field("Document No."; "Document No.")
                 {
                     ApplicationArea = All;
+                }
+                field(custNameImprime; custNameImprime)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Client Imprimé';
                 }
                 field("No."; "No.")
                 {
@@ -114,6 +124,12 @@ page 50156 "Ligne BS Subform"
                 {
                     ApplicationArea = All;
                     Caption = 'BL. Lié';
+                }
+
+                field("Bill-to Customer No."; "Bill-to Customer No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Client';
                 }
 
 
@@ -239,6 +255,7 @@ page 50156 "Ligne BS Subform"
     trigger OnAfterGetRecord()
     begin
         //   ShowShortcutDimCode(ShortcutDimCode);
+        CalcFields(custNameImprime);
     end;
 
     trigger OnInit()
@@ -332,6 +349,12 @@ page 50156 "Ligne BS Subform"
     [IntegrationEvent(false, false)]
     local procedure OnBeforeUndoShipmentPosting(SalesShipmentLine: Record "Sales Shipment Line"; var IsHandled: Boolean)
     begin
+    end;
+
+    procedure setDate(firstDay: date; lastDate: date)
+    begin
+        SetRange("Posting Date", firstDay, lastDate);
+        CurrPage.Update();
     end;
 }
 
