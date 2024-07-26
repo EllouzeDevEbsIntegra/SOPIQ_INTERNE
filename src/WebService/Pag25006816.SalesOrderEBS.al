@@ -8,6 +8,7 @@ page 25006816 "Sales Order EBS"
     ODataKeyFields = Id;
     PageType = API;
     SourceTable = "Sales Order Entity Buffer";
+    Permissions = tabledata "Sales Shipment Line" = rimd;
 
     layout
     {
@@ -25,6 +26,10 @@ page 25006816 "Sales Order EBS"
                     begin
                         RegisterFieldSet(FieldNo(Id));
                     end;
+                }
+                field(PostingDate; "Posting Date")
+                {
+                    Caption = 'Date Comptabilisation';
                 }
                 field(number; "No.")
                 {
@@ -385,6 +390,15 @@ page 25006816 "Sales Order EBS"
                         RegisterFieldSet(FieldNo("Sell-to E-Mail"));
                     end;
                 }
+
+                field(Base64; Base64)
+                {
+                    ApplicationArea = Basic, Suite, Invoicing;
+                }
+                field(Binary; Binary)
+                {
+                    ApplicationArea = Basic, Suite, Invoicing;
+                }
             }
         }
     }
@@ -645,10 +659,10 @@ page 25006816 "Sales Order EBS"
     local procedure SetActionResponse2(var ActionContext: WebServiceActionContext; salesShipReportID: Integer; documentID: Guid)
     var
     begin
-        // ActionContext.SetObjectType(ObjectType::Report);
-        // ActionContext.SetObjectId(salesShipReportID);
-        // ActionContext.AddEntityKey(Rec.FieldNo(Id), DocumentId);
-        // ActionContext.SetResultCode(WebServiceActionResultCode::Deleted);
+        ActionContext.SetObjectType(ObjectType::Report);
+        ActionContext.SetObjectId(salesShipReportID);
+        ActionContext.AddEntityKey(Rec.FieldNo(Id), DocumentId);
+        ActionContext.SetResultCode(WebServiceActionResultCode::Deleted);
 
     end;
 
@@ -680,16 +694,25 @@ page 25006816 "Sales Order EBS"
         SalesInvoiceAggregator: Codeunit "Sales Invoice Aggregator";
         SalesShipmentHeader: Record "Sales Shipment Header";
         idBL: Guid;
+
+        ReportSelections: Record "Report Selections";
+        FileManagement: Codeunit "File Management";
+        Convert: DotNet Convert;
+        FileObj: DotNet File;
+        OutStr: OutStream;
+        DocumentPath: Text[250];
     begin
         GetOrder(SalesHeader);
         PostWithShip(SalesHeader);
         if SalesShipmentHeader.get(SalesHeader."Last Shipping No.") then begin
             idbl := SalesShipmentHeader.SystemId;
+            ReportSelections.GetPdfReport(DocumentPath, ReportSelections.Usage::"S.Shipment", SalesShipmentHeader, SalesShipmentHeader."Sell-to Customer No.");
+            Base64.CreateOutStream(OutStr);
+            FileManagement.IsAllowedPath(DocumentPath, false);
+            OutStr.WriteText(Convert.ToBase64String(FileObj.ReadAllBytes(DocumentPath)));
+            Binary.Import(DocumentPath);
+            if FILE.Erase(DocumentPath) then;
         end;
-        Message(SalesHeader."Last Shipping No.");
-        Error(SalesHeader."Last Shipping No.");
-        //SetActionResponse(ActionContext, Page::"APIV2 - Sales Invoices", SalesInvoiceAggregator.GetSalesInvoiceHeaderId(SalesInvoiceHeader));
-        //SetActionResponse2(ActionContext, Report::"Sales - Shipment Valorise", idbl);
     end;
 }
 

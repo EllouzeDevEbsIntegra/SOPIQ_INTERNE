@@ -83,6 +83,13 @@ tableextension 80103 "Item" extends Item //27
             FieldClass = FlowField;
             DecimalPlaces = 0 : 5;
         }
+        field(50125; "Last Purch Price Devise"; Decimal)
+        {
+            CalcFormula = lookup("Purch. Rcpt. Line"."Direct Unit Cost" where("No." = field("No."), "Posting Date" = field("Last Purchase Date"), Quantity = filter(> 0)));
+            Editable = false;
+            FieldClass = FlowField;
+            DecimalPlaces = 0 : 5;
+        }
 
         field(80107; "Mg Principal Filter"; code[100])
         {
@@ -261,6 +268,10 @@ tableextension 80103 "Item" extends Item //27
         {
             DataClassification = ToBeClassified;
             Editable = false;
+        }
+        field(50139; "Promotion"; Boolean)
+        {
+            DataClassification = ToBeClassified;
         }
 
         modify("No.")

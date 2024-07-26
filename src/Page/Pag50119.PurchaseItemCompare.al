@@ -3,7 +3,7 @@ page 50119 PurchaseItemCompare
     PageType = List;
     SourceTable = "Purchase Price";
     Caption = 'Comparateur de prix d''achat fournisseurs';
-    SourceTableView = where("Ending Date" = FILTER(''));
+    //SourceTableView = where("Ending Date" = FILTER(''''));
 
 
     layout
@@ -17,7 +17,6 @@ page 50119 PurchaseItemCompare
                 {
                     ApplicationArea = all;
                     caption = 'Frs';
-
                 }
                 field("No."; "No.")
                 {
@@ -40,6 +39,10 @@ page 50119 PurchaseItemCompare
                 }
 
                 field("Item PU Devise"; "Last Curr. Price.")
+                {
+                    ApplicationArea = all;
+                }
+                field("Ending Date"; "Ending Date")
                 {
                     ApplicationArea = all;
                 }

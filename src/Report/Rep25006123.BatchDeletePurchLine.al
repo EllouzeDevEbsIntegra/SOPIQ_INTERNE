@@ -14,7 +14,8 @@ report 25006123 "Batch Delete Purch. Line"
                   tabledata "Vendor Ledger Entry" = rimd,
                   tabledata "Purch. Cr. Memo Line" = rimd,
                   tabledata "Purch. Cr. Memo Hdr." = rimd,
-                  tabledata "Payment Line" = rimd;
+                  tabledata "Payment Line" = rimd,
+                  tabledata "G/L Entry" = rimd;
 
 
     // Permission pour l'utilsateur de lire / ecrire / modofier / inserer dans une table 
@@ -38,7 +39,9 @@ report 25006123 "Batch Delete Purch. Line"
                 PurchCrMemoLine: Record "Purch. Cr. Memo Line";
                 PurchCrMemoHdr: Record "Purch. Cr. Memo Hdr.";
                 PaymentLine: Record "Payment Line";
+                lineNo: Integer;
             begin
+                lineNo := 20000;
                 Window.Update(1, "No.");
                 PurchInvLine.Reset();
                 PurchInvLine.SetRange("Document No.", "No.");
@@ -46,7 +49,10 @@ report 25006123 "Batch Delete Purch. Line"
                     repeat
 
                         //Message(PurchInvLine.Description);
-                        if PurchInvLine.Type = PurchaseLine.Type::" " then PurchInvLine.Delete();
+                        if (PurchInvLine.Type = PurchaseLine.Type::" ") OR (PurchInvLine."No." = '1679064104') then begin
+                            PurchInvLine.Delete();
+                            lineNo := 30000;
+                        end;
                     until PurchInvLine.Next() = 0;
                 end;
 
@@ -55,7 +61,7 @@ report 25006123 "Batch Delete Purch. Line"
                 if PurchInvLine.Count > 1 then begin
                     if PurchInvLine.FindSet() then begin
                         repeat
-                            if (PurchInvLine."Line No." > 20000) then begin
+                            if (PurchInvLine."Line No." > lineNo) then begin
                                 Window.Update(2, PurchInvLine."Line No.");
                                 SLEEP(20);
 
@@ -232,6 +238,7 @@ report 25006123 "Batch Delete Purch. Line"
                         VendorLedgerEntry.CalcFields("Remaining Amount");
                         if VendorLedgerEntry."Remaining Amount" = 0 then begin
                             //Message('Here %1', VendorLedgerEntry."Entry No.");
+                            //if VendorLedgerEntry.FindFirst() then
                             VendorLedgerEntry.Delete();
                             //Commit();
                         end;
@@ -264,7 +271,7 @@ report 25006123 "Batch Delete Purch. Line"
 
 
     var
-        InvoiceMsgNo: Label 'Facture N° #1##################\ Ligne Facture N° #2##################\  Réception N° #3##################\ Ligne Réception N° #4##################\ Commande N° #5##################\ Ligne Commande N° #6##################\ Item Leadger Entry N° #7##################\ Avoir Achat N° #8##################\ Ligne Avoir Achat N° #9##################\ Ecriture Frs N° #10#################\ Ecriture Frs Détaillé N0 ° #11#################\'; //, Comment = '%1 = counter'
+        InvoiceMsgNo: Label 'Facture N° #1##################\ Ligne Facture N° #2##################\  Réception N° #3##################\ Ligne Réception N° #4##################\ Commande N° #5##################\ Ligne Commande N° #6##################\ Item Leadger Entry N° #7##################\ Avoir Achat N° #8##################\ Ligne Avoir Achat N° #9##################\ Ecriture Frs N° #10#################\ Ecriture Frs Détaillé N° #11#################\'; //, Comment = '%1 = counter'
         CalculatingLinesMsg: Label 'Calculating deleted lines #1';
         Window: Dialog;
         counter, counter2 : Integer;

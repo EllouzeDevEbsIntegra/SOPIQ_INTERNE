@@ -1,7 +1,6 @@
 
 pageextension 80118 "item" extends "Item List" //31
 {
-
     layout
     {
         addafter("No.")
@@ -62,6 +61,11 @@ pageextension 80118 "item" extends "Item List" //31
             field("Total Vendu"; "Total Vendu")
             {
                 Caption = 'Total Vente';
+                ApplicationArea = all;
+            }
+            field("Last Purch Price Devise"; "Last Purch Price Devise")
+            {
+                Caption = 'Dernier Prix Achat (Devise)';
                 ApplicationArea = all;
             }
 
@@ -248,7 +252,7 @@ pageextension 80118 "item" extends "Item List" //31
         // end;
         rec.setMgPrincipalFilter(rec);
 
-        CalcFields(rec."Available Inventory", rec."Default Bin", "Total Vendu");
+        CalcFields(rec."Available Inventory", rec."Default Bin", rec."Total Vendu", rec."Last Purch Price Devise");
 
 
 

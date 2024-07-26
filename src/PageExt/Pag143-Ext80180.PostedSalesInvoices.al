@@ -5,6 +5,11 @@ pageextension 80180 "Posted Sales Invoices" extends "Posted Sales Invoices"//143
         // Add changes to page layout here
         addafter("Amount Including VAT")
         {
+            field(RemiseMoyenne; RemiseMoyenne)
+            {
+                ApplicationArea = all;
+                Caption = 'Remise Moyenne';
+            }
             field("Moy Jour Paiement"; MoyJourPaiement(rec))
             {
                 ApplicationArea = all;
@@ -72,7 +77,45 @@ pageextension 80180 "Posted Sales Invoices" extends "Posted Sales Invoices"//143
     }
 
     var
-        myInt: Integer;
+        RemiseMoyenne: Decimal;
+
+    trigger OnAfterGetRecord()
+    begin
+        rec.CalcFields("Montant reçu caisse");
+        if (getMntBrutHT(rec) <> 0) then RemiseMoyenne := (1 - (getMntNetHT(rec) / getMntBrutHT(rec))) * 100;
+    end;
+
+    procedure getMntBrutHT(InvHeader: Record "Sales Invoice Header"): Decimal
+    var
+        LigneInvoice: Record "Sales Invoice Line";
+        mntBrutHt: Decimal;
+    begin
+        mntBrutHt := 0;
+        LigneInvoice.Reset();
+        LigneInvoice.SetRange("Document No.", InvHeader."No.");
+        if LigneInvoice.FindSet() then begin
+            repeat
+                mntBrutHt := mntBrutHt + LigneInvoice.Quantity * LigneInvoice."Unit Price";
+            until LigneInvoice.Next() = 0;
+        end;
+        exit(mntBrutHt);
+    end;
+
+    procedure getMntNetHT(InvHeader: Record "Sales Invoice Header"): Decimal
+    var
+        LigneInvoice: Record "Sales Invoice Line";
+        mntNetHt: Decimal;
+    begin
+        mntNetHt := 0;
+        LigneInvoice.Reset();
+        LigneInvoice.SetRange("Document No.", InvHeader."No.");
+        if LigneInvoice.FindSet() then begin
+            repeat
+                mntNetHt := mntNetHt + LigneInvoice.Quantity * (LigneInvoice."Unit Price" * (1 - (LigneInvoice."Line Discount %" / 100)));
+            until LigneInvoice.Next() = 0;
+        end;
+        exit(mntNetHt);
+    end;
 
     local procedure MoyJourPaiement(Facture: Record "Sales Invoice Header"): Decimal
     var

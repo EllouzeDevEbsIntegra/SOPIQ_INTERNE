@@ -13,6 +13,11 @@ pageextension 80127 "Item Card" extends "Item Card"//30
 
         addafter("Last Purchase Date")
         {
+            field("Last Purch Price Devise"; "Last Purch Price Devise")
+            {
+                Caption = 'Dernier Prix Achat (Devise)';
+                ApplicationArea = all;
+            }
             field("Last. Pursh. Date"; "Last. Pursh. Date")
             {
                 ApplicationArea = All;
@@ -30,6 +35,15 @@ pageextension 80127 "Item Card" extends "Item Card"//30
             {
                 ApplicationArea = All;
                 Caption = 'Dernier préférentiel';
+            }
+
+        }
+        addafter(Verified)
+        {
+            field(Promotion; Promotion)
+            {
+                ApplicationArea = all;
+                Caption = 'En Promotion';
             }
         }
 
@@ -53,6 +67,7 @@ pageextension 80127 "Item Card" extends "Item Card"//30
         }
 
     }
+
 
     // trigger OnClosePage()
     // var

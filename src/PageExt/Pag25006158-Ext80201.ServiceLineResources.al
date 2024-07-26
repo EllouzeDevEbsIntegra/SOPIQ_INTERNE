@@ -12,6 +12,17 @@ pageextension 80201 "Service Line Resources" extends "Service Line Resources"//2
 
         }
         // Add changes to page layout here
+        addafter(Travel)
+        {
+            field(beginTime; beginTime)
+            {
+                Caption = 'Heure Début';
+            }
+            field(EndTime; EndTime)
+            {
+                Caption = 'Heure Fin';
+            }
+        }
     }
 
     actions
