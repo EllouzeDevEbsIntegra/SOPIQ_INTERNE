@@ -2,11 +2,39 @@ tableextension 80250 "Service Header EDMS" extends "Service Header EDMS" //25006
 {
     fields
     {
+        modify("Control Performed")
+        {
+            trigger OnBeforeValidate()
+            begin
+                if ("Initiator Code" = '') then Error('Veuillez sélectionner l''Initiateur SVP !');
+            end;
+        }
+        modify("Initiator Code")
+        {
+            trigger OnAfterValidate()
+            var
+                SalespersonPurchaser: Record "Salesperson/Purchaser";
+            begin
+                SalespersonPurchaser.Reset();
+                SalespersonPurchaser.SetRange(Code, rec."Initiator Code");
+                if SalespersonPurchaser.FindFirst() then rec."Initiator Name" := SalespersonPurchaser.Name;
+            end;
+        }
         field(80250; "Vehicule Prete"; boolean)
         {
             caption = 'Vehicule Prête';
             DataClassification = ToBeClassified;
             InitValue = false;
+        }
+        field(80251; "Masquer"; Boolean)
+        {
+            Caption = 'Masquer';
+            DataClassification = ToBeClassified;
+            InitValue = false;
+        }
+        field(80252; "Initiator Name"; TEXT[50])
+        {
+            DataClassification = ToBeClassified;
         }
         // modify("Vehicle Serial No.")
         // {

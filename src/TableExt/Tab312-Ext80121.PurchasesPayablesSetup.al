@@ -53,6 +53,23 @@ tableextension 80121 "Purchases & Payables Setup" extends "Purchases & Payables 
             InitValue = false;
             DataClassification = ToBeClassified;
         }
+        field(80127; "Activ. Def. Bin Purch.Order"; Boolean)
+        {
+            Caption = 'Activer Emplacement par defaut commande achat';
+            InitValue = false;
+            DataClassification = ToBeClassified;
+        }
+        field(80128; "Default Bin Purch.Order"; Code[20])
+        {
+            Caption = 'Emplacement par defaut commande achat';
+            DataClassification = ToBeClassified;
+            TableRelation = Bin.Code WHERE("Location Code" = FIELD("Default Location Purch.Order"));
+        }
+        field(80129; "Default Location Purch.Order"; Code[10])
+        {
+            Caption = 'Magasin par defaut commande Achat';
+            TableRelation = Location;
+        }
     }
 
     var

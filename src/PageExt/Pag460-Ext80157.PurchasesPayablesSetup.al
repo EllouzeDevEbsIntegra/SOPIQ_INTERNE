@@ -33,6 +33,38 @@ pageextension 80157 "Purchases & Payables Setup" extends "Purchases & Payables S
                 ApplicationArea = all;
                 Caption = 'Contrôle Commande Achat';
             }
+            field("Activ. Def. Bin Purch.Order"; "Activ. Def. Bin Purch.Order")
+            {
+                ApplicationArea = all;
+                Caption = 'Activer Emp Par Déf Cmd Achat';
+                trigger OnValidate()
+                begin
+                    if xRec."Activ. Def. Bin Purch.Order" = false then begin
+                        if ("Default Location Purch.Order" = '') OR ("Default Bin Purch.Order" = '') then begin
+                            Error('Vous devez spécifier magasin et contenu par défaut pour commande achat !');
+                        end
+                    end
+                end;
+            }
+            field("Default Location Purch.Order"; "Default Location Purch.Order")
+            {
+                ApplicationArea = all;
+                Caption = 'Magasin par défaut Cmd Achat';
+                Editable = NOT "Activ. Def. Bin Purch.Order";
+                trigger OnValidate()
+                begin
+                    if rec."Default Location Purch.Order" = '' then begin
+                        "Default Bin Purch.Order" := '';
+                        rec.Modify();
+                    end
+                end;
+            }
+            field("Default Bin Purch.Order"; "Default Bin Purch.Order")
+            {
+                ApplicationArea = all;
+                Caption = 'Emplacement par défaut Cmd Achat';
+                Editable = NOT "Activ. Def. Bin Purch.Order";
+            }
             field("Current Year"; "Current Year")
             {
                 ApplicationArea = All;

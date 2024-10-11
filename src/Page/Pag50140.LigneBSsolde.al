@@ -8,7 +8,7 @@ page 50140 "Ligne BS solde"
     UsageCategory = Lists;
     ApplicationArea = all;
     SourceTable = "Sales Shipment Line";
-    SourceTableView = sorting("Document No.", "Line No.") where(BS = const(true), "Quantity Invoiced" = filter(= 0), solde = filter(true), "Qty BS To Invoice" = filter(> 0));
+    SourceTableView = sorting("Document No.", "Line No.") where(BS = const(true), "Quantity Invoiced" = filter(= 0), "Qty BS To Invoice" = filter(> 0));
     Permissions = tabledata "Sales Shipment Line" = rm;
 
     layout
@@ -267,23 +267,64 @@ page 50140 "Ligne BS solde"
                         ToolTip = 'Spécifie si on garde les prix initiaux ou non.';
                         Editable = false;
                     }
+                    field(solde; solde)
+                    {
+                        ApplicationArea = all;
+                        Editable = false;
+                    }
 
                 }
             }
             group("Total Selected Line")
             {
-                Caption = 'Total des lignes sélectionées';
+                Caption = 'Total des lignes sélectionées (Remise BS)';
+
                 field(TotalHTSelctLine; TotalHTSelctLine)
                 {
+                    Caption = 'Total HT (Prix BS)';
                     ApplicationArea = All;
                     Style = Strong;
                     Editable = false;
                 }
+
                 field(TotalTTCSelctLine; TotalTTCSelctLine)
                 {
                     ApplicationArea = All;
+                    Caption = 'Total TTC (Prix BS)';
                     Style = Strong;
                     Editable = false;
+                }
+
+            }
+            group("Total Selected Line New Discount")
+            {
+                Caption = 'Total des lignes sélectionées (Nouvelle Remise Appliquée)';
+                field(discount; discount)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Remise à appliquer';
+                    Editable = true;
+
+                }
+                field(totalBrutHT; totalBrutHT)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Total HT (Sans Remise)';
+                    Editable = false;
+                }
+                field(TotalNetHTNewDiscount; TotalNetHTNewDiscount)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Total HT (Nouvelle Remise Calculé)';
+                    Style = Favorable;
+                    Editable = false;
+                }
+                field(TotalNetTTcNewDiscount; TotalNetTTcNewDiscount)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Total TTC (Nouvelle Remise Calculé)';
+                    Editable = false;
+                    Style = Favorable;
                 }
             }
             group(Totalisation)
@@ -336,7 +377,7 @@ page 50140 "Ligne BS solde"
             {
                 ApplicationArea = Suite;
                 Caption = 'Liste des BL';
-                Image = Statistics;
+                Image = Document;
                 Promoted = true;
                 // PromotedCategory = Category5;
                 // PromotedIsBig = true;
@@ -410,11 +451,16 @@ page 50140 "Ligne BS solde"
             action("Calcul Selected Line")
             {
                 Caption = 'Calculer les lignes sélectionnées';
+                Image = NewSum;
+                ShortcutKey = F8;
                 trigger OnAction()
                 var
                     SalesShipLine: Record "Sales Shipment Line";
                 begin
                     TotalHTSelctLine := 0;
+                    totalBrutHT := 0;
+                    TotalNetHTNewDiscount := 0;
+                    TotalNetTTcNewDiscount := 0;
                     TotalTTCSelctLine := 0;
                     SalesShipLine.Reset();
 
@@ -423,10 +469,29 @@ page 50140 "Ligne BS solde"
                     SalesShipLine.SetRange("Selected line", true);
                     IF SalesShipLine.FINDSET THEN begin
                         repeat
-                            TotalHTSelctLine := TotalHTSelctLine + SalesShipLine."Montant ligne HT BS";
-                            TotalTTCSelctLine := TotalTTCSelctLine + SalesShipLine."Montant ligne TTC BS";
+                            totalBrutHT := totalBrutHT + SalesShipLine.Quantity * SalesShipLine."Unit Price";
+                            TotalNetHTNewDiscount := TotalNetHTNewDiscount + (SalesShipLine.Quantity * SalesShipLine."Unit Price") * ((100 - discount) / 100);
+                            TotalNetTTcNewDiscount := TotalNetTTcNewDiscount + (((SalesShipLine.Quantity * SalesShipLine."Unit Price") * ((100 - discount) / 100)) * (1 + SalesShipLine."VAT %" / 100));
+                            TotalHTSelctLine := TotalHTSelctLine + SalesShipLine."Line Amount HT";
+                            TotalTTCSelctLine := TotalTTCSelctLine + SalesShipLine."Line Amount";
                         UNTIL SalesShipLine.NEXT = 0;
                     end;
+                end;
+            }
+            action("Show all BS lines")
+            {
+                Caption = 'Afficher tous les lignes BS';
+                Image = ClearFilter;
+                trigger OnAction()
+                var
+                    SalesShipmentLine: Record "Sales Shipment Line";
+                begin
+                    SalesShipmentLine.SetRange(BS, true);
+                    SalesShipmentLine.SetRange("Quantity Invoiced", 0);
+                    SalesShipmentLine.SetFilter("Qty BS To Invoice", '>0');
+                    CurrPage.SetTableView(SalesShipmentLine);
+                    CurrPage.Update();
+                    //(BS = const(true), "Quantity Invoiced" = filter(= 0), solde = filter(true), "Qty BS To Invoice" = filter(> 0));
                 end;
             }
         }
@@ -466,9 +531,19 @@ page 50140 "Ligne BS solde"
     end;
 
     trigger OnOpenPage()
+    var
+        SalesShipmentLine: Record "Sales Shipment Line";
     begin
+        discount := 20;
         SetDimensionsVisibility;
+        SalesShipmentLine.SetRange(BS, true);
+        SalesShipmentLine.SetRange("Quantity Invoiced", 0);
+        SalesShipmentLine.SetFilter("Qty BS To Invoice", '>0');
+        SalesShipmentLine.SetRange(solde, true);
+        CurrPage.SetTableView(SalesShipmentLine);
+        CurrPage.Update();
     end;
+
 
     var
         isSelected: Boolean;
@@ -484,7 +559,7 @@ page 50140 "Ligne BS solde"
         DimVisible8: Boolean;
         TotalTTC: Decimal;
         TotalHT: Decimal;
-        TotalHTSelctLine, TotalTTCSelctLine : Decimal;
+        TotalHTSelctLine, TotalTTCSelctLine, totalBrutHT, TotalNetHTNewDiscount, TotalNetTTcNewDiscount : Decimal;
         Shipmentline, Shipmentline2 : Record "Sales Shipment Line";
 
     local procedure calctotal()
@@ -501,8 +576,8 @@ page 50140 "Ligne BS solde"
             TotalHT := 0;
             TotalTTC := 0;
             repeat
-                TotalHT := TotalHT + SaleslShptLine."Montant ligne HT BS";
-                TotalTTC := TotalTTC + SaleslShptLine."Montant ligne TTC BS";
+                TotalHT := TotalHT + SaleslShptLine."Line Amount HT";
+                TotalTTC := TotalTTC + SaleslShptLine."Line Amount";
             UNTIL SaleslShptLine.NEXT = 0;
         end;
         caltot := false;
@@ -580,5 +655,8 @@ page 50140 "Ligne BS solde"
     var
         SaleslShptLine: Record "Sales Shipment Line";
         caltot: Boolean;
+        discount: decimal;
+
+
 }
 

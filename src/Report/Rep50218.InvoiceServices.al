@@ -33,6 +33,9 @@ report 50218 "Invoice Services"
             column(AmountTTCSalesInvoiceHeader; "Sales Invoice Header"."Amount Including VAT")
             {
             }
+            column(AmountTTCSalesInvoiceHeaderSR; totTTCSR)
+            {
+            }
             column(StampAmount; "Sales Invoice Header"."stStamp Amount")
             {
 
@@ -87,6 +90,9 @@ report 50218 "Invoice Services"
             column(MontantTText; MontantTText)
             {
             }
+            column(MontantTTextSR; MontantTTextSR)
+            {
+            }
 
             column(Picture; RecGCompany.Picture)
             {
@@ -109,10 +115,22 @@ report 50218 "Invoice Services"
             column(ShowLabor; ShowLabor)
             {
             }
+            column(HideDiscount; HideDiscount)
+            {
+            }
             column(TotPiece; TotPiece)
             {
             }
+            column(TotPieceSR; TotPieceSR)
+            {
+            }
             column(TotMO; TotMO)
+            {
+            }
+            column(TotMOSR; TotMOSR)
+            {
+            }
+            column(TotTrExtSR; TotTrExtSR)
             {
             }
             column(VATBaseCaptionLbl; VATBaseCaptionLbl)
@@ -225,6 +243,12 @@ report 50218 "Invoice Services"
                 column(AmountTVASalesInvoiceLIne; AmountGTVA)
                 {
                 }
+                column(AmountTVASalesInvoiceLIneSR; AmountGTVASR)
+                {
+                }
+                column(LineAmountSR; LineAmountSR)
+                {
+                }
                 column(SalesInvoiceLineRef; Ref)
                 {
                 }
@@ -270,6 +294,10 @@ report 50218 "Invoice Services"
 
                     AmountGTVA := ("VAT %" * "VAT Base Amount") / 100;
                     Discount := "Line Discount Amount";
+
+                    // Calcul Ligne Sans Remise 
+                    LineAmountSR := Quantity * "Unit Price";
+                    AmountGTVASR := ("VAT %" * LineAmountSR) / 100;
 
                     //compte gen
                     IF Type = Type::"G/L Account" THEN begin
@@ -360,13 +388,26 @@ report 50218 "Invoice Services"
                         RecGPostServOrderLine.SETRANGE("Document No.", lSalesInvoiceLine."Service Order No. EDMS");
                         RecGPostServOrderLine.SETRANGE("Line No.", lSalesInvoiceLine."Service Order Line No. EDMS");
                         IF RecGPostServOrderLine.FINDSET THEN BEGIN
+
+                            if RecGPostServOrderLine."Small Parts" = false then totTTCSR += (RecGPostServOrderLine.Quantity * RecGPostServOrderLine."Unit Price") + ((RecGPostServOrderLine."VAT %" * ((RecGPostServOrderLine.Quantity * RecGPostServOrderLine."Unit Price"))) / 100);
                             CASE RecGPostServOrderLine.Type OF
                                 RecGPostServOrderLine.Type::Item:
-                                    TotPiece += RecGPostServOrderLine."Line Amount";
+                                    begin
+                                        TotPiece += RecGPostServOrderLine."Line Amount";
+                                        TotPieceSR += RecGPostServOrderLine.Quantity * RecGPostServOrderLine."Unit Price";
+                                    end;
                                 RecGPostServOrderLine.Type::Labor:
-                                    TotMO += RecGPostServOrderLine."Line Amount";
+                                    begin
+                                        TotMO += RecGPostServOrderLine."Line Amount";
+                                        TotMOSR += RecGPostServOrderLine.Quantity * RecGPostServOrderLine."Unit Price";
+                                    end;
+
                                 RecGPostServOrderLine.Type::"External Service":
-                                    TotMO += RecGPostServOrderLine."Line Amount";
+                                    begin
+                                        TotMO += RecGPostServOrderLine."Line Amount";
+                                        TotMOSR += RecGPostServOrderLine.Quantity * RecGPostServOrderLine."Unit Price";
+                                    end;
+
 
                             END;
                         END;
@@ -377,23 +418,28 @@ report 50218 "Invoice Services"
                 //>>DELTA 01
 
                 //<<DELTA 01
-
+                Converter."Montant en texte"(MontantTTextSR, totTTCSR + "STStamp Amount");
                 Converter."Montant en texte"(MontantTText, "Amount Including VAT" + "STStamp Amount");
                 IF lPaymentTerms.GET("Sales Invoice Header"."Payment Terms Code") THEN;
                 IF PaymentMethod.GET("Sales Invoice Header"."Payment Method Code") THEN;
 
                 CustomerPostingGroup.GET("Sales Invoice Header"."Customer Posting Group");
-                IF "Sales Invoice Header"."STStamp Amount" <> 0 THEN
-                    MontantTText := 'FACTURE ARRETEE A LA SOMME DE ' + MontantTText
-                ELSE
+                IF "Sales Invoice Header"."STStamp Amount" <> 0 THEN begin
+                    MontantTText := 'FACTURE ARRETEE A LA SOMME DE ' + MontantTText;
+                    MontantTTextSR := 'FACTURE ARRETEE A LA SOMME DE ' + MontantTTextSR;
+                end
+                ELSE begin
                     MontantTText := 'FACTURE ARRETEE A LA SOMME DE: ' + MontantTText;
+                    MontantTTextSR := 'FACTURE ARRETEE A LA SOMME DE: ' + MontantTTextSR;
+                end;
+
             end;
         }
     }
 
     requestpage
     {
-        SaveValues = true;
+        SaveValues = false;
         layout
         {
             area(Content)
@@ -414,6 +460,11 @@ report 50218 "Invoice Services"
                     ApplicationArea = all;
                     Caption = 'Afficher information véhicule';
                 }
+                field(HideDiscount; HideDiscount)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Masquer Remise';
+                }
             }
         }
 
@@ -431,31 +482,35 @@ report 50218 "Invoice Services"
         RecGCompany.Get();
         RecCompany.CalcFields("Invoice Footer Picture");
         RecCompany.CalcFields("Invoice Header Picture");
+        ShowLabor := false;
         ShowVehiculeInfo := true;
         afficherPiedsPage := true;
-
+        HideDiscount := false;
     end;
 
 
 
     var
+        HideDiscount: Boolean;
         RecGSalesPerson: Record 13;
         RecGCustomer: Record 18;
         RecGOr: Record 25006149;
         RecGPostServOrderLine: Record 25006150;
-        TotPiece: Decimal;
-        TotMO: Decimal;
-        TotTrExt: Decimal;
+        TotPiece, TotPieceSR : Decimal;
+        TotMO, TotMOSR : Decimal;
+        TotTrExt, TotTrExtSR : Decimal;
+        totTTCSR: Decimal;
         MntDossier: Decimal;
         RecGCompany: Record 79;
         RecCompany: Record "Company Information";
         CompanyNames: Text;
         RecGResponsibilityCenter: Record 5714;
-        AmountGTVA: Decimal;
-        MontantTText: Text;
+        AmountGTVA, AmountGTVASR : Decimal;
+        LineAmountSR: Decimal;
+        MontantTText, MontantTTextSR : Text;
         Converter: Codeunit MontantTouteLettre;
         increment: Integer;
-        Discount: Decimal;
+        Discount, DiscountSR : Decimal;
         Ref: Text;
         Iteration: Integer;
         Gdescription: Code[100];

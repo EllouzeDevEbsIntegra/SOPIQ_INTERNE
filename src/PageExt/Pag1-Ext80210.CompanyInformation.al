@@ -25,6 +25,30 @@ pageextension 80210 "Company Information" extends "Company Information" // 1
 
         }
 
+        addafter(Communication)
+        {
+            group(Commission)
+            {
+                Caption = 'Commission';
+                field("Com VN"; "Com VN")
+                {
+                    Caption = 'Commission VN';
+                    ApplicationArea = all;
+                }
+                field("Com PDR"; "Com PDR")
+                {
+                    Caption = 'Commission PDR';
+                    ApplicationArea = all;
+                }
+                field(Other; Other)
+                {
+                    Caption = 'Autre';
+                    ApplicationArea = all;
+                }
+            }
+
+        }
+
 
     }
 

@@ -1,5 +1,6 @@
 pageextension 80182 "Customer List" extends "Customer List"//22
 {
+    Editable = true;
     layout
     {
         addlast(Control1)
@@ -7,6 +8,10 @@ pageextension 80182 "Customer List" extends "Customer List"//22
             field("Opened Invoice"; "Opened Invoice")
             {
                 Caption = 'Facture et Avoir Ouverts';
+            }
+            field("Payment Method Code"; "Payment Method Code")
+            {
+
             }
             // field("Shipped Not Invoiced"; "Shipped Not Invoiced BL")
             // {

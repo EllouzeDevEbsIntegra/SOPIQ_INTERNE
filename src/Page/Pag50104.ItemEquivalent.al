@@ -126,7 +126,6 @@ page 50104 "Item Equivalent"
             {
                 Caption = 'Transactions articles';
                 ShortcutKey = F9;
-                // Visible = false;
                 RunObject = page "Specific Item Ledger Entry";
                 RunPageLink = "Item No." = field("No.");
             }
@@ -135,9 +134,6 @@ page 50104 "Item Equivalent"
             {
                 ApplicationArea = All;
                 Caption = 'Ancien Historique';
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 RunObject = page "Item Old Transaction";
                 RunPageLink = "Item N°" = field("No.");
                 ShortcutKey = F8;
@@ -159,6 +155,7 @@ page 50104 "Item Equivalent"
                 ApplicationArea = All;
                 Caption = 'Article à vérifier';
                 Image = ChangeStatus;
+                ShortcutKey = 'Ctrl+F7';
                 trigger OnAction()
 
                 begin

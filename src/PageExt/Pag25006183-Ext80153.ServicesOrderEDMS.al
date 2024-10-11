@@ -46,11 +46,22 @@ pageextension 80153 "Services Order EDMS" extends "Service Order EDMS"//25006183
 
                 end;
             }
+            field(Masquer; Masquer)
+            {
+                ApplicationArea = All;
+                Caption = 'Masquer';
+            }
 
 
         }
-
-
+        addafter(InitiatorCode)
+        {
+            field("Initiator Name"; "Initiator Name")
+            {
+                Caption = 'Nom Initiateur';
+                ApplicationArea = all;
+            }
+        }
 
     }
 

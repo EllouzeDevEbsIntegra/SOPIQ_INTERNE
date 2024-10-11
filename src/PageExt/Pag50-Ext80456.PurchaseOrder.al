@@ -15,7 +15,6 @@ pageextension 80456 "Purchase Order" extends "Purchase Order" //50
                     PurchRcptHeader.SetRange("Vendor Shipment No.", "Vendor Shipment No.");
                     if PurchRcptHeader.FindFirst() then Error('N° BL pour le fournisseur %1 existe déja !', "Buy-from Vendor Name");
                 end;
-
             end;
         }
     }
@@ -65,7 +64,7 @@ pageextension 80456 "Purchase Order" extends "Purchase Order" //50
                             purchLine.SetRange("Document No.", "No.");
                             if PurchLine.FindSet() then begin
                                 repeat
-                                    if (PurchLine.margeUpdate = false) then begin
+                                    if (PurchLine.Type = PurchLine.Type::Item) AND (PurchLine.margeUpdate = false) then begin
                                         isUpdate := false;
                                         break;
                                     end
@@ -91,7 +90,7 @@ pageextension 80456 "Purchase Order" extends "Purchase Order" //50
                 end;
             }
 
-            action(Controle)
+            action(Controler)
             {
                 Caption = 'Contrôler';
                 ApplicationArea = all;
@@ -108,43 +107,99 @@ pageextension 80456 "Purchase Order" extends "Purchase Order" //50
                     PurchSetup: Record "Purchases & Payables Setup";
                     PurchRcptHeader: Record "Purch. Rcpt. Header";
                     PurchOrderPage: Page "Purchase Order";
+                    SalesLine: Record "Sales Line";
+                    isUpdate: Boolean;
                 begin
 
 
                     PurchSetup.Get();
                     if (PurchSetup.controlePurshOrder = true) then begin
+                        rec.CalcFields("Nb Line To Receive");
+                        if "Nb Line To Receive" = 0 then begin
+                            if "Vendor Shipment No." = '' then
+                                Message('N° BL fournisseur Obligatoire !')
+                            else begin
+                                //***********
+                                if (PurchSetup.PurchaserCodeRequired = false) OR ((PurchSetup.PurchaserCodeRequired = true) AND ("Purchaser Code" <> '')) then begin
+                                    if (PurchSetup.UpdateProfitOblogatoire = true) then begin
+                                        isUpdate := false;
+                                        purchLine.reset();
+                                        purchLine.SetRange("Document No.", "No.");
+                                        if PurchLine.FindSet() then begin
+                                            repeat
+                                                if (PurchLine.Type = PurchLine.Type::Item) AND (PurchLine.margeUpdate = false) then begin
+                                                    isUpdate := false;
+                                                    break;
+                                                end
+                                                else begin
+                                                    isUpdate := true;
+                                                end;
+                                            until PurchLine.Next() = 0;
+                                        end;
+                                        if (isUpdate = false) then
+                                            Error('Vous devez appliquer les marges avant de valider !') else begin
+                                            Controle := true;
+                                            rec.Modify();
+                                            //Commit();
 
-                        if "Vendor Shipment No." = '' then
-                            Message('N° BL fournisseur Obligatoire !')
-                        else begin
+                                            PurchLine.Reset();
+                                            PurchLine.SetRange("Document No.", rec."No.");
+                                            if PurchLine.FindSet() then begin
+                                                repeat
+                                                    PurchLine.Controle := true;
+                                                    PurchLine.Modify();
+                                                until PurchLine.Next() = 0;
+                                            end;
+                                            PurchRcptHeader.Reset();
+                                            PurchRcptHeader.SetRange("Order No.", "No.");
+                                            if PurchRcptHeader.FindSet() then begin
+                                                repeat
+                                                    PurchRcptHeader.Controle := true;
+                                                    PurchRcptHeader."Vendor Shipment No." := "Vendor Shipment No.";
+                                                    PurchRcptHeader.Modify();
+                                                until PurchRcptHeader.Next() = 0;
+                                            end;
+                                            Message('Commande contrôlée avec succès.');
+                                            CurrPage.Close();
+                                        end;
 
-                            Controle := true;
-                            rec.Modify();
-                            //Commit();
+                                    end else begin
+                                        Controle := true;
+                                        rec.Modify();
+                                        //Commit();
 
-                            PurchLine.Reset();
-                            PurchLine.SetRange("Document No.", rec."No.");
-                            if PurchLine.FindSet() then begin
-                                repeat
-                                    PurchLine.Controle := true;
-                                    PurchLine.Modify();
-                                until PurchLine.Next() = 0;
+                                        PurchLine.Reset();
+                                        PurchLine.SetRange("Document No.", rec."No.");
+                                        if PurchLine.FindSet() then begin
+                                            repeat
+                                                PurchLine.Controle := true;
+                                                PurchLine.Modify();
+                                            until PurchLine.Next() = 0;
+                                        end;
+                                        PurchRcptHeader.Reset();
+                                        PurchRcptHeader.SetRange("Order No.", "No.");
+                                        if PurchRcptHeader.FindSet() then begin
+                                            repeat
+                                                PurchRcptHeader.Controle := true;
+                                                PurchRcptHeader."Vendor Shipment No." := "Vendor Shipment No.";
+                                                PurchRcptHeader.Modify();
+                                            until PurchRcptHeader.Next() = 0;
+                                        end;
+                                        Message('Commande contrôlée avec succès.');
+                                        CurrPage.Close();
+                                    end;
+
+                                end
+                                else begin
+                                    if rec."Purchaser Code" = '' then
+                                        Message('Code acheteur obligatoire !');
+                                end;
+                                //***********
                             end;
-                            PurchRcptHeader.Reset();
-                            PurchRcptHeader.SetRange("Order No.", "No.");
-                            if PurchRcptHeader.FindSet() then begin
-                                repeat
-                                    PurchRcptHeader.Controle := true;
-                                    PurchRcptHeader."Vendor Shipment No." := "Vendor Shipment No.";
-                                    PurchRcptHeader.Modify();
-                                until PurchRcptHeader.Next() = 0;
-                            end;
+                        end else begin
+                            Message('Il existe des lignes non encore réceptionnées sur commande achat %1', rec."No.");
                         end;
-
-                        Message('Commande contrôlée avec succès.');
-                        CurrPage.Close();
                     end;
-
                 end;
             }
         }
@@ -169,6 +224,7 @@ pageextension 80456 "Purchase Order" extends "Purchase Order" //50
         then begin
             isControleur := true;
         end;
+
 
     end;
 

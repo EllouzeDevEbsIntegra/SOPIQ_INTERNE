@@ -91,20 +91,16 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
             {
                 Caption = 'Transactions articles';
                 ShortcutKey = F9;
-                // Visible = false;
                 RunObject = page "Specific Item Ledger Entry";
                 RunPageLink = "Item No." = field("No.");
             }
             action("Item Old Transaction")
             {
                 ApplicationArea = All;
+                ShortcutKey = F8;
                 Caption = 'Ancien Historique';
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 RunObject = page "Item Old Transaction";
                 RunPageLink = "Item N°" = field("No.");
-                ShortcutKey = F8;
             }
             action(Prices)
             {
@@ -122,6 +118,7 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
                 ApplicationArea = All;
                 Caption = 'Article à vérifier';
                 Image = ChangeStatus;
+                ShortcutKey = 'Ctrl+F7';
                 trigger OnAction()
                 var
                     recitem: Record Item;

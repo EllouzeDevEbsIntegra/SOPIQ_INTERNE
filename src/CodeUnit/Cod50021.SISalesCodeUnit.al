@@ -152,4 +152,19 @@ codeunit 50021 SISalesCodeUnit
         rec.Modify();
     end;
 
+    procedure UpdateServiceLineDiscount(pSalesLine: Record "Service Line EDMS")
+    var
+        Saleslines: Record "Service Line EDMS";
+    begin
+        Saleslines.Reset();
+        Saleslines.SetRange("Document Type", pSalesLine."Document Type");
+        Saleslines.SetRange("Document No.", pSalesLine."Document No.");
+        Saleslines.SetRange(Type, pSalesLine.Type);
+        if Saleslines.FindSet() then
+            repeat
+                Saleslines.Validate("Line Discount %", pSalesLine."Line Discount %");
+                Saleslines.Modify(true);
+            until Saleslines.Next() = 0;
+    end;
+
 }

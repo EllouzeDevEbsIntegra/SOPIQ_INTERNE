@@ -49,6 +49,23 @@ pageextension 80165 "Service Quote Subform EDMS" extends "Service Quote Subform 
     actions
     {
         // Add changes to page actions here
+        addafter(ApplyReplacement)
+        {
+            action("Apply Discount")
+            {
+                Caption = 'Appliquer remise pour toute les lignes similaires';
+                Image = Discount;
+                trigger OnAction()
+                var
+                    SalesFunctions: Codeunit SISalesCodeUnit;
+                    SalesLine: Record "Service Line EDMS";
+                begin
+                    CurrPage.SetSelectionFilter(SalesLine);
+                    SalesLine.FindFirst();
+                    SalesFunctions.UpdateServiceLineDiscount(SalesLine);
+                end;
+            }
+        }
     }
 
     var

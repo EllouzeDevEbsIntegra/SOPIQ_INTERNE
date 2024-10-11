@@ -55,6 +55,18 @@ tableextension 80106 "Item Ledger Entry" extends "Item Ledger Entry"//32
             Editable = false;
             FieldClass = FlowField;
         }
+        // field(50027; "PurchInvNo"; code[20])
+        // {
+        //     AutoFormatType = 1;
+        //     CalcFormula = lookup("Purch. Inv. Line"."Document No." where("Receipt No." = field("Document No."), "Receipt Line No." = field("Document Line No.")));
+        //     FieldClass = FlowField;
+        // }
+        // field(50028; "PurchInvDocDate"; Date)
+        // {
+        //     AutoFormatType = 1;
+        //     CalcFormula = lookup("Purch. Inv. Header"."Document Date" where("No." = field(PurchInvNo)));
+        //     FieldClass = FlowField;
+        // }
 
     }
 

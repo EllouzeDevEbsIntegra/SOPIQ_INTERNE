@@ -7,6 +7,7 @@ codeunit 50019 SubscriberEventProcedure
                     tabledata "Ligne archive BS" = rimd,
                     tabledata "items Master" = rimd,
                     tabledata "Sales Shipment Header" = rimd,
+                    tabledata "Sales Shipment Line" = rimd,
                     tabledata "User Setup" = m;
 
 

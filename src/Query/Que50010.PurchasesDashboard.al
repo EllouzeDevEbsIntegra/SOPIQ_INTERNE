@@ -19,6 +19,12 @@ query 50010 "Purchases Dashboard"
             column(Entry_Type; "Entry Type")
             {
             }
+            column(Document_Date; "Document Date")
+            {
+            }
+            column(Last_Invoice_Date; "Last Invoice Date")
+            {
+            }
             column(Quantity; Quantity)
             {
             }
@@ -34,9 +40,18 @@ query 50010 "Purchases Dashboard"
             column(Cost_Amount_Expected; "Cost Amount (Expected)")
             {
             }
+            column(Cost_Amount__Non_Invtbl__; "Cost Amount (Non-Invtbl.)")
+            {
+            }
             column(Dimension_Set_ID; "Dimension Set ID")
             {
             }
+            // column(PurchInvNo; PurchInvNo)
+            // {
+            // }
+            // column(PurchInvDocDate; PurchInvDocDate)
+            // {
+            // }
             dataitem(Country_Region; "Country/Region")
             {
                 DataItemLink = Code = Item_Ledger_Entry."Country/Region Code";

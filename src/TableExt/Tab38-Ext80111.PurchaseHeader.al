@@ -44,6 +44,13 @@ tableextension 80111 "Purchase Header" extends "Purchase Header" //38
             Editable = false;
             CalcFormula = count("Purchase Line" where("Document No." = field("No.")));
         }
+        field(80152; "Nb Line To Receive"; Integer)
+        {
+            Caption = 'Nombre de ligne avec Qte à réceptionner';
+            FieldClass = FlowField;
+            Editable = false;
+            CalcFormula = count("Purchase Line" where("Document No." = field("No."), "Qty. to Receive (Base)" = filter(> 0)));
+        }
     }
 
     var

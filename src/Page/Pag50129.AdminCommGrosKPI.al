@@ -334,6 +334,7 @@ page 50129 "Admin Comm. Gros KPI"
                         CustomerLedEntries.Reset();
                         CustomerLedEntries.SetRange("Document Type", CustomerLedEntries."Document Type"::Invoice);
                         CustomerLedEntries.SetRange(Open, true);
+                        CustomerLedEntries.SetFilter("Customer Posting Group", '<>CLT-INT');
                         Page.Run(Page::"Customer Ledger Entries", CustomerLedEntries);
                     end;
                 }
@@ -348,6 +349,7 @@ page 50129 "Admin Comm. Gros KPI"
                         CustomerLedEntries.Reset();
                         CustomerLedEntries.SetRange("Document Type", CustomerLedEntries."Document Type"::Invoice);
                         CustomerLedEntries.SetRange(Open, true);
+                        CustomerLedEntries.SetFilter("Customer Posting Group", '<>CLT-INT');
                         Page.Run(Page::"Customer Ledger Entries", CustomerLedEntries);
                     end;
                 }

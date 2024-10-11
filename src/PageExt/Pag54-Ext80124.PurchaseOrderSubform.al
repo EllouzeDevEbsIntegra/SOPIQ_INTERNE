@@ -180,32 +180,35 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
                         recPurshLine.SetRange("Document No.", "Document No.");
                         IF recPurshLine.FINDSET THEN
                             REPEAT
-                                if recItem.Get(recPurshLine."No.") then begin
-                                    recItem."Profit %" := recPurshLine.Marge;
-                                    recItem."Price/Profit Calculation New" := recItem."Price/Profit Calculation New"::"No Relationship";
-                                    recItem."Price/Profit Calculation" := recItem."Price/Profit Calculation"::"No Relationship";
-                                    recItem."Last Direct Cost" := recPurshLine."Direct Unit Cost";
-                                    if recItem."Profit %" <= 75 then begin
-                                        GetGLSetup;
-                                        recItem."Unit Price" :=
-                                        //   Round(
-                                        //     (recItem."Unit Cost" / (1 - recItem."Profit %" / 100)) *
-                                        //     (1 + CalcVAT),
-                                        //     GLSetup."Unit-Amount Rounding Precision");
-                                        Round(
-                                            (recPurshLine."Direct Unit Cost" / (1 - recItem."Profit %" / 100)) *
-                                            (1 + CalcVAT),
-                                            GLSetup."Unit-Amount Rounding Precision");
+                                if recPurshLine.Type = Type::Item then begin
+                                    if recItem.Get(recPurshLine."No.") then begin
+                                        recItem."Profit %" := recPurshLine.Marge;
+                                        recItem."Price/Profit Calculation New" := recItem."Price/Profit Calculation New"::"No Relationship";
+                                        recItem."Price/Profit Calculation" := recItem."Price/Profit Calculation"::"No Relationship";
+                                        recItem."Last Direct Cost" := recPurshLine."Direct Unit Cost";
+                                        if recItem."Profit %" <= 75 then begin
+                                            GetGLSetup;
+                                            recItem."Unit Price" :=
+                                            //   Round(
+                                            //     (recItem."Unit Cost" / (1 - recItem."Profit %" / 100)) *
+                                            //     (1 + CalcVAT),
+                                            //     GLSetup."Unit-Amount Rounding Precision");
+                                            Round(
+                                                (recPurshLine."Direct Unit Cost" / (1 - recItem."Profit %" / 100)) *
+                                                (1 + CalcVAT),
+                                                GLSetup."Unit-Amount Rounding Precision");
 
-                                        recItem.Modify();
-                                        recPurshLine.margeUpdate := true;
-                                        recPurshLine.Modify();
-                                    end
-                                    else
-                                        Error('Marge ne doit pas dépasser 75% !');
-                                    ;
+                                            recItem.Modify();
+                                            recPurshLine.margeUpdate := true;
+                                            recPurshLine.Modify();
+                                        end
+                                        else
+                                            Error('Marge ne doit pas dépasser 75% !');
+                                        ;
 
-                                end;
+                                    end;
+                                end
+
 
                             UNTIL recPurshLine.NEXT = 0;
                     end
@@ -227,10 +230,13 @@ pageextension 80124 "Purchase Order Subform" extends "Purchase Order Subform"//5
                     PurchaseLine.SetRange("Document No.", rec."Document No.");
                     if PurchaseLine.FindSet() then begin
                         repeat
-                            PurchaseLine."Prix vente calculé" := Round((PurchaseLine."Direct Unit Cost" / (1 - PurchaseLine.Marge / 100)) *
-                                                                (1 + CalcVAT),
-                                                                GLSetup."Unit-Amount Rounding Precision");
-                            PurchaseLine.Modify();
+                            if PurchaseLine.Type = Type::Item then begin
+                                PurchaseLine."Prix vente calculé" := Round((PurchaseLine."Direct Unit Cost" / (1 - PurchaseLine.Marge / 100)) *
+                                                                    (1 + CalcVAT),
+                                                                    GLSetup."Unit-Amount Rounding Precision");
+                                PurchaseLine.Modify();
+                            end;
+
                         until PurchaseLine.Next() = 0;
                     end;
                     CurrPage.Update();

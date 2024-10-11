@@ -60,6 +60,12 @@ tableextension 80140 "Sales Invoice Header" extends "Sales Invoice Header"//112
         {
             DataClassification = ToBeClassified;
         }
+        field(80414; "Initiateur"; code[20])
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup("Posted Serv. Order Header"."Initiator Code" WHERE("No." = field("Service Order No.")));
+        }
+
     }
 
     var

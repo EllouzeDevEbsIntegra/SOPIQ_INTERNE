@@ -106,4 +106,14 @@ pageextension 80120 "Product To Be Compared card" extends "Product To Be Compare
 
     end;
 
+
+    trigger OnQueryClosePage(CloseAction: Action): Boolean
+    var
+        bool: Boolean;
+    begin
+        bool := Confirm('Voulez vous vraiment quitter ?', true);
+        if bool = false then exit(bool);
+
+    end;
+
 }

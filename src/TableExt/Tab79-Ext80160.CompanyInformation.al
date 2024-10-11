@@ -44,6 +44,21 @@ tableextension 80160 "Company Information" extends "Company Information" //79
 
             end;
         }
+        field(80161; "Com VN"; code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = Customer;
+        }
+        field(80162; "Com PDR"; code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = Customer;
+        }
+        field(80163; "Other"; code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = Customer;
+        }
     }
 
     var
