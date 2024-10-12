@@ -138,8 +138,8 @@ page 25006811 "ItemCopyAPI"
 
 
         Insert(true);
-
-        Modify(true);
+        Rec."Origine Création" := "Origine Création"::Automatically;
+        rec.Modify(true);
 
         exit(false);
 

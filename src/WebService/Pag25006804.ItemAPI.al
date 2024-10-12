@@ -63,6 +63,7 @@ page 25006804 "ItemAPI"
         recFabricant: Record Manufacturer;
         recItemUnit: Record "Item Unit of Measure";
         fabricant, reference : Text[100];
+
     begin
         if "No." = '' then
             Error(NotProvidedCustomerNameErr);
@@ -109,14 +110,11 @@ page 25006804 "ItemAPI"
 
         Insert(true);
 
-        Modify(true);
+        Rec."Origine Création" := "Origine Création"::Automatically;
+        rec.Modify(true);
 
 
         exit(false);
-
-
-
-
     end;
 
 

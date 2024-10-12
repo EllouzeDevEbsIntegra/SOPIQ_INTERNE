@@ -708,6 +708,16 @@
           <note from="Developer" annotates="general" priority="2">%1 = Document Type</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit SISalesCodeUnit - Method ConfirmBSPOST - NamedType PostConfirmQst</note>
         </trans-unit>
+        <trans-unit id="Codeunit 807570171 - Method 1490688921 - NamedType 2311103200" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The Unit of Measure with Code %1 does not exist.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Code of Unit of measure</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SIStockCodeUnit - Method validateItemMaster - NamedType UnitOfMeasureNotExistErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 807570171 - Method 1490688921 - NamedType 2553052393" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The quantity per base unit of measure must be 1. %1 is set up with %2 per unit of measure.\\You can change this setup in the Item Units of Measure window.</source>
+          <note from="Developer" annotates="general" priority="2">%1 Name of Unit of measure (e.g. BOX, PCS, KG...), %2 Qty. of %1 per base unit of measure </note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SIStockCodeUnit - Method validateItemMaster - NamedType BaseUnitOfMeasureQtyMustBeOneErr</note>
+        </trans-unit>
         <trans-unit id="Page 2829331306 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Commerce de Gros</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -6907,6 +6917,16 @@
           <source>Modifier Informations Article</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Items Master List - Action Modify Item Information - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4145419452 - Action 1401459433 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Valider Tous (Ste Base)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Items Master List - Action Validate All - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4145419452 - Action 1401459433 - Method 1377591017 - NamedType 3004040435" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Référence en cours de traitement  #1##################\</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Items Master List - Action Validate All - Method OnAction - NamedType Msg</note>
         </trans-unit>
         <trans-unit id="Page 4145419452 - Action 698326501 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Valider Article</source>
@@ -15857,6 +15877,16 @@
           <source>Commentaire ligne paiement automatique</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension General Ledger Setup - Field AutoComment - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3276313895 - Method 1262666395 - NamedType 2311103200" size-unit="char" translate="yes" xml:space="preserve" al-object-target="TableExtension 3276313895">
+          <source>The Unit of Measure with Code %1 does not exist.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Code of Unit of measure</note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Method OnModify - NamedType UnitOfMeasureNotExistErr</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3276313895 - Method 1262666395 - NamedType 2553052393" size-unit="char" translate="yes" xml:space="preserve" al-object-target="TableExtension 3276313895">
+          <source>The quantity per base unit of measure must be 1. %1 is set up with %2 per unit of measure.\\You can change this setup in the Item Units of Measure window.</source>
+          <note from="Developer" annotates="general" priority="2">%1 Name of Unit of measure (e.g. BOX, PCS, KG...), %2 Qty. of %1 per base unit of measure </note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Method OnModify - NamedType BaseUnitOfMeasureQtyMustBeOneErr</note>
         </trans-unit>
         <trans-unit id="TableExtension 3276313895 - Field 696722477 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>Stock Disponible</source>

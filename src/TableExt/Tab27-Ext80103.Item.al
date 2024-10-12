@@ -320,8 +320,34 @@ tableextension 80103 "Item" extends Item //27
     end;
 
     trigger OnModify()
+    var
+        recItemMaster: Record "items Master";
+        TypeModif: Text[200];
+        recItem, recItem2, tempItem, unitItem : Record Item;
+        recCompany: Record Company;
+        tempUnit: Code[10];
+        UnitOfMeasure: Record "Unit of Measure";
+        UnitOfMeasureNotExistErr: Label 'The Unit of Measure with Code %1 does not exist.', Comment = '%1 = Code of Unit of measure';
+        ItemUnitOfMeasure: Record "Item Unit of Measure";
+        BaseUnitOfMeasureQtyMustBeOneErr: Label 'The quantity per base unit of measure must be 1. %1 is set up with %2 per unit of measure.\\You can change this setup in the Item Units of Measure window.', Comment = '%1 Name of Unit of measure (e.g. BOX, PCS, KG...), %2 Qty. of %1 per base unit of measure ';
+
     begin
         "No. 2" := "No.";
+        if ("Creation Date" = System.today) AND (rec."Origine Création" = "Origine Création"::Automatically) then begin
+            recItemMaster.Reset();
+            recItemMaster.Company := Database.CompanyName;
+            recItemMaster.No := rec."No.";
+            if (rec."Reference Origine Lié" <> '') THEN
+                recItemMaster.Master := rec."Reference Origine Lié";
+            if (rec.Groupe <> '') THEN
+                recItemMaster.Famille := rec.Groupe;
+            if (rec."Sous Groupe" <> '') THEN
+                recItemMaster."Sous Famille" := rec."Sous Groupe";
+            recItemMaster."Add date" := System.today;
+            recItemMaster."Add User" := Database.UserId;
+            recItemMaster."Type Ajout" := 'Nouveau : Gateway';
+            recItemMaster.Insert(true);
+        end;
     end;
 
     trigger OnRename()
