@@ -9909,7 +9909,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales Order Entity SI - Control custPrintName - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2272133841 - Control 4031535563 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source></source>
+          <source>VIN Imprimé</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales Order Entity SI - Control custPrintVIN - Property Caption</note>
         </trans-unit>
@@ -14367,6 +14367,11 @@
           <source>Etat Soldes Clients</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Customer List - Action SoldeClient - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2901867346 - Control 4074724847 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2901867346">
+          <source>Moyen Jour Paiement</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Customer List - Control MoyenJourPaiement - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 2901867346 - Control 2391826168 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2901867346">
           <source>Facture et Avoir Ouverts</source>

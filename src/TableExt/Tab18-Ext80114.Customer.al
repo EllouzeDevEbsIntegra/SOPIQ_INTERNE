@@ -110,7 +110,7 @@ tableextension 80114 "Customer" extends "Customer" //18
         field(80120; "Cheque En Coffre"; Decimal)
         {
             AutoFormatType = 1;
-            CalcFormula = Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_CHEQUE'),
+            CalcFormula = - Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_CHEQUE'),
                                                                  "Account No." = field("No."),
                                                                  "Account Type" = FILTER(Customer),
                                                                   "Copied To No." = FILTER('')
@@ -124,7 +124,7 @@ tableextension 80114 "Customer" extends "Customer" //18
         field(80900; "Cheque Impaye"; Decimal)
         {
             AutoFormatType = 1;
-            CalcFormula = Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_CHEQUE'),
+            CalcFormula = - Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_CHEQUE'),
                                                                  "Account No." = field("No."),
                                                                  "Account Type" = FILTER(Customer),
                                                                   "Copied To No." = FILTER('')
@@ -138,7 +138,7 @@ tableextension 80114 "Customer" extends "Customer" //18
         field(80121; "Traite En Coff."; Decimal)
         {
             AutoFormatType = 1;
-            CalcFormula = Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_TRAITE'),
+            CalcFormula = - Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_TRAITE'),
                                                                  "Account No." = field("No."),
                                                                  "Account Type" = FILTER(Customer),
                                                                   "Copied To No." = FILTER('')
@@ -151,7 +151,7 @@ tableextension 80114 "Customer" extends "Customer" //18
         field(80122; "Traite En Escompte"; Decimal)
         {
             AutoFormatType = 1;
-            CalcFormula = Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_TRAITE'),
+            CalcFormula = - Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_TRAITE'),
                                                                  "Account No." = field("No."),
                                                                  "Account Type" = FILTER(Customer),
                                                                  "Copied To No." = FILTER('')
@@ -165,7 +165,7 @@ tableextension 80114 "Customer" extends "Customer" //18
         field(80901; "Traite Impaye"; Decimal)
         {
             AutoFormatType = 1;
-            CalcFormula = Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_TRAITE'),
+            CalcFormula = - Sum("Payment Line"."Amount (LCY)" WHERE("Type réglement" = CONST('ENC_TRAITE'),
                                                                  "Account No." = field("No."),
                                                                  "Account Type" = FILTER(Customer),
                                                                   "Copied To No." = FILTER('')
@@ -175,8 +175,6 @@ tableextension 80114 "Customer" extends "Customer" //18
             Editable = false;
             FieldClass = FlowField;
         }
-
-
 
 
     }

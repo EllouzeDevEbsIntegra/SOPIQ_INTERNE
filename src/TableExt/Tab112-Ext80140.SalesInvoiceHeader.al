@@ -70,4 +70,64 @@ tableextension 80140 "Sales Invoice Header" extends "Sales Invoice Header"//112
 
     var
         myInt: Integer;
+
+    procedure MoyJourPaiement(Facture: Record "Sales Invoice Header"): Decimal
+    var
+        PaymentLine: Record "Payment Line";
+        MoyJourPaiement, CumulJourPaiement, nbPaiement, totalPaiement : Decimal;
+        searchFacture: Text[50];
+
+    begin
+        searchFacture := '*' + Facture."No." + '*';
+        nbPaiement := 0;
+        totalPaiement := 0;
+
+        // Calcul total des paiement
+        PaymentLine.Reset();
+        PaymentLine.SetFilter("Applies-to Invoices Nos.", '%1', searchFacture);
+        PaymentLine.SetRange(IsCopy, false);
+        PaymentLine.SetRange("Account Type", 1);
+
+        if PaymentLine.FindSet() then begin
+            repeat
+
+                if (PaymentLine."Payment Class" = 'ENC_RS')
+                THEN begin
+                end
+                ELSE begin
+                    totalPaiement := totalPaiement - PaymentLine."STMontant Initial DS";
+                    nbPaiement := nbPaiement + 1;
+                end;
+
+            until PaymentLine.Next() = 0;
+        end;
+
+
+        // Calcul nombre de jours moyen des paiements
+        MoyJourPaiement := 0;
+        CumulJourPaiement := 0;
+        PaymentLine.Reset();
+        PaymentLine.SetFilter("Applies-to Invoices Nos.", '%1', searchFacture);
+        PaymentLine.SetRange(IsCopy, false);
+        PaymentLine.SetRange("Account Type", 1);
+
+        if PaymentLine.FindSet() then begin
+            repeat
+
+                if (PaymentLine."Payment Class" = 'ENC_RS')
+                THEN begin
+                end
+                ELSE begin
+                    if (totalPaiement <> 0) AND (PaymentLine."Due Date" >= rec."Posting Date")
+                    THEN
+                        CumulJourPaiement := CumulJourPaiement + ((-PaymentLine."STMontant Initial DS" / totalPaiement) * (PaymentLine."Due Date" - rec."Posting Date"))
+                end;
+
+
+
+            until PaymentLine.Next() = 0;
+        end;
+        MoyJourPaiement := CumulJourPaiement;
+        exit(MoyJourPaiement);
+    end;
 }
