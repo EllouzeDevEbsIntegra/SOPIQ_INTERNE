@@ -2,6 +2,14 @@ pageextension 80256 "Sales Order List" extends "Sales Order List"//9305
 {
     layout
     {
+        addafter("Shipping Agent Code")
+        {
+            field("Shipping Agent Code SI"; "Shipping Agent Code SI")
+            {
+                Caption = 'Code Transporteur SI';
+                ApplicationArea = all;
+            }
+        }
         // Add changes to page layout here
         addafter("Montant réglement")
         {

@@ -2,22 +2,13 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
 {
     fields
     {
-        modify("Shipping Agent Code")
-        {
-            trigger OnAfterValidate()
-            begin
-                shippingAgentCode := "Shipping Agent Code";
-            end;
-        }
-        field(50100; shippingAgentCode; Code[10])
+
+        field(50100; "Shipping Agent Code SI"; Code[10])
         {
             AccessByPermission = TableData "Shipping Agent Services" = R;
             Caption = 'Shipping Agent Code';
             TableRelation = "Shipping Agent".Code;
-            trigger OnValidate()
-            begin
-                Validate("Shipping Agent Code", shippingAgentCode);
-            end;
+
         }
         modify("Sell-to Customer No.")
         {
@@ -26,9 +17,7 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
                 ModifyPostingDesc(rec);
                 GetCust("Sell-to Customer No.");
                 Cust.CheckBlockedCustOnDocs(Cust, "Document Type", false, false);
-                // if not ApplicationAreaMgmt.IsSalesTaxEnabled then
-                //    Cust.TestField("Gen. Bus. Posting Group");
-                //OnAfterCheckSellToCust(Rec, xRec, Cust);
+
             end;
         }
 
@@ -88,7 +77,7 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
 
     var
         Cust: Record Customer;
-        shippingAgentCode: Code[10];
+    //shippingAgentCode: Code[10];
 
     procedure ModifyPostingDesc(Prec: Record "Sales Header")
     begin
@@ -111,7 +100,7 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
         if (rec."Document Type" = "Document Type"::"Credit Memo") OR (rec."Document Type" = "Document Type"::"Return Order") then
             // Message('%1', "Document Type");
         ignoreStamp(rec);
-        "Shipping Agent Code" := "External Document No.";
+        "Shipping Agent Code" := "Shipping Agent Code SI";
         Validate("Shipping Agent Code");
     end;
 

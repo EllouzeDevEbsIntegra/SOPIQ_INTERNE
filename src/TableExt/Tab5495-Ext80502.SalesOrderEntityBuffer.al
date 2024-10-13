@@ -4,7 +4,7 @@ tableextension 80502 "Sales Order Entity Buffer" extends "Sales Order Entity Buf
     fields
     {
         // Add changes to table fields here
-        field(50100; shippingAgentCode; Code[10])
+        field(50100; "Shipping Agent Code SI"; Code[10])
         {
             AccessByPermission = TableData "Shipping Agent Services" = R;
             Caption = 'Shipping Agent Code';
@@ -22,6 +22,25 @@ tableextension 80502 "Sales Order Entity Buffer" extends "Sales Order Entity Buf
         {
             Caption = 'Binary';
         }
+        field(80101; custNameImprime; Text[200])
+        {
+            Caption = 'Nom Client Imprimé';
+        }
+
+        field(80102; custAdresseImprime; Text[200])
+        {
+            Caption = 'Adresse Client Imprimé';
+        }
+
+        field(80103; custMFImprime; Text[200])
+        {
+            Caption = 'Matricule Fiscal Imprimé';
+        }
+
+        field(80104; custVINImprime; Text[200])
+        {
+            Caption = 'Vin Client Imprimé';
+        }
     }
 
     keys
@@ -36,4 +55,5 @@ tableextension 80502 "Sales Order Entity Buffer" extends "Sales Order Entity Buf
 
     var
         myInt: Integer;
+
 }

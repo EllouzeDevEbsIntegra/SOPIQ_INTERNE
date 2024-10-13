@@ -1,13 +1,10 @@
 page 25006819 "SI Sales Order"
 {
-    Caption = 'siSalesOrders', Locked = true;
+    Caption = 'siSalesOrdersAAAAA', Locked = true;
     ChangeTrackingAllowed = true;
     DelayedInsert = true;
-    APIPublisher = 'sopiq';
-    APIGroup = 'interne';
-    APIVersion = 'v1.0';
-    EntityName = 'siSalesOrder';
-    EntitySetName = 'siSalesOrders';
+    EntityName = 'siSalesOrdersAAAAA';
+    EntitySetName = 'siSalesOrdersAAAAAAA';
     ODataKeyFields = Id;
     PageType = API;
     SourceTable = "Sales Order Entity Buffer";

@@ -13,6 +13,29 @@ pageextension 80182 "Customer List" extends "Customer List"//22
             {
 
             }
+            field("Cheque En Coffre"; "Cheque En Coffre")
+            {
+
+            }
+
+            field("Cheque Impaye"; "Cheque Impaye")
+            {
+
+            }
+
+            field("Traite En Coff."; "Traite En Coff.")
+            {
+
+            }
+            field("Traite En Escompte"; "Traite En Escompte")
+            {
+
+            }
+
+            field("Traite Impaye"; "Traite Impaye")
+            {
+
+            }
             // field("Shipped Not Invoiced"; "Shipped Not Invoiced BL")
             // {
             //     Caption = 'Bon de livraison non facturé';

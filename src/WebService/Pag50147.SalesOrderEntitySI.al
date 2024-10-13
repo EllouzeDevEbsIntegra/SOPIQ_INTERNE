@@ -1,10 +1,10 @@
 page 50147 "Sales Order Entity SI"
 {
-    Caption = 'salesOrders', Locked = true;
+    Caption = 'siSalesOrders', Locked = true;
     ChangeTrackingAllowed = true;
     DelayedInsert = true;
-    EntityName = 'salesOrderSi';
-    EntitySetName = 'salesOrdersSi';
+    EntityName = 'siSalesOrders';
+    EntitySetName = 'siSalesOrders';
     ODataKeyFields = Id;
     PageType = API;
     SourceTable = "Sales Order Entity Buffer";
@@ -47,12 +47,44 @@ page 50147 "Sales Order Entity SI"
                         RegisterFieldSet(FieldNo("External Document No."))
                     end;
                 }
-                field(shippingAgentCode; shippingAgentCode)
+                field(shippingAgentCode; rec."Shipping Agent Code SI")
                 {
                     Caption = 'Shipping Agent Code';
                     trigger OnValidate()
                     begin
-                        RegisterFieldSet(Rec.FieldNo(shippingAgentCode));
+                        RegisterFieldSet(Rec.FieldNo("Shipping Agent Code SI"));
+                    end;
+                }
+                field(custPrintName; rec.custNameImprime)
+                {
+                    Caption = 'Client Imprimé';
+                    trigger OnValidate()
+                    begin
+                        RegisterFieldSet(Rec.FieldNo(custNameImprime));
+                    end;
+                }
+                field(custPrintAdress; custAdresseImprime)
+                {
+                    Caption = 'Adresse Imprimé';
+                    trigger OnValidate()
+                    begin
+                        RegisterFieldSet(Rec.FieldNo(custAdresseImprime));
+                    end;
+                }
+                field(custPrintMF; custMFImprime)
+                {
+                    Caption = 'MF Imprimé';
+                    trigger OnValidate()
+                    begin
+                        RegisterFieldSet(Rec.FieldNo(custMFImprime));
+                    end;
+                }
+                field(custPrintVIN; custVINImprime)
+                {
+                    Caption = 'VIN Imprimé';
+                    trigger OnValidate()
+                    begin
+                        RegisterFieldSet(Rec.FieldNo(custVINImprime));
                     end;
                 }
                 field(orderDate; "Document Date")
