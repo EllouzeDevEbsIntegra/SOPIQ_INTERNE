@@ -36,10 +36,10 @@ pageextension 80182 "Customer List" extends "Customer List"//22
             {
 
             }
-            field(MoyenJourPaiement; MoyenJourPaiement)
-            {
-                Caption = 'Moyen Jour Paiement';
-            }
+            // field(MoyenJourPaiement; MoyenJourPaiement)
+            // {
+            //     Caption = 'Moyen Jour Paiement';
+            // }
             // field("Shipped Not Invoiced"; "Shipped Not Invoiced BL")
             // {
             //     Caption = 'Bon de livraison non facturé';
@@ -109,27 +109,27 @@ pageextension 80182 "Customer List" extends "Customer List"//22
     var
         TotalEncours, Depassement, Depassement2 : Decimal;
         FieldStyle, FieldStyle2 : Text;
-        MoyenJourPaiement, nbInvoice : Decimal;
+    //MoyenJourPaiement, nbInvoice : Decimal;
 
     trigger OnAfterGetRecord()
     var
-        SalesInvoiceHeader: Record "Sales Invoice Header";
+    //SalesInvoiceHeader: Record "Sales Invoice Header";
 
     begin
         CalcFields("Opened Invoice", "Shipped Not Invoiced BL");
 
-        MoyenJourPaiement := 0;
-        SalesInvoiceHeader.Reset();
-        SalesInvoiceHeader.SetRange("Bill-to Customer No.", "No.");
-        SalesInvoiceHeader.CalcFields("Remaining Amount");
-        SalesInvoiceHeader.SetRange("Remaining Amount", 0);
-        nbInvoice := SalesInvoiceHeader.Count;
-        if SalesInvoiceHeader.FindSet() then begin
-            repeat
-                MoyenJourPaiement := MoyenJourPaiement + SalesInvoiceHeader.MoyJourPaiement(SalesInvoiceHeader);
-            until SalesInvoiceHeader.Next() = 0;
-            MoyenJourPaiement := MoyenJourPaiement / nbInvoice;
-        end;
+        //MoyenJourPaiement := 0;
+        // SalesInvoiceHeader.Reset();
+        // SalesInvoiceHeader.SetRange("Bill-to Customer No.", "No.");
+        // SalesInvoiceHeader.CalcFields("Remaining Amount");
+        // SalesInvoiceHeader.SetRange("Remaining Amount", 0);
+        //nbInvoice := SalesInvoiceHeader.Count;
+        // if SalesInvoiceHeader.FindSet() then begin
+        //     repeat
+        //         MoyenJourPaiement := MoyenJourPaiement + SalesInvoiceHeader.MoyJourPaiement(SalesInvoiceHeader);
+        //     until SalesInvoiceHeader.Next() = 0;
+        //     MoyenJourPaiement := MoyenJourPaiement / nbInvoice;
+        // end;
 
         TotalEncours := "Opened Invoice" + "Shipped Not Invoiced BL" + "Return Receipts Not Invoiced";
         Depassement := "Credit Limit (LCY)" - TotalEncours;

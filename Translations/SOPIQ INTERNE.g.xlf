@@ -6908,6 +6908,21 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Items Master List - Action Modify Item Information - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 4145419452 - Action 3358488966 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Valider Tous Article (Ste Base)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Items Master List - Action Validate All Item - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4145419452 - Action 3358488966 - Method 1377591017 - NamedType 2311103200" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The Unit of Measure with Code %1 does not exist.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Code of Unit of measure</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Items Master List - Action Validate All Item - Method OnAction - NamedType UnitOfMeasureNotExistErr</note>
+        </trans-unit>
+        <trans-unit id="Page 4145419452 - Action 3358488966 - Method 1377591017 - NamedType 2553052393" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The quantity per base unit of measure must be 1. %1 is set up with %2 per unit of measure.\\You can change this setup in the Item Units of Measure window.</source>
+          <note from="Developer" annotates="general" priority="2">%1 Name of Unit of measure (e.g. BOX, PCS, KG...), %2 Qty. of %1 per base unit of measure </note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Items Master List - Action Validate All Item - Method OnAction - NamedType BaseUnitOfMeasureQtyMustBeOneErr</note>
+        </trans-unit>
         <trans-unit id="Page 4145419452 - Action 698326501 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Valider Article</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -14367,11 +14382,6 @@
           <source>Etat Soldes Clients</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Customer List - Action SoldeClient - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 2901867346 - Control 4074724847 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2901867346">
-          <source>Moyen Jour Paiement</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Customer List - Control MoyenJourPaiement - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 2901867346 - Control 2391826168 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2901867346">
           <source>Facture et Avoir Ouverts</source>

@@ -66,13 +66,34 @@ report 25006129 "Etat Credit Agence"
 
             }
 
+            column(Phone_No_; "Phone No.")
+            {
+
+            }
+            column(Mobile_Phone_No_; "Mobile Phone No.")
+            {
+
+            }
+            column(Sell_to_Phone_No_; "Sell-to Phone No.")
+            {
+
+            }
+            column(InvoiceComment; InvoiceComment)
+            {
+
+            }
 
 
             trigger OnAfterGetRecord()
             var
                 SalespersonPurchaser: Record "Salesperson/Purchaser";
                 CompanyInformation: Record "Company Information";
+                SalesCommentLine: Record "Sales Comment Line";
+                char13, char10 : char;
             begin
+                InvoiceComment := '';
+                char10 := 10;
+                char13 := 13;
                 initiateurName := '';
                 CalcFields(Initiateur, "Remaining Amount", "Amount Including VAT", "Montant reçu caisse");
                 SalespersonPurchaser.Reset();
@@ -91,6 +112,16 @@ report 25006129 "Etat Credit Agence"
                     else
                         initiateurName := 'Revendeurs / Non Affectés';
                 end;
+
+                SalesCommentLine.Reset();
+                SalesCommentLine.SetRange("No.", "No.");
+                if SalesCommentLine.FindSet() then begin
+                    repeat
+                        IF InvoiceComment <> '' then InvoiceComment := InvoiceComment + FORMAT(char13) + FORMAT(char10);
+                        InvoiceComment := InvoiceComment + FORMAT(SalesCommentLine.Date) + ' - ' + SalesCommentLine.Comment;
+                    until SalesCommentLine.Next() = 0;
+                end;
+                //InvoiceComment := InvoiceComment.ToUpper();
 
             end;
 
@@ -142,4 +173,5 @@ report 25006129 "Etat Credit Agence"
         RecCompany: Record "Company Information";
         showTotalBelow, showDetails : Boolean;
         initiateurName: Text;
+        InvoiceComment: Text;
 }
