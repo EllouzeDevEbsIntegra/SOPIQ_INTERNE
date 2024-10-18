@@ -504,7 +504,7 @@
                                 <TextRun>
                                   <Value>=Fields!Bill_to_Name.Value</Value>
                                   <Style>
-                                    <FontWeight>Normal</FontWeight>
+                                    <FontWeight>Bold</FontWeight>
                                     <Color>#333333</Color>
                                   </Style>
                                 </TextRun>
@@ -1033,7 +1033,6 @@
                                 <TextRun>
                                   <Value>OBSERVATION : </Value>
                                   <Style>
-                                    <FontWeight>Bold</FontWeight>
                                     <TextDecoration>Underline</TextDecoration>
                                     <Color>#333333</Color>
                                   </Style>

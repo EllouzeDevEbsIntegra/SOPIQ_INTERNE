@@ -214,12 +214,9 @@ page 50123 "Sales Role details"
                     ApplicationArea = Location;
                     Caption = 'Ordres de transfert';
                     Image = FinChargeMemo;
-                    Promoted = true;
-                    PromotedCategory = Process;
                     RunObject = Page "Transfer Orders";
                     ToolTip = 'Move inventory items between company locations. With transfer orders, you ship the outbound transfer from one location and receive the inbound transfer at the other location. This allows you to manage the involved warehouse activities and provides more certainty that inventory quantities are updated correctly.';
                 }
-
 
             }
             group(Action63)

@@ -159,6 +159,13 @@ page 50100 "Sales line"
                     QuickEntry = false;
                     Editable = false;
                 }
+                field("Qty. to Ship"; "Qty. to Ship")
+                {
+                    ApplicationArea = all;
+                    BlankZero = true;
+                    QuickEntry = false;
+                    Editable = false;
+                }
                 field("Qty. to Invoice"; "Qty. to Invoice")
                 {
                     ApplicationArea = Basic;

@@ -90,6 +90,7 @@ codeunit 50019 SubscriberEventProcedure
         PostArchivShipLine: Record "Ligne archive BS";
         recBS: Record "Entete archive BS";
         recBL: Record "Sales Shipment Header";
+        salesLine: Record "Sales Line";
         userSetup: Record "User Setup";
 
 
@@ -103,7 +104,15 @@ codeunit 50019 SubscriberEventProcedure
         end;
         // ----------------------------------------------------------------------------------------------------------------
 
-
+        // Supprimer les lignes annulées du commande vente
+        salesLine.Reset();
+        salesLine.SetRange("Document No.", OldSalesShipmentLine."Order No.");
+        salesLine.SetRange("Line No.", OldSalesShipmentLine."Order Line No.");
+        if salesLine.FindFirst() then begin
+            salesLine."Is Ship Canceled" := true;
+            salesLine.Modify();
+        end;
+        // -----------------------------------------------
 
 
         AddArchiveLigneBS(NewSalesShipmentLine, OldSalesShipmentLine);

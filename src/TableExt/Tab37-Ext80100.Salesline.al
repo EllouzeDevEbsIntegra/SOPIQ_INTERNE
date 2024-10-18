@@ -230,6 +230,11 @@ tableextension 80100 "Sales line" extends "Sales line" //37
             FieldClass = FlowField;
             CalcFormula = lookup(Item."Description structurée" where("No." = field("No.")));
         }
+        field(50216; "Is Ship Canceled"; Boolean)
+        {
+            Caption = 'Expédition Annulée';
+            DataClassification = ToBeClassified;
+        }
     }
 
 

@@ -7238,6 +7238,241 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BL Subform - Control Unit Price - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1750085964 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Panier Bon Sortie (Tous)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 3244334840 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the item ledger entry that the document or journal line is applied to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Appl.-to Item Entry - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 2814799924 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the bin where the items are picked or put away.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Bin Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 3083748138 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies that this sales shipment line has been posted as a corrective entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Correction - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 2168672665 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the cross-referenced item number. If you enter a cross reference between yours and your vendor's or customer's item number, then this number will override the standard item number when you enter the cross-reference number on a sales or purchase document.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Cross-Reference No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies a description of the record.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 1908272084 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the related job.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Job No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 561421623 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the related job task.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Job Task No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 1369027531 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spécifie si on garde les prix initiaux ou non.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Keep Init. Prices - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 2161572060 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the location from where inventory items to the customer on the sales document are to be shipped by default.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Location Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 4200184881 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the involved entry or record, according to the specified number series.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 1562764323 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies a date formula for the time it takes to get items ready to ship from this location. The time element is used in the calculation of the delivery date as follows: Shipment Date + Outbound Warehouse Handling Time = Planned Shipment Date + Shipping Time = Planned Delivery Date.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Outbound Whse. Handling Time - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 3260337296 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the planned date that the shipment will be delivered at the customer's address. If the customer requests a delivery date, the program calculates whether the items will be available for delivery on this date. If the items are available, the planned delivery date will be the same as the requested delivery date. If not, the program calculates the date that the items are available for delivery and enters this date in the Planned Delivery Date field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Planned Delivery Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 433370900 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the date that the shipment should ship from the warehouse. If the customer requests a delivery date, the program calculates the planned shipment date by subtracting the shipping time from the requested delivery date. If the customer does not request a delivery date or the requested delivery date cannot be met, the program calculates the content of this field by adding the shipment time to the shipping date.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Planned Shipment Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 70558618 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Prix Vente 1 (coût + 20%)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Prix Vente 1 - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 2452436063 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Prix Vente remise (Prix Vente 1 - 10%)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Prix Vente 2 - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 436997413 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the date that you have promised to deliver the order, as a result of the Order Promising function.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Promised Delivery Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 641667003 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the quantity of the shipped item that has been posted as shipped but that has not yet been posted as invoiced.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Qty. Shipped Not Invoiced - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 2704404533 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of units of the item specified on the line.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Quantity - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 61616130 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how many units of the item on the line have been posted as invoiced.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Quantity Invoiced - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 135600996 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the date that the customer has asked for the order to be delivered.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Requested Delivery Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 1576505637 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code explaining why the item was returned.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Return Reason Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 4283600753 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source></source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Selected line - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 4112852368 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies when items on the document are shipped or were shipped. A shipment date is usually calculated from a requested delivery date plus lead time.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Shipment Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 1913523417 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how long it takes from when the items are shipped from the warehouse to when they are delivered.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Shipping Time - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 1878130204 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the line type.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Type - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 1920046521 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the item or resource's unit of measure, such as piece or hour.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Unit of Measure - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 2385270358 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how each unit of the item or resource is measured, such as in pieces or hours. By default, the value in the Base Unit of Measure field on the item or resource card is inserted.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Unit of Measure Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 3450651614 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the variant of the item on the line.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Variant Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 23669951 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total des lignes sélectionées (Remise BS)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Total Selected Line - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 2435401599 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total HT (Prix BS)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control TotalHTSelctLine - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 3315936150 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total TTC (Prix BS)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control TotalTTCSelctLine - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 2314561280 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total des lignes sélectionées (Nouvelle Remise Appliquée)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control Total Selected Line New Discount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 2879423743 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Remise à appliquer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control discount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 3505920385 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total HT (Sans Remise)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control totalBrutHT - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 582024868 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total HT (Nouvelle Remise Calculé)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control TotalNetHTNewDiscount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Control 1143365977 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total TTC (Nouvelle Remise Calculé)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Control TotalNetTTcNewDiscount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Action 1588831389 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Calculer les lignes sélectionnées</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Action Calcul Selected Line - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Action 391198415 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Initialiser les lignes sélectionnés</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Action Init Selected Line - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Action 813315441 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Modifier garder prix initiaux</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Action keepInitPrices - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Action 2292260717 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Liste des BL</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Action Liste des BL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Action 978928008 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Liste des BS</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Action Liste des BS - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Action 318048098 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Afficher tous les lignes BS</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Action Show all BS lines - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Action 245426702 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Calculer total</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Action Total - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Action 2690896667 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transformer les bon de sortie en bon de livraison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Action TransformtoBL - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Action 2690896667 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transformer en BL</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Action TransformtoBL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750085964 - Action 2690896667 - Method 1377591017 - NamedType 1084176789" size-unit="char" translate="yes" xml:space="preserve">
+          <source>pas de bon sortie sélectionné</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Ligne BS - Action TransformtoBL - Method OnAction - NamedType txtmessage</note>
+        </trans-unit>
         <trans-unit id="Page 4233825723 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Panier BS à facturer</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -14388,6 +14623,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Customer List - Control Opened Invoice - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 2901867346 - Control 3855271124 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2901867346">
+          <source>Moyen de Paiement</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Customer List - Control Payment Method Code - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 225348890 - Control 76714455 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3902691336">
           <source>Encours Client</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -15317,6 +15557,11 @@
           <source>Générer :</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Order - Action Valider 2 - Method OnAction - NamedType Choix</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3332899200 - Action 530404936 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3332899200">
+          <source>Supprimer tous les lignes avec expédition annulée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Order List - Action Delete Canceled Ship - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 3332899200 - Control 188715016 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3332899200">
           <source>Code Transporteur SI</source>
@@ -16962,6 +17207,11 @@
           <source>Initial Unit Price</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales line - Field Initial Unit Price - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3171687522 - Field 1729211537 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2574427010">
+          <source>Expédition Annulée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales line - Field Is Ship Canceled - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3171687522 - Field 2983779778 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2574427010">
           <source>Dernière Date Vente</source>

@@ -49,6 +49,26 @@ pageextension 80256 "Sales Order List" extends "Sales Order List"//9305
     actions
     {
         // Add changes to page actions here
+        addafter("Co&mments")
+        {
+            action("Delete Canceled Ship")
+            {
+                Caption = 'Supprimer tous les lignes avec expédition annulée';
+                Image = DeleteAllBreakpoints;
+                Promoted = true;
+                PromotedCategory = Category5;
+                trigger OnAction()
+                var
+                    SalesLine: Record "Sales Line";
+                begin
+
+                    SalesLine.Reset();
+                    SalesLine.SetRange("Is Ship Canceled", true);
+                    SalesLine.DeleteAll();
+                    Message('Tous les lignes avec expédition annullée sont supprimées avec succés !');
+                end;
+            }
+        }
     }
 
     var

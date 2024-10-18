@@ -588,6 +588,7 @@
                                               <PaddingBottom>2pt</PaddingBottom>
                                             </Style>
                                           </Textbox>
+                                          <rd:Selected>true</rd:Selected>
                                         </CellContents>
                                       </TablixCell>
                                       <TablixCell>
@@ -693,7 +694,7 @@
                                     </TablixCells>
                                   </TablixRow>
                                   <TablixRow>
-                                    <Height>0.19396cm</Height>
+                                    <Height>0.12375cm</Height>
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
@@ -800,7 +801,7 @@
                               </TablixRowHierarchy>
                               <DataSetName>DataSet_Result</DataSetName>
                               <Left>0.03884cm</Left>
-                              <Height>0.94742cm</Height>
+                              <Height>0.87721cm</Height>
                               <Width>19.30786cm</Width>
                               <Style>
                                 <Border>
@@ -1066,7 +1067,7 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>1.12381cm</Top>
+            <Top>0.9827cm</Top>
             <Left>0.48376cm</Left>
             <Height>0.46615cm</Height>
             <Width>19.2cm</Width>
@@ -1078,7 +1079,7 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>1.64886cm</Height>
+        <Height>1.54303cm</Height>
         <Style />
       </Body>
       <Width>19.88097cm</Width>
@@ -1094,7 +1095,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Devis N°</Value>
+                      <Value>Commande / Devis N°</Value>
                       <Style>
                         <FontFamily>Verdana</FontFamily>
                         <FontSize>15pt</FontSize>

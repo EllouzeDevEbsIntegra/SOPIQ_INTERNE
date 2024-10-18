@@ -11,7 +11,7 @@ pageextension 80182 "Customer List" extends "Customer List"//22
             }
             field("Payment Method Code"; "Payment Method Code")
             {
-
+                Caption = 'Moyen de Paiement';
             }
             field("Cheque En Coffre"; "Cheque En Coffre")
             {
