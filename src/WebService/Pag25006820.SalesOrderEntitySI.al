@@ -1,4 +1,4 @@
-page 50147 "Sales Order Entity SI"
+page 25006820 "Sales Order Entity SI"
 {
     Caption = 'siSalesOrders', Locked = true;
     ChangeTrackingAllowed = true;

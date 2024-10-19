@@ -5838,6 +5838,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Customer List Administration - Action Sales Statistics - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 2278635338 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Statistiques Clients</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Stat - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 2963177620 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Transactions Client Détaillées</source>
           <note from="Developer" annotates="general" priority="2"></note>
