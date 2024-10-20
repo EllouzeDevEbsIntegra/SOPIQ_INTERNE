@@ -4748,6 +4748,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Customer List Administration - Control Location Code - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="Page 3900872708 - Control 4008011123 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Moyen TTC / Facture</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer List Administration - Control Moyen Amount / Facture - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3900872708 - Control 3064966287 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Moyen Jour Paiement</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer List Administration - Control Moyen Jour Paiement - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3900872708 - Control 2961552353 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the customer's name. This name will appear on all sales documents for the customer.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -5473,6 +5483,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Customer List Administration - Action ApplyTemplate - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3900872708 - Action 16993558 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Mettre à jour Moyen Paiement &amp; Moyen TTC par Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer List Administration - Action Calcul Moyen / Client - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3900872708 - Action 1638686336 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Open the cash receipt journal to post incoming payments.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -5842,6 +5857,66 @@
           <source>Statistiques Clients</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Customer Stat - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2278635338 - Control 3833905205 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Recherche Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Stat - Control Search Item - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2278635338 - Control 1498529049 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Encours Autorisé (Principal)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Stat - Control Crédit autorisé - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2278635338 - Control 2594899426 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dépassement (% Encours princiapl)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Stat - Control Dépassement (% Encours princiapl) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2278635338 - Control 4163693687 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Encours Supplémentaire</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Stat - Control Encours supplémentaire - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2278635338 - Control 2961552353 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Stat - Control Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2278635338 - Control 4241246932 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nombre de facture non payée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Stat - Control Nb facture NP - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2278635338 - Control 4200184881 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Stat - Control No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2278635338 - Control 2391826168 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Facture et Avoir Ouverts</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Stat - Control Opened Invoice - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2278635338 - Control 3855271124 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Moyen de Paiement</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Stat - Control Payment Method Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2278635338 - Control 1784439319 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Réception retour non facturé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Stat - Control Return Receipts Not Invoiced - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2278635338 - Control 3226323109 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bon de livraison non facturé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Stat - Control Shipped Not Invoiced - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2278635338 - Control 2702167979 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Encours</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Stat - Control Total Encours - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2963177620 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Transactions Client Détaillées</source>
@@ -16032,6 +16107,16 @@
           <source>Is Special Vendor</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Customer - Field Is Special Vendor - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1994964448 - Field 4008011123 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1994964448">
+          <source>Moyen TTC / Facture</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Customer - Field Moyen Amount / Facture - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1994964448 - Field 3064966287 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1994964448">
+          <source>Moyen Jour Paiement</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Customer - Field Moyen Jour Paiement - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 1994964448 - Field 2521394804 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1994964448">
           <source>Nombre de facture non payée autorisée</source>

@@ -370,6 +370,15 @@ page 50117 "Customer List Administration"
                 {
                     Caption = 'Total Encours Financier';
                 }
+                field("Moyen Jour Paiement"; "Moyen Jour Paiement")
+                {
+                    Caption = 'Moyen Jour Paiement';
+                }
+                field("Moyen Amount / Facture"; "Moyen Amount / Facture")
+                {
+                    Caption = 'Moyen TTC / Facture';
+                }
+
             }
         }
         area(factboxes)
@@ -1364,6 +1373,24 @@ page 50117 "Customer List Administration"
                 RunPageLink = "Source No." = FIELD("No.");
                 ToolTip = 'Process your customer payments by matching amounts received on your bank account with the related unpaid sales invoices, and then post the payments.';
             }
+            action("Calcul Moyen / Client")
+            {
+                ApplicationArea = Basic, Suite;
+                Caption = 'Mettre à jour Moyen Paiement & Moyen TTC par Client';
+                Image = PaymentDays;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                trigger OnAction()
+                begin
+                    if Confirm('Voulez vous mettre à jour les moyens par client ?') then begin
+                        CalcMoyenParClient();
+                        Message('Mise à jour des moyens de jours de paiement et moyens TTC par client est terminée avec succées !');
+                    end;
+
+                end;
+            }
             group(Display)
             {
                 Caption = 'Display';
@@ -1589,7 +1616,7 @@ page 50117 "Customer List Administration"
 
     trigger OnAfterGetRecord()
     begin
-        // CalcFields("Opened Invoice", "Shipped Not Invoiced BL", "Cheque En Coffre", "Traite En Coff.", "Cheque Impaye", "Traite En Escompte", "Traite Impaye");
+        //CalcFields("Opened Invoice", "Shipped Not Invoiced BL", "Cheque En Coffre", "Traite En Coff.", "Cheque Impaye", "Traite En Escompte", "Traite Impaye");
 
         TotalEncoursFinancier := "Cheque En Coffre" + "Cheque Impaye" + "Traite En Coff." + "Traite En Escompte" + "Traite Impaye";
 
@@ -1608,6 +1635,8 @@ page 50117 "Customer List Administration"
 
         FieldStyle := SetStyleAmount(Depassement);
         FieldStyle2 := SetStyleAmount(Depassement2);
+
+
     end;
 
     trigger OnAfterGetCurrRecord()

@@ -118,18 +118,6 @@ pageextension 80182 "Customer List" extends "Customer List"//22
     begin
         CalcFields("Opened Invoice", "Shipped Not Invoiced BL");
 
-        //MoyenJourPaiement := 0;
-        // SalesInvoiceHeader.Reset();
-        // SalesInvoiceHeader.SetRange("Bill-to Customer No.", "No.");
-        // SalesInvoiceHeader.CalcFields("Remaining Amount");
-        // SalesInvoiceHeader.SetRange("Remaining Amount", 0);
-        //nbInvoice := SalesInvoiceHeader.Count;
-        // if SalesInvoiceHeader.FindSet() then begin
-        //     repeat
-        //         MoyenJourPaiement := MoyenJourPaiement + SalesInvoiceHeader.MoyJourPaiement(SalesInvoiceHeader);
-        //     until SalesInvoiceHeader.Next() = 0;
-        //     MoyenJourPaiement := MoyenJourPaiement / nbInvoice;
-        // end;
 
         TotalEncours := "Opened Invoice" + "Shipped Not Invoiced BL" + "Return Receipts Not Invoiced";
         Depassement := "Credit Limit (LCY)" - TotalEncours;

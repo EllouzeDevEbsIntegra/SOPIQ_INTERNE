@@ -176,9 +176,60 @@ tableextension 80114 "Customer" extends "Customer" //18
             FieldClass = FlowField;
         }
 
+        field(80902; "Moyen Jour Paiement"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+            Caption = 'Moyen Jour Paiement';
+        }
+        field(80903; "Moyen Amount / Facture"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+            Caption = 'Moyen TTC / Facture';
+        }
+
+
 
     }
 
     var
         myInt: Integer;
+
+    procedure CalcMoyenParClient()
+    var
+        SalesInvoiceHeader: Record "Sales Invoice Header";
+        MoyenJourPaiement, MoyenAmountParFacture, nbInvoice, totalInvoice : Decimal;
+        recCustomer: Record Customer;
+    begin
+        // Calcul Moyen de jour Paiement pour chaque client
+        if recCustomer.FindSet() then begin
+            repeat
+                MoyenJourPaiement := 0;
+                totalInvoice := 0;
+                MoyenAmountParFacture := 0;
+                SalesInvoiceHeader.Reset();
+                SalesInvoiceHeader.SetRange("Bill-to Customer No.", recCustomer."No.");
+                SalesInvoiceHeader.CalcFields("Remaining Amount");
+                SalesInvoiceHeader.SetRange("Remaining Amount", 0);
+                nbInvoice := SalesInvoiceHeader.Count;
+
+                if SalesInvoiceHeader.FindSet() then begin
+                    repeat
+                        MoyenJourPaiement := MoyenJourPaiement + SalesInvoiceHeader.MoyJourPaiement(SalesInvoiceHeader);
+                        SalesInvoiceHeader.CalcFields("Amount Including VAT");
+                        totalInvoice := totalInvoice + SalesInvoiceHeader."Amount Including VAT";
+                    until SalesInvoiceHeader.Next() = 0;
+                    MoyenJourPaiement := MoyenJourPaiement / nbInvoice;
+                    MoyenAmountParFacture := totalInvoice / nbInvoice;
+                end;
+                recCustomer."Moyen Jour Paiement" := MoyenJourPaiement;
+                recCustomer."Moyen Amount / Facture" := MoyenAmountParFacture;
+                recCustomer.Modify();
+            until recCustomer.Next() = 0;
+
+        end
+
+
+    end;
 }
