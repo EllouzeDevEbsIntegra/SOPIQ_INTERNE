@@ -80,4 +80,9 @@ pageextension 80138 "Customer Card" extends "Customer Card"//21
 
     var
         myInt: Integer;
+
+    trigger OnOpenPage()
+    begin
+        CalcFields("Traite En Escompte", "Cheque En Coffre", "Cheque Impaye", "Traite En Coff.", "Traite Impaye");
+    end;
 }

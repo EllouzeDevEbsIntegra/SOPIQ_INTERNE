@@ -343,6 +343,7 @@ page 50100 "Sales line"
                     Editable = false;
                     Visible = false;
                 }
+
             }
         }
     }

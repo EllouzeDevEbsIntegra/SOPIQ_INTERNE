@@ -169,6 +169,7 @@ page 50101 "Purchase Item Search"
 
     trigger OnAfterGetCurrRecord()
     VAR
+
         recIsKit, recIsComponent : Record "BOM Component";
         recitem: Record item;
         iscomponent: Boolean;

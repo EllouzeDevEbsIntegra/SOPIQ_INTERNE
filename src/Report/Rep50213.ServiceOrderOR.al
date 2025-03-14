@@ -416,6 +416,8 @@ report 50213 "Service Order OR"
             }
 
             trigger OnAfterGetRecord()
+            var
+
             begin
                 IF "Service Header EDMS"."Service Advisor" <> '' THEN BEGIN
                     IF SalespersonPurchaser.GET("Service Header EDMS"."Service Advisor") THEN

@@ -196,7 +196,7 @@ tableextension 80114 "Customer" extends "Customer" //18
     var
         myInt: Integer;
 
-    procedure CalcMoyenParClient()
+    procedure CalcMoyenParClient(beginDate: Date; endDate: Date)
     var
         SalesInvoiceHeader: Record "Sales Invoice Header";
         MoyenJourPaiement, MoyenAmountParFacture, nbInvoice, totalInvoice : Decimal;
@@ -210,6 +210,7 @@ tableextension 80114 "Customer" extends "Customer" //18
                 MoyenAmountParFacture := 0;
                 SalesInvoiceHeader.Reset();
                 SalesInvoiceHeader.SetRange("Bill-to Customer No.", recCustomer."No.");
+                SalesInvoiceHeader.Setfilter("Posting Date", '%1..%2', beginDate, endDate);
                 SalesInvoiceHeader.CalcFields("Remaining Amount");
                 SalesInvoiceHeader.SetRange("Remaining Amount", 0);
                 nbInvoice := SalesInvoiceHeader.Count;

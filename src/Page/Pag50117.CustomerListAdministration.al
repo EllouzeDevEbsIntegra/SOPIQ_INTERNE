@@ -17,6 +17,34 @@ page 50117 "Customer List Administration"
     {
         area(content)
         {
+            grid("Date")
+            {
+                field(beginDate; beginDate)
+                {
+                    Caption = 'Date Début';
+                    ApplicationArea = all;
+                    Style = Strong;
+                    trigger OnValidate()
+                    begin
+                        if beginDate > endDate then begin
+                            Error('Date début doit être inférieur à la date fin !');
+                        end;
+                    end;
+                }
+                field(endDate; endDate)
+                {
+                    Caption = 'Date Fin';
+                    ApplicationArea = all;
+                    Style = Strong;
+                    trigger OnValidate()
+                    begin
+                        if endDate < beginDate then begin
+                            Error('Date fin doit être supérieur à la date début !');
+                        end;
+                    end;
+                }
+
+            }
             repeater(Control1)
             {
                 ShowCaption = false;
@@ -300,6 +328,11 @@ page 50117 "Customer List Administration"
                 {
                     Caption = 'Réception retour non facturé';
                     Editable = false;
+                }
+                field("Payment Method Code"; "Payment Method Code")
+                {
+                    Caption = 'Moyen de Paiement';
+                    Editable = true;
                 }
 
                 field("Total Encours"; TotalEncours)
@@ -1385,7 +1418,7 @@ page 50117 "Customer List Administration"
                 trigger OnAction()
                 begin
                     if Confirm('Voulez vous mettre à jour les moyens par client ?') then begin
-                        CalcMoyenParClient();
+                        CalcMoyenParClient(beginDate, endDate);
                         Message('Mise à jour des moyens de jours de paiement et moyens TTC par client est terminée avec succées !');
                     end;
 
@@ -1686,6 +1719,8 @@ page 50117 "Customer List Administration"
         with SocialListeningSetup do
             SocialListeningSetupVisible := Get and "Show on Customers" and "Accept License Agreement" and ("Solution ID" <> '');
         SetRange("Date Filter", 0D, WorkDate());
+        beginDate := System.DMY2Date(1, 1, System.Date2DMY(Today, 3));
+        endDate := System.DMY2Date(31, 12, System.Date2DMY(Today, 3));
     end;
 
     procedure SetStyleAmount(PDecimal: Decimal): Text[50]
@@ -1696,6 +1731,7 @@ page 50117 "Customer List Administration"
     var
         TotalEncours, Depassement, Depassement2, TotalEncoursFinancier : Decimal;
         FieldStyle, FieldStyle2 : Text;
+        beginDate, endDate : date;
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
         SocialListeningSetupVisible: Boolean;
         SocialListeningVisible: Boolean;

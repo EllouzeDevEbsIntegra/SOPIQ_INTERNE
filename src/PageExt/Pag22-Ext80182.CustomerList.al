@@ -9,33 +9,33 @@ pageextension 80182 "Customer List" extends "Customer List"//22
             {
                 Caption = 'Facture et Avoir Ouverts';
             }
-            field("Payment Method Code"; "Payment Method Code")
-            {
-                Caption = 'Moyen de Paiement';
-            }
-            field("Cheque En Coffre"; "Cheque En Coffre")
-            {
+            // field("Payment Method Code"; "Payment Method Code")
+            // {
+            //     Caption = 'Moyen de Paiement';
+            // }
+            // field("Cheque En Coffre"; "Cheque En Coffre")
+            // {
 
-            }
+            // }
 
-            field("Cheque Impaye"; "Cheque Impaye")
-            {
+            // field("Cheque Impaye"; "Cheque Impaye")
+            // {
 
-            }
+            // }
 
-            field("Traite En Coff."; "Traite En Coff.")
-            {
+            // field("Traite En Coff."; "Traite En Coff.")
+            // {
 
-            }
-            field("Traite En Escompte"; "Traite En Escompte")
-            {
+            // }
+            // field("Traite En Escompte"; "Traite En Escompte")
+            // {
 
-            }
+            // }
 
-            field("Traite Impaye"; "Traite Impaye")
-            {
+            // field("Traite Impaye"; "Traite Impaye")
+            // {
 
-            }
+            // }
             // field(MoyenJourPaiement; MoyenJourPaiement)
             // {
             //     Caption = 'Moyen Jour Paiement';

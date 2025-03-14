@@ -13,6 +13,15 @@ tableextension 80277 "Item Journal Line" extends "Item Journal Line" //83
             Caption = 'Prêt à la validation';
             DataClassification = ToBeClassified;
         }
+
+        field(80730; inventory; Decimal)
+        {
+            CalcFormula = Sum("Item Ledger Entry".Quantity WHERE("Item No." = FIELD("Item No."), "Location Code" = field("Location Code")));
+            Caption = 'Inventory';
+            DecimalPlaces = 0 : 5;
+            Editable = false;
+            FieldClass = FlowField;
+        }
     }
 
     keys

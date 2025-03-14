@@ -4,6 +4,29 @@ pageextension 80312 "Item Reclass. Journal" extends "Item Reclass. Journal"//393
     layout
     {
         // Add changes to page layout here
+        addafter(Quantity)
+        {
+            field(inventory; inventory)
+            {
+
+            }
+        }
+        modify("Item No.")
+        {
+            trigger OnAfterValidate()
+            begin
+                CalcFields(inventory);
+                CurrPage.Update();
+            end;
+        }
+        modify("Location Code")
+        {
+            trigger OnAfterValidate()
+            begin
+                CalcFields(inventory);
+                CurrPage.Update();
+            end;
+        }
     }
 
     actions
@@ -15,6 +38,15 @@ pageextension 80312 "Item Reclass. Journal" extends "Item Reclass. Journal"//393
         }
         addafter(Post)
         {
+            action("Verify Stock")
+            {
+                trigger OnAction()
+                begin
+                    rec.CalcFields(inventory);
+                    Message('%1', rec.inventory);
+
+                end;
+            }
             action(Validate)
             {
                 Caption = 'A Valider';
@@ -76,5 +108,11 @@ pageextension 80312 "Item Reclass. Journal" extends "Item Reclass. Journal"//393
         if recUserSetup.FindFirst() then begin
             BtnValidate := recUserSetup."A Valid. Jrnl. line";
         end;
+    end;
+
+    trigger OnAfterGetRecord()
+    var
+    begin
+        CalcFields(inventory);
     end;
 }

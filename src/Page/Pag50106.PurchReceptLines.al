@@ -85,6 +85,12 @@ page 50106 "Purch. Recept. Lines"
                     Editable = false;
                     ApplicationArea = all;
                 }
+                field("Last Unit Price Devise"; "Last Unit Price Devise")
+                {
+                    Caption = 'Dernier PU Devise Facturé';
+                    Editable = false;
+                    ApplicationArea = all;
+                }
 
                 field("Last Unit Cost"; "Last Unit Cost")
                 {
@@ -186,6 +192,8 @@ page 50106 "Purch. Recept. Lines"
     }
 
     trigger OnAfterGetRecord()
+    var
+        PurchInvLine: Record "Purch. Inv. Line";
     begin
         "Buy-from Vendor No.HideValue" := false;
         "Document No.HideValue" := false;
@@ -194,6 +202,13 @@ page 50106 "Purch. Recept. Lines"
 
         Boolavoir := AvoirExist;
         rec.CalcFields("Actual Unit Price");
+
+        PurchInvLine.Reset();
+        PurchInvLine.SetRange("No.", "No.");
+        if PurchInvLine.FindLast() then begin
+            "Last Unit Price Devise" := PurchInvLine."Direct Unit Cost";
+            rec.Modify();
+        end;
     end;
 
     trigger OnAfterGetCurrRecord()

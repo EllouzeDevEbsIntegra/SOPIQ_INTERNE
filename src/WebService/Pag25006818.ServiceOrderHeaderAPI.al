@@ -9,6 +9,7 @@ page 25006818 "Service Order Header API"
     EntitySetName = 'ServOrderHeader';
     SourceTable = "Service Header EDMS";
     DelayedInsert = true;
+    ModifyAllowed = true;
     ODataKeyFields = SystemId;
     layout
     {
@@ -25,7 +26,10 @@ page 25006818 "Service Order Header API"
                 {
                     Caption = 'Date Commande';
                 }
-
+                field(DealType; "Deal Type")
+                {
+                    Caption = 'Type Affaire';
+                }
                 field(DocumentType; "Document Type")
                 {
                     Caption = 'Type Document';
@@ -41,6 +45,10 @@ page 25006818 "Service Order Header API"
                 field("WorkDescription"; GetWorkDescription())
                 {
                     Caption = 'Description Travail';
+                }
+                field("Customer"; "Sell-to Customer No.")
+                {
+                    Caption = 'Client';
                 }
                 field(VIN; VIN)
                 {
@@ -67,5 +75,6 @@ page 25006818 "Service Order Header API"
         }
 
     }
+
 
 }
