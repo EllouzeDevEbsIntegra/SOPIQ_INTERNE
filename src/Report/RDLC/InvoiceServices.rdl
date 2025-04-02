@@ -1806,7 +1806,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!AmountSalesInvoiceHeader.Value + Sum(Fields!Discount.Value)</Value>
+                                  <Value>=IIF(Fields!HideDiscount.Value,Sum(Fields!LineAmountSR.Value),Sum(Fields!SalesInvoiceLineAmount.Value))</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -1826,6 +1826,7 @@
                             </Border>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -2108,7 +2109,6 @@
                             </Border>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>

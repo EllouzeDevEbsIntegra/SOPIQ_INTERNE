@@ -11,6 +11,7 @@ page 25006818 "Service Order Header API"
     DelayedInsert = true;
     ModifyAllowed = true;
     ODataKeyFields = SystemId;
+
     layout
     {
         area(Content)
@@ -42,21 +43,43 @@ page 25006818 "Service Order Header API"
                 {
                     Caption = 'Type Prestation';
                 }
-                field("WorkDescription"; GetWorkDescription())
+                field("WorkDescription"; workDescription)
                 {
                     Caption = 'Description Travail';
+                    Editable = true;
                 }
-                field("Customer"; "Sell-to Customer No.")
+                // field("Customer"; "Sell-to Customer No.")
+                // {
+                //     Caption = 'Client';
+                // }
+
+                field("Customer"; "Bill-to Customer No.")
                 {
                     Caption = 'Client';
+                }
+                field(CustomerName; "Sell-to Customer Name")
+                {
+                    Caption = 'Nom Client';
+                }
+
+                field(PhoneNo; "Mobile Phone No.")
+                {
+                    Caption = 'Téléphone Mobile';
+                }
+                field(Vsn; "Vehicle Serial No.")
+                {
+                    Caption = 'Numéro de série du véhicule';
+
                 }
                 field(VIN; VIN)
                 {
                     Caption = 'VIN';
                 }
+
                 field(VehicleRegistNo; "Vehicle Registration No.")
                 {
                     Caption = 'Immatriculation';
+
                 }
                 field("Make"; "Make Code")
                 {
@@ -70,11 +93,40 @@ page 25006818 "Service Order Header API"
                 {
                     Caption = 'Statut Document';
                 }
+                field(CodeStatus; "Status")
+                {
+                    Caption = 'Statut';
+                }
+                field("ServiceAdvisor"; "Service Advisor")
+                {
+                    Caption = 'Conseiller';
+                }
+                field(klm; "Variable Field Run 1")
+                {
+                    Caption = 'Kilométrage';
+                }
+                field(fuel; fuel)
+                {
+                    Caption = 'Carburant';
+                }
+                field(Location; "Location Code")
+                {
+                    Caption = 'Code Magasin';
+                }
+
+
 
             }
         }
 
     }
+    var
+        workDescription: Text[250];
 
-
+    trigger OnModifyRecord(): Boolean
+    begin
+        if workDescription <> '' then begin
+            rec.SetWorkDescription(workDescription);
+        end
+    end;
 }

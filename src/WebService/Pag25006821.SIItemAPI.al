@@ -76,6 +76,10 @@ page 25006821 "SI Item API"
                 {
                     Caption = 'Marque';
                 }
+                field(SmallParts; "Small Parts")
+                {
+                    Caption = 'Petites Fournitures';
+                }
 
                 field(Description; Description)
                 {
@@ -174,6 +178,9 @@ page 25006821 "SI Item API"
                         RegisterFieldSet(FieldNo("Unit of Measure Id"));
                         RegisterFieldSet(FieldNo("Base Unit of Measure"));
                     end;
+                }
+                field(UnitofMeasure; "Base Unit of Measure")
+                {
                 }
                 field(baseUnitOfMeasure; BaseUnitOfMeasureJSONText)
                 {
@@ -300,8 +307,16 @@ page 25006821 "SI Item API"
                         RegisterFieldSet(FieldNo("Tax Group Id"));
                     end;
                 }
+                field(InventoryPostingGroup; "Inventory Posting Group")
+                {
 
+                }
                 field("genProdPostingGroup"; "Gen. Prod. Posting Group")
+                {
+
+                }
+
+                field(codeTVA; "VAT Prod. Posting Group")
                 {
 
                 }
@@ -344,6 +359,7 @@ page 25006821 "SI Item API"
     var
         GraphCollectionMgtItem: Codeunit "Graph Collection Mgt - Item";
     begin
+
         if TempFieldSet.Get(DATABASE::Item, FieldNo("Base Unit of Measure")) then
             if BaseUnitOfMeasureJSONText = '' then
                 BaseUnitOfMeasureJSONText := GraphCollectionMgtItem.ItemUnitOfMeasureToJSON(Rec, BaseUnitOfMeasureCode);
@@ -359,6 +375,8 @@ page 25006821 "SI Item API"
         Item: Record Item;
         GraphCollectionMgtItem: Codeunit "Graph Collection Mgt - Item";
     begin
+
+
         if TempFieldSet.Get(DATABASE::Item, FieldNo("Base Unit of Measure")) then
             Validate("Base Unit of Measure", BaseUnitOfMeasureCode);
 

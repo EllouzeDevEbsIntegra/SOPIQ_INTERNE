@@ -12,6 +12,10 @@ tableextension 80321 Vendor extends Vendor //23
         {
             DataClassification = ToBeClassified;
         }
+        field(80323; "Frs Local"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

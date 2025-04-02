@@ -393,8 +393,10 @@ report 50218 "Invoice Services"
                             CASE RecGPostServOrderLine.Type OF
                                 RecGPostServOrderLine.Type::Item:
                                     begin
-                                        TotPiece += RecGPostServOrderLine."Line Amount";
-                                        TotPieceSR += RecGPostServOrderLine.Quantity * RecGPostServOrderLine."Unit Price";
+                                        if RecGPostServOrderLine."Small Parts" = false then begin
+                                            TotPiece += RecGPostServOrderLine."Line Amount";
+                                            TotPieceSR += RecGPostServOrderLine.Quantity * RecGPostServOrderLine."Unit Price";
+                                        end
                                     end;
                                 RecGPostServOrderLine.Type::Labor:
                                     begin

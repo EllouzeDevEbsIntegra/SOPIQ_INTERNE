@@ -147,6 +147,9 @@ pageextension 80153 "Services Order EDMS" extends "Service Order EDMS"//25006183
     trigger OnOpenPage()
     begin
         if ("Vehicule Prete" = false) then VehiculePretEditable := rec."Control Performed" else VehiculePretEditable := false;
+
+        if VIN <> '' then Validate(VIN);
+        if "Sell-to Customer No." <> '' then Validate("Sell-to Customer No.");
     end;
 
     procedure verifyGlobalQtyFini(ServiceHeaderEDMS: Record "Service Header EDMS")

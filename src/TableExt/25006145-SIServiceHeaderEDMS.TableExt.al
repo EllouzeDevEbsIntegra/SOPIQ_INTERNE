@@ -36,31 +36,6 @@ tableextension 80250 "Service Header EDMS" extends "Service Header EDMS" //25006
         {
             DataClassification = ToBeClassified;
         }
-        // modify("Vehicle Serial No.")
-        // {
-        //     trigger OnAfterValidate()
-        //     var
-        //         DocumentStatus: Record "Document Status";
-        //         TextMessage: Text;
-        //     begin
-        //         TextMessage := '';
-        //         DocumentStatus.Reset();
-        //         DocumentStatus.SetRange(Code, rec."Document Status");
-        //         DocumentStatus.SetRange("Document Type", "Document Type"::Order);
-        //         DocumentStatus.SetRange("Document Profile", DocumentStatus."Document Profile"::Service);
-        //         if DocumentStatus.FindFirst() then begin
-        //             // Message('here ! %1 - %2 - %3', rec."Document Status", DocumentStatus.SendMsg, DocumentStatus.Message);
-        //             if (DocumentStatus.SendMsg = true) then begin
-        //                 TextMessage := DocumentStatus.Message.Replace('%MAT%', rec."Vehicle Registration No.");
-        //                 //Message(TextMessage);
-        //                 SendMessage(rec, TextMessage);
-
-        //             end;
-        //         end;
-
-        //     end;
-        // }
-
     }
     procedure SI_InsertServPackage()
     var
@@ -198,4 +173,6 @@ tableextension 80250 "Service Header EDMS" extends "Service Header EDMS" //25006
             end;
         end;
     end;
+
+
 }

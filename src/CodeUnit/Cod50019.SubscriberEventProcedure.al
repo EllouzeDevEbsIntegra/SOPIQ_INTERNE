@@ -383,4 +383,17 @@ codeunit 50019 SubscriberEventProcedure
     //     SalesShipmLine.Modify;
     // END;
 
+    [EventSubscriber(ObjectType::Table, Database::"Service Header EDMS", 'OnBeforeValidateEvent', 'Vehicle Serial No.', false, false)]
+    local procedure SuppressConfirmOnVehicleSerialNoValidate(var Rec: Record "Service Header EDMS"; var xRec: Record "Service Header EDMS")
+    begin
+        if not GuiAllowed then
+            Rec.SetHideValidationDialog(true); // Supprime les dialogues dans le contexte API
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Service Header EDMS", 'OnBeforeValidateEvent', 'Bill-to Customer No.', false, false)]
+    local procedure SuppressConfirmationOnApi(var Rec: Record "Service Header EDMS"; var xRec: Record "Service Header EDMS")
+    begin
+        if not GuiAllowed then
+            Rec.SetHideValidationDialog(true); // Supprime les dialogues dans le contexte API
+    end;
 }
