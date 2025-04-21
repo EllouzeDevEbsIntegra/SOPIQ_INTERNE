@@ -18,6 +18,16 @@ page 25006999 "TecDoc Articles"
                 {
                     ApplicationArea = All;
                 }
+                field(Description; Description)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Description';
+                }
+                field(Famille; Famille)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Famille';
+                }
             }
         }
     }

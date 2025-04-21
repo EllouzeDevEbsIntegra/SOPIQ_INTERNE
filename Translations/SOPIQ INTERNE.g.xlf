@@ -693,6 +693,31 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Specific Item Ledger Entry - Field Year - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 2870421122 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Buffer Articles TecDoc</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2870421122 - Field 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Field Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2870421122 - Field 2743516650 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Fabricant</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Field Fabricant - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2870421122 - Field 3632989434 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Famille</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Field Famille - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2870421122 - Field 574863965 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Référence</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Field Référence - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2246482555 - Method 210834541 - NamedType 583370471" size-unit="char" translate="yes" xml:space="preserve">
           <source>&amp;Ship</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -11707,6 +11732,21 @@
           <source>Changer l'Année</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry - Action Transaction Year -1  - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3203277727 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Articles TecDoc</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3203277727 - Control 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Control Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3203277727 - Control 3632989434 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Famille</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Control Famille - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 3418304880 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Batch Calc. Rcpt Line Ht/TTC</source>
