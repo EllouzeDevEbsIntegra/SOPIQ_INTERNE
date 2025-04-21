@@ -226,6 +226,19 @@ pageextension 80118 "item" extends "Item List" //31
                 end;
             }
 
+            action("Rechercher dans TecDoc")
+            {
+                ApplicationArea = All;
+                Caption = 'Recherche TecDoc';
+                Image = AboutNav;
+                trigger OnAction()
+                var
+                    TecDocAPI: Codeunit "TecDoc Connector";
+                begin
+                    TecDocAPI.RechercherArticleTecdoc(Rec."No.");
+                end;
+            }
+
         }
 
     }

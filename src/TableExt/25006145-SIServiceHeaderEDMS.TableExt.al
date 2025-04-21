@@ -36,6 +36,73 @@ tableextension 80250 "Service Header EDMS" extends "Service Header EDMS" //25006
         {
             DataClassification = ToBeClassified;
         }
+
+        field(80253; "Type Lavage"; Enum "Type Lavage")
+        {
+            Caption = 'Type Lavage';
+            DataClassification = ToBeClassified;
+        }
+
+        field(80254; "Carte Grise"; Boolean)
+        {
+            Caption = 'Carte Grise';
+            DataClassification = ToBeClassified;
+            InitValue = false;
+        }
+        field(80255; "Assurance"; Boolean)
+        {
+            Caption = 'Assurance';
+            DataClassification = ToBeClassified;
+            InitValue = false;
+        }
+        field(80256; "Accessoire Tel"; Boolean)
+        {
+            Caption = 'Accessoire Téléphone';
+            DataClassification = ToBeClassified;
+            InitValue = false;
+        }
+        field(80257; "Tapis"; Boolean)
+        {
+            Caption = 'Tapis de sol';
+            DataClassification = ToBeClassified;
+            InitValue = false;
+        }
+        field(80258; "Roue"; Boolean)
+        {
+            Caption = 'Roue de secours';
+            DataClassification = ToBeClassified;
+            InitValue = false;
+        }
+        field(80259; "Compresseur"; Boolean)
+        {
+            Caption = 'Compresseur';
+            DataClassification = ToBeClassified;
+            InitValue = false;
+        }
+        field(80260; "Triange Panne"; Boolean)
+        {
+            Caption = 'Triange Panne';
+            DataClassification = ToBeClassified;
+            InitValue = false;
+        }
+        field(80261; "Objet"; Boolean)
+        {
+            Caption = 'Objets Laissés';
+            DataClassification = ToBeClassified;
+            InitValue = false;
+        }
+        field(80262; "Cle Roue"; Boolean)
+        {
+            Caption = 'Clé de roue sécurité';
+            DataClassification = ToBeClassified;
+            InitValue = false;
+        }
+        field(80263; "Observation"; Text[250])
+        {
+            Caption = 'Observation';
+            DataClassification = ToBeClassified;
+        }
+
     }
     procedure SI_InsertServPackage()
     var

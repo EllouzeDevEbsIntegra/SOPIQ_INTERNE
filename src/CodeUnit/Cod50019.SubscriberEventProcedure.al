@@ -396,4 +396,7 @@ codeunit 50019 SubscriberEventProcedure
         if not GuiAllowed then
             Rec.SetHideValidationDialog(true); // Supprime les dialogues dans le contexte API
     end;
+
+
+
 }

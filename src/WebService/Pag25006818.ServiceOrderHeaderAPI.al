@@ -89,9 +89,13 @@ page 25006818 "Service Order Header API"
                 {
                     Caption = 'Modèle';
                 }
+                field(DocumentStatusCode; "Document Status")
+                {
+                    Caption = 'Code Statut Document';
+                }
                 field(DocStatus; "Doc. Statut Desc.")
                 {
-                    Caption = 'Statut Document';
+                    Caption = 'Description Statut Document';
                 }
                 field(CodeStatus; "Status")
                 {
@@ -101,7 +105,7 @@ page 25006818 "Service Order Header API"
                 {
                     Caption = 'Conseiller';
                 }
-                field(klm; "Variable Field Run 1")
+                field(km; "Variable Field Run 1")
                 {
                     Caption = 'Kilométrage';
                 }
@@ -112,6 +116,52 @@ page 25006818 "Service Order Header API"
                 field(Location; "Location Code")
                 {
                     Caption = 'Code Magasin';
+                }
+
+                field(Lavage; "Type Lavage")
+                {
+                    Caption = 'Lavage';
+                }
+                field(CarteGrise; "Carte Grise")
+                {
+                    Caption = 'Carte Grise';
+                }
+                field(Assurance; "Assurance")
+                {
+                    Caption = 'Assurance';
+                }
+                field(AccessoireTel; "Accessoire Tel")
+                {
+                    Caption = 'Accessoire Téléphone';
+                }
+
+                field(Tapis; "Tapis")
+                {
+                    Caption = 'Tapis de sol';
+                }
+                field(Roue; Roue)
+                {
+                    Caption = 'Roue de secours';
+                }
+                field(CleRoue; "Cle Roue")
+                {
+                    Caption = 'Clé de roue sécurité';
+                }
+                field(Compresseur; "Compresseur")
+                {
+                    Caption = 'Compresseur';
+                }
+                field(TriangePanne; "Triange Panne")
+                {
+                    Caption = 'Triangle de panne';
+                }
+                field(Objet; Objet)
+                {
+                    Caption = 'Objet laissé';
+                }
+                field(Observation; Observation)
+                {
+                    Caption = 'Observation';
                 }
 
 

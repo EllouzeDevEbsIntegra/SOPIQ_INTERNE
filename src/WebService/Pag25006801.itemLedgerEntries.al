@@ -135,6 +135,7 @@ page 25006801 "itemLedgerEntries"
                     ApplicationArea = Location;
                     ToolTip = 'Specifies the code for the location that the entry is linked to.';
                 }
+
                 field(Quantity; Quantity)
                 {
                     ApplicationArea = Basic, Suite;
@@ -323,7 +324,6 @@ page 25006801 "itemLedgerEntries"
                 {
                     ApplicationArea = Basic;
                 }
-
             }
         }
     }
@@ -331,8 +331,6 @@ page 25006801 "itemLedgerEntries"
     actions
     {
     }
-
-
 
 }
 

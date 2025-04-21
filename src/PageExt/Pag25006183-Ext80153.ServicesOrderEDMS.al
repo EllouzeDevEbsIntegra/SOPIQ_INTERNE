@@ -63,6 +63,73 @@ pageextension 80153 "Services Order EDMS" extends "Service Order EDMS"//25006183
             }
         }
 
+        addafter(Advanced)
+        {
+            group(Constat)
+            {
+                Caption = 'Constat Ordre Réparation';
+                field("Type Lavage"; "Type Lavage")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Type Lavage';
+                    ToolTip = 'Type de lavage';
+                }
+                field("Carte Grise"; "Carte Grise")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Carte Grise';
+                }
+                field("Assurance"; "Assurance")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Assurance';
+                }
+                field("Accessoire Tel"; "Accessoire Tel")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Accessoire Téléphone';
+                }
+
+                field("Tapis"; "Tapis")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Tapis de sol';
+                }
+                field(Roue; Roue)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Roue de secours';
+                }
+                field("Cle Roue"; "Cle Roue")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Clé de roue sécurité';
+                }
+                field("Compresseur"; "Compresseur")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Compresseur';
+                }
+                field("Triange Panne"; "Triange Panne")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Triangle de panne';
+                }
+                field(Objet; Objet)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Objet';
+                }
+                field(Observation; Observation)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Observation';
+                    ToolTip = 'Observation';
+                }
+
+            }
+        }
+
     }
 
     actions

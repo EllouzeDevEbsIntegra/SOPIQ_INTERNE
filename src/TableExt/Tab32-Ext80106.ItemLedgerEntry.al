@@ -55,6 +55,7 @@ tableextension 80106 "Item Ledger Entry" extends "Item Ledger Entry"//32
             Editable = false;
             FieldClass = FlowField;
         }
+
         // field(50027; "PurchInvNo"; code[20])
         // {
         //     AutoFormatType = 1;

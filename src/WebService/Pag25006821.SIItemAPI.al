@@ -81,6 +81,18 @@ page 25006821 "SI Item API"
                     Caption = 'Petites Fournitures';
                 }
 
+                field(SearchDescription; "Search Description2")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Search Description', Locked = true;
+                    ToolTip = 'Specifies the search description for the item.';
+
+                    trigger OnValidate()
+                    begin
+                        RegisterFieldSet(FieldNo("Search Description"));
+                    end;
+                }
+
                 field(Description; Description)
                 {
                     ApplicationArea = All;
