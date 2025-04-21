@@ -1,29 +1,31 @@
 page 25006999 "TecDoc Articles"
 {
-    PageType = List;
+    PageType = Card;
     SourceTable = "TecDoc Article Buffer";
-    Caption = 'Articles TecDoc';
+    Caption = 'Article TecDoc';
     Editable = false;
+
     layout
     {
         area(content)
         {
-            repeater(Group)
+            group(Générale)
             {
-                field(Référence; Référence)
+                Caption = 'Générale';
+                field(Référence; Rec.Référence)
                 {
                     ApplicationArea = All;
                 }
-                field(Fabricant; Fabricant)
+                field(Fabricant; Rec.Fabricant)
                 {
                     ApplicationArea = All;
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
                     Caption = 'Description';
                 }
-                field(Famille; Famille)
+                field(Famille; Rec.Famille)
                 {
                     ApplicationArea = All;
                     Caption = 'Famille';

@@ -11734,9 +11734,14 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry - Action Transaction Year -1  - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3203277727 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Articles TecDoc</source>
+          <source>Article TecDoc</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3203277727 - Control 1184528629 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Générale</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Control Générale - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3203277727 - Control 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Description</source>

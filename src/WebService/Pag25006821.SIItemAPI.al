@@ -9,7 +9,7 @@ page 25006821 "SI Item API"
     SourceTable = Item;
     ChangeTrackingAllowed = true;
     DelayedInsert = true;
-    ODataKeyFields = Id;
+    ODataKeyFields = SystemId;
     PageType = API;
 
     layout
@@ -18,7 +18,7 @@ page 25006821 "SI Item API"
         {
             repeater(Group)
             {
-                field(id; Id)
+                field(id; SystemId)
                 {
                     ApplicationArea = All;
                     Caption = 'Id', Locked = true;
