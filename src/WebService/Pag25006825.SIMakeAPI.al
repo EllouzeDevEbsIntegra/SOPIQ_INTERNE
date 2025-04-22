@@ -32,6 +32,11 @@ page 25006825 "SI Make API"
                     ApplicationArea = All;
                     Caption = 'Name';
                 }
+                field(Picture; Picture)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Picture';
+                }
             }
 
         }

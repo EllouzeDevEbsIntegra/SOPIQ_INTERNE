@@ -26,21 +26,53 @@ codeunit 50023 "TecDoc Connector"
         KeyBrand: Text;
         KeyDescription: Text;
         KeyFamille: Text;
+        KeyOemNumbers: Text;
+        KeyArticleCriteria: Text;
+        KeyImage: Text;
         StartPos: Integer;
         EndPos: Integer;
         ArticleNo: Text;
         Brand: Text;
         Description: Text;
         Famille: Text;
+        OemNumbers: Text;
+        ArticleCriteria: Text;
+        ImageURL: Text;
         JsonResponse: JsonObject;
         StatusToken: JsonToken;
         ErrorToken: JsonToken;
+        TotalMatchingToken: JsonToken;
+        TempText: Text;
+        IsFirst: Boolean;
+        recItem: Record Item;
+        searchType: Integer;
     begin
+        // 0) Verification de la référence Origine ou non
+        searchType := 0;
+        recItem.Reset();
+        recItem.SetRange("No.", Reference);
+        if recItem.FindFirst() then begin
+            // La référence est un article
+            if recItem."Item Class" = recItem."Item Class"::Original then begin
+                // La référence est un article d'origine
+                Reference := recItem."Vendor Item No.";
+                searchType := 1;
+            end else begin
+                // La référence est un article TecDoc
+                Reference := recItem."No.";
+                searchType := 2;
+            end;
+        end else begin
+            // La référence n'est pas un article
+            Message('La référence "%1" n''existe pas dans la base de données.', Reference);
+            exit;
+        end;
+
         // 1) Paramètres
         Pays := 'TN';
-        FournisseurID := 24879;   // votre variable
+        FournisseurID := 24879;   // votre variable 
         Langue := 'en';
-        APIKey := '2BeBXg6QH1oQtitZABFPjuLczwZ2Z6xPazrcg69tHKnTkAEsv7Y3';          // votre clé
+        APIKey := '2BeBXg6QH1oQtitZABFPjuLczwZ2Z6xPazrcg69tHKnTkAEsv7Y3';          // votre clé 
 
         // 2) Construction du JSON body
         BodyText :=
@@ -49,9 +81,9 @@ codeunit 50023 "TecDoc Connector"
               '"articleCountry":"' + Pays + '",' +
               '"provider":' + Format(FournisseurID) + ',' +
               '"searchQuery":"' + Reference + '",' +
+              '"searchType":"' + Format(searchType) + '",' +
               '"lang":"' + Langue + '",' +
               '"includeAll": true,' +
-              '"searchType": 99,' +
             '}' +
           '}';
 
@@ -100,6 +132,12 @@ codeunit 50023 "TecDoc Connector"
             end;
         end;
 
+        // Vérifier si "totalMatchingArticles" existe pour confirmer la structure attendue
+        if not JsonResponse.Get('totalMatchingArticles', TotalMatchingToken) then begin
+            Message('La réponse JSON ne contient pas le champ "totalMatchingArticles". Réponse : %1', BodyText);
+            exit;
+        end;
+
         // 8) Isolation du tableau "articles"
         PosArrStart := STRPOS(BodyText, '"articles":[');
         if PosArrStart = 0 then begin
@@ -125,6 +163,9 @@ codeunit 50023 "TecDoc Connector"
         KeyBrand := '"mfrName":"';
         KeyDescription := '"genericArticleDescription":"';
         KeyFamille := '"assemblyGroupName":"';
+        KeyOemNumbers := '"oemNumbers": [';
+        KeyArticleCriteria := '"articleCriteria": [';
+        KeyImage := '"images": [';
 
         while STRLEN(Remaining) > 0 do begin
             PosObjSep := STRPOS(Remaining, '},{');
@@ -168,7 +209,7 @@ codeunit 50023 "TecDoc Connector"
             end else
                 Brand := '';
 
-            // Extraction genericArticleName (Description)
+            // Extraction genericArticleDescription (Description)
             StartPos := STRPOS(ItemJson, KeyDescription);
             if StartPos > 0 then begin
                 StartPos := StartPos + STRLEN(KeyDescription);
@@ -200,6 +241,115 @@ codeunit 50023 "TecDoc Connector"
             end else
                 Famille := '';
 
+            // Extraction oemNumbers
+            // StartPos := STRPOS(ItemJson, KeyOemNumbers);
+            // if StartPos > 0 then begin
+            //     StartPos := StartPos + STRLEN(KeyOemNumbers);
+            //     EndPos := STRPOS(COPYSTR(ItemJson, StartPos), ']');
+            //     if EndPos > 0 then begin
+            //         TempText := COPYSTR(ItemJson, StartPos, EndPos - 1);
+            //         OemNumbers := '';
+            //         IsFirst := true;
+            //         while STRLEN(TempText) > 0 do begin
+            //             PosObjSep := STRPOS(TempText, '},{');
+            //             if PosObjSep > 0 then begin
+            //                 ItemJson := COPYSTR(TempText, 1, PosObjSep + 1);
+            //                 TempText := DELSTR(TempText, 1, PosObjSep + 3);
+            //             end else begin
+            //                 ItemJson := TempText;
+            //                 TempText := '';
+            //             end;
+
+            //             StartPos := STRPOS(ItemJson, '"articleNumber": "');
+            //             if StartPos > 0 then begin
+            //                 StartPos := StartPos + STRLEN('"articleNumber": "');
+            //                 EndPos := STRPOS(COPYSTR(ItemJson, StartPos), '"');
+            //                 if EndPos > 0 then begin
+            //                     EndPos := EndPos - 1;
+            //                     if EndPos >= 0 then begin
+            //                         if IsFirst then
+            //                             OemNumbers := COPYSTR(ItemJson, StartPos, EndPos)
+            //                         else
+            //                             OemNumbers := OemNumbers + ', ' + COPYSTR(ItemJson, StartPos, EndPos);
+            //                         IsFirst := false;
+            //                     end;
+            //                 end;
+            //             end;
+            //         end;
+            //     end else
+            //         OemNumbers := '';
+            // end else
+            //     OemNumbers := '';
+
+            // Extraction articleCriteria
+            // StartPos := STRPOS(ItemJson, KeyArticleCriteria);
+            // if StartPos > 0 then begin
+            //     StartPos := StartPos + STRLEN(KeyArticleCriteria);
+            //     EndPos := STRPOS(COPYSTR(ItemJson, StartPos), ']');
+            //     if EndPos > 0 then begin
+            //         TempText := COPYSTR(ItemJson, StartPos, EndPos - 1);
+            //         ArticleCriteria := '';
+            //         IsFirst := true;
+            //         while STRLEN(TempText) > 0 do begin
+            //             PosObjSep := STRPOS(TempText, '},{');
+            //             if PosObjSep > 0 then begin
+            //                 ItemJson := COPYSTR(TempText, 1, PosObjSep + 1);
+            //                 TempText := DELSTR(TempText, 1, PosObjSep + 3);
+            //             end else begin
+            //                 ItemJson := TempText;
+            //                 TempText := '';
+            //             end;
+
+            //             StartPos := STRPOS(ItemJson, '"criteriaDescription": "');
+            //             if StartPos > 0 then begin
+            //                 StartPos := StartPos + STRLEN('"criteriaDescription": "');
+            //                 EndPos := STRPOS(COPYSTR(ItemJson, StartPos), '"');
+            //                 if EndPos > 0 then begin
+            //                     EndPos := EndPos - 1;
+            //                     if EndPos >= 0 then begin
+            //                         TempText := COPYSTR(ItemJson, StartPos, EndPos);
+            //                         StartPos := STRPOS(ItemJson, '"formattedValue": "');
+            //                         if StartPos > 0 then begin
+            //                             StartPos := StartPos + STRLEN('"formattedValue": "');
+            //                             EndPos := STRPOS(COPYSTR(ItemJson, StartPos), '"');
+            //                             if EndPos > 0 then begin
+            //                                 EndPos := EndPos - 1;
+            //                                 if EndPos >= 0 then begin
+            //                                     if COPYSTR(ItemJson, StartPos, EndPos) <> '' then begin
+            //                                         if IsFirst then
+            //                                             ArticleCriteria := TempText + ': ' + COPYSTR(ItemJson, StartPos, EndPos)
+            //                                         else
+            //                                             ArticleCriteria := ArticleCriteria + ', ' + TempText + ': ' + COPYSTR(ItemJson, StartPos, EndPos);
+            //                                         IsFirst := false;
+            //                                     end;
+            //                                 end;
+            //                             end;
+            //                         end;
+            //                     end;
+            //                 end;
+            //             end;
+            //         end;
+            //     end else
+            //         ArticleCriteria := '';
+            // end else
+            //     ArticleCriteria := '';
+
+            // Extraction imageURL3200 (Images)
+            // StartPos := STRPOS(ItemJson, KeyImage);
+            // if StartPos > 0 then begin
+            //     StartPos := StartPos + STRLEN(KeyImage);
+            //     EndPos := STRPOS(COPYSTR(ItemJson, StartPos), '"');
+            //     if EndPos > 0 then begin
+            //         EndPos := EndPos - 1;
+            //         if EndPos >= 0 then
+            //             ImageURL := COPYSTR(ItemJson, StartPos, EndPos)
+            //         else
+            //             ImageURL := '';
+            //     end else
+            //         ImageURL := '';
+            // end else
+            //     ImageURL := '';
+
             // Insérer dans le buffer si au moins une référence est trouvée
             if ArticleNo <> '' then begin
                 Buffer.Init();
@@ -207,6 +357,9 @@ codeunit 50023 "TecDoc Connector"
                 Buffer.Fabricant := Brand;
                 Buffer.Description := Description;
                 Buffer.Famille := Famille;
+                // Buffer.OemNumbers := CopyStr(OemNumbers, 1, 250); // Limiter à la longueur du champ
+                // Buffer.ArticleCriteria := CopyStr(ArticleCriteria, 1, 250); // Limiter à la longueur du champ
+                // Buffer.ImageURL := CopyStr(ImageURL, 1, 250); // Limiter à la longueur du champ
                 Buffer.Insert(true);
             end;
         end;

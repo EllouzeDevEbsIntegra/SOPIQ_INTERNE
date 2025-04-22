@@ -30,7 +30,23 @@ page 25006999 "TecDoc Articles"
                     ApplicationArea = All;
                     Caption = 'Famille';
                 }
+                field(OemNumbers; Rec.OemNumbers)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Numéros OEM';
+                }
+                field(ArticleCriteria; Rec.ArticleCriteria)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Critères Article';
+                }
+                field(ImageURL; Rec.ImageURL)
+                {
+                    ApplicationArea = All;
+                    Caption = 'URL Image';
+                }
             }
+
         }
     }
 }

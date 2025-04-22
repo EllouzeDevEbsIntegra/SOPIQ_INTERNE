@@ -22,6 +22,19 @@ table 25006999 "TecDoc Article Buffer"
         {
             Caption = 'Famille';
         }
+        field(5; OemNumbers; Text[250])
+        {
+            Caption = 'Numéros OEM';
+        }
+        field(6; ArticleCriteria; Text[250])
+        {
+            Caption = 'Critères Article';
+        }
+        field(7; ImageURL; Text[250])
+        {
+            Caption = 'URL Image';
+        }
+
     }
     keys
     {

@@ -698,6 +698,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 2870421122 - Field 1779281369 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Critères Article</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Field ArticleCriteria - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 2870421122 - Field 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Description</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -712,6 +717,16 @@
           <source>Famille</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Field Famille - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2870421122 - Field 4166343776 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>URL Image</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Field ImageURL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2870421122 - Field 4147667185 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Numéros OEM</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Field OemNumbers - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 2870421122 - Field 574863965 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Référence</source>
@@ -10178,6 +10193,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales Order EBS - Control billingPostalAddress - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="Page 2398269430 - Control 2626499740 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Location Code SI</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Order EBS - Control locationCode - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 2398269430 - Control 3037438984 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Date Comptabilisation</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -11158,6 +11178,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page SI Make API - Control Description - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 2069511172 - Control 1594621544 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Picture</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SI Make API - Control Picture - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 2966359775 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>SI Manufacturer</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -11743,6 +11768,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Control Générale - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3203277727 - Control 1779281369 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Critères Article</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Control ArticleCriteria - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3203277727 - Control 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Description</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -11752,6 +11782,16 @@
           <source>Famille</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Control Famille - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3203277727 - Control 4166343776 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>URL Image</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Control ImageURL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3203277727 - Control 4147667185 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Numéros OEM</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Control OemNumbers - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 3418304880 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Batch Calc. Rcpt Line Ht/TTC</source>
@@ -17798,6 +17838,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Header - Field custVINImprime - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 1192395785 - Field 2448071910 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1192395785">
+          <source>Location Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Header - Field Location Code SI - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 1192395785 - Field 188715016 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1192395785">
           <source>Shipping Agent Code</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -17987,6 +18032,11 @@
           <source>Vin Client Imprimé</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Order Entity Buffer - Field custVINImprime - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1423389335 - Field 2448071910 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1423389335">
+          <source>Location Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Order Entity Buffer - Field Location Code SI - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 1423389335 - Field 3080618677 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1423389335">
           <source>Message</source>

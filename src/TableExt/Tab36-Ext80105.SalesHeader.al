@@ -10,6 +10,13 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
             TableRelation = "Shipping Agent".Code;
 
         }
+        field(50101; "Location Code SI"; Code[10])
+        {
+            AccessByPermission = TableData Location = R;
+            Caption = 'Location Code';
+            TableRelation = Location.Code;
+
+        }
         modify("Sell-to Customer No.")
         {
             trigger OnAfterValidate()
@@ -101,7 +108,9 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
             // Message('%1', "Document Type");
         ignoreStamp(rec);
         "Shipping Agent Code" := "Shipping Agent Code SI";
+        "Location Code" := "Location Code SI";
         Validate("Shipping Agent Code");
+        Validate("Location Code");
     end;
 
     // Function for BS Return

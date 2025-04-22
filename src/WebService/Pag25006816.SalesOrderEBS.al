@@ -399,6 +399,17 @@ page 25006816 "Sales Order EBS"
                 {
                     ApplicationArea = Basic, Suite, Invoicing;
                 }
+                field(locationCode; rec."Location Code SI")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Location Code SI';
+                    TableRelation = Location.Code;
+                    trigger OnValidate()
+                    begin
+                        RegisterFieldSet(Rec.FieldNo("Location Code SI"));
+                    end;
+                }
+
             }
         }
     }
@@ -422,6 +433,8 @@ page 25006816 "Sales Order EBS"
     end;
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
+    var
+        SalesOrder: Record "Sales Header";
     begin
         CheckCustomerSpecified;
         ProcessBillingPostalAddress;

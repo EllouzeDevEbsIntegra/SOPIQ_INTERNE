@@ -10,6 +10,12 @@ tableextension 80502 "Sales Order Entity Buffer" extends "Sales Order Entity Buf
             Caption = 'Shipping Agent Code';
             TableRelation = "Shipping Agent".Code;
         }
+        field(50101; "Location Code SI"; Code[10])
+        {
+            AccessByPermission = TableData Location = R;
+            Caption = 'Location Code';
+            TableRelation = Location.Code;
+        }
         field(50102; Base64; BLOB)
         {
             Caption = 'Base64';
@@ -41,6 +47,8 @@ tableextension 80502 "Sales Order Entity Buffer" extends "Sales Order Entity Buf
         {
             Caption = 'Vin Client Imprimé';
         }
+
+
     }
 
     keys
