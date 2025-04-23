@@ -29,6 +29,26 @@ page 25006821 "SI Item API"
                     ApplicationArea = All;
                     Caption = 'Number', Locked = true;
                 }
+                field(ReferenceOrigineLie; "Reference Origine Lié")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Reference Origine Lié';
+                }
+                field(VendorNo; "Vendor No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Vendor No.';
+                }
+                field(VendorItemNo; "Vendor Item No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Vendor Item No.';
+                }
+                field(Produit; Produit)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Produit';
+                }
 
                 field(ItemType; "Item Type")
                 {

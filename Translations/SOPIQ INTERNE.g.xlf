@@ -698,11 +698,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Table 2870421122 - Field 1779281369 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Critères Article</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Field ArticleCriteria - Property Caption</note>
-        </trans-unit>
         <trans-unit id="Table 2870421122 - Field 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Description</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -718,20 +713,75 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Field Famille - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Table 2870421122 - Field 4166343776 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>URL Image</source>
+        <trans-unit id="Table 2870421122 - Field 1647949508 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>OEM Part</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Field ImageURL - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Table 2870421122 - Field 4147667185 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Numéros OEM</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Field OemNumbers - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Field nbPicture - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 2870421122 - Field 574863965 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Référence</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Article Buffer - Field Référence - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4097637875 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Buffer Critères TecDoc</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Criteria Buffer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4097637875 - Field 1404610440 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nom Critère</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Criteria Buffer - Field Nom - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4097637875 - Field 1417977601 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Référence Article</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Criteria Buffer - Field ParentReference - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4097637875 - Field 3656477579 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Valeur</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Criteria Buffer - Field Valeur - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 185180330 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Buffer Images TecDoc</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Images Buffer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 185180330 - Field 320775665 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Image</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Images Buffer - Field Image - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 185180330 - Field 3567159886 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Image ID</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Images Buffer - Field ImageID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 185180330 - Field 1417977601 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Référence Article</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Images Buffer - Field ParentReference - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3424789375 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Buffer OEM TecDoc</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc OEM Buffer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3424789375 - Field 3255363281 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Marque</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc OEM Buffer - Field Marque - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3424789375 - Field 2725620880 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>OEM Number</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc OEM Buffer - Field OEMNumber - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3424789375 - Field 1417977601 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Référence Article</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc OEM Buffer - Field ParentReference - Property Caption</note>
         </trans-unit>
         <trans-unit id="Codeunit 2246482555 - Method 210834541 - NamedType 583370471" size-unit="char" translate="yes" xml:space="preserve">
           <source>&amp;Ship</source>
@@ -1867,6 +1917,11 @@
           <source>Appliquer les nouveaux valeurs</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Analyse des prix - Action Appliquer les nouveaux valeurs - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 301198960 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Détails Article Tecdoc</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Article Tecdoc Details - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2372371920 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Bon de Livraison</source>
@@ -11138,6 +11193,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page SI Item API - Control picture - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1884197993 - Control 3843977147 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Produit</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SI Item API - Control Produit - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1884197993 - Control 2651529502 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Reference Origine Lié</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SI Item API - Control ReferenceOrigineLie - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1884197993 - Control 1760125580 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the search description for the item.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -11167,6 +11232,16 @@
           <source>Specifies the Type for the Item. Possible values are Inventory and Service.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page SI Item API - Control type - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1884197993 - Control 1714454220 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Vendor Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SI Item API - Control VendorItemNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1884197993 - Control 1607295407 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Vendor No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SI Item API - Control VendorNo - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2069511172 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>SI Make API</source>
@@ -11758,40 +11833,50 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry - Action Transaction Year -1  - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 3203277727 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Article TecDoc</source>
+        <trans-unit id="Page 693657762 - Control 1404610440 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nom</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Criteria Part - Control Nom - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 3203277727 - Control 1184528629 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Générale</source>
+        <trans-unit id="Page 693657762 - Control 3656477579 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Valeur</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Control Générale - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Criteria Part - Control Valeur - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 3203277727 - Control 1779281369 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Critères Article</source>
+        <trans-unit id="Page 3580762759 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Image 1</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Control ArticleCriteria - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Image Detail 1 - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 3203277727 - Control 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Description</source>
+        <trans-unit id="Page 1198885314 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Image 2</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Control Description - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Image Detail 2 - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 3203277727 - Control 3632989434 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Famille</source>
+        <trans-unit id="Page 561188697 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Image 3</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Control Famille - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Image Detail 3 - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 3203277727 - Control 4166343776 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>URL Image</source>
+        <trans-unit id="Page 3849762680 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Liste des images</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Control ImageURL - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Images List - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 3203277727 - Control 4147667185 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Numéros OEM</source>
+        <trans-unit id="Page 3849762680 - Control 3567159886 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nom de l'image</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Articles - Control OemNumbers - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc Images List - Control ImageID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2029784022 - Control 3255363281 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Marque</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc OEM Part - Control Marque - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2029784022 - Control 2725620880 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>OEM Number</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc OEM Part - Control OEMNumber - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 3418304880 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Batch Calc. Rcpt Line Ht/TTC</source>

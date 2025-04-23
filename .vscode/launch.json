@@ -2,22 +2,22 @@
     "version": "0.2.0",
     "configurations": [
 
-        {
-            "name": "SOPIQ TEST",
-            "request": "launch",
-            "type": "al",
-            "environmentType": "OnPrem",
-            "server":  "http://192.168.1.5",
-            "serverInstance": "BC160TEST",
-            "authentication": "Windows",
-            "breakOnError": true,
-            "launchBrowser": true,
-            "enableLongRunningSqlStatements": true,
-            "enableSqlInformationDebugger": true,
-            "tenant": "default",
-            "schemaUpdateMode": "ForceSync",
-            "port": 9049
-        }
+        // {
+        //     "name": "SOPIQ TEST",
+        //     "request": "launch",
+        //     "type": "al",
+        //     "environmentType": "OnPrem",
+        //     "server":  "http://192.168.1.5",
+        //     "serverInstance": "BC160TEST",
+        //     "authentication": "Windows",
+        //     "breakOnError": true,
+        //     "launchBrowser": true,
+        //     "enableLongRunningSqlStatements": true,
+        //     "enableSqlInformationDebugger": true,
+        //     "tenant": "default",
+        //     "schemaUpdateMode": "ForceSync",
+        //     "port": 9049
+        // }
         // ,
         // {
         //     "name": "SOPIQ DEV",
@@ -35,23 +35,23 @@
         //     "schemaUpdateMode": "ForceSync",
         //     "port": 8049
         // }
-        ,
-        {
-            "name": "SOPIQ PROD",
-            "request": "launch",
-            "type": "al",
-            "environmentType": "OnPrem",
-            "server": "http://192.168.1.4",
-            "serverInstance": "BC160",
-            "authentication": "Windows",
-            "breakOnError": true,
-            "launchBrowser": true,
-            "enableLongRunningSqlStatements": true,
-            "enableSqlInformationDebugger": true,
-            "tenant": "default",
-            "schemaUpdateMode": "ForceSync",
-            "port": 7049
-        },
+        // ,
+        // {
+        //     "name": "SOPIQ PROD",
+        //     "request": "launch",
+        //     "type": "al",
+        //     "environmentType": "OnPrem",
+        //     "server": "http://192.168.1.4",
+        //     "serverInstance": "BC160",
+        //     "authentication": "Windows",
+        //     "breakOnError": true,
+        //     "launchBrowser": true,
+        //     "enableLongRunningSqlStatements": true,
+        //     "enableSqlInformationDebugger": true,
+        //     "tenant": "default",
+        //     "schemaUpdateMode": "ForceSync",
+        //     "port": 7049
+        // },
         {
             "name": "SOPIQ DEV",
             "request": "launch",
