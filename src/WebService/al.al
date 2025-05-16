@@ -1,92 +1,70 @@
-page 25006834 "Si Picture API"
+page 25006839 "Service Order Lines API"
 {
-    Caption = 'SIPictureAPI', Locked = true;
-    DelayedInsert = true;
-    EntityName = 'SIPictureAPI';
-    EntitySetName = 'SIPictureAPI';
-    ODataKeyFields = "No.";
     PageType = API;
-    SourceTable = "Picture";
-    SourceTableTemporary = true;
-    Permissions = TableData Picture = RM;
+    Caption = 'Service Order Lines';
+    APIPublisher = 'sopiq';
+    APIGroup = 'interne';
+    APIVersion = 'v1.0';
+    EntityName = 'ServiceOrderLine';
+    EntitySetName = 'ServiceOrderLines';
+    SourceTable = "Service Line";
+
+    // Clés OData composées
+    ODataKeyFields = "Document Type", "Document No.", "Line No.";
+    ModifyAllowed = true;
+    InsertAllowed = true;
+    DeleteAllowed = true;
+    DelayedInsert = true;
 
     layout
     {
-        area(content)
+        area(Content)
         {
             repeater(Group)
             {
-                field(no; "No.")
+                field(DocumentType; "Document Type")
                 {
-                    Caption = 'No.';
+                    Caption = 'Type Document';
                 }
-                field(sourceType; "Source Type")
+                field(DocumentNo; "Document No.")
                 {
-                    Caption = 'Source Type';
+                    Caption = 'Document N°';
                 }
-                field(sourceSubtype; "Source Subtype")
+                field(LineNo; "Line No.")
                 {
-                    Caption = 'Source Subtype';
+                    Caption = 'N° Ligne';
                 }
-                field(sourceId; "Source ID")
+                field(Type; Type)
                 {
-                    Caption = 'Source ID';
+                    Caption = 'Type Ligne';
                 }
-                field(sourceRefNo; "Source Ref. No.")
+                field(EntryNo; "No.")
                 {
-                    Caption = 'Source Ref. No.';
+                    Caption = 'Numéro';
                 }
-                field(description; Description)
+                field(Description; Description)
                 {
                     Caption = 'Description';
                 }
-                field(imported; Imported)
+                field(Quantity; Quantity)
                 {
-                    Caption = 'Imported';
+                    Caption = 'Quantité';
                 }
-                field(isDefault; Default)
+                field(UnitOfMeasureCode; "Unit of Measure Code")
                 {
-                    Caption = 'Is Default';
+                    Caption = 'Unité de Mesure';
                 }
-                field(blob; Blob)
+                field(UnitCostLCY; "Unit Cost (LCY)")
                 {
-                    Caption = 'Blob';
+                    Caption = 'Coût Unitaire (LCY)';
                 }
-                field(thumbnail; Thumbnail)
-                {
-                    Caption = 'Thumbnail';
-                }
-                field(noSeries; "No. Series")
-                {
-                    Caption = 'No. Series';
-                }
-                field(date; Date)
-                {
-                    Caption = 'Date';
-                }
-                field(time; Time)
-                {
-                    Caption = 'Time';
-                }
-                field(userId; "User ID")
-                {
-                    Caption = 'User ID';
-                }
-                field(vehicleSerialNo; "Vehicle Serial No.")
-                {
-                    Caption = 'Vehicle Serial No.';
-                }
-                field(versionNo; "Version No.")
-                {
-                    Caption = 'Version No.';
-                }
-                field(docNoOccurrence; "Doc. No. Occurrence")
-                {
-                    Caption = 'Doc. No. Occurrence';
-                }
+                // Ajoutez d'autres champs si nécessaire
             }
         }
     }
 
+    trigger OnAfterGetRecord()
+    begin
+        // Logique éventuelle après lecture
+    end;
 }
-

@@ -122,7 +122,9 @@ table 70011 "Recu Caisse"
     begin
         recRecuCaisse.Printed := true;
         recRecuCaisse.Modify();
-        Message('Ticket %1 imprimé avec succées ********* ', recRecuCaisse.No);
+        if GuiAllowed() then begin
+            Message('Ticket %1 imprimé avec succées ********* ', recRecuCaisse.No);
+        end;
     end;
 
 }

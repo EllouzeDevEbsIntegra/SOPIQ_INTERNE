@@ -139,8 +139,6 @@ page 50132 "Recu Caisse Card"
                 }
 
             }
-            // group(Nombre)
-            // {
             grid(Stat)
             {
                 Caption = 'Statistiques';
@@ -182,20 +180,6 @@ page 50132 "Recu Caisse Card"
                     Editable = false;
                 }
             }
-            // }
-            // group(Statistique)
-            // {
-            //     grid(Montant)
-            //     {
-            //         field(TotalBS; TotalBS)
-            //         {
-            //             ApplicationArea = all;
-            //             Caption = 'Total BS';
-            //             Editable = false;
-            //         }
-            //     }
-            // }
-
             part("Document"; "Recu Document Subpage")
             {
                 Caption = 'Document à payer';

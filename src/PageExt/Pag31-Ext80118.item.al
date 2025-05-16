@@ -234,10 +234,12 @@ pageextension 80118 "item" extends "Item List" //31
                 trigger OnAction()
                 var
                     TecDocAPI: Codeunit "TecDoc Connector";
+                    Mrfid: Text; // Variable locale pour récupérer le mrfid calculé dans la procédure ValiderReference
                 begin
-                    TecDocAPI.RechercherArticleTecdoc(Rec."No.");
+                    TecDocAPI.RechercherArticleTecdoc(Rec."No.", Mrfid);
                 end;
             }
+
 
         }
 

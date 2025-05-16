@@ -273,6 +273,12 @@ tableextension 80103 "Item" extends Item //27
         {
             DataClassification = ToBeClassified;
         }
+        field(50140; mrfID; code[20])
+        {
+            Caption = 'MRF ID';
+            FieldClass = FlowField;
+            CalcFormula = lookup(Manufacturer."ID TechDOC" where(Code = field("Manufacturer Code")));
+        }
 
         modify("No.")
         {
