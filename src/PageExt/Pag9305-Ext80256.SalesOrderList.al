@@ -71,6 +71,7 @@ pageextension 80256 "Sales Order List" extends "Sales Order List"//9305
         }
     }
 
+
     var
         myInt: Integer;
 

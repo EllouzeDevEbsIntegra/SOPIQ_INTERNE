@@ -349,6 +349,14 @@ page 50118 "Items Master List"
                                             // Message('Item Modified : %1 Dans société : %2', recItem."No.", recCompany.Name);
                                         end
                                         else begin
+                                            tempItem."Unit Price" := 0;
+                                            tempItem."Last Purch Price Devise" := 0;
+                                            tempItem."Last. Pursh. cost DS" := 0;
+                                            tempItem."Last Direct Cost" := 0;
+                                            tempItem."Unit Cost" := 0;
+                                            tempItem."Last Purchase Date" := 0D;
+                                            tempItem."Last. Pursh. Date" := 0D;
+                                            tempItem."Cost is Adjusted" := false;
                                             tempItem.Insert;
                                         end;
 

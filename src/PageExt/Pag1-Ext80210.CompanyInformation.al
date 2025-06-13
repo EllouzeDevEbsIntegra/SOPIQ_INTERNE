@@ -49,6 +49,24 @@ pageextension 80210 "Company Information" extends "Company Information" // 1
 
         }
 
+        addafter(Commission)
+        {
+            group("Inter Society")
+            {
+                Caption = 'Inter Société';
+                field("Inter Society 1"; "Inter Society 1")
+                {
+                    Caption = 'Société 1';
+                    ApplicationArea = all;
+                }
+                field("Inter Society 2"; "Inter Society 2")
+                {
+                    Caption = 'Société 2';
+                    ApplicationArea = all;
+                }
+            }
+        }
+
 
     }
 

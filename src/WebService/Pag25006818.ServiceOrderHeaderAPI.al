@@ -179,4 +179,9 @@ page 25006818 "Service Order Header API"
             rec.SetWorkDescription(workDescription);
         end
     end;
+
+    trigger OnAfterGetRecord()
+    begin
+        WorkDescription := CopyStr(GetWorkDescription, 1, 250);
+    end;
 }

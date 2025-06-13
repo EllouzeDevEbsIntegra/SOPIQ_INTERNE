@@ -2,6 +2,40 @@ pageextension 80120 "Product To Be Compared card" extends "Product To Be Compare
 {
     layout
     {
+        addafter(General)
+        {
+            grid("Company Inventory")
+            {
+                field("Selected No"; rec."Selected No")
+                {
+                    Caption = 'Selected No';
+                    Editable = false;
+                    ApplicationArea = All;
+                    Style = StrongAccent;
+                }
+                field("Test1"; PageNumber)
+                {
+                    Caption = 'N° ligne';
+                    Editable = false;
+                    ApplicationArea = All;
+                    Style = StrongAccent;
+                }
+                field("Test2"; PageNumber)
+                {
+                    Caption = 'N° ligne';
+                    Editable = false;
+                    ApplicationArea = All;
+                    Style = StrongAccent;
+                }
+                field("Test3"; PageNumber)
+                {
+                    Caption = 'N° ligne';
+                    Editable = false;
+                    ApplicationArea = All;
+                    Style = StrongAccent;
+                }
+            }
+        }
 
         addafter("Comparateur")
         {
@@ -58,6 +92,8 @@ pageextension 80120 "Product To Be Compared card" extends "Product To Be Compare
         recPurchLine: Record "Purchase Line";
         iscomponent, EntredOnce : Boolean;
         comparedNo: TEXT;
+        recCompany: Record Company;
+        recItemCompared: Record Item;
 
     begin
         EntredOnce := false;
@@ -100,10 +136,7 @@ pageextension 80120 "Product To Be Compared card" extends "Product To Be Compare
                     CurrPage."kit".Page.SetKit(comparedNo)
                 else
                     CurrPage.Kit.Page.SetComponent(comparedNo);
-        end
-
-
-
+        end;
     end;
 
 
@@ -115,5 +148,13 @@ pageextension 80120 "Product To Be Compared card" extends "Product To Be Compare
         if bool = false then exit(bool);
 
     end;
+
+    procedure SetNoFromSubpage(NewNo: Code[20])
+    begin
+        rec."Selected No" := newNo;
+        rec.Modify();
+        CurrPage.Update(); // Pour forcer le rafraîchissement de l'affichage
+    end;
+
 
 }

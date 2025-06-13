@@ -59,6 +59,16 @@ tableextension 80160 "Company Information" extends "Company Information" //79
             DataClassification = ToBeClassified;
             TableRelation = Customer;
         }
+        field(80164; "Inter Society 1"; code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = Company.Name;
+        }
+        field(80165; "Inter Society 2"; code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = Company.Name;
+        }
     }
 
     var

@@ -2,6 +2,52 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
 {
     layout
     {
+        addfirst(Content)
+        {
+            grid("1")
+            {
+                field("Item No"; rec."No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Article';
+                }
+
+                field("Stock Ste 1"; recItemCompany1.Inventory)
+                {
+                    Caption = 'Qte Ste 1';
+                    Editable = false;
+                    trigger OnDrillDown()
+                    var
+                        SpecificItemLedgerEntry: Record "Specific Item Ledger Entry";
+                        SILEPage: Page "Specific Item Ledger Entry";
+                    begin
+                        SpecificItemLedgerEntry.Reset();
+                        SpecificItemLedgerEntry.ChangeCompany(recCompany."Inter Society 1");
+                        SpecificItemLedgerEntry.SetRange("Item No.", rec."No.");
+                        if SpecificItemLedgerEntry.get then begin
+                            SILEPage.SetSelectionFilter(SpecificItemLedgerEntry);
+                            SILEPage.RunModal();
+                        end;
+
+                    end;
+                }
+                field("Last Purchase Date Ste 1"; recItemCompany1."Last Purchase Date")
+                {
+                    Caption = 'Dern. Date. Achat Ste 1';
+                    Editable = false;
+                }
+                field("Stock Ste 2"; recItemCompany2.Inventory)
+                {
+                    Caption = 'Référence';
+                    Editable = false;
+                }
+                field("Last Purchase Date Ste 2"; recItemCompany2."Last Purchase Date")
+                {
+                    Caption = 'Dern. Date. Achat Ste 2';
+                    Editable = false;
+                }
+            }
+        }
 
 
         modify("No.")
@@ -151,6 +197,9 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
         styleExpr: text[50];
         recItem: Record item;
         FieldStyleQty: Text[50];
+        recItemCompany1, recItemCompany2 : Record Item;
+        recCompany: Record "Company Information";
+
 
     procedure SetStyleDate(PDate: Date): Text[50]
     var
@@ -172,8 +221,25 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
         styleExpr := SetStyleDate(recItem."Last. Pursh. Date");
     end;
 
+
     procedure SetStyleQte(PDecimal: Decimal): Text[50]
     begin
         IF PDecimal <= 0 THEN exit('Unfavorable') ELSE exit('Favorable');
     end;
+
+    trigger OnAfterGetCurrRecord()
+    var
+    begin
+        recCompany.get();
+        recItemCompany1.Reset();
+        recItemCompany2.Reset();
+        recItemCompany1.ChangeCompany(recCompany."Inter Society 1");
+        IF recItemCompany1.GET(rec."No.") then begin
+            recItemCompany1.CalcFields(Inventory);
+        end;
+        IF recItemCompany2.GET(rec."No.") then begin
+            recItemCompany2.CalcFields(Inventory);
+        end;
+    end;
+
 }
