@@ -51,6 +51,11 @@ page 25006827 "SI Model Version API"
                     ApplicationArea = All;
                     Caption = 'Item Tracking Code';
                 }
+                field(finition; "Commercial Description")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Commercial Description';
+                }
 
             }
 

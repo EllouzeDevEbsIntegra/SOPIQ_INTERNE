@@ -279,6 +279,11 @@ tableextension 80103 "Item" extends Item //27
             FieldClass = FlowField;
             CalcFormula = lookup(Manufacturer."ID TechDOC" where(Code = field("Manufacturer Code")));
         }
+        field(50141; "Commercial Description"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Description Commercial';
+        }
 
         modify("No.")
         {

@@ -66,6 +66,37 @@ page 25006833 "SI Vehicle  API"
                     Caption = 'Customer No.';
                     ToolTip = 'Specifies the customer No of the vehicle.';
                 }
+                field(DateAssurance; "Date Assurance")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Date Assurance';
+                    ToolTip = 'Specifies the date of the insurance for the vehicle.';
+                }
+                field(PeriodeAssurance; "Periode Assurance")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Période Assurance';
+                    ToolTip = 'Specifies the period of the insurance for the vehicle.';
+                }
+                field(AssuranceCompagnie; "Assurance Compagnie")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Compagnie Assurance';
+                    ToolTip = 'Specifies the insurance company for the vehicle.';
+                }
+                field(DateVisiteTechnique; "Date Visite Technique")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Date Visite Technique';
+                    ToolTip = 'Specifies the date of the technical visit for the vehicle.';
+                }
+                field(TypeProprietaire; "Type Proprietaire")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Type Propriétaire';
+                    ToolTip = 'Specifies the type of owner for the vehicle.';
+                }
+
             }
         }
     }

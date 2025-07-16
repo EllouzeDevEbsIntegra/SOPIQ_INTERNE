@@ -110,6 +110,15 @@ page 50123 "Sales Role details"
                     RunObject = Page "Sales Order List";
                     ToolTip = 'Record your agreements with customers to sell certain products on certain delivery and payment terms. Sales orders, unlike sales invoices, allow you to ship partially, deliver directly from your vendor to your customer, initiate warehouse handling, and print various customer-facing documents. Sales invoicing is integrated in the sales order process.';
                 }
+                action("Sales Orders P")
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Commande vente Personalisé';
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    RunObject = Page "Sales Order List Personalized";
+                    ToolTip = 'Record your agreements with customers to sell certain products on certain delivery and payment terms. Sales orders, unlike sales invoices, allow you to ship partially, deliver directly from your vendor to your customer, initiate warehouse handling, and print various customer-facing documents. Sales invoicing is integrated in the sales order process.';
+                }
                 action("Etat Vente")
                 {
                     ApplicationArea = BasicEU;
