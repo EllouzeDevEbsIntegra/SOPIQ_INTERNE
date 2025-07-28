@@ -33,6 +33,15 @@ tableextension 80150 "Service Mgt. Setup EDMS" extends "Service Mgt. Setup EDMS"
             DataClassification = ToBeClassified;
             TableRelation = "Document Status".Code;
         }
+        field(80004; "Service Task Nos"; code[20])
+        {
+            Caption = 'N° Tâche Service';
+            DataClassification = ToBeClassified;
+            TableRelation = "No. Series".Code;
+        }
 
     }
+
+
+
 }

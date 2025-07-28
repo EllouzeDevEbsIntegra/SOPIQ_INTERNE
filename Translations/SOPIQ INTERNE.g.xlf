@@ -178,6 +178,31 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table items Master - Field Verified - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 3058751856 - Field 2916642318 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantité estimée par défaut</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Labor Tasks - Field Default Estimated Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3058751856 - Field 3092895737 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Labor Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Labor Tasks - Field Labor Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3058751856 - Field 302866760 - Property 3830149458" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description Main Oeuvre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Labor Tasks - Field Labor Description - Property caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3058751856 - Field 1791699764 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Task Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Labor Tasks - Field Task Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3058751856 - Field 333348285 - Property 3830149458" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description Tâche</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Labor Tasks - Field Task Description - Property caption</note>
+        </trans-unit>
         <trans-unit id="Table 1877859587 - Field 219518427 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Demande Achat Date</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -447,6 +472,76 @@
           <source>User ID Filter</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Sales Details Cue - Field User ID Filter - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 838988888 - Field 2916642318 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantité estimée par défaut</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Service Line Labor Task - Field Default Estimated Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 838988888 - Field 2480638018 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Service Line No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Service Line Labor Task - Field Document Line No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 838988888 - Field 486908828 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Service Document No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Service Line Labor Task - Field Document No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 838988888 - Field 764562723 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantité estimée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Service Line Labor Task - Field Estimated Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 838988888 - Field 3092895737 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N° Main Oeuvre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Service Line Labor Task - Field Labor Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 838988888 - Field 302866760 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Main Oeuvre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Service Line Labor Task - Field Labor Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 838988888 - Field 3320823955 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Task Line No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Service Line Labor Task - Field Line No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 838988888 - Field 2902851687 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ressource affectée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Service Line Labor Task - Field Resource Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 838988888 - Field 3961767479 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ressource affectée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Service Line Labor Task - Field Resource No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 838988888 - Field 1791699764 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code Tâche</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Service Line Labor Task - Field Task Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 838988888 - Field 333348285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description Tâche</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Service Line Labor Task - Field Task Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 838988888 - Field 2939430181 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Temps Presté (Heures)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Service Line Labor Task - Field Temps Presté (Heures) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1035451540 - Field 3004954119 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Service Task - Field Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1035451540 - Field 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Service Task - Field Description - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 3021677304 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Item Ledger Entry</source>
@@ -7353,6 +7448,31 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page KPI vente Détails - Action Set Up Cues - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 2748974690 - Control 2916642318 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Qte Estimée par défaut</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Labor Tasks List - Control Default Estimated Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2748974690 - Control 3092895737 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code Main Oeuvre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Labor Tasks List - Control Labor Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2748974690 - Control 302866760 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description Main Oeuvre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Labor Tasks List - Control Labor Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2748974690 - Control 1791699764 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code Tâche</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Labor Tasks List - Control Task Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2748974690 - Control 333348285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description Tâche</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Labor Tasks List - Control Task Description - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3199799295 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Lignes BL</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -11293,6 +11413,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Serv. Line Res. API - Control ResourceNo - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1590045514 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tâches de Main Oeuvre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Service Line Labor Task List - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1590045514 - Action 4109514097 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dupliquer la Tâche</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Service Line Labor Task List - Action Dupliquer Tâche - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 986506592 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Commande Service</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -11412,6 +11542,11 @@
           <source>Date Commande</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Service Order Header API - Control OrderDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 986506592 - Control 646935216 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Téléphone Mobile</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Service Order Header API - Control Phone - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 986506592 - Control 3080177079 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Téléphone Mobile</source>
@@ -16278,26 +16413,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Product To Be Compared - Action Update last. Purch. Cost. DS - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 1852570220 - Control 2199366164 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1852570220">
-          <source>Selected No</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Product To Be Compared card - Control Selected No - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 1852570220 - Control 701373641 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1852570220">
-          <source>N° ligne</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Product To Be Compared card - Control Test1 - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 1852570220 - Control 63677024 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1852570220">
-          <source>N° ligne</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Product To Be Compared card - Control Test2 - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 1852570220 - Control 3720947703 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1852570220">
-          <source>N° ligne</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Product To Be Compared card - Control Test3 - Property Caption</note>
-        </trans-unit>
         <trans-unit id="PageExtension 3157688816 - Action 259724722 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3157688816">
           <source>Ancien Historique</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -16609,7 +16724,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Quote Lines - Control Stock Ste 1 - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 1071220633 - Control 916909060 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1071220633">
-          <source>Référence</source>
+          <source>Qte Ste 2</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Quote Lines - Control Stock Ste 2 - Property Caption</note>
         </trans-unit>
@@ -17008,25 +17123,70 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Advisor Activitie - Control CA MO SRV RAPID - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 3833176206 - Control 895206272 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3833176206">
+        <trans-unit id="PageExtension 3833176206 - Control 3192175264 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3833176206">
           <source>Date</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Line Resources - Control date - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Line Resources - Control Date - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 3833176206 - Control 655979510 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3833176206">
+        <trans-unit id="PageExtension 3833176206 - Control 3092895737 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3833176206">
+          <source>Main Oeuvre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Line Resources - Control Labor Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3833176206 - Control 2916642318 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3833176206">
+          <source>Quantité Par Défaut Estimée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Line Resources - Control Default Estimated Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3833176206 - Control 764562723 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3833176206">
+          <source>Quantité Estimée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Line Resources - Control Estimated Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3833176206 - Control 1791699764 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3833176206">
+          <source>Code Tâche</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Line Resources - Control Task Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3833176206 - Control 333348285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3833176206">
+          <source>Description Tâche</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Line Resources - Control Task Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3833176206 - Control 791550054 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3833176206">
           <source>Heure Début</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Line Resources - Control beginTime - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Line Resources - Control Begin Time - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 3833176206 - Control 3837516702 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3833176206">
+        <trans-unit id="PageExtension 3833176206 - Control 1575773417 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3833176206">
+          <source>Temps Constructeur</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Line Resources - Control Constructor Temps - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3833176206 - Control 4240670190 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3833176206">
           <source>Heure Fin</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Line Resources - Control EndTime - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Line Resources - Control End Time - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3833176206 - Control 3282555122 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3833176206">
+          <source>Temps Standard</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Line Resources - Control Standard Time - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 4100033759 - Control 83960814 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4100033759">
+          <source>N° Tâche Service</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Mgt. Setup EDMS - Control Service Task Nos - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 3192088338 - Action 4073456195 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3192088338">
           <source>Appliquer remise pour toute les lignes similaires</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Order Subform EDMS - Action Apply Discount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3192088338 - Action 872873508 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3192088338">
+          <source>Voir Tâches Main d'Oeuvre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Service Order Subform EDMS - Action Voir Tâches Main d''Oeuvre - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 3192088338 - Control 4053628079 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3192088338">
           <source>Stock Disponible</source>
@@ -17147,6 +17307,11 @@
           <source>Type Lavage</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Services Order EDMS - Control Type Lavage - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2941607454 - Action 2105121963 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2941607454">
+          <source>Mentionner Aval</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension STPayment Lines List - Action Mentionner Aval - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 2909255671 - Action 2441761297 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2909255671">
           <source>Tarification</source>
@@ -18803,30 +18968,55 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Shipment Line - Field solde - Property Caption</note>
         </trans-unit>
-        <trans-unit id="TableExtension 4120991665 - Field 655979510 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4120991665">
-          <source>beginTime</source>
+        <trans-unit id="TableExtension 4120991665 - Field 791550054 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4120991665">
+          <source>Begin Time</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Serv. Labor Alloc. Application - Field beginTime - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Serv. Labor Alloc. Application - Field Begin Time - Property Caption</note>
         </trans-unit>
-        <trans-unit id="TableExtension 4120991665 - Field 195793361 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4120991665">
-          <source>ConstructorTemps</source>
+        <trans-unit id="TableExtension 4120991665 - Field 1575773417 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4120991665">
+          <source>Constructor Temps</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Serv. Labor Alloc. Application - Field ConstructorTemps - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Serv. Labor Alloc. Application - Field Constructor Temps - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 4120991665 - Field 3192175264 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4120991665">
           <source>Date</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Serv. Labor Alloc. Application - Field Date - Property Caption</note>
         </trans-unit>
-        <trans-unit id="TableExtension 4120991665 - Field 3837516702 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4120991665">
-          <source>EndTime</source>
+        <trans-unit id="TableExtension 4120991665 - Field 2916642318 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4120991665">
+          <source>Task Description</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Serv. Labor Alloc. Application - Field EndTime - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Serv. Labor Alloc. Application - Field Default Estimated Quantity - Property Caption</note>
         </trans-unit>
-        <trans-unit id="TableExtension 4120991665 - Field 1652044226 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4120991665">
-          <source>StandardTime</source>
+        <trans-unit id="TableExtension 4120991665 - Field 4240670190 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4120991665">
+          <source>End Time</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Serv. Labor Alloc. Application - Field StandardTime - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Serv. Labor Alloc. Application - Field End Time - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4120991665 - Field 764562723 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4120991665">
+          <source>Estimated Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Serv. Labor Alloc. Application - Field Estimated Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4120991665 - Field 2721669487 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4120991665">
+          <source>Labor No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Serv. Labor Alloc. Application - Field Labor No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4120991665 - Field 3282555122 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4120991665">
+          <source>Standard Time</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Serv. Labor Alloc. Application - Field Standard Time - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4120991665 - Field 1791699764 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4120991665">
+          <source>Task Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Serv. Labor Alloc. Application - Field Task Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4120991665 - Field 333348285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4120991665">
+          <source>Task Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Serv. Labor Alloc. Application - Field Task Description - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 391315939 - Field 783517148 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 391315939">
           <source>Total CA MO</source>
@@ -19022,6 +19212,11 @@
           <source>Ressource Global Obligatoire</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Service Mgt. Setup EDMS - Field Global Ress. Mondata - Property caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4100033759 - Field 83960814 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4100033759">
+          <source>N° Tâche Service</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Service Mgt. Setup EDMS - Field Service Task Nos - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 4100033759 - Field 1349665887 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4100033759">
           <source>Statut Vehicule Pret</source>

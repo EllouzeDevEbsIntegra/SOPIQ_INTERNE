@@ -2,40 +2,40 @@ pageextension 80120 "Product To Be Compared card" extends "Product To Be Compare
 {
     layout
     {
-        addafter(General)
-        {
-            grid("Company Inventory")
-            {
-                field("Selected No"; rec."Selected No")
-                {
-                    Caption = 'Selected No';
-                    Editable = false;
-                    ApplicationArea = All;
-                    Style = StrongAccent;
-                }
-                field("Test1"; PageNumber)
-                {
-                    Caption = 'N° ligne';
-                    Editable = false;
-                    ApplicationArea = All;
-                    Style = StrongAccent;
-                }
-                field("Test2"; PageNumber)
-                {
-                    Caption = 'N° ligne';
-                    Editable = false;
-                    ApplicationArea = All;
-                    Style = StrongAccent;
-                }
-                field("Test3"; PageNumber)
-                {
-                    Caption = 'N° ligne';
-                    Editable = false;
-                    ApplicationArea = All;
-                    Style = StrongAccent;
-                }
-            }
-        }
+        // addafter(General)
+        // {
+        //     grid("Company Inventory")
+        //     {
+        //         field("Selected No"; rec."Selected No")
+        //         {
+        //             Caption = 'Selected No';
+        //             Editable = false;
+        //             ApplicationArea = All;
+        //             Style = StrongAccent;
+        //         }
+        //         field("Test1"; PageNumber)
+        //         {
+        //             Caption = 'N° ligne';
+        //             Editable = false;
+        //             ApplicationArea = All;
+        //             Style = StrongAccent;
+        //         }
+        //         field("Test2"; PageNumber)
+        //         {
+        //             Caption = 'N° ligne';
+        //             Editable = false;
+        //             ApplicationArea = All;
+        //             Style = StrongAccent;
+        //         }
+        //         field("Test3"; PageNumber)
+        //         {
+        //             Caption = 'N° ligne';
+        //             Editable = false;
+        //             ApplicationArea = All;
+        //             Style = StrongAccent;
+        //         }
+        //     }
+        // }
 
         addafter("Comparateur")
         {

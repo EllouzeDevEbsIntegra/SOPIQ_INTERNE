@@ -67,6 +67,22 @@ pageextension 80160 "Service Order Subform EDMS" extends "Service Order Subform 
                     SalesFunctions.UpdateServiceLineDiscount(SalesLine);
                 end;
             }
+
+            action("Voir Tâches Main d''Oeuvre")
+            {
+                Caption = 'Voir Tâches Main d''Oeuvre';
+                Image = Task;
+                trigger OnAction()
+                var
+                    TaskRec: Record "Service Line Labor Task";
+                begin
+                    TaskRec.SetRange("Document No.", Rec."Document No.");
+                    TaskRec.SetRange("Document Line No.", Rec."Line No.");
+
+                    PAGE.RUN(PAGE::"Service Line Labor Task List", TaskRec);
+                end;
+            }
+
         }
     }
 

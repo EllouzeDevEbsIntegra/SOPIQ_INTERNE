@@ -108,9 +108,9 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
             // Message('%1', "Document Type");
         ignoreStamp(rec);
         "Shipping Agent Code" := "Shipping Agent Code SI";
-        "Location Code" := "Location Code SI";
+        //"Location Code" := "Location Code SI";
         Validate("Shipping Agent Code");
-        Validate("Location Code");
+        //Validate("Location Code");
     end;
 
     // Function for BS Return

@@ -16,20 +16,7 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
                 {
                     Caption = 'Qte Ste 1';
                     Editable = false;
-                    trigger OnDrillDown()
-                    var
-                        SpecificItemLedgerEntry: Record "Specific Item Ledger Entry";
-                        SILEPage: Page "Specific Item Ledger Entry";
-                    begin
-                        SpecificItemLedgerEntry.Reset();
-                        SpecificItemLedgerEntry.ChangeCompany(recCompany."Inter Society 1");
-                        SpecificItemLedgerEntry.SetRange("Item No.", rec."No.");
-                        if SpecificItemLedgerEntry.get then begin
-                            SILEPage.SetSelectionFilter(SpecificItemLedgerEntry);
-                            SILEPage.RunModal();
-                        end;
 
-                    end;
                 }
                 field("Last Purchase Date Ste 1"; recItemCompany1."Last Purchase Date")
                 {
@@ -38,7 +25,7 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
                 }
                 field("Stock Ste 2"; recItemCompany2.Inventory)
                 {
-                    Caption = 'Référence';
+                    Caption = 'Qte Ste 2';
                     Editable = false;
                 }
                 field("Last Purchase Date Ste 2"; recItemCompany2."Last Purchase Date")
@@ -237,6 +224,7 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
         IF recItemCompany1.GET(rec."No.") then begin
             recItemCompany1.CalcFields(Inventory);
         end;
+        recItemCompany2.ChangeCompany(recCompany."Inter Society 2");
         IF recItemCompany2.GET(rec."No.") then begin
             recItemCompany2.CalcFields(Inventory);
         end;

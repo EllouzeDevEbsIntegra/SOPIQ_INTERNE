@@ -51,5 +51,13 @@ pageextension 80150 "Service Mgt. Setup EDMS" extends "Service Mgt. Setup EDMS" 
                 ApplicationArea = all;
             }
         }
+        addafter(LaborNos)
+        {
+            field("Service Task Nos"; "Service Task Nos")
+            {
+                Caption = 'N° Tâche Service';
+                ApplicationArea = All;
+            }
+        }
     }
 }

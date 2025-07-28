@@ -29,11 +29,11 @@ page 25006817 "Serv. Line Res. API"
                 {
                     Caption = 'Date';
                 }
-                field(beginTime; beginTime)
+                field(beginTime; "Begin Time")
                 {
                     Caption = 'Heure Début';
                 }
-                field(EndTime; EndTime)
+                field(EndTime; "End Time")
                 {
                     Caption = 'Heure Fin';
                 }
@@ -69,18 +69,18 @@ page 25006817 "Serv. Line Res. API"
     begin
         if rec."Document No." = '' then
             Error('Service Order No can not be empty !') else
-            if rec.beginTime = 0DT then
+            if rec."Begin Time" = 0DT then
                 Error('Begin date can not be empty !') else
                 if rec."Resource No." = '' then
                     Error('Ressource No can not be empty !') else
-                    if (rec.EndTime <> 0DT) AND (rec.EndTime < rec.beginTime) then begin
+                    if (rec."End Time" <> 0DT) AND (rec."End Time" < rec."Begin Time") then begin
                         Error('End date must be earlier than the start date!');
                     end
     end;
 
     trigger OnModifyRecord(): Boolean
     begin
-        if rec.EndTime < rec.beginTime then begin
+        if rec."End Time" < rec."Begin Time" then begin
             Error('End date must be earlier than the start date!');
         end
     end;

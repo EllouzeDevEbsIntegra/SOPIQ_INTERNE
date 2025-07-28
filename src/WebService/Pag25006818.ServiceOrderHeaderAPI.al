@@ -62,7 +62,11 @@ page 25006818 "Service Order Header API"
                     Caption = 'Nom Client';
                 }
 
-                field(PhoneNo; "Mobile Phone No.")
+                field(PhoneNo; "Phone No.")
+                {
+                    Caption = 'Téléphone Mobile';
+                }
+                field(Phone; "Phone No.")
                 {
                     Caption = 'Téléphone Mobile';
                 }
