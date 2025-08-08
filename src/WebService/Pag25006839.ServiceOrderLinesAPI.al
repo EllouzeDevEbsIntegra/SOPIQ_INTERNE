@@ -7,7 +7,7 @@ page 25006839 "Service Order Lines API"
     APIVersion = 'v1.0';
     EntityName = 'ServiceOrderLine';
     EntitySetName = 'ServiceOrderLines';
-    SourceTable = "Service Line";
+    SourceTable = "Service Line EDMS";
 
     // Clés OData composées
     ODataKeyFields = "Document Type", "Document No.", "Line No.";
@@ -67,4 +67,32 @@ page 25006839 "Service Order Lines API"
     begin
         // Logique éventuelle après lecture
     end;
+
+    procedure GetNextLineNo(DocumentType: Enum "Service Document Type"; DocumentNo: Code[20]): Integer
+    var
+        ServiceLine: Record "Service Line EDMS";
+    begin
+        ServiceLine.SetRange("Document Type", DocumentType);
+        ServiceLine.SetRange("Document No.", DocumentNo);
+
+        if ServiceLine.FindLast then
+            exit(ServiceLine."Line No." + 10000) // Incrément typique par pas de 10000
+        else
+            exit(10000); // Première ligne du document
+    end;
+
+    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
+    begin
+        "Line No." := GetNextLineNo("Document Type", "Document No.");
+        Message('Line No. généré : %1', "Line No.");
+        if "Line No." = 0 then
+            Error('Le numéro de ligne ne peut pas être zéro.');
+
+    end;
+
+    // trigger OnNewRecord(BelowxRec: Boolean)
+    // begin
+    //     "Line No." := GetNextLineNo("Document Type", "Document No.");
+    // end;
+
 }

@@ -7193,6 +7193,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control ShippedQtyNotReturned - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="Page 3738696838 - Control 848733486 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the unit of measure for the item in the entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control UnitofMeasureCode - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Page 3738696838 - Control 3798681774 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the variant of the item on the line.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -7447,6 +7452,31 @@
           <source>Set Up Cues</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page KPI vente Détails - Action Set Up Cues - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3538373105 - Control 1843164222 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantité Estimée par Défaut</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Labor Task API - Control DefaultEstimatedQuantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3538373105 - Control 437434033 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code de Main Oeuvre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Labor Task API - Control LaborCode - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3538373105 - Control 3307821648 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description de la Main Oeuvre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Labor Task API - Control LaborDescription - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3538373105 - Control 4061120276 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code de Tâche</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Labor Task API - Control TaskCode - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3538373105 - Control 4050089437 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description de la Tâche</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Labor Task API - Control TaskDescription - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2748974690 - Control 2916642318 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Qte Estimée par défaut</source>
@@ -11648,6 +11678,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Service Order Lines API - Control UnitOfMeasureCode - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3857701932 - Control 3004954119 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Service Task API - Control Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3857701932 - Control 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Service Task API - Control Description - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1884197993 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>SI Item API</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -12447,6 +12487,66 @@
           <source>Changer l'Année</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry - Action Transaction Year -1  - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2034385242 - Control 1843164222 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantité estimée par défaut</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Srv Line Labor Task API - Control DefaultEstimatedQuantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2034385242 - Control 4066289460 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Service Line No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Srv Line Labor Task API - Control DocumentLineNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2034385242 - Control 3117834186 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Service Document No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Srv Line Labor Task API - Control DocumentNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2034385242 - Control 370775611 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantité estimée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Srv Line Labor Task API - Control EstimatedQuantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2034385242 - Control 437434033 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N° Main Oeuvre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Srv Line Labor Task API - Control LaborCode - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2034385242 - Control 3307821648 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Main Oeuvre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Srv Line Labor Task API - Control LaborDescription - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2034385242 - Control 1165969121 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Task Line No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Srv Line Labor Task API - Control LineNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2034385242 - Control 4250575119 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nom Ressource</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Srv Line Labor Task API - Control ResourceName - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2034385242 - Control 2754093181 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ressource affectée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Srv Line Labor Task API - Control ResourceNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2034385242 - Control 4061120276 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code Tâche</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Srv Line Labor Task API - Control TaskCode - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2034385242 - Control 4050089437 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description Tâche</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Srv Line Labor Task API - Control TaskDescription - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2034385242 - Control 3174455334 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Temps Presté</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Srv Line Labor Task API - Control TempsPreste - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 693657762 - Control 1404610440 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Nom</source>

@@ -141,6 +141,11 @@ page 25006801 "itemLedgerEntries"
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the number of units of the item in the item entry.';
                 }
+                field(UnitofMeasureCode; "Unit of Measure Code")
+                {
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the unit of measure for the item in the entry.';
+                }
                 field(InvoicedQuantity; "Invoiced Quantity")
                 {
                     ApplicationArea = Basic, Suite;

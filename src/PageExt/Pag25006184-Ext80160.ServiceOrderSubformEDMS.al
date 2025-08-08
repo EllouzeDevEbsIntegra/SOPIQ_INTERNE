@@ -98,4 +98,17 @@ pageextension 80160 "Service Order Subform EDMS" extends "Service Order Subform 
     begin
         FieldStyleQty := SetStyleQte("Available Qty");
     end;
+
+    trigger OnDeleteRecord(): Boolean
+    var
+        ServiceLineLaborTask: Record "Service Line Labor Task";
+    begin
+        ServiceLineLaborTask.Reset();
+        ServiceLineLaborTask.SetRange("Document No.", Rec."Document No.");
+        ServiceLineLaborTask.SetRange("Document Line No.", Rec."Line No.");
+        if ServiceLineLaborTask.FindFirst() then begin
+            Error('Vous ne pouvez pas supprimer cette ligne car elle est liée à des tâches de main d''oeuvre.');
+            exit(false);
+        end;
+    end;
 }

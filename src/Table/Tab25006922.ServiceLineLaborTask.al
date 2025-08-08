@@ -127,5 +127,11 @@ table 25006922 "Service Line Labor Task"
             until LaborTask.Next() = 0;
     end;
 
+    trigger OnDelete()
+    begin
+        CalcFields("Temps Presté (Heures)");
+        if "Temps Presté (Heures)" <> 0 then
+            Error('Impossible de supprimer cette ligne de tâche car des heures prestées ont déjà été enregistrées.');
+    end;
 
 }
