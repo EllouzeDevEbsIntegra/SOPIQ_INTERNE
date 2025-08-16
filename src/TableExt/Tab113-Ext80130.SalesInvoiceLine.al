@@ -58,6 +58,13 @@ tableextension 80130 "Sales Invoice Line" extends "Sales Invoice Line" //113
             DataClassification = ToBeClassified;
             InitValue = false;
         }
+        field(80136; "New Description"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'New Description';
+            Editable = true;
+        }
+
     }
 
     var

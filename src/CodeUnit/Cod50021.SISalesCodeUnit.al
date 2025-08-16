@@ -9,7 +9,17 @@ codeunit 50021 SISalesCodeUnit
                     tabledata "Return Receipt Header" = rimd,
                     tabledata "Return Receipt Line" = rimd,
                     tabledata "Sales Shipment Header" = rimd,
-                    tabledata "Purch. Rcpt. Line" = rimd;
+                    tabledata "Purch. Rcpt. Line" = rimd,
+                    tabledata "Sales Invoice Line" = m;
+
+
+    procedure modifySalesLineDescription(var SalesLine: Record "Sales Invoice Line"; NewDescription: Text[250])
+    var
+    begin
+        SalesLine.Description := NewDescription;
+        SalesLine.Modify(true);
+    end;
+
     procedure ConfirmBSPOST(var SalesHeader: Record "Sales Header"; DefaultOption: Integer): Boolean
     var
         ConfirmManagement: Codeunit "Confirm Management";

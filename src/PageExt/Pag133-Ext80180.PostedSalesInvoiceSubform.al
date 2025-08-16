@@ -18,12 +18,35 @@ pageextension 80190 "Posted Sales Invoice Subform" extends "Posted Sales Invoice
             {
 
             }
+
         }
+
     }
 
     actions
     {
         // Add changes to page actions here
+        addafter(DocAttach)
+        {
+            action("Modify Invoice")
+            {
+                ApplicationArea = All;
+                Caption = 'Modifier Facture';
+                Image = Edit;
+
+                trigger OnAction()
+                var
+                    SalesInvoiceLine: Record "Sales Invoice Line";
+                    ModifySalesLineDescription: Page "Modify Sales Line Description";
+                begin
+                    SalesInvoiceLine.SetRange("Document No.", Rec."Document No.");
+                    SalesInvoiceLine.SetRange("Line No.", Rec."Line No.");
+                    ModifySalesLineDescription.SetTableView(SalesInvoiceLine);
+                    ModifySalesLineDescription.RunModal();
+                end;
+            }
+        }
+
     }
 
     var

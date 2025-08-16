@@ -2,6 +2,7 @@ table 25006995 "TecDoc Request Cache"
 {
     DataClassification = ToBeClassified;
     Caption = 'Cache des requêtes TecDoc';
+
     fields
     {
         field(1; SearchQuery; Text[100])
@@ -24,17 +25,27 @@ table 25006995 "TecDoc Request Cache"
         {
             Caption = 'Response Data';
             DataClassification = ToBeClassified;
+            SubType = Memo;
         }
         field(6; LastUpdated; DateTime)
         {
             Caption = 'Last Updated';
         }
+        field(7; RequestID; Integer)
+        {
+            Caption = 'Request ID';
+        }
     }
+
     keys
     {
         key(PK; SearchQuery, SearchType, IncludeAll, Mrfid)
         {
             Clustered = true;
+        }
+        key(RequestIDKey; RequestID)
+        {
+            Clustered = false;
         }
     }
 }

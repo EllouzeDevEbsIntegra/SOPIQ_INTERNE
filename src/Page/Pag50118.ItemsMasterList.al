@@ -224,6 +224,9 @@ page 50118 "Items Master List"
                                                     recItem.validate("Manufacturer Code", tempItem."Manufacturer Code");
                                                     recItem.validate("Make Code", tempItem."Make Code");
                                                     recItem.Validate("No. 2", tempItem."No.");
+                                                    // recItem.Validate("Gen. Prod. Posting Group", tempItem."Gen. Prod. Posting Group");
+                                                    // recItem.Validate("VAT Prod. Posting Group", tempItem."VAT Prod. Posting Group");
+                                                    // recItem.Validate("Inventory Posting Group", tempItem."Inventory Posting Group");
                                                     recItem.Modify;
                                                 end
                                                 else begin
@@ -344,6 +347,9 @@ page 50118 "Items Master List"
                                             recItem.validate("Manufacturer Code", tempItem."Manufacturer Code");
                                             recItem.validate("Make Code", tempItem."Make Code");
                                             recItem.Validate("No. 2", tempItem."No.");
+                                            // recItem.Validate("Gen. Prod. Posting Group", tempItem."Gen. Prod. Posting Group");
+                                            // recItem.Validate("VAT Prod. Posting Group", tempItem."VAT Prod. Posting Group");
+                                            // recItem.Validate("Inventory Posting Group", tempItem."Inventory Posting Group");
                                             recItem.Modify;
 
                                             // Message('Item Modified : %1 Dans société : %2', recItem."No.", recCompany.Name);

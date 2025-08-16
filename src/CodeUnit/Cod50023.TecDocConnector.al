@@ -7,23 +7,22 @@ codeunit 50023 "TecDoc Connector"
         ResponseText: Text;
         RequestCache: Record "TecDoc Request Cache";
         ArticleBuffer: Record "TecDoc Article Buffer";
-        // Paramètres fixes pour l'API TecDoc
+        RequestID: Integer;
         Pays: Text;
         ProviderID: Integer;
         Langue: Text;
         APIKey: Text;
+        TotalArticles: Integer;
+        Token: JsonToken;
     begin
-        // Paramètres fixes
         Pays := 'TN';
         ProviderID := 24879;
-        Langue := 'en';
+        Langue := 'fr';
         APIKey := '2BeBXg6QH1oQtitZABFPjuLczwZ2Z6xPazrcg69tHKnTkAEsv7Y3';
 
-        // Validation de la référence, calcul et récupération du FlowField mrfID
         if not ValiderReference(Reference, SearchType, Mrfid) then
             exit;
 
-        // Vérification dans le cache (filtré sur SearchQuery, SearchType, IncludeAll et Mrfid)
         RequestCache.Reset();
         RequestCache.SetRange(SearchQuery, Reference);
         RequestCache.SetRange(SearchType, SearchType);
@@ -31,80 +30,80 @@ codeunit 50023 "TecDoc Connector"
         RequestCache.SetRange(Mrfid, Mrfid);
 
         if RequestCache.FindFirst() then begin
-            // Cache trouvé, vérification de son expiration
             if IsCacheExpired(RequestCache.LastUpdated) then begin
-                // Cache expiré → suppression des enregistrements associés
-                DeleteCacheDataAndRelatedRecords(Reference);
-                // Appel API
+                DeleteAllByRequestID(RequestCache.RequestID);
                 ResponseText := EffectuerAppelHTTP(Pays, ProviderID, Langue, Reference, SearchType, Mrfid, APIKey);
-                if ResponseText = '' then
-                    exit; // Échec lors de l'appel API
+                if ResponseText = '' then exit;
 
+                RequestID := GetNextRequestID();
                 RequestCache.Init();
                 RequestCache.SearchQuery := Reference;
                 RequestCache.SearchType := SearchType;
                 RequestCache.IncludeAll := true;
                 RequestCache.Mrfid := Mrfid;
                 RequestCache.LastUpdated := CurrentDateTime();
-                StoreResponseInCache(RequestCache, ResponseText);
+                RequestCache.RequestID := RequestID;
                 RequestCache.Insert();
 
                 if not JsonResponse.ReadFrom(ResponseText) then
                     Error('Erreur lors du parsing JSON après appel API.');
-                ParserResponse(JsonResponse, Reference);
+                ParserResponse(JsonResponse, Reference, RequestID);
+                lastUpdatedTime := RequestCache.LastUpdated;
             end else begin
-                // Cache non expiré : relecture du record depuis la base pour obtenir le BLOB actualisé
-                if not RequestCache.Get(RequestCache.SearchQuery, RequestCache.SearchType, RequestCache.IncludeAll, RequestCache.Mrfid) then
-                    Error('Le record cache est introuvable lors de la lecture.');
-
-                // Affichage du contenu pour débogage
-                ResponseText := GetResponseFromCache(RequestCache);
-                Message('Contenu du cache lu : ' + ResponseText); // Message de débogage
-                if not JsonResponse.ReadFrom(ResponseText) then
-                    Error('Erreur lors de la lecture du cache.');
-                ParserResponse(JsonResponse, Reference);
+                RequestID := RequestCache.RequestID;
+                lastUpdatedTime := RequestCache.LastUpdated;
+                // ✅ Pas de lecture JSON, on lit directement les buffers
             end;
         end else begin
-            // Aucun cache → appel API
             ResponseText := EffectuerAppelHTTP(Pays, ProviderID, Langue, Reference, SearchType, Mrfid, APIKey);
-            if ResponseText = '' then
-                exit; // Échec lors de l'appel API
+            if not JsonResponse.ReadFrom(ResponseText) then
+                Error('Erreur lors du parsing JSON après appel API.');
 
+            // Récupérer la valeur du champ "totalMatchingArticles"
+            if JsonResponse.Get('totalMatchingArticles', Token) then begin
+                if not Token.AsValue().IsNull then
+                    TotalArticles := Token.AsValue().AsInteger();
+
+                if TotalArticles = 0 then
+                    Error('Aucun article trouvé pour la référence %1', Reference);
+            end;
+
+            RequestID := GetNextRequestID();
             RequestCache.Init();
             RequestCache.SearchQuery := Reference;
             RequestCache.SearchType := SearchType;
             RequestCache.IncludeAll := true;
             RequestCache.Mrfid := Mrfid;
             RequestCache.LastUpdated := CurrentDateTime();
-            StoreResponseInCache(RequestCache, ResponseText);
+            RequestCache.RequestID := RequestID;
             RequestCache.Insert();
 
             if not JsonResponse.ReadFrom(ResponseText) then
                 Error('Erreur lors du parsing JSON après appel API.');
-            ParserResponse(JsonResponse, Reference);
+            ParserResponse(JsonResponse, Reference, RequestID);
+            lastUpdatedTime := RequestCache.LastUpdated;
         end;
 
-        // Affichage de la page "TecDoc Articles List" avec le contenu du buffer Article
         ArticleBuffer.Reset();
-        ArticleBuffer.SetRange("Référence", Reference);
+        ArticleBuffer.SetRange(RequestID, RequestID);
         if ArticleBuffer.FindFirst() then
             PAGE.RUN(page::"TecDoc Articles List", ArticleBuffer)
         else
             Message('Aucun article trouvé pour "%1".', Reference);
     end;
 
-    local procedure ValiderReference(var Reference: Text; var SearchType: Integer; var Mrfid: Text) Result: Boolean
+    local procedure ValiderReference(var Reference: Text; var SearchType: Integer; var Mrfid: Text): Boolean
     var
         recItem: Record Item;
     begin
         recItem.Reset();
         recItem.SetRange("No.", Reference);
         if recItem.FindFirst() then begin
-            recItem.CALCFIELDS(mrfID); // Calcul du FlowField mrfID
+            recItem.CALCFIELDS(mrfID);
             if recItem."Item Class" = recItem."Item Class"::Original then begin
                 Reference := recItem."Vendor Item No.";
                 SearchType := 1;
-                Mrfid := ''; // Aucun mrfid pour un article original
+                Mrfid := '';
             end else begin
                 SearchType := 0;
                 Mrfid := recItem.mrfID;
@@ -116,29 +115,46 @@ codeunit 50023 "TecDoc Connector"
         end;
     end;
 
-    local procedure EffectuerAppelHTTP(Pays: Text; ProviderID: Integer; Langue: Text; Reference: Text; SearchType: Integer; Mrfid: Text; APIKey: Text) ResponseText: Text
+    local procedure GetNextRequestID(): Integer
+    var
+        Cache: Record "TecDoc Request Cache";
+        MaxID: Integer;
+    begin
+        Cache.Reset();
+        if Cache.FindLast() then
+            MaxID := Cache.RequestID;
+        exit(MaxID + 1);
+    end;
+
+    local procedure IsCacheExpired(CacheDateTime: DateTime): Boolean
+    var
+        OneMonthAgo: Date;
+    begin
+        OneMonthAgo := CalcDate('-1M', DT2Date(CurrentDateTime()));
+        exit(DT2Date(CacheDateTime) < OneMonthAgo);
+    end;
+
+    local procedure EffectuerAppelHTTP(Pays: Text; ProviderID: Integer; Langue: Text; Reference: Text; SearchType: Integer; Mrfid: Text; APIKey: Text): Text
     var
         Client: HttpClient;
         Response: HttpResponseMessage;
         Content: HttpContent;
         Headers: HttpHeaders;
         URL: Text;
+        ResponseText: Text;
     begin
         URL := 'https://webservice.tecalliance.services/pegasus-3-0/services/TecdocToCatDLB.jsonEndpoint?api_key=' + APIKey;
         Content.WriteFrom(ConstruireJSONBody(Pays, ProviderID, Langue, Reference, SearchType, Mrfid));
         Content.GetHeaders(Headers);
-        if Headers.Contains('Content-Type') then
-            Headers.Remove('Content-Type'); // Évite les doublons d'en-tête
+        Headers.Remove('Content-Type');
         Headers.Add('Content-Type', 'application/json');
-        if not Client.Post(URL, Content, Response) then
-            exit('');
-        if not Response.IsSuccessStatusCode() then
-            exit('');
+        if not Client.Post(URL, Content, Response) then exit('');
+        if not Response.IsSuccessStatusCode() then exit('');
         Response.Content().ReadAs(ResponseText);
         exit(ResponseText);
     end;
 
-    local procedure ConstruireJSONBody(Pays: Text; ProviderID: Integer; Langue: Text; Reference: Text; SearchType: Integer; Mrfid: Text) Result: Text
+    local procedure ConstruireJSONBody(Pays: Text; ProviderID: Integer; Langue: Text; Reference: Text; SearchType: Integer; Mrfid: Text): Text
     begin
         exit(
           '{' +
@@ -155,68 +171,31 @@ codeunit 50023 "TecDoc Connector"
         );
     end;
 
-    // Stockage dans le cache via le champ BLOB (aucun appel à Modify() car le record est nouveau)
-    local procedure StoreResponseInCache(var RequestCache: Record "TecDoc Request Cache"; ResponseText: Text)
+    local procedure DeleteAllByRequestID(RequestID: Integer)
     var
-        OutStream: OutStream;
-    begin
-        RequestCache.ResponseData.CreateOutStream(OutStream);
-        OutStream.WriteText(ResponseText);
-    end;
-
-    local procedure GetResponseFromCache(var RequestCache: Record "TecDoc Request Cache") ResponseText: Text
-    var
-        InStream: InStream;
-    begin
-        ResponseText := '';
-        if RequestCache.ResponseData.HasValue() then begin
-            RequestCache.ResponseData.CreateInStream(InStream);
-            InStream.ReadText(ResponseText);
-        end;
-        // Message de débogage pour vérifier le contenu du BLOB
-        Message('Contenu du cache lu : ' + ResponseText);
-        exit(ResponseText);
-    end;
-
-    local procedure IsCacheExpired(CacheDateTime: DateTime) Result: Boolean
-    var
-        OneMonthAgo: DateTime;
-    begin
-        // Logique d'expiration (à adapter si nécessaire)
-        OneMonthAgo := CurrentDateTime() - 1000000;
-        exit(CacheDateTime < OneMonthAgo);
-    end;
-
-    local procedure DeleteCacheDataAndRelatedRecords(SearchQuery: Text)
-    var
-        RequestCache: Record "TecDoc Request Cache";
         ArticleBuffer: Record "TecDoc Article Buffer";
         OEMBuffer: Record "TecDoc OEM Buffer";
         CriteriaBuffer: Record "TecDoc Criteria Buffer";
         ImagesBuffer: Record "TecDoc Images Buffer";
+        RequestCache: Record "TecDoc Request Cache";
     begin
-        RequestCache.Reset();
-        RequestCache.SetRange(SearchQuery, SearchQuery);
-        RequestCache.DeleteAll();
-
-        ArticleBuffer.Reset();
-        ArticleBuffer.SetRange("Référence", SearchQuery);
+        ArticleBuffer.SetRange(RequestID, RequestID);
         ArticleBuffer.DeleteAll();
 
-        OEMBuffer.Reset();
-        OEMBuffer.SetRange("ParentReference", SearchQuery);
+        OEMBuffer.SetRange(RequestID, RequestID);
         OEMBuffer.DeleteAll();
 
-        CriteriaBuffer.Reset();
-        CriteriaBuffer.SetRange("ParentReference", SearchQuery);
+        CriteriaBuffer.SetRange(RequestID, RequestID);
         CriteriaBuffer.DeleteAll();
 
-        ImagesBuffer.Reset();
-        ImagesBuffer.SetRange("ParentReference", SearchQuery);
+        ImagesBuffer.SetRange(RequestID, RequestID);
         ImagesBuffer.DeleteAll();
+
+        RequestCache.SetRange(RequestID, RequestID);
+        RequestCache.DeleteAll();
     end;
 
-    local procedure ParserResponse(JsonResponse: JsonObject; OriginalReference: Text)
+    procedure ParserResponse(JsonResponse: JsonObject; OriginalReference: Text; RequestID: Integer)
     var
         ArticlesToken: JsonToken;
         ArticlesArray: JsonArray;
@@ -225,6 +204,7 @@ codeunit 50023 "TecDoc Connector"
         ArticleObj: JsonObject;
         ArticleNo: Text;
         Brand: Text;
+        BrandID: Code[20];
         DescriptionValue: Text;
         Famille: Text;
         GenericArticlesToken: JsonToken;
@@ -253,12 +233,6 @@ codeunit 50023 "TecDoc Connector"
         end;
         ArticlesArray := ArticlesToken.AsArray();
 
-        // Suppression des anciens enregistrements dans les buffers
-        ArticleBuffer.DeleteAll();
-        OEMRec.DeleteAll();
-        CriteriaRec.DeleteAll();
-        ImagesRec.DeleteAll();
-
         foreach ArticleToken in ArticlesArray do begin
             ArticleObj := ArticleToken.AsObject();
 
@@ -267,6 +241,10 @@ codeunit 50023 "TecDoc Connector"
             else
                 ArticleNo := '';
 
+            if ArticleObj.Get('dataSupplierId', ArticleToken) then
+                BrandID := ArticleToken.AsValue().AsText()
+            else
+                BrandID := '';
             if ArticleObj.Get('mfrName', ArticleToken) then
                 Brand := ArticleToken.AsValue().AsText()
             else
@@ -293,51 +271,62 @@ codeunit 50023 "TecDoc Connector"
             if ArticleNo <> '' then begin
                 ArticleBuffer.Init();
                 ArticleBuffer."Référence" := ArticleNo;
+                ArticleBuffer.dataSupplierId := BrandID;
                 ArticleBuffer.Fabricant := Brand;
                 ArticleBuffer.Description := DescriptionValue;
                 ArticleBuffer.Famille := Famille;
+                ArticleBuffer.LastUpdated := lastUpdatedTime;
+                ArticleBuffer.RequestID := RequestID;
                 ArticleBuffer.Insert(true);
 
-                // Traitement des OEM – éviter les doublons sur ParentReference et OEMNumber
                 if ArticleObj.Get('oemNumbers', ArticleToken) and ArticleToken.IsArray() then begin
                     OEMNumbersArray := ArticleToken.AsArray();
                     foreach OEMToken in OEMNumbersArray do begin
-                        if OEMToken.AsObject().Get('articleNumber', OEMToken) then begin
-                            if not OEMRec.Get(ArticleNo, OEMToken.AsValue().AsText()) then begin
-                                OEMRec.Init();
-                                OEMRec.ParentReference := ArticleNo;
-                                OEMRec.OEMNumber := OEMToken.AsValue().AsText();
-                                if ArticleObj.Get('mfrName', OEMToken) then
-                                    OEMRec.Marque := OEMToken.AsValue().AsText()
-                                else
-                                    OEMRec.Marque := Brand;
-                                OEMRec.Insert();
-                            end;
-                        end;
+                        GenericArticleObj := OEMToken.AsObject();
+
+                        OEMRec.Init();
+                        OEMRec.ParentReference := ArticleNo;
+                        OEMRec.dataSupplierId := BrandID;
+                        OEMRec.RequestID := RequestID;
+
+                        if GenericArticleObj.Get('articleNumber', TempToken) then
+                            OEMRec.OEMNumber := CopyStr(TempToken.AsValue().AsText(), 1, 50)
+                        else
+                            OEMRec.OEMNumber := '';
+
+                        if GenericArticleObj.Get('mfrName', TempToken) then
+                            OEMRec.Marque := CopyStr(TempToken.AsValue().AsText(), 1, 100)
+                        else
+                            OEMRec.Marque := CopyStr(Brand, 1, 100);
+
+                        if (OEMRec.OEMNumber <> '') and
+                           (not OEMRec.Get(OEMRec.ParentReference, OEMRec.dataSupplierId, OEMRec.OEMNumber, OEMRec.Marque)) then
+                            OEMRec.Insert();
                     end;
                 end;
 
-                // Traitement des critères
                 if ArticleObj.Get('articleCriteria', ArticleToken) and ArticleToken.IsArray() then begin
                     CriteriaArray := ArticleToken.AsArray();
                     foreach CriteriaToken in CriteriaArray do begin
                         CriteriaRec.Init();
                         CriteriaRec.ParentReference := ArticleNo;
+                        CriteriaRec.dataSupplierId := BrandID;
+                        CriteriaRec.RequestID := RequestID;
+
                         if CriteriaToken.AsObject().Get('criteriaDescription', TempToken) then
                             CriteriaRec.Nom := TempToken.AsValue().AsText();
                         if CriteriaToken.AsObject().Get('formattedValue', TempToken) then
                             CriteriaRec.Valeur := TempToken.AsValue().AsText()
                         else
                             CriteriaRec.Valeur := '';
-                        // Évite le doublon en vérifiant l'existence
-                        if not CriteriaRec.Get(CriteriaRec.ParentReference, CriteriaRec.Nom) then
+
+                        if not CriteriaRec.Get(CriteriaRec.ParentReference, CriteriaRec.dataSupplierId, CriteriaRec.Nom) then
                             CriteriaRec.Insert()
                         else
                             CriteriaRec.Modify();
                     end;
                 end;
 
-                // Traitement des images
                 if ArticleObj.Get('images', ArticleToken) and ArticleToken.IsArray() then begin
                     ImagesArray := ArticleToken.AsArray();
                     ImageCount := 0;
@@ -347,7 +336,9 @@ codeunit 50023 "TecDoc Connector"
                             if ImageURL <> '' then begin
                                 ImagesRec.Init();
                                 ImagesRec.ParentReference := ArticleNo;
+                                ImagesRec.dataSupplierId := BrandID;
                                 ImagesRec.ImageID := GetNextImageID(ArticleNo);
+                                ImagesRec.RequestID := RequestID;
                                 if DownloadImage(ImageURL, ImagesRec) then begin
                                     ImagesRec.Insert();
                                     ImageCount += 1;
@@ -356,6 +347,7 @@ codeunit 50023 "TecDoc Connector"
                         end;
                     end;
                     ArticleBuffer.SetRange("Référence", ArticleNo);
+                    ArticleBuffer.SetRange(dataSupplierId, BrandID);
                     if ArticleBuffer.FindFirst() then begin
                         ArticleBuffer.nbPicture := ImageCount;
                         ArticleBuffer.Modify();
@@ -394,4 +386,7 @@ codeunit 50023 "TecDoc Connector"
             until ImgBufferRec.Next() = 0;
         exit(MaxID + 1);
     end;
+
+    var
+        lastUpdatedTime: DateTime;
 }

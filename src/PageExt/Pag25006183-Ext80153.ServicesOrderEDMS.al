@@ -61,6 +61,11 @@ pageextension 80153 "Services Order EDMS" extends "Service Order EDMS"//25006183
                 Caption = 'Nom Initiateur';
                 ApplicationArea = all;
             }
+            // field("Tax Area Code"; "Tax Area Code")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Code Initiateur (Zone)';
+            // }
         }
 
         addafter(Advanced)
@@ -162,7 +167,7 @@ pageextension 80153 "Services Order EDMS" extends "Service Order EDMS"//25006183
                     DocMgt.SelectServDocReport(DocReport, Rec, ServLine, false);
                     // Modify document Statut
                     if ("No. Printed" = 0) then begin
-                        message('Test Here !');
+                        //message('Test Here !');
                         ServiceMgtSetupEDMS.Get();
                         if ServiceMgtSetupEDMS."Statut Vehicule Receptionne" <> '' then begin
                             if ("Document Status" = ServiceMgtSetupEDMS."Statut creation OR") then begin
@@ -215,8 +220,6 @@ pageextension 80153 "Services Order EDMS" extends "Service Order EDMS"//25006183
     begin
         if ("Vehicule Prete" = false) then VehiculePretEditable := rec."Control Performed" else VehiculePretEditable := false;
 
-        // if VIN <> '' then Validate(VIN);
-        // if "Sell-to Customer No." <> '' then Validate("Sell-to Customer No.");
     end;
 
     procedure verifyGlobalQtyFini(ServiceHeaderEDMS: Record "Service Header EDMS")

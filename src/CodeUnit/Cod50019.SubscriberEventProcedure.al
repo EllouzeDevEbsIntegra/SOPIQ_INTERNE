@@ -11,6 +11,7 @@ codeunit 50019 SubscriberEventProcedure
                     tabledata "User Setup" = m;
 
 
+
     EventSubscriberInstance = StaticAutomatic;
 
 
@@ -214,8 +215,7 @@ codeunit 50019 SubscriberEventProcedure
     //         SalesShipmentLine."Line Amount" := SalesShipmentLine.Quantity * SalesShipmentLine."Unit Price" * (1 - SalesShipmentLine."Line Discount %" / 100) * (1 + SalesShipmentLine."VAT %" / 100);
     //         SalesShipmentLine."Line Amount HT" := SalesShipmentLine.Quantity * SalesShipmentLine."Unit Price" * (1 - SalesShipmentLine."Line Discount %" / 100);
     //     end;
-    //     SalesShipmentLine.Modify();
-    //     Commit();
+    //     SalesShipmentLine.Modify();  
     // end;
     //  [IntegrationEvent(false, false)]
     local procedure OnAfterPostSalesDoc(var SalesHeader: Record "Sales Header"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; SalesShptHdrNo: Code[20]; RetRcpHdrNo: Code[20]; SalesInvHdrNo: Code[20]; SalesCrMemoHdrNo: Code[20]; CommitIsSuppressed: Boolean; InvtPickPutaway: Boolean)
@@ -333,8 +333,8 @@ codeunit 50019 SubscriberEventProcedure
 
 
 
-    // @@@@@@ TO VERIFY
-    // Garder prix initial dans la facturation des lignes BS
+    // // @@@@@@ TO VERIFY
+    // // Garder prix initial dans la facturation des lignes BS
     // [EventSubscriber(ObjectType::Table, Database::"Sales Shipment Line", 'OnAfterInsertEvent', '', false, false)]
     // local procedure OnAfterInsertEventSalesShipLine(var Rec: Record "Sales Shipment Line"; RunTrigger: Boolean)
     // Var
@@ -354,6 +354,7 @@ codeunit 50019 SubscriberEventProcedure
     //     IF SalesLine.FindFirst THEN
     //         SalesShipmLine.CalcFields(BS);
     //     IF SalesShipmLine.BS then begin
+    //         Message('Here Test !');
     //         if (salessetup."Same Price Order/BS" = true) OR (SalesLine."Unit Cost" = 0) then begin
     //             SalesShipmLine."Prix Vente 1" := SalesLine."Unit Price";
     //             SalesShipmLine."Prix Vente 2" := SalesLine."Unit Price" * (1 - (SalesLine."Line Discount %" / 100));
@@ -371,9 +372,8 @@ codeunit 50019 SubscriberEventProcedure
     //         end;
     //         SalesShipmLine."Line Amount Order" := SalesLine."Line Amount";
     //         SalesShipmLine."Quantity Order" := SalesLine.Quantity;
-    //     end;
-
-    //     SalesShipmLine."% Discount" := SalesLine."Line Discount %";
+    //     end else
+    //         SalesShipmLine."% Discount" := SalesLine."Line Discount %";
     //     IF SalesLine.Quantity > SalesShipmLine.Quantity then
     //         SalesShipmLine."Line Amount" := (SalesLine."Amount Including VAT" / SalesLine.Quantity) * SalesShipmLine.Quantity else
     //         SalesShipmLine."Line Amount" := SalesLine."Amount Including VAT";

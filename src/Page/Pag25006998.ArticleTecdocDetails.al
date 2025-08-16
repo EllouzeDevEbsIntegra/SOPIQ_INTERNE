@@ -9,10 +9,11 @@ page 25006998 "Article Tecdoc Details"
         {
             group("Informations Générales")
             {
-                field(Référence; Référence) { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
-                field(Fabricant; Fabricant) { ApplicationArea = All; }
-                field(Famille; Famille) { ApplicationArea = All; }
+                field(Référence; Référence) { ApplicationArea = All; Editable = false; }
+                field(Description; Description) { ApplicationArea = All; Editable = false; }
+                field(Fabricant; Fabricant) { ApplicationArea = All; Editable = false; }
+                field(Famille; Famille) { ApplicationArea = All; Editable = false; }
+                field(LastUpdated; LastUpdated) { ApplicationArea = All; Editable = false; Caption = 'Dernière mise à jour'; }
             }
             group("Liste des OEM")
             {

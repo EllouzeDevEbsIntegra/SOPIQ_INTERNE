@@ -2,6 +2,28 @@ pageextension 80201 "Service Line Resources" extends "Service Line Resources" //
 {
     layout
     {
+        modify(FinishedQuantityHours)
+        {
+            trigger OnAfterValidate()
+            var
+                DurationToAdd: Duration;
+            begin
+                if (xRec."Finished Quantity (Hours)" > 0) AND (rec."Finished Quantity (Hours)" = 0) then begin
+                    // Si la quantité d'heures terminées est passée de >0 à 0, on remet l'heure de fin à 0
+                    "End Time" := 0DT;
+                end else
+                    if "Begin Time" <> 0DT then begin
+                        // Convertir les heures en millisecondes
+                        if "Finished Quantity (Hours)" > 8 then
+                            Error('La quantité d''heures terminées ne peut pas dépasser 8 heures par jour.')
+                        else begin
+                            DurationToAdd := "Finished Quantity (Hours)" * 3600000; // 1 heure = 3 600 000 ms
+                            "End Time" := "Begin Time" + DurationToAdd;
+                        end;
+                    end else
+                        Error('Le champ "Heure Début" doit être renseigné avant de valider la quantité d''heures terminées.');
+            end;
+        }
         modify(RemainingQuantityHours)
         {
             ApplicationArea = All;
