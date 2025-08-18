@@ -87,6 +87,26 @@ report 50232 "Etat Vente Journalier"
             {
 
             }
+            column(QteCmdVente; QteCmdVente)
+            {
+
+            }
+            column(StkSecondLocation; StkSecondLocation)
+            {
+
+            }
+            column(SecondLocationFilter; SecondLocationFilter)
+            {
+
+            }
+            column(showCmdVente; showCmdVente)
+            {
+
+            }
+            column(showSecLocation; showSecLocation)
+            {
+
+            }
             trigger OnAfterGetRecord()
             var
                 myInt: Integer;
@@ -142,6 +162,13 @@ report 50232 "Etat Vente Journalier"
                         CodeEmplacement := BinCOntent1."Bin Code";
                 end;
 
+
+                StkSecondLocation := 0;
+                QteCmdVente := 0;
+
+                if showSecLocation then GetStockSecondLocation(GItem, SecondLocationFilter, GETFILTER("Posting Date"));
+                if showCmdVente then GetQteCmd(GItem);
+
             END;
 
             trigger OnPreDataItem()
@@ -155,35 +182,53 @@ report 50232 "Etat Vente Journalier"
                 DateFilter := GETFILTER("Posting date");
                 if DateFilter = '' then error(DatFilterError);
                 //message('%1 %2', varlocatinfilter, DateFilter);
+
+                if SecondLocationFilter = '' then showSecLocation := false;
             end;
 
 
+
+
+
         }
+
+
     }
 
     requestpage
     {
-        // layout
-        // {
-        //     area(Content)
-        //     {
-        //         group(Filter)
-        //         {
-        //             field(From; DatFilter)
-        //             {
-        //                 ApplicationArea = All;
-        //                 Caption = 'De :';
+        SaveValues = true;
+        layout
+        {
+            area(Content)
+            {
 
-        //             }
-        //             field(To; DatFilter1)
-        //             {
-        //                 ApplicationArea = All;
-        //                 Caption = 'A :';
+                group(Filter)
+                {
 
-        //             }
-        //         }
-        //     }
-        // }
+                    field(SecondLocationFilter; SecondLocationFilter)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Filtre Magasin Secondaire';
+                        ShowMandatory = false;
+                    }
+                    field(showCmdVente; showCmdVente)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Afficher Qte Cmd Vente';
+                        ToolTip = 'Afficher la quantité des commande vente non expédiée';
+                        ShowMandatory = false;
+                    }
+                    field(showSecLocation; showSecLocation)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Afficher Stock Mag Secondaire';
+                        ToolTip = 'Afficher le stock du magasin secondaire';
+                        ShowMandatory = false;
+                    }
+                }
+            }
+        }
 
         actions
         {
@@ -197,23 +242,25 @@ report 50232 "Etat Vente Journalier"
             }
         }
     }
-    // local procedure GetStockInitial(Var Rec: Record item; LocationFilter: Text[250])
+    local procedure GetQteCmd(Var Rec: Record item)
 
-    // var
-    //     myInt: Integer;
-    //     lItem: Record Item;
-    // begin
+    var
+        SalesLine: Record "Sales Line";
+    begin
+        // QteCmdVente := 0;
+        SalesLine.Reset();
+        SalesLine.SetRange("No.", Rec."No.");
+        SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
+        SalesLine."Drop Shipment" := false;
+        SalesLine.SetFilter("Outstanding Qty. (Base)", '<>0');
+        if SalesLine.FindSet() then begin
+            repeat
+                QteCmdVente += SalesLine."Outstanding Qty. (Base)";
+            until SalesLine.Next() = 0;
+        end;
 
-    //     WITH lItem DO BEGIN
-    //         setrange("No.", Rec."No.");
-    //         SETFILTER("Location Filter", LocationFilter);
-    //         SETFILTER("Date Filter", format(0D) + '..' + format(DatFilter - 1));
-    //         IF FINDSET THEN
-    //             CalcFields(Inventory2);
-    //         Stockdebut := Inventory2;
-    //         //message('%1 %2 ', LocationFilter, Stockdebut);
-    //     end;
-    // end;
+
+    end;
 
     local procedure GetStockVendu(Var Rec: Record item; LocationFilters: Text[250]; DateFilters: text[20])
 
@@ -232,6 +279,23 @@ report 50232 "Etat Vente Journalier"
         end;
     end;
 
+    local procedure GetStockSecondLocation(Var Rec: Record item; LocationFilters: Text[250]; DateFilters: text[20])
+
+    var
+        myInt: Integer;
+        lItem: Record Item;
+    begin
+        WITH lItem DO BEGIN
+            setrange("No.", Rec."No.");
+            SETFILTER("Location Filter", LocationFilters);
+            SETFILTER("Date Filter", DateFilters);
+            if FINDSET THEN
+                CalcFields(Inventory);
+            StkSecondLocation := Inventory;
+            //message('%1 %2 %3', Rec."No.", LocationFilters, QteVendu);
+        end;
+    end;
+
     trigger OnInitReport()
     begin
         CLEAR(RecCompany);
@@ -246,7 +310,7 @@ report 50232 "Etat Vente Journalier"
 
         oldItem: code[20];
         OldLocation: code[10];
-        GItem: Record Item;
+        GItem, ItemSecLocation : Record Item;
         myInt: Integer;
         DatFilter: date;
         DatFilter1: date;
@@ -255,13 +319,15 @@ report 50232 "Etat Vente Journalier"
         WarehouseEntry: Record 7312;
         DatFilterError: label 'Merci de renseigner la date de filtre';
         QteVendu: Decimal;
-        LocationFilter: text[250];
+        QteCmdVente, StkSecondLocation : Decimal;
+        LocationFilter, SecondLocationFilter : text[250];
         DateFilter: text[20];
         Int: Integer;
         varlocatinfilter: text[250];
         fab: Record Manufacturer;
         RecCompany: record "Company Information";
         BinCOntent, BinCOntent1 : Record "Bin Content";
+        showCmdVente, showSecLocation : Boolean;
 
 
 }

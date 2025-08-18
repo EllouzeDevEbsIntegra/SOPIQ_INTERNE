@@ -13988,6 +13988,31 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente Journalier - NamedType DatFilterError</note>
         </trans-unit>
+        <trans-unit id="Report 3325472121 - Control 3592978567 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Filtre Magasin Secondaire</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente Journalier - Control SecondLocationFilter - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 3325472121 - Control 3930405895 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Afficher la quantité des commande vente non expédiée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente Journalier - Control showCmdVente - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Report 3325472121 - Control 3930405895 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Afficher Qte Cmd Vente</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente Journalier - Control showCmdVente - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 3325472121 - Control 1011281213 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Afficher le stock du magasin secondaire</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente Journalier - Control showSecLocation - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Report 3325472121 - Control 1011281213 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Afficher Stock Mag Secondaire</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente Journalier - Control showSecLocation - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Report 1258665712 - Control 63266223 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Options</source>
           <note from="Developer" annotates="general" priority="2"></note>
