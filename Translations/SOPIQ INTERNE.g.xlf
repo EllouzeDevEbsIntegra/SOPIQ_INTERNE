@@ -14123,6 +14123,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente Journalier - Control showSecLocation - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Report 3325472121 - Control 2585081471 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Afficher le stock physique</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente Journalier - Control showStkPhysique - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Report 3325472121 - Control 2585081471 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Afficher Stock Physique</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Vente Journalier - Control showStkPhysique - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Report 1258665712 - Control 63266223 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Options</source>
           <note from="Developer" annotates="general" priority="2"></note>

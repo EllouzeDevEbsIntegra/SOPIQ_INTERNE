@@ -107,6 +107,10 @@ report 50232 "Etat Vente Journalier"
             {
 
             }
+            column(showStkPhysique; showStkPhysique)
+            {
+
+            }
             trigger OnAfterGetRecord()
             var
                 myInt: Integer;
@@ -166,8 +170,8 @@ report 50232 "Etat Vente Journalier"
                 StkSecondLocation := 0;
                 QteCmdVente := 0;
 
-                if showSecLocation then GetStockSecondLocation(GItem, SecondLocationFilter, GETFILTER("Posting Date"));
-                if showCmdVente then GetQteCmd(GItem);
+                GetStockSecondLocation(GItem, SecondLocationFilter, GETFILTER("Posting Date"));
+                GetQteCmd(GItem);
 
             END;
 
@@ -224,6 +228,13 @@ report 50232 "Etat Vente Journalier"
                         ApplicationArea = All;
                         Caption = 'Afficher Stock Mag Secondaire';
                         ToolTip = 'Afficher le stock du magasin secondaire';
+                        ShowMandatory = false;
+                    }
+                    field(showStkPhysique; showStkPhysique)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Afficher Stock Physique';
+                        ToolTip = 'Afficher le stock physique';
                         ShowMandatory = false;
                     }
                 }
@@ -327,7 +338,7 @@ report 50232 "Etat Vente Journalier"
         fab: Record Manufacturer;
         RecCompany: record "Company Information";
         BinCOntent, BinCOntent1 : Record "Bin Content";
-        showCmdVente, showSecLocation : Boolean;
+        showCmdVente, showSecLocation, showStkPhysique : Boolean;
 
 
 }
