@@ -262,7 +262,7 @@ report 50236 "Etat Recu Caisse"
                     repeat
                         TotalDoc := TotalDoc + recRecuCaisseLigne."Montant Reglement";
                         if (LibelleTicket = '') then
-                            if recRecuCaisseLigne.type = recRecuCaisseLigne.type::Divers then begin
+                            if (recRecuCaisseLigne.type = recRecuCaisseLigne.type::Divers) OR (recRecuCaisseLigne.type = recRecuCaisseLigne.type::Impaye) then begin
                                 LibelleTicket := '* ' + recRecuCaisseLigne.Libelle + ' / ' + Format(recRecuCaisseLigne."Montant Reglement", 0, '<Precision,3:3><Standard Format,0>')
                             end
                             else

@@ -56,6 +56,10 @@ table 70012 "Recu Caisse Document"
         {
             DataClassification = ToBeClassified;
         }
+        field(70021; "id Ligne Impaye"; integer)
+        {
+            DataClassification = ToBeClassified;
+        }
 
     }
 

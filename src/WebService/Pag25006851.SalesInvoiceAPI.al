@@ -109,6 +109,18 @@ page 25006851 "Sales Invoice API"
                     Caption = 'orderNumber', Locked = true;
                     Editable = false;
                 }
+                field(OrderDate; "Order Date")
+                {
+                    ApplicationArea = All;
+                    Caption = 'orderDate', Locked = true;
+                    Editable = false;
+                }
+                field(ServiceOrderNo; "Service Order No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Service Order No.', Locked = true;
+                    ToolTip = 'Specifies the service order number associated with the invoice.';
+                }
                 field(salesperson; "Salesperson Code")
                 {
                     ApplicationArea = All;
@@ -194,6 +206,36 @@ page 25006851 "Sales Invoice API"
                     ToolTip = 'Specifies the document profile for the invoice.';
 
                 }
+                field(TypeService; "Type Booking")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Type Booking', Locked = true;
+                    ToolTip = 'Specifies the type of booking for the invoice.';
+                }
+                field(Initiateur; Initiateur)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Code Initiateur', Locked = true;
+                    ToolTip = 'Specifies the code of the initiator for the invoice.';
+                }
+                field(VehicleSerialNo; "Vehicle Serial No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Vehicle Serial No.', Locked = true;
+                    ToolTip = 'Specifies the serial number of the vehicle associated with the invoice.';
+                }
+                field(VIN; vinNumber)
+                {
+                    ApplicationArea = All;
+                    Caption = 'VIN', Locked = true;
+                    ToolTip = 'Specifies the Vehicle Identification Number (VIN) associated with the invoice.';
+                }
+                field(workDescription; workDescription)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Work Description', Locked = true;
+                    ToolTip = 'Specifies the description of the work associated with the invoice.';
+                }
             }
         }
     }
@@ -205,7 +247,17 @@ page 25006851 "Sales Invoice API"
     trigger OnAfterGetRecord()
     var
         SalesInvoiceAggregator: Codeunit "Sales Invoice Aggregator";
+        Vehicle: Record Vehicle;
     begin
+        CalcFields(Initiateur);
+        WorkDescription := CopyStr(GetWorkDescription, 1, 250);
+
+        Vehicle.reset();
+        Vehicle.SetRange("Serial No.", "Vehicle Serial No.");
+        if Vehicle.FindFirst() then
+            vinNumber := Vehicle."VIN";
+
+
     end;
 
     trigger OnModifyRecord(): Boolean
@@ -254,6 +306,8 @@ page 25006851 "Sales Invoice API"
         AlreadyCanceledErr: Label 'The invoice cannot be canceled because it has already been canceled.', Locked = true;
         MailNotConfiguredErr: Label 'An email account must be configured to send emails.', Locked = true;
         HasWritePermissionForDraft: Boolean;
+        workDescription: Text[250];
+        vinNumber: Text[50];
 
 
 

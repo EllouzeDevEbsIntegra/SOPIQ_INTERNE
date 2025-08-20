@@ -28,7 +28,7 @@ enum 50056 "Banque Caisse"
 
     value(6; ZB)
     {
-        Caption = 'ZTIOUNA';
+        Caption = 'ZITOUNA';
     }
 
     value(7; BB)

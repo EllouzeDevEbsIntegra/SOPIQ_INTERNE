@@ -45,5 +45,9 @@ enum 50057 "Document Caisse Type"
     {
         Caption = 'Avoir Achat';
     }
+    value(11; Impaye)
+    {
+        Caption = 'Impayé';
+    }
 
 }

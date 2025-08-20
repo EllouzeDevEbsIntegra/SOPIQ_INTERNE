@@ -14,7 +14,8 @@ report 25006127 "Batch Garder Prix Initial"
     {
         dataitem("Sales Shipment Line"; "Sales Shipment Line")
         {
-            RequestFilterFields = "Document No.";
+            RequestFilterFields = "Document No.", BS;
+            DataItemTableView = where(BS = const(true));
             trigger OnAfterGetRecord()
             var
                 SalesLine: Record 37;

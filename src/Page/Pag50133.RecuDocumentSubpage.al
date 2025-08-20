@@ -70,7 +70,9 @@ page 50133 "Recu Document Subpage"
                     else
                     if (type = const(FA)) "Purch. Inv. Header" where(solde = filter('Non'))
                     else
-                    if (type = const(AVA)) "Purch. Cr. Memo Hdr." where(solde = filter('Non'));
+                    if (type = const(AVA)) "Purch. Cr. Memo Hdr." where(solde = filter('Non'))
+                    else
+                    if (type = const(Impaye)) "Recu Caisse Paiement" where("N° Client" = field("Customer No"), Impaye = filter('Oui'));
 
                     trigger OnValidate()
 
@@ -83,6 +85,7 @@ page 50133 "Recu Document Subpage"
                         recRetourBL: Record "Return Receipt Header";
                         recPurchInv: Record "Purch. Inv. Header";
                         recPurchCrMemo: Record "Purch. Cr. Memo Hdr.";
+                        recRecuCaissePaiement: Record "Recu Caisse Paiement";
 
                     begin
 
@@ -170,6 +173,19 @@ page 50133 "Recu Document Subpage"
                                             recPurchCrMemo.CalcFields("Amount Including VAT", "Montant reçu caisse");
                                             "Montant Reglement" := (recPurchCrMemo."Amount Including VAT" - recPurchCrMemo."Montant reçu caisse");
                                             "Total TTC" := recPurchCrMemo."Amount Including VAT";
+                                        end;
+                                    end;
+                                type::Impaye:
+                                    begin
+                                        recRecuCaissePaiement.SetRange("N° Client", "Customer No");
+                                        recRecuCaissePaiement.SetRange("No Recu", "Document No");
+                                        recRecuCaissePaiement.SetRange(Impaye, true);
+                                        if recRecuCaissePaiement.FindFirst() then begin
+                                            recRecuCaissePaiement.CalcFields("Montant reçu caisse");
+                                            "Montant Reglement" := recRecuCaissePaiement."Montant" - recRecuCaissePaiement."Montant reçu caisse";
+                                            "Total TTC" := recRecuCaissePaiement."Montant";
+                                            "id Ligne Impaye" := recRecuCaissePaiement."Line No";
+                                            Libelle := 'Impaye ' + Format(recRecuCaissePaiement.type) + ' ' + Format(recRecuCaissePaiement.banque) + ' N°' + recRecuCaissePaiement."Paiment No" + ' Montant: ' + Format(recRecuCaissePaiement."Montant", 0, '<Precision,3:3><Standard Format,0>') + ' Echéance : ' + Format(recRecuCaissePaiement.Echeance) + ' ' + recRecuCaissePaiement.Name;
                                         end;
                                     end;
                                 else begin

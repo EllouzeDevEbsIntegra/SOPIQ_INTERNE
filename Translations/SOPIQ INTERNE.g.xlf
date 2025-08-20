@@ -303,6 +303,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Document - Field Document No - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 633452020 - Field 3495888423 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>id Ligne Impaye</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Document - Field id Ligne Impaye - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 633452020 - Field 893932817 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Libelle</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -338,6 +343,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Paiement - Field banque - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 3704848948 - Field 2208820791 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date Impayé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Paiement - Field Date Impaye - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 3704848948 - Field 2786374491 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Date Reçu</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -347,6 +357,11 @@
           <source>Echeance</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Paiement - Field Echeance - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3704848948 - Field 512193667 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Impaye</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Paiement - Field Impaye - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 3704848948 - Field 1894446929 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>isDecaissement</source>
@@ -368,6 +383,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Paiement - Field Montant Calcul - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 3704848948 - Field 117901444 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Montant reçu caisse</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Paiement - Field Montant reçu caisse - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 3704848948 - Field 2961552353 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Name</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -377,6 +397,16 @@
           <source>No Recu</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Paiement - Field No Recu - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3704848948 - Field 3823797279 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nom Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Paiement - Field Nom Client - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3704848948 - Field 1113793905 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Paiement - Field N° Client - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 3704848948 - Field 1251800501 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Paiment No</source>
@@ -8683,10 +8713,40 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Liste Paiement Caisse - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1254443442 - Control 2208820791 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date Impayé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Liste Paiement Caisse - Control Date Impaye - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1254443442 - Control 512193667 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Impaye</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Liste Paiement Caisse - Control Impaye - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1254443442 - Control 1512414681 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Mnt Calculé</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Liste Paiement Caisse - Control Montant Calcul - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1254443442 - Control 117901444 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Montant reçu caisse</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Liste Paiement Caisse - Control Montant reçu caisse - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1254443442 - Control 3823797279 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nom Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Liste Paiement Caisse - Control Nom Client - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1254443442 - Control 1113793905 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Liste Paiement Caisse - Control N° Client - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1254443442 - Action 1077954309 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Marquer Impayé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Liste Paiement Caisse - Action setImpaye - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 284191700 - Control 2445482498 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Lignes</source>
@@ -10713,10 +10773,40 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control feedback - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="Page 1788160435 - Control 3872123568 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code of the initiator for the invoice.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control Initiateur - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Page 1788160435 - Control 1589153032 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the amount received in cash.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control MontantRecuCaisse - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1788160435 - Control 2339910006 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the service order number associated with the invoice.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control ServiceOrderNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1788160435 - Control 3620118319 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the type of booking for the invoice.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control TypeService - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1788160435 - Control 1129682667 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the serial number of the vehicle associated with the invoice.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control VehicleSerialNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1788160435 - Control 3582544635 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the Vehicle Identification Number (VIN) associated with the invoice.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control VIN - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1788160435 - Control 2131938465 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the description of the work associated with the invoice.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control workDescription - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 2190856366 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Liste Facture à payer</source>
@@ -16883,6 +16973,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Purchase Quotes - Control Total Line - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 3113493751 - Control 4272836170 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3113493751">
+          <source>No. Doc Frs</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Purchase Return Order List - Control Vendor Cr. Memo No. - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 3921990236 - Control 450952657 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3921990236">
           <source>Activer Emp Par Déf Cmd Achat</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -19764,7 +19859,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Enum Banque Caisse - EnumValue WB - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 1567262030 - EnumValue 429800956 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>ZTIOUNA</source>
+          <source>ZITOUNA</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum Banque Caisse - EnumValue ZB - Property Caption</note>
         </trans-unit>
@@ -19827,6 +19922,11 @@
           <source>Facture Achat</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum Document Caisse Type - EnumValue FA - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 3267310699 - EnumValue 512193667 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Impayé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Document Caisse Type - EnumValue Impaye - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 3267310699 - EnumValue 821689635 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Facture</source>
@@ -19954,7 +20054,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Enum Obs. Purch. Inv. Line - EnumValue Vendor Return - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 608388792 - EnumValue 346433935 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Avoir Esp/Cheque</source>
+          <source>Avoir Paiement</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum Paiment Caisse Type - EnumValue AvoirEsp - Property Caption</note>
         </trans-unit>
@@ -20019,7 +20119,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Enum Paiment Caisse Type - EnumValue Remise - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 608388792 - EnumValue 3390553078 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Reste Cheque/Traite</source>
+          <source>Reste Paiement</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum Paiment Caisse Type - EnumValue ResteCheque - Property Caption</note>
         </trans-unit>

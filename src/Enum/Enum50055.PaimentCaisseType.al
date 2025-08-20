@@ -35,11 +35,11 @@ enum 50055 "Paiment Caisse Type"
 
     value(7; ResteCheque)
     {
-        Caption = 'Reste Cheque/Traite';
+        Caption = 'Reste Paiement';
     }
     value(8; AvoirEsp)
     {
-        Caption = 'Avoir Esp/Cheque';
+        Caption = 'Avoir Paiement';
     }
     value(9; RS)
     {

@@ -4,10 +4,24 @@ table 70013 "Recu Caisse Paiement"
 
     fields
     {
-        field(70011; "Date Reçu"; Date)
+        field(70009; "Date Reçu"; Date)
         {
             CalcFormula = lookup("Recu Caisse".dateRecu where(No = field("No Recu")));
             Caption = 'Date Reçu';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(70010; "N° Client"; Code[20])
+        {
+            CalcFormula = lookup("Recu Caisse"."Customer No" where(No = field("No Recu")));
+            Caption = 'Code Client';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(70011; "Nom Client"; text[100])
+        {
+            CalcFormula = lookup("Recu Caisse".custName where(No = field("No Recu")));
+            Caption = 'Nom Client';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -75,6 +89,26 @@ table 70013 "Recu Caisse Paiement"
         {
             DataClassification = ToBeClassified;
         }
+
+        field(70023; Impaye; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(70025; "Date Impaye"; date)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Date Impayé';
+        }
+        field(70024; "Montant reçu caisse"; Decimal)
+        {
+            Caption = 'Montant reçu caisse';
+
+            FieldClass = FlowField;
+            CalcFormula = sum("Recu Caisse Document"."Montant Reglement" WHERE("Document No" = field("No Recu"), "id Ligne Impaye" = field("Line No")));
+            Editable = false;
+        }
+
+
 
     }
 
