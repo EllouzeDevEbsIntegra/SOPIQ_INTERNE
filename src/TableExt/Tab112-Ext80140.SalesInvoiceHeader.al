@@ -47,14 +47,6 @@ tableextension 80140 "Sales Invoice Header" extends "Sales Invoice Header"//112
             CalcFormula = sum("Recu Caisse Document"."Montant Reglement" WHERE("Document No" = field("No.")));
             Editable = false;
         }
-        // field(80412; "No reçu caisse"; code[20])
-        // {
-        //     Caption = 'No reçu caisse';
-
-        //     FieldClass = FlowField;
-        //     CalcFormula = lookup("Recu Caisse Document"."No Recu" WHERE("Document No" = field("No.")));
-        //     Editable = false;
-        // }
 
         field(80413; solde; Boolean)
         {
@@ -64,6 +56,11 @@ tableextension 80140 "Sales Invoice Header" extends "Sales Invoice Header"//112
         {
             FieldClass = FlowField;
             CalcFormula = lookup("Posted Serv. Order Header"."Initiator Code" WHERE("No." = field("Service Order No.")));
+        }
+        field(80415; feedback; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Feedback';
         }
 
     }

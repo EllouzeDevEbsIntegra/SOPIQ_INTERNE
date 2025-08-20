@@ -10698,6 +10698,26 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales Cr Memo To Pay - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1788160435 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>salesInvoices</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1788160435 - Control 2139404112 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the document profile for the invoice.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control DocumentProfile - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1788160435 - Control 859562579 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies whether the invoice has feedback.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control feedback - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1788160435 - Control 1589153032 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the amount received in cash.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control MontantRecuCaisse - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Page 2190856366 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Liste Facture à payer</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -16583,6 +16603,21 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoices (Serv.) - Control Remaining Amount - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 2984472522 - Control 1729919859 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2984472522">
+          <source>Indicates if the feedback has been given for this service order.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoices (Serv.) - Control Feedback - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2984472522 - Control 1729919859 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2984472522">
+          <source>Feedback</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoices (Serv.) - Control Feedback - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2984472522 - Control 117901444 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2984472522">
+          <source>Montant reçu caisse</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoices (Serv.) - Control Montant reçu caisse - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 3373253667 - Action 3698879524 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3373253667">
           <source>Imprimer BL Agence</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -18947,6 +18982,11 @@
           <source>Type MO</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Invoice Header - Field DiscountAmount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 809936682 - Field 859562579 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 809936682">
+          <source>Feedback</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Invoice Header - Field feedback - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 809936682 - Field 3872123568 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 809936682">
           <source>Initiateur</source>

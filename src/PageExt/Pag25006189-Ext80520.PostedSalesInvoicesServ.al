@@ -17,24 +17,34 @@ pageextension 80520 "Posted Sales Invoices (Serv.)" extends "Posted Sales Invoic
             }
 
         }
+        addlast(Control1)
+        {
+            field("Feedback"; feedback)
+            {
+                ApplicationArea = All;
+                Caption = 'Feedback';
+                ToolTip = 'Indicates if the feedback has been given for this service order.';
+            }
+            field("Montant reçu caisse"; "Montant reçu caisse")
+            {
+                ApplicationArea = all;
+                Caption = 'Montant reçu caisse';
+                trigger OnDrillDown()
+                begin
+                    DoDrillDown;
+                end;
+            }
+        }
     }
 
 
     actions
     {
         // Add changes to page actions here
-        addafter(Print)
-        {
-            action(modifyDate)
-            {
-                trigger OnAction()
-                begin
-                    CurrPage.Editable := true;
-                    CurrPage.Update();
+        // addafter(Print)
+        // {
 
-                end;
-            }
-        }
+        // }
     }
 
     var
@@ -42,6 +52,14 @@ pageextension 80520 "Posted Sales Invoices (Serv.)" extends "Posted Sales Invoic
 
     trigger OnAfterGetRecord()
     begin
-        CalcFields(Initiateur, "Remaining Amount");
+        CalcFields(Initiateur, "Remaining Amount", "Montant reçu caisse");
+    end;
+
+    local procedure DoDrillDown()
+    var
+        recuCaisseDoc: Record "Recu Caisse Document";
+    begin
+        recuCaisseDoc.SetRange("Document No", rec."No.");
+        PAGE.Run(PAGE::"Recu Document List", recuCaisseDoc);
     end;
 }
