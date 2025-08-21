@@ -255,6 +255,7 @@ report 50236 "Etat Recu Caisse"
                 Clear(recRecuCaisseLigne);
                 LibelleTicket := '';
                 LibellePaiement := '';
+                libelleLinkedInvoice := '';
                 TotalDoc := 0;
                 TotalReglement := 0;
                 recRecuCaisseLigne.SetRange("No Recu", "Recu Caisse".No);
@@ -294,6 +295,7 @@ report 50236 "Etat Recu Caisse"
                 recRecuPaiement.SetRange("No Recu", "Recu Caisse".No);
                 if recRecuPaiement.FindSet() then begin
                     repeat
+                        libelleLinkedInvoice := '';
                         libelleNoPaiement := '';
                         if (recRecuPaiement.type = recRecuPaiement.type::"AvoirEsp")
                             OR (recRecuPaiement.type = recRecuPaiement.type::"Cheque")
@@ -311,11 +313,15 @@ report 50236 "Etat Recu Caisse"
 
                         end;
 
+                        if recRecuPaiement."Linked Invoice" <> '' then begin
+                            libelleLinkedInvoice := ' / Facture N° : ' + recRecuPaiement."Linked Invoice";
+                        end;
+
                         if (recRecuPaiement."Paiment No" <> '') then libelleNoPaiement := 'N°';
                         if (LibellePaiement = '') then
-                            LibellePaiement := '* ' + Format(recRecuPaiement.type) + ' ' + Format(recRecuPaiement.banque) + ' ' + libelleNoPaiement + Format(recRecuPaiement."Paiment No") + ' ' + Format(recRecuPaiement.Montant, 0, '<Precision,3:3><Standard Format,0>') + ' ' + Format(recRecuPaiement.Echeance) + ' ' + Format(recRecuPaiement.Name)
+                            LibellePaiement := '* ' + Format(recRecuPaiement.type) + ' ' + Format(recRecuPaiement.banque) + ' ' + libelleNoPaiement + Format(recRecuPaiement."Paiment No") + ' ' + Format(recRecuPaiement.Montant, 0, '<Precision,3:3><Standard Format,0>') + ' ' + Format(recRecuPaiement.Echeance) + ' ' + Format(recRecuPaiement.Name) + libelleLinkedInvoice
                         else
-                            LibellePaiement := LibellePaiement + FORMAT(char13) + FORMAT(char10) + '* ' + Format(recRecuPaiement.type) + ' ' + Format(recRecuPaiement.banque) + ' ' + libelleNoPaiement + Format(recRecuPaiement."Paiment No") + ' ' + Format(recRecuPaiement.Montant, 0, '<Precision,3:3><Standard Format,0>') + ' ' + Format(recRecuPaiement.Echeance) + ' ' + Format(recRecuPaiement.Name);
+                            LibellePaiement := LibellePaiement + FORMAT(char13) + FORMAT(char10) + '* ' + Format(recRecuPaiement.type) + ' ' + Format(recRecuPaiement.banque) + ' ' + libelleNoPaiement + Format(recRecuPaiement."Paiment No") + ' ' + Format(recRecuPaiement.Montant, 0, '<Precision,3:3><Standard Format,0>') + ' ' + Format(recRecuPaiement.Echeance) + ' ' + Format(recRecuPaiement.Name) + libelleLinkedInvoice;
                     until recRecuPaiement.Next() = 0;
                 end;
 
@@ -370,6 +376,7 @@ report 50236 "Etat Recu Caisse"
         DateFilter: text[20];
         DatFilterError: label 'Merci de renseigner la date de filtre';
         isACPTOrREG: Text;
+        libelleLinkedInvoice: Text;
 
 
 

@@ -100,6 +100,12 @@ page 50135 "Recu Paiement Subpage"
                     Caption = 'Mnt Calculé';
                     Editable = false;
                 }
+                field("Linked Invoice"; "Linked Invoice")
+                {
+                    ApplicationArea = all;
+                    Caption = 'Facture liée';
+                    ToolTip = 'Facture liée à ce paiement';
+                }
 
 
 

@@ -378,6 +378,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Paiement - Field Line No - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 3704848948 - Field 3030287788 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Facture Liée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Paiement - Field Linked Invoice - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 3704848948 - Field 4186423149 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Montant</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -10757,6 +10762,16 @@
           <source>Liste Paiements</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Recu Paiement Subpage - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3454346139 - Control 3030287788 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Facture liée à ce paiement</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Paiement Subpage - Control Linked Invoice - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3454346139 - Control 3030287788 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Facture liée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Paiement Subpage - Control Linked Invoice - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3454346139 - Control 1512414681 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Mnt Calculé</source>

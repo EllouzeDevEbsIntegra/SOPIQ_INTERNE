@@ -166,6 +166,7 @@ report 25006029 "Recu Caisse"
                 Clear(recRecuCaisseLigne);
                 LibelleTicket := '';
                 LibellePaiement := '';
+                libelleLinkedInvoice := '';
                 recRecuCaisseLigne.SetRange("No Recu", "Recu Caisse".No);
                 if recRecuCaisseLigne.FindSet() then begin
                     repeat
@@ -180,11 +181,15 @@ report 25006029 "Recu Caisse"
                 recRecuPaiement.SetRange("No Recu", "Recu Caisse".No);
                 if recRecuPaiement.FindSet() then begin
                     repeat
+                        libelleLinkedInvoice := '';
+                        if recRecuPaiement."Linked Invoice" <> '' then begin
+                            libelleLinkedInvoice := ' / Facture N° : ' + recRecuPaiement."Linked Invoice";
+                        end;
                         if (recRecuPaiement."Paiment No" <> '') then libelleNoPaiement := 'N°';
                         if (LibellePaiement = '') then
-                            LibellePaiement := '* ' + Format(recRecuPaiement.type) + ' ' + Format(recRecuPaiement.banque) + ' ' + libelleNoPaiement + Format(recRecuPaiement."Paiment No") + ' ' + Format(recRecuPaiement.Montant, 0, '<Precision,3:3><Standard Format,0>') + ' ' + Format(recRecuPaiement.Echeance) + ' ' + Format(recRecuPaiement.Name)
+                            LibellePaiement := '* ' + Format(recRecuPaiement.type) + ' ' + Format(recRecuPaiement.banque) + ' ' + libelleNoPaiement + Format(recRecuPaiement."Paiment No") + ' ' + Format(recRecuPaiement.Montant, 0, '<Precision,3:3><Standard Format,0>') + ' ' + Format(recRecuPaiement.Echeance) + ' ' + Format(recRecuPaiement.Name) + libelleLinkedInvoice
                         else
-                            LibellePaiement := LibellePaiement + FORMAT(char13) + FORMAT(char10) + '* ' + Format(recRecuPaiement.type) + ' ' + Format(recRecuPaiement.banque) + ' ' + libelleNoPaiement + Format(recRecuPaiement."Paiment No") + ' ' + Format(recRecuPaiement.Montant, 0, '<Precision,3:3><Standard Format,0>') + ' ' + Format(recRecuPaiement.Echeance) + ' ' + Format(recRecuPaiement.Name);
+                            LibellePaiement := LibellePaiement + FORMAT(char13) + FORMAT(char10) + '* ' + Format(recRecuPaiement.type) + ' ' + Format(recRecuPaiement.banque) + ' ' + libelleNoPaiement + Format(recRecuPaiement."Paiment No") + ' ' + Format(recRecuPaiement.Montant, 0, '<Precision,3:3><Standard Format,0>') + ' ' + Format(recRecuPaiement.Echeance) + ' ' + Format(recRecuPaiement.Name) + libelleLinkedInvoice;
                     until recRecuPaiement.Next() = 0;
                 end;
 
@@ -228,6 +233,8 @@ report 25006029 "Recu Caisse"
         LibelleTicket, LibellePaiement : text;
         recRecuCaisseLigne: Record "Recu Caisse Document";
         recRecuPaiement: Record "Recu Caisse Paiement";
+        libelleLinkedInvoice: Text;
+
 
 }
 

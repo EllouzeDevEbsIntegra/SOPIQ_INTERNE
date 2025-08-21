@@ -112,6 +112,12 @@ table 70013 "Recu Caisse Paiement"
             DataClassification = ToBeClassified;
             Caption = 'Solde';
         }
+        field(70027; "Linked Invoice"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Facture Liée';
+            TableRelation = "Sales Invoice Header"."No.";
+        }
 
 
 
