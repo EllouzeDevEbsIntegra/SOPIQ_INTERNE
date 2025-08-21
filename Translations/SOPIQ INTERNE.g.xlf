@@ -328,6 +328,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Document - Field No Recu - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 633452020 - Field 1749222251 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>solde</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Document - Field solde - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 633452020 - Field 1845139091 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Total TTC</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -412,6 +417,11 @@
           <source>Paiment No</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Paiement - Field Paiment No - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3704848948 - Field 1749222251 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Solde</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Paiement - Field solde - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 3704848948 - Field 936837089 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Text For Print</source>
@@ -4893,10 +4903,15 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control Name - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 1202461241 - Control 2445482498 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1202461241 - Control 3219584453 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Solde Ouvert</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control totalSolde - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1202461241 - Control 2190984592 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Statistiques</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control General - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control Statistique - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 1202461241 - Control 223042559 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>BL</source>
@@ -4932,6 +4947,46 @@
           <source>Cmd Vente</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control salesOrderCount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1202461241 - Control 2609915797 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Totaux Soldes Ouverts</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control Totaux - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1202461241 - Control 1487053632 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total BL</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control blTotal - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1202461241 - Control 3995732829 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total BS</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control bsTotal - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1202461241 - Control 2426798116 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Cmd</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control CmdTotal - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1202461241 - Control 1513946971 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Avoir</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control crMemoTotal - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1202461241 - Control 3862943189 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Facture</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control invoiceTotal - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1202461241 - Control 4178439457 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Ret BL</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control retBlTotal - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1202461241 - Control 2075355484 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Ret BS</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control retBsTotal - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2392491431 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Customer Ledger Entry API</source>
@@ -8743,6 +8798,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Liste Paiement Caisse - Control N° Client - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1254443442 - Control 1749222251 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Solde</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Liste Paiement Caisse - Control solde - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1254443442 - Action 1077954309 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Marquer Impayé</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -10702,6 +10762,16 @@
           <source>Mnt Calculé</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Recu Paiement Subpage - Control Montant Calcul - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3454346139 - Action 1735172866 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Copier le nom du client dans le champ Nom</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Paiement Subpage - Action Copier Nom - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3454346139 - Action 1735172866 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Copier Nom</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Paiement Subpage - Action Copier Nom - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2906447551 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Retour BL</source>
@@ -14773,6 +14843,31 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report ModifyBillToCustomer - NamedType dialogWindow</note>
         </trans-unit>
+        <trans-unit id="Report 2347554639 - NamedType 1768589747" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bon de sortie No %1 modifié pour le client No %2 - %3</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report ModifyBillToCustomerBS - NamedType BlGenerated</note>
+        </trans-unit>
+        <trans-unit id="Report 2347554639 - NamedType 149024193" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Modifier le bon de sortie</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report ModifyBillToCustomerBS - NamedType confirmation</note>
+        </trans-unit>
+        <trans-unit id="Report 2347554639 - NamedType 1521351204" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Génération annulé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report ModifyBillToCustomerBS - NamedType confirmationcanceled</note>
+        </trans-unit>
+        <trans-unit id="Report 2347554639 - NamedType 1624025432" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Merci de spécifier le code client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report ModifyBillToCustomerBS - NamedType CustAbsence</note>
+        </trans-unit>
+        <trans-unit id="Report 2347554639 - NamedType 2775559488" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Modification du bon de sortie</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report ModifyBillToCustomerBS - NamedType dialogWindow</note>
+        </trans-unit>
         <trans-unit id="Report 3813463510 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Phys. Invt. Recording</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -16552,6 +16647,16 @@
           <source>Remise %</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Ligne archive BS - Control % Discount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 466920747 - Action 1334252824 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 466920747">
+          <source>Modifier Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Liste archive Bon de sortie - Action ModifyCustomer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 466920747 - Action 1334252824 - Method 1377591017 - NamedType 1084176789" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 466920747">
+          <source>Pas de BS sélectionné</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Liste archive Bon de sortie - Action ModifyCustomer - Method OnAction - NamedType txtmessage</note>
         </trans-unit>
         <trans-unit id="PageExtension 466920747 - Control 4204456523 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 466920747">
           <source>Client Imprimé</source>

@@ -30,6 +30,13 @@ page 50161 "Customer Document Transaction"
                     Editable = false;
                     Style = Strong;
                 }
+                field(totalSolde; totalSolde)
+                {
+                    Caption = 'Total Solde Ouvert';
+                    ApplicationArea = all;
+                    Editable = false;
+                    Style = Favorable;
+                }
                 field(global; global)
                 {
                     ApplicationArea = all;
@@ -77,7 +84,7 @@ page 50161 "Customer Document Transaction"
                     ApplicationArea = All;
                 }
             }
-            group(General)
+            group(Statistique)
             {
                 Caption = 'Statistiques';
                 grid("Stat")
@@ -130,6 +137,55 @@ page 50161 "Customer Document Transaction"
                         ApplicationArea = all;
                         Editable = false;
                         StyleExpr = FieldStyleCrMemo;
+                    }
+                }
+            }
+            group(Totaux)
+            {
+                Caption = 'Totaux Soldes Ouverts';
+                grid("Total")
+                {
+                    field(CmdTotal; CmdTotal)
+                    {
+                        Caption = 'Total Cmd';
+                        ApplicationArea = all;
+                        Editable = false;
+                    }
+                    field(bsTotal; bsTotal)
+                    {
+                        Caption = 'Total BS';
+                        ApplicationArea = all;
+                        Editable = false;
+                    }
+                    field(retBsTotal; retBsTotal)
+                    {
+                        Caption = 'Total Ret BS';
+                        ApplicationArea = all;
+                        Editable = false;
+                    }
+                    field(blTotal; blTotal)
+                    {
+                        Caption = 'Total BL';
+                        ApplicationArea = all;
+                        Editable = false;
+                    }
+                    field(retBlTotal; retBlTotal)
+                    {
+                        Caption = 'Total Ret BL';
+                        ApplicationArea = all;
+                        Editable = false;
+                    }
+                    field(invoiceTotal; invoiceTotal)
+                    {
+                        Caption = 'Total Facture';
+                        ApplicationArea = all;
+                        Editable = false;
+                    }
+                    field(crMemoTotal; crMemoTotal)
+                    {
+                        Caption = 'Total Avoir';
+                        ApplicationArea = all;
+                        Editable = false;
                     }
                 }
             }
@@ -211,6 +267,7 @@ page 50161 "Customer Document Transaction"
 
     var
         salesOrderCount, bsCount, retBsCount, BlCount, RetBlCount, invoiceCount, crMemoCount : Integer;
+        CmdTotal, bsTotal, retBsTotal, blTotal, retBlTotal, invoiceTotal, crMemoTotal, totalSolde : Decimal;
         FieldStylesalesOrder, FieldStyleBS, FieldStyleRetBS, FieldStyleBL, FieldStyleRetBL, FieldStyleInvoice, FieldStyleCrMemo : Text[50];
         global: Boolean;
         SalesOrderVisible, BsVisible, RetBsVisible, BlVisible, RetBlVisible, InvVisible, CrMemoVisible : Boolean;
@@ -224,6 +281,13 @@ page 50161 "Customer Document Transaction"
         RetBlCount := 0;
         invoiceCount := 0;
         crMemoCount := 0;
+        CmdTotal := 0;
+        bsTotal := 0;
+        retBsTotal := 0;
+        blTotal := 0;
+        retBlTotal := 0;
+        invoiceTotal := 0;
+        crMemoTotal := 0;
         SalesOrderVisible := false;
         BsVisible := false;
         RetBsVisible := false;
@@ -267,46 +331,84 @@ page 50161 "Customer Document Transaction"
         recCompanyInformation: Record "Company Information";
     begin
         recCompanyInformation.get();
-        // Calcul nombre  Cmd Vente
+        // Calcul nombre  Cmd Vente + Total Cmd
+        CmdTotal := 0;
         salesHeader.Reset();
         salesHeader.SetRange("Document Type", salesHeader."Document Type"::Order);
         salesHeader.SetRange("Bill-to Customer No.", "No.");
         salesHeader.CalcFields("Completely Shipped");
         salesHeader.SetFilter("Completely Shipped", '%1', false);
         salesOrderCount := salesHeader.Count;
+        if salesHeader.FindSet() then begin
+            repeat
+                salesHeader.CalcFields("Amount Including VAT");
+                CmdTotal += salesHeader."Amount Including VAT";
+            until salesHeader.Next() = 0;
+        end;
         if salesOrderCount > 0 then SalesOrderVisible := true else SalesOrderVisible := false;
 
-        // Calcul nombre  BS Archivé
+        // Calcul nombre  BS Archivé + Total BS
+        bsTotal := 0;
         archiveBS.Reset();
         archiveBS.SetRange("Bill-to Customer No.", "No.");
         if soldeFilter = false then archiveBS.SetRange(Solde, false);
         bsCount := archiveBS.Count;
+        archiveBS.SetRange(Solde, false); // Set Solde to false for archive BS
+        if archiveBS.FindSet() then begin
+            repeat
+                archiveBS.CalcFields("Montant TTC", "Montant reçu caisse");
+                bsTotal += (archiveBS."Montant TTC" - archiveBS."Montant reçu caisse");
+            until archiveBS.Next() = 0;
+        end;
         if bsCount > 0 then BsVisible := true else BsVisible := false;
 
 
-        // Calcul nombre retour BS 
+        // Calcul nombre retour BS + Total retour BS
+        retBsTotal := 0;
         ReturnRcptHeader.Reset();
         ReturnRcptHeader.SetFilter(BS, '%1', true);
         ReturnRcptHeader.SetRange("Bill-to Customer No.", "No.");
         if soldeFilter = false then ReturnRcptHeader.SetRange(Solde, false);
         retBsCount := ReturnRcptHeader.Count;
+        ReturnRcptHeader.SetRange(Solde, false); // Set Solde to false for return BS
+        if ReturnRcptHeader.FindSet() then begin
+            repeat
+                ReturnRcptHeader.CalcFields("Line Amount", "Montant reçu caisse");
+                retBsTotal += (ReturnRcptHeader."Line Amount" - ReturnRcptHeader."Montant reçu caisse");
+            until ReturnRcptHeader.Next() = 0;
+        end;
         if retBsCount > 0 then RetBsVisible := true else RetBsVisible := false;
 
-        // Calcul nombre BL
+        // Calcul nombre BL + Total BL
+        blTotal := 0;
         SalesShipment.Reset();
         SalesShipment.SetFilter(BS, '%1', false);
         if recCompanyInformation.BS = false then begin
             if soldeFilter = false then SalesShipment.SetRange(Solde, false);
         end else begin
-            SalesShipment.CalcFields("Montant Ouvert");
+            SalesShipment.CalcFields("Montant Ouvert", "Montant reçu caisse");
             if soldeFilter = false then SalesShipment.setfilter("Montant Ouvert", '<>%1', 0);
         end;
 
         SalesShipment.SetRange("Bill-to Customer No.", "No.");
         BlCount := SalesShipment.Count;
+        IF recCompanyInformation.BS = FALSE THEN
+            SalesShipment.SetRange(Solde, false); // Set Solde to false for Sales Shipment
+        if SalesShipment.FindSet() then begin
+            repeat
+                if recCompanyInformation.BS = true then begin
+                    SalesShipment.CalcFields("Montant Ouvert");
+                    blTotal += SalesShipment."Montant Ouvert";
+                end else begin
+                    SalesShipment.CalcFields("Line Amount", "Montant reçu caisse");
+                    blTotal += (SalesShipment."Line Amount" - SalesShipment."Montant reçu caisse");
+                end;
+            until SalesShipment.Next() = 0;
+        end;
         if BlCount > 0 then BlVisible := true else BlVisible := false;
 
-        // Calcul nombre retour BL
+        // Calcul nombre retour BL + Total retour BL
+        retBlTotal := 0;
         ReturnRcptHeader.Reset();
         ReturnRcptHeader.SetFilter(BS, '%1', false);
         if recCompanyInformation.BS = false then begin
@@ -317,23 +419,55 @@ page 50161 "Customer Document Transaction"
         end;
         ReturnRcptHeader.SetRange("Bill-to Customer No.", "No.");
         RetBlCount := ReturnRcptHeader.Count;
+        if recCompanyInformation.BS = false then
+            ReturnRcptHeader.SetRange(Solde, false); // Set Solde to false for Return Receipt Header
+        if ReturnRcptHeader.FindSet() then begin
+            repeat
+
+                if recCompanyInformation.BS = true then begin
+                    ReturnRcptHeader.CalcFields("Montant Ouvert");
+                    retBlTotal += ReturnRcptHeader."Montant Ouvert";
+                end else begin
+                    ReturnRcptHeader.CalcFields("Line Amount", "Montant reçu caisse");
+                    retBlTotal += (ReturnRcptHeader."Line Amount" - ReturnRcptHeader."Montant reçu caisse");
+                end;
+            until ReturnRcptHeader.Next() = 0;
+        end;
         if RetBlCount > 0 then RetBlVisible := true else RetBlVisible := false;
 
 
-        // Calcul nombre FACTURE
+        // Calcul nombre FACTURE + Total Facture
+        invoiceTotal := 0;
         InvoiceHeader.Reset();
         InvoiceHeader.SetRange("Bill-to Customer No.", "No.");
         if soldeFilter = false then InvoiceHeader.SetRange(Solde, false);
         invoiceCount := InvoiceHeader.Count;
+        InvoiceHeader.SetRange(Solde, false); // Set Solde to false for Invoice Header
+        if InvoiceHeader.FindSet() then begin
+            repeat
+                InvoiceHeader.CalcFields("Amount Including VAT", "Montant reçu caisse");
+                invoiceTotal += (InvoiceHeader."Amount Including VAT" - InvoiceHeader."Montant reçu caisse");
+            until InvoiceHeader.Next() = 0;
+        end;
         if invoiceCount > 0 then InvVisible := true else InvVisible := false;
 
-        // Calcul nombre AVOIR
+        // Calcul nombre AVOIR + Total Avoir
+        crMemoTotal := 0;
         CrMemoHeader.Reset();
         CrMemoHeader.SetRange("Bill-to Customer No.", "No.");
         if soldeFilter = false then CrMemoHeader.SetRange(Solde, false);
         crMemoCount := CrMemoHeader.Count;
+        CrMemoHeader.SetRange(Solde, false); // Set Solde to false for Cr Memo Header
+        if CrMemoHeader.FindSet() then begin
+            repeat
+                CrMemoHeader.CalcFields("Amount Including VAT", "Montant reçu caisse");
+                crMemoTotal += (CrMemoHeader."Amount Including VAT" - CrMemoHeader."Montant reçu caisse");
+            until CrMemoHeader.Next() = 0;
+        end;
         if crMemoCount > 0 then CrMemoVisible := true else CrMemoVisible := false;
 
+        // Calcul Total Solde
+        totalSolde := CmdTotal + bsTotal - retBsTotal + blTotal - retBlTotal + invoiceTotal - crMemoTotal;
 
         // Set Style 
         FieldStylesalesOrder := SetStyleQte(salesOrderCount);

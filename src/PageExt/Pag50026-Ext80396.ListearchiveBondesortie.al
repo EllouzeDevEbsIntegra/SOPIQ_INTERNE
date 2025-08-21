@@ -50,6 +50,29 @@ pageextension 80396 "Liste archive Bon de sortie" extends "Liste archive Bon de 
     actions
     {
         // Add changes to page actions here
+        addafter(Remboursement)
+        {
+            action(ModifyCustomer)
+            {
+                ApplicationArea = all;
+                Caption = 'Modifier Client';
+                Image = EditCustomer;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                Visible = true;
+                trigger OnAction()
+                var
+                    recBsArchive: Record "Entete archive BS";
+                    txtmessage: label 'Pas de BS sélectionné';
+                begin
+                    CurrPage.SETSELECTIONFILTER(recBsArchive);
+                    IF recBsArchive.FINDSET THEN begin
+                        report.run(25006130, TRUE, TRUE, recBsArchive);
+                    end;
+                end;
+            }
+        }
     }
 
     var

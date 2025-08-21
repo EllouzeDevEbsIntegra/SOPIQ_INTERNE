@@ -61,6 +61,16 @@ page 50135 "Recu Paiement Subpage"
                     Editable = isEditable;
                     trigger OnValidate()
                     begin
+                        if type = type::RS then begin
+                            if Confirm('Cette retenue est-il sur Plateforme TEJ ?') then begin
+                                Name := SupprimerSTR(Name, ' ** TEJ **');
+                                Name := Name + ' ** TEJ **';
+                            end
+                            else
+                                Name := SupprimerSTR(Name, ' ** TEJ **');
+
+                            rec.Modify();
+                        end;
                         if (type = type::AvoirEsp) OR (type = type::Depense) OR (type = type::retourBS)
                          OR (type = type::ResteCheque) OR (type = type::Transport)
                          then
@@ -102,6 +112,23 @@ page 50135 "Recu Paiement Subpage"
     {
         area(Processing)
         {
+            action("Copier Nom")
+            {
+                ApplicationArea = All;
+                Caption = 'Copier Nom';
+                Image = Copy;
+                ToolTip = 'Copier le nom du client dans le champ Nom';
+                trigger OnAction()
+                var
+                    recuCaisse: Record "Recu Caisse";
+                begin
+                    if recuCaisse.Get(recuNo) then begin
+                        Name := recuCaisse.custName;
+                        Modify(true);
+                    end else
+                        Error('Reçu non trouvé !');
+                end;
+            }
 
         }
     }
@@ -119,6 +146,22 @@ page 50135 "Recu Paiement Subpage"
         recuNo := recuCaisse.No;
     end;
 
-
+    procedure SupprimerSTR(TexteOriginal: Text; textASupp: Text): Text
+    var
+        PositionDebut: Integer;
+        PositionFin: Integer;
+        PartieAvant: Text;
+        PartieApres: Text;
+    begin
+        PositionDebut := STRPOS(TexteOriginal, textASupp);
+        if PositionDebut > 0 then begin
+            // Calculer la position après la chaîne
+            PositionFin := PositionDebut + STRLEN(textASupp);
+            PartieAvant := COPYSTR(TexteOriginal, 1, PositionDebut - 1);
+            PartieApres := COPYSTR(TexteOriginal, PositionFin, STRLEN(TexteOriginal));
+            exit(PartieAvant + PartieApres);
+        end else
+            exit(TexteOriginal); // Rien à supprimer
+    end;
 
 }

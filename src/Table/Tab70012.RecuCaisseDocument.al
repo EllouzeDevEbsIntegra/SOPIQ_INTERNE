@@ -60,6 +60,10 @@ table 70012 "Recu Caisse Document"
         {
             DataClassification = ToBeClassified;
         }
+        field(70022; solde; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
 
     }
 
@@ -80,7 +84,17 @@ table 70012 "Recu Caisse Document"
         myInt: Integer;
 
     trigger OnInsert()
+    var
+        recRecuCaisse: Record "Recu Caisse";
     begin
+        recRecuCaisse.Reset();
+        recRecuCaisse.Get("No Recu");
+        if recRecuCaisse.isAcompte = true then begin
+            if rec."Line No" > 10000 then begin
+                Error('Vous ne pouvez pas ajouter plus qu''un document à un reçu de type acompte !');
+            end;
+        end;
+
 
     end;
 

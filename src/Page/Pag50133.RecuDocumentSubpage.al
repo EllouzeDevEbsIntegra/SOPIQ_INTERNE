@@ -72,7 +72,7 @@ page 50133 "Recu Document Subpage"
                     else
                     if (type = const(AVA)) "Purch. Cr. Memo Hdr." where(solde = filter('Non'))
                     else
-                    if (type = const(Impaye)) "Recu Caisse Paiement" where("N° Client" = field("Customer No"), Impaye = filter('Oui'));
+                    if (type = const(Impaye)) "Recu Caisse Paiement" where("N° Client" = field("Customer No"), Impaye = filter('Oui'), solde = filter('Non'));
 
                     trigger OnValidate()
 

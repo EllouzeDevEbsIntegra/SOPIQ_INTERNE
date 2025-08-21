@@ -247,7 +247,8 @@ page 50132 "Recu Caisse Card"
                 trigger OnAction()
                 VAR
                     recuCaisse: Record "Recu Caisse";
-                    recuPaiement: Record "Recu Caisse Paiement";
+                    recuPaiement, recuPaiement2 : Record "Recu Caisse Paiement";
+                    recuDocument: Record "Recu Caisse Document";
                 begin
                     CurrPage.Update(true);
                     if (totalDocToPay <> "totalRéglement") AND (isAcompte = false)
@@ -301,6 +302,17 @@ page 50132 "Recu Caisse Card"
                         end;
                     end else begin
                         Commit();
+
+                        if isAcompte = true then begin
+                            recuDocument.Reset();
+                            recuDocument.SetRange("No Recu", rec.No);
+                            if recuDocument.Findfirst() then begin
+                                rec.CalcFields("totalRéglement");
+                                recuDocument."Montant Reglement" := rec."totalRéglement";
+                                recuDocument.modify();
+                                Commit();
+                            end;
+                        end;
                         setDocumentSolde(rec);
                         if (user = '') then
                             Error('Vous devez sélectionner le code vendeur !') else begin
@@ -415,6 +427,7 @@ page 50132 "Recu Caisse Card"
         recRetourBL: Record "Return Receipt Header";
         recPurchInvHead: Record "Purch. Inv. Header";
         recCrMemoHead: Record "Purch. Cr. Memo Hdr.";
+        recRecuPay: Record "Recu Caisse Paiement";
     begin
         recRecuDoc.Reset();
         recRecuDoc.SetRange("No Recu", recRecu.No);
@@ -549,6 +562,25 @@ page 50132 "Recu Caisse Card"
                             end;
                             Commit();
                         end;
+                    "Document Caisse Type"::Impaye:
+                        begin
+                            recRecuPay.Reset();
+                            recRecuPay.setrange("No Recu", recRecuDoc."Document No");
+                            recRecuPay.SetRange("Line No", recRecuDoc."id Ligne Impaye");
+                            if recRecuPay.FindFirst() then begin
+                                // Message('here %1 - %2!', recRecuPay."No Recu", recRecuPay."Line No");
+                                recRecuPay.CalcFields("Montant reçu caisse");
+                                if recRecuPay.Montant = recRecuPay."Montant reçu caisse" then begin
+                                    recRecuPay.solde := true
+                                end else
+                                    recRecuPay.solde := false;
+                                recRecuPay.Modify();
+                            end;
+                            Commit();
+                        end;
+                    else
+                        recRecuDoc.Solde := false;
+                        recRecuDoc.Modify();
                 end;
             until recRecuDoc.Next() = 0;
         end

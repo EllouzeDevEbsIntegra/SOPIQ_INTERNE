@@ -94,18 +94,23 @@ table 70013 "Recu Caisse Paiement"
         {
             DataClassification = ToBeClassified;
         }
-        field(70025; "Date Impaye"; date)
+        field(70024; "Date Impaye"; date)
         {
             DataClassification = ToBeClassified;
             Caption = 'Date Impayé';
         }
-        field(70024; "Montant reçu caisse"; Decimal)
+        field(70025; "Montant reçu caisse"; Decimal)
         {
             Caption = 'Montant reçu caisse';
 
             FieldClass = FlowField;
             CalcFormula = sum("Recu Caisse Document"."Montant Reglement" WHERE("Document No" = field("No Recu"), "id Ligne Impaye" = field("Line No")));
             Editable = false;
+        }
+        field(70026; solde; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Solde';
         }
 
 

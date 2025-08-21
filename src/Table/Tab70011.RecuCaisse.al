@@ -70,6 +70,18 @@ table 70011 "Recu Caisse"
         field(70016; isAcompte; Boolean)
         {
             DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                recRecuCaisseDocument: Record "Recu Caisse Document";
+            begin
+                if xRec.isAcompte = false and Rec.isAcompte = true then begin
+                    recRecuCaisseDocument.Reset();
+                    recRecuCaisseDocument.SetRange("No Recu", Rec.No);
+                    if recRecuCaisseDocument.Count > 1 then begin
+                        Error('Vous ne pouvez pas activer Acompte car il y a plusieurs documents liés à ce reçu !');
+                    end;
+                end;
+            end;
         }
 
         field(70017; Printed; Boolean)

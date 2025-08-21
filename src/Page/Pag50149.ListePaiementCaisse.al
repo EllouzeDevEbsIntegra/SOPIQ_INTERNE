@@ -119,6 +119,12 @@ page 50149 "Liste Paiement Caisse"
                         DoDrillDown;
                     end;
                 }
+                field(solde; solde)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Solde';
+                    Visible = true;
+                }
 
             }
 
