@@ -65,6 +65,22 @@ pageextension 80180 "Posted Sales Invoices" extends "Posted Sales Invoices"//143
             {
 
             }
+            field("Linked Paiement Line"; "Linked Paiement Line")
+            {
+                ApplicationArea = all;
+                Caption = 'Ligne Paiement Liée';
+                trigger OnDrillDown()
+                var
+                    recRecuCaisse: Record "Recu Caisse";
+                begin
+                    recRecuCaisse.Reset();
+                    recRecuCaisse.SetRange(No, rec."Linked Paiement Line");
+                    if rec."Linked Paiement Line" <> '' then begin
+                        PAGE.Run(PAGE::"Recu de caisse", recRecuCaisse);
+                    end else
+                        Error('Aucune ligne de paiement liée trouvée.');
+                end;
+            }
         }
     }
 
@@ -81,7 +97,7 @@ pageextension 80180 "Posted Sales Invoices" extends "Posted Sales Invoices"//143
 
     trigger OnAfterGetRecord()
     begin
-        rec.CalcFields("Montant reçu caisse");
+        rec.CalcFields("Montant reçu caisse", "Linked Paiement Line");
         if (getMntBrutHT(rec) <> 0) then RemiseMoyenne := (1 - (getMntNetHT(rec) / getMntBrutHT(rec))) * 100;
     end;
 

@@ -16793,6 +16793,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoice Subform - Action Modify Invoice - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 3434938165 - Control 1772609636 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3434938165">
+          <source>Ligne Paiement Liée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoices - Control Linked Paiement Line - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 3434938165 - Control 117901444 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3434938165">
           <source>Montant reçu caisse</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -19217,6 +19222,11 @@
           <source>Initiateur</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Invoice Header - Field Initiateur - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 809936682 - Field 1772609636 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 809936682">
+          <source>Ligne Paiement Liée</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Invoice Header - Field Linked Paiement Line - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 809936682 - Field 117901444 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 809936682">
           <source>Montant reçu caisse</source>

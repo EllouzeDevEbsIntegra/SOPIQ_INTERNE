@@ -62,6 +62,12 @@ tableextension 80140 "Sales Invoice Header" extends "Sales Invoice Header"//112
             DataClassification = ToBeClassified;
             Caption = 'Feedback';
         }
+        field(80416; "Linked Paiement Line"; Code[10])
+        {
+            Caption = 'Ligne Paiement Liée';
+            CalcFormula = lookup("Recu Caisse Paiement"."No Recu" WHERE("Linked Invoice" = field("No.")));
+            FieldClass = FlowField;
+        }
 
     }
 
