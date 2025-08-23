@@ -4898,10 +4898,20 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control Code - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1202461241 - Control 3738542683 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total en Coffre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control coffreTotal - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1202461241 - Control 1062487533 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Afficher tous les documents</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control global - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1202461241 - Control 1723318602 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Impayé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer Document Transaction - Control impTotal - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 1202461241 - Control 2961552353 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Nom Client</source>

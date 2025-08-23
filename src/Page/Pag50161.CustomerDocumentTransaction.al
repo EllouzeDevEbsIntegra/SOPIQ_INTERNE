@@ -37,6 +37,46 @@ page 50161 "Customer Document Transaction"
                     Editable = false;
                     Style = Favorable;
                 }
+                field(coffreTotal; coffreTotal)
+                {
+                    Caption = 'Total en Coffre';
+                    ApplicationArea = all;
+                    Editable = false;
+                    Style = StrongAccent;
+                    DrillDown = true;
+                    trigger OnDrillDown()
+                    var
+                        RecuCaissePaiement: Record "Recu Caisse Paiement";
+                        RecuCaissePaiementList: page "Liste Paiement Caisse";
+                    begin
+                        RecuCaissePaiement.Reset();
+                        RecuCaissePaiement.SetRange("N° Client", "No.");
+                        RecuCaissePaiement.SetFilter(type, '%1|%2', RecuCaissePaiement.type::Cheque, RecuCaissePaiement.type::Traite);
+                        RecuCaissePaiement.SetFilter(Echeance, '>a');
+                        RecuCaissePaiementList.SetTableView(RecuCaissePaiement);
+                        PAGE.RUN(PAGE::"Liste Paiement Caisse", RecuCaissePaiement);
+                    end;
+                }
+                field(impTotal; impTotal)
+                {
+                    Caption = 'Total Impayé';
+                    ApplicationArea = all;
+                    Editable = false;
+                    Style = Unfavorable;
+                    DrillDown = true;
+                    trigger OnDrillDown()
+                    var
+                        PayImpaye: Record "Recu Caisse Paiement";
+                        RecuCaissePaiementList: page "Liste Paiement Caisse";
+                    begin
+                        PayImpaye.Reset();
+                        PayImpaye.SetRange("N° Client", "No.");
+                        PayImpaye.SetRange(Impaye, true);
+                        PayImpaye.SetRange(solde, false);
+                        RecuCaissePaiementList.SetTableView(PayImpaye);
+                        PAGE.RUN(PAGE::"Liste Paiement Caisse", PayImpaye);
+                    end;
+                }
                 field(global; global)
                 {
                     ApplicationArea = all;
@@ -267,7 +307,7 @@ page 50161 "Customer Document Transaction"
 
     var
         salesOrderCount, bsCount, retBsCount, BlCount, RetBlCount, invoiceCount, crMemoCount : Integer;
-        CmdTotal, bsTotal, retBsTotal, blTotal, retBlTotal, invoiceTotal, crMemoTotal, totalSolde : Decimal;
+        CmdTotal, bsTotal, retBsTotal, blTotal, retBlTotal, invoiceTotal, crMemoTotal, totalSolde, coffreTotal, impTotal : Decimal;
         FieldStylesalesOrder, FieldStyleBS, FieldStyleRetBS, FieldStyleBL, FieldStyleRetBL, FieldStyleInvoice, FieldStyleCrMemo : Text[50];
         global: Boolean;
         SalesOrderVisible, BsVisible, RetBsVisible, BlVisible, RetBlVisible, InvVisible, CrMemoVisible : Boolean;
@@ -329,6 +369,7 @@ page 50161 "Customer Document Transaction"
         CrMemoHeader: Record "Sales Cr.Memo Header";
         ReturnRcptHeader: Record "Return Receipt Header";
         recCompanyInformation: Record "Company Information";
+        recRecuPay, recPayImpaye : Record "Recu Caisse Paiement";
     begin
         recCompanyInformation.get();
         // Calcul nombre  Cmd Vente + Total Cmd
@@ -465,6 +506,31 @@ page 50161 "Customer Document Transaction"
             until CrMemoHeader.Next() = 0;
         end;
         if crMemoCount > 0 then CrMemoVisible := true else CrMemoVisible := false;
+
+        // Calcul encours Coffre
+        coffreTotal := 0;
+        recRecuPay.Reset();
+        recRecuPay.SetRange("N° Client", "No.");
+        recRecuPay.SetFilter(type, '%1|%2', recRecuPay.type::Cheque, recRecuPay.type::Traite);
+        recRecuPay.SetFilter(Echeance, '>a');
+        if recRecuPay.FindSet() then begin
+            repeat
+                coffreTotal += recRecuPay.Montant;
+            until recRecuPay.Next() = 0;
+        end;
+
+        // Calcul Impayé
+        impTotal := 0;
+        recPayImpaye.Reset();
+        recPayImpaye.SetRange("N° Client", "No.");
+        recPayImpaye.SetRange(Impaye, true);
+        recPayImpaye.SetRange(solde, false);
+        if recPayImpaye.FindSet() then begin
+            repeat
+                recPayImpaye.CalcFields("Montant reçu caisse");
+                impTotal += recPayImpaye.Montant - recPayImpaye."Montant reçu caisse";
+            until recPayImpaye.Next() = 0;
+        end;
 
         // Calcul Total Solde
         totalSolde := CmdTotal + bsTotal - retBsTotal + blTotal - retBlTotal + invoiceTotal - crMemoTotal;

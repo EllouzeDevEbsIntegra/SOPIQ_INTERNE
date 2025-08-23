@@ -15,11 +15,12 @@ report 25006127 "Batch Garder Prix Initial"
         dataitem("Sales Shipment Line"; "Sales Shipment Line")
         {
             RequestFilterFields = "Document No.", BS;
-            DataItemTableView = where(BS = const(true));
+            //DataItemTableView = where(BS = const(true));
             trigger OnAfterGetRecord()
             var
                 SalesLine: Record 37;
                 salessetup: Record "Sales & Receivables Setup";
+                SalesInvoiceLine: Record "Sales Invoice Line";
             begin
                 if (Quantity > 0) AND ("Order No." <> '') then begin
                     salessetup.get;
@@ -50,13 +51,27 @@ report 25006127 "Batch Garder Prix Initial"
                         "Quantity Order" := SalesLine.Quantity;
                     end;
 
-                    "% Discount" := SalesLine."Line Discount %";
-                    IF SalesLine.Quantity > Quantity then
-                        "Line Amount" := (SalesLine."Amount Including VAT" / SalesLine.Quantity) * Quantity else
-                        "Line Amount" := SalesLine."Amount Including VAT";
-                    IF SalesLine."VAT %" <> 0 then
-                        "Line Amount HT" := "Line Amount" / (1 + (SalesLine."VAT %" / 100)) else
-                        "Line Amount HT" := "Line Amount";
+                    if (BS = false) AND ("Quantity Invoiced" = Quantity) then begin
+
+                        SalesInvoiceLine.Reset();
+                        SalesInvoiceLine.SetRange("Order No.", "Order No.");
+                        SalesInvoiceLine.SetRange("Order Line No.", "Order Line No.");
+                        if SalesInvoiceLine.FindFirst() then begin
+                            "Line Discount %" := SalesInvoiceLine."Line Discount %";
+                            "Line Amount" := SalesInvoiceLine."Amount Including VAT";
+                            "Line Amount HT" := SalesInvoiceLine."Line Amount";
+
+                        end
+                    end else begin
+                        "% Discount" := SalesLine."Line Discount %";
+                        IF SalesLine.Quantity > Quantity then
+                            "Line Amount" := (SalesLine."Amount Including VAT" / SalesLine.Quantity) * Quantity else
+                            "Line Amount" := SalesLine."Amount Including VAT";
+                        IF SalesLine."VAT %" <> 0 then
+                            "Line Amount HT" := "Line Amount" / (1 + (SalesLine."VAT %" / 100)) else
+                            "Line Amount HT" := "Line Amount";
+
+                    end;
                     Modify();
                     Commit();
                 end;

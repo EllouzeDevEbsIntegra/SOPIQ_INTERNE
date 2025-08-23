@@ -91,22 +91,10 @@ page 50149 "Liste Paiement Caisse"
                     Visible = true;
                 }
 
-                field("Montant Calcul"; "Montant Calcul")
-                {
-                    ApplicationArea = all;
-                    Caption = 'Mnt Calculé';
-                    Visible = true;
-                }
                 field(Impaye; Impaye)
                 {
                     ApplicationArea = all;
                     Caption = 'Impaye';
-                    Visible = true;
-                }
-                field("Date Impaye"; "Date Impaye")
-                {
-                    ApplicationArea = all;
-                    Caption = 'Date Impayé';
                     Visible = true;
                 }
                 field("Montant reçu caisse"; "Montant reçu caisse")
@@ -123,6 +111,20 @@ page 50149 "Liste Paiement Caisse"
                 {
                     ApplicationArea = all;
                     Caption = 'Solde';
+                    Visible = true;
+                }
+                field("Date Impaye"; "Date Impaye")
+                {
+                    ApplicationArea = all;
+                    Caption = 'Date Impayé';
+                    Visible = true;
+                }
+
+
+                field("Montant Calcul"; "Montant Calcul")
+                {
+                    ApplicationArea = all;
+                    Caption = 'Mnt Calculé';
                     Visible = true;
                 }
 
