@@ -42,8 +42,13 @@ page 50165 "Invoice Subform"
                 field("Amount Including VAT"; "Amount Including VAT")
                 {
                     ApplicationArea = All;
-                    Style = Attention;
                     Caption = 'NET TTC';
+                }
+                field("Remaining Amount"; "Remaining Amount")
+                {
+                    ApplicationArea = All;
+                    Style = Attention;
+                    Caption = 'Net à payer';
                 }
                 field("Cust Name Imprime"; custNameImprime)
                 {
@@ -73,7 +78,7 @@ page 50165 "Invoice Subform"
 
     trigger OnAfterGetRecord()
     begin
-        CalcFields("Amount Including VAT", Amount);
+        CalcFields("Amount Including VAT", Amount, "Remaining Amount");
         if (getMntBrutHT(rec) <> 0) then RemiseMoyenne := (1 - (getMntNetHT(rec) / getMntBrutHT(rec))) * 100;
 
     end;

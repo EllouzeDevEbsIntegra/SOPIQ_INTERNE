@@ -11,259 +11,6 @@
       <rd:DataSourceID>f6a12791-7372-4cc4-8495-c9e5e20c6368</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="custNo">
-          <DataField>custNo</DataField>
-        </Field>
-        <Field Name="companyName">
-          <DataField>companyName</DataField>
-        </Field>
-        <Field Name="CompanyBS">
-          <DataField>CompanyBS</DataField>
-        </Field>
-        <Field Name="custName">
-          <DataField>custName</DataField>
-        </Field>
-        <Field Name="Tax_Area_Code">
-          <DataField>Tax_Area_Code</DataField>
-        </Field>
-        <Field Name="zone">
-          <DataField>zone</DataField>
-        </Field>
-        <Field Name="Phone_No_">
-          <DataField>Phone_No_</DataField>
-        </Field>
-        <Field Name="Address">
-          <DataField>Address</DataField>
-        </Field>
-        <Field Name="City">
-          <DataField>City</DataField>
-        </Field>
-        <Field Name="includeBL">
-          <DataField>includeBL</DataField>
-        </Field>
-        <Field Name="includeBS">
-          <DataField>includeBS</DataField>
-        </Field>
-        <Field Name="includeFV">
-          <DataField>includeFV</DataField>
-        </Field>
-        <Field Name="dateDebut">
-          <DataField>dateDebut</DataField>
-        </Field>
-        <Field Name="dateFin">
-          <DataField>dateFin</DataField>
-        </Field>
-        <Field Name="totalByZone">
-          <DataField>totalByZone</DataField>
-        </Field>
-        <Field Name="showTotalBelow">
-          <DataField>showTotalBelow</DataField>
-        </Field>
-        <Field Name="showDetails">
-          <DataField>showDetails</DataField>
-        </Field>
-        <Field Name="numBL">
-          <DataField>numBL</DataField>
-        </Field>
-        <Field Name="date_BL">
-          <DataField>date_BL</DataField>
-        </Field>
-        <Field Name="custImprime_BL">
-          <DataField>custImprime_BL</DataField>
-        </Field>
-        <Field Name="custBlNo">
-          <DataField>custBlNo</DataField>
-        </Field>
-        <Field Name="soldeBL">
-          <DataField>soldeBL</DataField>
-        </Field>
-        <Field Name="soldeBLFormat">
-          <DataField>soldeBLFormat</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseBL">
-          <DataField>mntRecuCaisseBL</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseBLFormat">
-          <DataField>mntRecuCaisseBLFormat</DataField>
-        </Field>
-        <Field Name="mntTTC_BL">
-          <DataField>mntTTC_BL</DataField>
-        </Field>
-        <Field Name="mntTTC_BLFormat">
-          <DataField>mntTTC_BLFormat</DataField>
-        </Field>
-        <Field Name="mntTTC_BL_companyBS">
-          <DataField>mntTTC_BL_companyBS</DataField>
-        </Field>
-        <Field Name="mntTTC_BL_companyBSFormat">
-          <DataField>mntTTC_BL_companyBSFormat</DataField>
-        </Field>
-        <Field Name="numRetour_BL">
-          <DataField>numRetour_BL</DataField>
-        </Field>
-        <Field Name="date_Retour_BL">
-          <DataField>date_Retour_BL</DataField>
-        </Field>
-        <Field Name="custImprime_Retour_BL">
-          <DataField>custImprime_Retour_BL</DataField>
-        </Field>
-        <Field Name="custRetour_BL">
-          <DataField>custRetour_BL</DataField>
-        </Field>
-        <Field Name="soldeRetour_BL">
-          <DataField>soldeRetour_BL</DataField>
-        </Field>
-        <Field Name="soldeRetour_BLFormat">
-          <DataField>soldeRetour_BLFormat</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseRetour_BL">
-          <DataField>mntRecuCaisseRetour_BL</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseRetour_BLFormat">
-          <DataField>mntRecuCaisseRetour_BLFormat</DataField>
-        </Field>
-        <Field Name="mntTTCRetour_BL">
-          <DataField>mntTTCRetour_BL</DataField>
-        </Field>
-        <Field Name="mntTTCRetour_BLFormat">
-          <DataField>mntTTCRetour_BLFormat</DataField>
-        </Field>
-        <Field Name="mntTTCRetour_BL_companyBS">
-          <DataField>mntTTCRetour_BL_companyBS</DataField>
-        </Field>
-        <Field Name="mntTTCRetour_BL_companyBSFormat">
-          <DataField>mntTTCRetour_BL_companyBSFormat</DataField>
-        </Field>
-        <Field Name="numRetour_BS">
-          <DataField>numRetour_BS</DataField>
-        </Field>
-        <Field Name="date_Retour_BS">
-          <DataField>date_Retour_BS</DataField>
-        </Field>
-        <Field Name="custImprime_Retour_BS">
-          <DataField>custImprime_Retour_BS</DataField>
-        </Field>
-        <Field Name="custRetour_BS">
-          <DataField>custRetour_BS</DataField>
-        </Field>
-        <Field Name="soldeRetour_BS">
-          <DataField>soldeRetour_BS</DataField>
-        </Field>
-        <Field Name="soldeRetour_BSFormat">
-          <DataField>soldeRetour_BSFormat</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseRetour_BS">
-          <DataField>mntRecuCaisseRetour_BS</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseRetour_BSFormat">
-          <DataField>mntRecuCaisseRetour_BSFormat</DataField>
-        </Field>
-        <Field Name="mntTTCRetour_BS">
-          <DataField>mntTTCRetour_BS</DataField>
-        </Field>
-        <Field Name="mntTTCRetour_BSFormat">
-          <DataField>mntTTCRetour_BSFormat</DataField>
-        </Field>
-        <Field Name="numBS">
-          <DataField>numBS</DataField>
-        </Field>
-        <Field Name="custImprime_BS">
-          <DataField>custImprime_BS</DataField>
-        </Field>
-        <Field Name="date_BS">
-          <DataField>date_BS</DataField>
-        </Field>
-        <Field Name="custBsNo">
-          <DataField>custBsNo</DataField>
-        </Field>
-        <Field Name="soldeBS">
-          <DataField>soldeBS</DataField>
-        </Field>
-        <Field Name="soldeBSFormat">
-          <DataField>soldeBSFormat</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseBS">
-          <DataField>mntRecuCaisseBS</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseBSFormat">
-          <DataField>mntRecuCaisseBSFormat</DataField>
-        </Field>
-        <Field Name="mntTTC_BS">
-          <DataField>mntTTC_BS</DataField>
-        </Field>
-        <Field Name="mntTTC_BSFormat">
-          <DataField>mntTTC_BSFormat</DataField>
-        </Field>
-        <Field Name="numFV">
-          <DataField>numFV</DataField>
-        </Field>
-        <Field Name="custImprime_FV">
-          <DataField>custImprime_FV</DataField>
-        </Field>
-        <Field Name="date_FV">
-          <DataField>date_FV</DataField>
-        </Field>
-        <Field Name="custFVNo">
-          <DataField>custFVNo</DataField>
-        </Field>
-        <Field Name="soldeFV">
-          <DataField>soldeFV</DataField>
-        </Field>
-        <Field Name="soldeFVFormat">
-          <DataField>soldeFVFormat</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseFV">
-          <DataField>mntRecuCaisseFV</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseFVFormat">
-          <DataField>mntRecuCaisseFVFormat</DataField>
-        </Field>
-        <Field Name="mntTTC_FV">
-          <DataField>mntTTC_FV</DataField>
-        </Field>
-        <Field Name="mntTTC_FVFormat">
-          <DataField>mntTTC_FVFormat</DataField>
-        </Field>
-        <Field Name="numAV">
-          <DataField>numAV</DataField>
-        </Field>
-        <Field Name="custImprime_AV">
-          <DataField>custImprime_AV</DataField>
-        </Field>
-        <Field Name="date_AV">
-          <DataField>date_AV</DataField>
-        </Field>
-        <Field Name="custAVNo">
-          <DataField>custAVNo</DataField>
-        </Field>
-        <Field Name="soldeAV">
-          <DataField>soldeAV</DataField>
-        </Field>
-        <Field Name="soldeAVFormat">
-          <DataField>soldeAVFormat</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseAV">
-          <DataField>mntRecuCaisseAV</DataField>
-        </Field>
-        <Field Name="mntRecuCaisseAVFormat">
-          <DataField>mntRecuCaisseAVFormat</DataField>
-        </Field>
-        <Field Name="mntTTC_AV">
-          <DataField>mntTTC_AV</DataField>
-        </Field>
-        <Field Name="mntTTC_AVFormat">
-          <DataField>mntTTC_AVFormat</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -292,7 +39,7 @@
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.86458cm</Height>
+                  <Height>0.72cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -353,7 +100,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=iif(Fields!totalByZone.Value, Sum(Fields!soldeBL.Value)+Sum(Fields!soldeBS.Value)+Sum(Fields!soldeFV.Value)-Sum(Fields!soldeRetour_BL.Value)-Sum(Fields!soldeRetour_BS.Value)-Sum(Fields!soldeAV.Value),"")</Value>
+                                  <Value>=iif(Fields!totalByZone.Value, Sum(Fields!soldeCV.Value)+Sum(Fields!soldeBL.Value)+Sum(Fields!soldeBS.Value)+Sum(Fields!soldeFV.Value)-Sum(Fields!soldeRV.Value)-Sum(Fields!soldeRetour_BL.Value)-Sum(Fields!soldeRetour_BS.Value)-Sum(Fields!soldeAV.Value),"")</Value>
                                   <Style>
                                     <FontSize>14pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -398,7 +145,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -734,7 +481,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -841,7 +588,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=iif(((Fields!showDetails.Value=true) AND (Fields!showTotalBelow.Value=true)),"",(Sum(Fields!soldeBL.Value)+Sum(Fields!soldeBS.Value)+Sum(Fields!soldeFV.Value)-Sum(Fields!soldeRetour_BL.Value)-Sum(Fields!soldeRetour_BS.Value)-Sum(Fields!soldeAV.Value)))</Value>
+                                  <Value>=iif(((Fields!showDetails.Value=true) AND (Fields!showTotalBelow.Value=true)),"",Sum(Fields!soldeCV.Value)+(Sum(Fields!soldeBL.Value)+Sum(Fields!soldeBS.Value)+Sum(Fields!soldeFV.Value)-Sum(Fields!soldeRV.Value)-Sum(Fields!soldeRetour_BL.Value)-Sum(Fields!soldeRetour_BS.Value)-Sum(Fields!soldeAV.Value)))</Value>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -884,7 +631,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1030,11 +777,778 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox9">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Commande</Value>
+                                  <Style>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox9</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Silver</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Style>None</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>None</Style>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Style>None</Style>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                            </RightBorder>
+                            <BackgroundColor>WhiteSmoke</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>6</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="date_CV">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!date_CV.Value</Value>
+                                  <Style>
+                                    <Format>dd/MM/yyyy</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>date_CV</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="numCV">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!numCV.Value</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>numCV</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Silver</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="custImprime_CV">
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!custImprime_CV.Value</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>custImprime_CV</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="mntTTC_CV">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!mntTTC_CV.Value</Value>
+                                  <Style>
+                                    <Format>#,0.000;- #,0.000</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>mntTTC_CV</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="mntRecuCaisseCV">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!mntRecuCaisseCV.Value</Value>
+                                  <Style>
+                                    <Format>#,0.000;- #,0.000</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>mntRecuCaisseCV</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="soldeCV">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!soldeCV.Value</Value>
+                                  <Style>
+                                    <Format>#,0.000;- #,0.000</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>soldeCV</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.62cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox79">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Total Commande</Value>
+                                  <Style>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox78</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BottomBorder>
+                              <Width>1.5pt</Width>
+                            </BottomBorder>
+                            <RightBorder>
+                              <Style>None</Style>
+                            </RightBorder>
+                            <BackgroundColor>WhiteSmoke</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>5</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox23">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(Fields!soldeCV.Value)</Value>
+                                  <Style>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.000;- #,0.000</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox12</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Silver</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Width>1.5pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Style>None</Style>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                            </RightBorder>
+                            <BackgroundColor>WhiteSmoke</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.62cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox21">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Retour</Value>
+                                  <Style>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox9</rd:DefaultName>
+                          <Visibility>
+                            <Hidden>true</Hidden>
+                          </Visibility>
+                          <Style>
+                            <Border>
+                              <Color>Silver</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Style>None</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>None</Style>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Style>None</Style>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                            </RightBorder>
+                            <BackgroundColor>WhiteSmoke</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>6</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="date_RV">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!date_RV.Value</Value>
+                                  <Style>
+                                    <Format>dd/MM/yyyy</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>date_RV</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="numRV">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!numRV.Value</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>numRV</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Silver</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="custImprime_RV">
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!custImprime_RV.Value</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>custImprime_RV</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="mntTTC_CV2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=-Fields!mntTTC_RV.Value</Value>
+                                  <Style>
+                                    <Format>#,0.000;- #,0.000</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>mntTTC_CV</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="mntRecuCaisseCV2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=-Fields!mntRecuCaisseRV.Value</Value>
+                                  <Style>
+                                    <Format>#,0.000;- #,0.000</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>mntRecuCaisseCV</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="soldeCV2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=-Fields!soldeRV.Value</Value>
+                                  <Style>
+                                    <Format>#,0.000;- #,0.000</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>soldeCV</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.62cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox80">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Total Retour</Value>
+                                  <Style>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox78</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BottomBorder>
+                              <Width>1.5pt</Width>
+                            </BottomBorder>
+                            <RightBorder>
+                              <Style>None</Style>
+                            </RightBorder>
+                            <BackgroundColor>WhiteSmoke</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>5</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox45">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=-Sum(Fields!soldeRV.Value)</Value>
+                                  <Style>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.000;- #,0.000</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox12</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Silver</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Width>1.5pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Style>None</Style>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                            </RightBorder>
+                            <BackgroundColor>WhiteSmoke</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.62cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox26">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -1052,6 +1566,9 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox9</rd:DefaultName>
+                          <Visibility>
+                            <Hidden>true</Hidden>
+                          </Visibility>
                           <Style>
                             <Border>
                               <Color>Silver</Color>
@@ -1309,7 +1826,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1412,7 +1929,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1678,7 +2195,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1781,7 +2298,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2047,7 +2564,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2150,7 +2667,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2416,7 +2933,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2519,7 +3036,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2785,7 +3302,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2888,7 +3405,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3154,7 +3671,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.72cm</Height>
+                  <Height>0.62cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3257,7 +3774,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.81167cm</Height>
+                  <Height>0.72cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3321,7 +3838,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!soldeBL.Value)+Sum(Fields!soldeBS.Value)+Sum(Fields!soldeFV.Value)-Sum(Fields!soldeRetour_BL.Value)-Sum(Fields!soldeRetour_BS.Value)-Sum(Fields!soldeAV.Value)</Value>
+                                  <Value>=Sum(Fields!soldeCV.Value)+Sum(Fields!soldeBL.Value)+Sum(Fields!soldeBS.Value)+Sum(Fields!soldeFV.Value)-Sum(Fields!soldeRV.Value)-Sum(Fields!soldeRetour_BL.Value)-Sum(Fields!soldeRetour_BS.Value)-Sum(Fields!soldeAV.Value)</Value>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -3599,6 +4116,60 @@
                           <KeepWithGroup>After</KeepWithGroup>
                         </TablixMember>
                         <TablixMember>
+                          <Group Name="CV">
+                            <GroupExpressions>
+                              <GroupExpression>=Fields!numCV.Value</GroupExpression>
+                            </GroupExpressions>
+                          </Group>
+                          <SortExpressions>
+                            <SortExpression>
+                              <Value>=Fields!numCV.Value</Value>
+                            </SortExpression>
+                          </SortExpressions>
+                          <Visibility>
+                            <Hidden>=iif((Fields!showDetails.Value=false) OR (Fields!soldeCV.Value=0),true,false)</Hidden>
+                          </Visibility>
+                        </TablixMember>
+                        <TablixMember>
+                          <Visibility>
+                            <Hidden>=IIf((Fields!showDetails.Value=false) OR(Sum(Fields!soldeCV.Value)=0),true,false)</Hidden>
+                          </Visibility>
+                          <KeepWithGroup>Before</KeepWithGroup>
+                        </TablixMember>
+                        <TablixMember>
+                          <Visibility>
+                            <Hidden>true</Hidden>
+                          </Visibility>
+                          <KeepWithGroup>After</KeepWithGroup>
+                        </TablixMember>
+                        <TablixMember>
+                          <Group Name="RV">
+                            <GroupExpressions>
+                              <GroupExpression>=Fields!numRV.Value</GroupExpression>
+                            </GroupExpressions>
+                          </Group>
+                          <SortExpressions>
+                            <SortExpression>
+                              <Value>=Fields!numRV.Value</Value>
+                            </SortExpression>
+                          </SortExpressions>
+                          <Visibility>
+                            <Hidden>=iif((Fields!showDetails.Value=false) OR (Fields!soldeRV.Value=0),true,false)</Hidden>
+                          </Visibility>
+                        </TablixMember>
+                        <TablixMember>
+                          <Visibility>
+                            <Hidden>=IIf((Fields!showDetails.Value=false) OR(Sum(Fields!soldeRV.Value)=0),true,false)</Hidden>
+                          </Visibility>
+                          <KeepWithGroup>Before</KeepWithGroup>
+                        </TablixMember>
+                        <TablixMember>
+                          <Visibility>
+                            <Hidden>true</Hidden>
+                          </Visibility>
+                          <KeepWithGroup>After</KeepWithGroup>
+                        </TablixMember>
+                        <TablixMember>
                           <Group Name="BL">
                             <GroupExpressions>
                               <GroupExpression>=Fields!numBL.Value</GroupExpression>
@@ -3765,12 +4336,12 @@
                         </TablixMember>
                       </TablixMembers>
                       <Visibility>
-                        <Hidden>=iif((Sum(Fields!soldeBL.Value)+Sum(Fields!soldeBS.Value)+Sum(Fields!soldeFV.Value)-Sum(Fields!soldeRetour_BL.Value)-Sum(Fields!soldeRetour_BS.Value)-Sum(Fields!soldeAV.Value)=0),true,false)</Hidden>
+                        <Hidden>=iif((Sum(Fields!soldeCV.Value)+Sum(Fields!soldeBL.Value)+Sum(Fields!soldeBS.Value)+Sum(Fields!soldeFV.Value)-Sum(Fields!soldeRV.Value)-Sum(Fields!soldeRetour_BL.Value)-Sum(Fields!soldeRetour_BS.Value)-Sum(Fields!soldeAV.Value)=0),true,false)</Hidden>
                       </Visibility>
                     </TablixMember>
                   </TablixMembers>
                   <Visibility>
-                    <Hidden>=iif((Sum(Fields!soldeBL.Value)+Sum(Fields!soldeBS.Value)+Sum(Fields!soldeFV.Value)-Sum(Fields!soldeRetour_BL.Value)-Sum(Fields!soldeRetour_BS.Value)-Sum(Fields!soldeAV.Value)=0),true,false)</Hidden>
+                    <Hidden>=iif((Sum(Fields!soldeCV.Value)+Sum(Fields!soldeBL.Value)+Sum(Fields!soldeBS.Value)+Sum(Fields!soldeFV.Value)-Sum(Fields!soldeRV.Value)-Sum(Fields!soldeRetour_BL.Value)-Sum(Fields!soldeRetour_BS.Value)-Sum(Fields!soldeAV.Value)=0),true,false)</Hidden>
                   </Visibility>
                 </TablixMember>
               </TablixMembers>
@@ -3780,7 +4351,7 @@
             <DataSetName>DataSet_Result</DataSetName>
             <Top>0.14993cm</Top>
             <Left>0.11857cm</Left>
-            <Height>16.07625cm</Height>
+            <Height>18.02cm</Height>
             <Width>19.52681cm</Width>
             <Style>
               <Border>
@@ -3789,7 +4360,7 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>16.54368cm</Height>
+        <Height>18.4541cm</Height>
         <Style />
       </Body>
       <Width>19.77411cm</Width>
@@ -4010,12 +4581,6 @@
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParametersLayout>
-    <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
-    </GridLayoutDefinition>
-  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -4055,4 +4620,365 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="custNo">
+          <DataField>custNo</DataField>
+        </Field>
+        <Field Name="companyName">
+          <DataField>companyName</DataField>
+        </Field>
+        <Field Name="CompanyBS">
+          <DataField>CompanyBS</DataField>
+        </Field>
+        <Field Name="custName">
+          <DataField>custName</DataField>
+        </Field>
+        <Field Name="Tax_Area_Code">
+          <DataField>Tax_Area_Code</DataField>
+        </Field>
+        <Field Name="zone">
+          <DataField>zone</DataField>
+        </Field>
+        <Field Name="Phone_No_">
+          <DataField>Phone_No_</DataField>
+        </Field>
+        <Field Name="Address">
+          <DataField>Address</DataField>
+        </Field>
+        <Field Name="City">
+          <DataField>City</DataField>
+        </Field>
+        <Field Name="includeBL">
+          <DataField>includeBL</DataField>
+        </Field>
+        <Field Name="includeBS">
+          <DataField>includeBS</DataField>
+        </Field>
+        <Field Name="includeFV">
+          <DataField>includeFV</DataField>
+        </Field>
+        <Field Name="includeCV">
+          <DataField>includeCV</DataField>
+        </Field>
+        <Field Name="dateDebut">
+          <DataField>dateDebut</DataField>
+        </Field>
+        <Field Name="dateFin">
+          <DataField>dateFin</DataField>
+        </Field>
+        <Field Name="totalByZone">
+          <DataField>totalByZone</DataField>
+        </Field>
+        <Field Name="showTotalBelow">
+          <DataField>showTotalBelow</DataField>
+        </Field>
+        <Field Name="showDetails">
+          <DataField>showDetails</DataField>
+        </Field>
+        <Field Name="numCV">
+          <DataField>numCV</DataField>
+        </Field>
+        <Field Name="date_CV">
+          <DataField>date_CV</DataField>
+        </Field>
+        <Field Name="custImprime_CV">
+          <DataField>custImprime_CV</DataField>
+        </Field>
+        <Field Name="custCvNo">
+          <DataField>custCvNo</DataField>
+        </Field>
+        <Field Name="soldeCV">
+          <DataField>soldeCV</DataField>
+        </Field>
+        <Field Name="soldeCVFormat">
+          <DataField>soldeCVFormat</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseCV">
+          <DataField>mntRecuCaisseCV</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseCVFormat">
+          <DataField>mntRecuCaisseCVFormat</DataField>
+        </Field>
+        <Field Name="mntTTC_CV">
+          <DataField>mntTTC_CV</DataField>
+        </Field>
+        <Field Name="mntTTC_CVFormat">
+          <DataField>mntTTC_CVFormat</DataField>
+        </Field>
+        <Field Name="numRV">
+          <DataField>numRV</DataField>
+        </Field>
+        <Field Name="date_RV">
+          <DataField>date_RV</DataField>
+        </Field>
+        <Field Name="custImprime_RV">
+          <DataField>custImprime_RV</DataField>
+        </Field>
+        <Field Name="custRvNo">
+          <DataField>custRvNo</DataField>
+        </Field>
+        <Field Name="soldeRV">
+          <DataField>soldeRV</DataField>
+        </Field>
+        <Field Name="soldeRVFormat">
+          <DataField>soldeRVFormat</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseRV">
+          <DataField>mntRecuCaisseRV</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseRVFormat">
+          <DataField>mntRecuCaisseRVFormat</DataField>
+        </Field>
+        <Field Name="mntTTC_RV">
+          <DataField>mntTTC_RV</DataField>
+        </Field>
+        <Field Name="mntTTC_RVFormat">
+          <DataField>mntTTC_RVFormat</DataField>
+        </Field>
+        <Field Name="numBL">
+          <DataField>numBL</DataField>
+        </Field>
+        <Field Name="date_BL">
+          <DataField>date_BL</DataField>
+        </Field>
+        <Field Name="custImprime_BL">
+          <DataField>custImprime_BL</DataField>
+        </Field>
+        <Field Name="custBlNo">
+          <DataField>custBlNo</DataField>
+        </Field>
+        <Field Name="soldeBL">
+          <DataField>soldeBL</DataField>
+        </Field>
+        <Field Name="soldeBLFormat">
+          <DataField>soldeBLFormat</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseBL">
+          <DataField>mntRecuCaisseBL</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseBLFormat">
+          <DataField>mntRecuCaisseBLFormat</DataField>
+        </Field>
+        <Field Name="mntTTC_BL">
+          <DataField>mntTTC_BL</DataField>
+        </Field>
+        <Field Name="mntTTC_BLFormat">
+          <DataField>mntTTC_BLFormat</DataField>
+        </Field>
+        <Field Name="mntTTC_BL_companyBS">
+          <DataField>mntTTC_BL_companyBS</DataField>
+        </Field>
+        <Field Name="mntTTC_BL_companyBSFormat">
+          <DataField>mntTTC_BL_companyBSFormat</DataField>
+        </Field>
+        <Field Name="numRetour_BL">
+          <DataField>numRetour_BL</DataField>
+        </Field>
+        <Field Name="date_Retour_BL">
+          <DataField>date_Retour_BL</DataField>
+        </Field>
+        <Field Name="custImprime_Retour_BL">
+          <DataField>custImprime_Retour_BL</DataField>
+        </Field>
+        <Field Name="custRetour_BL">
+          <DataField>custRetour_BL</DataField>
+        </Field>
+        <Field Name="soldeRetour_BL">
+          <DataField>soldeRetour_BL</DataField>
+        </Field>
+        <Field Name="soldeRetour_BLFormat">
+          <DataField>soldeRetour_BLFormat</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseRetour_BL">
+          <DataField>mntRecuCaisseRetour_BL</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseRetour_BLFormat">
+          <DataField>mntRecuCaisseRetour_BLFormat</DataField>
+        </Field>
+        <Field Name="mntTTCRetour_BL">
+          <DataField>mntTTCRetour_BL</DataField>
+        </Field>
+        <Field Name="mntTTCRetour_BLFormat">
+          <DataField>mntTTCRetour_BLFormat</DataField>
+        </Field>
+        <Field Name="mntTTCRetour_BL_companyBS">
+          <DataField>mntTTCRetour_BL_companyBS</DataField>
+        </Field>
+        <Field Name="mntTTCRetour_BL_companyBSFormat">
+          <DataField>mntTTCRetour_BL_companyBSFormat</DataField>
+        </Field>
+        <Field Name="numRetour_BS">
+          <DataField>numRetour_BS</DataField>
+        </Field>
+        <Field Name="date_Retour_BS">
+          <DataField>date_Retour_BS</DataField>
+        </Field>
+        <Field Name="custImprime_Retour_BS">
+          <DataField>custImprime_Retour_BS</DataField>
+        </Field>
+        <Field Name="custRetour_BS">
+          <DataField>custRetour_BS</DataField>
+        </Field>
+        <Field Name="soldeRetour_BS">
+          <DataField>soldeRetour_BS</DataField>
+        </Field>
+        <Field Name="soldeRetour_BSFormat">
+          <DataField>soldeRetour_BSFormat</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseRetour_BS">
+          <DataField>mntRecuCaisseRetour_BS</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseRetour_BSFormat">
+          <DataField>mntRecuCaisseRetour_BSFormat</DataField>
+        </Field>
+        <Field Name="mntTTCRetour_BS">
+          <DataField>mntTTCRetour_BS</DataField>
+        </Field>
+        <Field Name="mntTTCRetour_BSFormat">
+          <DataField>mntTTCRetour_BSFormat</DataField>
+        </Field>
+        <Field Name="numBS">
+          <DataField>numBS</DataField>
+        </Field>
+        <Field Name="custImprime_BS">
+          <DataField>custImprime_BS</DataField>
+        </Field>
+        <Field Name="date_BS">
+          <DataField>date_BS</DataField>
+        </Field>
+        <Field Name="custBsNo">
+          <DataField>custBsNo</DataField>
+        </Field>
+        <Field Name="soldeBS">
+          <DataField>soldeBS</DataField>
+        </Field>
+        <Field Name="soldeBSFormat">
+          <DataField>soldeBSFormat</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseBS">
+          <DataField>mntRecuCaisseBS</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseBSFormat">
+          <DataField>mntRecuCaisseBSFormat</DataField>
+        </Field>
+        <Field Name="mntTTC_BS">
+          <DataField>mntTTC_BS</DataField>
+        </Field>
+        <Field Name="mntTTC_BSFormat">
+          <DataField>mntTTC_BSFormat</DataField>
+        </Field>
+        <Field Name="numFV">
+          <DataField>numFV</DataField>
+        </Field>
+        <Field Name="custImprime_FV">
+          <DataField>custImprime_FV</DataField>
+        </Field>
+        <Field Name="date_FV">
+          <DataField>date_FV</DataField>
+        </Field>
+        <Field Name="custFVNo">
+          <DataField>custFVNo</DataField>
+        </Field>
+        <Field Name="soldeFV">
+          <DataField>soldeFV</DataField>
+        </Field>
+        <Field Name="soldeFVFormat">
+          <DataField>soldeFVFormat</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseFV">
+          <DataField>mntRecuCaisseFV</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseFVFormat">
+          <DataField>mntRecuCaisseFVFormat</DataField>
+        </Field>
+        <Field Name="mntTTC_FV">
+          <DataField>mntTTC_FV</DataField>
+        </Field>
+        <Field Name="mntTTC_FVFormat">
+          <DataField>mntTTC_FVFormat</DataField>
+        </Field>
+        <Field Name="numAV">
+          <DataField>numAV</DataField>
+        </Field>
+        <Field Name="custImprime_AV">
+          <DataField>custImprime_AV</DataField>
+        </Field>
+        <Field Name="date_AV">
+          <DataField>date_AV</DataField>
+        </Field>
+        <Field Name="custAVNo">
+          <DataField>custAVNo</DataField>
+        </Field>
+        <Field Name="soldeAV">
+          <DataField>soldeAV</DataField>
+        </Field>
+        <Field Name="soldeAVFormat">
+          <DataField>soldeAVFormat</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseAV">
+          <DataField>mntRecuCaisseAV</DataField>
+        </Field>
+        <Field Name="mntRecuCaisseAVFormat">
+          <DataField>mntRecuCaisseAVFormat</DataField>
+        </Field>
+        <Field Name="mntTTC_AV">
+          <DataField>mntTTC_AV</DataField>
+        </Field>
+        <Field Name="mntTTC_AVFormat">
+          <DataField>mntTTC_AVFormat</DataField>
+        </Field>
+        <Field Name="No_Recu">
+          <DataField>No_Recu</DataField>
+        </Field>
+        <Field Name="Date_Reçu">
+          <DataField>Date_Reçu</DataField>
+        </Field>
+        <Field Name="NoClient">
+          <DataField>NoClient</DataField>
+        </Field>
+        <Field Name="NomClient">
+          <DataField>NomClient</DataField>
+        </Field>
+        <Field Name="type">
+          <DataField>type</DataField>
+        </Field>
+        <Field Name="Name">
+          <DataField>Name</DataField>
+        </Field>
+        <Field Name="Echeance">
+          <DataField>Echeance</DataField>
+        </Field>
+        <Field Name="Paiment_No">
+          <DataField>Paiment_No</DataField>
+        </Field>
+        <Field Name="Montant">
+          <DataField>Montant</DataField>
+        </Field>
+        <Field Name="MontantFormat">
+          <DataField>MontantFormat</DataField>
+        </Field>
+        <Field Name="banque">
+          <DataField>banque</DataField>
+        </Field>
+        <Field Name="Montant_reçu_caisse">
+          <DataField>Montant_reçu_caisse</DataField>
+        </Field>
+        <Field Name="Montant_reçu_caisseFormat">
+          <DataField>Montant_reçu_caisseFormat</DataField>
+        </Field>
+        <Field Name="solde">
+          <DataField>solde</DataField>
+        </Field>
+        <Field Name="Linked_Invoice">
+          <DataField>Linked_Invoice</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

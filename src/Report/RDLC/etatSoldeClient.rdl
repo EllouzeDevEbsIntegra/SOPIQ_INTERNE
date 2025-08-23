@@ -22,19 +22,19 @@
                   <Width>1.99537cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.07365cm</Width>
+                  <Width>2.7cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>6.01896cm</Width>
+                  <Width>6cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.33229cm</Width>
+                  <Width>2.3cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.5699cm</Width>
+                  <Width>2.3cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.37788cm</Width>
+                  <Width>4.05cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -52,7 +52,7 @@
                                 <TextRun>
                                   <Value>="Secteur "+Fields!zone.Value</Value>
                                   <Style>
-                                    <FontSize>14pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Color>White</Color>
                                   </Style>
@@ -102,7 +102,7 @@
                                 <TextRun>
                                   <Value>=iif(Fields!totalByZone.Value, Sum(Fields!soldeCV.Value)+Sum(Fields!soldeBL.Value)+Sum(Fields!soldeBS.Value)+Sum(Fields!soldeFV.Value)-Sum(Fields!soldeRV.Value)-Sum(Fields!soldeRetour_BL.Value)-Sum(Fields!soldeRetour_BS.Value)-Sum(Fields!soldeAV.Value),"")</Value>
                                   <Style>
-                                    <FontSize>14pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.000;- #,0.000</Format>
                                     <Color>White</Color>
@@ -158,7 +158,6 @@
                                 <TextRun>
                                   <Value>Date</Value>
                                   <Style>
-                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -209,7 +208,6 @@
                                 <TextRun>
                                   <Value>Doc N°</Value>
                                   <Style>
-                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -265,7 +263,6 @@
                                 <TextRun>
                                   <Value>Client Imprimé</Value>
                                   <Style>
-                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -321,7 +318,6 @@
                                 <TextRun>
                                   <Value>Total TTC</Value>
                                   <Style>
-                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -377,7 +373,6 @@
                                 <TextRun>
                                   <Value>Acompte</Value>
                                   <Style>
-                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -433,7 +428,6 @@
                                 <TextRun>
                                   <Value>Solde</Value>
                                   <Style>
-                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -493,7 +487,7 @@
                                 <TextRun>
                                   <Value>=Fields!custNo.Value+" - "+Fields!custName.Value</Value>
                                   <Style>
-                                    <FontSize>12pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>Underline</TextDecoration>
                                   </Style>
@@ -533,26 +527,27 @@
                     <TablixCell />
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox17">
+                        <Textbox Name="Textbox1">
+                          <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=iif(((Fields!showDetails.Value=true) AND (Fields!showTotalBelow.Value=true)),"","TOTAL SOLDE")</Value>
+                                  <Value>="Adresse : "+Fields!Address.Value+" - "+Fields!City.Value</Value>
                                   <Style>
-                                    <FontSize>12pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>Underline</TextDecoration>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
-                                <TextAlign>Right</TextAlign>
+                                <TextAlign>Left</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox17</rd:DefaultName>
+                          <rd:DefaultName>Textbox1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -567,7 +562,8 @@
                               <Style>None</Style>
                             </LeftBorder>
                             <RightBorder>
-                              <Style>None</Style>
+                              <Color>Black</Color>
+                              <Width>1.5pt</Width>
                             </RightBorder>
                             <BackgroundColor>=iif(Fields!showDetails.Value,"LightGrey","Transparent")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -576,58 +572,11 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <ColSpan>2</ColSpan>
+                        <ColSpan>3</ColSpan>
                       </CellContents>
                     </TablixCell>
                     <TablixCell />
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox14">
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=iif(((Fields!showDetails.Value=true) AND (Fields!showTotalBelow.Value=true)),"",Sum(Fields!soldeCV.Value)+(Sum(Fields!soldeBL.Value)+Sum(Fields!soldeBS.Value)+Sum(Fields!soldeFV.Value)-Sum(Fields!soldeRV.Value)-Sum(Fields!soldeRetour_BL.Value)-Sum(Fields!soldeRetour_BS.Value)-Sum(Fields!soldeAV.Value)))</Value>
-                                  <Style>
-                                    <FontSize>12pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.000;- #,0.000</Format>
-                                    <TextDecoration>Underline</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Right</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox14</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                            </Border>
-                            <TopBorder>
-                              <Width>1.75pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Style>None</Style>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Style>None</Style>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Width>1.75pt</Width>
-                            </RightBorder>
-                            <BackgroundColor>=iif(Fields!showDetails.Value,"LightGrey","Transparent")</BackgroundColor>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
+                    <TablixCell />
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
@@ -641,9 +590,24 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>="Adresse : "+Fields!Address.Value</Value>
+                                  <Value>=IIf(
+  (Fields!showDetails.Value = True) AND (Fields!showTotalBelow.Value = True),
+  "",
+  "TOTAL SOLDE : " &amp; 
+  FormatNumber(
+    Sum(Fields!soldeCV.Value) +
+    Sum(Fields!soldeBL.Value) +
+    Sum(Fields!soldeBS.Value) +
+    Sum(Fields!soldeFV.Value) -
+    Sum(Fields!soldeRV.Value) -
+    Sum(Fields!soldeRetour_BL.Value) -
+    Sum(Fields!soldeRetour_BS.Value) -
+    Sum(Fields!soldeAV.Value),
+    3
+  )
+)</Value>
                                   <Style>
-                                    <FontSize>12pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -675,11 +639,63 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <ColSpan>3</ColSpan>
+                        <ColSpan>2</ColSpan>
                       </CellContents>
                     </TablixCell>
                     <TablixCell />
-                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox36">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=IIf(
+  (Fields!showDetails.Value = True) AND (Fields!showTotalBelow.Value = True),
+  "",
+  "TOTAL COFFRE : " &amp; 
+  Format(
+    Sum(Fields!Montant.Value),
+    "#,##0.000"
+  )
+)</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox36</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Style>None</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Width>1.75pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Style>None</Style>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Style>None</Style>
+                            </RightBorder>
+                            <BackgroundColor>=iif(Fields!showDetails.Value,"LightGrey","Transparent")</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="City">
@@ -688,15 +704,23 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!City.Value</Value>
+                                  <Value>=IIf(
+  (Fields!showDetails.Value = True) AND (Fields!showTotalBelow.Value = True),
+  "",
+  "TOTAL IMPAYE : " &amp; 
+  Format(
+    Sum(Fields!mntNonSolde_IMP.Value),
+    "#,##0.000"
+  )
+)</Value>
                                   <Style>
-                                    <FontSize>12pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
-                                <TextAlign>Right</TextAlign>
+                                <TextAlign>Left</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
@@ -724,19 +748,22 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <ColSpan>2</ColSpan>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell />
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Phone_No_">
+                        <Textbox Name="Textbox48">
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=iif(Fields!Phone_No_.Value="","","TEL : "+Fields!Phone_No_.Value)</Value>
+                                  <Value>=iif(Fields!Phone_No_.Value="","","Tél: "+System.Text.RegularExpressions.Regex.Replace(Fields!Phone_No_.Value, "\s+", " "))</Value>
                                   <Style>
-                                    <FontSize>12pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -746,7 +773,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Phone_No_</rd:DefaultName>
+                          <rd:DefaultName>Textbox48</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -770,10 +797,8 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <ColSpan>2</ColSpan>
                       </CellContents>
                     </TablixCell>
-                    <TablixCell />
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
@@ -790,7 +815,6 @@
                                 <TextRun>
                                   <Value>Commande</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -848,6 +872,7 @@
                                 <TextRun>
                                   <Value>=Fields!date_CV.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>dd/MM/yyyy</Format>
                                   </Style>
                                 </TextRun>
@@ -880,7 +905,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!numCV.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -965,6 +992,7 @@
                                 <TextRun>
                                   <Value>=Fields!mntTTC_CV.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -998,6 +1026,7 @@
                                 <TextRun>
                                   <Value>=Fields!mntRecuCaisseCV.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -1031,6 +1060,7 @@
                                 <TextRun>
                                   <Value>=Fields!soldeCV.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -1069,7 +1099,6 @@
                                 <TextRun>
                                   <Value>Total Commande</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1116,7 +1145,6 @@
                                 <TextRun>
                                   <Value>=Sum(Fields!soldeCV.Value)</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
@@ -1172,7 +1200,6 @@
                                 <TextRun>
                                   <Value>Retour</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1233,6 +1260,7 @@
                                 <TextRun>
                                   <Value>=Fields!date_RV.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>dd/MM/yyyy</Format>
                                   </Style>
                                 </TextRun>
@@ -1265,7 +1293,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!numRV.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -1350,6 +1380,7 @@
                                 <TextRun>
                                   <Value>=-Fields!mntTTC_RV.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -1383,6 +1414,7 @@
                                 <TextRun>
                                   <Value>=-Fields!mntRecuCaisseRV.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -1416,6 +1448,7 @@
                                 <TextRun>
                                   <Value>=-Fields!soldeRV.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -1454,7 +1487,6 @@
                                 <TextRun>
                                   <Value>Total Retour</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1501,7 +1533,6 @@
                                 <TextRun>
                                   <Value>=-Sum(Fields!soldeRV.Value)</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
@@ -1557,7 +1588,6 @@
                                 <TextRun>
                                   <Value>Bon de livraison</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1618,6 +1648,7 @@
                                 <TextRun>
                                   <Value>=Fields!date_BL.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>dd/MM/yyyy</Format>
                                   </Style>
                                 </TextRun>
@@ -1650,7 +1681,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!numBL.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -1735,6 +1768,7 @@
                                 <TextRun>
                                   <Value>=iif(Fields!CompanyBS.Value,Fields!mntTTC_BL_companyBS.Value,Fields!mntTTC_BL.Value)</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -1768,6 +1802,7 @@
                                 <TextRun>
                                   <Value>=Fields!mntRecuCaisseBL.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -1801,6 +1836,7 @@
                                 <TextRun>
                                   <Value>=Fields!soldeBL.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -1839,7 +1875,6 @@
                                 <TextRun>
                                   <Value>Total Bon de livraison</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1886,7 +1921,6 @@
                                 <TextRun>
                                   <Value>=Sum(Fields!soldeBL.Value)</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
@@ -1942,7 +1976,6 @@
                                 <TextRun>
                                   <Value>Retour BL</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1987,6 +2020,7 @@
                                 <TextRun>
                                   <Value>=Fields!date_Retour_BL.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>dd/MM/yyyy</Format>
                                   </Style>
                                 </TextRun>
@@ -2019,7 +2053,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!numRetour_BL.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -2104,6 +2140,7 @@
                                 <TextRun>
                                   <Value>=iif(Fields!CompanyBS.Value, -Fields!mntTTCRetour_BL_companyBS.Value,-Fields!mntTTCRetour_BL.Value)</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -2137,6 +2174,7 @@
                                 <TextRun>
                                   <Value>=-Fields!mntRecuCaisseRetour_BL.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -2170,6 +2208,7 @@
                                 <TextRun>
                                   <Value>=-Fields!soldeRetour_BL.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -2208,7 +2247,6 @@
                                 <TextRun>
                                   <Value>Total Retour BL</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2255,7 +2293,6 @@
                                 <TextRun>
                                   <Value>=- Sum(Fields!soldeRetour_BL.Value)</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
@@ -2311,7 +2348,6 @@
                                 <TextRun>
                                   <Value>Bon de sortie</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2356,6 +2392,7 @@
                                 <TextRun>
                                   <Value>=Fields!date_BS.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>dd/MM/yyyy</Format>
                                   </Style>
                                 </TextRun>
@@ -2388,7 +2425,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!numBS.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -2473,6 +2512,7 @@
                                 <TextRun>
                                   <Value>=Fields!mntTTC_BS.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -2506,6 +2546,7 @@
                                 <TextRun>
                                   <Value>=Fields!mntRecuCaisseBS.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -2539,6 +2580,7 @@
                                 <TextRun>
                                   <Value>=Fields!soldeBS.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -2577,7 +2619,6 @@
                                 <TextRun>
                                   <Value>Total Bon de sortie</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2624,7 +2665,6 @@
                                 <TextRun>
                                   <Value>=Sum(Fields!soldeBS.Value)</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
@@ -2680,7 +2720,6 @@
                                 <TextRun>
                                   <Value>Retour BS</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2725,6 +2764,7 @@
                                 <TextRun>
                                   <Value>=Fields!date_Retour_BS.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>dd/MM/yyyy</Format>
                                   </Style>
                                 </TextRun>
@@ -2757,7 +2797,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!numRetour_BS.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -2842,6 +2884,7 @@
                                 <TextRun>
                                   <Value>=-Fields!mntTTCRetour_BS.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -2875,6 +2918,7 @@
                                 <TextRun>
                                   <Value>=-Fields!mntRecuCaisseRetour_BS.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -2908,6 +2952,7 @@
                                 <TextRun>
                                   <Value>=-Fields!soldeRetour_BS.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -2946,7 +2991,6 @@
                                 <TextRun>
                                   <Value>Total Retour BS</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2993,7 +3037,6 @@
                                 <TextRun>
                                   <Value>=- Sum(Fields!soldeRetour_BS.Value)</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
@@ -3049,7 +3092,6 @@
                                 <TextRun>
                                   <Value>Facture</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -3094,6 +3136,7 @@
                                 <TextRun>
                                   <Value>=Fields!date_FV.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>dd/MM/yyyy</Format>
                                   </Style>
                                 </TextRun>
@@ -3126,7 +3169,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!numFV.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -3211,6 +3256,7 @@
                                 <TextRun>
                                   <Value>=Fields!mntTTC_FV.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -3244,6 +3290,7 @@
                                 <TextRun>
                                   <Value>=Fields!mntRecuCaisseFV.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -3277,6 +3324,7 @@
                                 <TextRun>
                                   <Value>=Fields!soldeFV.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -3315,7 +3363,6 @@
                                 <TextRun>
                                   <Value>Total Facture</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -3362,7 +3409,6 @@
                                 <TextRun>
                                   <Value>=Sum(Fields!soldeFV.Value)</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
@@ -3418,7 +3464,6 @@
                                 <TextRun>
                                   <Value>Avoir</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -3463,6 +3508,7 @@
                                 <TextRun>
                                   <Value>=Fields!date_AV.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>dd/MM/yyyy</Format>
                                   </Style>
                                 </TextRun>
@@ -3495,7 +3541,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!numAV.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -3580,6 +3628,7 @@
                                 <TextRun>
                                   <Value>=-Fields!mntTTC_AV.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -3613,6 +3662,7 @@
                                 <TextRun>
                                   <Value>=-Fields!mntRecuCaisseAV.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -3646,6 +3696,7 @@
                                 <TextRun>
                                   <Value>=-Fields!soldeAV.Value</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
                                 </TextRun>
@@ -3684,7 +3735,6 @@
                                 <TextRun>
                                   <Value>Total Avoir</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -3731,7 +3781,6 @@
                                 <TextRun>
                                   <Value>=- Sum(Fields!soldeAV.Value)</Value>
                                   <Style>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
@@ -3774,6 +3823,1170 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox25">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Encours Financier</Value>
+                                  <Style>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox25</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                              <Width>2pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </BottomBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <BackgroundColor>Gray</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>6</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox8">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>N° Reçu</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox8</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                              <Width>2pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </BottomBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox34">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Libelle</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox34</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                              <Width>2pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </BottomBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>3</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox44">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Echéance</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox44</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                              <Width>2pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </BottomBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox46">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Montant</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox46</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                              <Width>2pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </BottomBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="No_Recu">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!No_Recu.Value</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>No_Recu</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="type">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!type.Value+" "+Fields!banque.Value+" N°"+Fields!Paiment_No.Value+" / "+Fields!Name.Value</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>type</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>3</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox7">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Echeance.Value</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <Format>d</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox7</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="banque">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Montant.Value</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <Format>#,0.000;- #,0.000</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>banque</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox289">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Total Encours Financier</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox289</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <BackgroundColor>WhiteSmoke</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>5</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox294">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=sum(Fields!Montant.Value)</Value>
+                                  <Style>
+                                    <Format>#,0.000;- #,0.000</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox294</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>WhiteSmoke</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox313">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Liste des Impayés</Value>
+                                  <Style>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox313</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Width>2pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Width>2pt</Width>
+                            </BottomBorder>
+                            <BackgroundColor>Gray</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>6</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox295">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>N° Reçu</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox295</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox296">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Libelle</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox296</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>2</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox298">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Montant</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox298</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox299">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Acompte</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox299</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox300">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Solde</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox300</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Impaye_No_Recu">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Impaye_No_Recu.Value</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Impaye_No_Recu</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox284">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Left(Fields!Impaye_type.Value+" "+Fields!Impaye_banque.Value+" N°"+Fields!Impaye_Paiment_No.Value+" Du "+Fields!Impaye_Echeance.Value+" /"+Fields!Impaye_Name.Value,50)</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox284</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>2</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Impaye_Montant">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Impaye_Montant.Value</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <Format>#,0.000;- #,0.000</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Impaye_Montant</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Impaye_Montant_reçu_caisse">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Impaye_Montant_reçu_caisse.Value</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <Format>#,0.000;- #,0.000</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Impaye_Montant_reçu_caisse</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="mntNonSolde_IMP">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!mntNonSolde_IMP.Value</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <Format>#,0.000;- #,0.000</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>mntNonSolde_IMP</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox33">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Total Impayé</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox33</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <BackgroundColor>WhiteSmoke</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>5</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox40">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=sum(Fields!mntNonSolde_IMP.Value)</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.000;- #,0.000</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox40</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>WhiteSmoke</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
                   <Height>0.72cm</Height>
                   <TablixCells>
                     <TablixCell>
@@ -3787,7 +5000,7 @@
                                 <TextRun>
                                   <Value>TOTAL GENERAL</Value>
                                   <Style>
-                                    <FontSize>12pt</FontSize>
+                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -3840,7 +5053,7 @@
                                 <TextRun>
                                   <Value>=Sum(Fields!soldeCV.Value)+Sum(Fields!soldeBL.Value)+Sum(Fields!soldeBS.Value)+Sum(Fields!soldeFV.Value)-Sum(Fields!soldeRV.Value)-Sum(Fields!soldeRetour_BL.Value)-Sum(Fields!soldeRetour_BS.Value)-Sum(Fields!soldeAV.Value)</Value>
                                   <Style>
-                                    <FontSize>12pt</FontSize>
+                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.000;- #,0.000</Format>
                                   </Style>
@@ -4129,6 +5342,7 @@
                           <Visibility>
                             <Hidden>=iif((Fields!showDetails.Value=false) OR (Fields!soldeCV.Value=0),true,false)</Hidden>
                           </Visibility>
+                          <KeepTogether>true</KeepTogether>
                         </TablixMember>
                         <TablixMember>
                           <Visibility>
@@ -4156,6 +5370,7 @@
                           <Visibility>
                             <Hidden>=iif((Fields!showDetails.Value=false) OR (Fields!soldeRV.Value=0),true,false)</Hidden>
                           </Visibility>
+                          <KeepTogether>true</KeepTogether>
                         </TablixMember>
                         <TablixMember>
                           <Visibility>
@@ -4183,6 +5398,7 @@
                           <Visibility>
                             <Hidden>=iif((Fields!showDetails.Value=false) OR (Fields!soldeBL.Value=0),true,false)</Hidden>
                           </Visibility>
+                          <KeepTogether>true</KeepTogether>
                         </TablixMember>
                         <TablixMember>
                           <Visibility>
@@ -4210,6 +5426,7 @@
                           <Visibility>
                             <Hidden>=iif((Fields!showDetails.Value=false) OR(Fields!soldeRetour_BL.Value=0),true,false)</Hidden>
                           </Visibility>
+                          <KeepTogether>true</KeepTogether>
                         </TablixMember>
                         <TablixMember>
                           <Visibility>
@@ -4240,6 +5457,7 @@
                           <Visibility>
                             <Hidden>=iif((Fields!showDetails.Value=false) OR(Fields!soldeBS.Value=0),true,false)</Hidden>
                           </Visibility>
+                          <KeepTogether>true</KeepTogether>
                         </TablixMember>
                         <TablixMember>
                           <Visibility>
@@ -4267,6 +5485,7 @@
                           <Visibility>
                             <Hidden>=iif((Fields!showDetails.Value=false) OR(Fields!soldeRetour_BS.Value=0),true,false)</Hidden>
                           </Visibility>
+                          <KeepTogether>true</KeepTogether>
                         </TablixMember>
                         <TablixMember>
                           <Visibility>
@@ -4294,6 +5513,7 @@
                           <Visibility>
                             <Hidden>=iif((Fields!showDetails.Value=false) OR(Fields!soldeFV.Value=0),true,false)</Hidden>
                           </Visibility>
+                          <KeepTogether>true</KeepTogether>
                         </TablixMember>
                         <TablixMember>
                           <Visibility>
@@ -4321,10 +5541,84 @@
                           <Visibility>
                             <Hidden>=iif((Fields!showDetails.Value=false) OR(Fields!soldeAV.Value=0),true,false)</Hidden>
                           </Visibility>
+                          <KeepTogether>true</KeepTogether>
                         </TablixMember>
                         <TablixMember>
                           <Visibility>
                             <Hidden>=IIf((Fields!showDetails.Value=false) OR(Sum(Fields!soldeAV.Value)=0),true,false)</Hidden>
+                          </Visibility>
+                          <KeepWithGroup>Before</KeepWithGroup>
+                        </TablixMember>
+                        <TablixMember>
+                          <Visibility>
+                            <Hidden>=IIf((Fields!showDetails.Value=false) OR(Sum(Fields!Montant.Value)=0),true,false)</Hidden>
+                          </Visibility>
+                          <KeepWithGroup>Before</KeepWithGroup>
+                        </TablixMember>
+                        <TablixMember>
+                          <Visibility>
+                            <Hidden>=IIf((Fields!showDetails.Value=false) OR(Sum(Fields!Montant.Value)=0),true,false)</Hidden>
+                          </Visibility>
+                          <KeepWithGroup>Before</KeepWithGroup>
+                        </TablixMember>
+                        <TablixMember>
+                          <Group Name="No_Recu">
+                            <GroupExpressions>
+                              <GroupExpression>=Fields!No_Recu.Value</GroupExpression>
+                              <GroupExpression>=Fields!Line_No.Value</GroupExpression>
+                            </GroupExpressions>
+                          </Group>
+                          <SortExpressions>
+                            <SortExpression>
+                              <Value>=Fields!type.Value</Value>
+                            </SortExpression>
+                            <SortExpression>
+                              <Value>=Fields!Echeance.Value</Value>
+                            </SortExpression>
+                          </SortExpressions>
+                          <Visibility>
+                            <Hidden>=iif((Fields!showDetails.Value=false) OR(Fields!Montant.Value=0),true,false)</Hidden>
+                          </Visibility>
+                          <KeepTogether>true</KeepTogether>
+                        </TablixMember>
+                        <TablixMember>
+                          <Visibility>
+                            <Hidden>=IIf((Fields!showDetails.Value=false) OR(Sum(Fields!Montant.Value)=0),true,false)</Hidden>
+                          </Visibility>
+                          <KeepWithGroup>After</KeepWithGroup>
+                        </TablixMember>
+                        <TablixMember>
+                          <Visibility>
+                            <Hidden>=IIf((Fields!showDetails.Value=false) OR(sum(Fields!mntNonSolde_IMP.Value)=0),true,false)</Hidden>
+                          </Visibility>
+                          <KeepWithGroup>After</KeepWithGroup>
+                        </TablixMember>
+                        <TablixMember>
+                          <Visibility>
+                            <Hidden>=IIf((Fields!showDetails.Value=false) OR(sum(Fields!mntNonSolde_IMP.Value)=0),true,false)</Hidden>
+                          </Visibility>
+                          <KeepWithGroup>After</KeepWithGroup>
+                        </TablixMember>
+                        <TablixMember>
+                          <Group Name="Impaye_No_Recu">
+                            <GroupExpressions>
+                              <GroupExpression>=Fields!Impaye_No_Recu.Value</GroupExpression>
+                              <GroupExpression>=Fields!Impaye_Line_No.Value</GroupExpression>
+                            </GroupExpressions>
+                          </Group>
+                          <SortExpressions>
+                            <SortExpression>
+                              <Value>=Fields!Impaye_No_Recu.Value</Value>
+                            </SortExpression>
+                          </SortExpressions>
+                          <Visibility>
+                            <Hidden>=IIf((Fields!showDetails.Value=false) OR(sum(Fields!mntNonSolde_IMP.Value)=0),true,false)</Hidden>
+                          </Visibility>
+                          <KeepTogether>true</KeepTogether>
+                        </TablixMember>
+                        <TablixMember>
+                          <Visibility>
+                            <Hidden>=IIf((Fields!showDetails.Value=false) OR(sum(Fields!mntNonSolde_IMP.Value)=0),true,false)</Hidden>
                           </Visibility>
                           <KeepWithGroup>Before</KeepWithGroup>
                         </TablixMember>
@@ -4348,22 +5642,246 @@
             </TablixRowHierarchy>
             <RepeatRowHeaders>true</RepeatRowHeaders>
             <FixedRowHeaders>true</FixedRowHeaders>
+            <KeepTogether>true</KeepTogether>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>0.14993cm</Top>
+            <SortExpressions>
+              <SortExpression>
+                <Value>=Fields!type.Value</Value>
+              </SortExpression>
+              <SortExpression>
+                <Value>=Fields!Echeance.Value</Value>
+              </SortExpression>
+            </SortExpressions>
+            <Top>0.78228cm</Top>
             <Left>0.11857cm</Left>
-            <Height>18.02cm</Height>
-            <Width>19.52681cm</Width>
+            <Height>22.82cm</Height>
+            <Width>19.50413cm</Width>
             <Style>
               <Border>
                 <Style>None</Style>
               </Border>
             </Style>
           </Tablix>
+          <Textbox Name="Textbox2">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>SOLDE GLOBAL : </Value>
+                    <Style>
+                      <FontSize>9pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox2</rd:DefaultName>
+            <Top>0.11466cm</Top>
+            <Left>0.19795cm</Left>
+            <Height>0.49123cm</Height>
+            <Width>2.89612cm</Width>
+            <ZIndex>1</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <VerticalAlign>Middle</VerticalAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox37">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Sum(Fields!soldeCV.Value)+Sum(Fields!soldeBL.Value)+Sum(Fields!soldeBS.Value)+Sum(Fields!soldeFV.Value)-Sum(Fields!soldeRV.Value)-Sum(Fields!soldeRetour_BL.Value)-Sum(Fields!soldeRetour_BS.Value)-Sum(Fields!soldeAV.Value)</Value>
+                    <Style>
+                      <FontSize>9pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Format>#,0.000;- #,0.000</Format>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox37</rd:DefaultName>
+            <Top>0.11466cm</Top>
+            <Left>3.23518cm</Left>
+            <Height>0.49123cm</Height>
+            <Width>3.5cm</Width>
+            <ZIndex>2</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <VerticalAlign>Middle</VerticalAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox5">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>COFFRE GLOBAL :</Value>
+                    <Style>
+                      <FontSize>9pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox2</rd:DefaultName>
+            <Top>0.11466cm</Top>
+            <Left>6.80574cm</Left>
+            <Height>0.49123cm</Height>
+            <Width>3.11473cm</Width>
+            <ZIndex>3</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <VerticalAlign>Middle</VerticalAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox39">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=sum(Fields!Montant.Value)</Value>
+                    <Style>
+                      <FontSize>9pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Format>#,0.000;- #,0.000</Format>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox37</rd:DefaultName>
+            <Top>0.11466cm</Top>
+            <Left>9.92047cm</Left>
+            <Height>0.49123cm</Height>
+            <Width>3.20896cm</Width>
+            <ZIndex>4</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <VerticalAlign>Middle</VerticalAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox6">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>IMPAYE GLOBAL :</Value>
+                    <Style>
+                      <FontSize>9pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox2</rd:DefaultName>
+            <Top>0.11466cm</Top>
+            <Left>13.19999cm</Left>
+            <Height>0.49123cm</Height>
+            <Width>2.97834cm</Width>
+            <ZIndex>5</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <VerticalAlign>Middle</VerticalAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox43">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=sum(Fields!mntNonSolde_IMP.Value)</Value>
+                    <Style>
+                      <FontSize>9pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Format>#,0.000;- #,0.000</Format>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox37</rd:DefaultName>
+            <Top>0.11466cm</Top>
+            <Left>16.17833cm</Left>
+            <Height>0.49123cm</Height>
+            <Width>3.28834cm</Width>
+            <ZIndex>6</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <VerticalAlign>Middle</VerticalAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
-        <Height>18.4541cm</Height>
+        <Height>23.73457cm</Height>
         <Style />
       </Body>
-      <Width>19.77411cm</Width>
+      <Width>19.66531cm</Width>
       <Page>
         <PageHeader>
           <Height>1.82562cm</Height>
@@ -4415,7 +5933,7 @@
                     <TextRun>
                       <Value>SOLDES CLIENTS</Value>
                       <Style>
-                        <FontSize>14pt</FontSize>
+                        <FontSize>16pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -4502,7 +6020,7 @@
               <Top>1.17299cm</Top>
               <Left>0.25968cm</Left>
               <Height>0.50271cm</Height>
-              <Width>5.80799cm</Width>
+              <Width>6.20487cm</Width>
               <ZIndex>3</ZIndex>
               <Style>
                 <Border>
@@ -4536,9 +6054,9 @@
               </Paragraphs>
               <rd:DefaultName>Textbox19</rd:DefaultName>
               <Top>1.17299cm</Top>
-              <Left>13.58269cm</Left>
+              <Left>14.38179cm</Left>
               <Height>0.50271cm</Height>
-              <Width>6.06268cm</Width>
+              <Width>5.26358cm</Width>
               <ZIndex>4</ZIndex>
               <Style>
                 <Border>
@@ -4661,6 +6179,12 @@ End Function
         </Field>
         <Field Name="includeCV">
           <DataField>includeCV</DataField>
+        </Field>
+        <Field Name="includeDF">
+          <DataField>includeDF</DataField>
+        </Field>
+        <Field Name="includeIMP">
+          <DataField>includeIMP</DataField>
         </Field>
         <Field Name="dateDebut">
           <DataField>dateDebut</DataField>
@@ -4928,6 +6452,111 @@ End Function
         </Field>
         <Field Name="mntTTC_AVFormat">
           <DataField>mntTTC_AVFormat</DataField>
+        </Field>
+        <Field Name="No_Recu">
+          <DataField>No_Recu</DataField>
+        </Field>
+        <Field Name="Date_Reçu">
+          <DataField>Date_Reçu</DataField>
+        </Field>
+        <Field Name="Line_No">
+          <DataField>Line_No</DataField>
+        </Field>
+        <Field Name="NoClient">
+          <DataField>NoClient</DataField>
+        </Field>
+        <Field Name="NomClient">
+          <DataField>NomClient</DataField>
+        </Field>
+        <Field Name="type">
+          <DataField>type</DataField>
+        </Field>
+        <Field Name="Name">
+          <DataField>Name</DataField>
+        </Field>
+        <Field Name="Echeance">
+          <DataField>Echeance</DataField>
+        </Field>
+        <Field Name="Paiment_No">
+          <DataField>Paiment_No</DataField>
+        </Field>
+        <Field Name="Montant">
+          <DataField>Montant</DataField>
+        </Field>
+        <Field Name="MontantFormat">
+          <DataField>MontantFormat</DataField>
+        </Field>
+        <Field Name="banque">
+          <DataField>banque</DataField>
+        </Field>
+        <Field Name="Montant_reçu_caisse">
+          <DataField>Montant_reçu_caisse</DataField>
+        </Field>
+        <Field Name="Montant_reçu_caisseFormat">
+          <DataField>Montant_reçu_caisseFormat</DataField>
+        </Field>
+        <Field Name="solde">
+          <DataField>solde</DataField>
+        </Field>
+        <Field Name="Linked_Invoice">
+          <DataField>Linked_Invoice</DataField>
+        </Field>
+        <Field Name="Impaye_No_Recu">
+          <DataField>Impaye_No_Recu</DataField>
+        </Field>
+        <Field Name="Impaye_Date_Reçu">
+          <DataField>Impaye_Date_Reçu</DataField>
+        </Field>
+        <Field Name="Impaye_Line_No">
+          <DataField>Impaye_Line_No</DataField>
+        </Field>
+        <Field Name="Impaye_NoClient">
+          <DataField>Impaye_NoClient</DataField>
+        </Field>
+        <Field Name="Impaye_NomClient">
+          <DataField>Impaye_NomClient</DataField>
+        </Field>
+        <Field Name="Impaye_type">
+          <DataField>Impaye_type</DataField>
+        </Field>
+        <Field Name="Impaye_Name">
+          <DataField>Impaye_Name</DataField>
+        </Field>
+        <Field Name="Impaye_Echeance">
+          <DataField>Impaye_Echeance</DataField>
+        </Field>
+        <Field Name="Impaye_Paiment_No">
+          <DataField>Impaye_Paiment_No</DataField>
+        </Field>
+        <Field Name="Impaye_Montant">
+          <DataField>Impaye_Montant</DataField>
+        </Field>
+        <Field Name="Impaye_MontantFormat">
+          <DataField>Impaye_MontantFormat</DataField>
+        </Field>
+        <Field Name="Impaye_banque">
+          <DataField>Impaye_banque</DataField>
+        </Field>
+        <Field Name="Impaye_Montant_reçu_caisse">
+          <DataField>Impaye_Montant_reçu_caisse</DataField>
+        </Field>
+        <Field Name="Impaye_Montant_reçu_caisseFormat">
+          <DataField>Impaye_Montant_reçu_caisseFormat</DataField>
+        </Field>
+        <Field Name="Impaye_solde">
+          <DataField>Impaye_solde</DataField>
+        </Field>
+        <Field Name="Impaye_Linked_Invoice">
+          <DataField>Impaye_Linked_Invoice</DataField>
+        </Field>
+        <Field Name="Date_Impaye">
+          <DataField>Date_Impaye</DataField>
+        </Field>
+        <Field Name="mntNonSolde_IMP">
+          <DataField>mntNonSolde_IMP</DataField>
+        </Field>
+        <Field Name="mntNonSolde_IMPFormat">
+          <DataField>mntNonSolde_IMPFormat</DataField>
         </Field>
       </Fields>
       <Query>

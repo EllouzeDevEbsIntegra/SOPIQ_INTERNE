@@ -68,6 +68,14 @@ report 25006118 "Etat Solde Client"
             {
 
             }
+            column(includeDF; includeDF)
+            {
+
+            }
+            column(includeIMP; includeIMP)
+            {
+
+            }
             column(dateDebut; dateDebut)
             {
 
@@ -92,6 +100,7 @@ report 25006118 "Etat Solde Client"
             {
                 DataItemLink = "Bill-to Customer No." = field("No.");
                 DataItemTableView = sorting("No.") where("Document Type" = const(Order), "Completely Shipped" = filter(false));
+
                 column(numCV; "No.")
                 {
 
@@ -484,6 +493,159 @@ report 25006118 "Etat Solde Client"
                 end;
             }
 
+            // Liste encours paiements Client 
+            dataitem(lignePayRecuCaisse; "Recu Caisse Paiement")
+            {
+                DataItemLink = "N° Client" = field("No.");
+                DataItemTableView = where(Echeance = filter('>a'), type = filter(Cheque | Traite));
+                column(No_Recu; "No Recu")
+                {
+
+                }
+                column("Date_Reçu"; "Date Reçu")
+                {
+
+                }
+                column(Line_No; "Line No")
+                {
+
+                }
+                column(NoClient; "N° Client")
+                {
+
+                }
+                column(NomClient; "Nom Client")
+                {
+
+                }
+                column(type; type)
+                {
+
+                }
+                column(Name; Name)
+                {
+
+                }
+                column(Echeance; Echeance)
+                {
+
+                }
+                column(Paiment_No; "Paiment No")
+                {
+
+                }
+                column(Montant; Montant)
+                {
+
+                }
+                column(banque; banque)
+                {
+
+                }
+                column("Montant_reçu_caisse"; "Montant reçu caisse")
+                {
+
+                }
+                column(solde; solde)
+                {
+
+                }
+                column(Linked_Invoice; "Linked Invoice")
+                {
+
+                }
+
+                trigger OnPreDataItem()
+                begin
+                    if not (includeDF) then CurrReport.Break();
+                end;
+
+            }
+
+            // Liste Paiement Impayé 
+            dataitem(lignePayImpaye; "Recu Caisse Paiement")
+            {
+                DataItemLink = "N° Client" = field("No.");
+                DataItemTableView = where(solde = filter(false), type = filter(Cheque | Traite), Impaye = filter(true));
+                column(Impaye_No_Recu; "No Recu")
+                {
+
+                }
+                column("Impaye_Date_Reçu"; "Date Reçu")
+                {
+
+                }
+                column(Impaye_Line_No; "Line No")
+                {
+
+                }
+                column(Impaye_NoClient; "N° Client")
+                {
+
+                }
+                column(Impaye_NomClient; "Nom Client")
+                {
+
+                }
+                column(Impaye_type; type)
+                {
+
+                }
+                column(Impaye_Name; Name)
+                {
+
+                }
+                column(Impaye_Echeance; Echeance)
+                {
+
+                }
+                column(Impaye_Paiment_No; "Paiment No")
+                {
+
+                }
+                column(Impaye_Montant; Montant)
+                {
+
+                }
+                column(Impaye_banque; banque)
+                {
+
+                }
+                column(Impaye_Montant_reçu_caisse; "Montant reçu caisse")
+                {
+
+                }
+                column(Impaye_solde; solde)
+                {
+
+                }
+                column(Impaye_Linked_Invoice; "Linked Invoice")
+                {
+
+                }
+                column(Date_Impaye; "Date Impaye")
+                {
+
+                }
+                column(mntNonSolde_IMP; mntNonSolde_IMP)
+                {
+
+                }
+
+                trigger OnPreDataItem()
+                begin
+                    if not (includeIMP) then CurrReport.Break();
+                end;
+
+                trigger OnAfterGetRecord()
+                begin
+                    mntNonSolde_IMP := 0;
+                    lignePayImpaye.CalcFields("Montant reçu caisse");
+                    mntNonSolde_IMP := Montant - "Montant reçu caisse";
+                end;
+
+            }
+
 
             trigger OnAfterGetRecord()
             var
@@ -560,6 +722,16 @@ report 25006118 "Etat Solde Client"
                         Caption = 'Inclure Facture et Avoir';
                         ApplicationArea = Basic, Suite;
                     }
+                    field(includeDF; includeDF)
+                    {
+                        Caption = 'Inclure Encours Financier';
+                        ApplicationArea = Basic, Suite;
+                    }
+                    field(includeIMP; includeIMP)
+                    {
+                        Caption = 'Inclure Impayé';
+                        ApplicationArea = Basic, Suite;
+                    }
 
                     field(totalByZone; totalByZone)
                     {
@@ -585,9 +757,9 @@ report 25006118 "Etat Solde Client"
 
     var
         zone: Text;
-        mntNonSolde_BL, mntNonSolde_BS, mntNonSolde_RetBL, mntNonSolde_RetBS, mntNonSolde_FV, mntNonSolde_AV, mntNonSolde_CV, mntNonSolde_RV : decimal;
+        mntNonSolde_BL, mntNonSolde_BS, mntNonSolde_RetBL, mntNonSolde_RetBS, mntNonSolde_FV, mntNonSolde_AV, mntNonSolde_CV, mntNonSolde_RV, mntNonSolde_IMP : decimal;
         dateDebut, dateFin : Date;
-        includeCV, includeBL, includeBS, includeFV, totalByZone : Boolean;
+        includeCV, includeBL, includeBS, includeFV, includeDF, includeIMP, totalByZone : Boolean;
         RecCompany: Record "Company Information";
         showTotalBelow, showDetails : Boolean;
         nomClientBL: Text;
