@@ -11308,6 +11308,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales Role details - Action Blanket Purchase Orders - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 2661476762 - Action 121117409 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Etat Documents Achat</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Role details - Action Etat Fournisseur - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 2661476762 - Action 4135951594 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Opens a list of posted purchase credit memos.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -14067,6 +14072,36 @@
           <source>Date Fin</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report Etat Credit Agence - Control dateFin - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1306493797 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Etat  Documents Fournisseur</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Documents Fournisseur - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1306493797 - Control 2346885236 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source></source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Documents Fournisseur - Control Options - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1306493797 - Control 526631466 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date Début</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Documents Fournisseur - Control dateDebut - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1306493797 - Control 2673469895 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date Fin</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Documents Fournisseur - Control dateFin - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1306493797 - Control 4057265088 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inclure Réception Achat</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Documents Fournisseur - Control includeRecpt - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1306493797 - Control 2758849626 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inclure Retour Achat</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Documents Fournisseur - Control includeReturn - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 1586683101 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Etat Reçu de caisse</source>
@@ -19347,6 +19382,11 @@
           <source>Expédition Annulée</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales line - Field Is Ship Canceled - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3171687522 - Field 2163816639 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2574427010">
+          <source>Dernière Date Achat</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales line - Field Last Purchase Date - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3171687522 - Field 2983779778 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2574427010">
           <source>Dernière Date Vente</source>

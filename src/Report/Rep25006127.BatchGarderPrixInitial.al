@@ -63,6 +63,11 @@ report 25006127 "Batch Garder Prix Initial"
 
                         end
                     end else begin
+                        SalesLine.RESET;
+                        SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
+                        SalesLine.setrange("Document No.", "Order No.");
+                        SalesLine.setrange("Line No.", "Order Line No.");
+                        SalesLine.SetFilter(Quantity, '>%1', 0);
                         "% Discount" := SalesLine."Line Discount %";
                         IF SalesLine.Quantity > Quantity then
                             "Line Amount" := (SalesLine."Amount Including VAT" / SalesLine.Quantity) * Quantity else
@@ -70,7 +75,6 @@ report 25006127 "Batch Garder Prix Initial"
                         IF SalesLine."VAT %" <> 0 then
                             "Line Amount HT" := "Line Amount" / (1 + (SalesLine."VAT %" / 100)) else
                             "Line Amount HT" := "Line Amount";
-
                     end;
                     Modify();
                     Commit();

@@ -76,6 +76,11 @@ pageextension 80114 "Sales Order Subform" extends "Sales Order Subform" //46
                 ApplicationArea = all;
                 Editable = false;
             }
+            field("Last Purchase Date"; "Last Purchase Date")
+            {
+                ApplicationArea = all;
+                Editable = false;
+            }
         }
     }
 
@@ -158,7 +163,7 @@ pageextension 80114 "Sales Order Subform" extends "Sales Order Subform" //46
     trigger OnAfterGetRecord()
     begin
         FieldStyleQty := SetStyleQte("Available Qty");
-        CalcFields("Received Quantity", "Description Structuré");
+        CalcFields("Received Quantity", "Description Structuré", "Last Purchase Date");
     end;
 
 }

@@ -235,6 +235,12 @@ tableextension 80100 "Sales line" extends "Sales line" //37
             Caption = 'Expédition Annulée';
             DataClassification = ToBeClassified;
         }
+        field(50217; "Last Purchase Date"; Date)
+        {
+            Caption = 'Dernière Date Achat';
+            FieldClass = FlowField;
+            CalcFormula = lookup(Item."Last. Pursh. Date" where("No." = field("No.")));
+        }
     }
 
 

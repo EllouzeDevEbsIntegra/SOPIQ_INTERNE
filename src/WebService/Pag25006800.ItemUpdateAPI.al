@@ -54,6 +54,7 @@ page 25006800 "ItemUpdateAPI"
         if (recItem."Count Item Manual " <> Rec."Count Item Manual ") then begin
             recItem.TransferFields(rec, false);
             rec.TransferFields(recItem);
+            totalCount := recItem."Count Item Manual ";
         end;
 
         recEqvItem.Reset();

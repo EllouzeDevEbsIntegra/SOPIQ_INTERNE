@@ -326,6 +326,13 @@ page 50123 "Sales Role details"
                     RunObject = Page "Posted Purchase Receipts";
                     ToolTip = 'Open the list of posted purchase receipts.';
                 }
+                action("Etat Fournisseur")
+                {
+                    ApplicationArea = BasicEU;
+                    Caption = 'Etat Documents Achat';
+                    Image = PrintChecklistReport;
+                    RunObject = report 25006136;
+                }
             }
             group(Action62)
             {

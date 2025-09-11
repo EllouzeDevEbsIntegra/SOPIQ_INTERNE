@@ -333,8 +333,8 @@ codeunit 50019 SubscriberEventProcedure
 
 
 
-    // // @@@@@@ TO VERIFY
-    // // Garder prix initial dans la facturation des lignes BS
+    // @@@@@@ TO VERIFY
+    // Garder prix initial dans la facturation des lignes BS
     // [EventSubscriber(ObjectType::Table, Database::"Sales Shipment Line", 'OnAfterInsertEvent', '', false, false)]
     // local procedure OnAfterInsertEventSalesShipLine(var Rec: Record "Sales Shipment Line"; RunTrigger: Boolean)
     // Var
@@ -354,7 +354,6 @@ codeunit 50019 SubscriberEventProcedure
     //     IF SalesLine.FindFirst THEN
     //         SalesShipmLine.CalcFields(BS);
     //     IF SalesShipmLine.BS then begin
-    //         Message('Here Test !');
     //         if (salessetup."Same Price Order/BS" = true) OR (SalesLine."Unit Cost" = 0) then begin
     //             SalesShipmLine."Prix Vente 1" := SalesLine."Unit Price";
     //             SalesShipmLine."Prix Vente 2" := SalesLine."Unit Price" * (1 - (SalesLine."Line Discount %" / 100));
@@ -372,8 +371,9 @@ codeunit 50019 SubscriberEventProcedure
     //         end;
     //         SalesShipmLine."Line Amount Order" := SalesLine."Line Amount";
     //         SalesShipmLine."Quantity Order" := SalesLine.Quantity;
-    //     end else
-    //         SalesShipmLine."% Discount" := SalesLine."Line Discount %";
+    //     end;
+
+    //     SalesShipmLine."% Discount" := SalesLine."Line Discount %";
     //     IF SalesLine.Quantity > SalesShipmLine.Quantity then
     //         SalesShipmLine."Line Amount" := (SalesLine."Amount Including VAT" / SalesLine.Quantity) * SalesShipmLine.Quantity else
     //         SalesShipmLine."Line Amount" := SalesLine."Amount Including VAT";
@@ -381,6 +381,7 @@ codeunit 50019 SubscriberEventProcedure
     //         SalesShipmLine."Line Amount HT" := SalesShipmLine."Line Amount" / (1 + (SalesLine."VAT %" / 100)) else
     //         SalesShipmLine."Line Amount HT" := SalesShipmLine."Line Amount";
     //     SalesShipmLine.Modify;
+    //     Commit();
     // END;
 
     [EventSubscriber(ObjectType::Table, Database::"Service Header EDMS", 'OnBeforeValidateEvent', 'Vehicle Serial No.', false, false)]

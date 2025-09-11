@@ -316,6 +316,7 @@ page 50132 "Recu Caisse Card"
                         setDocumentSolde(rec);
                         if (user = '') then
                             Error('Vous devez sélectionner le code vendeur !') else begin
+                            Commit();
                             CurrPage.Update(true);
                             CurrPage.SETSELECTIONFILTER(recuCaisse);
                             REPORT.RUNMODAL(REPORT::"Recu Caisse", TRUE, TRUE, recuCaisse);

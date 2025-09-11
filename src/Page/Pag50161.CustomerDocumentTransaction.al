@@ -379,6 +379,7 @@ page 50161 "Customer Document Transaction"
         salesHeader.SetRange("Bill-to Customer No.", "No.");
         salesHeader.CalcFields("Completely Shipped");
         salesHeader.SetFilter("Completely Shipped", '%1', false);
+        salesHeader.SetRange("Statut B2B", salesHeader."Statut B2B"::"Commande en attente");
         salesOrderCount := salesHeader.Count;
         if salesHeader.FindSet() then begin
             repeat
