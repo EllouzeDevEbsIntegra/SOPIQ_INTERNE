@@ -50,7 +50,6 @@ page 50110 "Specific Item Ledger Entry"
                     ApplicationArea = All;
                     StyleExpr = FieldStyle;
                     Editable = false;
-
                 }
 
                 field("Entry Type"; "Entry Type")

@@ -67,18 +67,25 @@ codeunit 50019 SubscriberEventProcedure
     local procedure OnBeforeUndoShipmentPosting(SalesShipmentLine: Record "Sales Shipment Line"; var IsHandled: Boolean)
     var
         userSetup: Record "User Setup";
+        EntetearchiveBS: Record "Entete archive BS";
     begin
-
-
-        if SalesShipmentLine.Correction = false then begin
-            userSetup.SetFilter("User ID", UserId);
-            if userSetup.FindFirst() then begin
-                userSetup."Initial Allow Post. Only Today" := userSetup."Allow Posting Only Today";
-                userSetup."Allow Posting Only Today" := false;
-                userSetup.Modify();
-                //Message('OnBeforeUndoShipmentPosting');
+        // Vérifier si le bon de sortie est soldé
+        EntetearchiveBS.Reset();
+        EntetearchiveBS.SetRange("No.", SalesShipmentLine."Document No.");
+        EntetearchiveBS.SetRange(BS, true);
+        EntetearchiveBS.SetRange(Solde, true);
+        if EntetearchiveBS.FindFirst() then begin
+            Error('Annulation non autorisée pour un bon de sortie BS soldé !');
+        end else begin
+            // Autoriser utilisateur à annuler une expédétion même "si Allow Posting Only Today" est true
+            if SalesShipmentLine.Correction = false then begin
+                userSetup.SetFilter("User ID", UserId);
+                if userSetup.FindFirst() then begin
+                    userSetup."Initial Allow Post. Only Today" := userSetup."Allow Posting Only Today";
+                    userSetup."Allow Posting Only Today" := false;
+                    userSetup.Modify();
+                end;
             end;
-
         end;
     end;
     // ----------------------------------------------------------------------------------------------------------------
@@ -101,7 +108,6 @@ codeunit 50019 SubscriberEventProcedure
         if userSetup.FindFirst() then begin
             userSetup."Allow Posting Only Today" := userSetup."Initial Allow Post. Only Today";
             userSetup.Modify();
-            //Message('OnAfterNewSalesShptLineInsert');
         end;
         // ----------------------------------------------------------------------------------------------------------------
 

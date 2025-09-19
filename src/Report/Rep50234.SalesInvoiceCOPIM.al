@@ -237,10 +237,10 @@ report 50234 "Sales Invoice COPIM"
                     Nombreligne := Nombreligne + 1;
 
                     TotalLigne := TotalLigne + 1;
-                    IF Nombreligne > 28 THEN
+                    IF Nombreligne > 26 THEN
                         Nombreligne := 1;
 
-                    PageLigne := 28;
+                    PageLigne := 26;
                     CASE TotalLigne OF
                         1 .. PageLigne:
                             pagination := 1;
@@ -353,7 +353,7 @@ report 50234 "Sales Invoice COPIM"
 
                 trigger OnPreDataItem()
                 begin
-                    SETRANGE(Number, 1, 28 - (increment MOD 28));
+                    SETRANGE(Number, 1, 26 - (increment MOD 26));
                 end;
 
             }

@@ -167,9 +167,11 @@ page 25006818 "Service Order Header API"
                 {
                     Caption = 'Observation';
                 }
+                field(Masquer; Masquer)
+                {
+                    Caption = 'Masquer';
 
-
-
+                }
             }
         }
 

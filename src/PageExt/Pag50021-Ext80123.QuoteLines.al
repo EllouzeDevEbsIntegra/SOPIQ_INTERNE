@@ -16,6 +16,17 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
                 {
                     Caption = 'Qte Ste 1';
                     Editable = false;
+                    trigger OnDrillDown()
+                    var
+                        ILECompany1: Record "Specific Item Ledger Entry";
+                    begin
+                        ILECompany1.Reset();
+                        ILECompany1.SetRange("Item No.", rec."No.");
+                        ILECompany1.ChangeCompany(recCompany."Inter Society 1");
+                        Commit();
+                        PAGE.RUNMODAL(PAGE::"Specific Item Ledger Entry", ILECompany1);
+                    end;
+
 
                 }
                 field("Last Purchase Date Ste 1"; recItemCompany1."Last Purchase Date")
@@ -27,6 +38,18 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
                 {
                     Caption = 'Qte Ste 2';
                     Editable = false;
+                    trigger OnDrillDown()
+                    var
+                        ILECompany2: Record "Specific Item Ledger Entry";
+
+                    begin
+                        ILECompany2.Reset();
+                        ILECompany2.SetRange("Item No.", rec."No.");
+                        ILECompany2.ChangeCompany(recCompany."Inter Society 2");
+                        Commit();
+                        PAGE.RUNMODAL(PAGE::"Specific Item Ledger Entry", ILECompany2);
+                    end;
+
                 }
                 field("Last Purchase Date Ste 2"; recItemCompany2."Last Purchase Date")
                 {
@@ -187,7 +210,6 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
         recItemCompany1, recItemCompany2 : Record Item;
         recCompany: Record "Company Information";
 
-
     procedure SetStyleDate(PDate: Date): Text[50]
     var
         recdate: date;
@@ -218,12 +240,15 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
     var
     begin
         recCompany.get();
+
         recItemCompany1.Reset();
-        recItemCompany2.Reset();
         recItemCompany1.ChangeCompany(recCompany."Inter Society 1");
         IF recItemCompany1.GET(rec."No.") then begin
             recItemCompany1.CalcFields(Inventory);
+
         end;
+
+        recItemCompany2.Reset();
         recItemCompany2.ChangeCompany(recCompany."Inter Society 2");
         IF recItemCompany2.GET(rec."No.") then begin
             recItemCompany2.CalcFields(Inventory);

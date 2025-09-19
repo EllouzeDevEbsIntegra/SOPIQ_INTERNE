@@ -28,6 +28,11 @@ pageextension 80118 "item" extends "Item List" //31
                 Caption = 'Emplacement par défaut';
                 ApplicationArea = All;
             }
+            field("Count Item Manual "; "Count Item Manual ")
+            {
+                Caption = 'Occurrence';
+                ApplicationArea = All;
+            }
             field("Small Parts"; "Small Parts")
             {
                 Caption = 'Petite Fourniture';

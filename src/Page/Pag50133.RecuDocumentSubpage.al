@@ -36,6 +36,12 @@ page 50133 "Recu Document Subpage"
                                 "Document No" := '';
                                 "Montant Reglement" := 0;
                                 "Total TTC" := 0;
+
+                                if (type = type::Impaye) then begin
+                                    isImpaye := true;
+                                end else
+                                    isImpaye := false;
+                                CurrPage.Update();
                             end
                         end;
                     end;
@@ -72,8 +78,7 @@ page 50133 "Recu Document Subpage"
                     else
                     if (type = const(AVA)) "Purch. Cr. Memo Hdr." where(solde = filter('Non'))
                     else
-                    if (type = const(Impaye)) "Recu Caisse Paiement" where("N° Client" = field("Customer No"), Impaye = filter('Oui'), solde = filter('Non'));
-
+                    if (type = const(Impaye)) "Recu Caisse Paiement"."No Recu" where("N° Client" = field("Customer No"), Impaye = filter('Oui'), solde = filter('Non'));
                     trigger OnValidate()
 
                     var
@@ -180,12 +185,14 @@ page 50133 "Recu Document Subpage"
                                         recRecuCaissePaiement.SetRange("N° Client", "Customer No");
                                         recRecuCaissePaiement.SetRange("No Recu", "Document No");
                                         recRecuCaissePaiement.SetRange(Impaye, true);
+                                        recRecuCaissePaiement.SetRange(solde, false);
                                         if recRecuCaissePaiement.FindFirst() then begin
                                             recRecuCaissePaiement.CalcFields("Montant reçu caisse");
-                                            "Montant Reglement" := recRecuCaissePaiement."Montant" - recRecuCaissePaiement."Montant reçu caisse";
-                                            "Total TTC" := recRecuCaissePaiement."Montant";
-                                            "id Ligne Impaye" := recRecuCaissePaiement."Line No";
-                                            Libelle := 'Impaye ' + Format(recRecuCaissePaiement.type) + ' ' + Format(recRecuCaissePaiement.banque) + ' N°' + recRecuCaissePaiement."Paiment No" + ' Montant: ' + Format(recRecuCaissePaiement."Montant", 0, '<Precision,3:3><Standard Format,0>') + ' Echéance : ' + Format(recRecuCaissePaiement.Echeance) + ' ' + recRecuCaissePaiement.Name;
+                                            "Montant Reglement" := 0;
+                                            "Total TTC" := 0;
+                                            isImpaye := true;
+                                            CurrPage.Update();
+                                            //Libelle := 'Impaye ' + Format(recRecuCaissePaiement.type) + ' ' + Format(recRecuCaissePaiement.banque) + ' N°' + recRecuCaissePaiement."Paiment No" + ' Montant: ' + Format(recRecuCaissePaiement."Montant", 0, '<Precision,3:3><Standard Format,0>') + ' Echéance : ' + Format(recRecuCaissePaiement.Echeance) + ' ' + recRecuCaissePaiement.Name;
                                         end;
                                     end;
                                 else begin
@@ -193,6 +200,35 @@ page 50133 "Recu Document Subpage"
                                 end;
                             end;
 
+                        end;
+                    end;
+
+                }
+                field("id Ligne Impaye"; "id Ligne Impaye")
+                {
+                    ApplicationArea = all;
+                    Visible = isImpaye;
+                    TableRelation = if (type = const(Impaye)) "Recu Caisse Paiement"."Line No" where("N° Client" = field("Customer No"), Impaye = filter('Oui'), solde = filter('Non'), "No Recu" = field("Document No"));
+                    trigger OnValidate()
+                    var
+                        recRecuCaissePaiement: Record "Recu Caisse Paiement";
+                    begin
+                        if (rec."id Ligne Impaye" <> xrec."id Ligne Impaye") then begin
+                            "Montant Reglement" := 0;
+                            "Total TTC" := 0;
+                            Modify();
+
+                            recRecuCaissePaiement.SetRange("N° Client", "Customer No");
+                            recRecuCaissePaiement.SetRange("No Recu", "Document No");
+                            recRecuCaissePaiement.SetRange("Line No", "id Ligne Impaye");
+                            recRecuCaissePaiement.SetRange(Impaye, true);
+                            recRecuCaissePaiement.SetRange(solde, false);
+                            if recRecuCaissePaiement.FindFirst() then begin
+                                recRecuCaissePaiement.CalcFields("Montant reçu caisse");
+                                "Montant Reglement" := recRecuCaissePaiement."Montant" - recRecuCaissePaiement."Montant reçu caisse";
+                                "Total TTC" := recRecuCaissePaiement."Montant";
+                                Libelle := ' Impaye ' + Format(recRecuCaissePaiement.type) + ' ' + Format(recRecuCaissePaiement.banque) + ' N°' + recRecuCaissePaiement."Paiment No" + ' Montant: ' + Format(recRecuCaissePaiement."Montant", 0, '<Precision,3:3><Standard Format,0>') + ' Echéance : ' + Format(recRecuCaissePaiement.Echeance) + ' ' + recRecuCaissePaiement.Name;
+                            end;
                         end;
                     end;
 
@@ -233,6 +269,9 @@ page 50133 "Recu Document Subpage"
         totalDoc: Decimal;
         nbDoc: Integer;
         isDivers: Boolean;
+        TempDocumentNo: Code[20];
+        TempLigneImpaye: Integer;
+        isImpaye: Boolean;
 
     procedure setFilter(recuCaisse: Record "Recu Caisse")
     var

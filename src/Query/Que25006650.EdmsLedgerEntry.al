@@ -6,10 +6,17 @@ Query 25006650 "Edms Ledger Entry"
         dataitem(Service_Ledger_Entry_EDMS; "Service Ledger Entry EDMS")
         {
             DataItemTableFilter = "Entry Type" = const(Sale);
+            column(Entry_No_; "Entry No.")
+            {
+
+            }
             column(Document_Type; "Document Type")
             {
             }
             column(Document_No; "Document No.")
+            {
+            }
+            column(Document_Line_No_; "Document Line No.")
             {
             }
             column(Service_Order_No_; "Service Order No.")
@@ -236,18 +243,18 @@ Query 25006650 "Edms Ledger Entry"
 
                                         }
                                     }
+
                                 }
-
                             }
-                        }
 
+                        }
                     }
+
+
                 }
 
-
             }
-
         }
     }
-}
 
+}
