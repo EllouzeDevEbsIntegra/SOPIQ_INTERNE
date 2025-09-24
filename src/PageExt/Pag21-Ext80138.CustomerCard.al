@@ -70,6 +70,11 @@ pageextension 80138 "Customer Card" extends "Customer Card"//21
                 ApplicationArea = all;
                 Caption = 'Client Divers';
             }
+            field("Ecarter Ctrl Modif Prix Remise"; "Ecarter Ctrl Modif Prix Remise")
+            {
+                ApplicationArea = all;
+                Caption = 'Ecarter Ctrl Modif Prix/Remise';
+            }
         }
     }
 

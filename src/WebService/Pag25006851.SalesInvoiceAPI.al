@@ -184,13 +184,7 @@ page 25006851 "Sales Invoice API"
                     Caption = 'Remaining Amount', Locked = true;
                     Editable = false;
                 }
-                field(feedback; feedback)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Feedback', Locked = true;
-                    ToolTip = 'Specifies whether the invoice has feedback.';
 
-                }
                 field(MontantRecuCaisse; "Montant reçu caisse")
                 {
                     ApplicationArea = All;

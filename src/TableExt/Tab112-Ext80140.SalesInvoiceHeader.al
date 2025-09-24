@@ -57,11 +57,7 @@ tableextension 80140 "Sales Invoice Header" extends "Sales Invoice Header"//112
             FieldClass = FlowField;
             CalcFormula = lookup("Posted Serv. Order Header"."Initiator Code" WHERE("No." = field("Service Order No.")));
         }
-        field(80415; feedback; Boolean)
-        {
-            DataClassification = ToBeClassified;
-            Caption = 'Feedback';
-        }
+
         field(80416; "Linked Paiement Line"; Code[10])
         {
             Caption = 'Ligne Paiement Liée';
@@ -133,4 +129,18 @@ tableextension 80140 "Sales Invoice Header" extends "Sales Invoice Header"//112
         MoyJourPaiement := CumulJourPaiement;
         exit(MoyJourPaiement);
     end;
+
+    trigger OnInsert()
+    var
+        SISalesCodeUnit: Codeunit SISalesCodeUnit;
+    begin
+        WorkDescription := CopyStr(GetWorkDescription, 1, 250);
+        Message(WorkDescription);
+        if rec."Document Profile" = "Document Profile"::Service then
+            SISalesCodeUnit.CreateSalesInvoiceHeaderForFeedback(Rec, workDescription);
+    end;
+
+
+    var
+        workDescription: Text[250];
 }

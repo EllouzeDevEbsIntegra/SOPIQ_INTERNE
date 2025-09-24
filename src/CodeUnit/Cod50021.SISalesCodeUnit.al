@@ -10,7 +10,8 @@ codeunit 50021 SISalesCodeUnit
                     tabledata "Return Receipt Line" = rimd,
                     tabledata "Sales Shipment Header" = rimd,
                     tabledata "Purch. Rcpt. Line" = rimd,
-                    tabledata "Sales Invoice Line" = m;
+                    tabledata "Sales Invoice Line" = m,
+                    tabledata "Sales Invoice Feedback" = rimd;
 
 
     procedure modifySalesLineDescription(var SalesLine: Record "Sales Invoice Line"; NewDescription: Text[250])
@@ -175,6 +176,43 @@ codeunit 50021 SISalesCodeUnit
                 Saleslines.Validate("Line Discount %", pSalesLine."Line Discount %");
                 Saleslines.Modify(true);
             until Saleslines.Next() = 0;
+    end;
+
+    procedure CreateSalesInvoiceHeaderForFeedback(SalesInvHeader: Record "Sales Invoice Header"; workDescription: Text[250])
+    var
+        SalesInvFeedback: Record "Sales Invoice Feedback";
+    begin
+        SalesInvHeader.CalcFields("Vehicle Registration No.");
+
+        SalesInvFeedback.Init();
+        SalesInvFeedback."No." := SalesInvHeader."No.";
+        SalesInvFeedback."Posting Date" := SalesInvHeader."Posting Date";
+        SalesInvFeedback."Document Profile" := SalesInvHeader."Document Profile";
+        SalesInvFeedback."Sell-to Customer No." := SalesInvHeader."Sell-to Customer No.";
+        SalesInvFeedback."Sell-to Customer Name" := SalesInvHeader."Sell-to Customer Name";
+        SalesInvFeedback."Bill-to Customer No." := SalesInvHeader."Bill-to Customer No.";
+        SalesInvFeedback."Bill-to Name" := SalesInvHeader."Bill-to Name";
+        SalesInvFeedback."Order No." := SalesInvHeader."Order No.";
+        SalesInvFeedback."Salesperson Code" := SalesInvHeader."Salesperson Code";
+        SalesInvFeedback."Service Order No." := SalesInvHeader."Service Order No.";
+        SalesInvFeedback."Order Creator" := SalesInvHeader."Order Creator";
+        SalesInvFeedback."Order Date" := SalesInvHeader."Order Date";
+        SalesInvFeedback."Deal Type Code" := SalesInvHeader."Deal Type Code";
+        SalesInvFeedback."Service Document" := SalesInvHeader."Service Document";
+        SalesInvFeedback."Document Date" := SalesInvHeader."Document Date";
+        SalesInvFeedback."External Document No." := SalesInvHeader."External Document No.";
+        SalesInvFeedback."User ID" := SalesInvHeader."User ID";
+        SalesInvFeedback."Sell-to Phone No." := SalesInvHeader."Sell-to Phone No.";
+        SalesInvFeedback."Phone No." := SalesInvHeader."Phone No.";
+        SalesInvFeedback."Mobile Phone No." := SalesInvHeader."Mobile Phone No.";
+        SalesInvFeedback."Work Description" := workDescription;
+        SalesInvFeedback."Vehicle Registration No." := SalesInvHeader."Vehicle Registration No.";
+        SalesInvFeedback."Make Code" := SalesInvHeader."Make Code";
+        SalesInvFeedback."Model Code" := SalesInvHeader."Model Code";
+        SalesInvFeedback."Vehicle Serial No." := SalesInvHeader."Vehicle Serial No.";
+        SalesInvFeedback.VIN := SalesInvHeader.VIN;
+        SalesInvFeedback.Insert(true);
+
     end;
 
 }

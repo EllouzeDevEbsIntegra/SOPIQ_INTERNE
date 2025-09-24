@@ -518,6 +518,161 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Sales Details Cue - Field User ID Filter - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 109107036 - Field 636392376 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Amount</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Amount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 1650118938 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Amount Including VAT</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Amount Including VAT - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 2965034906 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bill-to Customer No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Bill-to Customer No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 240204966 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bill-to Name</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Bill-to Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 3040675027 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Deal Type Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Deal Type Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 580412389 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Document Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 4170971264 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document Profile</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Document Profile - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 4170971264 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
+          <source> ,Spare Parts Trade,Vehicles Trade,Service,Rent</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Document Profile - Property OptionCaption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 1527563463 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>External Document No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field External Document No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 859562579 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Feedback</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field feedback - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 3131079407 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Feedback Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Feedback Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 4220593041 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Make Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Make Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 352546477 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Mobile Phone No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Mobile Phone No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 930798646 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Model Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Model Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 4200184881 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 1133762790 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Order Creator</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Order Creator - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 2632124822 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Order Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Order Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 2202932243 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Order No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Order No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 3986423421 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Phone No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Phone No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 3710982960 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Posting Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Posting Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 553464652 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Salesperson Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Salesperson Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 1474036805 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sell-to Customer Name</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Sell-to Customer Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 1225278069 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sell-to Customer No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Sell-to Customer No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 3875774453 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sell-to Phone No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Sell-to Phone No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 3089234062 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Service Document</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Service Document - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 868423472 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Service Order No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Service Order No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 2708250016 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>User ID</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field User ID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 2733117426 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Vehicle Registration No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Vehicle Registration No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 3466109473 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Vehicle Serial No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Vehicle Serial No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 3582544635 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>VIN</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field VIN - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 109107036 - Field 22244033 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Work Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Sales Invoice Feedback - Field Work Description - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 838988888 - Field 2916642318 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Quantité estimée par défaut</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -10868,11 +11023,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control DocumentProfile - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 1788160435 - Control 859562579 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies whether the invoice has feedback.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control feedback - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 1788160435 - Control 3872123568 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the code of the initiator for the invoice.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -16423,6 +16573,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Customer Card - Control Nb Facture NP - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 523354100 - Control 2501912252 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 523354100">
+          <source>Ecarter Ctrl Modif Prix/Remise</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Customer Card - Control Ecarter Ctrl Modif Prix Remise - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 523354100 - Control 2040206631 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 523354100">
           <source>Client Divers</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -16897,16 +17052,6 @@
           <source>Montant Ouvert</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoices (Serv.) - Control Remaining Amount - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 2984472522 - Control 1729919859 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2984472522">
-          <source>Indicates if the feedback has been given for this service order.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoices (Serv.) - Control Feedback - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 2984472522 - Control 1729919859 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2984472522">
-          <source>Feedback</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoices (Serv.) - Control Feedback - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 2984472522 - Control 117901444 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2984472522">
           <source>Montant reçu caisse</source>
@@ -18153,6 +18298,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Customer - Field Dep Enc Princ. - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 1994964448 - Field 2501912252 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1994964448">
+          <source>Ecarter Contrôle Modification Prix / Remise</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Customer - Field Ecarter Ctrl Modif Prix Remise - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 1994964448 - Field 2040206631 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1994964448">
           <source>Client Divers</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -19287,11 +19437,6 @@
           <source>Type MO</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Invoice Header - Field DiscountAmount - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="TableExtension 809936682 - Field 859562579 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 809936682">
-          <source>Feedback</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Invoice Header - Field feedback - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 809936682 - Field 3872123568 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 809936682">
           <source>Initiateur</source>

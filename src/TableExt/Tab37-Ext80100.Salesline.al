@@ -118,6 +118,8 @@ tableextension 80100 "Sales line" extends "Sales line" //37
         modify("Unit Price")
         {
             trigger OnAfterValidate()
+            var
+                RecCust: Record Customer;
             begin
                 if ("Unit Price" = "Initial Unit Price") Then begin
                     "Price modified" := false;
@@ -126,8 +128,17 @@ tableextension 80100 "Sales line" extends "Sales line" //37
                     if ("Initial Unit Price" = 0) then begin
                         "Price modified" := false;
                     end
-                    else
+                    else begin
                         "Price modified" := true;
+                        RecCust.Reset();
+                        RecCust.SetRange("No.", rec."Sell-to Customer No.");
+                        RecCust.SetRange("Ecarter Ctrl Modif Prix Remise", true);
+                        if RecCust.FindFirst() then begin
+                            "Ctrl Modified Price" := true;
+                        end;
+
+                    end;
+
 
             end;
         }
@@ -137,13 +148,23 @@ tableextension 80100 "Sales line" extends "Sales line" //37
 
 
             trigger OnAfterValidate()
-
+            var
+                RecCust: Record Customer;
             begin
                 if ("Line Discount %" = "Initial Discount") then begin
                     "Discount modified" := false;
                 end
-                else
+                else begin
                     "Discount modified" := true;
+                    RecCust.Reset();
+                    RecCust.SetRange("No.", rec."Sell-to Customer No.");
+                    RecCust.SetRange("Ecarter Ctrl Modif Prix Remise", true);
+                    if RecCust.FindFirst() then begin
+                        "Ctrl Modified Discount" := true;
+                    end;
+
+                end;
+
             end;
         }
 

@@ -188,6 +188,12 @@ tableextension 80114 "Customer" extends "Customer" //18
             Editable = false;
             Caption = 'Moyen TTC / Facture';
         }
+        field(80904; "Ecarter Ctrl Modif Prix Remise"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Ecarter Contrôle Modification Prix / Remise';
+            InitValue = false;
+        }
 
 
 

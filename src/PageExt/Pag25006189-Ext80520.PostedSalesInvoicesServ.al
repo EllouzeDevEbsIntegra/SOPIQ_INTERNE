@@ -15,16 +15,10 @@ pageextension 80520 "Posted Sales Invoices (Serv.)" extends "Posted Sales Invoic
                 ApplicationArea = all;
                 Caption = 'Code Initiateur';
             }
-
         }
         addlast(Control1)
         {
-            field("Feedback"; feedback)
-            {
-                ApplicationArea = All;
-                Caption = 'Feedback';
-                ToolTip = 'Indicates if the feedback has been given for this service order.';
-            }
+
             field("Montant reçu caisse"; "Montant reçu caisse")
             {
                 ApplicationArea = all;

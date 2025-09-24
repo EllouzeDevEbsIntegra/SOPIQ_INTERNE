@@ -242,6 +242,16 @@ Query 25006650 "Edms Ledger Entry"
                                         {
 
                                         }
+                                        dataitem(Item_Ledger_Entry; "Item Ledger Entry")
+                                        {
+                                            DataItemLink = "Document No." = Service_Ledger_Entry_EDMS."Document No.", "Document Line No." = Service_Ledger_Entry_EDMS."Document Line No.";
+                                            column(Cost_Amount__Actual_; "Cost Amount (Actual)")
+                                            {
+                                            }
+                                            column(Cost_Amount__Expected_; "Cost Amount (Expected)")
+                                            {
+                                            }
+                                        }
                                     }
 
                                 }
