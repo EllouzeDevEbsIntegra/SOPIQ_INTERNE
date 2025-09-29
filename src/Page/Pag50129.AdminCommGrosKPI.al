@@ -322,7 +322,7 @@ page 50129 "Admin Comm. Gros KPI"
             }
             cuegroup(FactureNonRegle)
             {
-                Caption = 'Factures';
+                Caption = 'Factures & Avoirs';
                 field(factureNonReg; FactureNonReglee)
                 {
                     Caption = 'Facture non réglée';
@@ -348,6 +348,36 @@ page 50129 "Admin Comm. Gros KPI"
                     begin
                         CustomerLedEntries.Reset();
                         CustomerLedEntries.SetRange("Document Type", CustomerLedEntries."Document Type"::Invoice);
+                        CustomerLedEntries.SetRange(Open, true);
+                        CustomerLedEntries.SetFilter("Customer Posting Group", '<>CLT-INT');
+                        Page.Run(Page::"Customer Ledger Entries", CustomerLedEntries);
+                    end;
+                }
+                field(AvoirNonReg; AvoirNonReglee)
+                {
+                    Caption = 'Avoir non réglée';
+                    ApplicationArea = All;
+                    trigger OnDrillDown()
+                    var
+                        CustomerLedEntries: Record "Cust. Ledger Entry";
+                    begin
+                        CustomerLedEntries.Reset();
+                        CustomerLedEntries.SetRange("Document Type", CustomerLedEntries."Document Type"::"Credit Memo");
+                        CustomerLedEntries.SetRange(Open, true);
+                        CustomerLedEntries.SetFilter("Customer Posting Group", '<>CLT-INT');
+                        Page.Run(Page::"Customer Ledger Entries", CustomerLedEntries);
+                    end;
+                }
+                field(TotalAvoirNonRegle; TotalAvoirNonReglee)
+                {
+                    Caption = 'Total Avoir non réglée';
+                    ApplicationArea = All;
+                    trigger OnDrillDown()
+                    var
+                        CustomerLedEntries: Record "Cust. Ledger Entry";
+                    begin
+                        CustomerLedEntries.Reset();
+                        CustomerLedEntries.SetRange("Document Type", CustomerLedEntries."Document Type"::"Credit Memo");
                         CustomerLedEntries.SetRange(Open, true);
                         CustomerLedEntries.SetFilter("Customer Posting Group", '<>CLT-INT');
                         Page.Run(Page::"Customer Ledger Entries", CustomerLedEntries);
@@ -1026,6 +1056,33 @@ page 50129 "Admin Comm. Gros KPI"
         exit(sumNotPaiedInvoice);
     end;
 
+    local procedure AvoirNonReglee(): Integer
+    var
+        CustomerLedEntries: Record "Cust. Ledger Entry";
+    begin
+        CustomerLedEntries.Reset();
+        CustomerLedEntries.SetRange("Document Type", CustomerLedEntries."Document Type"::"Credit Memo");
+        CustomerLedEntries.SetRange(Open, true);
+        exit(CustomerLedEntries.Count);
+    end;
+
+    local procedure TotalAvoirNonReglee(): Decimal
+    var
+        CustomerLedEntries: Record "Cust. Ledger Entry";
+    begin
+        sumNotPaiedCrMemo := 0;
+        CustomerLedEntries.Reset();
+        CustomerLedEntries.SetRange("Document Type", CustomerLedEntries."Document Type"::"Credit Memo");
+        CustomerLedEntries.SetRange(Open, true);
+        if CustomerLedEntries.FindSet() then begin
+            repeat
+                CustomerLedEntries.CalcFields("Remaining Amount");
+                sumNotPaiedCrMemo := sumNotPaiedCrMemo + CustomerLedEntries."Remaining Amount";
+            until CustomerLedEntries.Next() = 0;
+        end;
+        exit(sumNotPaiedCrMemo);
+    end;
+
     local procedure TotalFactureNonRegleeRC(): Decimal
     var
         salesInvoice: Record "Sales Invoice Header";
@@ -1130,7 +1187,7 @@ page 50129 "Admin Comm. Gros KPI"
         StatPurchaseCA: Boolean;
         StartingDate2, debutMois, FinMois : Date;
         userSetup: Record "User Setup";
-        sumNotPaiedInvoice: Decimal;
+        sumNotPaiedInvoice, sumNotPaiedCrMemo : Decimal;
         B2BStatusArray: array[20] of integer;
         SalesOrders: Record "Sales Header";
         PurchSetup: Record "Purchases & Payables Setup";

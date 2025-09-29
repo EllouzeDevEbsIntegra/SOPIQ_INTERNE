@@ -4,6 +4,11 @@ pageextension 80143 "Manufacturers" extends "Manufacturers"//5728
     {
         addafter("ID TechDOC")
         {
+            field(Origine; Origine)
+            {
+                ApplicationArea = All;
+                Caption = 'Origine';
+            }
             field(Actif; Actif)
             {
                 ApplicationArea = All;

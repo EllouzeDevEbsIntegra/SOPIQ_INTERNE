@@ -80,6 +80,11 @@ pageextension 80118 "item" extends "Item List" //31
             //     CaptionClass = '3,' + 'Etat Stock (' + Parvente."Société base analyseur prix" + ' )';
 
             // }
+            field(isOem; isOem)
+            {
+                ApplicationArea = all;
+                Caption = 'Article OEM';
+            }
 
         }
 
@@ -218,16 +223,18 @@ pageextension 80118 "item" extends "Item List" //31
             }
 
             // Test de consommer un API configurer déja dans code unit API
-            action("Test API")
+            action("Obtenir OEM Count")
             {
+                ApplicationArea = All;
+                Caption = 'Obtenir OEM Count';
+                Image = Information;
                 trigger OnAction()
                 var
-                    API: Codeunit API;
-                    jObject: JsonObject;
-                    jtitleToken: JsonToken;
+                    API: Codeunit "OEM API Integration";
+                    Count: Integer;
                 begin
-                    jObject.ReadFrom(API.GetRequest());
-                    if jObject.Get('title', jtitleToken) then Message(jtitleToken.AsValue().AsText());
+                    Count := API.GetOEMCount('6511800109');
+                    Message('Le nombre retourné est : %1', Count);
                 end;
             }
 
@@ -272,12 +279,7 @@ pageextension 80118 "item" extends "Item List" //31
         // end;
         rec.setMgPrincipalFilter(rec);
 
-        CalcFields(rec."Available Inventory", rec."Default Bin", rec."Total Vendu", rec."Last Purch Price Devise");
-
-
-
-
-
+        CalcFields(rec."Available Inventory", rec."Default Bin", rec."Total Vendu", rec."Last Purch Price Devise", rec.isOem);
 
         // recItem.ChangeCompany(Parvente."Société base analyseur prix");
         // IF recItem.GET("No.") then begin
@@ -313,7 +315,5 @@ pageextension 80118 "item" extends "Item List" //31
 
     //     end;
     // end;
-
-
 
 }

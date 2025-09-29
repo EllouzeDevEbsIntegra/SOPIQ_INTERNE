@@ -21,6 +21,13 @@ pageextension 80210 "Company Information" extends "Company Information" // 1
                 ApplicationArea = Basic;
                 Caption = 'Gestion BS';
             }
+            field("Posting Description Spécifique"; "Posting Description Spécifique")
+            {
+                ApplicationArea = Basic;
+                Caption = 'Libellé Ecriture Comptable Spécifique';
+                ToolTip = 'Permet de gérer un libellé d''écriture comptable spécifique pour cette société.';
+
+            }
 
 
         }

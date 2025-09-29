@@ -21,7 +21,7 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
         {
             trigger OnAfterValidate()
             begin
-                ModifyPostingDesc(rec);
+                ModifyPostingDesc(rec, rec.custNameImprime);
                 GetCust("Sell-to Customer No.");
                 Cust.CheckBlockedCustOnDocs(Cust, "Document Type", false, false);
 
@@ -32,7 +32,7 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
         {
             trigger OnAfterValidate()
             begin
-                ModifyPostingDesc(rec);
+                ModifyPostingDesc(rec, rec.custNameImprime);
             end;
         }
 
@@ -40,7 +40,7 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
         {
             trigger OnAfterValidate()
             begin
-                ModifyPostingDesc(rec);
+                ModifyPostingDesc(rec, rec.custNameImprime);
             end;
         }
         // Add changes to table fields here
@@ -63,6 +63,10 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
         field(80101; custNameImprime; Text[200])
         {
             Caption = 'Nom Client Imprimé';
+            trigger OnValidate()
+            begin
+                ModifyPostingDesc(rec, rec.custNameImprime);
+            end;
         }
 
         field(80102; custAdresseImprime; Text[200])
@@ -86,11 +90,24 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
         Cust: Record Customer;
     //shippingAgentCode: Code[10];
 
-    procedure ModifyPostingDesc(Prec: Record "Sales Header")
+    procedure ModifyPostingDesc(Prec: Record "Sales Header"; ClientImp: Text[200])
+    var
+        recCompany: Record "Company Information";
     begin
-        "Posting Description" := (FORMAT("Document Type").ToUpper()) + ' ' + "Bill-to Name";
+
+        recCompany.Get();
+        if recCompany."Posting Description Spécifique" then begin
+
+
+            if rec.custNameImprime = '' then
+                "Posting Description" := (FORMAT("Document Type").ToUpper()) + ' ' + "Bill-to Name"
+            else
+                "Posting Description" := (FORMAT("Document Type").ToUpper()) + ' ' + ClientImp;
+        end
+        else begin
+            "Posting Description" := (FORMAT("Document Type").ToUpper()) + ' ' + "Bill-to Name";
+        end;
         Validate("Posting Description");
-        // Message('%1', "Posting Description");
     end;
 
     procedure ignoreStamp(Prec: Record "Sales Header")
@@ -103,7 +120,7 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
 
     trigger OnInsert()
     begin
-        ModifyPostingDesc(rec);
+        ModifyPostingDesc(rec, rec.custNameImprime);
         if (rec."Document Type" = "Document Type"::"Credit Memo") OR (rec."Document Type" = "Document Type"::"Return Order") then
             // Message('%1', "Document Type");
         ignoreStamp(rec);

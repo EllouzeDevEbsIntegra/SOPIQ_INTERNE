@@ -46,6 +46,14 @@ pageextension 80127 "Item Card" extends "Item Card"//30
                 Caption = 'En Promotion';
             }
         }
+        addafter(Produit)
+        {
+            field(isOem; isOem)
+            {
+                ApplicationArea = all;
+                Caption = 'Article OEM';
+            }
+        }
 
     }
 
@@ -117,5 +125,10 @@ pageextension 80127 "Item Card" extends "Item Card"//30
 
 
     // end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        CalcFields(isOem);
+    end;
 
 }

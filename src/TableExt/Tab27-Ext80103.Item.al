@@ -284,6 +284,12 @@ tableextension 80103 "Item" extends Item //27
             DataClassification = ToBeClassified;
             Caption = 'Description Commercial';
         }
+        field(50142; isOem; Boolean)
+        {
+            Caption = 'Est OEM';
+            FieldClass = FlowField;
+            CalcFormula = lookup(Manufacturer.Origine where(Code = field("Manufacturer Code")));
+        }
 
         modify("No.")
         {

@@ -222,7 +222,6 @@ page 50105 "Item Kit"
     Var
         Master: Code[50];
     begin
-        // Message('kits!');
         recKit.Reset();
         filterParent := '';
         EntredOnce := false;

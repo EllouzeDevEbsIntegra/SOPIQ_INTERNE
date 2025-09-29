@@ -69,6 +69,11 @@ tableextension 80160 "Company Information" extends "Company Information" //79
             DataClassification = ToBeClassified;
             TableRelation = Company.Name;
         }
+        field(80166; "Posting Description Spécifique"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Libellé Ecriture Comptable Spécifique';
+        }
     }
 
     var

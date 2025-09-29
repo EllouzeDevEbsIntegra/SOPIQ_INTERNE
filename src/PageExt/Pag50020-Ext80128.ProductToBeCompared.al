@@ -3,6 +3,15 @@ pageextension 80128 "Product To Be Compared" extends "Product To Be Compared"//5
     layout
     {
         // Add changes to page layout here
+        addafter("None Treated")
+        {
+            field("Count Master"; "Count Master")
+            {
+                ApplicationArea = All;
+                Caption = 'Count Master';
+                Editable = false;
+            }
+        }
     }
 
     actions
@@ -119,8 +128,65 @@ pageextension 80128 "Product To Be Compared" extends "Product To Be Compared"//5
                 end;
 
             }
+
+            action("Update Item Count")
+            {
+                Caption = 'Mettre à jour le count des articles';
+                trigger OnAction()
+                var
+                    recItem, recMaster : Record Item;
+                    countMaster: Integer;
+                    API: Codeunit "OEM API Integration";
+                    count: Integer;
+                    ItemToBeCompared: Record "Item To Be Compared";
+                begin
+                    if Confirm('Voulez vous vraiment mettre à jour le count des articles OEM et Master ?', false) then begin
+                        ItemToBeCompared.Reset();
+                        ItemToBeCompared.SetRange("Compare Quote No.", "Compare Quote No.");
+                        if ItemToBeCompared.FindSet() then begin
+                            repeat
+                                recMaster.Reset();
+                                recMaster.SetRange("No.", ItemToBeCompared."No.");
+                                if recMaster.FindSet() then begin
+                                    repeat
+                                        countMaster := 0;
+                                        recItem.Reset();
+                                        recItem.SetRange(Produit, false);
+                                        recItem.SetRange("Reference Origine Lié", recMaster."No.");
+                                        recItem.CalcFields(isOem);
+                                        recItem.SetRange(isOem, true);
+                                        if recItem.FindSet() then begin
+                                            repeat
+                                                // Upadate count in OEM
+                                                Count := API.GetOEMCount(recItem."No.");
+                                                //Message('Item: %1 - Count: %2', recItem."No.", Count);
+                                                recItem."Count Item Manual " := Count;
+                                                recItem.Modify();
+
+                                                countMaster := countMaster + count;
+                                            until recItem.Next() = 0;
+                                        end;
+                                        //Message('Master Item: %1 - Count: %2', item."No.", countMaster);
+                                        // Update count in Master
+                                        recMaster."Count Item Manual " := countMaster;
+                                        recMaster.Modify();
+                                    until recMaster.Next() = 0;
+                                end;
+
+                            until ItemToBeCompared.Next() = 0;
+                            Message('Mise à jour effectué avec succés !');
+                        end;
+                    end;
+
+                end;
+
+            }
         }
     }
 
+    trigger OnAfterGetRecord()
+    begin
+        CalcFields("Count Master");
+    end;
 
 }

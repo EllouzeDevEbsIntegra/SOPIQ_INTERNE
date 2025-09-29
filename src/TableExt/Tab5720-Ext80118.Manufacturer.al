@@ -2,6 +2,11 @@ tableextension 80118 "Manufacturer" extends "Manufacturer" //5720
 {
     fields
     {
+        field(80117; "Origine"; Boolean)
+        {
+            InitValue = false;
+            DataClassification = ToBeClassified;
+        }
         field(80118; "Actif"; Boolean)
         {
             InitValue = true;

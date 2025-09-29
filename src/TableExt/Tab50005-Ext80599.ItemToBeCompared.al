@@ -8,6 +8,12 @@ tableextension 80599 "Item To Be Compared" extends "Item To Be Compared" // 5000
             Caption = 'Article Sélectionné';
             DataClassification = ToBeClassified;
         }
+        field(80600; "Count Master"; Integer)
+        {
+            Caption = 'Count Master';
+            FieldClass = FlowField;
+            CalcFormula = lookup(item."Count Item Manual " where("No." = field("No.")));
+        }
     }
 
     keys
