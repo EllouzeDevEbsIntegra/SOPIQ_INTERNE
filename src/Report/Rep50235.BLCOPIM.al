@@ -273,9 +273,14 @@ report 50235 "BL COPIM"
                     // MTHT := (PrixVente * Quantity) - (((PrixVente * Quantity) * ("Line Discount %" / 100)));
                     MTHT := ("Unit Price" * Quantity);
 
-                    ligneBLDiscount := "Line Discount %";
-                    NETHT := ("Unit Price" * Quantity) - ((("Unit Price" * Quantity) * ("Line Discount %" / 100)));
-                    Remise := (("Unit Price" * Quantity) * ("Line Discount %" / 100));
+
+                    if BS then
+                        ligneBLDiscount := "% Discount"
+                    else
+                        ligneBLDiscount := "Line Discount %";
+
+                    NETHT := ("Unit Price" * Quantity) - ((("Unit Price" * Quantity) * (ligneBLDiscount / 100)));
+                    Remise := (("Unit Price" * Quantity) * (ligneBLDiscount / 100));
                     MntTVAR := NETHT * (("VAT %" / 100));
                     MontantTVA := MTHT * (("VAT %" / 100));
                     // MontTTC := TotHT + MontantTVA;
