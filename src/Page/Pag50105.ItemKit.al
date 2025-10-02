@@ -21,6 +21,7 @@ page 50105 "Item Kit"
                     Caption = 'Frs';
                     ApplicationArea = All;
                     Editable = false;
+                    Visible = not (ColumnVisible);
                 }
 
                 field("No."; "No.")
@@ -50,6 +51,7 @@ page 50105 "Item Kit"
                     Caption = 'Import';
                     ApplicationArea = All;
                     StyleExpr = FieldStyleImportQty;
+                    Visible = not (ColumnVisible);
                 }
 
                 field("Qty. on Purch. Order"; "Qty. on Purch. Order")
@@ -76,12 +78,14 @@ page 50105 "Item Kit"
                     Caption = 'Cout Calculé';
                     ApplicationArea = All;
                     Editable = false;
+                    Visible = not (ColumnVisible);
                 }
                 field("Last Pursh. Date"; rec."Last. Pursh. Date")
                 {
                     Caption = 'Dernier Achat';
                     ApplicationArea = All;
                     Editable = false;
+                    Visible = not (ColumnVisible);
                 }
                 field("Unit Price"; "Unit Price")
                 {
@@ -95,6 +99,7 @@ page 50105 "Item Kit"
                     Caption = 'PU Devise';
                     ApplicationArea = All;
                     DecimalPlaces = 2 : 2;
+                    Visible = not (ColumnVisible);
                 }
 
 
@@ -103,6 +108,7 @@ page 50105 "Item Kit"
                     Caption = 'Pref';
                     ApplicationArea = All;
                     Editable = false;
+                    Visible = not (ColumnVisible);
 
                 }
                 field("Last date"; rec."Last Date")
@@ -110,6 +116,7 @@ page 50105 "Item Kit"
                     Caption = 'Date Prix Devise';
                     ApplicationArea = All;
                     Editable = false;
+                    Visible = not (ColumnVisible);
                 }
             }
 
@@ -191,6 +198,8 @@ page 50105 "Item Kit"
         [InDataSet]
         FieldStyleQty, FieldStyleImportQty, FieldStyleOnPurchQty : Text[50];
 
+        ColumnVisible: Boolean;
+
     trigger OnOpenPage()
     begin
 
@@ -216,6 +225,12 @@ page 50105 "Item Kit"
     procedure SetOrderNo(POrderNo: TEXT)
     begin
         LorderNo := POrderNo;
+    end;
+
+    procedure SetVisibleColumn()
+    begin
+        ColumnVisible := true;
+        CurrPage.Update();
     end;
 
     procedure SetKit(PItemNo: TEXT)

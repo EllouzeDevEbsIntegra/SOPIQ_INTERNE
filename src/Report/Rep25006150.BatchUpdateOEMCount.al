@@ -72,7 +72,7 @@ report 25006150 "Batch Update OEM Count"
     begin
         timeFin := CurrentDateTime();
         duration := timeFin - timedebut;
-        Message('Traitement terminé avec succès %1 !', duration);
+        //Message('Traitement terminé avec succès %1 !', duration);
     end;
 
     trigger OnPreReport()

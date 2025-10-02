@@ -1313,6 +1313,66 @@
           <note from="Developer" annotates="general" priority="2">%1 = Document Type</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit SISalesCodeUnit - Method ConfirmBSPOST - NamedType PostConfirmQst</note>
         </trans-unit>
+        <trans-unit id="Page 455333925 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Vente : Consultation articles</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Item Search - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 455333925 - Control 3833905205 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Recherche Article</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Item Search - Control Search Item - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 455333925 - Control 4200184881 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Référence</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Item Search - Control No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 455333925 - Control 4094643166 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Item Search - Control Description structurée - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 455333925 - Control 696722477 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Stock</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Item Search - Control Available Inventory - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 455333925 - Control 3420811913 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Qté Cmdé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Item Search - Control Qty. on Purch. Order - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 455333925 - Control 173493946 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Vendu</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Item Search - Control Total Vendu - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 455333925 - Control 2945642896 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Acheté</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Item Search - Control Total Achete - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 455333925 - Control 2937233469 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>PUHT</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Item Search - Control Unit Price - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 455333925 - Control 3055426411 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Equivalent</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Item Search - Control Produitéquivalent - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 455333925 - Control 633238482 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Kit</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Item Search - Control Kit - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 455333925 - Action 2571532123 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transactions articles</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Item Search - Action ItemTransaction - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 284191700 - Control 2445482498 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Lignes</source>
           <note from="Developer" annotates="general" priority="2"></note>

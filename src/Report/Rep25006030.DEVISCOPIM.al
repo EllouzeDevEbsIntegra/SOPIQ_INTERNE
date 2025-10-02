@@ -539,7 +539,7 @@ report 25006030 "DEVIS COPIM"
         MTBaseTVA: Decimal;
         MontantLigneGlobal: Decimal;
         Salesperson: Record 13;
-        IndexLigne: Text[4];
+        IndexLigne: Text[10];
         SalesReceivablesSetup: Record 311;
         Text001: Label 'Prix donné à titre estimatif, susceptible de modification lors de l’arrivage';
         AfficherClause: Boolean;
