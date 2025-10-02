@@ -17358,6 +17358,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Item Card - Control No. 2 - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 1434786627 - Control 2796318275 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1434786627">
+          <source>Date MAJ Compte OEM</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Item Card - Control Count OEM Update Date - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 1434786627 - Control 3518297013 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1434786627">
           <source>Dernier Prix Achat (Devise)</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -19472,6 +19477,11 @@
           <source>Est OEM</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field isOem - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3276313895 - Field 2796318275 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Date MAJ Count OEM</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Count OEM Update Date - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3276313895 - Method 1262666395 - NamedType 2311103200" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>The Unit of Measure with Code %1 does not exist.</source>

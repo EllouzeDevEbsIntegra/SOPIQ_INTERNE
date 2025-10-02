@@ -290,6 +290,12 @@ tableextension 80103 "Item" extends Item //27
             FieldClass = FlowField;
             CalcFormula = lookup(Manufacturer.Origine where(Code = field("Manufacturer Code")));
         }
+        field(50143; "Count OEM Update Date"; Date)
+        {
+            Caption = 'Date MAJ Count OEM';
+            DataClassification = ToBeClassified;
+        }
+
 
         modify("No.")
         {

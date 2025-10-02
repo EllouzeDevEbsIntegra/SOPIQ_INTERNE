@@ -10,6 +10,15 @@ pageextension 80127 "Item Card" extends "Item Card"//30
                 Caption = 'Réf. Imp.';
             }
         }
+        addafter("Count Item Manual ")
+        {
+            field("Count OEM Update Date"; "Count OEM Update Date")
+            {
+                ApplicationArea = all;
+                Caption = 'Date MAJ Compte OEM';
+                Editable = false;
+            }
+        }
 
         addafter("Last Purchase Date")
         {

@@ -24,7 +24,7 @@ report 25006150 "Batch Update OEM Count"
                 recMaster.SetRange(Produit, true);
                 if recMaster.FindSet() then begin
                     repeat
-                        Window.Update(1, recMaster."No.");
+                        //Window.Update(1, recMaster."No.");
                         countMaster := 0;
                         recItem.Reset();
                         recItem.SetRange(Produit, false);
@@ -33,21 +33,24 @@ report 25006150 "Batch Update OEM Count"
                         recItem.SetRange(isOem, true);
                         if recItem.FindSet() then begin
                             repeat
-                                Window.Update(2, recItem."No.");
+                                // Window.Update(2, recItem."No.");
                                 // Upadate count in OEM
                                 Count := API.GetOEMCount(recItem."No.");
-                                Window.Update(3, Format(Count));
+                                //Window.Update(3, Format(Count));
                                 //Message('Item: %1 - Count: %2', recItem."No.", Count);
                                 recItem."Count Item Manual " := Count;
+                                recItem."Count OEM Update Date" := Today();
                                 recItem.Modify();
+
 
                                 countMaster := countMaster + count;
                             until recItem.Next() = 0;
                         end;
                         //Message('Master Item: %1 - Count: %2', item."No.", countMaster);
                         // Update count in Master
-                        Window.Update(4, Format(countMaster));
+                        //Window.Update(4, Format(countMaster));
                         recMaster."Count Item Manual " := countMaster;
+                        recMaster."Count OEM Update Date" := Today();
                         recMaster.Modify();
                     until recMaster.Next() = 0;
                 end;
@@ -80,7 +83,7 @@ report 25006150 "Batch Update OEM Count"
         timedebut := CurrentDateTime();
         if not GuiAllowed then
             exit;
-        Window.Open(MasterMsgNo);
+        // Window.Open(MasterMsgNo);
     end;
 
     var
