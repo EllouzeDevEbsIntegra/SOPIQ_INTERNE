@@ -703,29 +703,26 @@ page 25006816 "Sales Order EBS"
     procedure Ship(var ActionContext: WebServiceActionContext)
     var
         SalesHeader: Record "Sales Header";
-        SalesInvoiceHeader: Record "Sales Invoice Header";
-        SalesInvoiceAggregator: Codeunit "Sales Invoice Aggregator";
         SalesShipmentHeader: Record "Sales Shipment Header";
-        idBL: Guid;
-
         ReportSelections: Record "Report Selections";
         FileManagement: Codeunit "File Management";
-        Convert: DotNet Convert;
-        FileObj: DotNet File;
+        DotNetConvert: DotNet DotNetConvert;
+        DotNetFile: DotNet DotNetFile;
         OutStr: OutStream;
         DocumentPath: Text[250];
     begin
         GetOrder(SalesHeader);
         PostWithShip(SalesHeader);
-        if SalesShipmentHeader.get(SalesHeader."Last Shipping No.") then begin
-            idbl := SalesShipmentHeader.SystemId;
+
+        if SalesShipmentHeader.Get(SalesHeader."Last Shipping No.") then begin
             ReportSelections.GetPdfReport(DocumentPath, ReportSelections.Usage::"S.Shipment", SalesShipmentHeader, SalesShipmentHeader."Sell-to Customer No.");
             Base64.CreateOutStream(OutStr);
             FileManagement.IsAllowedPath(DocumentPath, false);
-            OutStr.WriteText(Convert.ToBase64String(FileObj.ReadAllBytes(DocumentPath)));
+            OutStr.WriteText(DotNetConvert.ToBase64String(DotNetFile.ReadAllBytes(DocumentPath)));
             Binary.Import(DocumentPath);
-            if FILE.Erase(DocumentPath) then;
+            File.Erase(DocumentPath);
         end;
     end;
+
 }
 
