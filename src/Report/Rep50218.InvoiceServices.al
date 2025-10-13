@@ -118,6 +118,9 @@ report 50218 "Invoice Services"
             column(HideDiscount; HideDiscount)
             {
             }
+            column(hideTelNumber; hideTelNumber)
+            {
+            }
             column(TotPiece; TotPiece)
             {
             }
@@ -467,6 +470,11 @@ report 50218 "Invoice Services"
                     ApplicationArea = all;
                     Caption = 'Masquer Remise';
                 }
+                field(hideTelNumber; hideTelNumber)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Masquer N° Téléphone';
+                }
             }
         }
 
@@ -534,5 +542,6 @@ report 50218 "Invoice Services"
         ShowLabor: Boolean;
 
         islabor: Boolean;
+        hideTelNumber: Boolean;
 }
 

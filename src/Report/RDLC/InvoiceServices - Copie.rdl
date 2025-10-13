@@ -880,7 +880,7 @@
                                             </Paragraphs>
                                             <rd:DefaultName>SalesInvoiceLineDiscount</rd:DefaultName>
                                             <Visibility>
-                                              <Hidden>=(Fields!SalesInvoiceLineDiscount.Value=0)</Hidden>
+                                              <Hidden>=(Fields!SalesInvoiceLineDiscount.Value=0)OR(Fields!HideDiscount.Value)</Hidden>
                                             </Visibility>
                                             <Style>
                                               <Border>
@@ -910,7 +910,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=IIF(Fields!SalesInvoiceLineDiscount.Value = 100, Fields!SalesInvoiceLineAmount.Value, IIF(Fields!SalesInvoiceLineAmount.Value &gt; 0, Fields!SalesInvoiceLineAmount.Value, ""))</Value>
+                                                    <Value>=IIF(First(Fields!HideDiscount.Value, "DataSet_Result"),Fields!LineAmountSR.Value,IIF(Fields!SalesInvoiceLineDiscount.Value = 100, Fields!SalesInvoiceLineAmount.Value, IIF(Fields!SalesInvoiceLineAmount.Value &gt; 0, Fields!SalesInvoiceLineAmount.Value, "")))</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -1592,7 +1592,7 @@
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
-                                                      <Format>=Fields!KilometrageRecGOrFormat.Value</Format>
+                                                      <Format>#,0;(#,0)</Format>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
@@ -1806,7 +1806,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!AmountSalesInvoiceHeader.Value + Sum(Fields!Discount.Value)</Value>
+                                  <Value>=IIF(Fields!HideDiscount.Value,Sum(Fields!LineAmountSR.Value),Sum(Fields!SalesInvoiceLineAmount.Value))</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -1826,6 +1826,7 @@
                             </Border>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -1877,7 +1878,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!Discount.Value)</Value>
+                                  <Value>=IIF(Fields!HideDiscount.Value,0,Sum(Fields!Discount.Value))</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -1948,7 +1949,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!AmountTVASalesInvoiceLIne.Value)</Value>
+                                  <Value>=IIF(Fields!HideDiscount.Value,Sum(Fields!AmountTVASalesInvoiceLIneSR.Value),Sum(Fields!AmountTVASalesInvoiceLIne.Value))</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -1973,7 +1974,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.16389in</Height>
+                  <Height>0.1875in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2088,7 +2089,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!AmountTTCSalesInvoiceHeader.Value + Fields!StampAmount.Value</Value>
+                                  <Value>=IIF(Fields!HideDiscount.Value,Fields!AmountTTCSalesInvoiceHeaderSR.Value + Fields!StampAmount.Value,Fields!AmountTTCSalesInvoiceHeader.Value + Fields!StampAmount.Value)</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -2136,7 +2137,7 @@
             <DataSetName>DataSet_Result</DataSetName>
             <Top>1.12826in</Top>
             <Left>5.40576in</Left>
-            <Height>0.91389in</Height>
+            <Height>0.9375in</Height>
             <Width>2.40778in</Width>
             <ZIndex>1</ZIndex>
             <Style>
@@ -2221,7 +2222,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!TotMO.Value</Value>
+                                  <Value>=IIF(Fields!HideDiscount.Value,Fields!TotMOSR.Value,Fields!TotMO.Value)</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -2294,7 +2295,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!TotPiece.Value</Value>
+                                  <Value>=IIF(Fields!HideDiscount.Value,Fields!TotPieceSR.Value,Fields!TotPiece.Value)</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -2375,7 +2376,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Fields!MontantTText.Value</Value>
+                    <Value>=IIF(Fields!HideDiscount.Value,Fields!MontantTTextSR.Value,Fields!MontantTText.Value)</Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
                       <FontSize>8pt</FontSize>
@@ -3104,6 +3105,9 @@
                   <Height>0.18397in</Height>
                   <Width>2.70554in</Width>
                   <ZIndex>3</ZIndex>
+                  <Visibility>
+                    <Hidden>true</Hidden>
+                  </Visibility>
                   <Style>
                     <Border>
                       <Style>None</Style>
@@ -3691,6 +3695,12 @@ End Function
         <Field Name="AmountTTCSalesInvoiceHeaderFormat">
           <DataField>AmountTTCSalesInvoiceHeaderFormat</DataField>
         </Field>
+        <Field Name="AmountTTCSalesInvoiceHeaderSR">
+          <DataField>AmountTTCSalesInvoiceHeaderSR</DataField>
+        </Field>
+        <Field Name="AmountTTCSalesInvoiceHeaderSRFormat">
+          <DataField>AmountTTCSalesInvoiceHeaderSRFormat</DataField>
+        </Field>
         <Field Name="StampAmount">
           <DataField>StampAmount</DataField>
         </Field>
@@ -3751,6 +3761,9 @@ End Function
         <Field Name="MontantTText">
           <DataField>MontantTText</DataField>
         </Field>
+        <Field Name="MontantTTextSR">
+          <DataField>MontantTTextSR</DataField>
+        </Field>
         <Field Name="Picture">
           <DataField>Picture</DataField>
         </Field>
@@ -3769,17 +3782,41 @@ End Function
         <Field Name="ShowLabor">
           <DataField>ShowLabor</DataField>
         </Field>
+        <Field Name="HideDiscount">
+          <DataField>HideDiscount</DataField>
+        </Field>
+        <Field Name="hideTelNumber">
+          <DataField>hideTelNumber</DataField>
+        </Field>
         <Field Name="TotPiece">
           <DataField>TotPiece</DataField>
         </Field>
         <Field Name="TotPieceFormat">
           <DataField>TotPieceFormat</DataField>
         </Field>
+        <Field Name="TotPieceSR">
+          <DataField>TotPieceSR</DataField>
+        </Field>
+        <Field Name="TotPieceSRFormat">
+          <DataField>TotPieceSRFormat</DataField>
+        </Field>
         <Field Name="TotMO">
           <DataField>TotMO</DataField>
         </Field>
         <Field Name="TotMOFormat">
           <DataField>TotMOFormat</DataField>
+        </Field>
+        <Field Name="TotMOSR">
+          <DataField>TotMOSR</DataField>
+        </Field>
+        <Field Name="TotMOSRFormat">
+          <DataField>TotMOSRFormat</DataField>
+        </Field>
+        <Field Name="TotTrExtSR">
+          <DataField>TotTrExtSR</DataField>
+        </Field>
+        <Field Name="TotTrExtSRFormat">
+          <DataField>TotTrExtSRFormat</DataField>
         </Field>
         <Field Name="VATBaseCaptionLbl">
           <DataField>VATBaseCaptionLbl</DataField>
@@ -3888,6 +3925,18 @@ End Function
         </Field>
         <Field Name="AmountTVASalesInvoiceLIneFormat">
           <DataField>AmountTVASalesInvoiceLIneFormat</DataField>
+        </Field>
+        <Field Name="AmountTVASalesInvoiceLIneSR">
+          <DataField>AmountTVASalesInvoiceLIneSR</DataField>
+        </Field>
+        <Field Name="AmountTVASalesInvoiceLIneSRFormat">
+          <DataField>AmountTVASalesInvoiceLIneSRFormat</DataField>
+        </Field>
+        <Field Name="LineAmountSR">
+          <DataField>LineAmountSR</DataField>
+        </Field>
+        <Field Name="LineAmountSRFormat">
+          <DataField>LineAmountSRFormat</DataField>
         </Field>
         <Field Name="SalesInvoiceLineRef">
           <DataField>SalesInvoiceLineRef</DataField>

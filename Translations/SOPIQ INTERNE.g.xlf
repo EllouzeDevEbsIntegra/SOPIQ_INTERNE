@@ -14913,6 +14913,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report Invoice Services - Control HideDiscount - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Report 3279368417 - Control 1949896026 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Masquer N° Téléphone</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Invoice Services - Control hideTelNumber - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Report 3279368417 - Control 3236280267 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Afficher quantité main d'oeuvre</source>
           <note from="Developer" annotates="general" priority="2"></note>

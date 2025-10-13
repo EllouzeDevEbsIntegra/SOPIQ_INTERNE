@@ -15,6 +15,11 @@ pageextension 80520 "Posted Sales Invoices (Serv.)" extends "Posted Sales Invoic
                 ApplicationArea = all;
                 Caption = 'Code Initiateur';
             }
+            field("Phone No."; "Phone No.")
+            {
+                ApplicationArea = all;
+                Caption = 'N° Téléphone';
+            }
         }
         addlast(Control1)
         {
