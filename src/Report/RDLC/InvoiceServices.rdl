@@ -24,340 +24,6 @@
       <rd:DataSourceID>1f378626-e6e7-48cf-ba62-cbc04d7019da</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="NoSalesInvoiceHeader">
-          <DataField>NoSalesInvoiceHeader</DataField>
-        </Field>
-        <Field Name="PostingDateSalesInvoiceHeader">
-          <DataField>PostingDateSalesInvoiceHeader</DataField>
-        </Field>
-        <Field Name="OrderNoSalesInvoiceHeader">
-          <DataField>OrderNoSalesInvoiceHeader</DataField>
-        </Field>
-        <Field Name="OrderDateSalesInvoiceHeader">
-          <DataField>OrderDateSalesInvoiceHeader</DataField>
-        </Field>
-        <Field Name="VenderNameRecGVendor">
-          <DataField>VenderNameRecGVendor</DataField>
-        </Field>
-        <Field Name="AmountSalesInvoiceHeader">
-          <DataField>AmountSalesInvoiceHeader</DataField>
-        </Field>
-        <Field Name="AmountSalesInvoiceHeaderFormat">
-          <DataField>AmountSalesInvoiceHeaderFormat</DataField>
-        </Field>
-        <Field Name="AmountTTCSalesInvoiceHeader">
-          <DataField>AmountTTCSalesInvoiceHeader</DataField>
-        </Field>
-        <Field Name="AmountTTCSalesInvoiceHeaderFormat">
-          <DataField>AmountTTCSalesInvoiceHeaderFormat</DataField>
-        </Field>
-        <Field Name="AmountTTCSalesInvoiceHeaderSR">
-          <DataField>AmountTTCSalesInvoiceHeaderSR</DataField>
-        </Field>
-        <Field Name="AmountTTCSalesInvoiceHeaderSRFormat">
-          <DataField>AmountTTCSalesInvoiceHeaderSRFormat</DataField>
-        </Field>
-        <Field Name="StampAmount">
-          <DataField>StampAmount</DataField>
-        </Field>
-        <Field Name="StampAmountFormat">
-          <DataField>StampAmountFormat</DataField>
-        </Field>
-        <Field Name="NoRecGCustomer">
-          <DataField>NoRecGCustomer</DataField>
-        </Field>
-        <Field Name="NameRecGCustomer">
-          <DataField>NameRecGCustomer</DataField>
-        </Field>
-        <Field Name="AdrRecGCustomer">
-          <DataField>AdrRecGCustomer</DataField>
-        </Field>
-        <Field Name="MFRecGCustomer">
-          <DataField>MFRecGCustomer</DataField>
-        </Field>
-        <Field Name="PhonRecGCustomer">
-          <DataField>PhonRecGCustomer</DataField>
-        </Field>
-        <Field Name="MakeRecGOr">
-          <DataField>MakeRecGOr</DataField>
-        </Field>
-        <Field Name="ModelRecGOr">
-          <DataField>ModelRecGOr</DataField>
-        </Field>
-        <Field Name="DateArrivalRecGOr">
-          <DataField>DateArrivalRecGOr</DataField>
-        </Field>
-        <Field Name="KilometrageRecGOr">
-          <DataField>KilometrageRecGOr</DataField>
-        </Field>
-        <Field Name="KilometrageRecGOrFormat">
-          <DataField>KilometrageRecGOrFormat</DataField>
-        </Field>
-        <Field Name="VINRecGOr">
-          <DataField>VINRecGOr</DataField>
-        </Field>
-        <Field Name="ImmatriculationRecGOr">
-          <DataField>ImmatriculationRecGOr</DataField>
-        </Field>
-        <Field Name="MntDossier">
-          <DataField>MntDossier</DataField>
-        </Field>
-        <Field Name="MntDossierFormat">
-          <DataField>MntDossierFormat</DataField>
-        </Field>
-        <Field Name="CompanyName">
-          <DataField>CompanyName</DataField>
-        </Field>
-        <Field Name="PaymentTermsSalesInvoiceHeader">
-          <DataField>PaymentTermsSalesInvoiceHeader</DataField>
-        </Field>
-        <Field Name="PaymentTermsDescription">
-          <DataField>PaymentTermsDescription</DataField>
-        </Field>
-        <Field Name="MontantTText">
-          <DataField>MontantTText</DataField>
-        </Field>
-        <Field Name="MontantTTextSR">
-          <DataField>MontantTTextSR</DataField>
-        </Field>
-        <Field Name="Picture">
-          <DataField>Picture</DataField>
-        </Field>
-        <Field Name="Entete">
-          <DataField>Entete</DataField>
-        </Field>
-        <Field Name="Pied">
-          <DataField>Pied</DataField>
-        </Field>
-        <Field Name="ShowVehiculeInfo">
-          <DataField>ShowVehiculeInfo</DataField>
-        </Field>
-        <Field Name="afficherPiedsPage">
-          <DataField>afficherPiedsPage</DataField>
-        </Field>
-        <Field Name="ShowLabor">
-          <DataField>ShowLabor</DataField>
-        </Field>
-        <Field Name="HideDiscount">
-          <DataField>HideDiscount</DataField>
-        </Field>
-        <Field Name="hideTelNumber">
-          <DataField>hideTelNumber</DataField>
-        </Field>
-        <Field Name="TotPiece">
-          <DataField>TotPiece</DataField>
-        </Field>
-        <Field Name="TotPieceFormat">
-          <DataField>TotPieceFormat</DataField>
-        </Field>
-        <Field Name="TotPieceSR">
-          <DataField>TotPieceSR</DataField>
-        </Field>
-        <Field Name="TotPieceSRFormat">
-          <DataField>TotPieceSRFormat</DataField>
-        </Field>
-        <Field Name="TotMO">
-          <DataField>TotMO</DataField>
-        </Field>
-        <Field Name="TotMOFormat">
-          <DataField>TotMOFormat</DataField>
-        </Field>
-        <Field Name="TotMOSR">
-          <DataField>TotMOSR</DataField>
-        </Field>
-        <Field Name="TotMOSRFormat">
-          <DataField>TotMOSRFormat</DataField>
-        </Field>
-        <Field Name="TotTrExtSR">
-          <DataField>TotTrExtSR</DataField>
-        </Field>
-        <Field Name="TotTrExtSRFormat">
-          <DataField>TotTrExtSRFormat</DataField>
-        </Field>
-        <Field Name="VATBaseCaptionLbl">
-          <DataField>VATBaseCaptionLbl</DataField>
-        </Field>
-        <Field Name="VATAmtCaptionLbl">
-          <DataField>VATAmtCaptionLbl</DataField>
-        </Field>
-        <Field Name="VATAmountLineCaptionLbl">
-          <DataField>VATAmountLineCaptionLbl</DataField>
-        </Field>
-        <Field Name="VATCaptionLbl">
-          <DataField>VATCaptionLbl</DataField>
-        </Field>
-        <Field Name="TMPBaseCaptionLbl">
-          <DataField>TMPBaseCaptionLbl</DataField>
-        </Field>
-        <Field Name="TMPAmtCaptionLbl">
-          <DataField>TMPAmtCaptionLbl</DataField>
-        </Field>
-        <Field Name="TMPAmountLineCaptionLbl">
-          <DataField>TMPAmountLineCaptionLbl</DataField>
-        </Field>
-        <Field Name="TMPCaptionLbl">
-          <DataField>TMPCaptionLbl</DataField>
-        </Field>
-        <Field Name="TMP">
-          <DataField>TMP</DataField>
-        </Field>
-        <Field Name="DueDate">
-          <DataField>DueDate</DataField>
-        </Field>
-        <Field Name="PaymentMethod">
-          <DataField>PaymentMethod</DataField>
-        </Field>
-        <Field Name="CompanyInfo_Name">
-          <DataField>CompanyInfo_Name</DataField>
-        </Field>
-        <Field Name="CompanyInfo_Adress">
-          <DataField>CompanyInfo_Adress</DataField>
-        </Field>
-        <Field Name="CompanyInfo_PostCode">
-          <DataField>CompanyInfo_PostCode</DataField>
-        </Field>
-        <Field Name="CompanyInfo_City">
-          <DataField>CompanyInfo_City</DataField>
-        </Field>
-        <Field Name="CompanyInfo_Phone">
-          <DataField>CompanyInfo_Phone</DataField>
-        </Field>
-        <Field Name="CompanyInfo_Fax">
-          <DataField>CompanyInfo_Fax</DataField>
-        </Field>
-        <Field Name="CompanyInfo_LegalForm">
-          <DataField>CompanyInfo_LegalForm</DataField>
-        </Field>
-        <Field Name="CompanyInfo_Capital">
-          <DataField>CompanyInfo_Capital</DataField>
-        </Field>
-        <Field Name="CompanyInfo_VatRegistration">
-          <DataField>CompanyInfo_VatRegistration</DataField>
-        </Field>
-        <Field Name="CompanyInfo_Email">
-          <DataField>CompanyInfo_Email</DataField>
-        </Field>
-        <Field Name="CompanyInfo_TradeRegister">
-          <DataField>CompanyInfo_TradeRegister</DataField>
-        </Field>
-        <Field Name="CompBankName">
-          <DataField>CompBankName</DataField>
-        </Field>
-        <Field Name="CompBankAccount">
-          <DataField>CompBankAccount</DataField>
-        </Field>
-        <Field Name="CompIBAN">
-          <DataField>CompIBAN</DataField>
-        </Field>
-        <Field Name="CompSWIFT">
-          <DataField>CompSWIFT</DataField>
-        </Field>
-        <Field Name="Text1Footer">
-          <DataField>Text1Footer</DataField>
-        </Field>
-        <Field Name="Bill_to_Customer_No">
-          <DataField>Bill_to_Customer_No</DataField>
-        </Field>
-        <Field Name="Sell_to_Name">
-          <DataField>Sell_to_Name</DataField>
-        </Field>
-        <Field Name="External_Document_No_">
-          <DataField>External_Document_No_</DataField>
-        </Field>
-        <Field Name="VAT_PourcentSalesInvoiceLIne">
-          <DataField>VAT_PourcentSalesInvoiceLIne</DataField>
-        </Field>
-        <Field Name="VAT_PourcentSalesInvoiceLIneFormat">
-          <DataField>VAT_PourcentSalesInvoiceLIneFormat</DataField>
-        </Field>
-        <Field Name="Vat_BaseAmountSalesInvoiceLIne">
-          <DataField>Vat_BaseAmountSalesInvoiceLIne</DataField>
-        </Field>
-        <Field Name="Vat_BaseAmountSalesInvoiceLIneFormat">
-          <DataField>Vat_BaseAmountSalesInvoiceLIneFormat</DataField>
-        </Field>
-        <Field Name="AmountTVASalesInvoiceLIne">
-          <DataField>AmountTVASalesInvoiceLIne</DataField>
-        </Field>
-        <Field Name="AmountTVASalesInvoiceLIneFormat">
-          <DataField>AmountTVASalesInvoiceLIneFormat</DataField>
-        </Field>
-        <Field Name="AmountTVASalesInvoiceLIneSR">
-          <DataField>AmountTVASalesInvoiceLIneSR</DataField>
-        </Field>
-        <Field Name="AmountTVASalesInvoiceLIneSRFormat">
-          <DataField>AmountTVASalesInvoiceLIneSRFormat</DataField>
-        </Field>
-        <Field Name="LineAmountSR">
-          <DataField>LineAmountSR</DataField>
-        </Field>
-        <Field Name="LineAmountSRFormat">
-          <DataField>LineAmountSRFormat</DataField>
-        </Field>
-        <Field Name="SalesInvoiceLineRef">
-          <DataField>SalesInvoiceLineRef</DataField>
-        </Field>
-        <Field Name="islabor">
-          <DataField>islabor</DataField>
-        </Field>
-        <Field Name="SalesInvoiceLineDescript">
-          <DataField>SalesInvoiceLineDescript</DataField>
-        </Field>
-        <Field Name="SalesInvoiceLineUOM">
-          <DataField>SalesInvoiceLineUOM</DataField>
-        </Field>
-        <Field Name="SalesInvoiceLineQte">
-          <DataField>SalesInvoiceLineQte</DataField>
-        </Field>
-        <Field Name="SalesInvoiceLineQteFormat">
-          <DataField>SalesInvoiceLineQteFormat</DataField>
-        </Field>
-        <Field Name="SalesInvoiceLineUnitPrice">
-          <DataField>SalesInvoiceLineUnitPrice</DataField>
-        </Field>
-        <Field Name="SalesInvoiceLineUnitPriceFormat">
-          <DataField>SalesInvoiceLineUnitPriceFormat</DataField>
-        </Field>
-        <Field Name="SalesInvoiceLineDiscount">
-          <DataField>SalesInvoiceLineDiscount</DataField>
-        </Field>
-        <Field Name="SalesInvoiceLineDiscountFormat">
-          <DataField>SalesInvoiceLineDiscountFormat</DataField>
-        </Field>
-        <Field Name="SalesInvoiceLineAmount">
-          <DataField>SalesInvoiceLineAmount</DataField>
-        </Field>
-        <Field Name="SalesInvoiceLineAmountFormat">
-          <DataField>SalesInvoiceLineAmountFormat</DataField>
-        </Field>
-        <Field Name="SalesInvoiceLineVAT">
-          <DataField>SalesInvoiceLineVAT</DataField>
-        </Field>
-        <Field Name="SalesInvoiceLineVATFormat">
-          <DataField>SalesInvoiceLineVATFormat</DataField>
-        </Field>
-        <Field Name="Discount">
-          <DataField>Discount</DataField>
-        </Field>
-        <Field Name="DiscountFormat">
-          <DataField>DiscountFormat</DataField>
-        </Field>
-        <Field Name="DLT_Small_Parts">
-          <DataField>DLT_Small_Parts</DataField>
-        </Field>
-        <Field Name="Number">
-          <DataField>Number</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -3962,12 +3628,6 @@
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParametersLayout>
-    <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
-    </GridLayoutDefinition>
-  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -4005,4 +3665,338 @@ End Function
 </Code>
   <Language>=User!Language</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="NoSalesInvoiceHeader">
+          <DataField>NoSalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="PostingDateSalesInvoiceHeader">
+          <DataField>PostingDateSalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="OrderNoSalesInvoiceHeader">
+          <DataField>OrderNoSalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="OrderDateSalesInvoiceHeader">
+          <DataField>OrderDateSalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="VenderNameRecGVendor">
+          <DataField>VenderNameRecGVendor</DataField>
+        </Field>
+        <Field Name="AmountSalesInvoiceHeader">
+          <DataField>AmountSalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="AmountSalesInvoiceHeaderFormat">
+          <DataField>AmountSalesInvoiceHeaderFormat</DataField>
+        </Field>
+        <Field Name="AmountTTCSalesInvoiceHeader">
+          <DataField>AmountTTCSalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="AmountTTCSalesInvoiceHeaderFormat">
+          <DataField>AmountTTCSalesInvoiceHeaderFormat</DataField>
+        </Field>
+        <Field Name="AmountTTCSalesInvoiceHeaderSR">
+          <DataField>AmountTTCSalesInvoiceHeaderSR</DataField>
+        </Field>
+        <Field Name="AmountTTCSalesInvoiceHeaderSRFormat">
+          <DataField>AmountTTCSalesInvoiceHeaderSRFormat</DataField>
+        </Field>
+        <Field Name="StampAmount">
+          <DataField>StampAmount</DataField>
+        </Field>
+        <Field Name="StampAmountFormat">
+          <DataField>StampAmountFormat</DataField>
+        </Field>
+        <Field Name="NoRecGCustomer">
+          <DataField>NoRecGCustomer</DataField>
+        </Field>
+        <Field Name="NameRecGCustomer">
+          <DataField>NameRecGCustomer</DataField>
+        </Field>
+        <Field Name="AdrRecGCustomer">
+          <DataField>AdrRecGCustomer</DataField>
+        </Field>
+        <Field Name="MFRecGCustomer">
+          <DataField>MFRecGCustomer</DataField>
+        </Field>
+        <Field Name="PhonRecGCustomer">
+          <DataField>PhonRecGCustomer</DataField>
+        </Field>
+        <Field Name="MakeRecGOr">
+          <DataField>MakeRecGOr</DataField>
+        </Field>
+        <Field Name="ModelRecGOr">
+          <DataField>ModelRecGOr</DataField>
+        </Field>
+        <Field Name="DateArrivalRecGOr">
+          <DataField>DateArrivalRecGOr</DataField>
+        </Field>
+        <Field Name="KilometrageRecGOr">
+          <DataField>KilometrageRecGOr</DataField>
+        </Field>
+        <Field Name="KilometrageRecGOrFormat">
+          <DataField>KilometrageRecGOrFormat</DataField>
+        </Field>
+        <Field Name="VINRecGOr">
+          <DataField>VINRecGOr</DataField>
+        </Field>
+        <Field Name="ImmatriculationRecGOr">
+          <DataField>ImmatriculationRecGOr</DataField>
+        </Field>
+        <Field Name="MntDossier">
+          <DataField>MntDossier</DataField>
+        </Field>
+        <Field Name="MntDossierFormat">
+          <DataField>MntDossierFormat</DataField>
+        </Field>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
+        <Field Name="PaymentTermsSalesInvoiceHeader">
+          <DataField>PaymentTermsSalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="PaymentTermsDescription">
+          <DataField>PaymentTermsDescription</DataField>
+        </Field>
+        <Field Name="MontantTText">
+          <DataField>MontantTText</DataField>
+        </Field>
+        <Field Name="MontantTTextSR">
+          <DataField>MontantTTextSR</DataField>
+        </Field>
+        <Field Name="Picture">
+          <DataField>Picture</DataField>
+        </Field>
+        <Field Name="Entete">
+          <DataField>Entete</DataField>
+        </Field>
+        <Field Name="Pied">
+          <DataField>Pied</DataField>
+        </Field>
+        <Field Name="ShowVehiculeInfo">
+          <DataField>ShowVehiculeInfo</DataField>
+        </Field>
+        <Field Name="afficherPiedsPage">
+          <DataField>afficherPiedsPage</DataField>
+        </Field>
+        <Field Name="ShowLabor">
+          <DataField>ShowLabor</DataField>
+        </Field>
+        <Field Name="HideDiscount">
+          <DataField>HideDiscount</DataField>
+        </Field>
+        <Field Name="hideTelNumber">
+          <DataField>hideTelNumber</DataField>
+        </Field>
+        <Field Name="TotPiece">
+          <DataField>TotPiece</DataField>
+        </Field>
+        <Field Name="TotPieceFormat">
+          <DataField>TotPieceFormat</DataField>
+        </Field>
+        <Field Name="TotPieceSR">
+          <DataField>TotPieceSR</DataField>
+        </Field>
+        <Field Name="TotPieceSRFormat">
+          <DataField>TotPieceSRFormat</DataField>
+        </Field>
+        <Field Name="TotMO">
+          <DataField>TotMO</DataField>
+        </Field>
+        <Field Name="TotMOFormat">
+          <DataField>TotMOFormat</DataField>
+        </Field>
+        <Field Name="TotMOSR">
+          <DataField>TotMOSR</DataField>
+        </Field>
+        <Field Name="TotMOSRFormat">
+          <DataField>TotMOSRFormat</DataField>
+        </Field>
+        <Field Name="TotTrExtSR">
+          <DataField>TotTrExtSR</DataField>
+        </Field>
+        <Field Name="TotTrExtSRFormat">
+          <DataField>TotTrExtSRFormat</DataField>
+        </Field>
+        <Field Name="VATBaseCaptionLbl">
+          <DataField>VATBaseCaptionLbl</DataField>
+        </Field>
+        <Field Name="VATAmtCaptionLbl">
+          <DataField>VATAmtCaptionLbl</DataField>
+        </Field>
+        <Field Name="VATAmountLineCaptionLbl">
+          <DataField>VATAmountLineCaptionLbl</DataField>
+        </Field>
+        <Field Name="VATCaptionLbl">
+          <DataField>VATCaptionLbl</DataField>
+        </Field>
+        <Field Name="TMPBaseCaptionLbl">
+          <DataField>TMPBaseCaptionLbl</DataField>
+        </Field>
+        <Field Name="TMPAmtCaptionLbl">
+          <DataField>TMPAmtCaptionLbl</DataField>
+        </Field>
+        <Field Name="TMPAmountLineCaptionLbl">
+          <DataField>TMPAmountLineCaptionLbl</DataField>
+        </Field>
+        <Field Name="TMPCaptionLbl">
+          <DataField>TMPCaptionLbl</DataField>
+        </Field>
+        <Field Name="TMP">
+          <DataField>TMP</DataField>
+        </Field>
+        <Field Name="DueDate">
+          <DataField>DueDate</DataField>
+        </Field>
+        <Field Name="PaymentMethod">
+          <DataField>PaymentMethod</DataField>
+        </Field>
+        <Field Name="CompanyInfo_Name">
+          <DataField>CompanyInfo_Name</DataField>
+        </Field>
+        <Field Name="CompanyInfo_Adress">
+          <DataField>CompanyInfo_Adress</DataField>
+        </Field>
+        <Field Name="CompanyInfo_PostCode">
+          <DataField>CompanyInfo_PostCode</DataField>
+        </Field>
+        <Field Name="CompanyInfo_City">
+          <DataField>CompanyInfo_City</DataField>
+        </Field>
+        <Field Name="CompanyInfo_Phone">
+          <DataField>CompanyInfo_Phone</DataField>
+        </Field>
+        <Field Name="CompanyInfo_Fax">
+          <DataField>CompanyInfo_Fax</DataField>
+        </Field>
+        <Field Name="CompanyInfo_LegalForm">
+          <DataField>CompanyInfo_LegalForm</DataField>
+        </Field>
+        <Field Name="CompanyInfo_Capital">
+          <DataField>CompanyInfo_Capital</DataField>
+        </Field>
+        <Field Name="CompanyInfo_VatRegistration">
+          <DataField>CompanyInfo_VatRegistration</DataField>
+        </Field>
+        <Field Name="CompanyInfo_Email">
+          <DataField>CompanyInfo_Email</DataField>
+        </Field>
+        <Field Name="CompanyInfo_TradeRegister">
+          <DataField>CompanyInfo_TradeRegister</DataField>
+        </Field>
+        <Field Name="CompBankName">
+          <DataField>CompBankName</DataField>
+        </Field>
+        <Field Name="CompBankAccount">
+          <DataField>CompBankAccount</DataField>
+        </Field>
+        <Field Name="CompIBAN">
+          <DataField>CompIBAN</DataField>
+        </Field>
+        <Field Name="CompSWIFT">
+          <DataField>CompSWIFT</DataField>
+        </Field>
+        <Field Name="Text1Footer">
+          <DataField>Text1Footer</DataField>
+        </Field>
+        <Field Name="Bill_to_Customer_No">
+          <DataField>Bill_to_Customer_No</DataField>
+        </Field>
+        <Field Name="Sell_to_Name">
+          <DataField>Sell_to_Name</DataField>
+        </Field>
+        <Field Name="External_Document_No_">
+          <DataField>External_Document_No_</DataField>
+        </Field>
+        <Field Name="VAT_PourcentSalesInvoiceLIne">
+          <DataField>VAT_PourcentSalesInvoiceLIne</DataField>
+        </Field>
+        <Field Name="VAT_PourcentSalesInvoiceLIneFormat">
+          <DataField>VAT_PourcentSalesInvoiceLIneFormat</DataField>
+        </Field>
+        <Field Name="Vat_BaseAmountSalesInvoiceLIne">
+          <DataField>Vat_BaseAmountSalesInvoiceLIne</DataField>
+        </Field>
+        <Field Name="Vat_BaseAmountSalesInvoiceLIneFormat">
+          <DataField>Vat_BaseAmountSalesInvoiceLIneFormat</DataField>
+        </Field>
+        <Field Name="AmountTVASalesInvoiceLIne">
+          <DataField>AmountTVASalesInvoiceLIne</DataField>
+        </Field>
+        <Field Name="AmountTVASalesInvoiceLIneFormat">
+          <DataField>AmountTVASalesInvoiceLIneFormat</DataField>
+        </Field>
+        <Field Name="AmountTVASalesInvoiceLIneSR">
+          <DataField>AmountTVASalesInvoiceLIneSR</DataField>
+        </Field>
+        <Field Name="AmountTVASalesInvoiceLIneSRFormat">
+          <DataField>AmountTVASalesInvoiceLIneSRFormat</DataField>
+        </Field>
+        <Field Name="LineAmountSR">
+          <DataField>LineAmountSR</DataField>
+        </Field>
+        <Field Name="LineAmountSRFormat">
+          <DataField>LineAmountSRFormat</DataField>
+        </Field>
+        <Field Name="SalesInvoiceLineRef">
+          <DataField>SalesInvoiceLineRef</DataField>
+        </Field>
+        <Field Name="islabor">
+          <DataField>islabor</DataField>
+        </Field>
+        <Field Name="SalesInvoiceLineDescript">
+          <DataField>SalesInvoiceLineDescript</DataField>
+        </Field>
+        <Field Name="SalesInvoiceLineUOM">
+          <DataField>SalesInvoiceLineUOM</DataField>
+        </Field>
+        <Field Name="SalesInvoiceLineQte">
+          <DataField>SalesInvoiceLineQte</DataField>
+        </Field>
+        <Field Name="SalesInvoiceLineQteFormat">
+          <DataField>SalesInvoiceLineQteFormat</DataField>
+        </Field>
+        <Field Name="SalesInvoiceLineUnitPrice">
+          <DataField>SalesInvoiceLineUnitPrice</DataField>
+        </Field>
+        <Field Name="SalesInvoiceLineUnitPriceFormat">
+          <DataField>SalesInvoiceLineUnitPriceFormat</DataField>
+        </Field>
+        <Field Name="SalesInvoiceLineDiscount">
+          <DataField>SalesInvoiceLineDiscount</DataField>
+        </Field>
+        <Field Name="SalesInvoiceLineDiscountFormat">
+          <DataField>SalesInvoiceLineDiscountFormat</DataField>
+        </Field>
+        <Field Name="SalesInvoiceLineAmount">
+          <DataField>SalesInvoiceLineAmount</DataField>
+        </Field>
+        <Field Name="SalesInvoiceLineAmountFormat">
+          <DataField>SalesInvoiceLineAmountFormat</DataField>
+        </Field>
+        <Field Name="SalesInvoiceLineVAT">
+          <DataField>SalesInvoiceLineVAT</DataField>
+        </Field>
+        <Field Name="SalesInvoiceLineVATFormat">
+          <DataField>SalesInvoiceLineVATFormat</DataField>
+        </Field>
+        <Field Name="Discount">
+          <DataField>Discount</DataField>
+        </Field>
+        <Field Name="DiscountFormat">
+          <DataField>DiscountFormat</DataField>
+        </Field>
+        <Field Name="DLT_Small_Parts">
+          <DataField>DLT_Small_Parts</DataField>
+        </Field>
+        <Field Name="Number">
+          <DataField>Number</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

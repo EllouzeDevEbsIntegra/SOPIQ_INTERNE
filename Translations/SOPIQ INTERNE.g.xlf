@@ -17108,6 +17108,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purchase Receipts - Control Vendor Shipment No. - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 490304238 - Control 2975378708 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 490304238">
+          <source>Shows the remaining amount to be paid.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Cr.Memos (Serv.) - Control Remaining Amount - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 490304238 - Control 2975378708 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 490304238">
+          <source>Montant Ouvert</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Cr.Memos (Serv.) - Control Remaining Amount - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 2557560783 - Control 117901444 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2557560783">
           <source>Montant reçu caisse</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -17167,6 +17177,11 @@
           <source>Code Initiateur</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoices (Serv.) - Control Initiateur - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2984472522 - Control 3986423421 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2984472522">
+          <source>N° Téléphone</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoices (Serv.) - Control Phone No. - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 2984472522 - Control 2975378708 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2984472522">
           <source>Montant Ouvert</source>
