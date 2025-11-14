@@ -60,8 +60,4 @@ tableextension 80502 "Sales Order Entity Buffer" extends "Sales Order Entity Buf
     {
         // Add changes to field groups here
     }
-
-    var
-        myInt: Integer;
-
 }

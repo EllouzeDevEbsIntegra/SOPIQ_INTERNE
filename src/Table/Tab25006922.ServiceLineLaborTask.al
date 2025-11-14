@@ -58,7 +58,7 @@ table 25006922 "Service Line Labor Task"
     var
         TaskRec: Record "Service Line Labor Task";
         LastLineNo: Integer;
-        SalesLine: Record "Sales Line";
+        SalesLine: Record "Service Line EDMS";
         ServTask: Record "Service Task";
     begin
         // Calcul du prochain Line No.
@@ -71,13 +71,14 @@ table 25006922 "Service Line Labor Task"
             LastLineNo := 0;
 
         "Line No." := LastLineNo + 10000;
-
         //  Description de la ligne commande
         SalesLine.Reset();
         SalesLine.SetRange("Document No.", "Document No.");
         SalesLine.SetRange("Line No.", "Document Line No.");
-        if SalesLine.FindFirst() then
+        if SalesLine.FindFirst() then begin
+            "Labor Code" := SalesLine."No.";
             "Labor Description" := SalesLine.Description;
+        end;
 
         //  Description de la tâche associée (Service Task)
         if ServTask.Get("Task Code") then

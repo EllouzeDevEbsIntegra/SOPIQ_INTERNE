@@ -18,7 +18,7 @@ page 25006851 "Sales Invoice API"
         {
             repeater(Group)
             {
-                field(id; Id)
+                field(id; SystemId)
                 {
                     ApplicationArea = All;
                     Caption = 'id', Locked = true;
@@ -30,6 +30,14 @@ page 25006851 "Sales Invoice API"
                     Caption = 'Number', Locked = true;
                     Editable = false;
                 }
+
+                field(Internal; "Internal Bill-to Customer")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Internal Bill-to Customer', Locked = true;
+                    Editable = false;
+                }
+
                 field(externalDocumentNumber; "External Document No.")
                 {
                     ApplicationArea = All;
@@ -98,6 +106,14 @@ page 25006851 "Sales Invoice API"
                     Caption = 'billToAddress', Locked = true;
                     Editable = false;
                 }
+
+                field(AdresseDonneurOrdre; "Sell-to Address")
+                {
+                    ApplicationArea = All;
+                    Caption = 'sellToAddress', Locked = true;
+                    Editable = false;
+                }
+
                 field(currencyCode; CurrencyCodeTxt)
                 {
                     ApplicationArea = All;
@@ -132,13 +148,13 @@ page 25006851 "Sales Invoice API"
                     Caption = 'pricesIncludeTax', Locked = true;
                     Editable = false;
                 }
-                part(salesInvoiceLines; "Sales Invoice Line Entity")
+                part(salesInvoiceLines; "Sales Invoice Line API")
                 {
                     ApplicationArea = All;
                     Caption = 'Lines', Locked = true;
                     EntityName = 'salesInvoiceLine';
                     EntitySetName = 'salesInvoiceLines';
-                    SubPageLink = "Document Id" = FIELD(Id);
+                    SubPageLink = "Document No." = FIELD("No.");
                 }
                 part(pdfDocument; "PDF Document Entity")
                 {
@@ -146,7 +162,7 @@ page 25006851 "Sales Invoice API"
                     Caption = 'PDF Document', Locked = true;
                     EntityName = 'pdfDocument';
                     EntitySetName = 'pdfDocument';
-                    SubPageLink = "Document Id" = FIELD(Id);
+                    SubPageLink = "Document Id" = FIELD(SystemId);
                 }
                 field(discountAmount; "Invoice Discount Amount")
                 {
@@ -167,7 +183,12 @@ page 25006851 "Sales Invoice API"
                     Caption = 'totalAmountIncludingTax', Locked = true;
                     Editable = false;
                 }
-                field(phoneNumber; "Sell-to Phone No.")
+                field(PhoneNo; "Phone No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'PhoneNumber', Locked = true;
+                }
+                field(phoneDonneurOrdre; "Sell-to Phone No.")
                 {
                     ApplicationArea = All;
                     Caption = 'PhoneNumber', Locked = true;
@@ -230,6 +251,12 @@ page 25006851 "Sales Invoice API"
                     Caption = 'Work Description', Locked = true;
                     ToolTip = 'Specifies the description of the work associated with the invoice.';
                 }
+                field(ContreRemboursment; contreRemboursment)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Contre Remboursment', Locked = true;
+                    ToolTip = 'Indicates whether the invoice is marked as cash on delivery.';
+                }
             }
         }
     }
@@ -242,6 +269,7 @@ page 25006851 "Sales Invoice API"
     var
         SalesInvoiceAggregator: Codeunit "Sales Invoice Aggregator";
         Vehicle: Record Vehicle;
+        Customer: Record Customer;
     begin
         CalcFields(Initiateur);
         WorkDescription := CopyStr(GetWorkDescription, 1, 250);
@@ -250,6 +278,8 @@ page 25006851 "Sales Invoice API"
         Vehicle.SetRange("Serial No.", "Vehicle Serial No.");
         if Vehicle.FindFirst() then
             vinNumber := Vehicle."VIN";
+
+        if Customer.get(("Bill-to Customer No.")) then contreRemboursment := Customer."Contre remboursement";
 
 
     end;
@@ -262,6 +292,7 @@ page 25006851 "Sales Invoice API"
 
 
     var
+        contreRemboursment: Boolean;
         SISalesCodeUnit: Codeunit SISalesCodeUnit;
         CannotChangeIDErr: Label 'The id cannot be changed.', Locked = true;
         TempFieldBuffer: Record "Field Buffer" temporary;
@@ -302,9 +333,6 @@ page 25006851 "Sales Invoice API"
         HasWritePermissionForDraft: Boolean;
         workDescription: Text[250];
         vinNumber: Text[50];
-
-
-
 
 
 }

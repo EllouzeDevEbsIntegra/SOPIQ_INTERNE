@@ -52,6 +52,19 @@ page 25006816 "Sales Order EBS"
                         RegisterFieldSet(FieldNo("External Document No."))
                     end;
                 }
+                field(LastShipmentNo; getLastShipmentNo())
+                {
+                    ApplicationArea = All;
+                    Caption = 'lastShipmentNo', Locked = true;
+                    Editable = false;
+                }
+
+                field(LastPostedNo; getLastPostedNo())
+                {
+                    ApplicationArea = All;
+                    Caption = 'lastPostedNo', Locked = true;
+                    Editable = false;
+                }
                 field(orderDate; "Document Date")
                 {
                     ApplicationArea = All;
@@ -357,6 +370,7 @@ page 25006816 "Sales Order EBS"
                         RegisterFieldSet(FieldNo("Completely Shipped"));
                     end;
                 }
+
                 field(status; Status)
                 {
                     ApplicationArea = All;
@@ -506,6 +520,22 @@ page 25006816 "Sales Order EBS"
         DocumentDateSet: Boolean;
         DocumentDateVar: Date;
         HasWritePermission: Boolean;
+
+    local procedure getLastShipmentNo(): Code[20]
+    var
+        SalesHeader: Record "Sales Header";
+    begin
+        SalesHeader.get(SalesHeader."Document Type"::Order, "No.");
+        exit(SalesHeader."Last Shipping No.");
+    end;
+
+    local procedure getLastPostedNo(): Code[20]
+    var
+        SalesHeader: Record "Sales Header Archive";
+    begin
+        if SalesHeader.get(SalesHeader."Document Type"::Order, "No.") then
+            exit(SalesHeader."Last Posting No.");
+    end;
 
     local procedure SetCalculatedFields()
     var
@@ -679,6 +709,35 @@ page 25006816 "Sales Order EBS"
 
     end;
 
+    local procedure PostWithShipAndInvoice(var SalesHeader: Record "Sales Header"; var SalesInvoiceHeader: Record "Sales Invoice Header")
+    var
+        LinesInstructionMgt: Codeunit "Lines Instruction Mgt.";
+        OrderNo: Code[20];
+        OrderNoSeries: Code[20];
+    begin
+        LinesInstructionMgt.SalesCheckAllLinesHaveQuantityAssigned(SalesHeader);
+        OrderNo := SalesHeader."No.";
+        OrderNoSeries := SalesHeader."No. Series";
+        SalesHeader.Ship := true;
+        SalesHeader.Invoice := true;
+        SalesHeader.SendToPosting(Codeunit::"Sales-Post");
+    end;
+
+    local procedure PostWithInvoice(var SalesHeader: Record "Sales Header"; var SalesInvoiceHeader: Record "Sales Invoice Header")
+    var
+        LinesInstructionMgt: Codeunit "Lines Instruction Mgt.";
+        OrderNo: Code[20];
+        OrderNoSeries: Code[20];
+    begin
+        LinesInstructionMgt.SalesCheckAllLinesHaveQuantityAssigned(SalesHeader);
+        OrderNo := SalesHeader."No.";
+        OrderNoSeries := SalesHeader."No. Series";
+        SalesHeader.Ship := false;
+        SalesHeader.Invoice := true;
+        SalesHeader.SendToPosting(Codeunit::"Sales-Post");
+    end;
+
+
     local procedure PostWithShip(var SalesHeader: Record "Sales Header")
     var
         LinesInstructionMgt: Codeunit "Lines Instruction Mgt.";
@@ -691,11 +750,34 @@ page 25006816 "Sales Order EBS"
         SalesHeader.Ship := true;
         SalesHeader.Invoice := false;
         SalesHeader.SendToPosting(Codeunit::"Sales-Post");
-        /*SalesInvoiceHeader.SetCurrentKey("Order No.");
-        SalesInvoiceHeader.SetRange("Pre-Assigned No. Series", '');
-        SalesInvoiceHeader.SetRange("Order No. Series", OrderNoSeries);
-        SalesInvoiceHeader.SetRange("Order No.", OrderNo);
-        SalesInvoiceHeader.FindFirst();*/
+    end;
+
+
+    [ServiceEnabled]
+    [Scope('OnPrem')]
+    procedure ShipAndInvoice(var ActionContext: WebServiceActionContext)
+    var
+        SalesHeader: Record "Sales Header";
+        SalesInvoiceHeader: Record "Sales Invoice Header";
+        SalesInvoiceAggregator: Codeunit "Sales Invoice Aggregator";
+    begin
+        GetOrder(SalesHeader);
+        PostWithShipAndInvoice(SalesHeader, SalesInvoiceHeader);
+        SetActionResponse(ActionContext, Page::"Sales Invoice API", SalesInvoiceAggregator.GetSalesInvoiceHeaderId(SalesInvoiceHeader));
+    end;
+
+
+    [ServiceEnabled]
+    [Scope('OnPrem')]
+    procedure Invoice(var ActionContext: WebServiceActionContext)
+    var
+        SalesHeader: Record "Sales Header";
+        SalesInvoiceHeader: Record "Sales Invoice Header";
+        SalesInvoiceAggregator: Codeunit "Sales Invoice Aggregator";
+    begin
+        GetOrder(SalesHeader);
+        PostWithInvoice(SalesHeader, SalesInvoiceHeader);
+        SetActionResponse(ActionContext, Page::"Sales Invoice API", SalesInvoiceAggregator.GetSalesInvoiceHeaderId(SalesInvoiceHeader));
     end;
 
     [ServiceEnabled]
@@ -714,14 +796,6 @@ page 25006816 "Sales Order EBS"
         GetOrder(SalesHeader);
         PostWithShip(SalesHeader);
 
-        if SalesShipmentHeader.Get(SalesHeader."Last Shipping No.") then begin
-            ReportSelections.GetPdfReport(DocumentPath, ReportSelections.Usage::"S.Shipment", SalesShipmentHeader, SalesShipmentHeader."Sell-to Customer No.");
-            Base64.CreateOutStream(OutStr);
-            FileManagement.IsAllowedPath(DocumentPath, false);
-            OutStr.WriteText(DotNetConvert.ToBase64String(DotNetFile.ReadAllBytes(DocumentPath)));
-            Binary.Import(DocumentPath);
-            File.Erase(DocumentPath);
-        end;
     end;
 
 }

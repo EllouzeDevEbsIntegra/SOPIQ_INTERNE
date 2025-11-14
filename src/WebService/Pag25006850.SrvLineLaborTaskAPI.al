@@ -10,7 +10,7 @@ page 25006850 "Srv Line Labor Task API"
     ODataKeyFields = "Document No.", "Document Line No.", "Line No.";
     DelayedInsert = true;
     ModifyAllowed = true;
-    InsertAllowed = false;
+    InsertAllowed = true;
     DeleteAllowed = true;
 
     layout
@@ -44,4 +44,8 @@ page 25006850 "Srv Line Labor Task API"
     begin
         rec.CalcFields("Temps Presté (Heures)");
     end;
+
+
+
+
 }
