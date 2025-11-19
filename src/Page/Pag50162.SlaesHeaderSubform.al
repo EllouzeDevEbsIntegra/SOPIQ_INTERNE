@@ -4,7 +4,7 @@ page 50162 "Slaes Header Subform"
     LinksAllowed = false;
     PageType = ListPart;
     SourceTable = "Sales Header";
-    SourceTableView = WHERE("Document Type" = FILTER(Order), "Completely Shipped" = filter(false));
+    SourceTableView = WHERE("Document Type" = FILTER(Order), "Completely Shipped" = filter(false), Amount = filter(> 0));
 
     layout
     {

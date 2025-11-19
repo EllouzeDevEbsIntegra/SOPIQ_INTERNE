@@ -296,6 +296,67 @@ tableextension 80103 "Item" extends Item //27
             DataClassification = ToBeClassified;
         }
 
+        field(50144; "Avg Daily Sales N"; Decimal)
+        {
+            Caption = 'Qté moy. vente/jour (N)', Locked = true;
+            DecimalPlaces = 0 : 2;
+        }
+        field(50145; "Days With Positive Stock N"; Decimal)
+        {
+            Caption = 'Nb jour stock > 0 N', Locked = true;
+            DecimalPlaces = 0 : 2;
+        }
+        field(50146; "Avg Daily Sales N-1"; Decimal)
+        {
+            Caption = 'Qté moy. vente/jour (N-1)', Locked = true;
+            DecimalPlaces = 0 : 2;
+        }
+        field(50147; "Days With Positive Stock N-1"; Decimal)
+        {
+            Caption = 'Nb jour stock > 0 N-1', Locked = true;
+            DecimalPlaces = 0 : 2;
+        }
+        field(50148; "Avg Daily Sales N-2"; Decimal)
+        {
+            Caption = 'Qté moy. vente/jour (N-2)', Locked = true;
+            DecimalPlaces = 0 : 2;
+        }
+        field(50149; "Days With Positive Stock N-2"; Decimal)
+        {
+            Caption = 'Nb jour stock > 0 N-2', Locked = true;
+            DecimalPlaces = 0 : 2;
+        }
+        field(50150; "Version"; Text[20])
+        {
+            Caption = 'Version';
+            DataClassification = ToBeClassified;
+        }
+
+        field(50151; "Stock Rotation N"; Decimal)
+        {
+            Caption = 'Rotation Stock N';
+            DecimalPlaces = 0 : 2;
+            DataClassification = ToBeClassified;
+        }
+        field(50152; "Stock Rotation N-1"; Decimal)
+        {
+            Caption = 'Rotation Stock N-1';
+            DecimalPlaces = 0 : 2;
+            DataClassification = ToBeClassified;
+        }
+        field(50153; "Stock Rotation N-2"; Decimal)
+        {
+            Caption = 'Rotation Stock N-2';
+            DecimalPlaces = 0 : 2;
+            DataClassification = ToBeClassified;
+        }
+
+        field(50154; "Last Update Year"; Integer)
+        {
+            Caption = 'Dernière année de mise à jour';
+            DataClassification = ToBeClassified;
+        }
+
 
         modify("No.")
         {

@@ -178,6 +178,141 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table items Master - Field Verified - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 892373594 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>KPI Cache</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 3047770096 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ajust. négatif (coût)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Ajustement Négatif - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 3304706500 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ajust. positif (coût)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Ajustement Positif - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 1697633997 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Calculé par</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Calculated By - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 3293033515 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Chèques en Coffre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Chèques en Coffre - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 916047081 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Chèques Impayés</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Chèques Impayés - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 3192175264 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 883711285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N° séquentiel</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 429282430 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dernier calcul</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Last Calculated - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 729255731 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nb Avoirs Non Réglés</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Nb Avoirs Non Réglés - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 2641727447 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nb Factures Non Réglées</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Nb Factures Non Réglées - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 2053185933 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Retours du Jour (TTC)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Retours du Jour - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 3204030655 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Avoirs RC Non Réglés</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Total Avoir RC Non Réglés - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 1475499281 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Avoirs Non Réglés</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Total Avoirs Non Réglés - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 3774056900 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>BL Non Réglés RC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Total BL Non Réglés RC - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 2160394449 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>BS Non Réglés RC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Total BS Non Réglés RC - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 3224293973 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Factures RC Non Réglées</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Total Fact RC Non Réglées - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 40807181 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Factures Non Réglées</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Total Factures Non Réglées - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 370563386 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Retour BL Non Réglés RC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Total Retour BL RC - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 2670727459 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Retour BS Non Réglés RC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Total Retour BS RC - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 1235844056 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Traites en Coffre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Traites en Coffre - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 4059322822 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Traites Escompte</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Traites Escompte - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 2919686681 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Traites Impayées</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Traites Impayées - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 1664456402 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Endommagé (valeur)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Valeur Endommagé - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 2577870972 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Litige + (valeur)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Valeur Litige + - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 1302477738 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Litige - (valeur)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Valeur Litige - - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 334303504 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ventes du Jour (TTC)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Ventes du Jour - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 3058751856 - Field 2916642318 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Quantité estimée par défaut</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -2124,27 +2259,27 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control AjustLitige - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3667168034 - Control 2613143119 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Ajust. négatif (Pounds)</source>
+          <source>Ajust. négatif (£)</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control AjustNeg - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3667168034 - Control 1467642000 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Ajust. positif (Pounds)</source>
+          <source>Ajust. positif (£)</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control AjustPosi - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3667168034 - Control 1464922102 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Endommagé (Pounds)</source>
+          <source>Endommagé (£)</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control Endommage Valeur - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3667168034 - Control 2027875772 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Litige + (Pounds)</source>
+          <source>Litige + (£)</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control Litige + Valeur - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3667168034 - Control 1004559034 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Litige - (Pounds)</source>
+          <source>Litige - (£)</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control Litige - Valeur - Property Caption</note>
         </trans-unit>
@@ -2184,7 +2319,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control TotalAvoirNonRegle - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3667168034 - Control 964390705 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Total Facture non non réglée</source>
+          <source>Total Facture non réglée</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control TotalfactureNonReg - Property Caption</note>
         </trans-unit>
@@ -2192,6 +2327,31 @@
           <source>Paiement Client</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control Paiment - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 3009599457 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Cheque En Coffre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control Cheque En Coffre - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 436916522 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Cheque Impayé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control Cheque Impaye - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 232541578 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Traite En Coffre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control Traite En Coff. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 3174304518 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Traite Escompte</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control Traite En Escompte - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 4218513018 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Traite Impayee</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control Traite Impaye - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3667168034 - Control 1605034380 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Panier BS</source>
@@ -2233,18 +2393,13 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control TotalReturnBLNonRegleRC - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 3667168034 - Control 741077755 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Taux de rotation</source>
+        <trans-unit id="Page 3667168034 - Action 742001001 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Set up the cues (status tiles) related to the role.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control turnover rate - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Page 3667168034 - Action 3590288985 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Rafraîchir</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Action RefreshKPI - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Action Set Up Cues - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 3667168034 - Action 742001001 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Configurer</source>
+          <source>Set Up Cues</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Action Set Up Cues - Property Caption</note>
         </trans-unit>
@@ -16978,11 +17133,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report STGrand livre fournisseur - Control devise - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Report 1367479497 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Mise à jour taux de rotation</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Update Item Turnover - Property Caption</note>
-        </trans-unit>
         <trans-unit id="Report 3102151271 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Valider feuille reclassement article</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -17283,30 +17433,15 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Action UPDATE ITEM INFO - Method OnAction - NamedType messageSuccees</note>
         </trans-unit>
-        <trans-unit id="PageExtension 979344903 - Action 3899467858 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
-          <source>Calculer taux de rotation (sélection)</source>
+        <trans-unit id="PageExtension 979344903 - Action 1565074039 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
+          <source>Calculer Rotation Pondérée</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Action Calculate Turnover Selected - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 979344903 - Action 3899467858 - Method 1377591017 - NamedType 2294662597" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 979344903">
-          <source>Voulez-vous recalculer le taux de rotation pour l'article sélectionné ?</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Action Calculate Turnover Selected - Method OnAction - NamedType ConfirmMsg</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 979344903 - Action 3899467858 - Method 1377591017 - NamedType 1556380518" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 979344903">
-          <source>Taux de rotation mis à jour pour %1 article(s).</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Action Calculate Turnover Selected - Method OnAction - NamedType SuccessMsg</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Action Calculer Rotation Pondérée - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 979344903 - Action 633469275 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
           <source>Historique des articles</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Action ITEM TRANSACTION - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 979344903 - Action 302597404 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
-          <source>Mettre à jour taux de rotation</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Action Mettre à jour taux de rotation - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 979344903 - Action 526965751 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
           <source>Obtenir OEM Count</source>
@@ -17378,25 +17513,30 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Control NbJourRupture - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 979344903 - Control 1550494878 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
+          <source>Rotation Stock N</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Control Stock Rotation N - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 979344903 - Control 4171674602 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
+          <source>Rotation Stock N-1</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Control Stock Rotation N-1 - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 979344903 - Control 2258584751 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
+          <source>Rotation Stock N-2</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Control Stock Rotation N-2 - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 979344903 - Control 173493946 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
           <source>Total Vente</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Control Total Vendu - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 979344903 - Control 888163202 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
-          <source>Rotation (N)</source>
+        <trans-unit id="PageExtension 979344903 - Control 237762718 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
+          <source>Version</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Control Turnover Rate (Current Year) - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 979344903 - Control 612519047 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
-          <source>Rotation (N-1)</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Control Turnover Rate (Last Year) - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 979344903 - Control 2908669611 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
-          <source>Rotation (N-2)</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Control Turnover Rate (Last Year-1) - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Control Version - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 4260588318 - Control 1673260710 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4260588318">
           <source>Nombre emplacement</source>
@@ -19283,6 +19423,21 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Qty Stock - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3276313895 - Field 1550494878 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Rotation Stock N</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Stock Rotation N - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3276313895 - Field 4171674602 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Rotation Stock N-1</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Stock Rotation N-1 - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3276313895 - Field 2258584751 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Rotation Stock N-2</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Stock Rotation N-2 - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3276313895 - Field 284074200 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>To verify</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -19308,20 +19463,10 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Total Vendu - Property Caption</note>
         </trans-unit>
-        <trans-unit id="TableExtension 3276313895 - Field 888163202 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
-          <source>Taux de rotation (Année en cours)</source>
+        <trans-unit id="TableExtension 3276313895 - Field 237762718 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Version</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Turnover Rate (Current Year) - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="TableExtension 3276313895 - Field 612519047 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
-          <source>Taux de rotation (Année précédente)</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Turnover Rate (Last Year) - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="TableExtension 3276313895 - Field 2908669611 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
-          <source>Taux de rotation (Année N-2)</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Turnover Rate (Last Year-1) - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Version - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 1487222247 - Field 702590429 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1487222247">
           <source>Category BI</source>
@@ -19993,26 +20138,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Cue - Field Item Bin - Property Caption</note>
         </trans-unit>
-        <trans-unit id="TableExtension 388441093 - Field 1210221283 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 388441093">
-          <source>Dernier Current Year calculé</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Cue - Field Last Calc Current Year - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="TableExtension 388441093 - Field 1327559766 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 388441093">
-          <source>Dernier Last Year calculé</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Cue - Field Last Calc Last Year - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="TableExtension 388441093 - Field 3368792114 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 388441093">
-          <source>Dernier Last Year-1 calculé</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Cue - Field Last Calc Last Year-1 - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="TableExtension 388441093 - Field 4133867364 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 388441093">
-          <source>Dernier date mise à jour taux de rotation</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Cue - Field Last Turnover Update - Property Caption</note>
-        </trans-unit>
         <trans-unit id="TableExtension 388441093 - Field 4259157380 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 388441093">
           <source>Total achat du mois</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -20087,21 +20212,6 @@
           <source>Total des ventes du jour</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Cue - Field Today Sum Sales - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="TableExtension 388441093 - Field 4022241580 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 388441093">
-          <source>Taux de rotation calculé Current Year</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Cue - Field tournover rate N - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="TableExtension 388441093 - Field 2715256600 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 388441093">
-          <source>Taux de rotation calculé Year -1</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Cue - Field tournover rate N-1 - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="TableExtension 388441093 - Field 3352953217 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 388441093">
-          <source>Taux de rotation calculé Year -2</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Cue - Field tournover rate N-2 - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 388441093 - Field 232541578 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 388441093">
           <source>Traite en coffre</source>

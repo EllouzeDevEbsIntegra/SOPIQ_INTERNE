@@ -85,6 +85,62 @@ pageextension 80118 "item" extends "Item List" //31
                 ApplicationArea = all;
                 Caption = 'Article OEM';
             }
+            field("Avg Daily Sales N"; "Avg Daily Sales N")
+            {
+                Caption = 'Qté moy. vente/jour (N)', Locked = true;
+                DecimalPlaces = 0 : 2;
+            }
+            field("Days With Positive Stock N"; "Days With Positive Stock N")
+            {
+                Caption = 'Nb jour stock > 0 N', Locked = true;
+                DecimalPlaces = 0 : 2;
+            }
+            field("Avg Daily Sales N-1"; "Avg Daily Sales N-1")
+            {
+                Caption = 'Qté moy. vente/jour (N-1)', Locked = true;
+                DecimalPlaces = 0 : 2;
+            }
+            field("Days With Positive Stock N-1"; "Days With Positive Stock N-1")
+            {
+                Caption = 'Nb jour stock > 0 N-1', Locked = true;
+                DecimalPlaces = 0 : 2;
+            }
+            field("Avg Daily Sales N-2"; "Avg Daily Sales N-2")
+            {
+                Caption = 'Qté moy. vente/jour (N-2)', Locked = true;
+                DecimalPlaces = 0 : 2;
+            }
+            field("Days With Positive Stock N-2"; "Days With Positive Stock N-2")
+            {
+                Caption = 'Nb jour stock > 0 N-2', Locked = true;
+                DecimalPlaces = 0 : 2;
+            }
+
+            field("Version"; "Version")
+            {
+                Caption = 'Version';
+                ApplicationArea = all;
+            }
+
+            field("Stock Rotation N"; "Stock Rotation N")
+            {
+                Caption = 'Rotation Stock N';
+                DecimalPlaces = 0 : 2;
+                ApplicationArea = all;
+            }
+            field("Stock Rotation N-1"; "Stock Rotation N-1")
+            {
+                Caption = 'Rotation Stock N-1';
+                DecimalPlaces = 0 : 2;
+                ApplicationArea = all;
+            }
+            field("Stock Rotation N-2"; "Stock Rotation N-2")
+            {
+                Caption = 'Rotation Stock N-2';
+                DecimalPlaces = 0 : 2;
+                ApplicationArea = all;
+            }
+
 
         }
 
@@ -249,6 +305,43 @@ pageextension 80118 "item" extends "Item List" //31
                     Mrfid: Text; // Variable locale pour récupérer le mrfid calculé dans la procédure ValiderReference
                 begin
                     TecDocAPI.RechercherArticleTecdoc(Rec."No.", Mrfid);
+                end;
+            }
+
+            action("Calculer Rotation Pondérée")
+            {
+                ApplicationArea = All;
+                Caption = 'Calculer Rotation Pondérée';
+                Image = Calculate;
+                trigger OnAction()
+                var
+                    UpdateCodeunit: Codeunit "Update Avg Daily Sales";
+                    PurchPaySetup: Record "Purchases & Payables Setup";
+                    YearN, YearN1, YearN2 : Integer;
+                    StartDate, EndDate : Date;
+                begin
+                    PurchPaySetup.Get();
+                    YearN := PurchPaySetup."Current Year";
+                    YearN1 := PurchPaySetup."Last Year";
+                    YearN2 := PurchPaySetup."Last Year-1";
+
+                    // Calcul pour l'année N (jusqu'à WorkDate)
+                    StartDate := DMY2Date(1, 1, YearN);
+                    EndDate := WorkDate();
+                    Rec."Stock Rotation N" := UpdateCodeunit.CalcWeightedStockRotation(Rec."No.", StartDate, EndDate);
+
+                    // Calcul pour N-1 (année complète)
+                    StartDate := DMY2Date(1, 1, YearN1);
+                    EndDate := DMY2Date(31, 12, YearN1);
+                    Rec."Stock Rotation N-1" := UpdateCodeunit.CalcWeightedStockRotation(Rec."No.", StartDate, EndDate);
+
+                    // Calcul pour N-2 (année complète)
+                    StartDate := DMY2Date(1, 1, YearN2);
+                    EndDate := DMY2Date(31, 12, YearN2);
+                    Rec."Stock Rotation N-2" := UpdateCodeunit.CalcWeightedStockRotation(Rec."No.", StartDate, EndDate);
+
+                    Rec.Modify();
+                    Message('Rotation pondérée calculée pour l''article %1.', Rec."No.");
                 end;
             }
 
