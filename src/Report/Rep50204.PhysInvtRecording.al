@@ -179,9 +179,17 @@ report 50204 "Phys Invt Recording"
                     column(Phys__Invt__Recording_Line__Lot_No__Caption; FieldCaption("Lot No."))
                     {
                     }
+                    column(qteCmd; qteCmd)
+                    {
+                    }
 
                     trigger OnAfterGetRecord()
+
                     begin
+                        if GItem.get("Item No.") THEN;
+                        qteCmd := 0;
+                        GetQteCmd(GItem);
+
                         CalcFields("Phys. Invt. Record Line"."Qte Prevu");
                     end;
 
@@ -220,5 +228,28 @@ report 50204 "Phys Invt Recording"
         CurrReport_PAGENOCaptionLbl: Label 'Page';
         Phys__Inventory_RecordingCaptionLbl: Label 'Phys. Inventory Recording';
         AfficherQte: Boolean;
+        qteCmd: Decimal;
+        GItem: Record Item;
+
+
+    local procedure GetQteCmd(Var Rec: Record item)
+
+    var
+        SalesLine: Record "Sales Line";
+    begin
+        // QteCmdVente := 0;
+        SalesLine.Reset();
+        SalesLine.SetRange("No.", Rec."No.");
+        SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
+        SalesLine."Drop Shipment" := false;
+        SalesLine.SetFilter("Outstanding Qty. (Base)", '<>0');
+        if SalesLine.FindSet() then begin
+            repeat
+                qteCmd += SalesLine."Outstanding Qty. (Base)";
+            until SalesLine.Next() = 0;
+        end;
+
+
+    end;
 }
 

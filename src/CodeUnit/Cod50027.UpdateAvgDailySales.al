@@ -21,45 +21,56 @@ codeunit 50027 "Update Avg Daily Sales"
         YearN1 := PurchPaySetup."Last Year";
         YearN2 := PurchPaySetup."Last Year-1";
 
-        // ===> LA LIGNE QUI CHANGE TOUT <===
-        EndDateN := WorkDate();   // Arrête à aujourd'hui pour l'année en cours
-
+        EndDateN := WorkDate();
         ItemCount := 0;
+
         Item.SetFilter("Total Vendu", '>0');
+        Item.SetCurrentKey("No.");
+
         if Item.FindSet(true) then
             repeat
                 // Année N (2025) → du 01/01/2025 à aujourd'hui seulement
                 Item."Avg Daily Sales N" := CalcAvgDailySales(Item."No.", YearN);
                 Item."Days With Positive Stock N" := CountDaysWithPositiveStock(Item."No.", DMY2Date(1, 1, YearN), EndDateN);
-                Item."Stock Rotation N" := CalcWeightedStockRotation(Item."No.", DMY2Date(1, 1, YearN), EndDateN);
+                Item."Stock Rotation N" := CalcStockRotation(Item."No.", DMY2Date(1, 1, YearN), EndDateN);
 
                 // Années N-1 et N-2 → année complète
                 Item."Avg Daily Sales N-1" := CalcAvgDailySales(Item."No.", YearN1);
                 Item."Days With Positive Stock N-1" := CountDaysWithPositiveStock(Item."No.", DMY2Date(1, 1, YearN1), DMY2Date(31, 12, YearN1));
-                Item."Stock Rotation N-1" := CalcWeightedStockRotation(Item."No.", DMY2Date(1, 1, YearN1), DMY2Date(31, 12, YearN1));
+                Item."Stock Rotation N-1" := CalcStockRotation(Item."No.", DMY2Date(1, 1, YearN1), DMY2Date(31, 12, YearN1));
 
                 Item."Avg Daily Sales N-2" := CalcAvgDailySales(Item."No.", YearN2);
                 Item."Days With Positive Stock N-2" := CountDaysWithPositiveStock(Item."No.", DMY2Date(1, 1, YearN2), DMY2Date(31, 12, YearN2));
-                Item."Stock Rotation N-2" := CalcWeightedStockRotation(Item."No.", DMY2Date(1, 1, YearN2), DMY2Date(31, 12, YearN2));
-                Item.Version := 'v2.1';
+                Item."Stock Rotation N-2" := CalcStockRotation(Item."No.", DMY2Date(1, 1, YearN2), DMY2Date(31, 12, YearN2));
+
+                Item.Version := 'v3.0';
                 Item.Modify();
                 ItemCount += 1;
+
             until Item.Next() = 0;
     end;
 
     local procedure CalcAvgDailySales(ItemNo: Code[20]; Year: Integer): Decimal
     var
+        ItemDailyStats: Record 25006658;
         TotalSold: Decimal;
         DaysWithStock: Integer;
-        StartDate, EndDate : Date;
     begin
         if Year = 0 then exit(0);
 
-        StartDate := DMY2Date(1, 1, Year);
-        EndDate := DMY2Date(31, 12, Year);
+        // Utiliser la table pré-calculée pour les performances
+        ItemDailyStats.SetRange("Item No.", ItemNo);
+        ItemDailyStats.SetRange(Year, Year);
+        ItemDailyStats.SetRange("Has Positive Stock", true);
 
-        TotalSold := GetTotalSoldInPeriod(ItemNo, StartDate, EndDate);
-        DaysWithStock := CountDaysWithPositiveStock(ItemNo, StartDate, EndDate);
+        DaysWithStock := ItemDailyStats.Count;
+
+        ItemDailyStats.SetRange("Has Positive Stock");
+        if ItemDailyStats.FindSet() then begin
+            repeat
+                TotalSold += ItemDailyStats."Total Sold";
+            until ItemDailyStats.Next() = 0;
+        end;
 
         if (DaysWithStock > 0) and (TotalSold > 0) then
             exit(Round(TotalSold / DaysWithStock, 0.0001));
@@ -83,24 +94,15 @@ codeunit 50027 "Update Avg Daily Sales"
 
     local procedure CountDaysWithPositiveStock(ItemNo: Code[20]; FromDate: Date; ToDate: Date): Integer
     var
-        ItemLedgEntry: Record "Item Ledger Entry";
-        TempDate: Date;
-        DailyStock: Decimal;
+        ItemDailyStats: Record 25006658;
         DaysCount: Integer;
     begin
-        DaysCount := 0;
+        // Utiliser la table pré-calculée pour les performances
+        ItemDailyStats.SetRange("Item No.", ItemNo);
+        ItemDailyStats.SetRange(Date, FromDate, ToDate);
+        ItemDailyStats.SetRange("Has Positive Stock", true);
 
-        // Boucle sur chaque jour de la période
-        TempDate := FromDate;
-        while TempDate <= ToDate do begin
-            // Calcule le stock disponible à la fin de la journée (avant minuit)
-            DailyStock := GetAvailableStockAsOfDate(ItemNo, TempDate);
-
-            if DailyStock > 0 then
-                DaysCount += 1;
-
-            TempDate := TempDate + 1;  // Jour suivant
-        end;
+        DaysCount := ItemDailyStats.Count;
 
         exit(DaysCount);
     end;
@@ -130,23 +132,33 @@ codeunit 50027 "Update Avg Daily Sales"
 
     procedure CalcStockRotation(ItemNo: Code[20]; FromDate: Date; ToDate: Date): Decimal
     var
+        ItemDailyStats: Record 25006658;
         TotalSold: Decimal;
-        AvgStock: Decimal;
-        StockStart, StockEnd : Decimal;
+        TotalStock: Decimal;
+        DaysCount: Integer;
     begin
-        // Total des ventes sur la période
-        TotalSold := GetTotalSoldInPeriod(ItemNo, FromDate, ToDate);
+        // Utiliser la table pré-calculée pour les performances
+        ItemDailyStats.SetRange("Item No.", ItemNo);
+        ItemDailyStats.SetRange(Date, FromDate, ToDate);
 
-        // Stock moyen : (Stock début + Stock fin) / 2
-        StockStart := GetAvailableStockAsOfDate(ItemNo, FromDate - 1);
-        StockEnd := GetAvailableStockAsOfDate(ItemNo, ToDate);
-        AvgStock := (StockStart + StockEnd) / 2;
+        if ItemDailyStats.FindSet() then begin
+            repeat
+                TotalSold += ItemDailyStats."Total Sold";
+                TotalStock += ItemDailyStats."Stock Level";
+                DaysCount += 1;
+            until ItemDailyStats.Next() = 0;
+        end;
 
-        // Rotation = Total Vendu / Stock Moyen
-        if AvgStock > 0 then
-            exit(Round(TotalSold / AvgStock, 0.01))
-        else
-            exit(0);
+        // Stock moyen pondéré
+        if DaysCount > 0 then begin
+            TotalStock := TotalStock / DaysCount;
+            if TotalStock > 0 then
+                exit(Round(TotalSold / TotalStock, 0.01))
+            else
+                exit(0);
+        end;
+
+        exit(0);
     end;
 
     procedure CalcWeightedStockRotation(ItemNo: Code[20]; FromDate: Date; ToDate: Date): Decimal
@@ -167,7 +179,6 @@ codeunit 50027 "Update Avg Daily Sales"
         WeightedStockSum := 0;
         DaysInPeriod := ToDate - FromDate + 1;
         PrevDate := FromDate;
-        DaysAtLevel := 0;
 
         ItemLedgEntry.SetCurrentKey("Item No.", "Posting Date");
         ItemLedgEntry.SetRange("Item No.", ItemNo);
@@ -176,24 +187,23 @@ codeunit 50027 "Update Avg Daily Sales"
 
         if ItemLedgEntry.FindSet() then
             repeat
-                if ItemLedgEntry."Posting Date" <> PrevDate then begin
-                    // Ajouter les jours au niveau précédent
-                    WeightedStockSum += CurrentStock * DaysAtLevel;
-                    DaysAtLevel := ItemLedgEntry."Posting Date" - PrevDate;
-                    PrevDate := ItemLedgEntry."Posting Date";
-                end;
+                DaysAtLevel := ItemLedgEntry."Posting Date" - PrevDate;
+                WeightedStockSum += Abs(CurrentStock) * DaysAtLevel;
                 CurrentStock += ItemLedgEntry.Quantity;
+                PrevDate := ItemLedgEntry."Posting Date";
             until ItemLedgEntry.Next() = 0;
 
         // Dernière période
         DaysAtLevel := ToDate - PrevDate + 1;
-        WeightedStockSum += CurrentStock * DaysAtLevel;
+        WeightedStockSum += Abs(CurrentStock) * DaysAtLevel;
 
         // Stock moyen pondéré
         if DaysInPeriod > 0 then begin
             CurrentStock := WeightedStockSum / DaysInPeriod;
             if CurrentStock > 0 then
-                exit(Round(TotalSold / CurrentStock, 0.01));
+                exit(Round(TotalSold / CurrentStock, 0.01))
+            else
+                exit(0);
         end;
 
         exit(0);
