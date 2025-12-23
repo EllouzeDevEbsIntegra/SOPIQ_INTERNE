@@ -244,8 +244,7 @@ table 50023 "Specific Item Ledger Entry"
                 recItem.SetRange("Item Type", recItem."item type"::"Model Version");
                 recItem.SetRange("Make Code", "Make Code");
                 recItem.SetRange("Model Code", "Model Code");
-                if Page.RunModal(Page::"Item List", recItem) = Action::LookupOK then //30.10.2012 EDMS
-                 begin
+                if Page.RunModal(Page::"Item List", recItem) = Action::LookupOK then begin
                     Validate("Model Version No.", recItem."No.");
                 end;
             end;

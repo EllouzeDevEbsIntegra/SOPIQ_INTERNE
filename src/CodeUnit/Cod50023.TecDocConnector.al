@@ -165,7 +165,7 @@ codeunit 50023 "TecDoc Connector"
               '"searchType":"' + Format(SearchType) + '",' +
               '"lang":"' + Langue + '",' +
               '"includeAll": true,' +
-              '"mrfid":"' + Mrfid + '"' +
+              '"dataSupplierIds":"' + Mrfid + '"' +
             '}' +
           '}'
         );

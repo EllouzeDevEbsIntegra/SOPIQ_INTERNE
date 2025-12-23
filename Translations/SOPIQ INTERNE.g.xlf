@@ -2498,6 +2498,146 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Article Tecdoc Details - Control LastUpdated - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 538702456 - Control 1172897889 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>descriptionStructured</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control descriptionStructured - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 2686962215 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>id</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control id - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 2539212235 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>PU Devise (FlowField "Last Curr. Price.").</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control lastCurrPrice - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 2539212235 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>lastCurrPrice</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control lastCurrPrice - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 3418189122 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date prix devise (FlowField "Last Date").</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control lastDate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 3418189122 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>lastDate</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control lastDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 2651596039 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date dernier achat</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control lastPurshaseDate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 2651596039 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>lastPurshaseDate</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control lastPurshaseDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 1711412814 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Coût calculé ("Last. Pursh. cost DS").</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control lastPurshCostDS - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 1711412814 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>lastPurshCostDS</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control lastPurshCostDS - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 1787938630 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dernier achat ("Last. Pursh. Date").</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control lastPurshDate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 1787938630 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>lastPurshDate</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control lastPurshDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 3521462364 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>manufacturerTecdocId</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control manufacturerTecdocId - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 3179096107 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>no</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control no - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 2843335739 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Import (FlowField "Qty Import").</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control qtyImport - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 2843335739 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>qtyImport</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control qtyImport - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 747855801 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantité sur commande achat (FlowField "Qty. on Purch. Order").</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control qtyOnPurchOrder - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 747855801 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>qtyOnPurchOrder</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control qtyOnPurchOrder - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 2362208912 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Stock (FlowField "Qty Stock").</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control qtyStock - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 2362208912 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>qtyStock</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control qtyStock - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 2981770665 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>ReferenceMaster</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control ReferenceMaster - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 2769784714 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>styleImportQty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control styleImportQty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 2690936050 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>styleOnPurchQty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control styleOnPurchQty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 3532627741 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>styleQty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control styleQty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 1531515464 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>totalAchete</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control totalAchete - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 1580069074 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>totalVendu</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control totalVendu - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 3421409717 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>unitPrice</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control unitPrice - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 1764391503 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>vendorNo</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control vendorNo - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 2372371920 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Bon de Livraison</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -13762,6 +13902,146 @@
           <source>Changer l'Année</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry - Action Transaction Year -1  - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Ledger Entries</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 344856075 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies if the entry has been fully invoiced or if more posted invoices are expected. Only completely invoiced entries can be revalued.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control CompletelyInvoiced - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 2929189203 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the adjusted cost, in LCY, of the quantity posting.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control CostAmountActual - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 1576803899 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the expected cost, in LCY, of the quantity posting.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control CostAmountExpected - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 2029162621 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the adjusted non-inventoriable cost, that is an item charge assigned to an outbound entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control CostAmountNonInvtbl - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies a description of the entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control Description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 4066289460 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the line on the posted document that corresponds to the item ledger entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control DocumentLineNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 3117834186 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the document number on the entry. The document is the voucher that the entry was based on, for example, a receipt.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control DocumentNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 4237283545 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies what type of document was posted to create the item ledger entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control DocumentType - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 1390049907 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies if your vendor ships the items directly to your customer.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control DropShipment - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 1016130111 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the entry, as assigned from the specified number series when the entry was created.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control EntryNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 404483104 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies which type of transaction that the entry is created from.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control EntryType - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 2398799890 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how many units of the item on the line have been invoiced.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control InvoicedQuantity - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 332802016 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the item in the entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control ItemNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 39415292 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code for the location that the entry is linked to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control LocationCode - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 4259830144 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies whether the entry has been fully applied to.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control Open - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 4248105707 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the line number of the order that created the entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control OrderLineNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 681009761 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the order that created the entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control OrderNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 3874136290 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies which type of order that the entry was created in.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control OrderType - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 3037438984 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the posting date for the entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control PostingDate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 164360944 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the quantity per item unit of measure.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control QtyperUnitofMeasure - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 2704404533 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of units of the item in the item entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control Quantity - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 1523797681 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the quantity in the Quantity field that remains to be processed.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control RemainingQuantity - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 4294523174 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the sales amount, in LCY.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control SalesAmountActual - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 2949368078 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the expected sales amount, in LCY.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control SalesAmountExpected - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 34717358 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the source, based on the Source Type and Source No. fields.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control SourceName - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 34717358 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Source Name</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control SourceName - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 976756736 - Control 848733486 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the unit of measure for the item in the entry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Specific Item Ledger Entry API - Control UnitofMeasureCode - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 2034385242 - Control 1843164222 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Quantité estimée par défaut</source>
