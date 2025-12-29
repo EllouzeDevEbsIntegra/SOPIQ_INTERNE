@@ -210,6 +210,18 @@ page 25006868 "Purchase Quote Line API"
                     Caption = 'lastDirectCost';
                     ApplicationArea = All;
                 }
+                field(VendorItemNo; item."Vendor Item No.")
+                {
+                    Caption = 'vendorItemNo';
+                    ApplicationArea = All;
+                }
+                field(ManufacturerTecdocId; ManufacturerTecdocId)
+                {
+                    Caption = 'manufacturerTecdocId';
+                    ApplicationArea = All;
+                }
+
+
             }
         }
     }
@@ -219,6 +231,8 @@ page 25006868 "Purchase Quote Line API"
         Item: Record Item;
         Item2: Record Item;
         Item3: Record Item;
+
+        ManufacturerTecdocId: Code[20];
         PurchaseSetup: Record "Purchases & Payables Setup";
 
         // Variables exposées (champs calculés)
@@ -235,6 +249,7 @@ page 25006868 "Purchase Quote Line API"
         StyleInvImportVar: Text[50];
         StyleInvNoImportVar: Text[50];
         StyleDateVar: Text[50];
+        recManufacturer: Record Manufacturer;
 
     trigger OnAfterGetRecord()
     begin
@@ -249,12 +264,25 @@ page 25006868 "Purchase Quote Line API"
         Clear(StyleInvImportVar);
         Clear(StyleInvNoImportVar);
         Clear(StyleDateVar);
+        Clear(ManufacturerTecdocId);
+
+
+
+
+
 
         if Rec."No." = '' then
             exit;
 
         // Récupération Item principal
         if Item.Get(Rec."No.") then begin
+
+            recManufacturer.Reset();
+            if recManufacturer.GET(Item."Manufacturer Code") then begin
+                ManufacturerTecdocId := recManufacturer."ID TechDOC";
+            end;
+
+
             // Qté sur commandes achat
             Item.CalcFields("Qty. on Purch. Order");
             QtyOnPurchOrderVar := Item."Qty. on Purch. Order";
@@ -292,6 +320,13 @@ page 25006868 "Purchase Quote Line API"
                     StyleInvNoImportVar := SetStyleQty(InventoryWithoutImportVar);
                 end;
             end;
+    end;
+
+    trigger OnModifyRecord(): Boolean
+    begin
+        if rec.Quantity <> xrec.Quantity then begin
+            rec.Validate(Treated, true);
+        end;
     end;
 
     local procedure GetLastDirectUnitCostCalculated(): Decimal

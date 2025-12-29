@@ -35,6 +35,11 @@ page 25006873 "BC Item API"
                     Caption = 'vendorNo';
                     ApplicationArea = All;
                 }
+                field(VendorItemNo; "Vendor Item No.")
+                {
+                    Caption = 'vendorItemNo';
+                    ApplicationArea = All;
+                }
                 field(no; Rec."No.")
                 {
                     Caption = 'no';
@@ -76,6 +81,16 @@ page 25006873 "BC Item API"
                     Caption = 'totalVendu';
                     ApplicationArea = All;
                 }
+                field(venduCurrYear; "Total Vendu curr. Year")
+                {
+                    Caption = 'totalVenduCurrYear';
+                    ApplicationArea = All;
+                }
+                field(acheteCurrYear; "Total Achete curr. Year")
+                {
+                    Caption = 'totalAcheteCurrYear';
+                    ApplicationArea = All;
+                }
                 field(totalAchete; Rec."Total Achete")
                 {
                     Caption = 'totalAchete';
@@ -92,6 +107,12 @@ page 25006873 "BC Item API"
                 {
                     Caption = 'lastPurshDate';
                     ToolTip = 'Dernier achat ("Last. Pursh. Date").';
+                    ApplicationArea = All;
+                }
+                field(LastPreferential; "Last. Preferential")
+                {
+                    Caption = 'LastPreferential';
+                    ToolTip = 'Dernier préférentiel ("Last. Preferential").';
                     ApplicationArea = All;
                 }
                 field(lastPurshaseDate; "Last Purchase Date")
@@ -160,6 +181,7 @@ page 25006873 "BC Item API"
 
         ManufacturerTecdocId: Code[20];
 
+
         recManufacturer: Record Manufacturer;
 
     trigger OnAfterGetRecord()
@@ -183,7 +205,8 @@ page 25006873 "BC Item API"
 
 
         // Calcul des FlowFields
-        Rec.CalcFields("Last Curr. Price.", "Qty. on Purch. Order", "Last Date", "Qty Stock", "Qty Import");
+        Rec.CalcFields("Last Curr. Price.", "Qty. on Purch. Order", "Last Date", "Qty Stock", "Qty Import", "Current Year");
+        rec.CalcFields("Total Vendu curr. Year", "Total Achete curr. Year");
 
         QtyStockVar := Rec."Qty Stock";
         QtyImportVar := Rec."Qty Import";

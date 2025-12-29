@@ -2498,6 +2498,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Article Tecdoc Details - Control LastUpdated - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 538702456 - Control 2628054425 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>totalAcheteCurrYear</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control acheteCurrYear - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 538702456 - Control 1172897889 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>descriptionStructured</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -2527,6 +2532,16 @@
           <source>lastDate</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control lastDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 7524897 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dernier préférentiel ("Last. Preferential").</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control LastPreferential - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 7524897 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>LastPreferential</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control LastPreferential - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 538702456 - Control 2651596039 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Date dernier achat</source>
@@ -2633,10 +2648,20 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control unitPrice - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 538702456 - Control 1714454220 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>vendorItemNo</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control VendorItemNo - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 538702456 - Control 1764391503 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>vendorNo</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control vendorNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 538702456 - Control 2326710463 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>totalVenduCurrYear</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control venduCurrYear - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2372371920 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Bon de Livraison</source>
@@ -9343,6 +9368,46 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Liste Paiement Caisse - Action setImpaye - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1448876033 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Manufacturer API</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Manufacturer API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1448876033 - Control 2704986715 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Actif</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Manufacturer API - Control Actif - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1448876033 - Control 3004954119 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Manufacturer API - Control Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1448876033 - Control 2728260969 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>ID TechDOC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Manufacturer API - Control IDTechDOC - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1448876033 - Control 3986548934 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Is Specific</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Manufacturer API - Control IsSpecific - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1448876033 - Control 2961552353 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Name</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Manufacturer API - Control Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1448876033 - Control 2738897387 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Origine</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Manufacturer API - Control Origine - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1448876033 - Control 1764391503 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Vendor No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Manufacturer API - Control vendorNo - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 284191700 - Control 2445482498 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Lignes</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -11003,6 +11068,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Quote Line API - Control lineNo - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 308559961 - Control 1246590972 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>manufacturerTecdocId</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Quote Line API - Control ManufacturerTecdocId - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 308559961 - Control 3179096107 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>no</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -11082,6 +11152,11 @@
           <source>unitPriceLCY</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Quote Line API - Control unitPriceLCY - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 308559961 - Control 1714454220 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>vendorItemNo</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Quote Line API - Control VendorItemNo - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 308559961 - Control 409679913 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>vendorQuantity</source>
@@ -19998,6 +20073,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Total Achete - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3276313895 - Field 1069293373 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Total Achete curr. Year</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Total Achete curr. Year - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3276313895 - Field 1884076868 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>Total Ajust+</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -20012,6 +20092,11 @@
           <source>Total Vendu</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Total Vendu - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3276313895 - Field 1904670771 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Total Vendu curr. Year</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Total Vendu curr. Year - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3276313895 - Field 237762718 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>Version</source>

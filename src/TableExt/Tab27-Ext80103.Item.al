@@ -69,6 +69,7 @@ tableextension 80103 "Item" extends Item //27
             FieldClass = FlowField;
             DecimalPlaces = 0 : 5;
         }
+
         field(50123; "Total Ajust+"; Decimal)
         {
             CalcFormula = sum("Item Ledger Entry".Quantity where("Item No." = field("No."), "Entry Type" = filter('Positive Adjmt.')));
@@ -355,6 +356,21 @@ tableextension 80103 "Item" extends Item //27
         {
             Caption = 'Dernière année de mise à jour';
             DataClassification = ToBeClassified;
+        }
+
+        field(50155; "Total Vendu curr. Year"; Decimal)
+        {
+            CalcFormula = - sum("Item Ledger Entry".Quantity where("Item No." = field("No."), "Entry Type" = filter('Sale'), year = field("Current Year")));
+            Editable = false;
+            FieldClass = FlowField;
+            DecimalPlaces = 0 : 5;
+        }
+        field(50156; "Total Achete curr. Year"; Decimal)
+        {
+            CalcFormula = sum("Item Ledger Entry".Quantity where("Item No." = field("No."), "Entry Type" = filter('Purchase'), year = field("Current Year")));
+            Editable = false;
+            FieldClass = FlowField;
+            DecimalPlaces = 0 : 5;
         }
 
 
