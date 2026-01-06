@@ -378,6 +378,66 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Labor Tasks - Field Task Description - Property caption</note>
         </trans-unit>
+        <trans-unit id="Table 926202065 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Purchase Cart</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Purchase Cart - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 926202065 - Field 1064927416 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Added Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Purchase Cart - Field Added Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 926202065 - Field 3792369418 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Buy-from Vendor No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Purchase Cart - Field Buy-from Vendor No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 926202065 - Field 2861279094 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Compare Quote No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Purchase Cart - Field Compare Quote No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 926202065 - Field 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Purchase Cart - Field Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 926202065 - Field 4187992892 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Direct Unit Cost</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Purchase Cart - Field Direct Unit Cost - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 926202065 - Field 3320823955 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Line No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Purchase Cart - Field Line No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 926202065 - Field 4200184881 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Purchase Cart - Field No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 926202065 - Field 2372739858 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Purchase Quote No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Purchase Cart - Field Purchase Quote No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 926202065 - Field 2704404533 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Purchase Cart - Field Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 926202065 - Field 513339096 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Status</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Purchase Cart - Field Status - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 926202065 - Field 1878130204 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Type</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Purchase Cart - Field Type - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 1877859587 - Field 219518427 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Demande Achat Date</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -10498,6 +10558,171 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Purch. Recept. Lines - Action ItemTransaction - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 615919801 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Purchase Cart API</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 615919801 - Method 3388793719 - NamedType 28698063" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cannot delete a line that has status %1.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Status</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart API - Method OnDeleteRecord - NamedType CannotDeleteErr</note>
+        </trans-unit>
+        <trans-unit id="Page 615919801 - Method 3530100688 - NamedType 2112810544" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cannot modify a line that has status %1.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Status</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart API - Method OnModifyRecord - NamedType CannotModifyErr</note>
+        </trans-unit>
+        <trans-unit id="Page 615919801 - Control 241557136 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Added Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart API - Control addedDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 615919801 - Control 2300757215 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Buy-from Vendor No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart API - Control buyFromVendorNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 615919801 - Control 674960800 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Compare Quote No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart API - Control compareQuoteNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 615919801 - Control 4232699882 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart API - Control description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 615919801 - Control 3840690540 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Direct Unit Cost</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart API - Control directUnitCost - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 615919801 - Control 2930473216 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart API - Control itemNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 615919801 - Control 1294919425 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Line No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart API - Control lineNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 615919801 - Control 787657444 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Purchase Quote No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart API - Control purchaseQuoteNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 615919801 - Control 3355113493 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart API - Control quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 615919801 - Control 998393528 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Status</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart API - Control status - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Liste du Panier d'Achat</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Method 4198874567 - NamedType 161430213" size-unit="char" translate="yes" xml:space="preserve">
+          <source>La demande de prix %1 a été créée.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Quote No.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Method CreatePurchaseQuote - NamedType QuoteCreatedMsg</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Control 1064927416 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spécifie la date d'ajout au panier.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Control Added Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Control 3792369418 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spécifie le numéro du fournisseur.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Control Buy-from Vendor No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Control 2861279094 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spécifie le numéro du comparateur de prix associé.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Control Compare Quote No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spécifie la description de la ligne.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Control Description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Control 4187992892 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spécifie le coût unitaire direct.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Control Direct Unit Cost - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Control 3320823955 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spécifie le numéro de ligne unique.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Control Line No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Control 4200184881 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spécifie le numéro de l'article, du compte général ou autre.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Control No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Control 2372739858 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spécifie le numéro de la demande de prix associée.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Control Purchase Quote No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Control 2704404533 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spécifie la quantité.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Control Quantity - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Control 513339096 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spécifie le statut de la ligne du panier.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Control Status - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Control 1878130204 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spécifie le type de la ligne (Article, Compte général, etc.).</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Control Type - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Action 2008359514 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transformer en Demande de Prix</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Action Convert to Quote - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Action 2008359514 - Method 1377591017 - NamedType 1074481313" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Créer une nouvelle demande de prix</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Action Convert to Quote - Method OnAction - NamedType NewQuoteMsg</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Action 2008359514 - Method 1377591017 - NamedType 1586331988" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ajouter à une demande existante</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Action Convert to Quote - Method OnAction - NamedType ExistingQuoteMsg</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Action 2008359514 - Method 1377591017 - NamedType 295450351" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Aucune ligne n'est sélectionnée.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Action Convert to Quote - Method OnAction - NamedType SelectionErr</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Action 2008359514 - Method 1377591017 - NamedType 3152294443" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Une ou plusieurs lignes sélectionnées ont déjà été traitées (statut %1 ou %2).</source>
+          <note from="Developer" annotates="general" priority="2">%1=Converted to Quote, %2=Cancelled</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Action Convert to Quote - Method OnAction - NamedType StatusErr</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Action 2008359514 - Method 1377591017 - NamedType 2605746843" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Toutes les lignes sélectionnées doivent appartenir au même fournisseur.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Action Convert to Quote - Method OnAction - NamedType VendorErr</note>
+        </trans-unit>
+        <trans-unit id="Page 4036709639 - Action 2008359514 - Method 1377591017 - NamedType 1388949795" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Aucune demande de prix ouverte n'a été trouvée pour le fournisseur %1.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Vendor No.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Cart List - Action Convert to Quote - Method OnAction - NamedType NoOpenQuotesErr</note>
+        </trans-unit>
         <trans-unit id="Page 2700619308 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Achat : Consultation articles</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -20393,6 +20618,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchase Line - Field Controle - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 1519909599 - Field 812183859 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1519909599">
+          <source>From Purchase Cart</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchase Line - Field From Purchase Cart - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 1519909599 - Field 529744049 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1519909599">
           <source>Prix Initial Vendeur</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -22082,6 +22312,26 @@
           <source>Virement</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum Paiment Caisse Type - EnumValue Virement - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 2169504733 - EnumValue 4069904181 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cancelled</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Purchase Cart Status - EnumValue Cancelled - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 2169504733 - EnumValue 375846961 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Converted to Quote</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Purchase Cart Status - EnumValue Converted to Quote - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 2169504733 - EnumValue 4137051400 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>New</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Purchase Cart Status - EnumValue New - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 2169504733 - EnumValue 269919882 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Verified</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Purchase Cart Status - EnumValue Verified - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 167501524 - EnumValue 1371923692 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source> </source>

@@ -12,6 +12,12 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
                 //Message('OnAfterValidate No');
             end;
         }
+        field(80189; "From Purchase Cart"; Boolean)
+        {
+            Caption = 'From Purchase Cart';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
 
         field(80190; "Last Receipt Date"; Date)
         {
