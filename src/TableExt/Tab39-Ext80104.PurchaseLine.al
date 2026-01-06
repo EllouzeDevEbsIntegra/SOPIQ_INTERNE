@@ -111,6 +111,11 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
             InitValue = ' ';
         }
 
+        field(80172; "Quote Line Comment"; Text[250])
+        {
+            Caption = 'Commentaire Ligne Devis';
+        }
+
         field(80150; "Controle"; Boolean)
         {
             Caption = 'Contrôlé';

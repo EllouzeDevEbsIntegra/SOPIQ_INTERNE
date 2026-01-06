@@ -168,6 +168,12 @@ page 25006868 "Purchase Quote Line API"
                     Caption = 'quoteLineReason';
                     ApplicationArea = All;
                 }
+
+                field(QuoteLineComment; "Quote Line Comment")
+                {
+                    Caption = 'quoteLineComment';
+                    ApplicationArea = All;
+                }
                 field(askingPrice; Rec."asking price")
                 {
                     Caption = 'askingPrice';

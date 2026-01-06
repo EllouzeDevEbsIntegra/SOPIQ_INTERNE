@@ -11103,6 +11103,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Quote Line API - Control quantity - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 308559961 - Control 3998445729 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>quoteLineComment</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Quote Line API - Control QuoteLineComment - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 308559961 - Control 4103964004 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>quoteLineReason</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -18888,6 +18893,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Quote Lines - Control asking Qty - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 1071220633 - Control 994421777 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1071220633">
+          <source>Commentaire Ligne Devis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Quote Lines - Control Quote Line Comment - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 1071220633 - Control 167501524 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1071220633">
           <source>Raison Qte Cmdé</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -20427,6 +20437,11 @@
           <source>Confirmation Initial Qte</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchase Line - Field Qty First Confirmation - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1519909599 - Field 994421777 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1519909599">
+          <source>Commentaire Ligne Devis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchase Line - Field Quote Line Comment - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 1519909599 - Field 167501524 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1519909599">
           <source>Raison de la Qté commandé</source>

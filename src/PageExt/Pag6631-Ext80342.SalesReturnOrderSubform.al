@@ -2,6 +2,19 @@ pageextension 80342 "Sales Return Order Subform" extends "Sales Return Order Sub
 {
     layout
     {
+
+        modify("Location Code")
+        {
+
+            Editable = locationEditable;
+
+        }
+        modify("Bin Code")
+        {
+
+            Editable = locationEditable;
+
+        }
         // Add changes to page layout here
         modify("Unit Price")
         {
@@ -222,8 +235,10 @@ pageextension 80342 "Sales Return Order Subform" extends "Sales Return Order Sub
         }
     }
 
-    var
-        myInt: Integer;
+    trigger OnModifyRecord(): Boolean
+    begin
+        if ("Appl.-from Item Entry" <> 0)  then Error('Impossible de modifier une ligne extraite d''une expédition ou d''une facture.');
+    end;
 
     trigger OnAfterGetRecord()
     var
@@ -234,6 +249,8 @@ pageextension 80342 "Sales Return Order Subform" extends "Sales Return Order Sub
         StampAmount := salesheader."STStamp Amount";
         // TTCInitial := salesheader."Old Amount Including VAT" + salesheader."Stamp Amount";
         // getInitialTTC();
+
+        if "Appl.-from Item Entry" = 0 then locationEditable := true else locationEditable := false;
     end;
 
 
@@ -301,6 +318,9 @@ pageextension 80342 "Sales Return Order Subform" extends "Sales Return Order Sub
     end;
 
     var
+        locationEditable: Boolean;
+        initial_unit_price: Decimal;
+        initial_discount: Decimal;
         UpdateAmount: Boolean;
         NewTTCAmount: Decimal;
         TTCInitial: Decimal;

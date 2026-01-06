@@ -96,6 +96,13 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
                 ApplicationArea = All;
                 Editable = true;
             }
+            field("Quote Line Comment"; "Quote Line Comment")
+            {
+                Caption = 'Commentaire Ligne Devis';
+                ApplicationArea = All;
+                Editable = true;
+            }
+
 
             field("asking Price"; "asking price")
             {
