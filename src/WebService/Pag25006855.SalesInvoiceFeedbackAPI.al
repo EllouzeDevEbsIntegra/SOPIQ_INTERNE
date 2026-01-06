@@ -13,6 +13,8 @@ page 25006855 "Sales Invoice Feedback API"
     InsertAllowed = false;
     DeleteAllowed = true;
 
+    
+
     layout
     {
         area(content)

@@ -120,18 +120,21 @@ page 25006868 "Purchase Quote Line API"
                     Caption = 'importInventory';
                     ToolTip = 'Stock import (Item Inventory filtré sur le lieu Import).';
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(inventoryWithoutImport; InventoryWithoutImportVar)
                 {
                     Caption = 'inventoryWithoutImport';
                     ToolTip = 'Stock actuel hors lieu Import.';
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(qtyOnPurchOrder; QtyOnPurchOrderVar)
                 {
                     Caption = 'qtyOnPurchOrder';
                     ToolTip = 'Qté sur commandes achat (Item."Qty. on Purch. Order").';
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(lastDirectUnitCostCalculated; LastDirectUnitCostCalculatedVar)
                 {
@@ -152,6 +155,7 @@ page 25006868 "Purchase Quote Line API"
                     Caption = 'availableInventory';
                     ToolTip = 'Stock disponible (Item."Available Inventory").';
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(dateDernierAchat; LastPurchaseDateVar)
                 {
@@ -169,12 +173,6 @@ page 25006868 "Purchase Quote Line API"
                     Caption = 'askingPrice';
                     ApplicationArea = All;
 
-                    // On reproduit le comportement de la page extension :
-                    // quand le prix est saisi, on met "asking qty" = "Vendor Quantity"
-                    trigger OnValidate()
-                    begin
-                        Rec."asking qty" := Rec."Vendor Quantity";
-                    end;
                 }
                 field(askingQty; Rec."asking qty")
                 {
@@ -291,7 +289,7 @@ page 25006868 "Purchase Quote Line API"
             LastDirectUnitCostCalculatedVar := GetLastDirectUnitCostCalculated();
 
             // Prix de vente (Calculé) = Prix de revient (calcule) / (100 - Item."Profit %") * 100
-            CalcAncienPrixDeVenteVar := CalcAncienPrixDeVente();
+            CalcAncienPrixDeVenteVar := CalcAncienPrixVente();
 
             // Données de la page extension
             Item.CalcFields("Available Inventory");
@@ -340,7 +338,7 @@ page 25006868 "Purchase Quote Line API"
         exit(0);
     end;
 
-    local procedure CalcAncienPrixDeVente(): Decimal
+    local procedure CalcAncienPrixVente(): Decimal
     var
         Den: Decimal;
     begin
@@ -380,5 +378,22 @@ page 25006868 "Purchase Quote Line API"
                 exit('Attention')
             else
                 exit('Strong');
+    end;
+
+    // Version recommandée : Une procédure globale exposée comme Action
+    [ServiceEnabled]
+    procedure GetTotalAmount(DocumentNo: Code[20]): Decimal
+    var
+        PurchaseLine: Record "Purchase Line";
+        Total: Decimal;
+    begin
+        PurchaseLine.SetRange("Document Type", PurchaseLine."Document Type"::Quote);
+        PurchaseLine.SetRange("Document No.", DocumentNo);
+        PurchaseLine.SetFilter(Quantity, '>0');
+        if PurchaseLine.FindSet() then
+            repeat
+                Total += (PurchaseLine.Quantity * PurchaseLine."Direct Unit Cost");
+            until PurchaseLine.Next() = 0;
+        exit(Total);
     end;
 }
