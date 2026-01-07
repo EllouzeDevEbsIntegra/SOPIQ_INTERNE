@@ -36,7 +36,7 @@ table 25006657 "Purchase Cart"
                 // Exemple de logique : récupérer la description si c'est un article
                 if Type = Type::Item then
                     if Item.Get("No.") then
-                        Description := Item.Description;
+                        Description := Item."Description structurée";
             end;
         }
         field(5; "Description"; Text[100])
@@ -77,6 +77,17 @@ table 25006657 "Purchase Cart"
             Caption = 'Purchase Quote No.';
             DataClassification = CustomerContent;
             TableRelation = "Purchase Header"."No." where("Document Type" = const(Quote));
+        }
+        field(12; "Ref Master"; Code[20])
+        {
+            Caption = 'Ref Master';
+            DataClassification = CustomerContent;
+            TableRelation = Item where("Produit" = const(true));
+        }
+        field(13; "Comment"; Text[250])
+        {
+            Caption = 'Comment';
+            DataClassification = CustomerContent;
         }
     }
 

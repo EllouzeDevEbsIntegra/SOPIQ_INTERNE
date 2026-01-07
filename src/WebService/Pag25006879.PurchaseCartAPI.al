@@ -34,9 +34,17 @@ page 25006879 "Purchase Cart API"
                 {
                     Caption = 'Item No.';
                 }
+                field(refMaster; Rec."Ref Master")
+                {
+                    Caption = 'Ref Master';
+                }
                 field(description; Rec.Description)
                 {
                     Caption = 'Description';
+                }
+                field(comment; Rec.Comment)
+                {
+                    Caption = 'Comment';
                 }
                 field(quantity; Rec.Quantity)
                 {
@@ -97,5 +105,42 @@ page 25006879 "Purchase Cart API"
             Error(CannotDeleteErr, Rec.Status);
 
         exit(true);
+    end;
+
+    [ServiceEnabled]
+    procedure Verify(var ActionContext: WebServiceActionContext)
+    var
+        CannotVerifyErr: Label 'Cannot verify a line with status %1. Only lines with status New can be verified.', Comment = '%1 = Status';
+    begin
+        if Rec.Status <> Rec.Status::New then
+            Error(CannotVerifyErr, Rec.Status);
+
+        Rec.Validate(Status, Rec.Status::Verified);
+        Rec.Modify(true);
+
+        ActionContext.SetObjectType(ObjectType::Page);
+        ActionContext.SetObjectId(PAGE::"Purchase Cart API");
+        ActionContext.AddEntityKey(Rec.FieldNo("Line No."), Rec."Line No.");
+        ActionContext.SetResultCode(WebServiceActionResultCode::Updated);
+    end;
+
+    [ServiceEnabled]
+    procedure Cancel(var ActionContext: WebServiceActionContext)
+    var
+        CannotCancelErr: Label 'Cannot cancel a line that has already been converted to a quote (status %1).', Comment = '%1 = Status';
+    begin
+        if Rec.Status = Rec.Status::"Converted to Quote" then
+            Error(CannotCancelErr, Rec.Status);
+
+        if Rec.Status = Rec.Status::Cancelled then
+            exit; // The line is already cancelled, no action needed.
+
+        Rec.Validate(Status, Rec.Status::Cancelled);
+        Rec.Modify(true);
+
+        ActionContext.SetObjectType(ObjectType::Page);
+        ActionContext.SetObjectId(PAGE::"Purchase Cart API");
+        ActionContext.AddEntityKey(Rec.FieldNo("Line No."), Rec."Line No.");
+        ActionContext.SetResultCode(WebServiceActionResultCode::Updated);
     end;
 }

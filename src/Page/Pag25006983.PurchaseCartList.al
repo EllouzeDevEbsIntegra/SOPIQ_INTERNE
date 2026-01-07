@@ -7,12 +7,16 @@ page 25006983 "Purchase Cart List"
     UsageCategory = Lists;
     Editable = true;
 
+
+
     layout
     {
         area(content)
         {
             repeater(General)
             {
+                Editable = LineIsEditable;
+
                 field("Line No."; Rec."Line No.")
                 {
                     ApplicationArea = All;
@@ -23,7 +27,6 @@ page 25006983 "Purchase Cart List"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Spécifie le numéro du fournisseur.';
-                    Editable = (Rec.Status <> Rec.Status::"Converted to Quote");
                 }
                 field("Type"; Rec."Type")
                 {
@@ -35,31 +38,36 @@ page 25006983 "Purchase Cart List"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Spécifie le numéro de l''article, du compte général ou autre.';
-                    Editable = (Rec.Status <> Rec.Status::"Converted to Quote");
+                }
+                field("Ref Master"; Rec."Ref Master")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Spécifie la référence de l''article maître.';
                 }
                 field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
                     ToolTip = 'Spécifie la description de la ligne.';
-                    Editable = (Rec.Status <> Rec.Status::"Converted to Quote");
+                }
+                field(Comment; Rec.Comment)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Spécifie un commentaire pour la ligne.';
                 }
                 field(Quantity; Rec.Quantity)
                 {
                     ApplicationArea = All;
                     ToolTip = 'Spécifie la quantité.';
-                    Editable = (Rec.Status <> Rec.Status::"Converted to Quote");
                 }
                 field("Direct Unit Cost"; Rec."Direct Unit Cost")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Spécifie le coût unitaire direct.';
-                    Editable = (Rec.Status <> Rec.Status::"Converted to Quote");
                 }
                 field("Compare Quote No."; Rec."Compare Quote No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Spécifie le numéro du comparateur de prix associé.';
-                    Editable = (Rec.Status <> Rec.Status::"Converted to Quote");
                 }
                 field("Added Date"; Rec."Added Date")
                 {
@@ -108,6 +116,12 @@ page 25006983 "Purchase Cart List"
                     StatusErr: Label 'Une ou plusieurs lignes sélectionnées ont déjà été traitées (statut %1 ou %2).', Comment = '%1=Converted to Quote, %2=Cancelled';
                     VendorErr: Label 'Toutes les lignes sélectionnées doivent appartenir au même fournisseur.';
                     NoOpenQuotesErr: Label 'Aucune demande de prix ouverte n''a été trouvée pour le fournisseur %1.', Comment = '%1 = Vendor No.';
+                    DuplicateCounter: Dictionary of [Code[20], Integer];
+                    DuplicateList: Text;
+                    ItemNo: Code[20];
+                    Count: Integer;
+                    DuplicateErr: Label 'Des références en double ont été trouvées dans la sélection. Veuillez ne sélectionner qu''une seule ligne pour chacun des articles suivants :';
+                    DuplicateLineMsg: Label '%1 (trouvé %2 fois)', Comment = '%1=Item No., %2=Count';
                 begin
                     CurrPage.SetSelectionFilter(PurchaseCart);
                     if not PurchaseCart.FindSet() then
@@ -115,6 +129,28 @@ page 25006983 "Purchase Cart List"
 
                     // Validations
                     SelectedVendorNo := PurchaseCart."Buy-from Vendor No.";
+
+                    // Check for duplicate item references in the selection
+                    DuplicateList := '';
+                    repeat
+                        if DuplicateCounter.ContainsKey(PurchaseCart."No.") then begin
+                            Count := DuplicateCounter.Get(PurchaseCart."No.");
+                            DuplicateCounter.Set(PurchaseCart."No.", Count + 1);
+                        end else
+                            DuplicateCounter.Add(PurchaseCart."No.", 1);
+                    until PurchaseCart.Next() = 0;
+
+                    foreach ItemNo in DuplicateCounter.Keys do begin
+                        Count := DuplicateCounter.Get(ItemNo);
+                        if Count > 1 then
+                            DuplicateList += '\- ' + StrSubstNo(DuplicateLineMsg, ItemNo, Count);
+                    end;
+
+                    if DuplicateList <> '' then
+                        Error(DuplicateErr + DuplicateList);
+
+                    // Reset recordset for next validation loop
+                    PurchaseCart.FindSet();
                     repeat
                         if PurchaseCart.Status in [PurchaseCart.Status::"Converted to Quote", PurchaseCart.Status::Cancelled] then
                             Error(StatusErr, PurchaseCart.Status::"Converted to Quote", PurchaseCart.Status::Cancelled);
@@ -141,7 +177,8 @@ page 25006983 "Purchase Cart List"
                         if not PurchaseHeader.FindSet() then
                             Error(NoOpenQuotesErr, SelectedVendorNo);
 
-                        if PAGE.RunModal(PAGE::"Purchase Quote", PurchaseHeader) = ACTION::LookupOK then begin
+                        // CORRECTION: Utiliser la page de type LISTE pour la sélection
+                        if PAGE.RunModal(PAGE::"Purchase Quotes", PurchaseHeader) = ACTION::LookupOK then begin
                             AddToExistingPurchaseQuote(PurchaseCart, PurchaseHeader);
                             PAGE.Run(PAGE::"Purchase Quote", PurchaseHeader);
                         end;
@@ -151,11 +188,28 @@ page 25006983 "Purchase Cart List"
         }
     }
 
+    var
+        LineIsEditable: Boolean;
+
+    trigger OnAfterGetRecord()
+    begin
+        // This pattern is more stable and avoids the error "The identifier 'Rec.Status' could not be found".
+        LineIsEditable := (Rec.Status <> Rec.Status::"Converted to Quote");
+    end;
+
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        // Assigner la date du jour par défaut, comme pour l'API.
+        Rec."Added Date" := Today;
+    end;
+
     local procedure CreatePurchaseQuote(var SelectedPurchaseCart: Record "Purchase Cart")
     var
         PurchaseHeader: Record "Purchase Header";
         PurchaseLine: Record "Purchase Line";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        // CORRECTION: Utiliser le nom correct du codeunit standard
+        NoSeriesMgt: Codeunit "NoSeriesManagement";
         PurchSetup: Record "Purchases & Payables Setup";
         NextLineNo: Integer;
         QuoteCreatedMsg: Label 'La demande de prix %1 a été créée.', Comment = '%1 = Quote No.';
