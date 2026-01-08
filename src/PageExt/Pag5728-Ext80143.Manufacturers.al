@@ -14,12 +14,19 @@ pageextension 80143 "Manufacturers" extends "Manufacturers"//5728
                 ApplicationArea = All;
                 Caption = 'Actif';
             }
+            field("Exclure Compared Tecdoc"; "Exclure Compared Tecdoc")
+            {
+                ApplicationArea = All;
+                Caption = 'Exclure Comparaison Tecdoc';
+            }
 
             field(IsSpecific; IsSpecific)
             {
                 ApplicationArea = All;
                 Caption = 'Fabricant Spécifique';
             }
+
+
         }
     }
 

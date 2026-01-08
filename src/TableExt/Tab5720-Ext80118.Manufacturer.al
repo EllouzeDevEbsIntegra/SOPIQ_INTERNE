@@ -18,6 +18,11 @@ tableextension 80118 "Manufacturer" extends "Manufacturer" //5720
             InitValue = false;
             DataClassification = ToBeClassified;
         }
+        field(80120; "Exclure Compared Tecdoc"; Boolean)
+        {
+            InitValue = false;
+            DataClassification = ToBeClassified;
+        }
     }
 
     var

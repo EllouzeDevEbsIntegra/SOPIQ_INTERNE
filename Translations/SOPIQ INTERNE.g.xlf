@@ -18608,6 +18608,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Manufacturers - Control Actif - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 2011898816 - Control 978318435 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2011898816">
+          <source>Exclure Comparaison Tecdoc</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Manufacturers - Control Exclure Compared Tecdoc - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 2011898816 - Control 3986548934 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2011898816">
           <source>Fabricant Spécifique</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -20497,6 +20502,11 @@
           <source>Actif</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Manufacturer - Field Actif - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3647128553 - Field 978318435 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3647128553">
+          <source>Exclure Compared Tecdoc</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Manufacturer - Field Exclure Compared Tecdoc - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3647128553 - Field 3986548934 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3647128553">
           <source>IsSpecific</source>

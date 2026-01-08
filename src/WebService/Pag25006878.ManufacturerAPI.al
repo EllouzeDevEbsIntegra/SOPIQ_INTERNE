@@ -14,6 +14,7 @@ page 25006878 "Manufacturer API"
     DeleteAllowed = false;
     Editable = true;
     Caption = 'Manufacturer API';
+    SourceTableView = where("Exclure Compared Tecdoc" = const(false));
 
     layout
     {
