@@ -64,6 +64,11 @@ pageextension 80138 "Customer Card" extends "Customer Card"//21
                 ApplicationArea = All;
                 Caption = 'Client Spécial';
             }
+            field("Has Invoice Discount"; "Has Invoice Discount")
+            {
+                ApplicationArea = All;
+                Caption = 'A une remise sur facture';
+            }
 
             field("Is Divers"; "Is Divers")
             {

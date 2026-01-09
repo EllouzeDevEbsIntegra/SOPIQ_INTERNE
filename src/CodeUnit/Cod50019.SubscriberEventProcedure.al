@@ -23,8 +23,16 @@ codeunit 50019 SubscriberEventProcedure
         recCrSalesHeader: Record "Return Receipt Header";
         numDoc: TEXT[50];
         SalesFunctions: Codeunit 50021;
+        Customer: Record Customer;
+        ConfirmMsg: Label 'Ce client bénéficie d''une remise sur facture. Continuer la validation ? (Cliquez sur ''Non'' pour vérifier les remises avant de valider).';
 
     begin
+        if salesHeader."Document Type" in [salesHeader."Document Type"::Invoice, salesHeader."Document Type"::"Credit Memo"] then
+            if Customer.Get(salesHeader."Bill-to Customer No.") then
+                if Customer."Has Invoice Discount" then
+                    if not Confirm(ConfirmMsg, true) then
+                        Error(''); // Annule la validation
+
         if (salesHeader."Document Type" = salesHeader."Document Type"::"Credit Memo") then begin
             salesHeader.ignoreStamp(salesHeader);
             salesHeader.Modify();

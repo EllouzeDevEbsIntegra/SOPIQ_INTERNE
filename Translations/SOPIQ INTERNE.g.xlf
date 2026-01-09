@@ -1428,6 +1428,11 @@
           <note from="Developer" annotates="general" priority="2">%1 = Document Type</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit SISalesCodeUnit - Method ConfirmBSPOST - NamedType PostConfirmQst</note>
         </trans-unit>
+        <trans-unit id="Codeunit 3324590493 - Method 2308241222 - NamedType 2294662597" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ce client bénéficie d'une remise sur facture. Continuer la validation ? (Cliquez sur 'Non' pour vérifier les remises avant de valider).</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SubscriberEventProcedure - Method OnBeforeConfirmSalesPost - NamedType ConfirmMsg</note>
+        </trans-unit>
         <trans-unit id="Page 2829331306 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Commerce de Gros</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -18213,6 +18218,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Customer Card - Control Ecarter Ctrl Modif Prix Remise - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 523354100 - Control 1419876850 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 523354100">
+          <source>A une remise sur facture</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Customer Card - Control Has Invoice Discount - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 523354100 - Control 2040206631 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 523354100">
           <source>Client Divers</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -20032,6 +20042,11 @@
           <source>Ecarter Contrôle Modification Prix / Remise</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Customer - Field Ecarter Ctrl Modif Prix Remise - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1994964448 - Field 1419876850 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1994964448">
+          <source>A une remise sur facture</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Customer - Field Has Invoice Discount - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 1994964448 - Field 2040206631 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1994964448">
           <source>Client Divers</source>

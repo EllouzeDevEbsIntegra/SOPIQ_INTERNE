@@ -195,6 +195,13 @@ tableextension 80114 "Customer" extends "Customer" //18
             InitValue = false;
         }
 
+        field(80905; "Has Invoice Discount"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'A une remise sur facture';
+            InitValue = false;
+        }
+
 
 
     }
