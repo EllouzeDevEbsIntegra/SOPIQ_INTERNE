@@ -204,6 +204,7 @@ pageextension 80342 "Sales Return Order Subform" extends "Sales Return Order Sub
                     salesLine2.SetRange("Document Type", SalesLine."Document Type");
                     salesLine2.SetRange("Document No.", SalesLine."Document No.");
                     salesLine2.SetRange(Type, salesLine2.Type::Item);
+                    salesLine2.SetRange("Appl.-from Item Entry", 0);
                     if salesLine2.FindSet() then
                         repeat
                             // salesLine2.Validate("Location Code", salesLine."Location Code");
@@ -215,7 +216,9 @@ pageextension 80342 "Sales Return Order Subform" extends "Sales Return Order Sub
 
                 end;
             }
-
+        }
+        addafter(ApplyLocation)
+        {
             action(CalculateInitialPrice)
             {
                 Caption = 'Calculer prix initial';
@@ -232,12 +235,48 @@ pageextension 80342 "Sales Return Order Subform" extends "Sales Return Order Sub
                     CurrPage.Update();
                 end;
             }
+            action("Set By Reception Bin")
+            {
+                ApplicationArea = All;
+                Caption = 'Retour dans Empl. Reception';
+                Image = Bin;
+
+                trigger OnAction()
+                var
+                    InventorySetup: Record "Inventory Setup";
+                    SalesLine: Record "Sales Line";
+                    ConfirmMsg: Label 'Voulez-vous vraiment appliquer l''emplacement de réception par défaut à toutes les lignes article de ce document ?';
+                    SuccessMsg: Label 'Emplacement de réception appliqué avec succès.';
+                begin
+                    if not Confirm(ConfirmMsg, true) then
+                        exit;
+
+                    InventorySetup.Get();
+                    InventorySetup.TestField("Magasin Central");
+                    InventorySetup.TestField("Emplacement Reception");
+
+                    SalesLine.Reset();
+                    SalesLine.SetRange("Document Type", Rec."Document Type");
+                    SalesLine.SetRange("Document No.", Rec."Document No.");
+                    SalesLine.SetRange(Type, SalesLine.Type::Item);
+                    if SalesLine.FindSet(true) then
+                        repeat
+                            SalesLine."Location Code" := InventorySetup."Magasin Central";
+                            SalesLine."Bin Code" := InventorySetup."Emplacement Reception";
+                            SalesLine.Modify(false);
+                        until SalesLine.Next() = 0;
+
+                    CurrPage.Update(false);
+                    Message(SuccessMsg);
+                end;
+            }
         }
+
     }
 
     trigger OnModifyRecord(): Boolean
     begin
-        if ("Appl.-from Item Entry" <> 0)  then Error('Impossible de modifier une ligne extraite d''une expédition ou d''une facture.');
+        if ("Appl.-from Item Entry" <> 0) then Error('Impossible de modifier une ligne extraite d''une expédition ou d''une facture.');
     end;
 
     trigger OnAfterGetRecord()

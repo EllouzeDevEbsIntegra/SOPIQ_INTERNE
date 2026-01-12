@@ -1,4 +1,4 @@
-page 25006982 "Sales Role details"
+page 50123 "Sales Role details"
 {
     Caption = 'Rôle Commercial détails', Comment = '{Dependency=Match,"ProfileDescription_ORDERPROCESSOR"}';
     PageType = RoleCenter;

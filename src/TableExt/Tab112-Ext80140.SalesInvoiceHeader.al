@@ -136,7 +136,7 @@ tableextension 80140 "Sales Invoice Header" extends "Sales Invoice Header"//112
     begin
         WorkDescription := CopyStr(GetWorkDescription, 1, 250);
         Message(WorkDescription);
-        if rec."Document Profile" = "Document Profile"::Service then
+        if (rec."Document Profile" = "Document Profile"::Service) AND ("Internal Bill-to Customer" = false) then
             SISalesCodeUnit.CreateSalesInvoiceHeaderForFeedback(Rec, workDescription);
     end;
 

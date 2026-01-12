@@ -378,6 +378,111 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Labor Tasks - Field Task Description - Property caption</note>
         </trans-unit>
+        <trans-unit id="Table 2481597119 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Livraison Transporteur PP</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2481597119 - Field 2998405077 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Commentaire</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Field comment - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2481597119 - Field 2475235959 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date Création</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Field createdAt - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2481597119 - Field 2564050174 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Adresse de Livraison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Field deliveryAddress - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2481597119 - Field 3028850205 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ville de Livraison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Field deliveryCity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2481597119 - Field 2179085657 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code Postal</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Field deliveryCp - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2481597119 - Field 534098828 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Email</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Field deliveryEmail - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2481597119 - Field 2060981781 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Gouvernorat</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Field deliveryGovernorat - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2481597119 - Field 1456580845 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nom Destinataire</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Field deliveryName - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2481597119 - Field 2888730124 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Téléphone</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Field deliveryPhone - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2481597119 - Field 3640037924 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Statut Livraison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Field deliveryStatus - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2481597119 - Field 2686962215 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>ID Livraison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Field id - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2481597119 - Field 3864418687 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Méthode Paiement</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Field paymentMethod - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2481597119 - Field 931752954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Statut Paiement</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Field paymentStatus - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2481597119 - Field 1499147820 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nb. Colis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Field totalColis - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2481597119 - Field 2455554157 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Contre-Remboursement</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Field totalCr - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2481597119 - Field 1278592334 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Type Colis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportOrder - Field typeColis - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2575026888 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Paramètres Transporteur PP</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportSetup - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2575026888 - Field 3951414661 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>URL de base de l'API</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportSetup - Field API URL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2575026888 - Field 2000823813 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Jeton d'authentification</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportSetup - Field Auth Token - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2575026888 - Field 1663593181 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Clé Primaire</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table PPTransportSetup - Field Primary Key - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 926202065 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Purchase Cart</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -1412,6 +1517,56 @@
           <source>Search Type</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Request Cache - Field SearchType - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2276399661 - Method 969128724 - NamedType 3220968669" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Les paramètres de l'API du transporteur ne sont pas configurés. Veuillez les renseigner dans la page "Paramètres Transporteur PP".</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit PPTransportAPI - Method DownloadOrderPDF - NamedType SetupNotConfiguredErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2276399661 - Method 969128724 - NamedType 1334027089" size-unit="char" translate="yes" xml:space="preserve">
+          <source>La requête vers le service du transporteur a échoué. Code statut: %1, Raison: %2</source>
+          <note from="Developer" annotates="general" priority="2">%1=Status Code, %2=Reason Phrase</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit PPTransportAPI - Method DownloadOrderPDF - NamedType RequestFailedErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2276399661 - Method 969128724 - NamedType 1444392344" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Télécharger le bon de transport</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit PPTransportAPI - Method DownloadOrderPDF - NamedType DownloadDialogTitle</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2276399661 - Method 969128724 - NamedType 1782892517" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bon_Transport_%1.pdf</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Order ID</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit PPTransportAPI - Method DownloadOrderPDF - NamedType PdfFileNameTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2276399661 - Method 969128724 - NamedType 677152552" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Erreur lors de la lecture de la réponse PDF.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit PPTransportAPI - Method DownloadOrderPDF - NamedType ReadingResponseErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2276399661 - Method 1116517565 - NamedType 1856571280" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Impossible de lire la réponse du service.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit PPTransportAPI - Method GetOrders - NamedType ErrorReadingResponseErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2276399661 - Method 1116517565 - NamedType 1334027089" size-unit="char" translate="yes" xml:space="preserve">
+          <source>La requête vers le service du transporteur a échoué. Code statut: %1, Raison: %2</source>
+          <note from="Developer" annotates="general" priority="2">%1=Status Code, %2=Reason Phrase</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit PPTransportAPI - Method GetOrders - NamedType RequestFailedErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2276399661 - Method 1116517565 - NamedType 3220968669" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Les paramètres de l'API du transporteur ne sont pas configurés. Veuillez les renseigner dans la page "Paramètres Transporteur PP".</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit PPTransportAPI - Method GetOrders - NamedType SetupNotConfiguredErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2276399661 - Method 1116517565 - NamedType 1739944124" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Impossible d'analyser la réponse JSON.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit PPTransportAPI - Method GetOrders - NamedType JsonParseErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2276399661 - Method 1116517565 - NamedType 3543156045" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Le tableau "orders" n'a pas été trouvé dans la réponse JSON.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit PPTransportAPI - Method GetOrders - NamedType OrdersNotFoundErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 2246482555 - Method 210834541 - NamedType 583370471" size-unit="char" translate="yes" xml:space="preserve">
           <source>&amp;Ship</source>
@@ -10112,6 +10267,46 @@
           <source>Update Document</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Posted Return Receipts BS - Action Update Document - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 717934954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Livraisons Transporteur PP</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PPTransportOrders - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 717934954 - Method 1952941024 - NamedType 2993839287" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Récupération des données depuis l'API du transporteur...</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PPTransportOrders - Method FetchData - NamedType FetchingDataMsg</note>
+        </trans-unit>
+        <trans-unit id="Page 717934954 - Action 3275279722 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Télécharge le bon de transport au format PDF pour la livraison sélectionnée.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PPTransportOrders - Action DownloadPDF - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 717934954 - Action 3275279722 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Télécharger le Bon de Transport</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PPTransportOrders - Action DownloadPDF - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 717934954 - Action 3275279722 - Method 1377591017 - NamedType 2365401857" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Veuillez sélectionner une seule ligne pour télécharger le bon de transport.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PPTransportOrders - Action DownloadPDF - Method OnAction - NamedType SingleSelectionErr</note>
+        </trans-unit>
+        <trans-unit id="Page 717934954 - Action 2026913255 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Actualiser</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PPTransportOrders - Action Refresh - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2575026888 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Paramètres Transporteur PP</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PPTransportSetup - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2575026888 - Control 2445482498 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Général</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PPTransportSetup - Control General - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3037497695 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Vérification Ligne Facture Achat</source>
@@ -19502,6 +19697,21 @@
           <source>Calculer prix initial</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Return Order Subform - Action CalculateInitialPrice - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3053760138 - Action 4082299971 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3053760138">
+          <source>Retour dans Empl. Reception</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Return Order Subform - Action Set By Reception Bin - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3053760138 - Action 4082299971 - Method 1377591017 - NamedType 2294662597" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 3053760138">
+          <source>Voulez-vous vraiment appliquer l'emplacement de réception par défaut à toutes les lignes article de ce document ?</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Return Order Subform - Action Set By Reception Bin - Method OnAction - NamedType ConfirmMsg</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3053760138 - Action 4082299971 - Method 1377591017 - NamedType 1556380518" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 3053760138">
+          <source>Emplacement de réception appliqué avec succès.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Sales Return Order Subform - Action Set By Reception Bin - Method OnAction - NamedType SuccessMsg</note>
         </trans-unit>
         <trans-unit id="PageExtension 3053760138 - Control 3476513704 - Property 3830149458" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3053760138">
           <source>Total HT souhaité</source>
