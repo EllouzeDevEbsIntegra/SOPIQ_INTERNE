@@ -2,6 +2,7 @@ pageextension 80436 "Ligne archive BS" extends "Ligne archive BS"//50028
 {
     layout
     {
+
         // Add changes to page layout here
         modify("Line Discount %")
         {

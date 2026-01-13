@@ -42,6 +42,11 @@ page 25006990 "Sales Order List Personalized"
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the name of the customer.';
                 }
+                field("Nom 2"; "Sell-to Customer Name 2")
+                {
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the second name of the customer.';
+                }
                 field("Salesperson Code"; "Salesperson Code")
                 {
                     ApplicationArea = All;

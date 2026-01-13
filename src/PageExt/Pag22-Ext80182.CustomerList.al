@@ -87,7 +87,11 @@ pageextension 80182 "Customer List" extends "Customer List"//22
                 SubPageLink = "No." = FIELD("No.");
             }
         }
+
+
     }
+
+
 
     actions
     {

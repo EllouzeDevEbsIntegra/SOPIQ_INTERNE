@@ -33,11 +33,17 @@ page 25006983 "Purchase Cart List"
                     ApplicationArea = All;
                     ToolTip = 'Spécifie le type de la ligne (Article, Compte général, etc.).';
                     Editable = false;
+                    Visible = false;
                 }
                 field("No."; Rec."No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Spécifie le numéro de l''article, du compte général ou autre.';
+                }
+                field(Quantity; Rec.Quantity)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Spécifie la quantité.';
                 }
                 field("Ref Master"; Rec."Ref Master")
                 {
@@ -54,11 +60,7 @@ page 25006983 "Purchase Cart List"
                     ApplicationArea = All;
                     ToolTip = 'Spécifie un commentaire pour la ligne.';
                 }
-                field(Quantity; Rec.Quantity)
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Spécifie la quantité.';
-                }
+
                 field("Direct Unit Cost"; Rec."Direct Unit Cost")
                 {
                     ApplicationArea = All;
@@ -79,7 +81,6 @@ page 25006983 "Purchase Cart List"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Spécifie le statut de la ligne du panier.';
-                    Editable = false;
                 }
                 field("Purchase Quote No."; Rec."Purchase Quote No.")
                 {

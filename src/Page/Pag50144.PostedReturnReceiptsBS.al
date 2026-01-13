@@ -32,6 +32,11 @@ page 50144 "Posted Return Receipts BS"
                     ApplicationArea = SalesReturnOrder;
                     ToolTip = 'Specifies the name of the customer.';
                 }
+                field("Nom 2"; "Sell-to Customer Name 2")
+                {
+                    ApplicationArea = SalesReturnOrder;
+                    ToolTip = 'Specifies the second name of the customer.';
+                }
                 field("Sell-to Post Code"; "Sell-to Post Code")
                 {
                     ApplicationArea = SalesReturnOrder;

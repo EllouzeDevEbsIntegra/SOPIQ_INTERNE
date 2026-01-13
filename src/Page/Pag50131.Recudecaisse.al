@@ -31,6 +31,13 @@ page 50131 "Recu de caisse"
                     Caption = 'Client';
                     Editable = false;
                 }
+                field(custName; custName)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Nom Client';
+                    Editable = false;
+                }
+
 
                 field(dateTime; dateTime)
                 {
@@ -144,11 +151,9 @@ page 50131 "Recu de caisse"
         }
     }
 
-    var
-        myInt: Integer;
-
     trigger OnAfterGetRecord()
     begin
-        rec.CalcFields(totalDocToPay, "totalReçu", totalDepense, "totalRéglement");
+        Rec.CalcFields(totalDocToPay, "totalReçu", totalDepense, "totalRéglement");
     end;
+
 }

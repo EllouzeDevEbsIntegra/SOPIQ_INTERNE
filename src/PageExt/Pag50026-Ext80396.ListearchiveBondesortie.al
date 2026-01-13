@@ -6,6 +6,15 @@ pageextension 80396 "Liste archive Bon de sortie" extends "Liste archive Bon de 
         {
             Editable = false;
         }
+
+        addafter("Sell-to Customer Name")
+        {
+            field("Nom 2"; "Sell-to Customer Name 2")
+            {
+                ApplicationArea = Basic, Suite;
+                ToolTip = 'Spécifie le deuxième nom du client.';
+            }
+        }
         // Add changes to page layout here
         addafter("Montant TTC")
         {

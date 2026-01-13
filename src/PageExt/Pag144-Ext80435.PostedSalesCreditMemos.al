@@ -2,6 +2,14 @@ pageextension 80435 "Posted Sales Credit Memos" extends "Posted Sales Credit Mem
 {
     layout
     {
+        addafter("Sell-to Customer Name")
+        {
+            field("Nom 2"; "Sell-to Customer Name 2")
+            {
+                ApplicationArea = Basic, Suite;
+                ToolTip = 'Specifies the second name of the customer.';
+            }
+        }
         // Add changes to page layout here
         addafter("Remaining Amount")
         {

@@ -35,6 +35,11 @@ page 50142 "BS Return List"
                     ApplicationArea = SalesReturnOrder;
                     ToolTip = 'Specifies the name of the customer.';
                 }
+                field("Nom 2"; "Sell-to Customer Name 2")
+                {
+                    ApplicationArea = SalesReturnOrder;
+                    ToolTip = 'Specifies the second name of the customer.';
+                }
                 field("External Document No."; "External Document No.")
                 {
                     ApplicationArea = SalesReturnOrder;

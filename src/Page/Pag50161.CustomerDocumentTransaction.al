@@ -23,7 +23,7 @@ page 50161 "Customer Document Transaction"
                     Editable = false;
                     Style = Strong;
                 }
-                field(Name; rec.Name)
+                field(Name; rec."Name")
                 {
                     Caption = 'Nom Client';
                     ApplicationArea = all;
@@ -110,6 +110,13 @@ page 50161 "Customer Document Transaction"
                     ApplicationArea = All;
                     Style = strong;
                 }
+                field("Name 2"; "Name 2")
+                {
+                    Caption = 'Nom 2';
+                    Editable = false;
+                    ApplicationArea = All;
+                }
+
                 field("Phone No."; "Phone No.")
                 {
                     Caption = 'Tél';

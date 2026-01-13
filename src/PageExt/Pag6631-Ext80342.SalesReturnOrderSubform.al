@@ -38,6 +38,7 @@ pageextension 80342 "Sales Return Order Subform" extends "Sales Return Order Sub
         }
         modify(Quantity)
         {
+            BlankZero = true;
             trigger OnAfterValidate()
             var
                 myInt: Integer;
@@ -276,7 +277,23 @@ pageextension 80342 "Sales Return Order Subform" extends "Sales Return Order Sub
 
     trigger OnModifyRecord(): Boolean
     begin
-        if ("Appl.-from Item Entry" <> 0) then Error('Impossible de modifier une ligne extraite d''une expédition ou d''une facture.');
+        // Pour les lignes extraites d'un document, on ne peut modifier que la quantité, et celle-ci doit rester positive.
+        if xRec."Appl.-from Item Entry" <> 0 then begin
+            // 1. Vérifier si un autre champ important a été modifié
+            if (Rec.Type <> xRec.Type) or
+               (Rec."No." <> xRec."No.") or
+               (Rec."Location Code" <> xRec."Location Code") or
+               (Rec."Bin Code" <> xRec."Bin Code") or
+               (Rec."Unit of Measure Code" <> xRec."Unit of Measure Code") or
+               (Rec."Unit Price" <> xRec."Unit Price") or
+               (Rec."Line Discount %" <> xRec."Line Discount %") // Le "Return Reason Code" peut être modifié
+            then
+                Error('Impossible de modifier cette ligne extraite. Seule la quantité peut être modifiée.');
+
+            // 2. Si la quantité a été modifiée, vérifier qu'elle est supérieure à zéro
+            if (Rec.Quantity <> xRec.Quantity) and (Rec.Quantity <= 0) then
+                Error('La quantité doit être supérieure à 0.');
+        end;
     end;
 
     trigger OnAfterGetRecord()

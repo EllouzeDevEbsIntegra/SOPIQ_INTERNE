@@ -206,6 +206,14 @@ tableextension 80114 "Customer" extends "Customer" //18
 
     }
 
+    fieldgroups
+    {
+        addlast(DropDown; "Name 2")
+        {
+        }
+    }
+
+
     var
         myInt: Integer;
 

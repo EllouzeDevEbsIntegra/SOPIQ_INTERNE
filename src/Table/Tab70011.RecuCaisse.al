@@ -19,6 +19,7 @@ table 70011 "Recu Caisse"
             DataClassification = ToBeClassified;
             Editable = false;
         }
+
         field(70012; dateTime; DateTime)
         {
             DataClassification = ToBeClassified;
