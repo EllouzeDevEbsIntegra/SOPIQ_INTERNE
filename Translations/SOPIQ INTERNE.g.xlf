@@ -2718,6 +2718,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control totalVendu - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 538702456 - Control 2727241704 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>toVerify</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page BC Item API - Control toVerify - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 538702456 - Control 3421409717 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>unitPrice</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -21527,11 +21532,6 @@
           <source>Message</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Order Entity Buffer - Field Message - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="TableExtension 1423389335 - Field 2958825091 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1423389335">
-          <source>Sell-to Customer Name 2</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Order Entity Buffer - Field Sell-to Customer Name 2 - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 1423389335 - Field 188715016 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1423389335">
           <source>Shipping Agent Code</source>

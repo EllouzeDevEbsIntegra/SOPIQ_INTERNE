@@ -26,7 +26,7 @@ report 25006118 "Etat Solde Client"
             {
 
             }
-            column(custName; Name)
+            column(custName; customerName)
             {
             }
 
@@ -651,6 +651,11 @@ report 25006118 "Etat Solde Client"
             var
                 recZone: Record "Tax Area";
             begin
+                customerName := '';
+                if Customer."Name 2" <> '' then
+                    customerName := Customer."Name 2"
+                else
+                    customerName := Customer.Name;
                 recZone.Reset();
                 recZone.SetRange(Code, Customer."Tax Area Code");
                 if recZone.FindFirst() then zone := recZone.Description else zone := 'Non affecté';
@@ -763,4 +768,6 @@ report 25006118 "Etat Solde Client"
         RecCompany: Record "Company Information";
         showTotalBelow, showDetails : Boolean;
         nomClientBL: Text;
+
+        customerName: Text;
 }

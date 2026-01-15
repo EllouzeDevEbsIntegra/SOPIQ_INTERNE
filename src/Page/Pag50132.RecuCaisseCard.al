@@ -82,7 +82,11 @@ page 50132 "Recu Caisse Card"
 
 
                         recCust.Reset();
-                        if recCust.get("Customer No") then rec.custName := recCust."Name 2";
+                        if recCust.get("Customer No") then begin
+                            if recCust."Name 2" <> '' then
+                                rec.custName := recCust."Name 2" else
+                                rec.custName := recCust.Name;
+                        end;
                         modifCustomer := false;
 
 

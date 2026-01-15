@@ -10,6 +10,7 @@ page 25006873 "BC Item API"
     EntitySetName = 'bcItems';
     ODataKeyFields = SystemId;
     DelayedInsert = true;
+    ModifyAllowed = true;
 
     // Même vue/tri que ta ListPart
     SourceTableView =
@@ -159,6 +160,13 @@ page 25006873 "BC Item API"
                 {
                     Caption = 'manufacturerTecdocId';
                     ApplicationArea = All;
+                }
+                field("toVerify"; "To verify")
+                {
+                    Caption = 'toVerify';
+                    ApplicationArea = All;
+
+                    Editable = true;
                 }
             }
         }
