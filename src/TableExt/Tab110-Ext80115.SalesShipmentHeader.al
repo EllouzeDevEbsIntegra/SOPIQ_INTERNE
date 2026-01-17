@@ -50,6 +50,11 @@ tableextension 80115 "Sales Shipment Header" extends "Sales Shipment Header" //1
             CalcFormula = sum("Recu Caisse Document"."Montant Reglement" WHERE("Document No" = field("No.")));
             Editable = false;
         }
+
+        field(80412; "Transporter Expedition No"; Code[20])
+        {
+            Caption = 'Transporter Expedition No';
+        }
     }
 
     var

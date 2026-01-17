@@ -1413,6 +1413,136 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TecDoc Request Cache - Field SearchType - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 783737014 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transporter Order Buffer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 2790486453 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Comment</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Comment - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 2570673311 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Created At</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Created At - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 3521048902 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Delivery Address</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Delivery Address - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 4049626917 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Delivery City</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Delivery City - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 3135268900 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Delivery Email</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Delivery Email - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 4077184418 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Delivery Governorate</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Delivery Governorate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 516947637 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Delivery Name</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Delivery Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 3307227012 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Delivery Phone</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Delivery Phone - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 3166187171 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Delivery Post Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Delivery Post Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 775476300 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Delivery Status</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Delivery Status - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 883711285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 2955615600 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Fetched DateTime</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Fetched DateTime - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 2703499652 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Is Processed</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Is Processed - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 1001654749 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Order ID</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Order ID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 3566004263 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Payment Method</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Payment Method - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 931886930 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Payment Status</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Payment Status - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 1052839156 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Colis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Total Colis - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 3007894757 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total CR</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Total CR - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 783737014 - Field 1491143270 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Type Colis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Type Colis - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2494112829 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transporter Setup</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Setup - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2494112829 - Field 4253087169 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>API Key</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Setup - Field API Key - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2494112829 - Field 3951414661 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>API URL</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Setup - Field API URL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2494112829 - Field 3004954119 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Setup - Field Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2494112829 - Field 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Setup - Field Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2494112829 - Field 43678778 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Last Fetched DateTime</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Setup - Field Last Fetched DateTime - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2246482555 - Method 210834541 - NamedType 583370471" size-unit="char" translate="yes" xml:space="preserve">
           <source>&amp;Ship</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -1432,6 +1562,56 @@
           <source>Ce client bénéficie d'une remise sur facture. Continuer la validation ? (Cliquez sur 'Non' pour vérifier les remises avant de valider).</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit SubscriberEventProcedure - Method OnBeforeConfirmSalesPost - NamedType ConfirmMsg</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 871054710 - Method 3109977918 - NamedType 3681695477" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Failed to connect to the transporter API.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Transporter API Integration - Method CreateOrder - NamedType ConnectErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 871054710 - Method 3109977918 - NamedType 156397543" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transporter API returned an error. Status Code: %1, Reason: %2, Response: %3, Request Body: %4</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Transporter API Integration - Method CreateOrder - NamedType HttpErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 871054710 - Method 1555832374 - NamedType 3681695477" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Failed to connect to the transporter API.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Transporter API Integration - Method GetOrderPdf - NamedType ConnectErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 871054710 - Method 1555832374 - NamedType 156397543" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transporter API returned an error. Status Code: %1, Reason: %2</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Transporter API Integration - Method GetOrderPdf - NamedType HttpErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 871054710 - Method 1116517565 - NamedType 1556380518" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Fetch complete. New: %1, Updated: %2, Skipped: %3, Total in response: %4.</source>
+          <note from="Developer" annotates="general" priority="2">%1=New, %2=Updated, %3=Skipped, %4=Total</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Transporter API Integration - Method GetOrders - NamedType SuccessMsg</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 871054710 - Method 1116517565 - NamedType 3681695477" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Failed to connect to the transporter API. Please check the API URL and your network connection.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Transporter API Integration - Method GetOrders - NamedType ConnectErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 871054710 - Method 1116517565 - NamedType 156397543" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transporter API returned an error. Status Code: %1, Reason: %2, Response: %3</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Transporter API Integration - Method GetOrders - NamedType HttpErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 871054710 - Method 1116517565 - NamedType 1739944124" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Failed to parse JSON response from transporter API.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Transporter API Integration - Method GetOrders - NamedType JsonParseErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 871054710 - Method 1116517565 - NamedType 2475944268" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transporter API returned an unsuccessful status without a specific message.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Transporter API Integration - Method GetOrders - NamedType ApiCallUnsuccessfulErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 871054710 - Method 1116517565 - NamedType 1826225694" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The "orders" array was not found or is not a valid array in the API response.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Transporter API Integration - Method GetOrders - NamedType OrdersArrayNotFoundErr</note>
         </trans-unit>
         <trans-unit id="Page 2829331306 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Commerce de Gros</source>
@@ -14538,6 +14718,261 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TecDoc OEM Part - Control OEMNumber - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 175262854 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Créer Transporter Order</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 175262854 - Control 318613646 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Détails Expédition</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Control Details - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 175262854 - Control 2790486453 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Commentaire</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Control Comment - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 175262854 - Control 419599116 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nombre de Colis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Control TotalColis - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 175262854 - Control 65285005 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Contre Remboursement</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Control TotalCr - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 175262854 - Control 2257761774 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Type de Colis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Control TypeColis - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 175262854 - Control 2257761774 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Colis,Enveloppe</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Control TypeColis - Property OptionCaption</note>
+        </trans-unit>
+        <trans-unit id="Page 175262854 - Control 2445482498 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Informations Livraison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Control General - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 175262854 - Control 329160606 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Adresse</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Control DeliveryAddress - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 175262854 - Control 3074297213 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ville</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Control DeliveryCity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 175262854 - Control 3904704044 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Email</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Control DeliveryEmail - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 175262854 - Control 2915936970 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Gouvernorat</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Control DeliveryGovernorate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 175262854 - Control 3686672973 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nom Destinataire</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Control DeliveryName - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 175262854 - Control 2855661740 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Téléphone</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Control DeliveryPhone - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transporter Orders</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Method 513050318 - NamedType 2355372627" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transporter Setup with code '%1' not found. Please configure the API.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Setup Code</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Method FetchAndRefresh - NamedType SetupNotFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 2790486453 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Comment field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Comment - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 2570673311 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Created At field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Created At - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 3521048902 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Delivery Address field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Delivery Address - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 4049626917 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Delivery City field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Delivery City - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 3135268900 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Delivery Email field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Delivery Email - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 4077184418 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Delivery Governorate field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Delivery Governorate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 516947637 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Delivery Name field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Delivery Name - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 3307227012 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Delivery Phone field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Delivery Phone - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 3166187171 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Delivery Post Code field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Delivery Post Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 775476300 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Delivery Status field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Delivery Status - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 883711285 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Entry No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Entry No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 2955615600 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the date and time when the order was fetched from the API.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Fetched DateTime - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 1001654749 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Order ID field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Order ID - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 3566004263 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Payment Method field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Payment Method - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 931886930 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Payment Status field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Payment Status - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 1052839156 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Total Colis field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Total Colis - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 3007894757 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Total CR field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Total CR - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Control 1491143270 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Type Colis field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Control Type Colis - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Action 4019833347 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Fetch Orders from Transporter</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Action Fetch Orders - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4009970333 - Action 3110191937 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Imprimer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Orders List - Action Print Order - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2001150529 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transporter Setup</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Setup Card - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2001150529 - Control 2445482498 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>General</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Setup Card - Control General - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2001150529 - Control 4253087169 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the API key for authentication with the transporter API.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Setup Card - Control API Key - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2001150529 - Control 3951414661 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the base URL for the transporter API.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Setup Card - Control API URL - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2001150529 - Control 3004954119 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the unique code for the transporter setup.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Setup Card - Control Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2001150529 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies a description for the transporter setup.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Setup Card - Control Description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2001150529 - Control 43678778 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the date and time when orders were last fetched from the API.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Setup Card - Control Last Fetched DateTime - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2001150529 - Action 3785206297 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Fetch Orders Now</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Setup Card - Action Fetch Orders Now - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2001150529 - Action 230240932 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>View Fetched Orders</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Setup Card - Action View Orders - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1693210610 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Liste des Expéditions Transporteur</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Shipment List - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1693210610 - Control 284195533 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Filtres</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Shipment List - Control Filters - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1693210610 - Control 3419990029 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nom Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Shipment List - Control FilterCustomerName - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1693210610 - Control 2651378991 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Shipment List - Control FilterCustomerNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1693210610 - Control 650327517 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code Transporteur</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Shipment List - Control FilterShippingAgent - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1693210610 - Action 512328554 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Créer Transporter Order</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Shipment List - Action CreateTransporterOrder - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Report 3418304880 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Batch Calc. Rcpt Line Ht/TTC</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -21577,6 +22012,11 @@
           <source>Soldé</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Shipment Header - Field solde - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3118382297 - Field 4006076992 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3118382297">
+          <source>Transporter Expedition No</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Shipment Header - Field Transporter Expedition No - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 1114148978 - Field 2687425130 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1114148978">
           <source>solde</source>

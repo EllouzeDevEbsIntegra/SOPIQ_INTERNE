@@ -1,4 +1,4 @@
-table 25006899 "Sales Invoice Feedback"
+table 25006898 "Sales Invoice Feedback"
 {
     DataClassification = ToBeClassified;
 

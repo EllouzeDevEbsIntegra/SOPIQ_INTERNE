@@ -21,6 +21,14 @@ codeunit 50021 SISalesCodeUnit
         SalesLine.Modify(true);
     end;
 
+    procedure modifyTransporterOrderNo(var salesShipmentHeader: Record "Sales Shipment Header"; transporterOrderNo: Code[20])
+    var
+    begin
+        salesShipmentHeader."Transporter Expedition No" := transporterOrderNo;
+        salesShipmentHeader.Modify(true);
+    end;
+
+
     procedure ConfirmBSPOST(var SalesHeader: Record "Sales Header"; DefaultOption: Integer): Boolean
     var
         ConfirmManagement: Codeunit "Confirm Management";
