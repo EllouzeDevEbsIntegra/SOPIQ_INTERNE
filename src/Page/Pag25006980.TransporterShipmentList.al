@@ -60,7 +60,9 @@ page 25006980 "Transporter Shipment List"
                 field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; }
                 field("Ship-to City"; Rec."Ship-to City") { ApplicationArea = All; }
                 field("Line Amount"; Rec."Line Amount") { ApplicationArea = All; }
-                field("Transporter Expedition No"; Rec."Transporter Expedition No") { ApplicationArea = All; }
+                field("N° récépissé"; "N° récépissé") { ApplicationArea = All; }
+                field("récépissé date"; "récépissé date") { ApplicationArea = All; }
+
             }
         }
     }
@@ -98,7 +100,7 @@ page 25006980 "Transporter Shipment List"
                     ContreRemboursement: Boolean;
                     PostCodeInt: Integer;
                     DeliveryGovernorate: Text;
-                    OrderId: Integer;
+                    OrderId: Code[20];
                     TempBlob: Codeunit "Temp Blob";
                     InStr: InStream;
                     FileName: Text;
@@ -174,7 +176,7 @@ page 25006980 "Transporter Shipment List"
 
                         OrderId := TransporterAPI.CreateOrder(JsonPayload, TransporterSetup);
 
-                        if OrderId <> 0 then begin
+                        if OrderId <> '' then begin
                             if SSH.FindSet() then
                                 repeat
                                     SISalesCodeUnit.modifyTransporterOrderNo(SSH, Format(OrderId));
@@ -220,7 +222,7 @@ page 25006980 "Transporter Shipment List"
     local procedure SetRecFilters()
     begin
         Rec.FilterGroup(2);
-        Rec.SetRange("Transporter Expedition No", '');
+        Rec.SetRange("N° récépissé", '');
 
         if FilterCustomerNo <> '' then begin
             Rec.SetRange("Sell-to Customer No.", FilterCustomerNo);

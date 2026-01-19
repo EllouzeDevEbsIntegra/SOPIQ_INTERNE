@@ -11,6 +11,9 @@ pageextension 80137 "Posted Sales Shipments" extends "Posted Sales Shipments"//1
             }
         }
 
+
+
+
         // Add changes to page layout here
         addafter("Line Amount")
         {
@@ -60,12 +63,36 @@ pageextension 80137 "Posted Sales Shipments" extends "Posted Sales Shipments"//1
             {
 
             }
+
         }
     }
 
     actions
     {
         // Add changes to page actions here
+        addlast(Processing)
+        {
+            action("Transporter Shipment List")
+            {
+                ApplicationArea = All;
+                Caption = 'Créer Expéditions Transporteur';
+                Image = TransferReceipt;
+                Promoted = true;
+                PromotedCategory = Process;
+                RunObject = Page "Transporter Shipment List";
+                ToolTip = 'Ouvre la liste des BL et créer une expédition Transporteur.';
+            }
+            action("Liste des Expéditions Transporteur")
+            {
+                ApplicationArea = All;
+                Caption = 'Liste des Expéditions Transporteur';
+                Image = Shipment;
+                Promoted = true;
+                PromotedCategory = Process;
+                RunObject = page "Transporter Orders List";
+                RunPageLink = "Order ID" = field("N° récépissé");
+            }
+        }
     }
 
     var

@@ -11,7 +11,7 @@ table 25006899 "Transporter Order Buffer"
             DataClassification = SystemMetadata;
             AutoIncrement = true;
         }
-        field(2; "Order ID"; Integer)
+        field(2; "Order ID"; Code[20])
         {
             Caption = 'Order ID';
             DataClassification = CustomerContent;

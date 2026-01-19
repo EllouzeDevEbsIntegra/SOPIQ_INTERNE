@@ -24,7 +24,8 @@ codeunit 50021 SISalesCodeUnit
     procedure modifyTransporterOrderNo(var salesShipmentHeader: Record "Sales Shipment Header"; transporterOrderNo: Code[20])
     var
     begin
-        salesShipmentHeader."Transporter Expedition No" := transporterOrderNo;
+        salesShipmentHeader."N° récépissé" := transporterOrderNo;
+        salesShipmentHeader."récépissé date" := System.Today;
         salesShipmentHeader.Modify(true);
     end;
 

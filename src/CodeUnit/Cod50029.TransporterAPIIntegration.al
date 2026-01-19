@@ -30,7 +30,7 @@ codeunit 50029 "Transporter API Integration"
         ApiCallUnsuccessfulErr: Label 'Transporter API returned an unsuccessful status without a specific message.';
         OrdersArrayNotFoundErr: Label 'The "orders" array was not found or is not a valid array in the API response.';
         IsSuccess: Boolean;
-        TempInt: Integer;
+        TempInt: Code[20];
         TempDecimal: Decimal;
         TempDateTime: DateTime;
         DateTimeText: Text;
@@ -99,12 +99,12 @@ codeunit 50029 "Transporter API Integration"
         foreach JsonToken in JsonArray do begin
             if JsonToken.IsObject() then begin
                 OrderObj := JsonToken.AsObject();
-                TempInt := 0;
+                TempInt := '';
                 if OrderObj.Get('id', JsonToken) then
                     if not JsonToken.AsValue().IsNull() then
                         if Evaluate(TempInt, JsonToken.AsValue().AsText()) then;
 
-                if TempInt <> 0 then begin
+                if TempInt <> '' then begin
                     // Upsert Logic: Update if exists, Insert if new.
                     ExistingOrder.SetRange("Order ID", TempInt);
                     if ExistingOrder.FindFirst() then begin
@@ -178,7 +178,7 @@ codeunit 50029 "Transporter API Integration"
         TransporterOrderBuffer."Fetched DateTime" := CurrentDateTime();
     end;
 
-    procedure GetOrderPdf(OrderId: Integer; var TransporterSetup: Record "Transporter Setup"; var TempBlob: Codeunit "Temp Blob")
+    procedure GetOrderPdf(OrderId: Code[20]; var TransporterSetup: Record "Transporter Setup"; var TempBlob: Codeunit "Temp Blob")
     var
         HttpClient: HttpClient;
         HttpResponseMessage: HttpResponseMessage;
@@ -207,7 +207,7 @@ codeunit 50029 "Transporter API Integration"
         CopyStream(OutStr, InStr);
     end;
 
-    procedure CreateOrder(OrderJson: JsonObject; var TransporterSetup: Record "Transporter Setup") OrderId: Integer
+    procedure CreateOrder(OrderJson: JsonObject; var TransporterSetup: Record "Transporter Setup") OrderId: code[20]
     var
         HttpClient: HttpClient;
         HttpContent: HttpContent;
@@ -245,6 +245,6 @@ codeunit 50029 "Transporter API Integration"
         HttpResponseMessage.Content().ReadAs(ResponseText);
         if ResponseJson.ReadFrom(ResponseText) then
             if ResponseJson.Get('orderId', JsonToken) then
-                OrderId := JsonToken.AsValue().AsInteger();
+                OrderId := JsonToken.AsValue().AsCode();
     end;
 }

@@ -19298,6 +19298,21 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Shipment - Control Acopmpte - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 1840709038 - Action 3039922950 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1840709038">
+          <source>Liste des Expéditions Transporteur</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Shipments - Action Liste des Expéditions Transporteur - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1840709038 - Action 1693210610 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1840709038">
+          <source>Ouvre la liste des BL et créer une expédition Transporteur.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Shipments - Action Transporter Shipment List - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1840709038 - Action 1693210610 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1840709038">
+          <source>Créer Expéditions Transporteur</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Shipments - Action Transporter Shipment List - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 1840709038 - Control 1304319130 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1840709038">
           <source>Specifies the second name of the customer.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -22012,11 +22027,6 @@
           <source>Soldé</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Shipment Header - Field solde - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="TableExtension 3118382297 - Field 4006076992 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3118382297">
-          <source>Transporter Expedition No</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Shipment Header - Field Transporter Expedition No - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 1114148978 - Field 2687425130 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1114148978">
           <source>solde</source>
