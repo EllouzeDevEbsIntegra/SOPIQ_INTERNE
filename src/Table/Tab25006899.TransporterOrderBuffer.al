@@ -56,10 +56,11 @@ table 25006899 "Transporter Order Buffer"
             Caption = 'Total Colis';
             DataClassification = CustomerContent;
         }
-        field(11; "Type Colis"; Text[50])
+        field(11; "Type Colis"; Enum "Type Colis")
         {
             Caption = 'Type Colis';
             DataClassification = CustomerContent;
+            InitValue = Colis;
         }
         field(12; "Total CR"; Decimal)
         {

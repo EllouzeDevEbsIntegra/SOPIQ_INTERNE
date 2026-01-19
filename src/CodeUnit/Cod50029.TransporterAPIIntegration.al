@@ -132,7 +132,7 @@ codeunit 50029 "Transporter API Integration"
         TransporterSetup."Last Fetched DateTime" := CurrentDateTime();
         TransporterSetup.Modify();
 
-        Message(SuccessMsg, NewOrdersCount, UpdatedOrdersCount, SkippedOrdersCount, TotalOrdersInResponse);
+        //Message(SuccessMsg, NewOrdersCount, UpdatedOrdersCount, SkippedOrdersCount, TotalOrdersInResponse);
     end;
 
     local procedure FillBufferRecord(var TransporterOrderBuffer: Record "Transporter Order Buffer"; OrderObj: JsonObject)
@@ -155,7 +155,9 @@ codeunit 50029 "Transporter API Integration"
         if OrderObj.Get('totalColis', JsonToken) then if not JsonToken.AsValue().IsNull() then if Evaluate(TempInt, JsonToken.AsValue().AsText()) then;
         TransporterOrderBuffer."Total Colis" := TempInt;
 
-        if OrderObj.Get('typeColis', JsonToken) then if not JsonToken.AsValue().IsNull() then TransporterOrderBuffer."Type Colis" := CopyStr(JsonToken.AsValue().AsText(), 1, MaxStrLen(TransporterOrderBuffer."Type Colis"));
+        if OrderObj.Get('typeColis', JsonToken) then
+            if not JsonToken.AsValue().IsNull() then
+                if Evaluate(TransporterOrderBuffer."Type Colis", JsonToken.AsValue().AsText()) then;
 
         TempDecimal := 0;
         if OrderObj.Get('totalCr', JsonToken) then if not JsonToken.AsValue().IsNull() then if Evaluate(TempDecimal, JsonToken.AsValue().AsText()) then;

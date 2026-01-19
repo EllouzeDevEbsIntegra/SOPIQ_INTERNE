@@ -6,6 +6,8 @@ page 25006982 "Transporter Orders List"
     SourceTable = "Transporter Order Buffer";
     SourceTableView = SORTING("Order ID") ORDER(Descending);
     UsageCategory = Lists;
+    Editable = false;
+
 
     layout
     {
@@ -141,10 +143,20 @@ page 25006982 "Transporter Orders List"
                     InStr: InStream;
                     FileName: Text;
                     DefaultSetupCodeTxt: Label 'DEFAULT', Locked = true;
+                    SalesShipmentHeader: Record "Sales Shipment Header";
+                    custNo: Code[20];
                 begin
+                    SalesShipmentHeader.Reset();
+                    custNo := '';
+
                     if not TransporterSetup.Get(DefaultSetupCodeTxt) then
                         if not TransporterSetup.FindFirst() then
                             Error('Transporter Setup not found.');
+
+                    SalesShipmentHeader.SetRange("N° récépissé", Rec."Order ID");
+                    if SalesShipmentHeader.FindFirst() then begin
+                        custNo := SalesShipmentHeader."Sell-to Customer No.";
+                    end;
 
                     TransporterAPI.GetOrderPdf(Rec."Order ID", TransporterSetup, TempBlob);
 
@@ -153,7 +165,7 @@ page 25006982 "Transporter Orders List"
 
                     TempBlob.CreateInStream(InStr);
 
-                    FileName := 'Order_' + Format(Rec."Order ID") + '.pdf';
+                    FileName := 'Order_' + Format(Rec."Order ID") + '_' + custNo + '.pdf';
                     DownloadFromStream(InStr, '', '', '', FileName);
                 end;
             }

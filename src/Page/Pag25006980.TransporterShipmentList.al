@@ -90,7 +90,7 @@ page 25006980 "Transporter Shipment List"
                     TotalTTC: Decimal;
                     TotalColis: Integer;
                     TotalCr: Decimal;
-                    TypeColisOpt: Option Colis,Enveloppe;
+                    TypeColisOpt: Enum "Type Colis";
                     TypeColisTxt: Text;
                     CommentTxt: Text;
                     ShipmentNos: Text;
@@ -105,6 +105,7 @@ page 25006980 "Transporter Shipment List"
                     InStr: InStream;
                     FileName: Text;
                     SISalesCodeUnit: Codeunit SISalesCodeUnit;
+                    TempShipmentNo: Text;
                 begin
                     TotalTTC := 0;
 
@@ -121,10 +122,19 @@ page 25006980 "Transporter Shipment List"
                         if SSH."Sell-to Customer No." <> CustNo then
                             Error('Toutes les expéditions sélectionnées doivent appartenir au même client (%1).', CustNo);
 
+                        TempShipmentNo := '';
                         if ShipmentNos = '' then
-                            ShipmentNos := SSH."No."
+                            TempShipmentNo := 'BLs : '
                         else
-                            ShipmentNos += '/' + SSH."No.";
+                            TempShipmentNo := '/';
+
+                        if StrLen(SSH."No.") > 5 then
+                            TempShipmentNo += CopyStr(SSH."No.", StrLen(SSH."No.") - 4)
+                        else
+                            TempShipmentNo += SSH."No.";
+
+                        if StrLen(ShipmentNos) + StrLen(TempShipmentNo) <= 90 then
+                            ShipmentNos += TempShipmentNo;
 
                         // Calcul du Total TTC pour ce BL
                         SSH.CalcFields("Line Amount");
@@ -145,10 +155,7 @@ page 25006980 "Transporter Shipment List"
                     if DialogPage.RunModal() = Action::OK then begin
                         DialogPage.GetData(TotalColis, TotalCr, TypeColisOpt, CommentTxt, DeliveryGovernorate);
 
-                        if TypeColisOpt = TypeColisOpt::Colis then
-                            TypeColisTxt := 'colis'
-                        else
-                            TypeColisTxt := 'enveloppe';
+                        TypeColisTxt := Format(TypeColisOpt);
 
                         // Préparation du JSON
                         JsonPayload.Add('deliveryName', Cust.Name);
@@ -185,7 +192,7 @@ page 25006980 "Transporter Shipment List"
                             TransporterAPI.GetOrderPdf(OrderId, TransporterSetup, TempBlob);
                             if TempBlob.HasValue() then begin
                                 TempBlob.CreateInStream(InStr);
-                                FileName := 'Order_' + Format(OrderId) + '.pdf';
+                                FileName := 'Order_' + Format(OrderId) + '_' + ssh."Sell-to Customer No." + '.pdf';
                                 DownloadFromStream(InStr, '', '', '', FileName);
                             end;
                             Message('Transporter Order %1 créé avec succès.', OrderId);

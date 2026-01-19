@@ -21,7 +21,7 @@ page 25006978 "Transporter Order Dialog"
             {
                 Caption = 'Détails Expédition';
                 field(TotalColis; TotalColis) { ApplicationArea = All; Caption = 'Nombre de Colis'; }
-                field(TypeColis; TypeColis) { ApplicationArea = All; Caption = 'Type de Colis'; OptionCaption = 'Colis,Enveloppe'; }
+                field(TypeColis; TypeColis) { ApplicationArea = All; Caption = 'Type de Colis'; }
                 field(TotalCr; TotalCr) { ApplicationArea = All; Caption = 'Total Contre Remboursement'; }
                 field(Comment; Comment) { ApplicationArea = All; Caption = 'Commentaire'; MultiLine = true; }
             }
@@ -37,7 +37,7 @@ page 25006978 "Transporter Order Dialog"
         DeliveryGovernorate: Text;
         TotalColis: Integer;
         TotalCr: Decimal;
-        TypeColis: Option Colis,Enveloppe;
+        TypeColis: Enum "Type Colis";
         Comment: Text;
 
     procedure SetData(Name: Text; Address: Text; City: Text; Phone: Text; Email: Text; Governorate: Text; CrAmount: Decimal; Cmt: Text)
@@ -53,12 +53,19 @@ page 25006978 "Transporter Order Dialog"
         TypeColis := TypeColis::Colis; // Valeur par défaut
     end;
 
-    procedure GetData(var TColis: Integer; var TCr: Decimal; var TyColis: Option; var Cmt: Text; var Governorate: Text)
+    procedure GetData(var TColis: Integer; var TCr: Decimal; var TyColis: Enum "Type Colis"; var Cmt: Text; var Governorate: Text)
     begin
         TColis := TotalColis;
         TCr := TotalCr;
         TyColis := TypeColis;
         Cmt := Comment;
         Governorate := DeliveryGovernorate;
+    end;
+
+    trigger OnQueryClosePage(CloseAction: Action): Boolean
+    begin
+        if CloseAction = Action::OK then
+            if TotalColis <= 0 then
+                Error('Le nombre de colis doit être strictement supérieur à 0.');
     end;
 }
