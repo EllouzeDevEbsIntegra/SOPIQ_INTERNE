@@ -18518,6 +18518,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Query Items - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Query 4040440750 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ligne archive BS</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query Ligne archive BS - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Query 599001129 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ligne Facture Vente</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query Ligne Facture Vente - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Query 3871186136 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>PaymentLine</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -18697,6 +18707,11 @@
           <source>Client Spécial</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Customer Card - Control Is Special Vendor - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 523354100 - Change 3116130058 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 523354100">
+          <source>Type Client BI</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Customer Card - Change Service Zone Code - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 2901867346 - Action 67177916 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2901867346">
           <source>Etat Soldes Clients</source>

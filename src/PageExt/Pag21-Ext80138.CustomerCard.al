@@ -2,6 +2,10 @@ pageextension 80138 "Customer Card" extends "Customer Card"//21
 {
     layout
     {
+        modify("Service Zone Code")
+        {
+            Caption = 'Type Client BI';
+        }
         // Add changes to page layout here
         modify("Traite en coffre")
         {

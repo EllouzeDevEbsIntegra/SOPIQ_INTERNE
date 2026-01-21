@@ -202,7 +202,7 @@ tableextension 80114 "Customer" extends "Customer" //18
             InitValue = false;
         }
 
-
+        
 
     }
 
