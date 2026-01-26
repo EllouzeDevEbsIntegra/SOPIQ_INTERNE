@@ -92,6 +92,7 @@ page 25006980 "Transporter Shipment List"
                     TotalCr: Decimal;
                     TypeColisOpt: Enum "Type Colis";
                     TypeColisTxt: Text;
+                    PaymentMethodOpt: Option NP,PM;
                     CommentTxt: Text;
                     ShipmentNos: Text;
                     JsonPayload: JsonObject;
@@ -153,9 +154,9 @@ page 25006980 "Transporter Shipment List"
                     DialogPage.SetData(Cust.Name, Cust.Address, Cust.City, Cust."Phone No.", Cust."E-Mail", DeliveryGovernorate, TotalTTC, ShipmentNos);
 
                     if DialogPage.RunModal() = Action::OK then begin
-                        DialogPage.GetData(TotalColis, TotalCr, TypeColisOpt, CommentTxt, DeliveryGovernorate);
+                        DialogPage.GetData(TotalColis, TotalCr, TypeColisOpt, CommentTxt, DeliveryGovernorate, PaymentMethodOpt);
 
-                        TypeColisTxt := Format(TypeColisOpt);
+                        TypeColisTxt := TypeColisOpt.Names().Get(TypeColisOpt.Ordinals().IndexOf(TypeColisOpt.AsInteger()));
 
                         // Préparation du JSON
                         JsonPayload.Add('deliveryName', Cust.Name);
@@ -172,7 +173,7 @@ page 25006980 "Transporter Shipment List"
                         JsonPayload.Add('deliveryEmail', Cust."E-Mail");
                         JsonPayload.Add('totalColis', TotalColis);
                         JsonPayload.Add('totalCr', TotalCr);
-                        JsonPayload.Add('paymentMethod', 'NP'); // Valeur temporaire
+                        JsonPayload.Add('paymentMethod', Format(PaymentMethodOpt));
                         JsonPayload.Add('typeColis', TypeColisTxt);
                         JsonPayload.Add('comment', CommentTxt);
 
@@ -193,6 +194,90 @@ page 25006980 "Transporter Shipment List"
                             if TempBlob.HasValue() then begin
                                 TempBlob.CreateInStream(InStr);
                                 FileName := 'Order_' + Format(OrderId) + '_' + ssh."Sell-to Customer No." + '.pdf';
+                                DownloadFromStream(InStr, '', '', '', FileName);
+                            end;
+                            Message('Transporter Order %1 créé avec succès.', OrderId);
+                        end;
+                    end;
+                end;
+            }
+
+            action(SendEnvelope)
+            {
+                ApplicationArea = All;
+                Caption = 'Envoyer une enveloppe';
+                Image = SendTo;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+
+                trigger OnAction()
+                var
+                    Cust: Record Customer;
+                    TransporterAPI: Codeunit "Transporter API Integration";
+                    TransporterSetup: Record "Transporter Setup";
+                    DialogPage: Page "Transporter Order Dialog";
+                    JsonPayload: JsonObject;
+                    DefaultSetupCodeTxt: Label 'DEFAULT', Locked = true;
+                    OrderId: Code[20];
+                    TempBlob: Codeunit "Temp Blob";
+                    InStr: InStream;
+                    FileName: Text;
+                    TotalColis: Integer;
+                    TotalCr: Decimal;
+                    TypeColisOpt: Enum "Type Colis";
+                    CommentTxt: Text;
+                    DeliveryGovernorate: Text;
+                    PaymentMethodOpt: Option NP,PM;
+                    PostCodeInt: Integer;
+                    JsonText: Text;
+                begin
+                    if FilterCustomerNo = '' then
+                        Error('Veuillez sélectionner un client dans le filtre pour envoyer une enveloppe.');
+
+                    Cust.Get(FilterCustomerNo);
+                    DeliveryGovernorate := Cust.City;
+
+                    // Initialisation du dialogue avec les données client, sans montant CR et sans BLs
+                    DialogPage.SetData(Cust.Name, Cust.Address, Cust.City, Cust."Phone No.", Cust."E-Mail", DeliveryGovernorate, 0, '');
+                    // Configuration spécifique pour l'enveloppe (bloque le type et met qté à 1)
+                    DialogPage.SetEnvelopeMode();
+
+                    if DialogPage.RunModal() = Action::OK then begin
+                        DialogPage.GetData(TotalColis, TotalCr, TypeColisOpt, CommentTxt, DeliveryGovernorate, PaymentMethodOpt);
+
+                        JsonPayload.Add('deliveryName', Cust.Name);
+                        JsonPayload.Add('deliveryPhone', DelChr(Cust."Phone No.", '=', ' +()'));
+                        JsonPayload.Add('deliveryAddress', Cust.Address);
+                        JsonPayload.Add('deliveryCity', Cust.City);
+
+                        if Evaluate(PostCodeInt, Cust."Post Code") then
+                            JsonPayload.Add('deliveryCp', PostCodeInt)
+                        else
+                            JsonPayload.Add('deliveryCp', 0);
+
+                        JsonPayload.Add('deliveryGovernorat', DeliveryGovernorate);
+                        JsonPayload.Add('deliveryEmail', Cust."E-Mail");
+                        JsonPayload.Add('totalColis', TotalColis);
+                        JsonPayload.Add('totalCr', TotalCr);
+                        JsonPayload.Add('paymentMethod', Format(PaymentMethodOpt));
+                        JsonPayload.Add('typeColis', TypeColisOpt.Names().Get(TypeColisOpt.Ordinals().IndexOf(TypeColisOpt.AsInteger())));
+                        JsonPayload.Add('comment', CommentTxt);
+
+                        JsonPayload.WriteTo(JsonText);
+                        //Message('Payload envoyé : %1', JsonText);
+
+                        if not TransporterSetup.Get(DefaultSetupCodeTxt) then
+                            if not TransporterSetup.FindFirst() then
+                                Error('Transporter Setup not found.');
+
+                        OrderId := TransporterAPI.CreateOrder(JsonPayload, TransporterSetup);
+
+                        if OrderId <> '' then begin
+                            TransporterAPI.GetOrderPdf(OrderId, TransporterSetup, TempBlob);
+                            if TempBlob.HasValue() then begin
+                                TempBlob.CreateInStream(InStr);
+                                FileName := 'Order_' + Format(OrderId) + '_' + Cust."No." + '.pdf';
                                 DownloadFromStream(InStr, '', '', '', FileName);
                             end;
                             Message('Transporter Order %1 créé avec succès.', OrderId);

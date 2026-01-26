@@ -67,10 +67,12 @@ table 25006899 "Transporter Order Buffer"
             Caption = 'Total CR';
             DataClassification = CustomerContent;
         }
-        field(13; "Payment Method"; Text[50])
+        field(13; "Payment Method"; Option)
         {
             Caption = 'Payment Method';
             DataClassification = CustomerContent;
+            OptionMembers = NP,PM;
+            OptionCaption = 'Non payé,Paiement Mensuel';
         }
         field(14; "Delivery Status"; Text[50])
         {

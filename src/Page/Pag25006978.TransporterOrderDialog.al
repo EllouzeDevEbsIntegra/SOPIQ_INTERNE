@@ -21,8 +21,14 @@ page 25006978 "Transporter Order Dialog"
             {
                 Caption = 'Détails Expédition';
                 field(TotalColis; TotalColis) { ApplicationArea = All; Caption = 'Nombre de Colis'; }
-                field(TypeColis; TypeColis) { ApplicationArea = All; Caption = 'Type de Colis'; }
+                field(TypeColis; TypeColis) { ApplicationArea = All; Caption = 'Type de Colis'; Editable = IsTypeColisEditable; }
                 field(TotalCr; TotalCr) { ApplicationArea = All; Caption = 'Total Contre Remboursement'; }
+                field(PaymentMethod; PaymentMethod)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Méthode de paiement';
+                    OptionCaption = 'Non payé,Paiement Mensuel';
+                }
                 field(Comment; Comment) { ApplicationArea = All; Caption = 'Commentaire'; MultiLine = true; }
             }
         }
@@ -38,7 +44,9 @@ page 25006978 "Transporter Order Dialog"
         TotalColis: Integer;
         TotalCr: Decimal;
         TypeColis: Enum "Type Colis";
+        PaymentMethod: Option NP,PM;
         Comment: Text;
+        IsTypeColisEditable: Boolean;
 
     procedure SetData(Name: Text; Address: Text; City: Text; Phone: Text; Email: Text; Governorate: Text; CrAmount: Decimal; Cmt: Text)
     begin
@@ -51,15 +59,25 @@ page 25006978 "Transporter Order Dialog"
         TotalCr := CrAmount;
         Comment := Cmt;
         TypeColis := TypeColis::Colis; // Valeur par défaut
+        PaymentMethod := PaymentMethod::NP;
+        IsTypeColisEditable := true;
     end;
 
-    procedure GetData(var TColis: Integer; var TCr: Decimal; var TyColis: Enum "Type Colis"; var Cmt: Text; var Governorate: Text)
+    procedure SetEnvelopeMode()
+    begin
+        TotalColis := 1;
+        TypeColis := TypeColis::Envelope;
+        IsTypeColisEditable := false;
+    end;
+
+    procedure GetData(var TColis: Integer; var TCr: Decimal; var TyColis: Enum "Type Colis"; var Cmt: Text; var Governorate: Text; var PMethod: Option NP,PM)
     begin
         TColis := TotalColis;
         TCr := TotalCr;
         TyColis := TypeColis;
         Cmt := Comment;
         Governorate := DeliveryGovernorate;
+        PMethod := PaymentMethod;
     end;
 
     trigger OnQueryClosePage(CloseAction: Action): Boolean

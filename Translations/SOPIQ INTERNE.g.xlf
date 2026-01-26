@@ -1493,6 +1493,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Payment Method - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 783737014 - Field 3566004263 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Non payé,Paiement Mensuel</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Order Buffer - Field Payment Method - Property OptionCaption</note>
+        </trans-unit>
         <trans-unit id="Table 783737014 - Field 931886930 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Payment Status</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -14733,6 +14738,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Control Comment - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 175262854 - Control 200753951 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Méthode de paiement</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Control PaymentMethod - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 175262854 - Control 200753951 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Non payé,Paiement Mensuel</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Order Dialog - Control PaymentMethod - Property OptionCaption</note>
+        </trans-unit>
         <trans-unit id="Page 175262854 - Control 419599116 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Nombre de Colis</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -14967,6 +14982,11 @@
           <source>Créer Transporter Order</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Shipment List - Action CreateTransporterOrder - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1693210610 - Action 3290963158 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Envoyer une enveloppe</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Shipment List - Action SendEnvelope - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 3418304880 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Batch Calc. Rcpt Line Ht/TTC</source>
@@ -22993,210 +23013,25 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum Quote Line Reason - EnumValue Waiting - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 1401708515 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Aile</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Aile - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 1850148113 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Alternateur</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Alternateur - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 655546594 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Amortisseur</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Amortisseur - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 387479657 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Enum 1491143270 - EnumValue 1522881929 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Autre</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Autre - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue autre - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 461954684 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Batterie</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Batterie - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 983138283 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Boîte de Vitesse</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Boite_Vitesse - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 2850371908 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Bras de Suspension</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Bras_Suspension - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 1130905931 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Capot</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Capot - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 1163708070 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Enum 1491143270 - EnumValue 380097990 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Colis</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Colis - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue colis - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 3629059222 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Courroie</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Courroie - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 1000965989 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Crémaillère de Direction</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Cremaillere - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 2279291697 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Démarreur</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Demarreur - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 1600806210 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Disque de Frein</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Disque_Frein - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 456194476 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Échappement</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Echappement - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 3499780690 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Enum 1491143270 - EnumValue 3755685938 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Enveloppe</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Envelope - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue envelope - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 1516758000 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Étrier de Frein</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Etrier_Frein - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 324803241 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Faisceau Électrique</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Faisceau - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 1842903444 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Filtre</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Filtre - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 3643847351 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Garniture Intérieure</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Garniture - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 142524021 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Grand Colis</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Grand_Colis - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 2812694615 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Grand Paquet</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Grand_Paquet - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 34397392 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Jante</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Jante - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 1880713424 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Moteur</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Moteur - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 1534848773 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Phare / Feu</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Optique - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 3785650055 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Palette</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Palette - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 3495323783 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Pare-chocs</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Parachoc - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 2309129011 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Enum 1491143270 - EnumValue 80670803 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Pare-brise</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Parebrise - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 2722128460 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Plaquette de Frein</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Plaquette_Frein - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 1097894658 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Pneu</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Pneu - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 2600203171 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Pompe à Eau</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Pompe_Eau - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 4204832744 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Porte</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Porte - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 3248808403 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Radiateur</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Radiateur - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 3410655826 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Ressort</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Ressort - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 600299994 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Rétroviseur</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Retro - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 2687559229 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Roue Complète</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Roue_Complete - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 4136616311 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Siège</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Siege - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 1808250602 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Tableau de Bord</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Tableau_Bord - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 403168280 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Bras de Suspension</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Triangle_Suspension - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 396032429 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Ventilateur</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Ventilateur - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 1615196015 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Vitre Latérale</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Vitre_Laterale - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1491143270 - EnumValue 3899056826 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Volant</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue Volant - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Type Colis - EnumValue parebrise - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 1263296788 - EnumValue 18652612 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source> </source>

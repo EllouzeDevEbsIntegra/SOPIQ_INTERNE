@@ -163,7 +163,9 @@ codeunit 50029 "Transporter API Integration"
         if OrderObj.Get('totalCr', JsonToken) then if not JsonToken.AsValue().IsNull() then if Evaluate(TempDecimal, JsonToken.AsValue().AsText()) then;
         TransporterOrderBuffer."Total CR" := TempDecimal;
 
-        if OrderObj.Get('paymentMethod', JsonToken) then if not JsonToken.AsValue().IsNull() then TransporterOrderBuffer."Payment Method" := CopyStr(JsonToken.AsValue().AsText(), 1, MaxStrLen(TransporterOrderBuffer."Payment Method"));
+        if OrderObj.Get('paymentMethod', JsonToken) then
+            if not JsonToken.AsValue().IsNull() then
+                if Evaluate(TransporterOrderBuffer."Payment Method", JsonToken.AsValue().AsText()) then;
         if OrderObj.Get('deliveryStatus', JsonToken) then if not JsonToken.AsValue().IsNull() then TransporterOrderBuffer."Delivery Status" := CopyStr(JsonToken.AsValue().AsText(), 1, MaxStrLen(TransporterOrderBuffer."Delivery Status"));
         if OrderObj.Get('paymentStatus', JsonToken) then if not JsonToken.AsValue().IsNull() then TransporterOrderBuffer."Payment Status" := CopyStr(JsonToken.AsValue().AsText(), 1, MaxStrLen(TransporterOrderBuffer."Payment Status"));
 
