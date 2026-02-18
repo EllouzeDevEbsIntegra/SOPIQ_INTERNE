@@ -257,6 +257,19 @@ page 25006851 "Sales Invoice API"
                     Caption = 'Contre Remboursment', Locked = true;
                     ToolTip = 'Indicates whether the invoice is marked as cash on delivery.';
                 }
+                field(CustLedgerEntryNo; "Cust. Ledger Entry No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Cust. Ledger Entry No.', Locked = true;
+                    ToolTip = 'Specifies the customer ledger entry number associated with the invoice.';
+                }
+                field(ZoneRecouvrement; "Tax Area Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Zone Recouvrement', Locked = true;
+                    ToolTip = 'Specifies the tax area code associated with the invoice.';
+                }
+
             }
         }
     }

@@ -7193,6 +7193,71 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Customer Transaction - Control salesOrderCount - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1296414865 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Customer Ledger Entry API</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Detailed Cust Ledg Entry API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1296414865 - Control 1121446808 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Amount</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Detailed Cust Ledg Entry API - Control amount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1296414865 - Control 1826362222 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Amount (LCY)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Detailed Cust Ledg Entry API - Control amountLCY - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1296414865 - Control 1808640270 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Currency Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Detailed Cust Ledg Entry API - Control currencyCode - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1296414865 - Control 2426856515 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cust. Ledger Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Detailed Cust Ledg Entry API - Control custLedgerEntryNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1296414865 - Control 1108861191 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Customer No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Detailed Cust Ledg Entry API - Control customerNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1296414865 - Control 73228906 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Detailed Cust Ledg Entry API - Control documentNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1296414865 - Control 305869689 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document Type</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Detailed Cust Ledg Entry API - Control documentType - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1296414865 - Control 1911349368 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry Due Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Detailed Cust Ledg Entry API - Control entryDueDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1296414865 - Control 2683860767 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Detailed Cust Ledg Entry API - Control entryNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1296414865 - Control 4002976000 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry Type</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Detailed Cust Ledg Entry API - Control entryType - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1296414865 - Control 1260828904 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Posting Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Detailed Cust Ledg Entry API - Control postingDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1296414865 - Control 1893738592 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>User ID</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Detailed Cust Ledg Entry API - Control userId - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 2048034419 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Chercher Article</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -12168,6 +12233,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control ContreRemboursment - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="Page 1788160435 - Control 542579299 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the customer ledger entry number associated with the invoice.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control CustLedgerEntryNo - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Page 1788160435 - Control 2139404112 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the document profile for the invoice.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -12207,6 +12277,11 @@
           <source>Specifies the description of the work associated with the invoice.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control workDescription - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1788160435 - Control 3150848197 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the tax area code associated with the invoice.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Sales Invoice API - Control ZoneRecouvrement - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 1671903065 - Control 4232699882 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>description</source>
@@ -14987,6 +15062,21 @@
           <source>Envoyer une enveloppe</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Shipment List - Action SendEnvelope - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1148435397 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Zone Recouvrement API</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Zone Recouvrement API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1148435397 - Control 707985127 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Zone Recouvrement API - Control code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1148435397 - Control 4232699882 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Zone Recouvrement API - Control description - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 3418304880 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Batch Calc. Rcpt Line Ht/TTC</source>
