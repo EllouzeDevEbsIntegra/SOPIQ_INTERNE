@@ -24,6 +24,19 @@ page 25006833 "SI Vehicle  API"
                     Caption = 'SerialNo', Locked = true;
                     ToolTip = 'Specifies the serial number of the vehicle.';
                 }
+                field(InteriorCode; "Interior Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Interior Code';
+                    ToolTip = 'Specifies the interior code of the vehicle.';
+                }
+                field(CommercialName; "Model Commercial Name")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Model Commercial Name';
+                    ToolTip = 'Specifies the model commercial name of the vehicle.';
+                }
+
                 field(VIN; VIN)
                 {
                     ApplicationArea = All;

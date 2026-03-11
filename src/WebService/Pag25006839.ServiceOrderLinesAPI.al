@@ -58,7 +58,17 @@ page 25006839 "Service Order Lines API"
                 {
                     Caption = 'Coût Unitaire (LCY)';
                 }
-                // Ajoutez d'autres champs si nécessaire
+
+                field(CustomerResponse; "Customer Response")
+                {
+                    Caption = 'Réponse Client';
+                }
+
+                field(CustRespDate; "Cust. Resp. Date")
+                {
+                    Caption = 'Date Réponse Client';
+                }
+
             }
         }
     }

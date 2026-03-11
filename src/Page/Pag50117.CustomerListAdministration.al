@@ -1714,6 +1714,7 @@ page 50117 "Customer List Administration"
         SocialListeningSetup: Record "Social Listening Setup";
         CRMIntegrationManagement: Codeunit "CRM Integration Management";
     begin
+        Rec.SetFilter("Date Filter", '>%1', WorkDate());
         CRMIntegrationEnabled := CRMIntegrationManagement.IsCRMIntegrationEnabled;
         CDSIntegrationEnabled := CRMIntegrationManagement.IsCDSIntegrationEnabled;
         with SocialListeningSetup do

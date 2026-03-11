@@ -40,7 +40,7 @@ tableextension 80101 "Sales Cue" extends "Sales Cue" //9053
             Caption = 'Ligne vente avec prix unitaire modifié';
 
             FieldClass = FlowField;
-            CalcFormula = count("Sales Line" where("Price modified" = filter(true), "Ctrl Modified Price" = filter(false), "Document Type" = filter(Order)));
+            CalcFormula = count("Sales Line" where("Price modified" = filter(true), "Ctrl Modified Price" = filter(false), "Document Type" = filter(Order | Invoice)));
 
         }
 
@@ -49,7 +49,7 @@ tableextension 80101 "Sales Cue" extends "Sales Cue" //9053
             Caption = 'Ligne vente avec remise modifié';
 
             FieldClass = FlowField;
-            CalcFormula = count("Sales Line" where("Discount modified" = filter(true), "Ctrl Modified Discount" = filter(false), "Document Type" = filter(Order)));
+            CalcFormula = count("Sales Line" where("Discount modified" = filter(true), "Ctrl Modified Discount" = filter(false), "Document Type" = filter(Order | Invoice)));
 
         }
 
@@ -237,7 +237,7 @@ tableextension 80101 "Sales Cue" extends "Sales Cue" //9053
                                                                  "Account Type" = FILTER(Customer),
                                                                  "Copied To No." = FILTER('')
                                                                 , "Status No." = FILTER(50030)
-                                                                 , "Due Date" = filter('>a')));
+                                                                 , "Due Date" = FIELD("Date Filter")));
             Caption = 'Traite en escompte';
             Editable = false;
             FieldClass = FlowField;

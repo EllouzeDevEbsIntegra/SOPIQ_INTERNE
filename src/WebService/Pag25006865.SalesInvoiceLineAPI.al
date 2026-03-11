@@ -64,6 +64,14 @@ page 25006865 "Sales Invoice Line API"
                 {
                     Caption = 'taxPercent';
                 }
+                field(Amount; Amount)
+                {
+                    Caption = 'Amount';
+                }
+                field(AmountIncludingVAT; "Amount Including VAT")
+                {
+                    Caption = 'AmountIncludingVAT';
+                }
                 field(shipmentDate; Rec."Shipment Date")
                 {
                     Caption = 'shipmentDate';

@@ -14,6 +14,21 @@ pageextension 80165 "Service Quote Subform EDMS" extends "Service Quote Subform 
                 StyleExpr = FieldStyleQty;
                 DecimalPlaces = 0 : 2;
             }
+            field("Customer Response"; "Customer Response")
+            {
+                ApplicationArea = All;
+                Caption = 'Réponse Client';
+                Editable = false;
+            }
+
+            field("Cust. Resp. Date"; "Cust. Resp. Date")
+            {
+                ApplicationArea = All;
+                Caption = 'Date Réponse Client';
+                Editable = false;
+            }
+
+
             // field("Prix Vente Public"; "Prix Vente Public")
             // {
             //     ApplicationArea = All;

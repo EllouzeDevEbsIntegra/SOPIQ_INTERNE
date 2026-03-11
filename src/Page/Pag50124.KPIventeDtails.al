@@ -247,6 +247,7 @@ page 50124 "KPI vente Détails"
         RoleCenterNotificationMgt: Codeunit "Role Center Notification Mgt.";
         ConfPersonalizationMgt: Codeunit "Conf./Personalization Mgt.";
     begin
+
         Reset;
         if not Get then begin
             Init;

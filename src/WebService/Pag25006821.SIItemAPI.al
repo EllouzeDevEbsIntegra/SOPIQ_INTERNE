@@ -24,6 +24,11 @@ page 25006821 "SI Item API"
                     Caption = 'Id', Locked = true;
                     Editable = false;
                 }
+                field(etatStkFrsBase; etatStkFrsBase)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Etat Stock', Locked = true;
+                }
                 field(Ref; "No.")
                 {
                     ApplicationArea = All;

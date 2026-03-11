@@ -373,6 +373,18 @@ tableextension 80103 "Item" extends Item //27
             DecimalPlaces = 0 : 5;
         }
 
+        field(50157; "Qte Min Mg Principal"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            DecimalPlaces = 0 : 5;
+        }
+        field(50158; "Multiple Vente"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            DecimalPlaces = 0 : 5;
+        }
+
+
 
         modify("No.")
         {

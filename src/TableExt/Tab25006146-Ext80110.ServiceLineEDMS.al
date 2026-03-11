@@ -17,6 +17,14 @@ tableextension 80110 "Service Line EDMS" extends "Service Line EDMS" //25006146
 
         field(80112; "Last Document Type"; Enum "Purchase Document Type") { }
 
+        field(80113; "Customer Response"; Option)
+        {
+            OptionMembers = " ",Accepted,Refused,Postponed;
+            OptionCaption = ' ,Accepté,Refusé,Reporté';
+        }
+
+        field(80114; "Cust. Resp. Date"; DateTime) { }
+
         modify("No.")
         {
             trigger OnBeforeValidate()

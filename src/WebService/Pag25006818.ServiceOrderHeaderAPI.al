@@ -172,6 +172,17 @@ page 25006818 "Service Order Header API"
                     Caption = 'Masquer';
 
                 }
+                field(Amount; Amount)
+                {
+                    Caption = 'Montant HT';
+                }
+
+                field(AmountIncludingVAT; "Amount Including VAT")
+                {
+                    Caption = 'Montant TTC';
+                }
+
+
             }
         }
 

@@ -64,6 +64,25 @@ pageextension 80127 "Item Card" extends "Item Card"//30
             }
         }
 
+        addlast(Planning)
+        {
+            field("Qte Min Mg Principal"; "Qte Min Mg Principal")
+            {
+                Caption = 'Qte Min Mg Principal';
+                ApplicationArea = all;
+            }
+        }
+
+        addafter("Sales Unit of Measure")
+        {
+            field("Multiple Vente"; "Multiple Vente")
+            {
+                Caption = 'Multiple Vente';
+                ApplicationArea = all;
+            }
+
+        }
+
     }
 
     actions
