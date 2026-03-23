@@ -132,30 +132,24 @@ codeunit 50027 "Update Avg Daily Sales"
 
     procedure CalcStockRotation(ItemNo: Code[20]; FromDate: Date; ToDate: Date): Decimal
     var
-        ItemDailyStats: Record 25006658;
+        ItemDailyStats: Record "Item Daily Stats";
         TotalSold: Decimal;
-        TotalStock: Decimal;
+        AvgStock: Decimal;
         DaysCount: Integer;
     begin
-        // Utiliser la table pré-calculée pour les performances
         ItemDailyStats.SetRange("Item No.", ItemNo);
         ItemDailyStats.SetRange(Date, FromDate, ToDate);
 
-        if ItemDailyStats.FindSet() then begin
-            repeat
-                TotalSold += ItemDailyStats."Total Sold";
-                TotalStock += ItemDailyStats."Stock Level";
-                DaysCount += 1;
-            until ItemDailyStats.Next() = 0;
-        end;
+        DaysCount := ItemDailyStats.Count;
+        if DaysCount = 0 then
+            exit(0);
 
-        // Stock moyen pondéré
-        if DaysCount > 0 then begin
-            TotalStock := TotalStock / DaysCount;
-            if TotalStock > 0 then
-                exit(Round(TotalSold / TotalStock, 0.01))
-            else
-                exit(0);
+        if ItemDailyStats.CalcSums("Total Sold", "Stock Level") then begin
+            TotalSold := ItemDailyStats."Total Sold";
+            AvgStock := ItemDailyStats."Stock Level" / DaysCount;
+
+            if (TotalSold > 0) and (AvgStock > 0) then
+                exit(Round(TotalSold / AvgStock, 0.01));
         end;
 
         exit(0);

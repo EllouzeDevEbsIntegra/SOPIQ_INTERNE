@@ -17,56 +17,90 @@ codeunit 50028 "Populate Item Daily Stats"
     procedure PopulateDailyStats(FromDate: Date; ToDate: Date)
     var
         Item: Record Item;
-        CurrentDate: Date;
+        ItemLedgEntry: Record "Item Ledger Entry";
         ItemDailyStats: Record "Item Daily Stats";
         ProcessedCount: Integer;
-        BatchSize: Integer;
+        ItemBatchSize: Integer;
+        StatInsertBatchSize: Integer;
+        TotalStatsInserted: Integer;
+        CurrentDate: Date;
+        StockLevel: Decimal;
+        DailyNetChange: Decimal;
+        DailySoldQty: Decimal;
+        Window: Dialog;
     begin
-        BatchSize := 100; // Traiter par lots pour éviter les blocages
+        ItemBatchSize := 100; // Commit tous les 100 articles
+        StatInsertBatchSize := 5000; // Commit toutes les 5000 statistiques insérées pour éviter les transactions trop longues
         ProcessedCount := 0;
 
-        // Supprimer les données existantes pour la période (optionnel)
+        // Supprimer les données existantes pour la période
         ItemDailyStats.SetRange(Date, FromDate, ToDate);
-        ItemDailyStats.DeleteAll();
+        if not ItemDailyStats.IsEmpty() then
+            ItemDailyStats.DeleteAll(true);
 
         // Traiter uniquement les articles ayant eu des ventes
         Item.SetFilter("Total Vendu", '>0');
         Item.SetCurrentKey("No.");
 
-        if Item.FindSet() then
+        if Item.FindSet() then begin
+            Window.Open('Traitement des articles... Article #1##################');
             repeat
+                Window.Update(1, Item."No.");
+
+                // 1. Calculer le stock initial juste avant la période de début
+                StockLevel := GetStockAsOfDate(Item."No.", FromDate - 1);
+
                 CurrentDate := FromDate;
                 while CurrentDate <= ToDate do begin
-                    InsertDailyStat(Item."No.", CurrentDate);
-                    CurrentDate := CurrentDate + 1;
+                    // 2. Obtenir les mouvements de la journée
+                    ItemLedgEntry.Reset();
+                    ItemLedgEntry.SetCurrentKey("Item No.", "Posting Date");
+                    ItemLedgEntry.SetRange("Item No.", Item."No.");
+                    ItemLedgEntry.SetRange("Posting Date", CurrentDate);
+                    ItemLedgEntry.SetRange(isLocationExclu, false);
+
+                    // 3. Calculer le changement net et les ventes du jour
+                    DailyNetChange := 0;
+                    DailySoldQty := 0;
+                    if ItemLedgEntry.CalcSums(Quantity) then begin
+                        DailyNetChange := ItemLedgEntry.Quantity;
+                        ItemLedgEntry.SetRange("Entry Type", ItemLedgEntry."Entry Type"::Sale);
+                        if ItemLedgEntry.CalcSums(Quantity) then
+                            DailySoldQty := -ItemLedgEntry.Quantity;
+                    end;
+
+                    // 4. Mettre à jour le niveau de stock de manière incrémentale
+                    StockLevel += DailyNetChange;
+
+                    // 5. Insérer la statistique du jour
+                    InsertDailyStat(Item."No.", CurrentDate, DailySoldQty, StockLevel);
+
+                    TotalStatsInserted += 1;
+                    // Commit partiel à l'intérieur de la boucle de date pour éviter les transactions trop longues
+                    if TotalStatsInserted mod StatInsertBatchSize = 0 then begin
+                        Commit();
+                        Sleep(50); // Petite pause pour laisser les autres processus s'exécuter
+                    end;
+
+                    CurrentDate := CalcDate('<1D>', CurrentDate);
                 end;
 
                 ProcessedCount += 1;
-
-                // Commit tous les 100 articles
-                if ProcessedCount mod BatchSize = 0 then begin
+                if ProcessedCount mod ItemBatchSize = 0 then begin
                     Commit();
                     Sleep(100); // Petite pause
                 end;
 
             until Item.Next() = 0;
-
+        end;
         Commit();
+        Window.Close();
     end;
 
-    local procedure InsertDailyStat(ItemNo: Code[20]; StatDate: Date)
+    local procedure InsertDailyStat(ItemNo: Code[20]; StatDate: Date; TotalSold: Decimal; StockLevel: Decimal)
     var
-        ItemDailyStats: Record 25006658;
-        TotalSold: Decimal;
-        StockLevel: Decimal;
+        ItemDailyStats: Record "Item Daily Stats";
     begin
-        // Calculer le total vendu pour la journée
-        TotalSold := GetTotalSoldOnDate(ItemNo, StatDate);
-
-        // Calculer le niveau de stock à la fin de la journée
-        StockLevel := GetStockAsOfDate(ItemNo, StatDate);
-
-        // Insérer ou mettre à jour l'enregistrement
         ItemDailyStats.Init();
         ItemDailyStats."Item No." := ItemNo;
         ItemDailyStats.Date := StatDate;
@@ -76,25 +110,7 @@ codeunit 50028 "Populate Item Daily Stats"
         ItemDailyStats.Year := Date2DMY(StatDate, 3);
         ItemDailyStats.Month := Date2DMY(StatDate, 2);
 
-        if not ItemDailyStats.Insert() then
-            ItemDailyStats.Modify();
-    end;
-
-    local procedure GetTotalSoldOnDate(ItemNo: Code[20]; OnDate: Date): Decimal
-    var
-        ItemLedgEntry: Record "Item Ledger Entry";
-    begin
-        ItemLedgEntry.SetRange("Item No.", ItemNo);
-        ItemLedgEntry.SetRange("Posting Date", OnDate);
-        ItemLedgEntry.SetRange("Entry Type", ItemLedgEntry."Entry Type"::Sale);
-        ItemLedgEntry.SetRange(isLocationExclu, false);
-
-        if ItemLedgEntry.FindSet() then begin
-            ItemLedgEntry.CalcSums(Quantity);
-            exit(-ItemLedgEntry.Quantity); // Les ventes sont négatives
-        end;
-
-        exit(0);
+        ItemDailyStats.Insert();
     end;
 
     local procedure GetStockAsOfDate(ItemNo: Code[20]; AsOfDate: Date): Decimal
