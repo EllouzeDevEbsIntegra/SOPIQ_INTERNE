@@ -58,6 +58,15 @@ page 25006839 "Service Order Lines API"
                 {
                     Caption = 'Coût Unitaire (LCY)';
                 }
+                field(Amount; Amount)
+                {
+                    Caption = 'Montant';
+                }
+
+                field(AmountIncludingVAT; "Amount Including VAT")
+                {
+                    Caption = 'Montant TTC';
+                }
 
                 field(CustomerResponse; "Customer Response")
                 {

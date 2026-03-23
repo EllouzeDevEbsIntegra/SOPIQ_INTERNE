@@ -42,7 +42,7 @@ table 70012 "Recu Caisse Document"
 
         }
 
-        field(70017; "Libelle"; Text[100])
+        field(70017; "Libelle"; Text[250])
         {
             DataClassification = ToBeClassified;
         }

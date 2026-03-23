@@ -79,15 +79,15 @@ page 25006882 "Detailed Cust Ledg Entry API"
         recPayLine: Record "Payment Line";
         dueDate: Text;
 
-    trigger OnAfterGetRecord()
-    begin
-        dueDate := '';
-        recPayLine.Reset();
-        recPayLine.SetRange("No.", "Document No.");
-        recPayLine.SetRange("Entry No. Credit", "Applied Cust. Ledger Entry No.");
-        if recPayLine.FindFirst() then
-            if recPayLine."Due Date" <> 0D then
-                dueDate := Format(recPayLine."Due Date", 0, 9);
-    end;
+    // trigger OnAfterGetRecord()
+    // begin
+    //     dueDate := '';
+    //     recPayLine.Reset();
+    //     recPayLine.SetRange("No.", "Document No.");
+    //     recPayLine.SetRange("Entry No. Credit", "Applied Cust. Ledger Entry No.");
+    //     if recPayLine.FindFirst() then
+    //         if recPayLine."Due Date" <> 0D then
+    //             dueDate := Format(recPayLine."Due Date", 0, 9);
+    // end;
 
 }

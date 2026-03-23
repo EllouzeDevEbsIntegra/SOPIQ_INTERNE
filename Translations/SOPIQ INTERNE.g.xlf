@@ -5643,6 +5643,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Customer API - Control address - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="Page 1393889752 - Control 2829159075 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Payment Method Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer API - Control PaymentTermCode - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1393889752 - Control 1463933576 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>picture</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -5652,6 +5657,11 @@
           <source>Specifies the display name of the tax area.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Customer API - Control taxAreaDisplayName - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1393889752 - Control 2722208761 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>taxRegistrationNumber</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Customer API - Control taxRegistrationNumber - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 1202461241 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Transactions Client : Liste Documents</source>
@@ -9783,6 +9793,36 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Modify Sales Line Description - Action Modifier Designation - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 809843481 - Control 707985127 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spécifie le code pour la condition de paiement.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Terms API - Control code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 809843481 - Control 707985127 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Terms API - Control code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 809843481 - Control 4232699882 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spécifie la description de la condition de paiement.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Terms API - Control description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 809843481 - Control 4232699882 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Terms API - Control description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 809843481 - Control 3652386003 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spécifie la formule qui détermine comment calculer la date d'échéance.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Terms API - Control dueDateCalculation - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 809843481 - Control 3652386003 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Due Date Calculation</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Terms API - Control dueDateCalculation - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3521511367 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Posted Sales Document Lines</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -13722,6 +13762,16 @@
           <source>Service Order Lines</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Service Order Lines API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2144219058 - Control 636392376 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Montant</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Service Order Lines API - Control Amount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2144219058 - Control 3038533218 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Montant TTC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Service Order Lines API - Control AmountIncludingVAT - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2144219058 - Control 1676599985 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Réponse Client</source>

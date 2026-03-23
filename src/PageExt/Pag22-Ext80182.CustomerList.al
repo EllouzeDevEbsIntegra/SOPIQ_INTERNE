@@ -118,7 +118,7 @@ pageextension 80182 "Customer List" extends "Customer List"//22
 
     trigger OnOpenPage()
     begin
-        Rec.SetFilter("Date Filter", '>%1', WorkDate());
+        // Rec.SetFilter("Date Filter", '>%1', WorkDate());
     end;
 
     trigger OnAfterGetRecord()

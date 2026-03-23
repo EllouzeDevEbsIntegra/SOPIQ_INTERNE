@@ -3,11 +3,17 @@ page 25006867 "Customer API"
     Caption = 'customers', Locked = true;
     ChangeTrackingAllowed = true;
     DelayedInsert = true;
+    APIPublisher = 'sopiq';
+    APIGroup = 'interne';
+    APIVersion = 'v1.0';
     EntityName = 'customerApi';
     EntitySetName = 'customersApi';
     ODataKeyFields = SystemId;
     PageType = API;
     SourceTable = Customer;
+    InsertAllowed = true;
+    ModifyAllowed = true;
+    DeleteAllowed = true;
 
     layout
     {
@@ -127,6 +133,16 @@ page 25006867 "Customer API"
                             RegisterFieldSet(FieldNo("VAT Bus. Posting Group"));
                     end;
                 }
+                field(taxAreaCode; "Tax Area Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'taxAreaCode', Locked = true;
+
+                    trigger OnValidate()
+                    begin
+                        RegisterFieldSet(FieldNo("Tax Area Code"));
+                    end;
+                }
                 field(taxAreaDisplayName; TaxAreaDisplayName)
                 {
                     ApplicationArea = All;
@@ -137,12 +153,13 @@ page 25006867 "Customer API"
                 field(taxRegistrationNumber; "VAT Registration No.")
                 {
                     ApplicationArea = All;
-                    Caption = 'taxRegistrationNumber', Locked = true;
+                    Caption = 'taxRegistrationNumber';
 
-                    trigger OnValidate()
-                    begin
-                        RegisterFieldSet(FieldNo("VAT Registration No."));
-                    end;
+                }
+                field(PaymentTermCode; "Payment Terms Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Payment Method Code';
                 }
                 field(currencyId; "Currency Id")
                 {
@@ -468,4 +485,3 @@ page 25006867 "Customer API"
             RegisterFieldSet(FieldNo(County));
     end;
 }
-
