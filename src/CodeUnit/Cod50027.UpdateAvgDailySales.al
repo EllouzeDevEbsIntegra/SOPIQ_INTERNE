@@ -13,6 +13,8 @@ codeunit 50027 "Update Avg Daily Sales"
     var
         Item: Record Item;
         PurchPaySetup: Record "Purchases & Payables Setup";
+        ProcessedCount: Integer;
+        BatchSize: Integer;
         YearN, YearN1, YearN2 : Integer;
         EndDateN: Date;
     begin
@@ -23,6 +25,9 @@ codeunit 50027 "Update Avg Daily Sales"
 
         EndDateN := WorkDate();
         ItemCount := 0;
+        ProcessedCount := 0;
+        BatchSize := 100; // Nombre d'articles à traiter avant un commit
+
 
         Item.SetFilter("Total Vendu", '>0');
         Item.SetCurrentKey("No.");
@@ -45,14 +50,23 @@ codeunit 50027 "Update Avg Daily Sales"
 
                 Item.Version := 'v3.0';
                 Item.Modify();
+
                 ItemCount += 1;
+                ProcessedCount += 1;
+
+                // Commit et pause pour éviter les blocages et libérer les ressources
+                if ProcessedCount mod BatchSize = 0 then begin
+                    Commit();
+                    Sleep(50); // Petite pause de 50ms
+                end;
 
             until Item.Next() = 0;
+        Commit(); // Commit final pour les éléments restants
     end;
 
     local procedure CalcAvgDailySales(ItemNo: Code[20]; Year: Integer): Decimal
     var
-        ItemDailyStats: Record 25006658;
+        ItemDailyStats: Record "Item Daily Stats";
         TotalSold: Decimal;
         DaysWithStock: Integer;
     begin
@@ -94,7 +108,7 @@ codeunit 50027 "Update Avg Daily Sales"
 
     local procedure CountDaysWithPositiveStock(ItemNo: Code[20]; FromDate: Date; ToDate: Date): Integer
     var
-        ItemDailyStats: Record 25006658;
+        ItemDailyStats: Record "Item Daily Stats";
         DaysCount: Integer;
     begin
         // Utiliser la table pré-calculée pour les performances

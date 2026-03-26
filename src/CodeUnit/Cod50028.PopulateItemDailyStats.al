@@ -9,8 +9,12 @@ codeunit 50028 "Populate Item Daily Stats"
 
     trigger OnRun()
     begin
-        // Alimenter depuis le 31/12/2022 jusqu'à aujourd'hui
-        PopulateDailyStats(DMY2Date(31, 12, 2022), WorkDate());
+        // IMPORTANT :
+        // Pour la toute première exécution (initialisation), un développeur doit lancer manuellement :
+        // PopulateDailyStats(DMY2Date(31, 12, 2022), Today() - 1); // Ou WorkDate() si vous voulez inclure la date de travail
+
+        // Pour les exécutions journalières via la file d'attente, on ne traite que la journée précédente.
+        PopulateDailyStats(Today() - 1, Today() - 1);
         Message('Alimentation terminée.');
     end;
 
