@@ -47,11 +47,9 @@ query 50010 "Purchases Dashboard"
             {
             }
             // column(PurchInvNo; PurchInvNo)
-            // {
-            // }
+            // { }
             // column(PurchInvDocDate; PurchInvDocDate)
-            // {
-            // }
+            // { }
             dataitem(Country_Region; "Country/Region")
             {
                 DataItemLink = Code = Item_Ledger_Entry."Country/Region Code";
@@ -88,11 +86,28 @@ query 50010 "Purchases Dashboard"
                             column(PurchasePersonName; Name)
                             {
                             }
+                            // dataitem(Value_Entry; "Value Entry")
+                            // {
+                            //     DataItemLink = "Item Ledger Entry No." = Item_Ledger_Entry."Entry No.", "Document Type"=const("Purchase Invoice");
+
+                            //     DataItemTableFilter = "Document Type" = const("Purchase Invoice"),
+                            //                           "Gen. Prod. Posting Group" = const('MARCH_19');
+
+                            //     column(Document_No_; "Document No.")
+                            //     {
+                            //     }
+                            //     column(Invoice_Date_; "Posting Date")
+                            //     {
+                            //     }
+
+
+
+                            // }
                         }
                     }
                 }
             }
         }
     }
-}
 
+}

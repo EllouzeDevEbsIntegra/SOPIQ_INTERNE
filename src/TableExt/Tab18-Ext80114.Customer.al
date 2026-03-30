@@ -156,7 +156,7 @@ tableextension 80114 "Customer" extends "Customer" //18
                                                                  "Account Type" = FILTER(Customer),
                                                                  "Copied To No." = FILTER('')
                                                                 , "Status No." = FILTER(50030)
-                                                                 ,"Due Date" = FIELD("Date Filter")));
+                                                                 , "Due Date" = FILTER('>today')));
             Caption = 'Traite en escompte';
             Editable = false;
             FieldClass = FlowField;
@@ -202,7 +202,7 @@ tableextension 80114 "Customer" extends "Customer" //18
             InitValue = false;
         }
 
-        
+
 
     }
 

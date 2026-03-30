@@ -98,6 +98,5 @@ pageextension 80138 "Customer Card" extends "Customer Card"//21
     trigger OnOpenPage()
     begin
         CalcFields("Traite En Escompte", "Cheque En Coffre", "Cheque Impaye", "Traite En Coff.", "Traite Impaye");
-        //Rec.SetFilter("Date Filter", '>%1', WorkDate());
     end;
 }

@@ -116,10 +116,6 @@ pageextension 80182 "Customer List" extends "Customer List"//22
     //MoyenJourPaiement, nbInvoice : Decimal;
 
 
-    trigger OnOpenPage()
-    begin
-        // Rec.SetFilter("Date Filter", '>%1', WorkDate());
-    end;
 
     trigger OnAfterGetRecord()
     var

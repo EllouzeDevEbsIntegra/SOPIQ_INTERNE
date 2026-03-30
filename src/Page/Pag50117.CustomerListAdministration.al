@@ -1714,7 +1714,7 @@ page 50117 "Customer List Administration"
         SocialListeningSetup: Record "Social Listening Setup";
         CRMIntegrationManagement: Codeunit "CRM Integration Management";
     begin
-        Rec.SetFilter("Date Filter", '>%1', WorkDate());
+        // Le filtre sur "Date Filter" pour les dates futures n'est plus nécessaire ici, car le champ "Traite En Escompte" gère son propre filtre ">Today()".
         CRMIntegrationEnabled := CRMIntegrationManagement.IsCRMIntegrationEnabled;
         CDSIntegrationEnabled := CRMIntegrationManagement.IsCDSIntegrationEnabled;
         with SocialListeningSetup do
@@ -1787,4 +1787,3 @@ page 50117 "Customer List Administration"
     begin
     end;
 }
-

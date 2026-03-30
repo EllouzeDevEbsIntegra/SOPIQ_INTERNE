@@ -58,6 +58,15 @@ page 25006839 "Service Order Lines API"
                 {
                     Caption = 'Coût Unitaire (LCY)';
                 }
+                field(LineDiscount; "Line Discount %")
+                {
+                    Caption = 'Remise (%)';
+                }
+
+                field(LineDiscountAmount; "Line Discount Amount")
+                {
+                    Caption = 'Remise';
+                }
                 field(Amount; Amount)
                 {
                     Caption = 'Montant';

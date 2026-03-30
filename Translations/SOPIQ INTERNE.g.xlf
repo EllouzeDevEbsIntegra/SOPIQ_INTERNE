@@ -13803,6 +13803,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Service Order Lines API - Control EntryNo - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 2144219058 - Control 707059629 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Remise (%)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Service Order Lines API - Control LineDiscount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2144219058 - Control 642538129 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Remise</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Service Order Lines API - Control LineDiscountAmount - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 2144219058 - Control 1165969121 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>N° Ligne</source>
           <note from="Developer" annotates="general" priority="2"></note>
