@@ -8,53 +8,54 @@ report 25006150 "Batch Update OEM Count"
 
     dataset
     {
-        dataitem(Dummy; Integer)
+        dataitem(MasterItem; Item)
         {
-            DataItemTableView = SORTING(Number) WHERE(Number = CONST(1)); // Exécute une seule fois
+            DataItemTableView = WHERE(Produit = CONST(true));
+            RequestFilterFields = "No.";
 
-
-            trigger OnPreDataItem()
+            trigger OnAfterGetRecord()
             var
-                recItem, recMaster : Record Item;
+                recItem: Record Item;
                 countMaster: Integer;
                 API: Codeunit "OEM API Integration";
                 count: Integer;
             begin
-                recMaster.Reset();
-                recMaster.SetRange(Produit, true);
-                if recMaster.FindSet() then begin
+                if GuiAllowed then
+                    Window.Update(1, MasterItem."No.");
+
+                countMaster := 0;
+                recItem.Reset();
+                recItem.SetRange(Produit, false);
+                recItem.SetRange("Reference Origine Lié", MasterItem."No.");
+                // Correction: Il est préférable d'utiliser SetFilter pour les FlowFields
+                recItem.SetFilter(isOem, '%1', true);
+                if recItem.FindSet() then
                     repeat
-                        //Window.Update(1, recMaster."No.");
-                        countMaster := 0;
-                        recItem.Reset();
-                        recItem.SetRange(Produit, false);
-                        recItem.SetRange("Reference Origine Lié", recMaster."No.");
-                        recItem.CalcFields(isOem);
-                        recItem.SetRange(isOem, true);
-                        if recItem.FindSet() then begin
-                            repeat
-                                // Window.Update(2, recItem."No.");
-                                // Upadate count in OEM
-                                Count := API.GetOEMCount(recItem."No.");
-                                //Window.Update(3, Format(Count));
-                                //Message('Item: %1 - Count: %2', recItem."No.", Count);
-                                recItem."Count Item Manual " := Count;
-                                recItem."Count OEM Update Date" := Today();
-                                recItem.Modify();
+                        if GuiAllowed then
+                            Window.Update(2, recItem."No.");
 
+                        // Upadate count in OEM
+                        Count := API.GetOEMCount(recItem."No.");
+                        if GuiAllowed then
+                            Window.Update(3, Count);
 
-                                countMaster := countMaster + count;
-                            until recItem.Next() = 0;
-                        end;
-                        //Message('Master Item: %1 - Count: %2', item."No.", countMaster);
-                        // Update count in Master
-                        //Window.Update(4, Format(countMaster));
-                        recMaster."Count Item Manual " := countMaster;
-                        recMaster."Count OEM Update Date" := Today();
-                        recMaster.Modify();
-                    until recMaster.Next() = 0;
-                end;
+                        recItem."Count Item Manual " := Count;
+                        recItem."Count OEM Update Date" := Today();
+                        recItem.Modify();
 
+                        countMaster := countMaster + Count;
+                        if GuiAllowed then
+                            Window.Update(4, countMaster);
+                    until recItem.Next() = 0;
+
+                // Update count in Master
+                MasterItem."Count Item Manual " := countMaster;
+                MasterItem."Count OEM Update Date" := Today();
+                MasterItem.Modify();
+
+                // OPTIMISATION: Commit après chaque article maître pour libérer les verrous
+                Commit();
+                Sleep(100); // Pause pour permettre à d'autres processus de s'exécuter
             end;
 
 
@@ -73,23 +74,24 @@ report 25006150 "Batch Update OEM Count"
 
     trigger OnPostReport()
     begin
-        timeFin := CurrentDateTime();
-        duration := timeFin - timedebut;
-        //Message('Traitement terminé avec succès %1 !', duration);
+        if GuiAllowed then
+            Window.Close();
+        TimeFin := CurrentDateTime();
+        Duration := TimeFin - TimeDebut;
+        Message('Traitement terminé avec succès en %1 !', Duration);
     end;
 
     trigger OnPreReport()
     begin
-        timedebut := CurrentDateTime();
-        if not GuiAllowed then
-            exit;
-        // Window.Open(MasterMsgNo);
+        TimeDebut := CurrentDateTime();
+        if GuiAllowed then
+            Window.Open(MasterMsgNo);
     end;
 
     var
-        timedebut: DateTime;
-        timeFin: DateTime;
-        duration: Duration;
+        TimeDebut: DateTime;
+        TimeFin: DateTime;
+        Duration: Duration;
         MasterMsgNo: Label 'MASTER N° #1##################\ OEM N° #2##################\  COUNT OEM #3##################\ COUNT MASTER  #4##################\';
         Window: Dialog;
 }

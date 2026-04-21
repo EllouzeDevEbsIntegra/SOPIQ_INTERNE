@@ -13713,6 +13713,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Service Order Header API - Control PhoneNo - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 986506592 - Control 4237402031 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Progress</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Service Order Header API - Control Progress - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 986506592 - Control 2421840855 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Roue de secours</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -22313,6 +22318,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Shipment Line - Field Line No BS Inverse - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 1114148978 - Field 4085379090 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1114148978">
+          <source>Masque</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Sales Shipment Line - Field Masque - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 1114148978 - Field 4044337449 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1114148978">
           <source>Qty BS To Invoice</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -22517,6 +22527,11 @@
           <source>Observation</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Service Header EDMS - Field Observation - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1822833887 - Field 4237402031 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1822833887">
+          <source>Progress</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Service Header EDMS - Field Progress - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 1822833887 - Field 2421840855 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1822833887">
           <source>Roue de secours</source>

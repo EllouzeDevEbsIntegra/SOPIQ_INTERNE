@@ -245,6 +245,11 @@ page 25006851 "Sales Invoice API"
                     Caption = 'VIN', Locked = true;
                     ToolTip = 'Specifies the Vehicle Identification Number (VIN) associated with the invoice.';
                 }
+                field("Immatriculation"; "Vehicle Registration No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Immatriculation', Locked = true;
+                }
                 field(workDescription; workDescription)
                 {
                     ApplicationArea = All;

@@ -8,7 +8,7 @@ codeunit 50024 "OEM API Integration"
         Content: Text;
         OEMCount: Integer;
     begin
-        Request.SetRequestUri('http://192.168.1.11/api/ext/oem-count?oem=' + OEMCode);
+        Request.SetRequestUri('http://192.168.3.10/api/ext/oem-count?oem=' + OEMCode);
         Request.Method := 'GET';
 
         if Client.Send(Request, Response) then begin

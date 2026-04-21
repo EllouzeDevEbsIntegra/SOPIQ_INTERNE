@@ -99,6 +99,13 @@ tableextension 80110 "Service Line EDMS" extends "Service Line EDMS" //25006146
                         end;
                     end;
                 end;
+
+                if xRec."Unit Price" <> 0 then begin
+                    "Unit Price" := xRec."Unit Price";
+                    exit;
+                end;
+
+
             end;
         }
     }

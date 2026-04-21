@@ -8,7 +8,7 @@ page 50113 "Ligne BS"
     UsageCategory = Lists;
     ApplicationArea = all;
     SourceTable = "Sales Shipment Line";
-    SourceTableView = sorting("No.") where(BS = const(true), "Quantity Invoiced" = filter(= 0), "Qty BS To Invoice" = filter(> 0));
+    SourceTableView = sorting("No.") where(BS = const(true), "Quantity Invoiced" = filter(= 0), "Qty BS To Invoice" = filter(> 0), Masque = filter(false));
     Permissions = tabledata "Sales Shipment Line" = rm;
 
     layout

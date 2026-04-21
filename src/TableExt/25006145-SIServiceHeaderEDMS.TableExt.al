@@ -102,6 +102,12 @@ tableextension 80250 "Service Header EDMS" extends "Service Header EDMS" //25006
             Caption = 'Observation';
             DataClassification = ToBeClassified;
         }
+        field(80264; Progress; Decimal)
+        {
+            Caption = 'Progress';
+            DataClassification = ToBeClassified;
+        }
+
 
     }
     procedure SI_InsertServPackage()

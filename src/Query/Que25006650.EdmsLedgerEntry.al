@@ -184,6 +184,13 @@ Query 25006650 "Edms Ledger Entry"
                 {
 
                 }
+                column(Initiateur; Initiateur)
+                {
+
+                }
+                column(Phone_No; "Phone No.")
+                {
+                }
 
                 dataitem(Sales_Cr_Memo_Header; "Sales Cr.Memo Header")
                 {
@@ -196,7 +203,10 @@ Query 25006650 "Edms Ledger Entry"
                     {
 
                     }
+                    column(Applies_to_Doc__No_; "Applies-to Doc. No.")
+                    {
 
+                    }
 
 
                     dataitem(Customer; Customer)
