@@ -18,9 +18,16 @@ page 25006864 "GET PDF Sales Shipment"
         {
             repeater(General)
             {
-                field(id; Rec."No.")
+                field(id; SystemId)
                 {
-                    Caption = 'id';
+                    ApplicationArea = All;
+                    Caption = 'id', Locked = true;
+                    Editable = false;
+                }
+
+                field(number; Rec."No.")
+                {
+                    Caption = 'number';
                 }
                 field(pdfBase64; PdfBase64)
                 {

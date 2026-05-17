@@ -16,6 +16,12 @@ page 25006844 "Labor Task API"
         {
             repeater(Group)
             {
+                field(id; SystemId)
+                {
+                    ApplicationArea = All;
+                    Caption = 'SystemId', Locked = true;
+                    Editable = false;
+                }
                 field(LaborCode; "Labor Code")
                 {
                     ApplicationArea = All;

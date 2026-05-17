@@ -9,7 +9,7 @@ page 25006833 "SI Vehicle  API"
     SourceTable = Vehicle;
     ChangeTrackingAllowed = true;
     DelayedInsert = true;
-    ODataKeyFields = "Serial No.";
+    ODataKeyFields = SystemId;
     PageType = API;
 
     layout
@@ -18,6 +18,12 @@ page 25006833 "SI Vehicle  API"
         {
             repeater(Group)
             {
+                field(id; SystemId)
+                {
+                    ApplicationArea = All;
+                    Caption = 'SystemId', Locked = true;
+                    Editable = false;
+                }
                 field(Vsn; "Serial No.")
                 {
                     ApplicationArea = All;

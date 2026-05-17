@@ -16,6 +16,12 @@ page 25006836 "Recu Caisse Document API"
         {
             group("Document")
             {
+                field(id; SystemId)
+                {
+                    ApplicationArea = All;
+                    Caption = 'SystemId', Locked = true;
+                    Editable = false;
+                }
                 field(NoRecu; "No Recu") { Caption = 'N° Reçu'; }
                 field(LineNo; "Line No") { Caption = 'N° Ligne'; }
                 field(type; type) { Caption = 'Type Document'; }

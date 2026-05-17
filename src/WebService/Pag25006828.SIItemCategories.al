@@ -4,7 +4,7 @@ page 25006828 "SI Item Categories"
     DelayedInsert = true;
     EntityName = 'SiItemCategory';
     EntitySetName = 'SiItemCategory';
-    ODataKeyFields = Id;
+    ODataKeyFields = SystemId;
     PageType = API;
     SourceTable = "Item Category";
     APIPublisher = 'sopiq';
@@ -16,7 +16,7 @@ page 25006828 "SI Item Categories"
         {
             repeater(Group)
             {
-                field(id; Id)
+                field(id; SystemId)
                 {
                     ApplicationArea = All;
                     Caption = 'Id', Locked = true;

@@ -151,6 +151,10 @@ table 25006898 "Sales Invoice Feedback"
         {
             Caption = 'Feedback Date';
         }
+        field(31; injoignable; Boolean)
+        {
+            Caption = 'injoignable';
+        }
     }
 
     keys

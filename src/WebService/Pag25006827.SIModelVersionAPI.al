@@ -10,7 +10,7 @@ page 25006827 "SI Model Version API"
     SourceTableView = where("Item Type" = const(2));
     ChangeTrackingAllowed = true;
     DelayedInsert = true;
-    ODataKeyFields = id;
+    ODataKeyFields = SystemId;
     PageType = API;
 
     layout
@@ -19,7 +19,7 @@ page 25006827 "SI Model Version API"
         {
             repeater(Group)
             {
-                field(id; id)
+                field(id; SystemId)
                 {
                     ApplicationArea = All;
                     Caption = 'id', Locked = true;

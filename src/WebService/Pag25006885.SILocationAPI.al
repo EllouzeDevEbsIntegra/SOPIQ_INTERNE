@@ -1,18 +1,18 @@
-page 25006832 "SI Manufacturer"
+page 25006885 "SI Location API"
 {
-    Caption = 'SI Manufacturer';
+    Caption = 'SI Location API';
     APIPublisher = 'sopiq';
     APIGroup = 'interne';
     APIVersion = 'v1.0';
-    EntityName = 'SiManufacturer';
-    EntitySetName = 'SiManufacturer';
-    SourceTable = Manufacturer;
+    EntityName = 'SiLocationAPI';
+    EntitySetName = 'SiLocationAPI';
+    SourceTable = Location;
     ChangeTrackingAllowed = true;
     DelayedInsert = true;
     InsertAllowed = true;
     ModifyAllowed = true;
     DeleteAllowed = true;
-    ODataKeyFields = SystemId;
+    ODataKeyFields = Code;
     PageType = API;
 
     layout
@@ -24,7 +24,7 @@ page 25006832 "SI Manufacturer"
                 field(id; SystemId)
                 {
                     ApplicationArea = All;
-                    Caption = 'SystemId', Locked = true;
+                    Caption = 'id', Locked = true;
                     Editable = false;
                 }
                 field(Code; Code)
@@ -38,22 +38,6 @@ page 25006832 "SI Manufacturer"
                     ApplicationArea = All;
                     Caption = 'Name';
                 }
-                field(IDTecdOC; "ID TechDOC")
-                {
-                    ApplicationArea = All;
-                    Caption = 'ID TechDOC';
-                }
-                field(NotActif; Actif)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Not Actif';
-                }
-                field(IsSpecific; IsSpecific)
-                {
-                    ApplicationArea = All;
-                    Caption = 'IsSpecific';
-                }
-
             }
 
         }

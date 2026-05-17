@@ -22,6 +22,12 @@ page 25006882 "Detailed Cust Ledg Entry API"
         {
             repeater(General)
             {
+                field(id; SystemId)
+                {
+                    ApplicationArea = All;
+                    Caption = 'id', Locked = true;
+                    Editable = false;
+                }
                 field(entryNo; Rec."Entry No.")
                 {
                     Caption = 'Entry No.';

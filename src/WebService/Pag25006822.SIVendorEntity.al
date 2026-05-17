@@ -5,7 +5,7 @@ page 25006822 "SI Vendor Entity"
     DelayedInsert = true;
     EntityName = 'SiVendorAPI';
     EntitySetName = 'SiVendorAPI';
-    ODataKeyFields = Id;
+    ODataKeyFields = SystemId;
     PageType = API;
     SourceTable = Vendor;
     APIPublisher = 'sopiq';
@@ -18,7 +18,7 @@ page 25006822 "SI Vendor Entity"
         {
             repeater(Group)
             {
-                field(id; Id)
+                field(id; SystemId)
                 {
                     ApplicationArea = All;
                     Caption = 'Id', Locked = true;

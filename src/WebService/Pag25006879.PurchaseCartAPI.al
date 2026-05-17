@@ -21,6 +21,12 @@ page 25006879 "Purchase Cart API"
         {
             repeater(General)
             {
+                field(id; SystemId)
+                {
+                    ApplicationArea = All;
+                    Caption = 'id', Locked = true;
+                    Editable = false;
+                }
                 field(lineNo; Rec."Line No.")
                 {
                     Caption = 'Line No.';

@@ -4,7 +4,7 @@ page 25006834 "Si Picture API"
     DelayedInsert = true;
     EntityName = 'SIPictureAPI';
     EntitySetName = 'SIPictureAPI';
-    ODataKeyFields = "No.";
+    ODataKeyFields = SystemId;
     PageType = API;
     SourceTable = "Picture";
     SourceTableTemporary = true;
@@ -16,6 +16,12 @@ page 25006834 "Si Picture API"
         {
             repeater(Group)
             {
+                field(id; SystemId)
+                {
+                    ApplicationArea = All;
+                    Caption = 'SystemId', Locked = true;
+                    Editable = false;
+                }
                 field(no; "No.")
                 {
                     Caption = 'No.';

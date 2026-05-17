@@ -9,6 +9,9 @@ page 25006821 "SI Item API"
     SourceTable = Item;
     ChangeTrackingAllowed = true;
     DelayedInsert = true;
+    InsertAllowed = true;
+    ModifyAllowed = true;
+    DeleteAllowed = true;
     ODataKeyFields = SystemId;
     PageType = API;
 
@@ -64,6 +67,11 @@ page 25006821 "SI Item API"
                 {
                     Caption = 'Category';
                 }
+                field(isOem; isOem)
+                {
+                    Caption = 'OEM';
+                }
+
 
                 field(GroupCode; "Item Product Code")
                 {

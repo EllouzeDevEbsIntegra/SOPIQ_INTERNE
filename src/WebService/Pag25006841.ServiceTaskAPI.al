@@ -16,6 +16,12 @@ page 25006841 "Service Task API"
         {
             repeater(Group)
             {
+                field(id; SystemId)
+                {
+                    ApplicationArea = All;
+                    Caption = 'SystemId', Locked = true;
+                    Editable = false;
+                }
                 field(Code; Code)
                 {
                     Caption = 'Code';

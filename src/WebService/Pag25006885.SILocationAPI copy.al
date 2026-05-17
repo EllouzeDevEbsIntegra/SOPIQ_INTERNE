@@ -1,12 +1,12 @@
-page 25006832 "SI Manufacturer"
+page 25006886 "SI Service Labor"
 {
-    Caption = 'SI Manufacturer';
+    Caption = 'SI Service Labor';
     APIPublisher = 'sopiq';
     APIGroup = 'interne';
     APIVersion = 'v1.0';
-    EntityName = 'SiManufacturer';
-    EntitySetName = 'SiManufacturer';
-    SourceTable = Manufacturer;
+    EntityName = 'SiServiceLabor';
+    EntitySetName = 'SiServiceLabor';
+    SourceTable = "Service Labor";
     ChangeTrackingAllowed = true;
     DelayedInsert = true;
     InsertAllowed = true;
@@ -24,35 +24,40 @@ page 25006832 "SI Manufacturer"
                 field(id; SystemId)
                 {
                     ApplicationArea = All;
-                    Caption = 'SystemId', Locked = true;
+                    Caption = 'id', Locked = true;
                     Editable = false;
                 }
-                field(Code; Code)
+
+                field(No; "No.")
                 {
                     ApplicationArea = All;
                     Caption = 'Code', Locked = true;
                     Editable = false;
                 }
-                field(Description; Name)
+                field(Description; Description)
                 {
                     ApplicationArea = All;
-                    Caption = 'Name';
+                    Caption = 'Description';
                 }
-                field(IDTecdOC; "ID TechDOC")
+                field("MakeCode"; "Make Code")
                 {
                     ApplicationArea = All;
-                    Caption = 'ID TechDOC';
+                    Caption = 'Make Code';
                 }
-                field(NotActif; Actif)
+
+                field("GroupCode"; "Group Code")
                 {
                     ApplicationArea = All;
-                    Caption = 'Not Actif';
+                    Caption = 'Group Code';
                 }
-                field(IsSpecific; IsSpecific)
+                field("LaborType"; "Labor Type")
                 {
                     ApplicationArea = All;
-                    Caption = 'IsSpecific';
+                    Caption = 'Labor Type';
                 }
+
+
+
 
             }
 

@@ -17,6 +17,12 @@ page 25006837 "Recu Caisse Paiement API"
         {
             group("Paiement")
             {
+                field(id; SystemId)
+                {
+                    ApplicationArea = All;
+                    Caption = 'SystemId', Locked = true;
+                    Editable = false;
+                }
                 field(NoRecu; "No Recu") { Caption = 'N° Reçu'; }
                 field(LineNo; "Line No") { Caption = 'N° Ligne'; }
                 field(type; type)

@@ -18,6 +18,7 @@ page 25006866 "GET PDF Sales Invoice"
         {
             repeater(General)
             {
+
                 field(id; Rec."No.")
                 {
                     Caption = 'id';

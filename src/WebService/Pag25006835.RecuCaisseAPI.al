@@ -9,7 +9,7 @@ page 25006835 "Recu Caisse API"
     EntityName = 'recuCaisseAPI';
     EntitySetName = 'recuCaisseAPI';
     DelayedInsert = true;
-    ODataKeyFields = "No";
+    ODataKeyFields = SystemId;
 
     layout
     {
@@ -17,6 +17,13 @@ page 25006835 "Recu Caisse API"
         {
             group("Reçu de Caisse")
             {
+
+                field(id; SystemId)
+                {
+                    ApplicationArea = All;
+                    Caption = 'SystemId', Locked = true;
+                    Editable = false;
+                }
                 field(No; No) { Caption = 'N° Reçu'; }
                 field(CustomerNo; "Customer No")
                 {

@@ -250,6 +250,13 @@ page 25006851 "Sales Invoice API"
                     ApplicationArea = All;
                     Caption = 'Immatriculation', Locked = true;
                 }
+
+                field(kilometrage; "Variable Field Run 1")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Variable Field Run 1', Locked = true;
+                }
+
                 field(workDescription; workDescription)
                 {
                     ApplicationArea = All;

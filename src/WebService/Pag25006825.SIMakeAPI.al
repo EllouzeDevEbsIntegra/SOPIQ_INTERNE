@@ -12,7 +12,7 @@ page 25006825 "SI Make API"
     InsertAllowed = true;
     ModifyAllowed = true;
     DeleteAllowed = true;
-    ODataKeyFields = Code;
+    ODataKeyFields = SystemId;
     PageType = API;
 
     layout
@@ -21,6 +21,12 @@ page 25006825 "SI Make API"
         {
             repeater(Group)
             {
+                field(id; SystemId)
+                {
+                    ApplicationArea = All;
+                    Caption = 'SystemId', Locked = true;
+                    Editable = false;
+                }
                 field(Code; Code)
                 {
                     ApplicationArea = All;

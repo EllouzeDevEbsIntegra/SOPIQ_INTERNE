@@ -22,6 +22,12 @@ page 25006878 "Manufacturer API"
         {
             repeater(Group)
             {
+                field(id; SystemId)
+                {
+                    ApplicationArea = All;
+                    Caption = 'id', Locked = true;
+                    Editable = false;
+                }
                 field(Code; Code)
                 {
                     ApplicationArea = All;

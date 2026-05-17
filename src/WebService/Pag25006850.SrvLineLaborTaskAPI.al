@@ -19,6 +19,12 @@ page 25006850 "Srv Line Labor Task API"
         {
             repeater(Group)
             {
+                field(id; SystemId)
+                {
+                    ApplicationArea = All;
+                    Caption = 'SystemId', Locked = true;
+                    Editable = false;
+                }
                 field(DocumentNo; "Document No.") { Caption = 'Service Document No.'; }
                 field(DocumentLineNo; "Document Line No.") { Caption = 'Service Line No.'; }
                 field(LineNo; "Line No.") { Caption = 'Task Line No.'; }

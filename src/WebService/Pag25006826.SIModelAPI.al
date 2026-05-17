@@ -9,7 +9,7 @@ page 25006826 "SI Model API"
     SourceTable = Model;
     ChangeTrackingAllowed = true;
     DelayedInsert = true;
-    ODataKeyFields = Code;
+    ODataKeyFields = SystemId;
     PageType = API;
 
     layout
@@ -18,6 +18,12 @@ page 25006826 "SI Model API"
         {
             repeater(Group)
             {
+                field(id; SystemId)
+                {
+                    ApplicationArea = All;
+                    Caption = 'SystemId', Locked = true;
+                    Editable = false;
+                }
                 field(Code; Code)
                 {
                     ApplicationArea = All;

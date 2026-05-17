@@ -21,6 +21,12 @@ page 25006883 "Zone Recouvrement API"
         {
             repeater(General)
             {
+                field(id; SystemId)
+                {
+                    ApplicationArea = All;
+                    Caption = 'id', Locked = true;
+                    Editable = false;
+                }
                 field(code; Rec."code")
                 {
                     Caption = 'Entry No.';

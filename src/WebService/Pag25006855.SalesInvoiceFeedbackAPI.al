@@ -13,12 +13,18 @@ page 25006855 "Sales Invoice Feedback API"
     InsertAllowed = false;
     DeleteAllowed = true;
 
-    
+
 
     layout
     {
         area(content)
         {
+            field(id; SystemId)
+            {
+                ApplicationArea = All;
+                Caption = 'SystemId', Locked = true;
+                Editable = false;
+            }
             field(No; "No.") { }
             field(postingDate; "Posting Date") { }
             field(amount; Amount) { }
@@ -49,6 +55,7 @@ page 25006855 "Sales Invoice Feedback API"
             field(vin; VIN) { }
             field(feedback; feedback) { }
             field("FeedbackDate"; "Feedback Date") { }
+            field(injoignable; injoignable) { }
 
 
         }
