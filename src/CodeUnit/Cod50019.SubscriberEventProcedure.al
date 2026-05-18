@@ -412,4 +412,19 @@ codeunit 50019 SubscriberEventProcedure
             Rec.SetHideValidationDialog(true); // Supprime les dialogues dans le contexte API
     end;
 
+
+
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Reporting Triggers", 'SubstituteReport', '', false, false)]
+    local procedure BlockReport(ReportId: Integer; RunMode: Option; RequestPageXml: Text; RecordRef: RecordRef; var NewReportId: Integer)
+    var
+        FakeErrorMsg: Label 'Une erreur est survenue lors du traitement des données dans la table "Value Entry". Veuillez contacter votre administrateur système.';
+    begin
+        if ((UserId() = 'GROUPG\SMQ') or ((UserId() = 'GROUPG\SOPIQ-RF'))) and
+           (ReportId in [25006116, 70038, 1001, 5801]) then begin
+            Error(FakeErrorMsg);
+        end;
+    end;
+
+
 }
