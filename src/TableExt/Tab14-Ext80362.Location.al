@@ -8,6 +8,11 @@ tableextension 80362 "Location" extends "Location" //14
             DataClassification = ToBeClassified;
             InitValue = false;
         }
+        field(80363; isMgOcc; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            InitValue = false;
+        }
     }
 
     keys

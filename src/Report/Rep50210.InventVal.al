@@ -3,7 +3,7 @@ report 50210 "Invent. Val."
     DefaultLayout = RDLC;
     RDLCLayout = './src/report/RDLC/EvaluationStock.rdl';
     ApplicationArea = Basic, Suite;
-    Caption = 'Evaluation du Stock Formaté';
+    Caption = 'Evaluation Stocks';
     EnableHyperlinks = true;
     UsageCategory = ReportsAndAnalysis;
 
@@ -11,7 +11,7 @@ report 50210 "Invent. Val."
     {
         dataitem(Item; Item)
         {
-            DataItemTableView = SORTING("Inventory Posting Group") WHERE(Type = CONST(Inventory));
+            DataItemTableView = SORTING("Inventory Posting Group") WHERE(Type = CONST(Inventory), "Manufacturer Code" = FILTER(<> 'FAB0001' & <> 'FAB0001' & <> 'FAB0067'));
             RequestFilterFields = "No.", "Inventory Posting Group", "Statistics Group";
             column(BoM_Text; BoM_TextLbl)
             {

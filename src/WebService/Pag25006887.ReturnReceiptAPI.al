@@ -1,12 +1,12 @@
-page 25006856 "SalesShipment API"
+page 25006887 "Return Receipt API"
 {
     PageType = API;
-    SourceTable = "Sales Shipment Header";
+    SourceTable = "Return Receipt Header";
     APIPublisher = 'sopiq';
     APIGroup = 'interne';
     APIVersion = 'v1.0';
-    EntityName = 'salesShipmentAPI';
-    EntitySetName = 'salesShipmentAPI';
+    EntityName = 'returnReceiptAPI';
+    EntitySetName = 'returnReceiptAPI';
     ODataKeyFields = SystemId;
     DelayedInsert = true;
 
@@ -60,14 +60,6 @@ page 25006856 "SalesShipment API"
                 field(sellToCountry; "Sell-to County")
                 {
                     Caption = 'sellToCountry';
-                }
-                field(phoneNumber; "Sell-to Phone No.")
-                {
-                    Caption = 'phoneNumber';
-                }
-                field(email; "Sell-to E-Mail")
-                {
-                    Caption = 'email';
                 }
 
                 field(billToName; "Bill-to Name")
@@ -132,9 +124,9 @@ page 25006856 "SalesShipment API"
                 {
                     Caption = 'currencyCode';
                 }
-                field(orderNumber; "Order No.")
+                field(returnOrderNumber; "Return Order No.")
                 {
-                    Caption = 'orderNumber';
+                    Caption = 'returnOrderNumber';
                 }
                 field(paymentTermsCode; "Payment Terms Code")
                 {
@@ -165,13 +157,6 @@ page 25006856 "SalesShipment API"
                 field("RemainingAmount"; "Montant Ouvert")
                 {
                     Caption = 'montantOuvert';
-                }
-                part(salesShipmentLines; "Sales Shipment Line API")
-                {
-                    Caption = 'salesShipmentLines';
-                    SubPageLink = "Document No." = field("No.");
-                    EntityName = 'salesShipmentLine';
-                    EntitySetName = 'salesShipmentLines';
                 }
 
             }

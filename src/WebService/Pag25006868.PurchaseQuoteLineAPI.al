@@ -78,6 +78,13 @@ page 25006868 "Purchase Quote Line API"
                     Caption = 'vendorQuantity';
                     ApplicationArea = All;
                 }
+                
+                field("QtyFirstConfirmation";"Qty First Confirmation")
+                {
+                    Caption = 'qtyFirstConfirmation';
+                    ApplicationArea = All;
+                }
+                
                 field(quantity; Rec.Quantity)
                 {
                     Caption = 'quantity';

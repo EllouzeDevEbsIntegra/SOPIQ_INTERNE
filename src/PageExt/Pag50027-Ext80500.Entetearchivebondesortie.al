@@ -60,6 +60,27 @@ pageextension 80500 "Entete archive bon de sortie" extends "Entete archive bon d
                     reportBonSortieArchive.Run();
                 end;
             }
+
+            action("Imprimer BS / BL SOPIQ")
+            {
+                ApplicationArea = all;
+                Caption = 'Imprimer BS / BL SOPIQ';
+                Visible = BS;
+                Promoted = true;
+                Image = Print;
+                PromotedIsBig = true;
+                PromotedCategory = Report;
+                trigger OnAction()
+                var
+                    PostedSalesShipment: Record "Entete archive BS";
+                    Posted: Page "Entete archive bon de sortie";
+                    reportBL: Report 25006152;
+                begin
+                    CurrPage.SetSelectionFilter(PostedSalesShipment);
+                    reportBL.SetTableView(PostedSalesShipment);
+                    reportBL.Run();
+                end;
+            }
         }
     }
 

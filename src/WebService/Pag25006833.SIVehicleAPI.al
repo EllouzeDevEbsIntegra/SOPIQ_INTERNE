@@ -10,6 +10,9 @@ page 25006833 "SI Vehicle  API"
     ChangeTrackingAllowed = true;
     DelayedInsert = true;
     ODataKeyFields = SystemId;
+    InsertAllowed = true;
+    ModifyAllowed = true;
+    DeleteAllowed = true;
     PageType = API;
 
     layout

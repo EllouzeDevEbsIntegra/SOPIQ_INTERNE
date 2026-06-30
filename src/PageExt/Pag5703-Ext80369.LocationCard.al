@@ -10,7 +10,16 @@ pageextension 80369 "Location Card" extends "Location Card" //5703
                 ApplicationArea = all;
                 Caption = 'Exclure du stock Disponible';
             }
+
+            field(isMgOcc; isMgOcc)
+            {
+                ApplicationArea = all;
+                Caption = 'Magasin Occasion';
+            }
+
+            
         }
+
     }
 
     actions

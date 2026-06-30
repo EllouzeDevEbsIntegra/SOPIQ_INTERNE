@@ -38,6 +38,22 @@ tableextension 80501 "Return Receipt Line" extends "Return Receipt Line" //6661
         {
             DataClassification = ToBeClassified;
         }
+
+        field(80420; ItemUnitPrice; Decimal)
+        {
+            CalcFormula = lookup(item."Unit Price" where("No." = field("No.")));
+            Caption = 'Prix Vente';
+            FieldClass = FlowField;
+        }
+
+        field(80421; itemLastPurchDate; Date)
+        {
+            CalcFormula = lookup(item."Last. Pursh. Date" where("No." = field("No.")));
+            Caption = 'Dernier Date Achat';
+            FieldClass = FlowField;
+        }
+
+
     }
 
     keys

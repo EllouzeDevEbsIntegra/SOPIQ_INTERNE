@@ -12,7 +12,6 @@ page 25006873 "BC Item API"
     DelayedInsert = true;
     ModifyAllowed = true;
 
-    // Même vue/tri que ta ListPart
     SourceTableView =
         WHERE(Produit = CONST(false),
               "Fabricant Is Actif" = FILTER(true));

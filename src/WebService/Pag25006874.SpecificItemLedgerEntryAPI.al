@@ -88,7 +88,7 @@ page 25006874 "Specific Item Ledger Entry API"
                     ToolTip = 'Specifies how many units of the item on the line have been invoiced.';
                     Visible = true;
                 }
-                field(RemainingQuantity; "Remaining Quantity")
+                field(RemainingQuantity; remainingQty)
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the quantity in the Quantity field that remains to be processed.';
@@ -190,6 +190,16 @@ page 25006874 "Specific Item Ledger Entry API"
                     ToolTip = 'Specifies the name of the source, based on the Source Type and Source No. fields.';
                     Visible = false;
                 }
+
+                field(isImportLocation; isImportLocation)
+                {
+                    ApplicationArea = Basic;
+                }
+                field(isLocationExclu; isLocationExclu)
+                {
+                    ApplicationArea = Basic;
+                }
+
 
 
             }

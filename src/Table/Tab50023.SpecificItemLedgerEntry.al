@@ -280,6 +280,27 @@ table 50023 "Specific Item Ledger Entry"
             FieldClass = FlowField;
         }
 
+
+        field(80106; isLocationExclu; Boolean)
+        {
+            CalcFormula = lookup(Location."ExculreStock" where("Code" = field("Location Code")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(80107; isImportLocation; Boolean)
+        {
+            CalcFormula = lookup(Location.Import where("Code" = field("Location Code")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(80108; remainingQty; Decimal)
+        {
+            CalcFormula = lookup("Item Ledger Entry"."Remaining Quantity" where("Entry No." = field("Entry No.")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
     }
 
     keys

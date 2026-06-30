@@ -131,4 +131,6 @@ tableextension 80110 "Service Line EDMS" extends "Service Line EDMS" //25006146
             if rec."No." <> '' then
                 TaskGenerator.GenerateTasksFromLabor(rec."No.", rec."Document No.", rec."Line No.");
     end;
+
+
 }
