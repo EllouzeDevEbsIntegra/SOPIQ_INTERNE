@@ -282,6 +282,13 @@ page 25006851 "Sales Invoice API"
                     ToolTip = 'Specifies the tax area code associated with the invoice.';
                 }
 
+                field(MoyJourPaiement; "Moy Jour Paiement")
+                {
+                    ApplicationArea = All;
+                    Caption = 'MoyJourPaiement', Locked = true;
+                    ToolTip = 'Specifies the payment terms associated with the invoice.';
+                }
+
             }
         }
     }
@@ -297,6 +304,8 @@ page 25006851 "Sales Invoice API"
         Customer: Record Customer;
     begin
         CalcFields(Initiateur);
+        CalcFields("Remaining Amount");
+        // "Moy Jour Paiement" est désormais persisté par le report 25006153 (Job Queue) : on lit la valeur stockée, pas de recalcul ici.
         WorkDescription := CopyStr(GetWorkDescription, 1, 250);
 
         Vehicle.reset();
