@@ -1,4 +1,4 @@
-codeunit 50022 SIStockCodeUnit
+﻿codeunit 50022 SIStockCodeUnit
 {
     Permissions = tabledata item = rimd,
                 tabledata "Item Vendor" = rimd,
@@ -200,38 +200,66 @@ codeunit 50022 SIStockCodeUnit
 
     procedure CreateVendorForItem(var Rec: Record Item; vendorNo: code[20]; recVendor: Text)
     var
-        VendorByManufacturer: Record "Vendor By Manufacturer";
         ItemVendor: Record "Item Vendor";
         Vendor: Record Vendor;
         ItemCrossReference: Record "Item Cross Reference";
+        ItemUoM: Record "Item Unit of Measure";
+        VendCode: Code[20];
+        UoMCode: Code[10];
     begin
+        // ---- Garde-fous : on n'ecrit rien sur des donnees incoherentes
+        if Rec."No." = '' then
+            exit;
+
+        VendCode := CopyStr(recVendor, 1, MaxStrLen(VendCode));
+        if VendCode = '' then
+            exit;
+        if not Vendor.Get(VendCode) then
+            exit;
+
+        // ---- Purge ciblee : SetRange (valeur) et non SetFilter (expression)
         ItemVendor.Reset();
-        ItemVendor.SetFilter("Item No.", Rec."No.");
-        ItemVendor.SetFilter("Vendor No.", recVendor);
-        ItemVendor.DeleteAll();
+        ItemVendor.SetRange("Item No.", Rec."No.");
+        ItemVendor.SetRange("Vendor No.", VendCode);
+        ItemVendor.DeleteAll(true);
 
         ItemCrossReference.Reset();
-        ItemCrossReference.SetFilter("Item No.", Rec."No.");
-        ItemCrossReference.SetFilter("Cross-Reference Type No.", recVendor);
-        ItemCrossReference.DeleteAll();
+        ItemCrossReference.SetRange("Item No.", Rec."No.");
+        ItemCrossReference.SetRange("Cross-Reference Type",
+                                    ItemCrossReference."Cross-Reference Type"::Vendor);
+        ItemCrossReference.SetRange("Cross-Reference Type No.", VendCode);
+        ItemCrossReference.DeleteAll(true);
 
+        // ---- Rien a recreer si la reference fournisseur est vide
+        if vendorNo = '' then
+            exit;
+
+        // ---- Unite de mesure : verifiee sur l'article, avec repli
+        UoMCode := Rec."Purch. Unit of Measure";
+        if (UoMCode = '') or (not ItemUoM.Get(Rec."No.", UoMCode)) then
+            UoMCode := Rec."Base Unit of Measure";
+        if (UoMCode <> '') and (not ItemUoM.Get(Rec."No.", UoMCode)) then
+            UoMCode := '';
+
+        // ---- Fiche fournisseur article
         ItemVendor.Init();
-        ItemVendor."Item No." := Rec."No.";
-        ItemVendor."Vendor No." := recVendor;
-        Vendor.get(recVendor);
-        ItemVendor."Lead Time Calculation" := Vendor."Lead Time Calculation"; //
-        ItemVendor."Vendor Item No." := vendorNo;
-        ItemVendor.Insert();
+        ItemVendor.Validate("Item No.", Rec."No.");
+        ItemVendor.Validate("Vendor No.", VendCode);
+        ItemVendor.Validate("Variant Code", '');
+        ItemVendor.Validate("Vendor Item No.", vendorNo);
+        ItemVendor.Validate("Lead Time Calculation", Vendor."Lead Time Calculation");
+        ItemVendor.Insert(true);
 
-
+        // ---- Reference externe
         ItemCrossReference.Init();
-        ItemCrossReference."Item No." := rec."No.";
-        ItemCrossReference."Cross-Reference Type" := ItemCrossReference."Cross-Reference Type"::Vendor;
-        ItemCrossReference."Cross-Reference Type No." := recVendor;
-        ItemCrossReference."Cross-Reference No." := vendorNo;
-        ItemCrossReference."Unit of Measure" := rec."Purch. Unit of Measure";
-        ItemCrossReference.Insert();
-
+        ItemCrossReference.Validate("Item No.", Rec."No.");
+        ItemCrossReference.Validate("Variant Code", '');
+        ItemCrossReference.Validate("Unit of Measure", UoMCode);
+        ItemCrossReference.Validate("Cross-Reference Type",
+                                    ItemCrossReference."Cross-Reference Type"::Vendor);
+        ItemCrossReference.Validate("Cross-Reference Type No.", VendCode);
+        ItemCrossReference.Validate("Cross-Reference No.", vendorNo);
+        ItemCrossReference.Insert(true);
     end;
 
 }

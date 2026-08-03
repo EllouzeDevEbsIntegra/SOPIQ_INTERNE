@@ -23233,16 +23233,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Vehicle SO Proc. Activities - Control Neg Ajust Year - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 3087690892 - Control 515058442 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3087690892">
-          <source>Fabricant</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Vendor By Manufacturer - Control fabricant - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 3087690892 - Control 2236528010 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3087690892">
-          <source>Format Référence Furnisseur</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Vendor By Manufacturer - Control Vendor No Format - Property Caption</note>
-        </trans-unit>
         <trans-unit id="PageExtension 848916957 - Control 1556704682 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4055858012">
           <source>Remise Par défaut en %</source>
           <note from="Developer" annotates="general" priority="2"></note>
