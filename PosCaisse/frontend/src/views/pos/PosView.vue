@@ -190,9 +190,6 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
       </aside>
 
       <main class="board">
-        <div class="board-head">
-          <span class="hint tiny">Appui long : options / disponibilité</span>
-        </div>
         <div class="grid scroll" :class="tileSize">
           <ProductTile v-for="p in products" :key="p.id" :product="p" :size="tileSize" :show-images="showImages"
                        :class="{ flash: flashed === p.id }" @tap="tap(p)" @hold="hold(p)" />
@@ -364,10 +361,8 @@ export default { components: { ReceiptInline } }
 .cat.on .tally { color: rgba(255, 255, 255, .6); }
 
 .board { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
-.board-head { display: flex; justify-content: flex-end; padding: 8px 16px 6px; }
-.hint { color: var(--ink-4); }
 .grid {
-  flex: 1; min-height: 0; padding: 0 16px 16px;
+  flex: 1; min-height: 0; padding: 12px 16px 16px;
   display: grid; align-content: start;
   /* Tuile horizontale : vignette carree a gauche, prix et libelle a droite.
      Les colonnes s'elargissent pour loger les deux, les lignes se raccourcissent

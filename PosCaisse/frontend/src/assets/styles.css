@@ -140,7 +140,13 @@ a { color: inherit; text-decoration: none; }
 .btn.chip.on { background: var(--ink); border-color: var(--ink); color: #fff; }
 
 /* ---------- formulaires ---------- */
-.field { display: flex; flex-direction: column; gap: 6px; }
+/* min-width:0 : sans cela un element de grille refuse de descendre sous sa
+   largeur intrinseque, et un contenu large deborde sur la cellule voisine. */
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+/* Le selecteur de fichier natif a une largeur intrinseque d'environ 280 px :
+   il debordait du champ Image et se posait sur le champ voisin. */
+.field input[type="file"] { min-width: 0; max-width: 100%; flex: 1 1 auto; font-size: 13px; }
+.field .row { min-width: 0; flex-wrap: wrap; }
 .field > label { font-size: 11.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
 .input, select.input, textarea.input {
   width: 100%; min-height: 42px; padding: 9px 12px;
