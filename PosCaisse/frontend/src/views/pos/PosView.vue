@@ -18,6 +18,7 @@ import TextDialog from '../../components/pos/TextDialog.vue'
 import CustomerDialog from '../../components/pos/CustomerDialog.vue'
 import HeldOrdersDialog from '../../components/pos/HeldOrdersDialog.vue'
 import CashMovementDialog from '../../components/pos/CashMovementDialog.vue'
+import TicketsView from './TicketsView.vue'
 import Modal from '../../components/common/Modal.vue'
 import Icon from '../../components/common/Icon.vue'
 
@@ -168,7 +169,7 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
           <Icon name="pause" :size="18" /><span>Attente</span>
           <em v-if="heldCount" class="count num">{{ heldCount }}</em>
         </button>
-        <router-link class="tb-btn" to="/tickets"><Icon name="receipt" :size="18" /><span>Tickets</span></router-link>
+        <button class="tb-btn" @click="dialog = { kind: 'tickets' }"><Icon name="receipt" :size="18" /><span>Tickets</span></button>
         <button class="tb-btn" v-if="auth.can('CASH_MOVEMENT')" @click="dialog = { kind: 'cash' }"><Icon name="drawer" :size="18" /><span>Caisse</span></button>
         <button class="tb-btn cart-toggle" @click="cartOpen = !cartOpen"><Icon name="cart" :size="18" /><span class="num">{{ fmt(cart.total) }}</span></button>
       </nav>
@@ -243,6 +244,9 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
     <CustomerDialog v-if="dialog?.kind === 'customer'" :initial="cart.customer" @close="dialog = null" @ok="setCustomer" />
     <HeldOrdersDialog v-if="dialog?.kind === 'held'" @close="dialog = null; refreshHeld()" @resume="resume" />
     <CashMovementDialog v-if="dialog?.kind === 'cash'" @close="dialog = null" />
+    <Modal v-if="dialog?.kind === 'tickets'" size="xl" title="Historique des tickets" @close="dialog = null">
+      <TicketsView embedded />
+    </Modal>
 
     <Modal v-if="dialog?.kind === 'done'" size="md" :closable="false">
       <template #head>

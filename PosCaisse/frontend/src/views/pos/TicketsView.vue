@@ -1,5 +1,6 @@
 <script setup>
-/** Ticket history — used standalone from the POS (/tickets) and embedded in the back-office. */
+/** Historique des tickets : page autonome (/tickets), panneau du back-office,
+    ou contenu de la boîte de dialogue ouverte depuis le POS. */
 import { onMounted, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { api } from '../../api'
@@ -10,8 +11,11 @@ import { fmt } from '../../utils/money'
 import { fmtDateTime, isoDate, startOfDayIso, endOfDayIso } from '../../utils/dates'
 import { statusLabel, serviceModeLabel } from '../../utils/i18n'
 import OrderDetailDialog from '../../components/pos/OrderDetailDialog.vue'
+/* La route ne décide plus seule : ouvert en dialogue, l'appelant impose le mode
+   embarqué, sinon l'en-tête « ← Retour » s'afficherait dans la boîte. */
+const props = defineProps({ embedded: { type: Boolean, default: null } })
 const route = useRoute(); const auth = useAuthStore(); const catalog = useCatalogStore(); const ui = useUiStore()
-const embedded = computed(() => !!route.meta.embedded)
+const isEmbedded = computed(() => props.embedded === null ? !!route.meta.embedded : props.embedded)
 const f = ref({ from: isoDate(), to: isoDate(), ticket: '', status: '', registerId: '', cashierId: '', method: '', minAmount: '', maxAmount: '' })
 const page = ref(0); const size = 50; const data = ref({ content: [], total: 0 }); const loading = ref(false); const selected = ref(null)
 const registers = ref([]); const users = ref([]); const template = ref(null)
@@ -34,8 +38,8 @@ const pages = computed(() => Math.ceil(data.value.total / size))
 const statusClass = (s) => ({ PAID: 'success', CANCELLED: 'danger', REFUNDED: 'danger', PARTIALLY_REFUNDED: 'warning' }[s] || '')
 </script>
 <template>
-  <div class="tickets" :class="{ embedded }">
-    <header v-if="!embedded" class="top"><router-link class="btn" :to="auth.session ? '/pos' : (auth.isBackoffice ? '/admin' : '/open')">← Retour</router-link><h1>Historique des tickets</h1></header>
+  <div class="tickets" :class="{ embedded: isEmbedded }">
+    <header v-if="!isEmbedded" class="top"><router-link class="btn" :to="auth.session ? '/pos' : (auth.isBackoffice ? '/admin' : '/open')">← Retour</router-link><h1>Historique des tickets</h1></header>
     <div class="content">
       <div class="toolbar card tight">
         <input class="input" v-model="f.ticket" placeholder="N° ticket" @keyup.enter="search" style="width:150px" />
