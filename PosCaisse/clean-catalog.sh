@@ -3,6 +3,7 @@
 #  Nettoyage définitif du catalogue PosCaisse.
 #      ./clean-catalog.sh              catalogue seulement
 #      ./clean-catalog.sh --ventes     + remise à zéro des ventes
+#      ./clean-catalog.sh --ventes --force   idem, sessions ouvertes comprises
 #      ./clean-catalog.sh --ventes -y  sans confirmation
 #
 #  Sans --ventes : supprime les produits inactifs jamais vendus, les
@@ -20,9 +21,11 @@ URL="http://localhost:${POSCAISSE_PORT:-8080}"
 PIN="${POSCAISSE_ADMIN_PIN:-9999}"
 RESET=false
 YES=false
+FORCE=false
 for a in "$@"; do
   case "$a" in
     --ventes|--reset-ventes) RESET=true ;;
+    --force) FORCE=true ;;   # supprime aussi les sessions de caisse ouvertes
     -y|--oui) YES=true ;;
     *) echo "Option inconnue : $a"; exit 2 ;;
   esac
@@ -58,5 +61,5 @@ for w in d["warnings"]:
     print("  -", w)
 print("  Base nettoyee. Rechargez le POS (F5).")
 '
-curl -s -X POST "$URL/api/catalog/purge?resetSales=$RESET" -H "Authorization: Bearer $TOKEN" \
+curl -s -X POST "$URL/api/catalog/purge?resetSales=$RESET&force=$FORCE" -H "Authorization: Bearer $TOKEN" \
   | python3 -c "$REPORT"

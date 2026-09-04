@@ -11,8 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Nettoyage définitif du catalogue.
@@ -43,6 +45,8 @@ public class CatalogPurgeService {
     private final SessionRepo sessionRepo;
     private final AuditService audit;
 
+    private static final DateTimeFormatter OPENED_AT = DateTimeFormatter.ofPattern("dd/MM à HH:mm");
+
     /** Ordre imposé par les clés étrangères sans ON DELETE CASCADE (refund → sale_order). */
     private static final List<String> SALES_TABLES = List.of(
             "print_job", "refund", "payment", "order_line_modifier", "order_line",
@@ -50,12 +54,22 @@ public class CatalogPurgeService {
             "register_session", "document_sequence");
 
     @Transactional
-    public PurgeResult purge(boolean resetSales) {
+    public PurgeResult purge(boolean resetSales, boolean force) {
         List<String> warnings = new ArrayList<>();
 
-        // Une session ouverte serait supprimée sous les pieds du caissier : on refuse.
-        if (resetSales && !sessionRepo.findByStatusOrderByOpenedAtDesc(Enums.SessionStatus.OPEN).isEmpty())
-            throw new BusinessException("Une caisse est encore ouverte. Fermez-la avant la remise à zéro des ventes.");
+        // Une session ouverte serait supprimée sous les pieds du caissier. On refuse,
+        // en nommant la caisse concernée — et « force » n'est accepté que parce que
+        // l'appelant a alors confirmé ce que ce message lui a montré.
+        if (resetSales && !force) {
+            String open = sessionRepo.findByStatusOrderByOpenedAtDesc(Enums.SessionStatus.OPEN).stream()
+                    .map(s -> s.getRegister().getName() + " (" + s.getOpenedBy().getFullName()
+                            + ", depuis le " + s.getOpenedAt().format(OPENED_AT) + ")")
+                    .collect(Collectors.joining(", "));
+            if (!open.isEmpty())
+                throw new BusinessException("Caisse encore ouverte : " + open
+                        + ". Clôturez-la depuis le POS, ou relancez le nettoyage en confirmant "
+                        + "la suppression des sessions ouvertes.");
+        }
 
         int salesDeleted = 0;
         if (resetSales) {

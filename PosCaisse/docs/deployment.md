@@ -8,7 +8,7 @@ Sous Windows, les `.bat` ne sont que des lanceurs d'une ligne ; la séquence com
 
 ## Nettoyer le catalogue
 
-`CLEAN_CATALOG.bat` (Windows) ou `./clean-catalog.sh` : supprime définitivement ce qu'un import en mode « remplacer » n'a pu que désactiver. Deux niveaux, catalogue seul ou catalogue + remise à zéro des ventes ; le second est irréversible et refusé tant qu'une caisse est ouverte. En API : `POST /api/catalog/purge?resetSales=true|false`.
+`CLEAN_CATALOG.bat` (Windows) ou `./clean-catalog.sh` : supprime définitivement ce qu'un import en mode « remplacer » n'a pu que désactiver. Deux niveaux, catalogue seul ou catalogue + remise à zéro des ventes ; le second est irréversible et refusé tant qu'une caisse est ouverte. Une caisse ouverte bloque la remise à zéro : le script la nomme et demande une confirmation supplémentaire avant de supprimer sa session. En API : `POST /api/catalog/purge?resetSales=true|false&force=true|false`.
 
 ## Développement (PC caisse ou poste de dev)
 - `START_POS.bat` (Windows) : PostgreSQL, base, puis backend sur 8080 — sans rien arrêter et sans `git pull`. Si PosCaisse répond déjà, le navigateur s'ouvre simplement. Le backend sert l'interface déjà compilée (`frontend/dist`).

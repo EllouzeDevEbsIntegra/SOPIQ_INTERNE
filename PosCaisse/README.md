@@ -45,6 +45,8 @@ Un import en mode « remplacer » ne peut que **désactiver** un article déjà 
 - **Catalogue seulement** — supprime les articles inactifs jamais vendus, les catégories devenues vides et les groupes d'options orphelins. L'historique des tickets est intact.
 - **Catalogue + ventes** — efface d'abord *toutes* les données de vente (tickets, lignes, paiements, remboursements, mouvements, journal, sessions, clôtures, numérotation), ce qui libère les articles inactifs restants, puis supprime le catalogue inactif. **Irréversible** : c'est la remise à zéro d'avant mise en production. Fermez toutes les caisses avant de la lancer, sinon l'opération est refusée.
 
+Si une caisse est encore ouverte, le script vous le dit — en nommant la caisse, le caissier et l'heure d'ouverture — et vous demande s'il faut supprimer cette session aussi. Rien n'est effacé sans cette confirmation supplémentaire.
+
 Après un nettoyage complet, il ne reste que les catégories et articles actifs, et la numérotation des tickets repart à 1.
 
 Les autres scripts restent disponibles pour un usage ciblé : `START_POS.bat` (démarrer sans rien arrêter ni mettre à jour), `STOP_POS.bat` (arrêter), `BUILD_POS.bat` (compiler seulement), `INIT_DB.bat` (préparer la base seulement), `CLEAN_CATALOG.bat` (nettoyer le catalogue).

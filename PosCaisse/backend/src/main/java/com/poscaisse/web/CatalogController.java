@@ -33,10 +33,13 @@ public class CatalogController {
      * Supprime définitivement le catalogue inactif laissé par un import en mode « remplacer ».
      * resetSales=true efface d'abord toutes les données de vente : c'est la seule façon de
      * supprimer un produit déjà vendu. Irréversible, réservé à la mise en production.
+     * force=true supprime aussi les sessions de caisse ouvertes, que la vérification refuse
+     * par défaut ; à n'envoyer qu'après confirmation explicite de l'utilisateur.
      */
     @PostMapping("/catalog/purge")
-    public PurgeResult purgeCatalog(@RequestParam(defaultValue = "false") boolean resetSales) {
-        return catalogPurge.purge(resetSales);
+    public PurgeResult purgeCatalog(@RequestParam(defaultValue = "false") boolean resetSales,
+                                    @RequestParam(defaultValue = "false") boolean force) {
+        return catalogPurge.purge(resetSales, force);
     }
 
     @GetMapping("/categories") public List<CategoryDto> categories() { return catalog.categories(); }
