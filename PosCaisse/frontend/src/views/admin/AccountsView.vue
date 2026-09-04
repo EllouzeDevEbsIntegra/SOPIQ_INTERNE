@@ -12,6 +12,7 @@ import { useBusy } from '../../composables/useApi'
 import { fmt, fmtQty, parseAmount } from '../../utils/money'
 import { fmtDateTime, startOfDayIso, endOfDayIso } from '../../utils/dates'
 import Modal from '../../components/common/Modal.vue'
+import Icon from '../../components/common/Icon.vue'
 import OrderDetailDialog from '../../components/pos/OrderDetailDialog.vue'
 
 const ui = useUiStore(); const { busy, run } = useBusy()
@@ -45,15 +46,30 @@ async function load() {
 onMounted(load)
 function switchParty(k) { party.value = k; selected.value = null; q.value = ''; load() }
 
+const periodParams = () => ({
+  from: period.value.from ? startOfDayIso(period.value.from) : undefined,
+  to: period.value.to ? endOfDayIso(period.value.to) : undefined
+})
+
 async function open(c) {
   try {
-    selected.value = await api.accounts.statement(party.value, c.partyId, {
-      from: period.value.from ? startOfDayIso(period.value.from) : undefined,
-      to: period.value.to ? endOfDayIso(period.value.to) : undefined
-    })
+    selected.value = await api.accounts.statement(party.value, c.partyId, periodParams())
   } catch (e) { ui.error(e.humanMessage) }
 }
 const reload = () => selected.value && open({ partyId: selected.value.partyId })
+
+/* Le relevé est produit par le serveur et téléchargé, plutôt qu'imprimé depuis la page :
+   la caisse tourne dans un navigateur lancé en impression directe, où un window.print()
+   partirait droit sur l'imprimante à tickets. Un PDF s'ouvre, s'imprime où l'on veut et
+   se joint à un courriel. */
+const pdfBusy = ref(false)
+async function printStatement() {
+  pdfBusy.value = true
+  try {
+    const name = await api.accounts.statementPdf(party.value, selected.value.partyId, periodParams())
+    ui.success('Relevé téléchargé : ' + name)
+  } catch (e) { ui.error(e) } finally { pdfBusy.value = false }
+}
 
 function startPayment() { pay.value = { paymentMethodId: methods.value[0]?.id, amount: '', note: '' } }
 async function savePayment() {
@@ -116,6 +132,9 @@ async function removePayment(p) {
         <input class="input" type="date" v-model="period.to" @change="reload" />
         <button class="btn sm" v-if="period.from || period.to" @click="period = { from: '', to: '' }; reload()">Tout</button>
         <span class="grow"></span>
+        <button class="btn" :disabled="pdfBusy" @click="printStatement">
+          <Icon name="printer" :size="16" />{{ pdfBusy ? 'Préparation…' : 'Imprimer / PDF' }}
+        </button>
         <button class="btn primary" @click="startPayment">+ Encaisser un règlement</button>
       </div>
 

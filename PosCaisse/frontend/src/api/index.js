@@ -4,6 +4,19 @@ const p = (u, d) => http.post(u, d).then(r => r.data)
 const put = (u, d) => http.put(u, d).then(r => r.data)
 const patch = (u, d) => http.patch(u, d).then(r => r.data)
 const del = (u) => http.delete(u).then(r => r.data)
+/* Telechargement d'un fichier produit par le serveur : on passe par axios pour garder
+   le jeton et le traitement d'erreur communs, puis on declenche l'enregistrement. */
+const download = (u, params, fallbackName) => http.get(u, { params, responseType: 'blob' }).then(r => {
+  const disp = r.headers['content-disposition'] || ''
+  const m = /filename\*?=(?:UTF-8'')?"?([^";]+)"?/i.exec(disp)
+  const name = m ? decodeURIComponent(m[1]) : fallbackName
+  const url = URL.createObjectURL(r.data)
+  const a = document.createElement('a')
+  a.href = url; a.download = name
+  document.body.appendChild(a); a.click(); a.remove()
+  setTimeout(() => URL.revokeObjectURL(url), 4000)
+  return name
+})
 
 export const api = {
   auth: {
@@ -59,6 +72,7 @@ export const api = {
   accounts: {
     balances: (party, withDebtOnly) => g(`/accounts/${party}`, { withDebtOnly }),
     statement: (party, partyId, params) => g(`/accounts/${party}/${partyId}`, params),
+    statementPdf: (party, partyId, params) => download(`/accounts/${party}/${partyId}/pdf`, params, 'releve.pdf'),
     pay: (party, b) => p(`/accounts/${party}/payments`, b),
     deletePayment: (party, id) => del(`/accounts/${party}/payments/${id}`)
   },

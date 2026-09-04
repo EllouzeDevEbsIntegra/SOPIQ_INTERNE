@@ -68,7 +68,11 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
 </script>
 <template>
   <div class="toolbar"><button class="btn primary" @click="create">+ Nouveau produit / menu</button><input class="input" v-model="q" placeholder="Rechercher…" /><select class="input" v-model="catFilter"><option value="">Toutes catégories</option><option v-for="c in cats" :key="c.id" :value="c.id">{{ c.name }}</option></select><span class="muted small">{{ filtered.length }} produit(s)</span>
-    <span class="muted small reorder-hint">{{ canReorder ? 'Glissez une ligne pour changer l\u2019ordre d\u2019affichage.' : 'Choisissez une cat\u00e9gorie (et videz la recherche) pour r\u00e9ordonner.' }}</span></div>
+    <span class="reorder-hint" :class="canReorder ? 'on' : 'off'">
+      <b>Ordre d'affichage</b>
+      <template v-if="canReorder">glissez une ligne par sa poignée pour la déplacer</template>
+      <template v-else>choisissez une catégorie{{ q.trim() ? ' et videz la recherche' : '' }} pour pouvoir réordonner</template>
+    </span></div>
   <div class="table-wrap"><table class="table">
     <thead><tr><th class="ord">Ordre</th><th>Code</th><th>Produit</th><th>Catégorie</th><th class="right">Prix</th><th>Type</th><th>Options</th><th>Impression</th><th>Favori</th><th>Dispo</th><th>Actif</th><th></th></tr></thead>
     <tbody><tr v-for="(p, i) in filtered" :key="p.id" :style="{ opacity: p.active ? 1 : .55 }"
@@ -126,7 +130,17 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
 </template>
 
 <style scoped>
-.reorder-hint { margin-left: auto; }
+/* L'indication vit a cote du selecteur de categorie, pas reléguée au bout de la barre :
+   c'est ce selecteur qui commande le glisser-deposer, et une mention pale a l'autre bout
+   de l'ecran passait inapercue — on croyait la fonction absente. */
+.reorder-hint {
+  display: inline-flex; align-items: baseline; gap: 7px; padding: 5px 11px;
+  border-radius: 999px; font-size: 12px; line-height: 1.3;
+}
+.reorder-hint b { font-size: 11px; font-weight: 750; letter-spacing: .05em; text-transform: uppercase; }
+.reorder-hint.on { background: var(--brand-soft); color: var(--ink-2); border: 1px solid var(--brand-line); }
+.reorder-hint.on b { color: var(--brand); }
+.reorder-hint.off { background: var(--surface-2); color: var(--ink-3); border: 1px dashed var(--line-2); }
 
 .ord { width: 74px; white-space: nowrap; }
 .ord b { font-size: 13px; font-weight: 700; color: var(--ink-2); }
@@ -136,7 +150,7 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
 .grip {
   display: inline-block; width: 9px; height: 14px; margin-right: 8px; vertical-align: -2px;
   background-image: radial-gradient(circle, var(--ink-4) 1.1px, transparent 1.2px);
-  background-size: 4.5px 4.5px; opacity: .8;
+  background-size: 4.5px 4.5px; opacity: .85;
 }
 tr.drag { cursor: grab; }
 tr.drag:hover { background: var(--surface-2); }
