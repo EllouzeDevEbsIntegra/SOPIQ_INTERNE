@@ -58,6 +58,14 @@ public class ReceiptRenderer {
     /** Marqueur de ligne mise en avant, en tete de ligne ; invisible en texte brut. */
     public static final char BOLD = '\u0001';
 
+    /**
+     * Marqueur des lignes de l'en-tete. L'imprimante les dispose a droite du logo :
+     * l'enseigne au-dessus, la date et l'heure en dessous. Le texte reste rempli pour
+     * la largeur du papier, donc parfaitement lisible sur un support qui ignore le
+     * marqueur (texte brut, ESC/POS d'aujourd'hui).
+     */
+    public static final char HEAD = '\u0002';
+
     static final class Sheet {
         final int w; final StringBuilder sb = new StringBuilder();
         Sheet(int w) { this.w = w; }
@@ -90,6 +98,14 @@ public class ReceiptRenderer {
                 int pad = Math.max(0, (bw - part.length()) / 2);
                 sb.append(BOLD).append(" ".repeat(pad)).append(part).append('\n');
             }
+        }
+        /** Marque comme lignes d'en-tete tout ce que le bloc vient d'ecrire. */
+        void head(Runnable emit) {
+            int from = sb.length();
+            emit.run();
+            String block = sb.substring(from);
+            sb.setLength(from);
+            for (String l : block.split("\n")) sb.append(HEAD).append(l).append('\n');
         }
         static List<String> wrap(String s, int w) {
             List<String> out = new ArrayList<>();
@@ -125,17 +141,19 @@ public class ReceiptRenderer {
         String cur = company == null ? "DT" : company.getCurrencySymbol();
         String sepCh = String.valueOf(cfg.getOrDefault("separator", "-"));
         Sheet s = new Sheet(w);
-        // ---- en-tete : logo (pose par l'imprimante), enseigne, date et heure ----
+        // ---- en-tete : le logo a gauche, l'enseigne et la date/heure a sa droite ----
         // L'adresse et le telephone sont renvoyes en pied : les repeter en haut allongerait
         // le ticket sans rien apprendre au client qui est deja dans le restaurant.
-        if (company != null && on(cfg, "showCompanyName"))
-            s.bold(company.getTradeName() != null && !company.getTradeName().isBlank() ? company.getTradeName() : company.getName());
-        if (t != null && t.getHeaderText() != null && !t.getHeaderText().isBlank()) s.center(t.getHeaderText());
         var when = (o.getPaidAt() == null ? o.getCreatedAt() : o.getPaidAt()).atZoneSameInstant(TZ);
         String dateStr = on(cfg, "showDate") ? when.format(DATE) : "";
         String timeStr = on(cfg, "showTime") ? when.format(TIME) : "";
-        if (!dateStr.isEmpty() && !timeStr.isEmpty()) s.lr(dateStr, timeStr);
-        else if (!dateStr.isEmpty() || !timeStr.isEmpty()) s.center(dateStr + timeStr);
+        s.head(() -> {
+            if (company != null && on(cfg, "showCompanyName"))
+                s.center(company.getTradeName() != null && !company.getTradeName().isBlank() ? company.getTradeName() : company.getName());
+            if (t != null && t.getHeaderText() != null && !t.getHeaderText().isBlank()) s.center(t.getHeaderText());
+            if (!dateStr.isEmpty() && !timeStr.isEmpty()) s.lr(dateStr, timeStr);
+            else if (!dateStr.isEmpty() || !timeStr.isEmpty()) s.center(dateStr + timeStr);
+        });
         s.sep(sepCh);
 
         // ---- identification du ticket ----

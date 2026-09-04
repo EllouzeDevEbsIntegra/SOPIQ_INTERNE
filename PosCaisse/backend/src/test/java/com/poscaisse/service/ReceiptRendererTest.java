@@ -6,13 +6,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ReceiptRendererTest {
     private final ReceiptRenderer renderer = new ReceiptRenderer(new ObjectMapper());
+
+    /** Le marqueur de mise en forme ne s'imprime pas : il ne compte pas dans la largeur. */
+    private static String printable(String line) {
+        return line.isEmpty() || line.charAt(0) >= ' ' ? line : line.substring(1);
+    }
 
     private SaleOrder order() {
         Company c = new Company(); c.setName("FAST FOOD DEMO SARL"); c.setTradeName("FAST FOOD DEMO"); c.setAddress("Tunis"); c.setPhone("71 000 000"); c.setDecimals(3);
@@ -37,17 +45,35 @@ class ReceiptRendererTest {
         ReceiptTemplate t = new ReceiptTemplate(); t.setPaperWidth(80); t.setFooterText("Merci");
         String txt = renderer.customerReceipt(o, o.getCompany(), t, false, false);
         assertThat(txt).contains("PV01-2026-000001").contains("Cheeseburger").contains("Supplément fromage").contains("17,000").contains("TOTAL").contains("RENDU").contains("33,000").contains("Merci");
-        for (String line : txt.split("\n")) assertThat(line.length()).as("line: " + line).isLessThanOrEqualTo(42);
+        for (String line : txt.split("\n")) assertThat(printable(line).length()).as("line: " + line).isLessThanOrEqualTo(42);
         assertThat(txt).doesNotContain("DUPLICATA");
     }
 
-    /** Le numéro de ticket et l'enseigne sont les deux lignes mises en avant. */
-    @Test void ticketNumberAndTradeNameAreEmphasised() {
+    /** Le numéro de ticket est la ligne mise en avant du corps du ticket. */
+    @Test void ticketNumberIsEmphasised() {
         SaleOrder o = order();
         String txt = renderer.customerReceipt(o, o.getCompany(), new ReceiptTemplate(), false, false);
         List<String> emphasised = txt.lines().filter(l -> !l.isEmpty() && l.charAt(0) == ReceiptRenderer.BOLD)
                 .map(l -> l.substring(1).trim()).toList();
-        assertThat(emphasised).containsExactly("FAST FOOD DEMO", "N° PV01-2026-000001");
+        assertThat(emphasised).containsExactly("N° PV01-2026-000001");
+    }
+
+    /**
+     * L'en-tête est un bloc à part : l'imprimante y pose le logo à gauche, l'enseigne
+     * au-dessus de la date et de l'heure à sa droite. Le texte reste rempli pour la
+     * largeur du papier, donc lisible tel quel si le support ignore le marqueur.
+     */
+    @Test void headerIsABlockOfTradeNameThenDateAndTime() {
+        SaleOrder o = order();
+        ReceiptTemplate t = new ReceiptTemplate(); t.setPaperWidth(80);
+        String txt = renderer.customerReceipt(o, o.getCompany(), t, false, false);
+        List<String> header = txt.lines().takeWhile(l -> !l.isEmpty() && l.charAt(0) == ReceiptRenderer.HEAD)
+                .map(l -> l.substring(1)).toList();
+        assertThat(header).hasSize(2);
+        assertThat(header.get(0).trim()).isEqualTo("FAST FOOD DEMO");
+        assertThat(header.get(1)).startsWith(LocalDate.now(ZoneId.of("Africa/Tunis")).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        assertThat(header.get(1)).matches("\\d{2}/\\d{2}/\\d{4} {2,}\\d{2}:\\d{2}");
+        assertThat(header.get(1).length()).isEqualTo(42);
     }
 
     /**
@@ -77,7 +103,7 @@ class ReceiptRendererTest {
         ReceiptTemplate t = new ReceiptTemplate(); t.setPaperWidth(58);
         String txt = renderer.customerReceipt(o, o.getCompany(), t, true, false);
         assertThat(txt).contains("DUPLICATA");
-        for (String line : txt.split("\n")) assertThat(line.length()).isLessThanOrEqualTo(32);
+        for (String line : txt.split("\n")) assertThat(printable(line).length()).isLessThanOrEqualTo(32);
     }
 
     @Test void prepTicketHidesPricesByDefault() {
