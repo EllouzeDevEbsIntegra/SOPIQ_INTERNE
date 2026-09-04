@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PosCaisse — 4 chartes graphiques pour l'écran de vente</title>
+<style>
+/* =====================================================================
+   Une seule structure HTML, quatre feuilles de style.
+   C'est le principe : la charte, c'est le CSS — pas le balisage.
+   ===================================================================== */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#EDEDEA;font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;color:#141110}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+.num{font-variant-numeric:tabular-nums}
+svg{display:block}
+
+/* ---------- chrome du prototype (neutre, hors charte) ---------- */
+.pbar{position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:14px;padding:9px 16px;background:#141110;color:#fff}
+.pbar h1{font-size:14px;font-weight:650;white-space:nowrap}
+.pbar h1 em{font-style:normal;color:#9A9188;font-weight:500}
+.ptabs{display:flex;gap:5px;margin-left:auto}
+.ptabs button{padding:7px 14px;border-radius:7px;font-size:13px;font-weight:600;color:#C9C0B5;border:1px solid rgba(255,255,255,.15)}
+.ptabs button:hover{background:rgba(255,255,255,.08);color:#fff}
+.ptabs button.on{background:#fff;border-color:#fff;color:#141110}
+.pbrief{padding:14px 16px 0}
+.pbrief-in{background:#fff;border:1px solid #DEDCD6;border-radius:10px;padding:13px 16px;
+  display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:start}
+.pbrief h2{font-size:17px;letter-spacing:-.02em;margin-bottom:4px}
+.pbrief p{font-size:13.5px;color:#4A423A;max-width:78ch}
+.pbrief p+p{margin-top:5px}
+.pbrief b{font-weight:650;color:#141110}
+.swatches{display:flex;flex-wrap:wrap;gap:6px}
+.sw{display:flex;align-items:center;gap:6px;font-size:11px;color:#6B635A;
+  border:1px solid #E4E1DA;border-radius:20px;padding:3px 9px 3px 4px}
+.sw i{width:15px;height:15px;border-radius:50%;display:block;border:1px solid rgba(0,0,0,.08)}
+.ptype{margin-top:9px;font-size:12px;color:#6B635A;line-height:1.5}
+.pstage{padding:12px 16px 22px}
+.pnote{display:flex;justify-content:space-between;font-size:11.5px;color:#7B736A;padding:0 3px 5px}
+
+/* ---------- structure commune de l'écran ---------- */
+.pos{
+  height:768px;max-height:calc(100vh - 40px);overflow:hidden;
+  display:grid;grid-template-areas:"bar bar bar" "rail grid cart";
+  grid-template-columns:206px 1fr 336px;grid-template-rows:auto 1fr;
+  border-radius:14px;box-shadow:0 12px 34px -14px rgba(20,17,14,.32);
+}
+.bar{grid-area:bar;display:flex;align-items:center;gap:14px;padding:0 16px;height:58px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:750;letter-spacing:-.02em;font-size:15.5px}
+.brand i{width:28px;height:28px;display:block}
+.srch{flex:1;max-width:330px;height:38px;padding:0 13px;font:inherit;font-size:13.5px}
+.me{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:12.5px}
+.me em{width:30px;height:30px;display:grid;place-items:center;font-style:normal;font-size:11.5px;font-weight:700}
+
+.rail{grid-area:rail;padding:10px;overflow:auto;display:flex;flex-direction:column;gap:4px}
+.cat{display:flex;align-items:center;gap:10px;padding:0 13px;height:52px;font-size:14.5px;font-weight:600;flex:0 0 auto}
+.cat b{margin-left:auto;font-size:11.5px;font-weight:600;opacity:.6}
+
+/* grid-auto-rows:min-content — sans cela, la grille etant un conteneur
+   defilant a hauteur definie, les lignes se dimensionnent sur cette hauteur
+   et non sur leur contenu : les tuiles sont rognees des qu'une charte
+   demande une grande vignette. */
+.grid{grid-area:grid;padding:12px;overflow:auto;display:grid;gap:9px;align-content:start;
+  grid-auto-rows:min-content;
+  grid-template-columns:repeat(auto-fill,minmax(clamp(150px,14vw,192px),1fr))}
+.tile{display:flex;flex-direction:column;gap:7px;padding:10px;overflow:hidden;position:relative}
+/* flex:none, meme raison que .nm : sans cela la vignette est ecrasee
+   des qu'une charte lui demande plus de hauteur (charte 2, 96 px). */
+.thumb{display:grid;place-items:center;height:66px;flex:none;overflow:hidden}
+.thumb svg{width:44px;height:44px}
+/* flex:none + hauteur de deux lignes : sans cela le nom se fait comprimer
+   par le flex et la seconde ligne est coupee en deux. Fixer la hauteur
+   aligne aussi les prix d'une tuile a l'autre. */
+.nm{font-size:14px;font-weight:600;line-height:1.22;flex:none;min-height:2.44em;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ft{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.pr{font-size:14.5px;font-weight:700}
+.tag{font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+
+.cart{grid-area:cart;display:flex;flex-direction:column;overflow:hidden}
+.chd{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px}
+.chd h3{font-size:12.5px;font-weight:750;letter-spacing:.09em;text-transform:uppercase}
+.chd .n{font-size:12px;font-weight:750;padding:1px 10px}
+.lines{flex:1;overflow:auto;padding:0 10px}
+.ln{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 6px}
+.qty{display:flex;align-items:center;overflow:hidden}
+.qty button{width:27px;height:29px;font-size:15px;font-weight:700;text-align:center}
+.qty b{min-width:26px;text-align:center;font-size:13.5px;font-weight:750}
+.ld{min-width:0}
+.ld strong{display:block;font-size:13.5px;font-weight:600;line-height:1.25}
+.chip{display:inline-block;margin-top:4px;padding:1px 8px;font-size:11px;font-weight:650}
+.la{font-size:13.5px;font-weight:700}
+.mt{padding:12px 16px}
+.mt .r{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:4px}
+.mt .big{display:flex;justify-content:space-between;align-items:baseline;margin:8px 0 0}
+.mt .big span{font-size:12px;font-weight:750;letter-spacing:.09em;text-transform:uppercase}
+.mt .big b{font-size:32px;font-weight:750;letter-spacing:-.035em}
+.pay{display:block;width:100%;height:62px;margin-top:11px;text-align:center;font-size:17px;font-weight:750;letter-spacing:.01em}
+.empty{padding:36px 16px;text-align:center;font-size:13.5px}
+
+/* =====================================================================
+   CHARTE 1 — ARDOISE
+   Sombre, contrastée, faite pour un comptoir éclairé au néon comme pour
+   un service de nuit. Un seul accent braise, aucune ombre : la
+   hiérarchie vient de la valeur, pas de la profondeur.
+   ===================================================================== */
+.C1{
+  --bg:#100E0C;--surf:#1A1714;--surf2:#232019;--line:#2F2A24;--line2:#3D362E;
+  --tx:#F3EDE4;--tx2:#A69B8D;--tx3:#6E655B;
+  --acc:#E2622C;--accs:#2B1911;--pay:#1F9D5A;
+  --m1:#5A5147;--m2:#E2622C;--m3:#8A7E70;
+  background:var(--bg);color:var(--tx);
+}
+.C1 .bar{background:var(--surf);border-bottom:1px solid var(--line)}
+.C1 .brand i{background:var(--acc);border-radius:6px}
+.C1 .srch{background:var(--bg);border:1px solid var(--line2);border-radius:7px;color:var(--tx)}
+.C1 .srch::placeholder{color:var(--tx3)}
+.C1 .me{color:var(--tx2)}
+.C1 .me em{background:var(--acc);color:#fff;border-radius:50%}
+.C1 .rail{background:var(--surf);border-right:1px solid var(--line)}
+.C1 .cat{color:var(--tx2);border-radius:7px}
+.C1 .cat:hover{background:var(--surf2);color:var(--tx)}
+.C1 .cat.on{background:var(--acc);color:#fff}
+.C1 .grid{background:var(--bg)}
+.C1 .tile{background:var(--surf);border:1px solid var(--line);border-radius:9px}
+.C1 .tile:hover{border-color:var(--acc);background:var(--surf2)}
+.C1 .thumb{background:var(--surf2);border-radius:6px}
+.C1 .nm{color:var(--tx)}
+.C1 .pr{color:var(--tx)}
+.C1 .tag{color:var(--acc)}
+.C1 .cart{background:var(--surf);border-left:1px solid var(--line)}
+.C1 .chd h3{color:var(--tx3)}
+.C1 .chd .n{background:var(--accs);color:var(--acc);border-radius:20px}
+.C1 .ln{border-bottom:1px solid var(--line)}
+.C1 .qty{border:1px solid var(--line2);border-radius:6px}
+.C1 .qty button{background:var(--surf2);color:var(--tx2)}
+.C1 .qty button:hover{background:var(--line);color:var(--tx)}
+.C1 .ld strong{color:var(--tx)}
+.C1 .chip{background:var(--accs);color:var(--acc);border-radius:20px}
+.C1 .la{color:var(--tx)}
+.C1 .mt{background:var(--surf2);border-top:1px solid var(--line)}
+.C1 .mt .r{color:var(--tx3)}
+.C1 .mt .big span{color:var(--tx3)}
+.C1 .pay{background:var(--pay);color:#fff;border-radius:8px}
+.C1 .pay:hover{background:#25B369}
+.C1 .empty{color:var(--tx3)}
+
+/* =====================================================================
+   CHARTE 2 — KIOSQUE
+   Claire, très arrondie, image dominante et prix en pastille.
+   Le vocabulaire des bornes de commande : lisible à un mètre, chaque
+   article se reconnaît à sa vignette avant même d'être lu.
+   ===================================================================== */
+.C2{
+  --bg:#EDF1F6;--surf:#fff;--line:#E2E8F0;
+  --tx:#0F172A;--tx2:#64748B;
+  --acc:#E11D48;--accs:#FFE4E9;--pay:#059669;
+  --m1:#FDBA74;--m2:#F97316;--m3:#FFF7ED;
+  background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  grid-template-areas:"bar bar" "rail cart" "grid cart";
+  grid-template-columns:1fr 356px;grid-template-rows:auto auto 1fr;
+}
+.C2 .bar{background:var(--surf);height:64px}
+.C2 .brand{font-size:16.5px;font-weight:800}
+.C2 .brand i{background:var(--acc);border-radius:10px}
+.C2 .srch{background:var(--bg);border:0;border-radius:999px;height:42px;padding:0 18px;color:var(--tx)}
+.C2 .me{color:var(--tx2);font-weight:600}
+.C2 .me em{background:var(--tx);color:#fff;border-radius:50%}
+.C2 .rail{flex-direction:row;gap:8px;padding:4px 14px 12px;background:var(--surf);overflow-x:auto}
+.C2 .cat{height:46px;border-radius:999px;background:var(--bg);color:var(--tx2);font-weight:700;
+  flex:0 0 auto;padding:0 20px;box-shadow:none}
+.C2 .cat b{margin-left:8px}
+.C2 .cat.on{background:var(--acc);color:#fff}
+.C2 .grid{gap:13px;padding:14px;grid-template-columns:repeat(auto-fill,minmax(clamp(160px,15vw,205px),1fr))}
+.C2 .tile{background:var(--surf);border-radius:20px;padding:11px;gap:9px;
+  box-shadow:0 1px 2px rgba(15,23,42,.05),0 6px 18px -8px rgba(15,23,42,.18)}
+.C2 .tile:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(15,23,42,.06),0 14px 28px -10px rgba(15,23,42,.26)}
+.C2 .thumb{height:96px;border-radius:14px;background:linear-gradient(160deg,#FFF1E6,#FFE0CC)}
+.C2 .thumb svg{width:62px;height:62px}
+.C2 .nm{font-size:15px;font-weight:700;letter-spacing:-.01em;min-height:2.5em}
+.C2 .pr{background:var(--tx);color:#fff;border-radius:999px;padding:4px 12px;font-size:14px;font-weight:750}
+.C2 .tag{color:var(--acc);background:var(--accs);border-radius:999px;padding:3px 8px;letter-spacing:.06em}
+.C2 .cart{background:var(--surf);border-radius:0}
+.C2 .chd{padding:18px 18px 10px}
+.C2 .chd h3{font-size:13px;color:var(--tx2)}
+.C2 .chd .n{background:var(--accs);color:var(--acc);border-radius:999px;font-size:12.5px}
+.C2 .ln{background:var(--bg);border-radius:16px;margin-bottom:8px;padding:11px 12px}
+.C2 .qty{border-radius:999px;background:var(--surf);border:1px solid var(--line)}
+.C2 .qty button{color:var(--tx2)}
+.C2 .chip{background:var(--surf);color:var(--acc);border-radius:999px;border:1px solid var(--accs)}
+.C2 .mt{background:var(--surf);border-top:1px solid var(--line)}
+.C2 .mt .r{color:var(--tx2)}
+.C2 .mt .big span{color:var(--tx2)}
+.C2 .pay{background:var(--pay);color:#fff;border-radius:999px;height:66px;font-size:18px;
+  box-shadow:0 8px 20px -8px rgba(5,150,105,.7)}
+.C2 .pay:hover{background:#047857}
+.C2 .empty{color:var(--tx2)}
+
+/* =====================================================================
+   CHARTE 3 — REGISTRE
+   Monochrome, plate, sans ornement : un outil de travail. Les tuiles
+   deviennent des lignes, la vignette se réduit à un repère. On voit
+   deux fois plus d'articles sans faire défiler.
+   ===================================================================== */
+.C3{
+  --bg:#fff;--surf:#fff;--surf2:#F6F6F5;--line:#DBDAD7;--line2:#B9B7B2;
+  --tx:#0A0A0A;--tx2:#605E5A;
+  --acc:#0A0A0A;--pay:#0A0A0A;
+  --m1:#B9B7B2;--m2:#0A0A0A;--m3:#F6F6F5;
+  background:var(--bg);color:var(--tx);letter-spacing:-.005em;
+}
+.C3 .bar{border-bottom:2px solid var(--tx);height:54px}
+.C3 .brand{font-weight:800;letter-spacing:-.03em}
+.C3 .brand i{background:var(--tx);border-radius:0}
+.C3 .srch{background:var(--surf2);border:1px solid var(--line);border-radius:2px;height:34px}
+.C3 .me{color:var(--tx2)}
+.C3 .me em{background:var(--tx);color:#fff;border-radius:2px}
+.C3 .rail{border-right:1px solid var(--line);padding:0;gap:0}
+.C3 .cat{border-radius:0;height:46px;border-bottom:1px solid var(--line);color:var(--tx2);
+  font-size:13.5px;font-weight:650;padding-left:16px;position:relative}
+.C3 .cat.on{background:var(--surf2);color:var(--tx)}
+.C3 .cat.on::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--tx)}
+.C3 .grid{gap:0;padding:0;grid-template-columns:1fr 1fr}
+.C3 .tile{flex-direction:row;align-items:center;gap:11px;padding:0 12px;height:56px;
+  border-bottom:1px solid var(--line);border-right:1px solid var(--line);border-radius:0}
+.C3 .tile:hover{background:var(--surf2)}
+.C3 .thumb{height:34px;width:34px;flex:0 0 34px;background:var(--surf2);border:1px solid var(--line);border-radius:2px}
+.C3 .thumb svg{width:22px;height:22px}
+.C3 .nm{flex:1;min-height:0;font-size:13.5px;font-weight:600;-webkit-line-clamp:1}
+.C3 .ft{margin:0;flex:0 0 auto;flex-direction:row-reverse;gap:9px}
+.C3 .pr{font-size:15px;font-weight:750}
+.C3 .tag{color:var(--tx2);font-size:9px;border:1px solid var(--line2);padding:1px 4px;border-radius:2px}
+.C3 .cart{border-left:2px solid var(--tx)}
+.C3 .chd{padding:12px 14px 8px;border-bottom:1px solid var(--line)}
+.C3 .chd h3{color:var(--tx)}
+.C3 .chd .n{background:var(--tx);color:#fff;border-radius:2px}
+.C3 .lines{padding:0}
+.C3 .ln{padding:9px 14px;border-bottom:1px solid var(--line)}
+.C3 .qty{border:1px solid var(--line2);border-radius:2px}
+.C3 .qty button{background:var(--surf2)}
+.C3 .chip{background:transparent;color:var(--tx2);border:1px solid var(--line2);border-radius:2px}
+.C3 .mt{border-top:2px solid var(--tx);background:var(--surf2)}
+.C3 .mt .r{color:var(--tx2)}
+.C3 .mt .big b{font-size:36px;font-weight:800;letter-spacing:-.045em}
+.C3 .pay{background:var(--pay);color:#fff;border-radius:2px;letter-spacing:.1em;font-size:15px}
+.C3 .pay:hover{background:#2B2B2B}
+.C3 .empty{color:var(--tx2)}
+
+/* =====================================================================
+   CHARTE 4 — TERRE
+   Une identité assumée : ocres, terre cuite et olive, un titre en
+   romain, un filigrane géométrique. La caisse ressemble à l'enseigne,
+   pas à un logiciel générique.
+   ===================================================================== */
+.C4{
+  --bg:#F7F0E2;--surf:#FFFDF7;--surf2:#F2E9D6;--line:#E2D3B4;--line2:#CBB68C;
+  --tx:#2B2317;--tx2:#7C6C50;--tx3:#9C8C6E;
+  --acc:#B4472C;--accs:#F6E3DC;--ocre:#B8792B;--pay:#4E6B3A;
+  --m1:#C9A25E;--m2:#B4472C;--m3:#F7EEDC;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  background:var(--bg);color:var(--tx);
+}
+.C4 .grid{
+  background-image:repeating-linear-gradient(45deg,rgba(184,121,43,.05) 0 1px,transparent 1px 16px),
+                   repeating-linear-gradient(-45deg,rgba(184,121,43,.05) 0 1px,transparent 1px 16px);
+}
+.C4 .bar{background:var(--surf);border-bottom:1.5px solid var(--line)}
+.C4 .brand{font-family:var(--serif);font-size:18px;font-weight:700;letter-spacing:0}
+.C4 .brand i{background:var(--acc);border-radius:50%;box-shadow:0 0 0 3px var(--surf),0 0 0 4.5px var(--acc)}
+.C4 .srch{background:var(--bg);border:1.5px solid var(--line);border-radius:9px;color:var(--tx)}
+.C4 .me{color:var(--tx2)}
+.C4 .me em{background:var(--ocre);color:#fff;border-radius:50%}
+.C4 .rail{background:var(--surf);border-right:1.5px solid var(--line)}
+.C4 .cat{border-radius:9px;color:var(--tx2);font-family:var(--serif);font-size:15.5px;font-weight:600}
+.C4 .cat:hover{background:var(--surf2)}
+.C4 .cat.on{background:var(--ocre);color:#fff}
+.C4 .tile{background:var(--surf);border:1.5px solid var(--line);border-radius:12px}
+.C4 .tile:hover{border-color:var(--ocre);box-shadow:0 4px 14px -8px rgba(184,121,43,.6)}
+.C4 .thumb{height:72px;width:72px;margin:2px auto 0;border-radius:50%;background:var(--surf2);
+  border:1.5px solid var(--line)}
+.C4 .thumb svg{width:42px;height:42px}
+.C4 .nm{font-family:var(--serif);font-size:14.5px;font-weight:600;text-align:center;line-height:1.25;min-height:2.5em}
+.C4 .ft{justify-content:center;gap:9px;padding-top:2px;border-top:1px dashed var(--line)}
+.C4 .pr{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--acc)}
+.C4 .tag{color:var(--ocre);letter-spacing:.09em}
+.C4 .cart{background:var(--surf);border-left:1.5px solid var(--line)}
+.C4 .chd h3{color:var(--tx3)}
+.C4 .chd .n{background:var(--accs);color:var(--acc);border-radius:20px}
+.C4 .ln{border-bottom:1px dashed var(--line)}
+.C4 .ld strong{font-family:var(--serif);font-size:14px}
+.C4 .qty{border:1.5px solid var(--line);border-radius:8px}
+.C4 .qty button{background:var(--surf2);color:var(--tx2)}
+.C4 .chip{background:var(--accs);color:var(--acc);border-radius:20px}
+.C4 .la{font-family:var(--serif);font-size:14.5px}
+.C4 .mt{background:var(--surf2);border-top:1.5px solid var(--line)}
+.C4 .mt .r{color:var(--tx2)}
+.C4 .mt .big span{color:var(--tx2)}
+.C4 .mt .big b{font-family:var(--serif)}
+.C4 .pay{background:var(--pay);color:#fff;border-radius:10px;font-family:var(--serif);font-size:18.5px;
+  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.25)}
+.C4 .pay:hover{background:#3F5730}
+.C4 .empty{color:var(--tx3)}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="m-sandwich" viewBox="0 0 48 48">
+    <rect x="9" y="32" width="30" height="9" rx="4.5" fill="var(--m1)"/>
+    <path d="M6 24h36v7c-6 5-12-1-18 3-6 4-12-1-18-3z" fill="var(--m3)"/>
+    <path d="M7 23h34v6c-6 4-11-1-17 2-6 3-11-1-17-2z" fill="var(--m2)"/>
+    <path d="M9 25C9 13 15 7 24 7s15 6 15 18z" fill="var(--m1)"/>
+  </symbol>
+  <symbol id="m-wrap" viewBox="0 0 48 48">
+    <g transform="rotate(-16 24 24)">
+      <rect x="15" y="8" width="18" height="34" rx="9" fill="var(--m1)"/>
+      <ellipse cx="24" cy="11" rx="9" ry="3.8" fill="var(--m3)"/>
+      <circle cx="21" cy="11" r="1.9" fill="var(--m2)"/><circle cx="27" cy="12" r="1.6" fill="var(--m2)"/>
+      <path d="M15 22h18" stroke="var(--m3)" stroke-width="2" opacity=".5"/>
+    </g>
+  </symbol>
+  <symbol id="m-bowl" viewBox="0 0 48 48">
+    <path d="M22 6c-2 3 2 4 0 7M28 8c-1.6 2.4 1.6 3.2 0 5.6" stroke="var(--m1)" stroke-width="2"
+          stroke-linecap="round" fill="none" opacity=".8"/>
+    <path d="M7 22h34a17 17 0 0 1-34 0z" fill="var(--m1)"/>
+    <ellipse cx="24" cy="22" rx="17" ry="4.4" fill="var(--m3)"/>
+    <circle cx="18" cy="21.5" r="2.4" fill="var(--m2)"/><circle cx="27" cy="22.5" r="2.1" fill="var(--m2)"/>
+  </symbol>
+  <symbol id="m-plate" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="18" fill="var(--m3)"/>
+    <circle cx="24" cy="24" r="18" fill="none" stroke="var(--m1)" stroke-width="2"/>
+    <circle cx="24" cy="24" r="11" fill="var(--m1)"/>
+    <path d="M24 13a11 11 0 0 1 0 22z" fill="var(--m2)"/>
+  </symbol>
+</defs></svg>
+
+<div class="pbar">
+  <h1>PosCaisse <em>— 4 chartes graphiques, même écran de vente</em></h1>
+  <div class="ptabs" id="tabs"></div>
+</div>
+
+<div class="pbrief"><div class="pbrief-in">
+  <div><h2 id="bT"></h2><div id="bX"></div></div>
+  <div><div class="swatches" id="bS"></div><div class="ptype" id="bY"></div></div>
+</div></div>
+
+<div class="pstage">
+  <div class="pnote"><span id="bN"></span><span>1366 × 768 — écran de caisse 15 pouces</span></div>
+  <div id="screen"></div>
+</div>
+
+<script>
+const DATA = {"categories":[{"name":"Classic","mark":"sandwich","products":[{"code":"CLA-M01","name":"Omlette Mozzarella","price":4.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M02","name":"Omlette Mozzarella Kwika","price":5.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M03","name":"Omlette Mozzarella Salami","price":6.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M04","name":"Omlette Mozzarella Thon","price":6.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M05","name":"Omlette Mozzarella Jombon","price":6.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M06","name":"Omlette Mozzarella Chawarma","price":8.7,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M07","name":"Omlette Mozzarella Kabeb","price":8.7,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M08","name":"Omlette Mozzarella Escalope Grillé","price":8.7,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M09","name":"Omlette Mozzarella Escalope Panée","price":9.7,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M10","name":"Omlette Mozzarella Cordon Bleu","price":9.7,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-S01","name":"Omlette","price":3.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S02","name":"Kwika","price":3.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S03","name":"Salami","price":3.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":0.5}],"optName":"Format"},{"code":"CLA-S04","name":"Jombon","price":4.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S05","name":"Thon","price":4.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S06","name":"Kabeb","price":6.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S07","name":"Chawarma","price":6.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S08","name":"Escalope Grillé","price":6.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S09","name":"Escalope Panée","price":7.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S10","name":"Cordon Bleu","price":7.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"}]},{"name":"Classic Spécial","mark":"sandwich","products":[{"code":"CSP-01","name":"Special","price":8.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-02","name":"Number One","price":9.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-03","name":"Number One Plus","price":13.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-04","name":"Spicy","price":13.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-05","name":"Cheese","price":9.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-06","name":"Hot Cheese","price":9.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-07","name":"Full Cheese","price":11.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"}]},{"name":"Healthy","mark":"wrap","products":[{"code":"HEA-M01","name":"Omlette Mozzarella","price":5.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M02","name":"Omlette Mozzarella Kwika","price":6.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M03","name":"Omlette Mozzarella Salami","price":7.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M04","name":"Omlette Mozzarella Thon","price":7.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M05","name":"Omlette Mozzarella Jombon","price":7.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M06","name":"Omlette Mozzarella Chawarma","price":9.7,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.3},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M07","name":"Omlette Mozzarella Kabeb","price":9.7,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.3},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M08","name":"Omlette Mozzarella Escalope Grillé","price":9.7,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.3},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M09","name":"Omlette Mozzarella Escalope Panée","price":10.7,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.3},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M10","name":"Omlette Mozzarella Cordon Bleu","price":10.7,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.3},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-S01","name":"Omlette","price":4.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S02","name":"Kwika","price":4.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S03","name":"Salami","price":4.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S04","name":"Jombon","price":5.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S05","name":"Thon","price":5.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S06","name":"Kabeb","price":7.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S07","name":"Chawarma","price":7.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S08","name":"Escalope Grillé","price":7.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S09","name":"Escalope Panée","price":8.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S10","name":"Cordon Bleu","price":8.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"}]},{"name":"Healthy Spécial","mark":"wrap","products":[{"code":"HSP-01","name":"Special","price":9.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-02","name":"Number One","price":10.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-03","name":"Number One Plus","price":14.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-04","name":"Spicy","price":14.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-05","name":"Cheese","price":10.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-06","name":"Hot Cheese","price":10.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-07","name":"Full Cheese","price":12.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"}]},{"name":"Lablebi","mark":"bowl","products":[{"code":"LAB-01","name":"Lablebi Normale","price":4.5,"opts":null,"optName":null},{"code":"LAB-02","name":"Lablebi Oeuf","price":5.0,"opts":null,"optName":null},{"code":"LAB-03","name":"Lablebi Thon","price":7.5,"opts":null,"optName":null},{"code":"LAB-04","name":"Lablebi Double Tête","price":6.0,"opts":null,"optName":null},{"code":"LAB-05","name":"Lablebi Oeuf Thon","price":8.0,"opts":null,"optName":null},{"code":"LAB-06","name":"Lablebi Double Tête Thon","price":9.0,"opts":null,"optName":null}]},{"name":"Extras","mark":"plate","products":[{"code":"EXT-01","name":"Omelette","price":0.7,"opts":null,"optName":null},{"code":"EXT-02","name":"Fromage Triangle","price":0.7,"opts":null,"optName":null},{"code":"EXT-03","name":"Mozzarella","price":2.0,"opts":null,"optName":null},{"code":"EXT-04","name":"Mozzarella 3arbi","price":3.0,"opts":null,"optName":null},{"code":"EXT-05","name":"Gruyère","price":3.0,"opts":null,"optName":null},{"code":"EXT-06","name":"Thon","price":2.5,"opts":null,"optName":null},{"code":"EXT-07","name":"Jombon","price":2.5,"opts":null,"optName":null},{"code":"EXT-08","name":"Salami","price":1.5,"opts":null,"optName":null},{"code":"EXT-09","name":"Kwika","price":1.0,"opts":null,"optName":null},{"code":"EXT-10","name":"Chawarma","price":4.0,"opts":null,"optName":null},{"code":"EXT-11","name":"Kabeb","price":4.0,"opts":null,"optName":null},{"code":"EXT-12","name":"Escalope Grillé","price":4.0,"opts":null,"optName":null},{"code":"EXT-13","name":"Escalope Panné","price":4.5,"opts":null,"optName":null},{"code":"EXT-14","name":"Cordon Bleu","price":4.5,"opts":null,"optName":null},{"code":"EXT-15","name":"Frite","price":3.0,"opts":null,"optName":null},{"code":"EXT-16","name":"Patte Normale","price":1.0,"opts":null,"optName":null},{"code":"EXT-17","name":"Patte Céréale","price":2.0,"opts":null,"optName":null},{"code":"EXT-18","name":"Patte Chia","price":2.5,"opts":null,"optName":null}]}]};
+const S = { c:0, cat:0, cart:[] };
+const money = n => n.toFixed(3).replace('.', ',');
+const cats = DATA.categories;
+const all  = cats.flatMap(c => c.products);
+const esc  = s => String(s).replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const total = () => S.cart.reduce((s,l) => s + l.unit*l.qty, 0);
+const count = () => S.cart.reduce((s,l) => s + l.qty, 0);
+
+/* panier de départ, pour que la charte se juge sur un écran réel et non vide */
+function seed(){
+  S.cart = [
+    { code:'CLA-M01', name:'Omlette Mozzarella',        opt:'Double', unit:5.5,  qty:2 },
+    { code:'CLA-M06', name:'Omlette Mozzarella Chawarma',opt:'Simple', unit:8.7,  qty:1 },
+    { code:'LAB-01',  name:'Lablebi Normale',            opt:null,     unit:4.5,  qty:1 },
+    { code:'EXT-05',  name:'Gruyère',                    opt:null,     unit:3.0,  qty:2 },
+  ];
+}
+function add(code){
+  const p = all.find(x => x.code === code);
+  const opt = p.opts ? p.opts[0] : null;
+  const unit = p.price + (opt ? opt.d : 0);
+  const key = code + '|' + (opt ? opt.n : '');
+  const f = S.cart.find(l => (l.code + '|' + (l.opt||'')) === key);
+  if (f) f.qty++; else S.cart.push({ code, name:p.name, opt: opt?opt.n:null, unit, qty:1 });
+  render();
+}
+function bump(i, d){ S.cart[i].qty += d; if (S.cart[i].qty <= 0) S.cart.splice(i,1); render(); }
+
+function tile(p, mark){
+  return `<button class="tile" onclick="add('${p.code}')">
+    <span class="thumb"><svg><use href="#m-${mark}"/></svg></span>
+    <span class="nm">${esc(p.name)}</span>
+    <span class="ft"><span class="pr num">${money(p.price)}</span>
+      ${p.opts ? `<span class="tag">${esc(p.optName)}</span>` : ''}</span></button>`;
+}
+function screen(){
+  const cat = cats[S.cat];
+  const lines = S.cart.length ? S.cart.map((l,i) => `<div class="ln">
+      <span class="qty"><button onclick="bump(${i},-1)">−</button><b class="num">${l.qty}</b><button onclick="bump(${i},1)">+</button></span>
+      <span class="ld"><strong>${esc(l.name)}</strong>
+        ${l.opt ? `<span class="chip">Pain : ${esc(l.opt)}</span>` : ''}</span>
+      <span class="la num">${money(l.unit*l.qty)}</span></div>`).join('')
+    : `<div class="empty">Panier vide.<br>Touchez un article pour commencer.</div>`;
+
+  return `<div class="pos C${S.c+1}">
+    <header class="bar">
+      <span class="brand"><i></i>NUMBER ONE</span>
+      <input class="srch" placeholder="Rechercher un article…">
+      <span class="me"><span>CAISSE 01 · Ahmed</span><em>A</em></span>
+    </header>
+    <nav class="rail">${cats.map((c,i) => `<button class="cat ${i===S.cat?'on':''}"
+      onclick="S.cat=${i};render()">${esc(c.name)}<b>${c.products.length}</b></button>`).join('')}</nav>
+    <main class="grid">${cat.products.map(p => tile(p, cat.mark)).join('')}</main>
+    <aside class="cart">
+      <div class="chd"><h3>Commande</h3><span class="n num">${count()}</span></div>
+      <div class="lines">${lines}</div>
+      <div class="mt">
+        <div class="r"><span>Sous-total</span><span class="num">${money(total())}</span></div>
+        <div class="r"><span>TVA 19 % incluse</span><span class="num">${money(total()*0.19/1.19)}</span></div>
+        <div class="big"><span>Total</span><b class="num">${money(total())} DT</b></div>
+        <button class="pay">ENCAISSER</button>
+      </div>
+    </aside></div>`;
+}
+
+const CH = [
+{ tab:'1 · Ardoise', title:'Charte 1 — Ardoise',
+  swatches:[['#100E0C','Fond'],['#1A1714','Surface'],['#E2622C','Accent braise'],['#1F9D5A','Encaisser'],['#F3EDE4','Texte']],
+  type:'Sans linéale système · titres 750 · chiffres tabulaires · rayon 8 px · aucune ombre',
+  note:'Sombre · rail vertical · vignette carrée 66 px',
+  text:`<p>Fond anthracite, un seul accent braise, aucune ombre : la hiérarchie vient du contraste,
+    pas de la profondeur. Les prix et le total ressortent parce que tout le reste est éteint.</p>
+    <p><b>Pour qui :</b> un comptoir sous néon ou un service de nuit — l’écran n’éblouit pas le caissier
+    et reste lisible de biais. <b>Le risque :</b> en plein soleil derrière une vitrine, un fond sombre
+    devient un miroir.</p>` },
+{ tab:'2 · Kiosque', title:'Charte 2 — Kiosque',
+  swatches:[['#EDF1F6','Fond'],['#FFFFFF','Carte'],['#E11D48','Accent'],['#059669','Encaisser'],['#0F172A','Texte']],
+  type:'Sans linéale système · titres 800 · rayon 20 px et pilules · ombres portées douces',
+  note:'Clair · catégories en pilules horizontales · vignette 96 px',
+  text:`<p>Le vocabulaire des bornes de commande : grandes vignettes, coins très arrondis, prix en
+    pastille pleine, ombres douces. On reconnaît l’article à son image avant de lire son nom.</p>
+    <p><b>Pour qui :</b> une carte que l’on veut vendre à l’œil, et un écran éventuellement tourné
+    vers le client. <b>Le prix à payer :</b> les grandes vignettes coûtent de la place — moins
+    d’articles par écran, donc plus de défilement sur vos 20 Classic.</p>` },
+{ tab:'3 · Registre', title:'Charte 3 — Registre',
+  swatches:[['#FFFFFF','Fond'],['#F6F6F5','Surface'],['#0A0A0A','Encre'],['#DBDAD7','Filets'],['#605E5A','Secondaire']],
+  type:'Sans linéale serrée · titre 800 · total 36 px · rayon 2 px · zéro ombre',
+  note:'Monochrome · les tuiles deviennent des lignes · deux colonnes',
+  text:`<p>Aucune couleur, aucun arrondi, aucune ombre : un outil de travail. Les tuiles deviennent
+    des lignes, la vignette se réduit à un repère de 34 px, et l’on voit deux fois plus d’articles
+    sans faire défiler.</p>
+    <p><b>Pour qui :</b> un caissier qui connaît la carte par cœur et cherche la vitesse pure.
+    <b>Le risque :</b> plus austère à prendre en main, et un nouvel employé s’appuiera moins
+    sur la mémoire visuelle.</p>` },
+{ tab:'4 · Terre', title:'Charte 4 — Terre',
+  swatches:[['#F7F0E2','Sable'],['#B8792B','Ocre'],['#B4472C','Terre cuite'],['#4E6B3A','Olive'],['#2B2317','Texte']],
+  type:'Titres en romain (Iowan / Palatino / Georgia) · corps linéale · rayon 12 px · filets 1,5 px',
+  note:'Chaleureux · médaillons ronds · filigrane géométrique',
+  text:`<p>Une identité assumée plutôt qu’un gris de logiciel : ocre, terre cuite et olive, titres en
+    romain, vignettes en médaillon et un filigrane géométrique très pâle sur la grille.</p>
+    <p><b>Pour qui :</b> une enseigne qui veut que sa caisse lui ressemble, y compris quand le client
+    voit l’écran. <b>Le risque :</b> une charte typée vieillit plus vite qu’un neutre, et le romain
+    est un peu moins lisible que la linéale à petite taille.</p>` }
+];
+
+function render(){
+  const c = CH[S.c];
+  document.getElementById('tabs').innerHTML = CH.map((x,i) =>
+    `<button class="${i===S.c?'on':''}" onclick="S.c=${i};render()">${x.tab}</button>`).join('');
+  document.getElementById('bT').textContent = c.title;
+  document.getElementById('bX').innerHTML   = c.text;
+  document.getElementById('bY').textContent = c.type;
+  document.getElementById('bN').textContent = c.note;
+  document.getElementById('bS').innerHTML = c.swatches.map(([h,n]) =>
+    `<span class="sw"><i style="background:${h}"></i>${n}</span>`).join('');
+  document.getElementById('screen').innerHTML = screen();
+}
+seed(); render();
+</script></body></html>
