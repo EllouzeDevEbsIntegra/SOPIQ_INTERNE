@@ -1,6 +1,7 @@
 package com.poscaisse.printing;
 
 import com.poscaisse.domain.*;
+import com.poscaisse.service.Money;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -139,10 +140,10 @@ public class ReceiptRenderer {
             }
             if (on(cfg, "showModifiers")) {
                 for (OrderLineModifier m : l.getModifiers())
-                    s.lr("   + " + m.getModifierName(), m.getPriceDelta().signum() == 0 ? "" : money(m.getPriceDelta(), dec));
+                    s.lr("   + " + modLabel(m), modAmount(m).signum() == 0 ? "" : money(modAmount(m), dec));
                 for (OrderLine c : l.getComponents()) {
                     s.lr("   • " + qty(c.getQuantity()) + " " + shortName(c), c.getLineTotal().signum() == 0 ? "" : "+" + money(c.getLineTotal(), dec));
-                    for (OrderLineModifier m : c.getModifiers()) s.lr("       + " + m.getModifierName(), m.getPriceDelta().signum() == 0 ? "" : money(m.getPriceDelta(), dec));
+                    for (OrderLineModifier m : c.getModifiers()) s.lr("       + " + modLabel(m), modAmount(m).signum() == 0 ? "" : money(modAmount(m), dec));
                 }
             }
             if (on(cfg, "showDiscounts") && l.getDiscountAmount().signum() > 0) s.lr("   Remise " + l.getDiscountPercent().stripTrailingZeros().toPlainString() + "%", "-" + money(l.getDiscountAmount(), dec));
@@ -193,10 +194,10 @@ public class ReceiptRenderer {
             String q = qty(l.getQuantity());
             String name = shortName(l);
             if (dest.isShowPrices()) s.lr(q + " x " + name, money(l.getLineTotal(), dec)); else s.line(q + " x " + name.toUpperCase());
-            for (OrderLineModifier m : l.getModifiers()) s.line("    + " + m.getModifierName());
+            for (OrderLineModifier m : l.getModifiers()) s.line("    + " + modLabel(m));
             for (OrderLine c : l.getComponents()) {
                 s.line("    • " + qty(c.getQuantity()) + " " + shortName(c));
-                for (OrderLineModifier m : c.getModifiers()) s.line("        + " + m.getModifierName());
+                for (OrderLineModifier m : c.getModifiers()) s.line("        + " + modLabel(m));
             }
             if (l.getNote() != null && !l.getNote().isBlank()) s.line("    » " + l.getNote().toUpperCase());
             s.nl();
@@ -213,5 +214,15 @@ public class ReceiptRenderer {
         Product p = l.getProduct();
         if (p != null && p.getShortName() != null && !p.getShortName().isBlank()) return p.getShortName();
         return l.getProductName();
+    }
+
+    /** « Mozarilla » ou « 3 x Mozarilla » : la quantite n'apparait que si elle depasse 1. */
+    private static String modLabel(OrderLineModifier m) {
+        return m.getQuantity() > 1 ? m.getQuantity() + " x " + m.getModifierName() : m.getModifierName();
+    }
+
+    /** Montant reellement facture pour l'option : le supplement multiplie par sa quantite. */
+    private static BigDecimal modAmount(OrderLineModifier m) {
+        return Money.nz(m.getPriceDelta()).multiply(BigDecimal.valueOf(Math.max(1, m.getQuantity())));
     }
 }

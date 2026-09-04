@@ -26,6 +26,32 @@ class PricingServiceTest {
         assertThat(l.getLineTotal()).isEqualByComparingTo("17.000");
     }
 
+    @Test void repeatedModifierIsChargedOncePerUnit() {
+        // Lablebi 4,500 + 3 x fromage a 0,700 = 6,600 : le supplement repete
+        // doit etre facture autant de fois qu'il a ete ajoute.
+        OrderLine l = new OrderLine();
+        l.setQuantity(BigDecimal.ONE);
+        l.setUnitPrice(new BigDecimal("4.500"));
+        OrderLineModifier m = new OrderLineModifier();
+        m.setModifierName("Fromage"); m.setPriceDelta(new BigDecimal("0.700")); m.setQuantity(3);
+        l.getModifiers().add(m);
+        pricing.computeLine(l);
+        assertThat(l.getModifiersTotal()).isEqualByComparingTo("2.100");
+        assertThat(l.getLineTotal()).isEqualByComparingTo("6.600");
+    }
+
+    @Test void repeatedModifierAlsoMultipliesByLineQuantity() {
+        // 2 articles portant chacun 3 fromages : 2 x (4,500 + 2,100) = 13,200.
+        OrderLine l = new OrderLine();
+        l.setQuantity(new BigDecimal("2"));
+        l.setUnitPrice(new BigDecimal("4.500"));
+        OrderLineModifier m = new OrderLineModifier();
+        m.setModifierName("Fromage"); m.setPriceDelta(new BigDecimal("0.700")); m.setQuantity(3);
+        l.getModifiers().add(m);
+        pricing.computeLine(l);
+        assertThat(l.getLineTotal()).isEqualByComparingTo("13.200");
+    }
+
     @Test void lineDiscountPercentIsRoundedTo3Decimals() {
         OrderLine l = line("8.500", "3");
         l.setDiscountPercent(new BigDecimal("10"));

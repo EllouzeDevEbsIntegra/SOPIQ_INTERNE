@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useCartStore } from '../../stores/cart'
 import { useAuthStore } from '../../stores/auth'
 import { useCatalogStore } from '../../stores/catalog'
-import { fmt, fmtQty } from '../../utils/money'
+import { fmt, fmtQty, mul } from '../../utils/money'
 import { serviceModeLabel } from '../../utils/i18n'
 import Icon from '../common/Icon.vue'
 
@@ -50,9 +50,9 @@ const hasDiscount = computed(() => cart.lineDiscountTotal > 0 || cart.orderDisco
 
         <div class="meta" v-if="l.components?.length || l.modifiers?.length || l.note || l.discountAmount || l.discountPercent || l.unitPrice !== Number(l.product.price)">
           <span v-for="c in l.components" :key="'c' + c.productId" class="bit">
-            {{ c.quantity > 1 ? c.quantity + '× ' : '' }}{{ c.product?.name }}<template v-if="c.modifiers?.length"> ({{ c.modifiers.map(m => m.name).join(', ') }})</template>
+            {{ c.quantity > 1 ? c.quantity + '× ' : '' }}{{ c.product?.name }}<template v-if="c.modifiers?.length"> ({{ c.modifiers.map(m => ((m.quantity || 1) > 1 ? m.quantity + ' × ' : '') + m.name).join(', ') }})</template>
           </span>
-          <span v-for="m in l.modifiers" :key="m.id" class="bit">{{ m.name }}<template v-if="m.priceDelta"> +{{ fmt(m.priceDelta) }}</template></span>
+          <span v-for="m in l.modifiers" :key="m.id" class="bit"><template v-if="(m.quantity || 1) > 1">{{ m.quantity }} × </template>{{ m.name }}<template v-if="m.priceDelta"> +{{ fmt(mul(m.priceDelta, m.quantity || 1)) }}</template></span>
           <span v-if="l.unitPrice !== Number(l.product.price)" class="bit alert">Prix {{ fmt(l.unitPrice) }}</span>
           <span v-if="l.discountAmount || l.discountPercent" class="bit alert">Remise −{{ fmt(cart.lineDiscount(l)) }}</span>
           <span v-if="l.note" class="bit quote">{{ l.note }}</span>

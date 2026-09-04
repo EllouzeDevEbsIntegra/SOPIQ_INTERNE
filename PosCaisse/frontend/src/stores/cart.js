@@ -4,10 +4,18 @@ import { add, mul, pct, round, sub } from '../utils/money'
 
 /**
  * Current order lives entirely in the browser (instant taps); the backend re-prices and validates at checkout.
- * Line shape: { key, productId, product, quantity, unitPrice, modifiers:[{id,name,priceDelta}], components:[{productId, product, quantity, modifiers, priceDelta}], discountPercent, discountAmount, note }
+ * Line shape: { key, productId, product, quantity, unitPrice, modifiers:[{id,name,priceDelta,quantity}], components:[{productId, product, quantity, modifiers, priceDelta}], discountPercent, discountAmount, note }
  */
 let keySeq = 0
 function uuid() { return (crypto.randomUUID ? crypto.randomUUID() : 'ref-' + Date.now() + '-' + Math.random().toString(16).slice(2)) }
+
+/* Le contrat de l'API reste une simple liste d'identifiants : une option ajoutee
+   trois fois y figure trois fois, et le serveur regroupe en quantite. */
+function expandModifiers(list) {
+  const out = []
+  for (const m of list || []) for (let i = 0; i < (m.quantity || 1); i++) out.push(m.id)
+  return out
+}
 
 export const useCartStore = defineStore('cart', () => {
   const lines = ref([])
@@ -22,7 +30,7 @@ export const useCartStore = defineStore('cart', () => {
   const selectedKey = ref(null)
 
   function lineUnit(l) {
-    const mods = (l.modifiers || []).reduce((s, m) => add(s, m.priceDelta), 0)
+    const mods = (l.modifiers || []).reduce((s, m) => add(s, mul(m.priceDelta, m.quantity || 1)), 0)
     const comps = (l.components || []).reduce((s, c) => add(s, mul(add(c.priceDelta || 0, (c.modifiers || []).reduce((a, m) => add(a, m.priceDelta), 0)), c.quantity || 1)), 0)
     return add(add(l.unitPrice, mods), comps)
   }
@@ -39,7 +47,7 @@ export const useCartStore = defineStore('cart', () => {
   const isEmpty = computed(() => lines.value.length === 0)
 
   function sameConfig(a, b) {
-    const ids = (x) => (x.modifiers || []).map(m => m.id).sort().join(',')
+    const ids = (x) => (x.modifiers || []).map(m => m.id + '×' + (m.quantity || 1)).sort().join(',')
     const comps = (x) => (x.components || []).map(c => c.productId + ':' + (c.quantity || 1) + ':' + ids(c)).sort().join('|')
     return a.productId === b.productId && ids(a) === ids(b) && comps(a) === comps(b) && (a.note || '') === (b.note || '') && a.unitPrice === b.unitPrice && !a.discountPercent && !a.discountAmount
   }
@@ -72,8 +80,8 @@ export const useCartStore = defineStore('cart', () => {
       discountPercent: discountPercent.value || 0, discountAmount: discountAmount.value || 0, heldOrderId: heldOrderId.value,
       lines: lines.value.map(l => ({
         productId: l.productId, quantity: l.quantity, unitPrice: l.unitPrice, discountPercent: l.discountPercent || 0, discountAmount: l.discountAmount || 0,
-        note: l.note || null, modifierIds: (l.modifiers || []).map(m => m.id),
-        components: (l.components || []).map(c => ({ productId: c.productId, quantity: c.quantity || 1, modifierIds: (c.modifiers || []).map(m => m.id), note: c.note || null }))
+        note: l.note || null, modifierIds: expandModifiers(l.modifiers),
+        components: (l.components || []).map(c => ({ productId: c.productId, quantity: c.quantity || 1, modifierIds: expandModifiers(c.modifiers), note: c.note || null }))
       }))
     }
   }
@@ -88,7 +96,7 @@ export const useCartStore = defineStore('cart', () => {
     for (const ol of order.lines) {
       const product = productsById[ol.productId]
       if (!product) continue
-      const modifiers = (ol.modifiers || []).map(m => ({ id: m.modifierId, name: m.name, priceDelta: Number(m.priceDelta) }))
+      const modifiers = (ol.modifiers || []).map(m => ({ id: m.modifierId, name: m.name, priceDelta: Number(m.priceDelta), quantity: m.quantity || 1 }))
       const components = (ol.components || []).map(c => ({ productId: c.productId, product: productsById[c.productId], quantity: Number(c.quantity), priceDelta: Number(c.unitPrice), modifiers: (c.modifiers || []).map(m => ({ id: m.modifierId, name: m.name, priceDelta: Number(m.priceDelta) })) }))
       const l = { key: ++keySeq, productId: ol.productId, product, quantity: Number(ol.quantity), unitPrice: Number(ol.unitPrice), modifiers, components, note: ol.note || '', discountPercent: Number(ol.discountPercent) || 0, discountAmount: Number(ol.discountAmount) || 0 }
       lines.value.push(l)

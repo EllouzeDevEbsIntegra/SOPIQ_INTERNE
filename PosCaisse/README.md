@@ -30,6 +30,12 @@ Double-cliquez sur **`RESTART_POS.bat`**. Il enchaîne tout, sans aucune autre m
 Comptez une quinzaine de secondes sans recompilation, une à deux minutes avec.
 Sous Linux / macOS : `./restart.sh` fait exactement la même chose.
 
+### Suppléments ajoutables plusieurs fois
+
+Dans « Options & suppléments », un groupe réglé sur **`maximum = 0` (illimité)** et **choix multiple** devient *répétable* : à la caisse, chaque appui sur l'option ajoute une unité (`×3` s'affiche sur la tuile, un « − » en retire une), et le prix suit. Le ticket imprime « 3 x Fromage » avec le montant cumulé.
+
+Un groupe doté d'un maximum garde l'ancien comportement : une option, une fois. Le serveur le vérifie aussi, la limite n'est donc pas contournable.
+
 ### Impression sans dialogue
 
 Le lanceur ouvre la caisse dans Chrome ou Edge avec l'option **`--kiosk-printing`** : le ticket part **directement sur l'imprimante par défaut de Windows**, sans que le caissier ait à valider un dialogue.

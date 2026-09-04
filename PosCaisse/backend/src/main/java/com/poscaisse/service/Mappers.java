@@ -121,7 +121,7 @@ public final class Mappers {
         return new OrderLineDto(l.getId(), l.getProduct() == null ? null : l.getProduct().getId(), l.getProductCode(), l.getProductName(),
                 l.getCategory() == null ? null : l.getCategory().getId(), l.getQuantity(), l.getOriginalUnitPrice(), l.getUnitPrice(),
                 l.getModifiersTotal(), l.getDiscountPercent(), l.getDiscountAmount(), l.getTaxRate(), l.getLineTotal(), l.getNote(),
-                l.getModifiers().stream().map(m -> new LineModifierDto(m.getModifier() == null ? null : m.getModifier().getId(), m.getModifierName(), m.getPriceDelta())).toList(),
+                l.getModifiers().stream().map(m -> new LineModifierDto(m.getModifier() == null ? null : m.getModifier().getId(), m.getModifierName(), m.getPriceDelta(), m.getQuantity())).toList(),
                 l.getComponents().stream().map(Mappers::line).toList());
     }
 

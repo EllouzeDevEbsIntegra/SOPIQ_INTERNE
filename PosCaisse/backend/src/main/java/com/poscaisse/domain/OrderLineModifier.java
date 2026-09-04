@@ -12,4 +12,6 @@ public class OrderLineModifier {
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "modifier_id") private Modifier modifier;
     private String modifierName;
     private BigDecimal priceDelta = BigDecimal.ZERO;
+    /** Nombre de fois que l'option est ajoutee a la ligne (groupes sans maximum). */
+    private int quantity = 1;
 }

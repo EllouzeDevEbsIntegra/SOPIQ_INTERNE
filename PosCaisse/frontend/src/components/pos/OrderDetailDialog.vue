@@ -57,8 +57,8 @@ const statusClass = (s) => ({ PAID: 'success', CANCELLED: 'danger', REFUNDED: 'd
         <tbody>
           <template v-for="l in order.lines" :key="l.id">
             <tr><td class="num">{{ fmtQty(l.quantity) }}</td><td><b>{{ l.productName }}</b>
-              <div v-for="c in l.components" :key="c.id" class="small muted">• {{ fmtQty(c.quantity) }} {{ c.productName }}<span v-if="c.modifiers.length"> ({{ c.modifiers.map(m=>m.name).join(', ') }})</span></div>
-              <div v-for="m in l.modifiers" :key="m.modifierId" class="small muted">+ {{ m.name }}<span v-if="Number(m.priceDelta)"> ({{ fmt(m.priceDelta) }})</span></div>
+              <div v-for="c in l.components" :key="c.id" class="small muted">• {{ fmtQty(c.quantity) }} {{ c.productName }}<span v-if="c.modifiers.length"> ({{ c.modifiers.map(m => ((m.quantity || 1) > 1 ? m.quantity + ' × ' : '') + m.name).join(', ') }})</span></div>
+              <div v-for="m in l.modifiers" :key="m.modifierId" class="small muted">+ <template v-if="(m.quantity || 1) > 1">{{ m.quantity }} × </template>{{ m.name }}<span v-if="Number(m.priceDelta)"> ({{ fmt(Number(m.priceDelta) * (m.quantity || 1)) }})</span></div>
               <div v-if="Number(l.discountAmount)" class="small" style="color:#b45309">Remise −{{ fmt(l.discountAmount) }}</div>
               <div v-if="l.note" class="small muted">» {{ l.note }}</div></td>
               <td class="right num">{{ fmt(Number(l.unitPrice) + Number(l.modifiersTotal)) }}</td><td class="right num bold">{{ fmt(l.lineTotal) }}</td></tr>

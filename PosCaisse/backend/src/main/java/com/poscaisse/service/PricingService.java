@@ -15,7 +15,8 @@ public class PricingService {
 
     /** Computes modifiersTotal, discountAmount and lineTotal of a line (including menu components). */
     public void computeLine(OrderLine line) {
-        BigDecimal mods = line.getModifiers().stream().map(OrderLineModifier::getPriceDelta).map(Money::nz)
+        BigDecimal mods = line.getModifiers().stream()
+                .map(m -> Money.nz(m.getPriceDelta()).multiply(BigDecimal.valueOf(Math.max(1, m.getQuantity()))))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal componentsUnit = BigDecimal.ZERO;
         for (OrderLine c : line.getComponents()) {

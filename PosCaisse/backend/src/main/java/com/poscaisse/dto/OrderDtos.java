@@ -26,7 +26,7 @@ public final class OrderDtos {
                                   BigDecimal discountAmount, @NotEmpty List<@Valid CartLineRequest> lines,
                                   @NotEmpty List<@Valid PaymentRequest> payments, Long heldOrderId) {}
 
-    public record LineModifierDto(Long modifierId, String name, BigDecimal priceDelta) {}
+    public record LineModifierDto(Long modifierId, String name, BigDecimal priceDelta, int quantity) {}
     public record OrderLineDto(Long id, Long productId, String productCode, String productName, Long categoryId, BigDecimal quantity,
                                BigDecimal originalUnitPrice, BigDecimal unitPrice, BigDecimal modifiersTotal, BigDecimal discountPercent,
                                BigDecimal discountAmount, BigDecimal taxRate, BigDecimal lineTotal, String note,

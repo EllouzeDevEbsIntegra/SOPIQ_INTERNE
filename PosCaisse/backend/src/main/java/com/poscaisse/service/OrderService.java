@@ -146,13 +146,25 @@ public class OrderService {
         // modifiers
         Map<Long, ModifierGroup> allowed = new HashMap<>();
         for (ProductModifierGroup pmg : p.getModifierGroups()) if (pmg.getModifierGroup().isActive()) allowed.put(pmg.getModifierGroup().getId(), pmg.getModifierGroup());
+        // Le client envoie une occurrence par ajout : « fromage » trois fois arrive
+        // trois fois. On regroupe en une ligne portant sa quantité, plutôt que trois
+        // lignes identiques sur le ticket de cuisine.
         Map<Long, Integer> perGroup = new HashMap<>();
-        if (lr.modifierIds() != null) for (Long mid : lr.modifierIds()) {
-            Modifier m = modifierRepo.findById(mid).orElseThrow(() -> BusinessException.notFound("Option #" + mid));
+        Map<Long, Integer> perModifier = new LinkedHashMap<>();
+        if (lr.modifierIds() != null) for (Long mid : lr.modifierIds()) perModifier.merge(mid, 1, Integer::sum);
+        for (Map.Entry<Long, Integer> e : perModifier.entrySet()) {
+            Modifier m = modifierRepo.findById(e.getKey()).orElseThrow(() -> BusinessException.notFound("Option #" + e.getKey()));
             if (!m.isActive() || !allowed.containsKey(m.getGroup().getId())) throw new BusinessException("L'option « " + m.getName() + " » n'est pas valide pour « " + p.getName() + " ».");
-            perGroup.merge(m.getGroup().getId(), 1, Integer::sum);
+            ModifierGroup g = allowed.get(m.getGroup().getId());
+            // Répéter une même option n'a de sens que dans un groupe sans maximum :
+            // ailleurs, cela contournerait silencieusement la limite configurée.
+            boolean repetable = g.isMultiple() && g.getMaxSelect() <= 0;
+            if (e.getValue() > 1 && !repetable)
+                throw new BusinessException("« " + g.getName() + " » : l'option « " + m.getName() + " » ne peut être ajoutée qu'une fois.");
+            perGroup.merge(g.getId(), e.getValue(), Integer::sum);
             OrderLineModifier om = new OrderLineModifier();
-            om.setOrderLine(l); om.setModifier(m); om.setModifierName(m.getName()); om.setPriceDelta(Money.nz(m.getPriceDelta()));
+            om.setOrderLine(l); om.setModifier(m); om.setModifierName(m.getName());
+            om.setPriceDelta(Money.nz(m.getPriceDelta())); om.setQuantity(e.getValue());
             l.getModifiers().add(om);
         }
         for (ModifierGroup g : allowed.values()) {
