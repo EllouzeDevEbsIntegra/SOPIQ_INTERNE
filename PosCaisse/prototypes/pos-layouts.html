@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PosCaisse — 4 pistes pour l'écran de vente</title>
+<style>
+:root{
+  --ink:#14110E;--ink-2:#4A423A;--ink-3:#857B70;--ink-4:#B3A99C;
+  --canvas:#F2F0EB;--surface:#fff;--surface-2:#FAF8F4;--surface-3:#F0EDE6;
+  --line:#E3DED4;--line-2:#D3CCBF;
+  --brand:#C8441C;--brand-2:#A8360F;--brand-soft:#FCEFE9;--brand-line:#F0CBBB;
+  --pay:#15784A;--pay-2:#0F5E39;--pay-soft:#EAF5EF;
+  --warn:#A2620A;--warn-soft:#FBF2E3;
+  --r-xs:5px;--r-sm:7px;--r:10px;--r-lg:14px;
+  --shadow-1:0 1px 2px rgba(20,17,14,.06),0 2px 8px rgba(20,17,14,.05);
+  --shadow-2:0 10px 30px -12px rgba(20,17,14,.28);
+  --font:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--canvas);color:var(--ink);font:14px/1.45 var(--font);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.num{font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+
+/* ---------- chrome du prototype ---------- */
+.proto-bar{
+  position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:14px;
+  padding:9px 16px;background:var(--ink);color:#fff;
+}
+.proto-bar h1{font-size:14px;font-weight:650;letter-spacing:-.01em;white-space:nowrap}
+.proto-bar h1 em{font-style:normal;color:#A69C90;font-weight:500}
+.tabs{display:flex;gap:5px;margin-left:auto}
+.tabs button{
+  padding:7px 13px;border-radius:var(--r-sm);font-size:13px;font-weight:600;
+  color:#C9C0B5;border:1px solid rgba(255,255,255,.14);white-space:nowrap;
+}
+.tabs button:hover{background:rgba(255,255,255,.08);color:#fff}
+.tabs button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.reset{font-size:12.5px;color:#A69C90;text-decoration:underline;text-underline-offset:3px}
+
+.brief{padding:14px 16px 0}
+.brief-in{
+  display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:13px 15px;
+}
+.brief h2{font-size:16.5px;letter-spacing:-.02em;margin-bottom:4px}
+.brief p{font-size:13.5px;color:var(--ink-2);max-width:76ch}
+.brief p + p{margin-top:5px}
+.brief b{font-weight:650;color:var(--ink)}
+.taps{display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 16px;
+  background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r);white-space:nowrap}
+.taps span{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.taps b{font-family:var(--font);font-size:26px;font-weight:750;letter-spacing:-.03em}
+.taps i{font-style:normal;font-size:11.5px;color:var(--ink-3)}
+
+.stage{padding:14px 16px 20px}
+.screen{
+  height:768px;max-height:calc(100vh - 40px);
+  background:var(--canvas);border:1px solid var(--line-2);border-radius:var(--r-lg);
+  overflow:hidden;box-shadow:var(--shadow-2);display:flex;flex-direction:column;
+}
+.screen-note{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:6px 4px 0;font-size:11.5px;color:var(--ink-3)
+}
+
+/* ---------- éléments communs POS ---------- */
+.topbar{
+  display:flex;align-items:center;gap:12px;padding:0 14px;height:52px;flex:0 0 52px;
+  background:var(--surface);border-bottom:1px solid var(--line);
+}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:-.02em;font-size:15px}
+.logo i{width:26px;height:26px;border-radius:var(--r-xs);background:var(--brand);display:block}
+.who{margin-left:auto;display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink-3)}
+.who em{width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;
+  font-style:normal;font-size:11px;font-weight:700}
+.srch{
+  flex:1;max-width:340px;height:36px;padding:0 12px;border:1px solid var(--line-2);border-radius:var(--r-sm);
+  background:var(--surface-2);font:inherit;font-size:13.5px;
+}
+.srch:focus{outline:2px solid var(--brand-line);outline-offset:-1px;background:#fff}
+
+.tile{
+  position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:5px;
+  padding:10px 11px;text-align:left;overflow:hidden;min-height:88px;
+  background:var(--c-bg);border:1px solid var(--c-line);border-radius:var(--r);
+  transition:background .1s,transform .06s,box-shadow .1s;
+}
+.tile::before{content:'';position:absolute;inset:0 auto 0 0;width:3px;background:var(--c)}
+.tile:hover{background:#fff;box-shadow:var(--shadow-1)}
+.tile:active{transform:translateY(1px)}
+.tile .nm{font-size:14px;font-weight:600;line-height:1.2;letter-spacing:-.01em;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.tile .ft{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.tile .pr{font-size:13.5px;font-weight:700;color:var(--ink-2)}
+.tile .tag{font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--c);opacity:.85}
+.grid{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(clamp(140px,14vw,182px),1fr));
+  align-content:start;overflow:auto;padding:12px}
+
+.cat{
+  display:flex;align-items:center;gap:9px;width:100%;padding:0 12px;height:52px;border-radius:var(--r-sm);
+  font-size:14px;font-weight:600;color:var(--ink-2);text-align:left;
+}
+.cat i{width:8px;height:8px;border-radius:2px;background:var(--k);flex:0 0 8px}
+.cat span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cat b{font-size:11.5px;font-weight:600;color:var(--ink-4)}
+.cat:hover{background:var(--surface-3)}
+.cat.on{background:var(--ink);color:#fff}
+.cat.on b{color:rgba(255,255,255,.55)}
+
+.cart{display:flex;flex-direction:column;background:var(--surface);border-left:1px solid var(--line)}
+.cart-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 9px}
+.cart-hd h3{font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)}
+.cart-hd .n{font-size:12px;font-weight:700;color:var(--brand);background:var(--brand-soft);
+  border:1px solid var(--brand-line);border-radius:20px;padding:1px 9px}
+.lines{flex:1;overflow:auto;padding:0 8px 8px}
+.line{display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:center;
+  padding:9px 6px;border-bottom:1px solid var(--line)}
+.qty{display:flex;align-items:center;gap:0;border:1px solid var(--line-2);border-radius:var(--r-xs);overflow:hidden}
+.qty button{width:26px;height:28px;font-size:15px;font-weight:700;color:var(--ink-3);background:var(--surface-2)}
+.qty button:hover{background:var(--surface-3);color:var(--ink)}
+.qty b{min-width:26px;text-align:center;font-size:13.5px;font-weight:700}
+.line .d{min-width:0}
+.line .d strong{display:block;font-size:13.5px;font-weight:600;line-height:1.25}
+.line .d small{font-size:11.5px;color:var(--ink-3)}
+.line .amt{font-size:13.5px;font-weight:700}
+.pill{display:inline-flex;align-items:center;gap:4px;margin-top:3px;padding:1px 7px;border-radius:20px;
+  font-size:11px;font-weight:650;color:var(--brand);background:var(--brand-soft);border:1px solid var(--brand-line)}
+.pill:hover{background:#F8DFD3}
+.empty{padding:34px 16px;text-align:center;color:var(--ink-4);font-size:13.5px}
+.tot{padding:11px 14px;border-top:1px solid var(--line);background:var(--surface-2)}
+.tot .row{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-3);margin-bottom:3px}
+.tot .big{display:flex;justify-content:space-between;align-items:baseline;margin-top:5px}
+.tot .big span{font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.tot .big b{font-size:31px;font-weight:750;letter-spacing:-.035em}
+.pay{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:60px;margin-top:9px;
+  border-radius:var(--r);background:var(--pay);color:#fff;font-size:17px;font-weight:700;letter-spacing:-.01em}
+.pay:hover{background:var(--pay-2)}
+.pay:disabled{background:var(--line);color:var(--ink-4);cursor:not-allowed}
+
+.sheet{position:absolute;inset:0;background:rgba(20,17,14,.42);display:grid;place-items:center;z-index:30;padding:24px}
+.sheet .box{width:min(100%,460px);background:var(--surface);border-radius:var(--r-lg);
+  box-shadow:var(--shadow-2);overflow:hidden}
+.sheet h4{padding:16px 18px 3px;font-size:18px;letter-spacing:-.02em}
+.sheet .sub{padding:0 18px 14px;font-size:13px;color:var(--ink-3)}
+.opts{display:flex;flex-direction:column;gap:7px;padding:0 18px 16px}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:10px;height:56px;padding:0 15px;
+  border:1px solid var(--line-2);border-radius:var(--r);font-size:15.5px;font-weight:600;text-align:left}
+.opt:hover{border-color:var(--brand);background:var(--brand-soft)}
+.opt .dd{font-size:13.5px;font-weight:700;color:var(--brand)}
+.sheet .cancel{width:100%;height:46px;border-top:1px solid var(--line);font-size:14px;
+  font-weight:600;color:var(--ink-3)}
+.sheet .cancel:hover{background:var(--surface-2)}
+
+/* Ancree en bas de la colonne grille : au centre elle masquait des articles,
+   en bas au centre elle chevauchait la barre de total de la piste D. */
+.flash{position:absolute;left:216px;bottom:16px;z-index:40;
+  padding:9px 18px;border-radius:22px;background:var(--ink);color:#fff;font-size:13.5px;font-weight:600;
+  opacity:0;transition:opacity .18s;pointer-events:none;white-space:nowrap}
+.flash.on{opacity:1}
+.screen.d .flash{left:16px;bottom:172px}
+</style></head><body>
+
+<div class="proto-bar">
+  <h1>PosCaisse <em>— 4 pistes pour l'écran de vente</em></h1>
+  <div class="tabs" id="tabs"></div>
+  <button class="reset" onclick="reset()">Vider le panier</button>
+</div>
+
+<div class="brief"><div class="brief-in">
+  <div><h2 id="bTitle"></h2><div id="bText"></div></div>
+  <div class="taps"><span>Taps / article</span><b id="bTaps"></b><i id="bTapsNote"></i></div>
+</div></div>
+
+<div class="stage">
+  <div class="screen-note">
+    <span id="noteL"></span><span>Cadre 1366 × 768 — écran de caisse 15 pouces</span>
+  </div>
+  <div class="screen" id="screen"></div>
+</div>
+
+<script>
+const DATA = {"categories":[{"name":"Classic","color":"#C8441C","products":[{"code":"CLA-M01","name":"Omlette Mozzarella","price":4.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M02","name":"Omlette Mozzarella Kwika","price":5.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M03","name":"Omlette Mozzarella Salami","price":6.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M04","name":"Omlette Mozzarella Thon","price":6.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M05","name":"Omlette Mozzarella Jombon","price":6.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M06","name":"Omlette Mozzarella Chawarma","price":8.7,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M07","name":"Omlette Mozzarella Kabeb","price":8.7,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M08","name":"Omlette Mozzarella Escalope Grillé","price":8.7,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M09","name":"Omlette Mozzarella Escalope Panée","price":9.7,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M10","name":"Omlette Mozzarella Cordon Bleu","price":9.7,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-S01","name":"Omlette","price":3.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S02","name":"Kwika","price":3.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S03","name":"Salami","price":3.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":0.5}],"optName":"Format"},{"code":"CLA-S04","name":"Jombon","price":4.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S05","name":"Thon","price":4.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S06","name":"Kabeb","price":6.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S07","name":"Chawarma","price":6.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S08","name":"Escalope Grillé","price":6.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S09","name":"Escalope Panée","price":7.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S10","name":"Cordon Bleu","price":7.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"}]},{"name":"Classic Spécial","color":"#8E2F12","products":[{"code":"CSP-01","name":"Special","price":8.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-02","name":"Number One","price":9.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-03","name":"Number One Plus","price":13.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-04","name":"Spicy","price":13.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-05","name":"Cheese","price":9.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-06","name":"Hot Cheese","price":9.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-07","name":"Full Cheese","price":11.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"}]},{"name":"Healthy","color":"#2F7D51","products":[{"code":"HEA-M01","name":"Omlette Mozzarella","price":5.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M02","name":"Omlette Mozzarella Kwika","price":6.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M03","name":"Omlette Mozzarella Salami","price":7.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M04","name":"Omlette Mozzarella Thon","price":7.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M05","name":"Omlette Mozzarella Jombon","price":7.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M06","name":"Omlette Mozzarella Chawarma","price":9.7,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.3},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M07","name":"Omlette Mozzarella Kabeb","price":9.7,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.3},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M08","name":"Omlette Mozzarella Escalope Grillé","price":9.7,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.3},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M09","name":"Omlette Mozzarella Escalope Panée","price":10.7,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.3},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M10","name":"Omlette Mozzarella Cordon Bleu","price":10.7,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.3},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-S01","name":"Omlette","price":4.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S02","name":"Kwika","price":4.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S03","name":"Salami","price":4.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S04","name":"Jombon","price":5.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S05","name":"Thon","price":5.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S06","name":"Kabeb","price":7.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S07","name":"Chawarma","price":7.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S08","name":"Escalope Grillé","price":7.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S09","name":"Escalope Panée","price":8.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S10","name":"Cordon Bleu","price":8.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"}]},{"name":"Healthy Spécial","color":"#1E5B3A","products":[{"code":"HSP-01","name":"Special","price":9.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-02","name":"Number One","price":10.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-03","name":"Number One Plus","price":14.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-04","name":"Spicy","price":14.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-05","name":"Cheese","price":10.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-06","name":"Hot Cheese","price":10.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-07","name":"Full Cheese","price":12.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"}]},{"name":"Lablebi","color":"#B5651D","products":[{"code":"LAB-01","name":"Lablebi Normale","price":4.5,"opts":null,"optName":null},{"code":"LAB-02","name":"Lablebi Oeuf","price":5.0,"opts":null,"optName":null},{"code":"LAB-03","name":"Lablebi Thon","price":7.5,"opts":null,"optName":null},{"code":"LAB-04","name":"Lablebi Double Tête","price":6.0,"opts":null,"optName":null},{"code":"LAB-05","name":"Lablebi Oeuf Thon","price":8.0,"opts":null,"optName":null},{"code":"LAB-06","name":"Lablebi Double Tête Thon","price":9.0,"opts":null,"optName":null}]},{"name":"Extras","color":"#7A6A55","products":[{"code":"EXT-01","name":"Omelette","price":0.7,"opts":null,"optName":null},{"code":"EXT-02","name":"Fromage Triangle","price":0.7,"opts":null,"optName":null},{"code":"EXT-03","name":"Mozzarella","price":2.0,"opts":null,"optName":null},{"code":"EXT-04","name":"Mozzarella 3arbi","price":3.0,"opts":null,"optName":null},{"code":"EXT-05","name":"Gruyère","price":3.0,"opts":null,"optName":null},{"code":"EXT-06","name":"Thon","price":2.5,"opts":null,"optName":null},{"code":"EXT-07","name":"Jombon","price":2.5,"opts":null,"optName":null},{"code":"EXT-08","name":"Salami","price":1.5,"opts":null,"optName":null},{"code":"EXT-09","name":"Kwika","price":1.0,"opts":null,"optName":null},{"code":"EXT-10","name":"Chawarma","price":4.0,"opts":null,"optName":null},{"code":"EXT-11","name":"Kabeb","price":4.0,"opts":null,"optName":null},{"code":"EXT-12","name":"Escalope Grillé","price":4.0,"opts":null,"optName":null},{"code":"EXT-13","name":"Escalope Panné","price":4.5,"opts":null,"optName":null},{"code":"EXT-14","name":"Cordon Bleu","price":4.5,"opts":null,"optName":null},{"code":"EXT-15","name":"Frite","price":3.0,"opts":null,"optName":null},{"code":"EXT-16","name":"Patte Normale","price":1.0,"opts":null,"optName":null},{"code":"EXT-17","name":"Patte Céréale","price":2.0,"opts":null,"optName":null},{"code":"EXT-18","name":"Patte Chia","price":2.5,"opts":null,"optName":null}]}]};
+
+/* ------------------------------------------------------------------ état */
+const S = { tab:0, cat:0, cart:[], sheet:null, bread:{}, expanded:null, flash:'' };
+const money = n => n.toFixed(3).replace('.', ',');
+const cats = DATA.categories;
+const total = () => S.cart.reduce((s,l)=>s+l.unit*l.qty,0);
+const count = () => S.cart.reduce((s,l)=>s+l.qty,0);
+
+function add(p, opt){
+  const unit = p.price + (opt ? opt.d : 0);
+  const key = p.code + '|' + (opt ? opt.n : '');
+  const found = S.cart.find(l=>l.key===key);
+  if (found) found.qty++;
+  else S.cart.push({ key, code:p.code, name:p.name, opt:opt?opt.n:null, optName:p.optName, opts:p.opts, unit, qty:1 });
+  toast(p.name + (opt ? ' · ' + opt.n : '') + ' ajouté');
+  render();
+}
+function bump(i, d){ S.cart[i].qty += d; if (S.cart[i].qty <= 0) S.cart.splice(i,1); render(); }
+function cycleOpt(i){
+  const l = S.cart[i]; if (!l.opts) return;
+  const j = l.opts.findIndex(o=>o.n===l.opt);
+  const next = l.opts[(j+1) % l.opts.length];
+  l.opt = next.n;
+  const base = cats.flatMap(c=>c.products).find(p=>p.code===l.code);
+  l.unit = base.price + next.d; l.key = l.code + '|' + next.n;
+  render();
+}
+function reset(){ S.cart = []; S.sheet = null; S.expanded = null; render(); }
+let flashTimer = null;
+function toast(t){ S.flash = t; clearTimeout(flashTimer); flashTimer = setTimeout(()=>{ S.flash=''; render(); }, 1400); }
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const tint = (hex,a) => { const h=hex.replace('#',''); const n=parseInt(h.length===3?h.split('').map(c=>c+c).join(''):h,16);
+  return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`; };
+
+function tile(p, cat, extra=''){
+  return `<button class="tile" style="--c:${cat.color};--c-bg:${tint(cat.color,.055)};--c-line:${tint(cat.color,.28)}"
+    onclick="${extra||`tap('${p.code}')`}">
+    <span class="nm">${esc(p.name)}</span>
+    <span class="ft"><span class="pr num">${money(p.price)}</span>
+    ${p.opts ? `<span class="tag">${p.optName}</span>` : ''}</span></button>`;
+}
+function topbar(extra=''){
+  return `<div class="topbar"><div class="logo"><i></i>NUMBER ONE</div>
+    ${extra}<input class="srch" placeholder="Rechercher un article…">
+    <div class="who"><span>CAISSE 01</span><em>A</em></div></div>`;
+}
+function cartLines(){
+  if (!S.cart.length) return `<div class="empty">Panier vide.<br>Touchez un article pour commencer.</div>`;
+  return S.cart.map((l,i)=>`<div class="line">
+    <span class="qty"><button onclick="bump(${i},-1)">−</button><b class="num">${l.qty}</b><button onclick="bump(${i},1)">+</button></span>
+    <span class="d"><strong>${esc(l.name)}</strong>
+      ${l.opt ? `<button class="pill" onclick="cycleOpt(${i})">${esc(l.optName)} : ${esc(l.opt)} ⇄</button>`
+              : `<small>${money(l.unit)} l'unité</small>`}</span>
+    <span class="amt num">${money(l.unit*l.qty)}</span></div>`).join('');
+}
+function totals(){
+  return `<div class="tot">
+    <div class="row"><span>${count()} article${count()>1?'s':''}</span><span class="num">${money(total())}</span></div>
+    <div class="row"><span>TVA incluse</span><span class="num">${money(total()*0.19/1.19)}</span></div>
+    <div class="big"><span>Total</span><b class="num">${money(total())} DT</b></div>
+    <button class="pay" ${S.cart.length?'':'disabled'}>ENCAISSER</button></div>`;
+}
+function sheet(){
+  if (!S.sheet) return '';
+  const p = S.sheet;
+  return `<div class="sheet" onclick="if(event.target===this){S.sheet=null;render()}"><div class="box">
+    <h4>${esc(p.name)}</h4><div class="sub">Choisissez le ${esc(p.optName.toLowerCase())} — obligatoire</div>
+    <div class="opts">${p.opts.map(o=>`<button class="opt" onclick="pick('${p.code}','${esc(o.n)}')">
+      <span>${esc(o.n)}</span>${o.d ? `<span class="dd num">+${money(o.d)}</span>` : ''}</button>`).join('')}</div>
+    <button class="cancel" onclick="S.sheet=null;render()">Annuler</button></div></div>`;
+}
+function flash(){ return `<div class="flash ${S.flash?'on':''}">${esc(S.flash)}</div>`; }
+const byCode = c => cats.flatMap(x=>x.products).find(p=>p.code===c);
+function tap(code){ const p = byCode(code); if (p.opts) { S.sheet = p; } else add(p); render(); }
+function pick(code, optName){ const p = byCode(code); add(p, p.opts.find(o=>o.n===optName)); S.sheet = null; }
+
+/* ------------------------------------------------------- les 4 propositions */
+const P = [
+{
+  key:'A', name:'A · Rail + modale',
+  taps:'2', tapsNote:'article, puis pain',
+  title:'A — Rail de catégories, modale de choix (l’écran actuel, retravaillé)',
+  text:`<p>Trois colonnes : catégories à gauche, grille au centre, panier à droite en permanence.
+        Toucher un article ouvre une modale plein cadre pour le pain.</p>
+        <p><b>Le défaut :</b> 54 de vos 78 articles ont un pain obligatoire, donc la modale s’ouvre
+        presque à chaque fois. Deux taps par article, et la grille disparaît entre les deux.
+        C’est le point de comparaison, pas ma recommandation.</p>`,
+  note:'Rail 200 px · grille fluide · panier 330 px',
+  render(){
+    const cat = cats[S.cat];
+    return topbar() + `<div style="flex:1;display:grid;grid-template-columns:200px 1fr 330px;min-height:0">
+      <div style="background:var(--surface);border-right:1px solid var(--line);padding:8px;overflow:auto">
+        ${cats.map((c,i)=>`<button class="cat ${i===S.cat?'on':''}" style="--k:${c.color}"
+          onclick="S.cat=${i};S.expanded=null;render()"><i></i><span>${esc(c.name)}</span>
+          <b>${c.products.length}</b></button>`).join('')}
+      </div>
+      <div class="grid">${cat.products.map(p=>tile(p,cat)).join('')}</div>
+      <div class="cart"><div class="cart-hd"><h3>Commande</h3>
+        ${count()?`<span class="n num">${count()}</span>`:''}</div>
+        <div class="lines">${cartLines()}</div>${totals()}</div></div>` + sheet() + flash();
+  }
+},
+{
+  key:'B', name:'B · Pain persistant',
+  taps:'1', tapsNote:'le pain est déjà choisi',
+  title:'B — Le pain se choisit une fois, en bandeau',
+  text:`<p>Un bandeau au-dessus de la grille porte le choix courant : <b>Simple / Double / 3arbi</b>.
+        Le caissier le règle une fois, puis chaque article part directement dans le panier.
+        Le bandeau s’adapte à la catégorie et disparaît sur Lablebi et Extras, qui n’ont pas d’options.</p>
+        <p><b>Pourquoi ça marche ici :</b> dans un fast-food, un client demande le plus souvent le même
+        pain pour toute sa commande. On paie le choix une fois au lieu d’une fois par article.
+        La correction reste possible d’un tap dans la ligne du panier.</p>`,
+  note:'Bandeau contextuel · aucune modale · panier 330 px',
+  render(){
+    const cat = cats[S.cat];
+    const opts = cat.products.find(p=>p.opts)?.opts;
+    const optName = cat.products.find(p=>p.opts)?.optName;
+    const cur = S.bread[S.cat] ?? 0;
+    const band = opts ? `<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;
+      background:var(--brand-soft);border-bottom:1px solid var(--brand-line)">
+      <span style="font-size:12px;font-weight:750;letter-spacing:.08em;text-transform:uppercase;color:var(--brand-2)">${esc(optName)}</span>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">${opts.map((o,i)=>`<button
+        onclick="S.bread[${S.cat}]=${i};render()"
+        style="height:40px;padding:0 16px;border-radius:var(--r-sm);font-size:14.5px;font-weight:650;
+        border:1px solid ${i===cur?'var(--brand)':'var(--brand-line)'};
+        background:${i===cur?'var(--brand)':'#fff'};color:${i===cur?'#fff':'var(--ink-2)'}">
+        ${esc(o.n)}${o.d?` <span class="num" style="opacity:.75;font-size:12.5px">+${money(o.d)}</span>`:''}</button>`).join('')}</div>
+      <span style="margin-left:auto;font-size:12px;color:var(--ink-3)">appliqué aux prochains articles</span></div>` : '';
+    return topbar() + `<div style="flex:1;display:grid;grid-template-columns:200px 1fr 330px;min-height:0">
+      <div style="background:var(--surface);border-right:1px solid var(--line);padding:8px;overflow:auto">
+        ${cats.map((c,i)=>`<button class="cat ${i===S.cat?'on':''}" style="--k:${c.color}"
+          onclick="S.cat=${i};render()"><i></i><span>${esc(c.name)}</span><b>${c.products.length}</b></button>`).join('')}
+      </div>
+      <div style="display:flex;flex-direction:column;min-height:0">${band}
+        <div class="grid">${cat.products.map(p=>tile(p,cat,`addB('${p.code}')`)).join('')}</div></div>
+      <div class="cart"><div class="cart-hd"><h3>Commande</h3>
+        ${count()?`<span class="n num">${count()}</span>`:''}</div>
+        <div class="lines">${cartLines()}</div>${totals()}</div></div>` + flash();
+  }
+},
+{
+  key:'C', name:'C · Tuile dépliante',
+  taps:'2', tapsNote:'sans quitter la grille',
+  title:'C — La tuile se déplie sur place',
+  text:`<p>Toucher un article ne fait rien disparaître : la tuile s’agrandit et montre ses pains.
+        Le deuxième tap ajoute. La grille, la catégorie et le panier restent visibles en permanence.</p>
+        <p><b>Le compromis :</b> toujours deux taps, mais aucune perte de contexte et aucun voile noir.
+        Plus rassurant qu’une modale pour un caissier débutant, et l’œil ne quitte jamais la zone
+        qu’il vient de toucher.</p>`,
+  note:'Aucune modale · le contexte reste à l’écran',
+  render(){
+    const cat = cats[S.cat];
+    const tiles = cat.products.map(p=>{
+      if (S.expanded === p.code && p.opts) {
+        return `<div style="grid-column:span 2;border:1px solid var(--brand);border-radius:var(--r);
+          background:#fff;padding:10px 11px;box-shadow:var(--shadow-1)">
+          <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;margin-bottom:9px">
+            <strong style="font-size:14.5px;line-height:1.2">${esc(p.name)}</strong>
+            <button onclick="S.expanded=null;render()" style="color:var(--ink-3);font-size:18px;line-height:1">×</button></div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">${p.opts.map(o=>`<button
+            onclick="pick('${p.code}','${esc(o.n)}');S.expanded=null;render()"
+            style="flex:1;min-width:88px;height:52px;border-radius:var(--r-sm);border:1px solid var(--line-2);
+            background:var(--surface-2);font-size:14px;font-weight:650;display:flex;flex-direction:column;
+            align-items:center;justify-content:center;gap:1px"
+            onmouseover="this.style.borderColor='var(--brand)';this.style.background='var(--brand-soft)'"
+            onmouseout="this.style.borderColor='var(--line-2)';this.style.background='var(--surface-2)'">
+            <span>${esc(o.n)}</span><span class="num" style="font-size:12px;color:var(--ink-3)">${money(p.price+o.d)}</span>
+            </button>`).join('')}</div></div>`;
+      }
+      return tile(p, cat, p.opts ? `S.expanded='${p.code}';render()` : `tap('${p.code}')`);
+    }).join('');
+    return topbar() + `<div style="flex:1;display:grid;grid-template-columns:200px 1fr 330px;min-height:0">
+      <div style="background:var(--surface);border-right:1px solid var(--line);padding:8px;overflow:auto">
+        ${cats.map((c,i)=>`<button class="cat ${i===S.cat?'on':''}" style="--k:${c.color}"
+          onclick="S.cat=${i};S.expanded=null;render()"><i></i><span>${esc(c.name)}</span><b>${c.products.length}</b></button>`).join('')}
+      </div>
+      <div class="grid">${tiles}</div>
+      <div class="cart"><div class="cart-hd"><h3>Commande</h3>
+        ${count()?`<span class="n num">${count()}</span>`:''}</div>
+        <div class="lines">${cartLines()}</div>${totals()}</div></div>` + flash();
+  }
+},
+{
+  key:'D', name:'D · Panier en bas',
+  taps:'1', tapsNote:'pain par défaut, corrigé après',
+  title:'D — Grille pleine largeur, ticket en bas',
+  text:`<p>Les catégories passent en onglets larges en haut, la grille prend toute la largeur de l’écran,
+        et le ticket défile horizontalement en bas — là où le pouce se trouve déjà.</p>
+        <p><b>Le pari :</b> on ajoute immédiatement avec le pain le plus courant (Simple), et la pastille
+        sur chaque carte du ticket permet de corriger d’un tap. Un tap par article dans le cas
+        courant, deux seulement quand le client demande autre chose.
+        En contrepartie, le total est plus bas dans le champ de vision qu’avec un panier latéral.</p>`,
+  note:'Grille sur toute la largeur · ticket horizontal en bas',
+  render(){
+    const cat = cats[S.cat];
+    const ticket = S.cart.length
+      ? S.cart.map((l,i)=>`<div style="flex:0 0 auto;min-width:172px;background:#fff;border:1px solid var(--line);
+          border-radius:var(--r);padding:9px 11px">
+          <div style="display:flex;justify-content:space-between;gap:8px;align-items:start">
+            <strong style="font-size:13px;font-weight:600;line-height:1.2">${esc(l.name)}</strong>
+            <span class="amt num" style="font-size:13.5px;font-weight:700">${money(l.unit*l.qty)}</span></div>
+          ${l.opt?`<button class="pill" onclick="cycleOpt(${i})">${esc(l.opt)} ⇄</button>`:''}
+          <div style="margin-top:7px"><span class="qty">
+            <button onclick="bump(${i},-1)">−</button><b class="num">${l.qty}</b>
+            <button onclick="bump(${i},1)">+</button></span></div></div>`).join('')
+      : `<div style="color:var(--ink-4);font-size:13.5px;padding:14px 4px">Panier vide — touchez un article.</div>`;
+    return topbar() + `
+      <div style="display:flex;gap:6px;padding:9px 12px;background:var(--surface);border-bottom:1px solid var(--line);overflow:auto">
+        ${cats.map((c,i)=>`<button onclick="S.cat=${i};render()"
+          style="flex:0 0 auto;height:46px;padding:0 20px;border-radius:var(--r-sm);font-size:14.5px;font-weight:650;
+          border:1px solid ${i===S.cat?'var(--ink)':'var(--line-2)'};
+          background:${i===S.cat?'var(--ink)':'#fff'};color:${i===S.cat?'#fff':'var(--ink-2)'}">
+          ${esc(c.name)}</button>`).join('')}</div>
+      <div class="grid" style="flex:1;grid-template-columns:repeat(auto-fill,minmax(clamp(140px,11vw,168px),1fr))">
+        ${cat.products.map(p=>tile(p,cat,`addD('${p.code}')`)).join('')}</div>
+      <div style="flex:0 0 auto;border-top:1px solid var(--line-2);background:var(--surface-2)">
+        <div style="display:flex;gap:8px;padding:10px 12px;overflow-x:auto">${ticket}</div>
+        <div style="display:flex;align-items:center;gap:16px;padding:0 12px 11px">
+          <div style="display:flex;align-items:baseline;gap:10px">
+            <span style="font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)">Total</span>
+            <b class="num" style="font-size:31px;font-weight:750;letter-spacing:-.035em">${money(total())} DT</b>
+            <span style="font-size:12.5px;color:var(--ink-3)">${count()} article${count()>1?'s':''}</span></div>
+          <button class="pay" style="margin:0 0 0 auto;width:280px;height:56px" ${S.cart.length?'':'disabled'}>ENCAISSER</button>
+        </div></div>` + flash();
+  }
+}];
+
+function addB(code){
+  const p = byCode(code);
+  if (!p.opts) return add(p);
+  add(p, p.opts[S.bread[S.cat] ?? 0]);
+}
+function addD(code){
+  const p = byCode(code);
+  add(p, p.opts ? p.opts[0] : null);   // pain par défaut, corrigeable dans le ticket
+}
+
+function render(){
+  const p = P[S.tab];
+  document.getElementById('tabs').innerHTML = P.map((x,i)=>
+    `<button class="${i===S.tab?'on':''}" onclick="S.tab=${i};S.sheet=null;S.expanded=null;render()">${x.name}</button>`).join('');
+  document.getElementById('bTitle').textContent = p.title;
+  document.getElementById('bText').innerHTML = p.text;
+  document.getElementById('bTaps').textContent = p.taps;
+  document.getElementById('bTapsNote').textContent = p.tapsNote;
+  document.getElementById('noteL').textContent = p.note;
+  const scr = document.getElementById('screen');
+  scr.className = 'screen ' + p.key.toLowerCase();
+  scr.innerHTML = p.render();
+  scr.style.position = 'relative';
+}
+render();
+</script></body></html>
