@@ -363,14 +363,15 @@ export default { components: { ReceiptInline } }
 .grid {
   flex: 1; min-height: 0; padding: 0 16px 16px;
   display: grid; align-content: start;
-  grid-template-columns: repeat(auto-fill, minmax(clamp(132px, 11.4vw, 178px), 1fr));
-  /* La tuile empile medaillon (40) + filet + nom sur deux lignes : une ligne
-     de grille plus basse rognerait le nom. Hauteur calee sur ce contenu. */
-  grid-auto-rows: clamp(108px, 14vh, 138px);
+  /* Tuile horizontale : vignette carree a gauche, prix et libelle a droite.
+     Les colonnes s'elargissent pour loger les deux, les lignes se raccourcissent
+     puisque plus rien n'est empile. Au total, plus d'articles a l'ecran. */
+  grid-template-columns: repeat(auto-fill, minmax(clamp(196px, 16vw, 264px), 1fr));
+  grid-auto-rows: clamp(84px, 10.6vh, 110px);
   gap: 9px;
 }
-.grid.S { grid-template-columns: repeat(auto-fill, minmax(clamp(116px, 10vw, 152px), 1fr)); grid-auto-rows: clamp(92px, 12vh, 116px); gap: 7px; }
-.grid.L { grid-template-columns: repeat(auto-fill, minmax(clamp(168px, 15vw, 232px), 1fr)); grid-auto-rows: clamp(136px, 17.5vh, 176px); gap: 11px; }
+.grid.S { grid-template-columns: repeat(auto-fill, minmax(clamp(168px, 13.5vw, 222px), 1fr)); grid-auto-rows: clamp(72px, 9vh, 94px); gap: 7px; }
+.grid.L { grid-template-columns: repeat(auto-fill, minmax(clamp(236px, 20vw, 312px), 1fr)); grid-auto-rows: clamp(104px, 13vh, 134px); gap: 11px; }
 .grid .empty { grid-column: 1 / -1; }
 .flash { box-shadow: 0 0 0 2px var(--pay); }
 

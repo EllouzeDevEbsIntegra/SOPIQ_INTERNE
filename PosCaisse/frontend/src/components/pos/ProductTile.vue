@@ -25,12 +25,13 @@ const tint = computed(() => {
     '--c-bg': `rgba(${r},${g},${b},.055)`,
     '--c-bg-press': `rgba(${r},${g},${b},.16)`,
     '--c-line': `rgba(${r},${g},${b},.28)`,
-    '--c-disc': `rgba(${r},${g},${b},.13)`     /* fond du médaillon */
+    '--c-pic': `rgba(${r},${g},${b},.13)`      /* fond de la vignette */
   }
 })
 const hasOptions = computed(() => (props.product.modifierGroups || []).length > 0)
-/* Le médaillon est toujours présent, avec ou sans photo : la tuile garde la même
-   silhouette, et une carte partiellement illustrée ne devient pas bancale. */
+/* La vignette est toujours présente, avec ou sans photo : sans image elle porte
+   l'initiale dans la teinte de la catégorie, pour qu'une carte partiellement
+   illustrée garde une grille régulière. */
 const initial = computed(() => (props.product.name || '?').trim().charAt(0).toUpperCase())
 
 let timer = null
@@ -43,27 +44,29 @@ function cancel() { if (timer) { clearTimeout(timer); timer = null } }
   <button
     class="tile" :class="[size, { off: !product.available }]" :style="tint"
     @pointerdown.prevent="down" @pointerup.prevent="up" @pointerleave="cancel" @pointercancel="cancel" @contextmenu.prevent>
-    <span class="top">
-      <span class="price num">{{ fmt(product.price) }}</span>
-      <span class="disc">
-        <img v-if="showImages && product.imageUrl" :src="product.imageUrl" alt="" draggable="false" />
-        <span v-else class="letter">{{ initial }}</span>
-      </span>
+    <span class="pic">
+      <img v-if="showImages && product.imageUrl" :src="product.imageUrl" alt="" draggable="false" />
+      <span v-else class="letter">{{ initial }}</span>
     </span>
-    <span class="rule"></span>
-    <span class="foot">
+    <span class="body">
+      <span class="top">
+        <span v-if="product.productType === 'MENU'" class="flag">Menu</span>
+        <Icon v-else-if="hasOptions" name="plus" :size="14" :stroke="2.4" class="opt" />
+        <span class="price num">{{ fmt(product.price) }}</span>
+      </span>
+      <span class="rule"></span>
       <span class="name">{{ product.name }}</span>
-      <span v-if="product.productType === 'MENU'" class="flag">Menu</span>
-      <Icon v-else-if="hasOptions" name="plus" :size="14" :stroke="2.4" class="opt" />
     </span>
     <span v-if="!product.available" class="veil">Indisponible</span>
   </button>
 </template>
 
 <style scoped>
+/* Bouton horizontal : vignette à gauche sur toute la hauteur, puis une colonne
+   avec le prix aligné à droite et le libellé de l'article en dessous. */
 .tile {
-  position: relative; display: flex; flex-direction: column; gap: 6px;
-  padding: 10px 11px; text-align: left; overflow: hidden;
+  position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px; padding: 8px 10px 8px 8px; text-align: left; overflow: hidden;
   background: var(--c-bg); border: 1px solid var(--c-line); border-radius: var(--r);
   transition: background .1s ease, transform .06s ease, box-shadow .1s ease;
 }
@@ -73,47 +76,45 @@ function cancel() { if (timer) { clearTimeout(timer); timer = null } }
 .tile:hover { background: #fff; box-shadow: var(--shadow-1); }
 .tile:active { background: var(--c-bg-press); transform: translateY(1px); box-shadow: none; }
 
-/* ---- ligne haute : prix à gauche, médaillon à droite ---- */
-.top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.price { font-size: 17px; font-weight: 750; color: var(--ink); letter-spacing: -.02em; }
-.disc {
-  flex: none; width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
-  display: grid; place-items: center;
-  background: var(--c-disc); border: 1px solid var(--c-line);
+/* vignette — carrée, calée sur la hauteur de la tuile */
+.pic {
+  align-self: stretch; aspect-ratio: 1; overflow: hidden;
+  display: grid; place-items: center; border-radius: var(--r-sm);
+  background: var(--c-pic); border: 1px solid var(--c-line);
 }
-.disc img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-.letter { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--c); }
+.pic img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+.letter { font-family: var(--font-display); font-size: 19px; font-weight: 700; color: var(--c); }
 
-.rule { height: 1px; background: var(--c-line); }
-
-/* ---- ligne basse : nom de l'article ---- */
-.foot { display: flex; align-items: center; gap: 7px; }
-.name {
-  flex: 1; min-width: 0;
-  font-size: 14px; font-weight: 600; line-height: 1.22; letter-spacing: -.01em; color: var(--ink);
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-}
+.body { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+/* le prix est poussé à droite ; l'indicateur d'options reste à gauche de la ligne */
+.top { display: flex; align-items: center; gap: 6px; }
+.price { margin-left: auto; font-size: 16.5px; font-weight: 750; color: var(--ink); letter-spacing: -.02em; }
 .flag {
-  flex: none;
   font-size: 9.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
   color: #fff; background: var(--c); padding: 2px 6px; border-radius: 3px;
 }
-.opt { flex: none; color: var(--c); opacity: .8; }
+.opt { color: var(--c); opacity: .8; }
 
-.tile.S { padding: 8px 9px; gap: 5px; }
-.tile.S .price { font-size: 15px; }
-.tile.S .disc { width: 30px; height: 30px; }
-.tile.S .letter { font-size: 13px; }
-.tile.S .name { font-size: 13.5px; -webkit-line-clamp: 2; }
-.tile.L { padding: 13px 14px; gap: 8px; }
+.rule { height: 1px; background: var(--c-line); }
+
+.name {
+  flex: 1; min-width: 0;
+  font-size: 13.5px; font-weight: 600; line-height: 1.22; letter-spacing: -.01em; color: var(--ink);
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.tile.S { gap: 8px; padding: 7px 8px 7px 7px; }
+.tile.S .price { font-size: 14.5px; }
+.tile.S .letter { font-size: 15px; }
+.tile.S .name { font-size: 12.5px; -webkit-line-clamp: 2; }
+.tile.L { gap: 12px; padding: 10px 13px 10px 10px; }
 .tile.L .price { font-size: 19.5px; }
-.tile.L .disc { width: 52px; height: 52px; }
-.tile.L .letter { font-size: 20px; }
-.tile.L .name { font-size: 15.5px; }
+.tile.L .letter { font-size: 24px; }
+.tile.L .name { font-size: 15px; }
 
 .tile.off { background: var(--surface-2); border-color: var(--line); }
 .tile.off .name, .tile.off .price { color: var(--ink-4); }
-.tile.off .disc { background: var(--surface-3); border-color: var(--line); }
+.tile.off .pic { background: var(--surface-3); border-color: var(--line); }
 .tile.off .letter { color: var(--ink-4); }
 .tile.off::before { background: var(--line-2); }
 .veil {
