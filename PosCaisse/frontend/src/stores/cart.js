@@ -87,6 +87,46 @@ export const useCartStore = defineStore('cart', () => {
   function setLineDiscount(key, percent, amount) { const l = find(key); if (l) { l.discountPercent = percent || 0; l.discountAmount = amount || 0 } }
   function setLinePrice(key, price) { const l = find(key); if (l) l.unitPrice = round(price) }
   function setLineNote(key, n) { const l = find(key); if (l) l.note = n }
+
+  /**
+   * Pose une remarque sur tout ou partie de la quantite d'une ligne.
+   *
+   * Trois articles identiques peuvent partir en cuisine avec des consignes differentes.
+   * Plutot que d'attacher plusieurs remarques quantifiees a une meme ligne, la ligne se
+   * scinde : deux « sans oignon » et un ordinaire deviennent deux lignes. C'est ce que la
+   * cuisine doit lire de toute facon, et tout le reste — prix, tickets, remboursements,
+   * statistiques — continue de fonctionner sans rien connaitre des remarques.
+   */
+  function applyLineNote(key, note, quantity) {
+    const l = find(key)
+    if (!l) return
+    const part = Math.min(Number(quantity) || l.quantity, l.quantity)
+    if (part >= l.quantity) { l.note = note; return absorb(l) }
+
+    // La remise en montant se repartit au prorata, sinon la scission changerait le total.
+    const partDiscount = round((l.discountAmount || 0) * (part / l.quantity))
+    const copy = {
+      ...l, key: ++keySeq, quantity: part, note, discountAmount: partDiscount,
+      modifiers: (l.modifiers || []).map(m => ({ ...m })),
+      components: (l.components || []).map(c => ({ ...c, modifiers: (c.modifiers || []).map(m => ({ ...m })) }))
+    }
+    l.quantity = sub(l.quantity, part)
+    l.discountAmount = round((l.discountAmount || 0) - partDiscount)
+    // La part qu'on vient d'annoter garde la place de la ligne editee ; le reste passe
+    // dessous. L'inverse donnerait l'impression que la ligne touchee a saute ailleurs.
+    lines.value.splice(lines.value.indexOf(l), 0, copy)
+    selectedKey.value = copy.key
+    absorb(copy)
+  }
+
+  /** Refusionne une ligne avec sa jumelle exacte, pour ne pas laisser deux lignes identiques. */
+  function absorb(l) {
+    const twin = lines.value.find(x => x !== l && x.key !== l.key && sameConfig(x, l))
+    if (!twin) return
+    twin.quantity = add(twin.quantity, l.quantity)
+    lines.value = lines.value.filter(x => x.key !== l.key)
+    selectedKey.value = twin.key
+  }
   function setLineModifiers(key, mods) { const l = find(key); if (l) l.modifiers = mods }
   function setOrderDiscount(percent, amount) { discountPercent.value = percent || 0; discountAmount.value = amount || 0 }
   function clear() {
@@ -156,5 +196,5 @@ export const useCartStore = defineStore('cart', () => {
   return { lines, serviceMode, defaultServiceMode, customer, courier, canPickCustomer, canPickCourier, needsCourier,
     note, discountPercent, discountAmount, heldOrderId, heldRef, clientRef, selectedKey, restoreDraft,
     subtotal, lineDiscountTotal, orderDiscount, total, itemCount, isEmpty, lineUnit, lineGross, lineDiscount, lineTotal,
-    addLine, find, setQuantity, increment, remove, setLineDiscount, setLinePrice, setLineNote, setLineModifiers, setOrderDiscount, clear, toRequest, loadFromOrder }
+    addLine, find, setQuantity, increment, remove, setLineDiscount, setLinePrice, setLineNote, applyLineNote, setLineModifiers, setOrderDiscount, clear, toRequest, loadFromOrder }
 })

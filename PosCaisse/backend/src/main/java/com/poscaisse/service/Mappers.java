@@ -171,6 +171,10 @@ public final class Mappers {
         return new CustomerDto(c.getId(), c.getName(), c.getPhone(), c.getNote(), c.getCreatedAt());
     }
 
+    public static KitchenNoteDto kitchenNote(KitchenNote n) {
+        return new KitchenNoteDto(n.getId(), n.getLabel(), n.getSortOrder(), n.isActive());
+    }
+
     public static CourierDto courier(Courier c) {
         return new CourierDto(c.getId(), c.getName(), c.getPhone(), c.getNote(), c.isActive(), c.getCreatedAt());
     }

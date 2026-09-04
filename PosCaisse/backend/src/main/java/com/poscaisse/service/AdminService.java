@@ -30,6 +30,7 @@ public class AdminService {
     private final PrintDestinationRepo destinationRepo;
     private final CustomerRepo customerRepo;
     private final CourierRepo courierRepo;
+    private final KitchenNoteRepo kitchenNoteRepo;
     private final AuditRepo auditRepo;
     private final SessionRepo sessionRepo;
     private final PasswordEncoder encoder;
@@ -217,6 +218,45 @@ public class AdminService {
         c.setName(r.name().trim()); c.setPhone(r.phone() == null ? null : r.phone().trim()); c.setNote(r.note());
         if (r.active() != null) c.setActive(r.active());
         return Mappers.courier(courierRepo.save(c));
+    }
+
+    // ---------- remarques de cuisine ----------
+    @Transactional(readOnly = true)
+    public List<KitchenNoteDto> kitchenNotes() {
+        return kitchenNoteRepo.findAllByOrderBySortOrderAscIdAsc().stream().map(Mappers::kitchenNote).toList();
+    }
+
+    @Transactional
+    public KitchenNoteDto saveKitchenNote(Long id, KitchenNoteRequest r) {
+        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de modifier les remarques de cuisine.");
+        KitchenNote n = id == null ? new KitchenNote() : kitchenNoteRepo.findById(id).orElseThrow(() -> BusinessException.notFound("Remarque"));
+        // Une nouvelle remarque se range en fin de liste : la placer en tete deplacerait
+        // sous les doigts du caissier des touches dont il connait la position.
+        if (id == null) n.setSortOrder(kitchenNoteRepo.findAll().stream().mapToInt(KitchenNote::getSortOrder).max().orElse(0) + 1);
+        n.setLabel(r.label().trim());
+        if (r.sortOrder() != null) n.setSortOrder(r.sortOrder());
+        if (r.active() != null) n.setActive(r.active());
+        return Mappers.kitchenNote(kitchenNoteRepo.save(n));
+    }
+
+    @Transactional
+    public void deleteKitchenNote(Long id) {
+        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de supprimer une remarque de cuisine.");
+        // Les tickets deja passes gardent leur texte : rien ne les reference, la
+        // suppression est donc sans effet sur l'historique.
+        kitchenNoteRepo.deleteById(id);
+        audit.log("KITCHEN_NOTE_DELETE", "KitchenNote", id, null);
+    }
+
+    /** Ordre d'affichage en caisse : la liste recue fait foi. */
+    @Transactional
+    public void reorderKitchenNotes(List<Long> ids) {
+        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de réordonner les remarques.");
+        int i = 0;
+        for (Long id : ids) {
+            KitchenNote n = kitchenNoteRepo.findById(id).orElse(null);
+            if (n != null) { n.setSortOrder(i++); kitchenNoteRepo.save(n); }
+        }
     }
 
     // ---------- audit ----------

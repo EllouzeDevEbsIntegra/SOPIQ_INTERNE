@@ -16,6 +16,7 @@ import ReceiptDialog from '../../components/pos/ReceiptDialog.vue'
 import AmountDialog from '../../components/pos/AmountDialog.vue'
 import TextDialog from '../../components/pos/TextDialog.vue'
 import PartyDialog from '../../components/pos/PartyDialog.vue'
+import LineNoteDialog from '../../components/pos/LineNoteDialog.vue'
 import HeldOrdersDialog from '../../components/pos/HeldOrdersDialog.vue'
 import CashMovementDialog from '../../components/pos/CashMovementDialog.vue'
 import TicketsView from './TicketsView.vue'
@@ -102,7 +103,7 @@ function setDiscount(v) {
 function price(l) { dialog.value = { kind: 'price', line: l } }
 function setPrice(v) { const d = dialog.value; dialog.value = null; if (v >= 0) cart.setLinePrice(d.line.key, v) }
 function note(l) { dialog.value = { kind: 'note', line: l } }
-function setNote(v) { const d = dialog.value; dialog.value = null; cart.setLineNote(d.line.key, v) }
+function setNote({ note: texte, quantity }) { const d = dialog.value; dialog.value = null; cart.applyLineNote(d.line.key, texte, quantity) }
 function orderNote() { dialog.value = { kind: 'orderNote' } }
 async function clearCart() { if (cart.isEmpty) return; if (await ui.confirm({ title: 'Vider le panier', message: 'Abandonner la commande en cours ?', okLabel: 'Vider', danger: true })) { if (cart.heldOrderId) { try { await api.pos.abandon(cart.heldOrderId) } catch { /* ignore */ } refreshHeld() } cart.clear() } }
 function customer() { dialog.value = { kind: 'party', party: 'CUSTOMER' } }
@@ -255,7 +256,7 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
                   :options="[{ label: '0 %', value: 0 }, { label: '5 %', value: 5 }, { label: '10 %', value: 10 }, { label: '20 %', value: 20 }, { label: '50 %', value: 50 }]"
                   ok-label="Appliquer" @close="dialog = null" @ok="setDiscount" />
     <AmountDialog v-if="dialog?.kind === 'price'" title="Nouveau prix unitaire" mode="amount" :initial="dialog.line.unitPrice" ok-label="Appliquer" @close="dialog = null" @ok="setPrice" />
-    <TextDialog v-if="dialog?.kind === 'note'" title="Note sur la ligne" :initial="dialog.line.note" placeholder="ex. sans sel, bien cuit…" @close="dialog = null" @ok="setNote" />
+    <LineNoteDialog v-if="dialog?.kind === 'note'" :line="dialog.line" @close="dialog = null" @ok="setNote" />
     <TextDialog v-if="dialog?.kind === 'orderNote'" title="Note de commande" :initial="cart.note" placeholder="Remarque pour la préparation ou la livraison" @close="dialog = null" @ok="v => { cart.note = v; dialog = null }" />
     <PartyDialog v-if="dialog?.kind === 'party'" :party="dialog.party"
                  :initial="dialog.party === 'COURIER' ? cart.courier : cart.customer" @close="dialog = null" @ok="setParty" />

@@ -45,4 +45,7 @@ public final class AdminDtos {
 
     public record CourierDto(Long id, String name, String phone, String note, boolean active, OffsetDateTime createdAt) {}
     public record CourierRequest(@NotBlank String name, String phone, String note, Boolean active) {}
+
+    public record KitchenNoteDto(Long id, String label, int sortOrder, boolean active) {}
+    public record KitchenNoteRequest(@NotBlank String label, Integer sortOrder, Boolean active) {}
 }

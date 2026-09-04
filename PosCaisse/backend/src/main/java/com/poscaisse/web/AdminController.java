@@ -68,6 +68,13 @@ public class AdminController {
     @PostMapping("/couriers") public CourierDto createCourier(@Valid @RequestBody CourierRequest r) { return admin.saveCourier(null, r); }
     @PutMapping("/couriers/{id}") public CourierDto updateCourier(@PathVariable Long id, @Valid @RequestBody CourierRequest r) { return admin.saveCourier(id, r); }
 
+    // remarques de cuisine
+    @GetMapping("/kitchen-notes") public List<KitchenNoteDto> kitchenNotes() { return admin.kitchenNotes(); }
+    @PostMapping("/kitchen-notes") public KitchenNoteDto createKitchenNote(@Valid @RequestBody KitchenNoteRequest r) { return admin.saveKitchenNote(null, r); }
+    @PutMapping("/kitchen-notes/{id}") public KitchenNoteDto updateKitchenNote(@PathVariable Long id, @Valid @RequestBody KitchenNoteRequest r) { return admin.saveKitchenNote(id, r); }
+    @DeleteMapping("/kitchen-notes/{id}") public Map<String, Boolean> deleteKitchenNote(@PathVariable Long id) { admin.deleteKitchenNote(id); return Map.of("ok", true); }
+    @PostMapping("/kitchen-notes/reorder") public Map<String, Boolean> reorderKitchenNotes(@RequestBody Map<String, List<Long>> body) { admin.reorderKitchenNotes(body.get("ids")); return Map.of("ok", true); }
+
     // audit
     @PreAuthorize("hasAuthority('AUDIT_VIEW')")
     @GetMapping("/audit")

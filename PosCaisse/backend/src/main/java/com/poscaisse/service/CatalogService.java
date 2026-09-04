@@ -2,6 +2,7 @@ package com.poscaisse.service;
 
 import com.poscaisse.audit.AuditService;
 import com.poscaisse.domain.*;
+import com.poscaisse.dto.AdminDtos;
 import com.poscaisse.dto.CatalogDtos.*;
 import com.poscaisse.exception.BusinessException;
 import com.poscaisse.repository.*;
@@ -22,6 +23,7 @@ public class CatalogService {
     private final PrintDestinationRepo destinationRepo;
     private final PaymentMethodRepo paymentMethodRepo;
     private final CompanyRepo companyRepo;
+    private final KitchenNoteRepo kitchenNoteRepo;
     private final SettingsService settings;
     private final AuditService audit;
 
@@ -37,7 +39,11 @@ public class CatalogService {
         List<PaymentMethodDto> methods = paymentMethodRepo.findAllByOrderBySortOrderAscIdAsc().stream().filter(PaymentMethod::isActive).map(Mappers::paymentMethod).toList();
         Company c = companyRepo.findAll().stream().findFirst().orElse(null);
         CompanyInfo info = c == null ? null : new CompanyInfo(c.getName(), c.getTradeName(), c.getCurrency(), c.getCurrencySymbol(), c.getDecimals(), c.getLogoData());
-        return new CatalogResponse(cats, products, methods, settings.all(), info);
+        // Les remarques de cuisine voyagent avec le catalogue : la boite de dialogue
+        // de la caisse doit pouvoir les proposer sans aller-retour supplementaire.
+        List<AdminDtos.KitchenNoteDto> notes = kitchenNoteRepo.findByActiveTrueOrderBySortOrderAscIdAsc()
+                .stream().map(Mappers::kitchenNote).toList();
+        return new CatalogResponse(cats, products, methods, settings.all(), info, notes);
     }
 
     // ---------- Categories ----------

@@ -42,6 +42,6 @@ public final class CatalogDtos {
     public record AvailabilityRequest(@NotNull Boolean available) {}
 
     public record CatalogResponse(List<CategoryDto> categories, List<ProductDto> products, List<PaymentMethodDto> paymentMethods,
-                                  Map<String, String> settings, CompanyInfo company) {}
+                                  Map<String, String> settings, CompanyInfo company, List<AdminDtos.KitchenNoteDto> kitchenNotes) {}
     public record CompanyInfo(String name, String tradeName, String currency, String currencySymbol, int decimals, String logoData) {}
 }

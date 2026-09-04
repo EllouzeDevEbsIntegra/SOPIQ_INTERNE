@@ -22,6 +22,7 @@ const nav = [
     { to: '/admin/products', label: 'Produits & menus', icon: 'box', perm: 'PRODUCTS_MANAGE' },
     { to: '/admin/categories', label: 'Catégories', icon: 'layers', perm: 'PRODUCTS_MANAGE' },
     { to: '/admin/modifiers', label: 'Options & suppléments', icon: 'sliders', perm: 'PRODUCTS_MANAGE' },
+    { to: '/admin/kitchen-notes', label: 'Remarques cuisine', icon: 'note', perm: 'PRODUCTS_MANAGE' },
     { to: '/admin/layout', label: 'Disposition POS', icon: 'grid', perm: 'PRODUCTS_MANAGE' },
     { to: '/admin/customers', label: 'Clients', icon: 'users', perm: 'BACKOFFICE_ACCESS' },
     { to: '/admin/couriers', label: 'Livreurs', icon: 'truck', perm: 'BACKOFFICE_ACCESS' } ] },
