@@ -7,13 +7,17 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
-/** Serves the built Vue app (copied into classpath:/static) with SPA fallback to index.html. */
+/** Serves the built Vue app (classpath:/static or ../frontend/dist) with SPA fallback to index.html. */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+    @org.springframework.beans.factory.annotation.Value("${poscaisse.frontend-dist:../frontend/dist}")
+    private String frontendDist;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String dist = frontendDist.endsWith("/") ? frontendDist : frontendDist + "/";
         registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/")
+                .addResourceLocations("classpath:/static/", "file:" + dist)
                 .resourceChain(true)
                 .addResolver(new PathResourceResolver() {
                     @Override
@@ -21,8 +25,10 @@ public class WebConfig implements WebMvcConfigurer {
                         Resource r = location.createRelative(path);
                         if (r.exists() && r.isReadable()) return r;
                         if (path.startsWith("api/") || path.startsWith("actuator")) return null;
-                        Resource index = new ClassPathResource("/static/index.html");
-                        return index.exists() ? index : null;
+                        Resource index = location.createRelative("index.html");
+                        if (index.exists() && index.isReadable()) return index;
+                        Resource cp = new ClassPathResource("/static/index.html");
+                        return cp.exists() ? cp : null;
                     }
                 });
     }

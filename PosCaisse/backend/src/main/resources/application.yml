@@ -36,6 +36,7 @@ poscaisse:
     expiration-minutes: ${POSCAISSE_JWT_EXPIRATION_MINUTES:720}
   timezone: Africa/Tunis
   demo-data: ${POSCAISSE_DEMO_DATA:true}
+  frontend-dist: ${POSCAISSE_FRONTEND_DIST:../frontend/dist}
   cors-origins: ${POSCAISSE_CORS_ORIGINS:http://localhost:5173,http://127.0.0.1:5173,http://localhost:4173}
 logging:
   level:
