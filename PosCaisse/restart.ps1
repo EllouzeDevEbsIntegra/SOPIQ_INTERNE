@@ -84,7 +84,40 @@ function Test-PosRunning([int]$p) { return ((Get-HealthText $p) -match '"status"
 
 # Un navigateur par defaut absent ou mal enregistre ne doit pas faire echouer
 # le demarrage : l'adresse est de toute facon affichee a l'ecran.
+# Chrome ou Edge : les seuls a savoir imprimer sans dialogue (--kiosk-printing).
+function Get-KioskBrowser {
+  $candidats = @(
+    "$env:ProgramFiles\Google\Chrome\Application\chrome.exe",
+    "${env:ProgramFiles(x86)}\Google\Chrome\Application\chrome.exe",
+    "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe",
+    "$env:ProgramFiles\Microsoft\Edge\Application\msedge.exe",
+    "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe"
+  )
+  foreach ($c in $candidats) { if ($c -and (Test-Path -LiteralPath $c)) { return $c } }
+  return $null
+}
+
 function Open-Browser([string]$url) {
+  # --kiosk-printing : le ticket part sur l'imprimante par defaut de Windows,
+  # sans dialogue. POSCAISSE_KIOSK=0 revient au navigateur habituel.
+  if ((Get-Setting 'POSCAISSE_KIOSK' '1') -eq '1') {
+    $exe = Get-KioskBrowser
+    if ($exe) {
+      # --user-data-dir est indispensable : sans profil dedie, si une fenetre du
+      # navigateur est deja ouverte, la commande n'ouvre qu'un onglet dans
+      # l'instance existante et le drapeau est purement ignore.
+      $profil = Join-Path $env:LOCALAPPDATA 'PosCaisse\navigateur'
+      try {
+        Start-Process -FilePath $exe -ArgumentList @(
+          '--kiosk-printing', "--user-data-dir=$profil",
+          '--no-first-run', '--no-default-browser-check', $url) | Out-Null
+        Write-Host '    Navigateur ouvert en impression silencieuse.'
+        return
+      } catch { }
+    } else {
+      Write-Host '    Chrome ou Edge introuvable : le dialogue d impression restera affiche.'
+    }
+  }
   try { Start-Process $url | Out-Null } catch { Write-Host "    Ouvrez $url dans votre navigateur." }
 }
 

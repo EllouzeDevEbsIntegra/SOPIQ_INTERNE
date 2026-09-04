@@ -30,6 +30,21 @@ Double-cliquez sur **`RESTART_POS.bat`**. Il enchaîne tout, sans aucune autre m
 Comptez une quinzaine de secondes sans recompilation, une à deux minutes avec.
 Sous Linux / macOS : `./restart.sh` fait exactement la même chose.
 
+### Impression sans dialogue
+
+Le lanceur ouvre la caisse dans Chrome ou Edge avec l'option **`--kiosk-printing`** : le ticket part **directement sur l'imprimante par défaut de Windows**, sans que le caissier ait à valider un dialogue.
+
+Deux points à régler une fois, sur le PC caisse :
+
+1. l'imprimante à tickets doit être définie comme **imprimante par défaut** de Windows (Paramètres → Bluetooth et appareils → Imprimantes, décochez « Laisser Windows gérer mon imprimante par défaut ») ;
+2. dans ses propriétés, réglez le **format de papier sur 58 ou 80 mm** selon votre rouleau, en cohérence avec « Tickets & impression » dans le back-office.
+
+Le navigateur s'ouvre avec un profil dédié (`%LOCALAPPDATA%\PosCaisse\navigateur`), sans quoi l'option serait ignorée si une fenêtre Chrome était déjà ouverte. Vos onglets et mots de passe habituels ne sont pas touchés.
+
+Pour revenir au comportement normal avec dialogue : `POSCAISSE_KIOSK=0`.
+
+Cette solution ne pilote qu'**une seule imprimante** — celle par défaut. Pour un ticket cuisine séparé, il faudra l'agent ESC/POS (voir `TODO.md`) : la file d'attente d'impression est déjà en place côté serveur.
+
 ### Charger votre carte
 
 Le catalogue livré par défaut est un jeu de démonstration. Pour charger une vraie carte, placez son fichier JSON dans `catalogs/` puis double-cliquez sur **`IMPORT_MENU.bat`** (Linux/macOS : `./import-menu.sh`).
