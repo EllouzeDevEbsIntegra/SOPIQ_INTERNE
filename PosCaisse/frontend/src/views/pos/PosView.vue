@@ -103,7 +103,7 @@ function setDiscount(v) {
 function price(l) { dialog.value = { kind: 'price', line: l } }
 function setPrice(v) { const d = dialog.value; dialog.value = null; if (v >= 0) cart.setLinePrice(d.line.key, v) }
 function note(l) { dialog.value = { kind: 'note', line: l } }
-function setNote({ note: texte, quantity }) { const d = dialog.value; dialog.value = null; cart.applyLineNote(d.line.key, texte, quantity) }
+function setNote({ notes }) { const d = dialog.value; dialog.value = null; cart.applyLineNotes(d.line.key, notes) }
 function orderNote() { dialog.value = { kind: 'orderNote' } }
 async function clearCart() { if (cart.isEmpty) return; if (await ui.confirm({ title: 'Vider le panier', message: 'Abandonner la commande en cours ?', okLabel: 'Vider', danger: true })) { if (cart.heldOrderId) { try { await api.pos.abandon(cart.heldOrderId) } catch { /* ignore */ } refreshHeld() } cart.clear() } }
 function customer() { dialog.value = { kind: 'party', party: 'CUSTOMER' } }
