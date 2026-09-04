@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -67,8 +68,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ApiError.of(409, "DATA_INTEGRITY", msg));
     }
 
+    /**
+     * Une navigation de navigateur qui n'atteint aucune ressource signifie que le frontend n'est pas compilé :
+     * on renvoie une page expliquant comment le lancer plutôt qu'un 404 JSON.
+     */
     @ExceptionHandler(NoResourceFoundException.class)
-    public ResponseEntity<ApiError> noResource(NoResourceFoundException e) {
+    public ResponseEntity<?> noResource(NoResourceFoundException e, jakarta.servlet.http.HttpServletRequest request) {
+        String accept = request.getHeader("Accept");
+        String path = request.getRequestURI();
+        if (accept != null && accept.contains(MediaType.TEXT_HTML_VALUE) && !path.startsWith("/api/")) {
+            return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(com.poscaisse.config.FrontendPlaceholder.html());
+        }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiError.of(404, "NOT_FOUND", "Ressource introuvable."));
     }
 

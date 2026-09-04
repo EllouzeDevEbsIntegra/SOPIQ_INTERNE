@@ -1,20 +1,25 @@
 package com.poscaisse.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
-/** Serves the built Vue app (classpath:/static or ../frontend/dist) with SPA fallback to index.html. */
+/**
+ * Sert l'application Vue compilée (classpath:/static ou ../frontend/dist) avec repli SPA sur index.html.
+ * Si aucun build n'est présent (dist n'est pas versionné), une page d'explication est renvoyée
+ * plutôt qu'un 404 JSON incompréhensible.
+ */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    @org.springframework.beans.factory.annotation.Value("${poscaisse.frontend-dist:../frontend/dist}")
-    private String frontendDist;
+    @Value("${poscaisse.frontend-dist:../frontend/dist}") private String frontendDist;
 
     @Override
-    public void addViewControllers(org.springframework.web.servlet.config.annotation.ViewControllerRegistry registry) {
+    public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("forward:/index.html");
     }
 
@@ -33,8 +38,10 @@ public class WebConfig implements WebMvcConfigurer {
                         Resource index = location.createRelative("index.html");
                         if (index.exists() && index.isReadable()) return index;
                         Resource cp = new ClassPathResource("/static/index.html");
+                        // Aucun build : NoResourceFoundException -> page d'aide (GlobalExceptionHandler)
                         return cp.exists() ? cp : null;
                     }
                 });
     }
+
 }
