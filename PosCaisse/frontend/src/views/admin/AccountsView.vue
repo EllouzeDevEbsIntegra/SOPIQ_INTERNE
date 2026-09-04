@@ -38,7 +38,8 @@ const totalDebt = computed(() => rows.value.reduce((s, c) => s + Number(c.balanc
 async function load() {
   try {
     rows.value = await api.accounts.balances(party.value, withDebtOnly.value)
-    if (!methods.value.length) methods.value = (await api.admin.paymentMethods()).filter(m => m.kind !== 'CREDIT' && m.active)
+    // Les moyens de paiement sont servis par le catalogue, pas par l'espace admin.
+    if (!methods.value.length) methods.value = (await api.catalog.paymentMethods()).filter(m => m.kind !== 'CREDIT' && m.active)
   } catch (e) { ui.error(e.humanMessage) }
 }
 onMounted(load)
