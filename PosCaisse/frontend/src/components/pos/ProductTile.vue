@@ -67,12 +67,9 @@ function cancel() { if (timer) { clearTimeout(timer); timer = null } }
    avec le prix aligné à droite et le libellé de l'article en dessous. */
 .tile {
   position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr);
-  gap: 10px; padding: 8px 10px 8px 8px; text-align: left; overflow: hidden;
+  gap: 10px; padding: 8px 10px; text-align: left; overflow: hidden;
   background: var(--c-bg); border: 1px solid var(--c-line); border-radius: var(--r);
   transition: background .1s ease, transform .06s ease, box-shadow .1s ease;
-}
-.tile::before {                       /* filet de catégorie, discret mais identifiant */
-  content: ''; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--c);
 }
 .tile:hover { background: #fff; box-shadow: var(--shadow-1); }
 .tile:active { background: var(--c-bg-press); transform: translateY(1px); box-shadow: none; }
@@ -93,8 +90,8 @@ function cancel() { if (timer) { clearTimeout(timer); timer = null } }
 .top { display: flex; align-items: center; gap: 6px; }
 .cat {
   min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--c); opacity: .85;
+  font-size: 8.5px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--c); opacity: .8;
 }
 .price { margin-left: auto; flex: none; font-size: 16.5px; font-weight: 750; color: var(--ink); letter-spacing: -.02em; }
 .flag {
@@ -111,14 +108,14 @@ function cancel() { if (timer) { clearTimeout(timer); timer = null } }
   display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
 
-.tile.S { gap: 8px; padding: 7px 8px 7px 7px; }
+.tile.S { gap: 8px; padding: 7px 8px; }
 .tile.S .price { font-size: 14.5px; }
-.tile.S .cat { font-size: 9px; }
+.tile.S .cat { font-size: 8px; }
 .tile.S .letter { font-size: 15px; }
 .tile.S .name { font-size: 12.5px; -webkit-line-clamp: 2; }
-.tile.L { gap: 12px; padding: 10px 13px 10px 10px; }
+.tile.L { gap: 12px; padding: 10px 13px; }
 .tile.L .price { font-size: 19.5px; }
-.tile.L .cat { font-size: 11px; }
+.tile.L .cat { font-size: 9.5px; }
 .tile.L .letter { font-size: 24px; }
 .tile.L .name { font-size: 15px; }
 
@@ -127,7 +124,6 @@ function cancel() { if (timer) { clearTimeout(timer); timer = null } }
 .tile.off .cat { color: var(--ink-4); }
 .tile.off .pic { background: var(--surface-3); border-color: var(--line); }
 .tile.off .letter { color: var(--ink-4); }
-.tile.off::before { background: var(--line-2); }
 .veil {
   position: absolute; inset: auto 0 0 0; padding: 3px 0; text-align: center;
   font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
