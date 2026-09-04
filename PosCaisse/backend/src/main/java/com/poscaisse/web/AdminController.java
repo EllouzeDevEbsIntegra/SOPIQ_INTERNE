@@ -51,7 +51,7 @@ public class AdminController {
     @PreAuthorize("hasAuthority('SETTINGS_MANAGE')") @DeleteMapping("/print-destinations/{id}") public Map<String, Boolean> deleteDest(@PathVariable Long id) { admin.deleteDestination(id); return Map.of("ok", true); }
     @GetMapping("/receipts/templates") public List<ReceiptTemplateDto> templates() { return print.templates(); }
     @PreAuthorize("hasAuthority('SETTINGS_MANAGE')") @PutMapping("/receipts/templates/{code}") public ReceiptTemplateDto saveTemplate(@PathVariable String code, @RequestBody ReceiptTemplateRequest r) { return print.saveTemplate(code, r); }
-    @PreAuthorize("hasAuthority('SETTINGS_MANAGE')") @PostMapping("/receipts/preview") public Map<String, Object> preview(@RequestBody ReceiptTemplateRequest r) { return print.preview(r, orders.sampleOrder()); }
+    @PreAuthorize("hasAuthority('SETTINGS_MANAGE')") @PostMapping("/receipts/preview") public Map<String, Object> preview(@RequestBody ReceiptTemplateRequest r) { return orders.receiptPreview(r); }
     @GetMapping("/receipts/active") public ReceiptTemplateDto activeTemplate() { return print.dto(print.activeTemplate()); }
 
     // settings

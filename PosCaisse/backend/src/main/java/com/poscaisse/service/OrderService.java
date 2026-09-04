@@ -384,6 +384,12 @@ public class OrderService {
         return new PageDto<>(res.getContent().stream().map(Mappers::orderSummary).toList(), res.getTotalElements(), page, size);
     }
 
+    /** Receipt template live preview (rendered inside one transaction so lazy associations are available). */
+    @Transactional(readOnly = true)
+    public java.util.Map<String, Object> receiptPreview(com.poscaisse.dto.AdminDtos.ReceiptTemplateRequest r) {
+        return printService.preview(r, sampleOrder());
+    }
+
     /** Latest real sale, or a synthetic one, for the receipt template preview. */
     @Transactional(readOnly = true)
     public SaleOrder sampleOrder() {

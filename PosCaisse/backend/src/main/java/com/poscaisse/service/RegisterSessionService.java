@@ -42,7 +42,15 @@ public class RegisterSessionService {
     public SessionDto get(Long id) { return Mappers.session(sessionRepo.findById(id).orElseThrow(() -> BusinessException.notFound("Session"))); }
 
     @Transactional(readOnly = true)
-    public List<SessionDto> search(OffsetDateTime from, OffsetDateTime to) { return sessionRepo.search(from, to).stream().map(Mappers::session).toList(); }
+    public List<SessionDto> search(OffsetDateTime from, OffsetDateTime to) {
+        org.springframework.data.jpa.domain.Specification<RegisterSession> spec = (root, q, cb) -> {
+            List<jakarta.persistence.criteria.Predicate> p = new ArrayList<>();
+            if (from != null) p.add(cb.greaterThanOrEqualTo(root.get("openedAt"), from));
+            if (to != null) p.add(cb.lessThan(root.get("openedAt"), to));
+            return cb.and(p.toArray(new jakarta.persistence.criteria.Predicate[0]));
+        };
+        return sessionRepo.findAll(spec, org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.DESC, "openedAt")).stream().map(Mappers::session).toList();
+    }
 
     @Transactional
     public SessionDto open(OpenSessionRequest req) {

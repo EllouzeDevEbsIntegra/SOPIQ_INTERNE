@@ -67,7 +67,7 @@ function select(l) { cart.selectedKey = l.key }
 .cart { display: flex; flex-direction: column; background: var(--surface); border-left: 1px solid var(--border); height: 100%; min-height: 0; min-width: 0; }
 .cart-head { padding: 10px 12px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
 .cust { text-align: left; min-height: 40px; padding: 6px 10px; border-radius: 10px; background: var(--surface-2); border: 1px dashed var(--border-strong); font-weight: 600; }
-.lines { flex: 1; padding: 6px; }
+.lines { flex: 1; min-height: 0; padding: 6px; }
 .empty-cart { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--text-3); text-align: center; }
 .line { padding: 10px 10px; border-radius: 12px; border: 2px solid transparent; margin-bottom: 4px; background: var(--surface-2); cursor: pointer; }
 .line.on { border-color: var(--accent); background: var(--accent-soft); }
@@ -83,4 +83,7 @@ function select(l) { cart.selectedKey = l.key }
 .cart-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px; border-top: 1px solid var(--border); background: var(--surface-2); }
 .checkout { grid-column: 1 / -1; min-height: 84px; font-size: 24px; font-weight: 900; display: flex; flex-direction: column; gap: 0; line-height: 1.1; box-shadow: 0 8px 24px rgba(22,163,74,.35); }
 .checkout span { font-size: 18px; font-weight: 700; opacity: .95; }
+</style>
+<style scoped>
+@media (max-height: 700px) { .checkout { min-height: 64px; font-size: 20px; } .trow.total { font-size: 24px; } }
 </style>
