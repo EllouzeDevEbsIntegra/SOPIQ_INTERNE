@@ -35,7 +35,8 @@ Lisez la dernière ligne `Caused by:` dans la fenêtre « PosCaisse Backend » :
 | Le backend démarre mais `http://localhost:8080` affiche « interface non compilée » | `frontend/dist` absent (les builds ne sont pas versionnés) | `cd frontend && npm install && npm run dev` puis http://localhost:5173, ou `npm run build` pour le mode un seul port |
 | `password authentication failed` | mot de passe PostgreSQL différent | définissez `POSCAISSE_DB_PASSWORD` (voir `.env.example`) avant de lancer |
 | `Connection refused` | PostgreSQL arrêté | démarrez le service PostgreSQL (ou Docker Desktop) |
-| `Port 8080 was already in use` | port occupé | définissez `POSCAISSE_PORT=8081` |
+| `Port 8080 was already in use` | une instance de PosCaisse tourne déjà | lancez `STOP_POS.bat` puis relancez, ou définissez `POSCAISSE_PORT=8081` |
+| Le log affiche encore `Using generated security password` | vous exécutez une version antérieure du code | `git pull` puis `BUILD_POS.bat` |
 
 ## Lancement manuel
 

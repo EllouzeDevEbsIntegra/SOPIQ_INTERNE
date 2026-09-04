@@ -37,6 +37,19 @@ echo [2/4] Verification de la base "%POSCAISSE_DB_NAME%"...
 call :ensure_db
 
 REM ---- 3. Backend Spring Boot ----
+REM Un backend deja lance occuperait le port : on le detecte avant de demarrer.
+netstat -ano | findstr ":%POSCAISSE_PORT% " | findstr LISTENING >nul 2>nul
+if not errorlevel 1 (
+  echo.
+  echo   Le port %POSCAISSE_PORT% est deja utilise : PosCaisse tourne probablement deja.
+  echo   - pour ouvrir l'application  : http://localhost:%POSCAISSE_PORT%
+  echo   - pour redemarrer proprement : lancez STOP_POS.bat, puis relancez ce script.
+  echo.
+  choice /c ON /n /m "  [O]uvrir l'application, ou [N] quitter ? "
+  if errorlevel 2 exit /b 1
+  start "" "http://localhost:%POSCAISSE_PORT%"
+  exit /b 0
+)
 echo [3/4] Demarrage du backend (port %POSCAISSE_PORT%)...
 if exist "backend\target\poscaisse-backend.jar" (
   start "PosCaisse Backend" cmd /k "cd /d "%~dp0backend" && java -jar target\poscaisse-backend.jar"
@@ -71,6 +84,7 @@ echo Le backend ne repond pas : lisez la fenetre "PosCaisse Backend" (derniere l
 echo   - "la base de donnees ... n'existe pas"  -^> lancez INIT_DB.bat
 echo   - "password authentication failed"       -^> definissez POSCAISSE_DB_PASSWORD (voir .env.example)
 echo   - "Connection refused"                   -^> PostgreSQL n'est pas demarre
+echo   - "Port ... already in use"              -^> lancez STOP_POS.bat puis relancez
 goto end
 
 :ready
