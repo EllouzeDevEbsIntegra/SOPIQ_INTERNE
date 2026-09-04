@@ -24,6 +24,7 @@ import Icon from '../../components/common/Icon.vue'
 
 const router = useRouter(); const auth = useAuthStore(); const catalog = useCatalogStore(); const cart = useCartStore(); const ui = useUiStore()
 const activeCat = ref('FAV'); const search = ref(''); const dialog = ref(null); const paying = ref(false); const lastSale = ref(null); const heldCount = ref(0)
+const customerOverlay = ref(false)   // choix du client par-dessus l'encaissement
 const template = ref(null); const clock = ref(fmtTime(new Date())); const menuOpen = ref(false); const cartOpen = ref(false)
 let clockTimer = null
 
@@ -232,7 +233,10 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
     </div>
 
     <ModifierDialog v-if="dialog?.kind === 'modifier'" :product="dialog.product" :initial="dialog.initial" @close="dialog = null" @confirm="onModifierConfirm" />
-    <PaymentDialog v-if="dialog?.kind === 'pay'" :total="cart.total" :busy="paying" @close="dialog = null" @confirm="pay" />
+    <PaymentDialog v-if="dialog?.kind === 'pay'" :total="cart.total" :busy="paying" @close="dialog = null" @confirm="pay"
+                   @customer="customerOverlay = true" />
+    <CustomerDialog v-if="customerOverlay" :initial="cart.customer"
+                    @close="customerOverlay = false" @ok="c => { cart.customer = c; customerOverlay = false }" />
     <AmountDialog v-if="dialog?.kind === 'qty'" title="Quantité" mode="integer" :initial="dialog.line.quantity" ok-label="Valider" @close="dialog = null" @ok="setQty" />
     <AmountDialog v-if="dialog?.kind === 'discount'" :title="dialog.line ? 'Remise sur la ligne' : 'Remise sur la commande'" mode="amount"
                   :initial="dialog.line ? dialog.line.discountPercent : cart.discountPercent" hint="Remise exprimée en pourcentage"

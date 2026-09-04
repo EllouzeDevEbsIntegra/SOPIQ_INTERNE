@@ -16,7 +16,8 @@ const nav = [
     { to: '/admin/journal', label: 'Journal de caisse', icon: 'book', perm: 'REVENUE_VIEW' },
     { to: '/admin/sessions', label: 'Sessions de caisse', icon: 'lock', perm: 'REVENUE_VIEW' },
     { to: '/admin/daily', label: 'Clôture journalière', icon: 'moon', perm: 'DAILY_CLOSE' },
-    { to: '/admin/reports', label: 'Rapports', icon: 'trend', perm: 'REPORTS_VIEW' } ] },
+    { to: '/admin/reports', label: 'Rapports', icon: 'trend', perm: 'REPORTS_VIEW' },
+    { to: '/admin/accounts', label: 'Comptes clients', icon: 'coins', perm: 'CUSTOMER_CREDIT' } ] },
   { group: 'Catalogue', items: [
     { to: '/admin/products', label: 'Produits & menus', icon: 'box', perm: 'PRODUCTS_MANAGE' },
     { to: '/admin/categories', label: 'Catégories', icon: 'layers', perm: 'PRODUCTS_MANAGE' },

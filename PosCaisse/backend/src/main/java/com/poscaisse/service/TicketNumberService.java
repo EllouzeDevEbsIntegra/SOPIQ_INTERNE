@@ -42,6 +42,26 @@ public class TicketNumberService {
         });
     }
 
+    /**
+     * Numero de reglement client, sur une sequence distincte de celle des tickets :
+     * melanger les deux ferait des trous dans la numerotation des ventes.
+     */
+    @Transactional(propagation = Propagation.MANDATORY)
+    public String nextCustomerPayment() {
+        LocalDate today = LocalDate.now(ZoneId.of("Africa/Tunis"));
+        String scopeKey = "CUSTOMER_PAYMENT:" + today.getYear();
+        DocumentSequence seq = sequenceRepo.lockByKey(scopeKey).orElseGet(() -> {
+            DocumentSequence s = new DocumentSequence();
+            s.setScopeKey(scopeKey);
+            s.setNextValue(1);
+            return sequenceRepo.saveAndFlush(s);
+        });
+        long v = seq.getNextValue();
+        seq.setNextValue(v + 1);
+        sequenceRepo.save(seq);
+        return String.format("REG-%d-%06d", today.getYear(), v);
+    }
+
     public interface SeqSource { long next(String scopeKey); }
 
     public static String format(String pattern, String posCode, String registerCode, SeqSource source) {

@@ -54,6 +54,12 @@ export const api = {
     customers: (q) => g('/customers', { q }), saveCustomer: (id, b) => id ? put(`/customers/${id}`, b) : p('/customers', b),
     audit: (params) => g('/audit', params)
   },
+  accounts: {
+    balances: (withDebtOnly) => g('/customer-accounts', { withDebtOnly }),
+    statement: (customerId, params) => g(`/customer-accounts/${customerId}`, params),
+    pay: (b) => p('/customer-accounts/payments', b),
+    deletePayment: (id) => del(`/customer-accounts/payments/${id}`)
+  },
   reports: {
     dashboard: (params) => g('/reports/dashboard', params), report: (type, params) => g(`/reports/${type}`, params),
     csvUrl: (type, params) => '/api/reports/' + type + '/csv?' + new URLSearchParams(Object.fromEntries(Object.entries(params || {}).filter(([, v]) => v !== null && v !== undefined && v !== ''))).toString()

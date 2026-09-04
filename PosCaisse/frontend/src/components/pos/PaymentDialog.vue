@@ -1,18 +1,23 @@
 <script setup>
 /** Encaissement tactile : espèces, carte, mixte, rendu de monnaie instantané. */
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import Modal from '../common/Modal.vue'
 import NumPad from '../common/NumPad.vue'
 import Icon from '../common/Icon.vue'
 import { useCatalogStore } from '../../stores/catalog'
-import { fmt, add, sub, round, parseAmount } from '../../utils/money'
+import { useCartStore } from '../../stores/cart'
+import { fmt, fmtQty, add, sub, mul, round, parseAmount } from '../../utils/money'
 
 const props = defineProps({ total: Number, busy: Boolean })
-const emit = defineEmits(['close', 'confirm'])
+const emit = defineEmits(['close', 'confirm', 'customer'])
 const catalog = useCatalogStore()
+const cart = useCartStore()
 
-const METHOD_ICON = { CASH: 'cash', CARD: 'card', CHECK: 'receipt', MEAL_VOUCHER: 'tag', OTHER: 'coins' }
-const methods = computed(() => catalog.paymentMethods)
+const METHOD_ICON = { CASH: 'cash', CARD: 'card', CHECK: 'receipt', MEAL_VOUCHER: 'tag', CREDIT: 'user', OTHER: 'coins' }
+/* Le crédit porte le ticket au compte d'un client : sans client désigné, ce serait
+   une dette sans débiteur, donc le moyen reste masqué tant qu'aucun n'est choisi. */
+const methods = computed(() => catalog.paymentMethods.filter(m => m.kind !== 'CREDIT' || !!cart.customer?.id))
+const customer = computed(() => cart.customer)
 const current = ref(methods.value.find(m => m.kind === 'CASH') || methods.value[0])
 const entry = ref('')
 const payments = ref([])
@@ -28,6 +33,11 @@ const done = computed(() => remaining.value <= 0 && payments.value.length > 0)
 const quick = computed(() => catalog.quickCash)
 
 function pick(m) { current.value = m; entry.value = '' }
+/* Si le client est retiré alors que le crédit était sélectionné, on retombe sur
+   les espèces : sinon le moyen courant pointerait sur un bouton disparu. */
+watch(methods, (list) => {
+  if (!list.some(m => m.id === current.value?.id)) current.value = list.find(m => m.kind === 'CASH') || list[0]
+})
 function addPayment(amountGiven) {
   const given = amountGiven ?? entryValue.value
   if (given <= 0 || remaining.value <= 0) return
@@ -54,8 +64,28 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
 <template>
   <Modal size="lg" title="Encaissement" :closable="!busy" @close="!busy && emit('close')">
     <div class="pay-grid">
-      <!-- colonne gauche : montants et moyens -->
+      <!-- colonne gauche : client, articles, montants et moyens -->
       <section class="left">
+        <button class="customer" :class="{ set: customer?.id }" @click="emit('customer')">
+          <Icon name="user" :size="18" />
+          <span class="grow" v-if="customer?.name">{{ customer.name }}<em v-if="customer.phone"> · {{ customer.phone }}</em></span>
+          <span class="grow muted" v-else>Aucun client — nécessaire pour le crédit</span>
+          <em class="act">{{ customer?.id ? 'Changer' : 'Choisir' }}</em>
+        </button>
+
+        <details class="basket" open>
+          <summary>{{ cart.itemCount }} article{{ cart.itemCount > 1 ? 's' : '' }} au panier</summary>
+          <ul>
+            <li v-for="l in cart.lines" :key="l.key">
+              <b class="q num">{{ fmtQty(l.quantity) }}</b>
+              <span class="n">{{ l.product.name }}
+                <em v-if="l.modifiers?.length">{{ l.modifiers.map(m => ((m.quantity || 1) > 1 ? m.quantity + ' × ' : '') + m.name).join(', ') }}</em>
+              </span>
+              <b class="a num">{{ fmt(mul(l.unitPrice, l.quantity)) }}</b>
+            </li>
+          </ul>
+        </details>
+
         <div class="board">
           <div class="row-amount">
             <span>À payer</span>
@@ -122,6 +152,32 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
 
 <style scoped>
 .pay-grid { display: grid; grid-template-columns: minmax(0, 1fr) 316px; gap: 20px; align-items: start; }
+
+/* --- client --- */
+.customer {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 46px; margin-bottom: 10px;
+  padding: 0 13px; border: 1px dashed var(--line-2); border-radius: var(--r);
+  font-size: 14px; font-weight: 600; color: var(--ink-2); text-align: left;
+}
+.customer:hover { border-color: var(--brand); color: var(--ink); }
+.customer.set { border-style: solid; border-color: var(--brand-line); background: var(--brand-soft); color: var(--ink); }
+.customer em { font-style: normal; font-weight: 500; color: var(--ink-3); }
+.customer .act { font-size: 12px; font-weight: 700; color: var(--brand); }
+
+/* --- rappel du panier --- */
+.basket { margin-bottom: 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface-2); }
+.basket summary {
+  padding: 9px 13px; cursor: pointer; list-style: none;
+  font-size: 12px; font-weight: 750; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3);
+}
+.basket summary::-webkit-details-marker { display: none; }
+.basket ul { max-height: 168px; overflow: auto; margin: 0; padding: 0 4px 6px; list-style: none; }
+.basket li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 9px; align-items: baseline;
+  padding: 5px 9px; border-top: 1px solid var(--line); }
+.basket .q { font-size: 13px; font-weight: 700; color: var(--ink-3); }
+.basket .n { font-size: 13.5px; font-weight: 600; line-height: 1.25; }
+.basket .n em { display: block; font-style: normal; font-size: 11.5px; font-weight: 500; color: var(--ink-3); }
+.basket .a { font-size: 13.5px; font-weight: 700; }
 
 /* --- montants --- */
 .board { background: var(--ink); border-radius: var(--r-lg); padding: 14px 18px 16px; color: #E8E2DA; }

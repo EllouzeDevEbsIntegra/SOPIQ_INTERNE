@@ -6,7 +6,8 @@ public final class Enums {
     public enum ServiceMode { DINE_IN, TAKEAWAY, DELIVERY }
     public enum SessionStatus { OPEN, CLOSED }
     public enum ProductType { SIMPLE, MENU }
-    public enum PaymentKind { CASH, CARD, CHECK, MEAL_VOUCHER, OTHER }
+    /** CREDIT : porte le ticket au compte du client au lieu d'encaisser. */
+    public enum PaymentKind { CASH, CARD, CHECK, MEAL_VOUCHER, CREDIT, OTHER }
     public enum MovementType { IN, OUT }
     public enum DestinationKind { CUSTOMER, PREP }
     public enum PrintJobStatus { PENDING, PRINTED, FAILED }

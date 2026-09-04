@@ -224,6 +224,10 @@ public class OrderService {
             PaymentMethod m = paymentMethodRepo.findById(pr.paymentMethodId()).orElseThrow(() -> BusinessException.notFound("Moyen de paiement"));
             if (!m.isActive()) throw new BusinessException("Le moyen de paiement « " + m.getName() + " » est désactivé.");
             if (pr.amount() == null || pr.amount().signum() <= 0) throw new BusinessException("Montant de paiement invalide.");
+            // Un ticket porté à crédit sans client serait une dette sans débiteur :
+            // le contrôle est ici, et pas seulement à l'écran, pour qu'il tienne.
+            if (m.getKind() == Enums.PaymentKind.CREDIT && o.getCustomer() == null)
+                throw new BusinessException("Le paiement à crédit exige un client : sélectionnez-le avant d'encaisser.");
             Payment p = new Payment();
             p.setOrder(o); p.setSession(session); p.setPaymentMethod(m); p.setAmount(Money.r(pr.amount())); p.setReference(pr.reference());
             if (m.getKind() == Enums.PaymentKind.CASH) {

@@ -15,4 +15,8 @@ import java.util.Optional;
 public interface OrderLineRepo extends JpaRepository<OrderLine, Long> {
     long countByProductId(Long productId);
     long countByCategoryId(Long categoryId);
+
+    /** Lignes de premier niveau : les composants d'un menu en sont exclus, sinon la
+        quantite du ticket compterait deux fois le meme article. */
+    List<OrderLine> findByOrderIdAndParentLineIsNullOrderBySortOrderAsc(Long orderId);
 }

@@ -33,6 +33,10 @@ public class DemoDataSeeder implements ApplicationRunner {
     @Transactional
     public void run(ApplicationArguments args) {
         if (roleRepo.count() == 0) seedCore();
+        // Hors seedCore : sur une installation deja en service les roles existent,
+        // seedCore ne tourne plus, et un moyen de paiement ajoute par une version
+        // ulterieure ne serait jamais cree.
+        seedPaymentMethods();
         if (props.isDemoData() && companyRepo.count() == 0) seedDemo();
     }
 
@@ -41,14 +45,11 @@ public class DemoDataSeeder implements ApplicationRunner {
         role("MANAGER", "Manager", EnumSet.of(Permission.REGISTER_OPEN, Permission.SELL, Permission.DISCOUNT_APPLY, Permission.DISCOUNT_HIGH, Permission.PRICE_EDIT,
                 Permission.LINE_DELETE, Permission.ORDER_CANCEL, Permission.TICKET_CANCEL, Permission.REFUND, Permission.DRAWER_OPEN, Permission.REVENUE_VIEW,
                 Permission.CASH_MOVEMENT, Permission.REGISTER_CLOSE, Permission.DAILY_CLOSE, Permission.PRODUCTS_MANAGE, Permission.REPORTS_VIEW,
-                Permission.TICKETS_VIEW, Permission.TICKETS_REPRINT, Permission.BACKOFFICE_ACCESS, Permission.AUDIT_VIEW));
+                Permission.TICKETS_VIEW, Permission.TICKETS_REPRINT, Permission.BACKOFFICE_ACCESS, Permission.AUDIT_VIEW,
+                Permission.CUSTOMER_CREDIT));
         role("CASHIER", "Caissier", EnumSet.of(Permission.REGISTER_OPEN, Permission.SELL, Permission.DISCOUNT_APPLY, Permission.LINE_DELETE, Permission.ORDER_CANCEL,
                 Permission.DRAWER_OPEN, Permission.CASH_MOVEMENT, Permission.REGISTER_CLOSE, Permission.TICKETS_VIEW, Permission.TICKETS_REPRINT));
-        if (paymentRepo.count() == 0) {
-            pay("CASH", "Espèces", Enums.PaymentKind.CASH, true, 1); pay("CARD", "Carte bancaire", Enums.PaymentKind.CARD, false, 2);
-            pay("CHECK", "Chèque", Enums.PaymentKind.CHECK, false, 3); pay("VOUCHER", "Ticket restaurant", Enums.PaymentKind.MEAL_VOUCHER, false, 4);
-            pay("OTHER", "Autre", Enums.PaymentKind.OTHER, false, 5);
-        }
+
         if (destRepo.count() == 0) {
             dest("CLIENT", "Ticket client", Enums.DestinationKind.CUSTOMER, 1, true, 0); dest("CUISINE", "Cuisine", Enums.DestinationKind.PREP, 1, false, 1);
             dest("PIZZA", "Pizza", Enums.DestinationKind.PREP, 1, false, 2); dest("BOISSONS", "Boissons", Enums.DestinationKind.PREP, 1, false, 3);
@@ -172,7 +173,19 @@ public class DemoDataSeeder implements ApplicationRunner {
         if (pin != null) u.setPinHash(encoder.encode(pin));
         return userRepo.save(u);
     }
+    /** Chaque moyen est cree s'il manque, et non « tout ou rien » : un seul moyen
+        deja present empecherait sinon la creation de tous les autres. */
+    private void seedPaymentMethods() {
+        pay("CASH", "Espèces", Enums.PaymentKind.CASH, true, 1);
+        pay("CARD", "Carte bancaire", Enums.PaymentKind.CARD, false, 2);
+        pay("CHECK", "Chèque", Enums.PaymentKind.CHECK, false, 3);
+        pay("VOUCHER", "Ticket restaurant", Enums.PaymentKind.MEAL_VOUCHER, false, 4);
+        pay("CREDIT", "Crédit client", Enums.PaymentKind.CREDIT, false, 5);
+        pay("OTHER", "Autre", Enums.PaymentKind.OTHER, false, 6);
+    }
+
     private void pay(String code, String name, Enums.PaymentKind kind, boolean drawer, int order) {
+        if (paymentRepo.findByCode(code).isPresent()) return;   // deja en place : on n'ecrase pas le reglage du client
         PaymentMethod m = new PaymentMethod(); m.setCode(code); m.setName(name); m.setKind(kind); m.setOpensDrawer(drawer); m.setSortOrder(order); paymentRepo.save(m);
     }
     private void dest(String code, String name, Enums.DestinationKind kind, int copies, boolean prices, int order) {
