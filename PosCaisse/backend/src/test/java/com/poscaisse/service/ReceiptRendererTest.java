@@ -89,6 +89,20 @@ class ReceiptRendererTest {
         assertThat(txt).contains("Merci pour votre visite");
     }
 
+    /**
+     * Le commentaire du ticket se lit avec le destinataire, avant les articles : place
+     * après les totaux, personne ne l'aurait cherché là.
+     */
+    @Test void ticketNoteSitsUnderTheRecipient() {
+        SaleOrder o = order();
+        o.setCustomerName("Karim");
+        o.setNote("Livrer avant 20 h, sonner deux fois");
+        String txt = renderer.customerReceipt(o, o.getCompany(), new ReceiptTemplate(), false, false);
+        assertThat(txt).contains("Note : Livrer avant 20 h, sonner deux fois");
+        assertThat(txt.indexOf("Note :")).isGreaterThan(txt.indexOf("Karim"));
+        assertThat(txt.indexOf("Note :")).isLessThan(txt.indexOf("Cheeseburger"));
+    }
+
     /** Un ticket en livraison nomme le livreur qui l'emporte. */
     @Test void deliveryTicketNamesTheCourier() {
         SaleOrder o = order();

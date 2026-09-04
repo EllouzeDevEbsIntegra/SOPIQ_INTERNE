@@ -97,6 +97,15 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
           </ul>
         </details>
 
+        <!-- Commentaire du ticket entier : livraison, table, mention a porter sur le
+             ticket. Il ne concerne aucun article en particulier — pour cela, la note se
+             saisit sur la ligne du panier. -->
+        <label class="note">
+          <span>Commentaire du ticket <em>(facultatif)</em></span>
+          <input class="input" v-model="cart.note" maxlength="180"
+                 placeholder="ex. livrer avant 20 h, table 4, sans couverts…" />
+        </label>
+
         <div class="board">
           <div class="row-amount">
             <span>À payer</span>
@@ -163,6 +172,11 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
 
 <style scoped>
 .pay-grid { display: grid; grid-template-columns: minmax(0, 1fr) 316px; gap: 20px; align-items: start; }
+
+/* --- commentaire du ticket --- */
+.note { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+.note > span { font-size: 11.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); }
+.note em { font-style: normal; font-weight: 500; text-transform: none; letter-spacing: 0; color: var(--ink-4); }
 
 /* --- client --- */
 .customer {

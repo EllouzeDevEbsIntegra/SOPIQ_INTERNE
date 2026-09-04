@@ -173,6 +173,10 @@ public class ReceiptRenderer {
         if (on(cfg, "showCustomer") && o.getCustomerName() != null && !o.getCustomerName().isBlank())
             s.lr("Client", o.getCustomerName() + (o.getCustomerPhone() == null ? "" : " " + o.getCustomerPhone()));
         if (on(cfg, "showCourier") && o.getCourier() != null) s.lr("Livreur", o.getCourier().getName());
+        // Le commentaire du ticket suit le destinataire : il le concerne le plus souvent
+        // (une consigne de livraison, un numero de table) et doit se lire avant les
+        // articles, pas apres les totaux ou personne ne le cherche.
+        if (notBlank(o.getNote())) s.line("Note : " + o.getNote());
         s.sep(sepCh);
         int count = 0;
         for (OrderLine l : o.getLines()) {
@@ -216,7 +220,6 @@ public class ReceiptRenderer {
         }
         if (o.getStatus() == Enums.OrderStatus.CANCELLED) { s.sep(sepCh); s.big("TICKET ANNULÉ"); }
         else if (o.getRefundedTotal() != null && o.getRefundedTotal().signum() > 0) { s.sep(sepCh); s.lr("REMBOURSÉ", money(o.getRefundedTotal(), dec)); }
-        if (o.getNote() != null && !o.getNote().isBlank()) { s.sep(sepCh); s.line("Note : " + o.getNote()); }
         // ---- pied : remerciement, puis les coordonnees pour recommander ----
         s.sep(sepCh);
         String merci = t != null && t.getFooterText() != null && !t.getFooterText().isBlank()
