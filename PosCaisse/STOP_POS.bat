@@ -1,4 +1,5 @@
 @echo off
+rem  Fins de ligne CRLF imposees par .gitattributes (exigence de cmd.exe).
 title PosCaisse - Arret
 cd /d "%~dp0"
 echo Arret du backend et du frontend PosCaisse...

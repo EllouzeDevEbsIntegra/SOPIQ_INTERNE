@@ -1,4 +1,5 @@
 @echo off
+rem  Fins de ligne CRLF imposees par .gitattributes (exigence de cmd.exe).
 setlocal
 title PosCaisse - Import de la carte
 cd /d "%~dp0"

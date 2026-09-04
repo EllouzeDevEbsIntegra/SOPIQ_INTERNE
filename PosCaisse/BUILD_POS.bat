@@ -1,4 +1,5 @@
 @echo off
+rem  Fins de ligne CRLF imposees par .gitattributes (exigence de cmd.exe).
 title PosCaisse - Build production
 cd /d "%~dp0"
 echo [1/2] Build frontend (npm run build)...

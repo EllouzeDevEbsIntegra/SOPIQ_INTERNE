@@ -38,12 +38,14 @@ La carte **NUMBER ONE** est déjà fournie : `catalogs/number-one.json` — 78 p
 
 L'import remplace le catalogue : ce qui n'est pas dans le fichier est **supprimé s'il n'a jamais été vendu, sinon simplement désactivé**, afin que l'historique des tickets reste intact. Un ré-import met à jour les produits existants par leur code, sans créer de doublon — c'est le moyen de faire évoluer vos prix. Pour ajouter sans rien retirer : `./import-menu.sh catalogs/ma-carte.json --ajouter`.
 
-Les autres scripts restent disponibles pour un usage ciblé : `START_POS.bat` (démarrer sans mise à jour ni recompilation), `STOP_POS.bat` (arrêter), `BUILD_POS.bat` (compiler seulement), `INIT_DB.bat` (préparer la base seulement).
+Les autres scripts restent disponibles pour un usage ciblé : `START_POS.bat` (démarrer sans rien arrêter ni mettre à jour), `STOP_POS.bat` (arrêter), `BUILD_POS.bat` (compiler seulement), `INIT_DB.bat` (préparer la base seulement).
+
+Ces `.bat` sont de simples lanceurs : la logique est dans `restart.ps1` et `init-db.ps1`, exécutés par le PowerShell livré avec Windows. Si un double-clic ouvre puis referme la fenêtre sans rien afficher, le fichier a été récupéré avec des fins de ligne Unix : `git pull` le corrige (le dépôt impose CRLF aux `.bat`/`.ps1`).
 
 ## Lancement détaillé (Windows)
 
 1. Copiez le dossier dans `D:\PosCaisse` (ou n'importe où).
-2. Double-cliquez **`START_POS.bat`** : démarre PostgreSQL (Docker si présent), le backend (port 8080), le frontend (port 5173 en mode développement, ou servi par le backend si `frontend\dist` existe) et ouvre le navigateur.
+2. Double-cliquez **`START_POS.bat`** : démarre PostgreSQL (Docker si présent) et le backend (port 8080, qui sert l'interface compilée depuis `frontend\dist`), puis ouvre le navigateur. Si PosCaisse tourne déjà, il ouvre simplement le navigateur au lieu de tout redémarrer.
 4. **`STOP_POS.bat`** arrête tout. **`BUILD_POS.bat`** produit un build de production (`backend\target\poscaisse-backend.jar` + `frontend\dist`, alors servis ensemble sur http://localhost:8080).
 
 Linux / macOS : `./start.sh` et `./stop.sh` (créent aussi la base au besoin).

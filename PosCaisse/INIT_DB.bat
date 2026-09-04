@@ -1,14 +1,9 @@
 @echo off
-setlocal
 title PosCaisse - Preparation de la base de donnees
-cd /d "%~dp0"
-
-call "%~dp0_ensure_db.bat"
-if errorlevel 1 (
-  echo.
-  echo Echec de la preparation de la base. Creez-la manuellement :
-  echo    psql -U %POSCAISSE_DB_USER% -c "CREATE DATABASE %POSCAISSE_DB_NAME%;"
-)
+rem =====================================================================
+rem  Demarre PostgreSQL et cree la base "poscaisse" si elle n'existe pas.
+rem  La logique est dans init-db.ps1.
+rem =====================================================================
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0init-db.ps1"
 echo.
 pause
-endlocal
