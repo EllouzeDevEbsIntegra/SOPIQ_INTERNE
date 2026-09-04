@@ -364,11 +364,13 @@ export default { components: { ReceiptInline } }
   flex: 1; min-height: 0; padding: 0 16px 16px;
   display: grid; align-content: start;
   grid-template-columns: repeat(auto-fill, minmax(clamp(132px, 11.4vw, 178px), 1fr));
-  grid-auto-rows: clamp(84px, 10.6vh, 116px);
+  /* La tuile empile medaillon (40) + filet + nom sur deux lignes : une ligne
+     de grille plus basse rognerait le nom. Hauteur calee sur ce contenu. */
+  grid-auto-rows: clamp(108px, 14vh, 138px);
   gap: 9px;
 }
-.grid.S { grid-template-columns: repeat(auto-fill, minmax(clamp(116px, 10vw, 152px), 1fr)); grid-auto-rows: clamp(74px, 9.2vh, 100px); gap: 7px; }
-.grid.L { grid-template-columns: repeat(auto-fill, minmax(clamp(168px, 15vw, 232px), 1fr)); grid-auto-rows: clamp(108px, 13.6vh, 152px); gap: 11px; }
+.grid.S { grid-template-columns: repeat(auto-fill, minmax(clamp(116px, 10vw, 152px), 1fr)); grid-auto-rows: clamp(92px, 12vh, 116px); gap: 7px; }
+.grid.L { grid-template-columns: repeat(auto-fill, minmax(clamp(168px, 15vw, 232px), 1fr)); grid-auto-rows: clamp(136px, 17.5vh, 176px); gap: 11px; }
 .grid .empty { grid-column: 1 / -1; }
 .flash { box-shadow: 0 0 0 2px var(--pay); }
 
