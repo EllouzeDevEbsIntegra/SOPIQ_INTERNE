@@ -50,8 +50,9 @@ function cancel() { if (timer) { clearTimeout(timer); timer = null } }
     </span>
     <span class="body">
       <span class="top">
+        <span class="cat">{{ product.categoryName }}</span>
         <span v-if="product.productType === 'MENU'" class="flag">Menu</span>
-        <Icon v-else-if="hasOptions" name="plus" :size="14" :stroke="2.4" class="opt" />
+        <Icon v-else-if="hasOptions" name="plus" :size="13" :stroke="2.4" class="opt" />
         <span class="price num">{{ fmt(product.price) }}</span>
       </span>
       <span class="rule"></span>
@@ -86,9 +87,16 @@ function cancel() { if (timer) { clearTimeout(timer); timer = null } }
 .letter { font-family: var(--font-display); font-size: 19px; font-weight: 700; color: var(--c); }
 
 .body { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
-/* le prix est poussé à droite ; l'indicateur d'options reste à gauche de la ligne */
+/* le prix est poussé à droite ; la catégorie et l'indicateur d'options
+   restent à gauche de la ligne. La catégorie se tronque avant le prix :
+   c'est le prix qui doit rester entier, jamais l'inverse. */
 .top { display: flex; align-items: center; gap: 6px; }
-.price { margin-left: auto; font-size: 16.5px; font-weight: 750; color: var(--ink); letter-spacing: -.02em; }
+.cat {
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--c); opacity: .85;
+}
+.price { margin-left: auto; flex: none; font-size: 16.5px; font-weight: 750; color: var(--ink); letter-spacing: -.02em; }
 .flag {
   font-size: 9.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
   color: #fff; background: var(--c); padding: 2px 6px; border-radius: 3px;
@@ -105,15 +113,18 @@ function cancel() { if (timer) { clearTimeout(timer); timer = null } }
 
 .tile.S { gap: 8px; padding: 7px 8px 7px 7px; }
 .tile.S .price { font-size: 14.5px; }
+.tile.S .cat { font-size: 9px; }
 .tile.S .letter { font-size: 15px; }
 .tile.S .name { font-size: 12.5px; -webkit-line-clamp: 2; }
 .tile.L { gap: 12px; padding: 10px 13px 10px 10px; }
 .tile.L .price { font-size: 19.5px; }
+.tile.L .cat { font-size: 11px; }
 .tile.L .letter { font-size: 24px; }
 .tile.L .name { font-size: 15px; }
 
 .tile.off { background: var(--surface-2); border-color: var(--line); }
 .tile.off .name, .tile.off .price { color: var(--ink-4); }
+.tile.off .cat { color: var(--ink-4); }
 .tile.off .pic { background: var(--surface-3); border-color: var(--line); }
 .tile.off .letter { color: var(--ink-4); }
 .tile.off::before { background: var(--line-2); }
