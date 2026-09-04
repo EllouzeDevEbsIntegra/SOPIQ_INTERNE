@@ -71,8 +71,11 @@ class ReceiptRendererTest {
                 .map(l -> l.substring(1)).toList();
         assertThat(header).hasSize(2);
         assertThat(header.get(0).trim()).isEqualTo("FAST FOOD DEMO");
-        assertThat(header.get(1)).startsWith(LocalDate.now(ZoneId.of("Africa/Tunis")).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-        assertThat(header.get(1)).matches("\\d{2}/\\d{2}/\\d{4} {2,}\\d{2}:\\d{2}");
+        // Enseigne et date sont toutes deux alignees a droite : elles bordent le logo.
+        assertThat(header.get(0)).endsWith("FAST FOOD DEMO");
+        assertThat(header.get(1)).endsWith(LocalDate.now(ZoneId.of("Africa/Tunis"))
+                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " - " + header.get(1).substring(header.get(1).length() - 5));
+        assertThat(header.get(1)).matches(" +\\d{2}/\\d{2}/\\d{4} - \\d{2}:\\d{2}");
         assertThat(header.get(1).length()).isEqualTo(42);
     }
 

@@ -154,8 +154,9 @@ public class ReceiptRenderer {
             if (company != null && on(cfg, "showCompanyName"))
                 s.lr("", company.getTradeName() != null && !company.getTradeName().isBlank() ? company.getTradeName() : company.getName());
             if (t != null && t.getHeaderText() != null && !t.getHeaderText().isBlank()) s.center(t.getHeaderText());
-            if (!dateStr.isEmpty() && !timeStr.isEmpty()) s.lr(dateStr, timeStr);
-            else if (!dateStr.isEmpty() || !timeStr.isEmpty()) s.center(dateStr + timeStr);
+            // Date et heure forment une seule mention, alignee a droite sous l'enseigne.
+            String quand = dateStr.isEmpty() || timeStr.isEmpty() ? dateStr + timeStr : dateStr + " - " + timeStr;
+            if (!quand.isEmpty()) s.lr("", quand);
         });
         s.sep(sepCh);
 
