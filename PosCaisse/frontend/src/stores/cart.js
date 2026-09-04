@@ -20,6 +20,10 @@ function expandModifiers(list) {
 export const useCartStore = defineStore('cart', () => {
   const lines = ref([])
   const serviceMode = ref('TAKEAWAY')
+  /* Mode dans lequel chaque nouveau ticket demarre. La caisse le renseigne depuis le
+     parametrage au chargement ; la valeur ci-dessous n'est qu'un point de depart avant
+     que le catalogue soit connu. */
+  const defaultServiceMode = ref('TAKEAWAY')
   const customer = ref({ id: null, name: '', phone: '' })
   const courier = ref({ id: null, name: '', phone: '' })
   const note = ref('')
@@ -87,6 +91,9 @@ export const useCartStore = defineStore('cart', () => {
   function setOrderDiscount(percent, amount) { discountPercent.value = percent || 0; discountAmount.value = amount || 0 }
   function clear() {
     lines.value = []; customer.value = noParty(); courier.value = noParty(); note.value = ''; discountPercent.value = 0; discountAmount.value = 0
+    // Un ticket vide est un ticket neuf : il repart dans le mode configure, sinon le
+    // reglage ne vaudrait que pour la premiere vente suivant l'ouverture de la caisse.
+    serviceMode.value = defaultServiceMode.value
     heldOrderId.value = null; heldRef.value = null; clientRef.value = uuid(); selectedKey.value = null
   }
   function toRequest(registerId) {
@@ -146,7 +153,7 @@ export const useCartStore = defineStore('cart', () => {
     clientRef.value = d.clientRef || clientRef.value
     return true
   }
-  return { lines, serviceMode, customer, courier, canPickCustomer, canPickCourier, needsCourier,
+  return { lines, serviceMode, defaultServiceMode, customer, courier, canPickCustomer, canPickCourier, needsCourier,
     note, discountPercent, discountAmount, heldOrderId, heldRef, clientRef, selectedKey, restoreDraft,
     subtotal, lineDiscountTotal, orderDiscount, total, itemCount, isEmpty, lineUnit, lineGross, lineDiscount, lineTotal,
     addLine, find, setQuantity, increment, remove, setLineDiscount, setLinePrice, setLineNote, setLineModifiers, setOrderDiscount, clear, toRequest, loadFromOrder }

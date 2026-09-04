@@ -30,7 +30,12 @@ let clockTimer = null
 
 onMounted(async () => {
   try { await catalog.load(true) } catch (e) { ui.error(e.humanMessage) }
-  cart.serviceMode = catalog.serviceModes.includes(cart.serviceMode) ? cart.serviceMode : (catalog.setting('pos.defaultServiceMode', 'TAKEAWAY'))
+  // Le mode configure au back-office s'applique, a condition d'etre encore actif ;
+  // sinon on prend le premier mode actif plutot que d'afficher un onglet impossible.
+  const modes = catalog.serviceModes
+  const voulu = catalog.setting('pos.defaultServiceMode', 'TAKEAWAY')
+  cart.defaultServiceMode = modes.includes(voulu) ? voulu : (modes[0] || 'TAKEAWAY')
+  cart.serviceMode = cart.defaultServiceMode
   if (!catalog.favorites.length && catalog.categories.length) activeCat.value = catalog.categories[0].id
   if (cart.restoreDraft(catalog.productsById)) ui.info('Commande en cours restaurée')
   api.admin.activeTemplate().then(t => { template.value = { ...t, logoData: catalog.company?.logoData } }).catch(() => {})
