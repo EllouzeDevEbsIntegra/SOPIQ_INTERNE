@@ -38,7 +38,16 @@ La carte **NUMBER ONE** est déjà fournie : `catalogs/number-one.json` — 78 p
 
 L'import remplace le catalogue : ce qui n'est pas dans le fichier est **supprimé s'il n'a jamais été vendu, sinon simplement désactivé**, afin que l'historique des tickets reste intact. Un ré-import met à jour les produits existants par leur code, sans créer de doublon — c'est le moyen de faire évoluer vos prix. Pour ajouter sans rien retirer : `./import-menu.sh catalogs/ma-carte.json --ajouter`.
 
-Les autres scripts restent disponibles pour un usage ciblé : `START_POS.bat` (démarrer sans rien arrêter ni mettre à jour), `STOP_POS.bat` (arrêter), `BUILD_POS.bat` (compiler seulement), `INIT_DB.bat` (préparer la base seulement).
+### Nettoyer le catalogue après un import
+
+Un import en mode « remplacer » ne peut que **désactiver** un article déjà vendu : ses lignes de vente le référencent, et le supprimer casserait un ticket déjà imprimé. Pour faire le ménage définitivement, double-cliquez sur **`CLEAN_CATALOG.bat`** (Linux/macOS : `./clean-catalog.sh`). Il propose deux niveaux :
+
+- **Catalogue seulement** — supprime les articles inactifs jamais vendus, les catégories devenues vides et les groupes d'options orphelins. L'historique des tickets est intact.
+- **Catalogue + ventes** — efface d'abord *toutes* les données de vente (tickets, lignes, paiements, remboursements, mouvements, journal, sessions, clôtures, numérotation), ce qui libère les articles inactifs restants, puis supprime le catalogue inactif. **Irréversible** : c'est la remise à zéro d'avant mise en production. Fermez toutes les caisses avant de la lancer, sinon l'opération est refusée.
+
+Après un nettoyage complet, il ne reste que les catégories et articles actifs, et la numérotation des tickets repart à 1.
+
+Les autres scripts restent disponibles pour un usage ciblé : `START_POS.bat` (démarrer sans rien arrêter ni mettre à jour), `STOP_POS.bat` (arrêter), `BUILD_POS.bat` (compiler seulement), `INIT_DB.bat` (préparer la base seulement), `CLEAN_CATALOG.bat` (nettoyer le catalogue).
 
 Ces `.bat` sont de simples lanceurs : la logique est dans `restart.ps1` et `init-db.ps1`, exécutés par le PowerShell livré avec Windows. Si un double-clic ouvre puis referme la fenêtre sans rien afficher, le fichier a été récupéré avec des fins de ligne Unix : `git pull` le corrige (le dépôt impose CRLF aux `.bat`/`.ps1`).
 

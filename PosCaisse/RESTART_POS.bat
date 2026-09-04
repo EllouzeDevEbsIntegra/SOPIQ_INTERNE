@@ -1,12 +1,15 @@
 @echo off
 title PosCaisse - Redemarrage
 rem =====================================================================
-rem  Double-cliquez sur ce fichier : il n'y a rien d'autre a faire.
-rem
-rem  Ce .bat ne contient volontairement aucune logique. Toute la sequence
-rem  (arret, git pull, base, compilation, demarrage) vit dans restart.ps1 :
-rem  cmd.exe mal-interprete les blocs entre parentheses et les etiquettes
-rem  des qu'un .bat grossit, et sort sans rien afficher.
+rem  Ce fichier ne contient volontairement AUCUNE logique : cmd.exe casse
+rem  silencieusement sur les blocs entre parentheses et les etiquettes.
+rem  Tout se passe dans le .ps1, execute par le PowerShell de Windows.
+rem  La pause finale est ici pour qu'une erreur reste lisible a l'ecran
+rem  meme si PowerShell s'arrete des la lecture du script.
 rem =====================================================================
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0restart.ps1" -Pause
-if errorlevel 9009 pause
+echo Redemarrage complet de PosCaisse (restart.ps1)...
+echo.
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0restart.ps1"
+echo.
+echo Code de sortie : %errorlevel%
+pause

@@ -1,10 +1,15 @@
 @echo off
 title PosCaisse - Lancement
 rem =====================================================================
-rem  Lance PosCaisse sans rien arreter. Si l'application repond deja,
-rem  le navigateur s'ouvre simplement sur la caisse.
-rem  Pour repartir de zero (arret + mise a jour + recompilation) :
-rem  RESTART_POS.bat.
+rem  Ce fichier ne contient volontairement AUCUNE logique : cmd.exe casse
+rem  silencieusement sur les blocs entre parentheses et les etiquettes.
+rem  Tout se passe dans le .ps1, execute par le PowerShell de Windows.
+rem  La pause finale est ici pour qu'une erreur reste lisible a l'ecran
+rem  meme si PowerShell s'arrete des la lecture du script.
 rem =====================================================================
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0restart.ps1" -Mode start -Pause
-if errorlevel 9009 pause
+echo Lancement de PosCaisse sans rien arreter (restart.ps1 -Mode start)...
+echo.
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0restart.ps1" -Mode start
+echo.
+echo Code de sortie : %errorlevel%
+pause

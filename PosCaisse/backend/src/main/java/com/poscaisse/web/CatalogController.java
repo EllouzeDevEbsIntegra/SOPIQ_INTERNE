@@ -3,7 +3,9 @@ package com.poscaisse.web;
 import com.poscaisse.dto.CatalogDtos.*;
 import com.poscaisse.dto.CatalogImportDtos.CatalogImport;
 import com.poscaisse.dto.CatalogImportDtos.ImportResult;
+import com.poscaisse.dto.CatalogPurgeDtos.PurgeResult;
 import com.poscaisse.service.CatalogImportService;
+import com.poscaisse.service.CatalogPurgeService;
 import com.poscaisse.service.CatalogService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +20,23 @@ import java.util.Map;
 public class CatalogController {
     private final CatalogService catalog;
     private final CatalogImportService catalogImport;
+    private final CatalogPurgeService catalogPurge;
 
     /** Import d'une carte complète. replace=true désactive ce qui n'y figure plus (jamais de suppression). */
     @PostMapping("/catalog/import")
     public ImportResult importCatalog(@RequestBody CatalogImport payload,
                                       @RequestParam(defaultValue = "false") boolean replace) {
         return catalogImport.importCatalog(payload, replace);
+    }
+
+    /**
+     * Supprime définitivement le catalogue inactif laissé par un import en mode « remplacer ».
+     * resetSales=true efface d'abord toutes les données de vente : c'est la seule façon de
+     * supprimer un produit déjà vendu. Irréversible, réservé à la mise en production.
+     */
+    @PostMapping("/catalog/purge")
+    public PurgeResult purgeCatalog(@RequestParam(defaultValue = "false") boolean resetSales) {
+        return catalogPurge.purge(resetSales);
     }
 
     @GetMapping("/categories") public List<CategoryDto> categories() { return catalog.categories(); }

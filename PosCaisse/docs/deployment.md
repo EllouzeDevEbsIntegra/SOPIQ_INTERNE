@@ -6,6 +6,10 @@
 
 Sous Windows, les `.bat` ne sont que des lanceurs d'une ligne ; la séquence complète vit dans `restart.ps1` et la préparation de la base dans `init-db.ps1` (PowerShell 5.1, livré avec Windows, aucune installation). `cmd.exe` casse silencieusement sur les scripts longs — d'où ce découpage. Le dépôt force les fins de ligne CRLF sur `.bat`/`.ps1` via `.gitattributes` : sans cela `cmd.exe` mal-interprète les fichiers et la fenêtre se referme sans rien lancer.
 
+## Nettoyer le catalogue
+
+`CLEAN_CATALOG.bat` (Windows) ou `./clean-catalog.sh` : supprime définitivement ce qu'un import en mode « remplacer » n'a pu que désactiver. Deux niveaux, catalogue seul ou catalogue + remise à zéro des ventes ; le second est irréversible et refusé tant qu'une caisse est ouverte. En API : `POST /api/catalog/purge?resetSales=true|false`.
+
 ## Développement (PC caisse ou poste de dev)
 - `START_POS.bat` (Windows) : PostgreSQL, base, puis backend sur 8080 — sans rien arrêter et sans `git pull`. Si PosCaisse répond déjà, le navigateur s'ouvre simplement. Le backend sert l'interface déjà compilée (`frontend/dist`).
 - `./start.sh` (Linux/macOS) : idem, avec le frontend Vite (5173, proxy `/api`) si `frontend/dist` est absent.

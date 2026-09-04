@@ -105,4 +105,46 @@ class PosIntegrationTest {
         assertThat(closed.get("status").asText()).isEqualTo("CLOSED");
         postJson("/api/pos/session/" + sessionId + "/close", cashierToken, java.util.Map.of("countedCash", 120), 409);
     }
+
+    /**
+     * Reproduit le scénario réel : import d'une carte en mode « remplacer », qui ne peut que
+     * désactiver les produits déjà vendus, puis nettoyage définitif. Vérifie que sans remise à
+     * zéro des ventes rien n'est supprimé (et que l'utilisateur est averti), et qu'avec elle il
+     * ne reste que le catalogue actif. Dernier test : il vide volontairement la base.
+     */
+    @Test @Order(6) void purgeRemovesInactiveCatalogOnlyWithSalesReset() throws Exception {
+        String adminToken = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn())
+                .get("token").asText();
+
+        String tinyCatalog = """
+                {"label":"Carte de test","categories":[{"name":"TEST"}],
+                 "products":[{"code":"T-001","name":"Article test","category":"TEST","price":1.5}]}""";
+        JsonNode imported = json(mvc.perform(post("/api/catalog/import?replace=true")
+                .header("Authorization", "Bearer " + adminToken)
+                .contentType(MediaType.APPLICATION_JSON).content(tinyCatalog)).andExpect(status().isOk()).andReturn());
+        assertThat(imported.get("productsDeactivated").asInt())
+                .as("les produits déjà vendus ne peuvent qu'être désactivés").isGreaterThan(0);
+
+        // Sans remise à zéro : rien n'est supprimé, mais l'utilisateur est averti pourquoi.
+        JsonNode kept = json(postJson("/api/catalog/purge", adminToken, java.util.Map.of(), 200));
+        assertThat(kept.get("salesReset").asBoolean()).isFalse();
+        assertThat(kept.get("productsDeleted").asInt()).isZero();
+        assertThat(kept.get("warnings")).isNotEmpty();
+        assertThat(kept.get("productsLeft").asInt()).isGreaterThan(1);
+
+        // Avec remise à zéro : ventes effacées, puis seul le catalogue actif subsiste.
+        JsonNode purged = json(postJson("/api/catalog/purge?resetSales=true", adminToken, java.util.Map.of(), 200));
+        assertThat(purged.get("salesReset").asBoolean()).isTrue();
+        assertThat(purged.get("salesRowsDeleted").asInt()).isPositive();
+        assertThat(purged.get("productsLeft").asInt()).isEqualTo(1);
+        assertThat(purged.get("categoriesLeft").asInt()).isEqualTo(1);
+        assertThat(purged.get("warnings")).isEmpty();
+
+        // Le POS reste utilisable : catalogue cohérent et numérotation repartie de zéro.
+        JsonNode cat = json(mvc.perform(get("/api/pos/catalog").header("Authorization", "Bearer " + adminToken))
+                .andExpect(status().isOk()).andReturn());
+        assertThat(cat.get("products").size()).isEqualTo(1);
+        assertThat(cat.get("products").get(0).get("code").asText()).isEqualTo("T-001");
+    }
 }

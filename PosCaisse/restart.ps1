@@ -9,7 +9,8 @@ param(
   # 'restart' : arrete ce qui tourne puis relance.  'start' : ne tue rien ;
   # si PosCaisse repond deja, ouvre simplement le navigateur.
   [ValidateSet('restart', 'start')] [string] $Mode = 'restart',
-  # Laisse la fenetre ouverte a la fin (appel depuis un double-clic .bat).
+  # Conserve pour compatibilite : la pause est desormais faite par le .bat,
+  # afin qu'une erreur de PowerShell lui-meme reste lisible a l'ecran.
   [switch] $Pause
 )
 $ErrorActionPreference = 'Continue'
@@ -26,7 +27,13 @@ function Get-Setting([string]$name, [string]$fallback) {
 $port   = Get-Setting 'POSCAISSE_PORT' '8080'
 $dbName = Get-Setting 'POSCAISSE_DB_NAME' 'poscaisse'
 
+# Journal : si quelque chose se passe mal, logs\restart.log garde la trace.
+$logDir = Join-Path $root 'logs'
+if (-not (Test-Path -LiteralPath $logDir)) { New-Item -ItemType Directory -Path $logDir | Out-Null }
+try { Start-Transcript -Path (Join-Path $logDir 'restart.log') -Force | Out-Null } catch { }
+
 function Quit([int]$code) {
+  try { Stop-Transcript | Out-Null } catch { }
   if ($Pause) {
     Write-Host ''
     Write-Host '  Appuyez sur Entree pour fermer cette fenetre.'
@@ -62,17 +69,29 @@ function Stop-Port([int]$p) {
   }
 }
 
-function Test-PosRunning([int]$p) {
+# Actuator repond en application/vnd.spring-boot.actuator.v3+json : un type que
+# PowerShell ne reconnait pas comme texte, donc .Content est un tableau d'octets
+# et non une chaine. Comparer directement avec -match ne matcherait jamais.
+function Get-HealthText([int]$p) {
   try {
-    $r = Invoke-WebRequest -Uri "http://localhost:$p/actuator/health" -UseBasicParsing -TimeoutSec 3
-    return ($r.Content -match 'UP')
-  } catch { return $false }
+    $r = Invoke-WebRequest -Uri "http://localhost:$p/actuator/health" -UseBasicParsing -TimeoutSec 4
+    if ($r.Content -is [byte[]]) { return [System.Text.Encoding]::UTF8.GetString($r.Content) }
+    return [string]$r.Content
+  } catch { return '' }
+}
+
+function Test-PosRunning([int]$p) { return ((Get-HealthText $p) -match '"status"\s*:\s*"UP"') }
+
+# Un navigateur par defaut absent ou mal enregistre ne doit pas faire echouer
+# le demarrage : l'adresse est de toute facon affichee a l'ecran.
+function Open-Browser([string]$url) {
+  try { Start-Process $url | Out-Null } catch { Write-Host "    Ouvrez $url dans votre navigateur." }
 }
 
 if ($Mode -eq 'start') {
   if (Test-PosRunning ([int]$port)) {
     Write-Host "    PosCaisse tourne deja sur le port $port : ouverture du navigateur."
-    Start-Process "http://localhost:$port" | Out-Null
+    Open-Browser "http://localhost:$port"
     Write-Host ''
     Write-Host '    Pour repartir de zero, utilisez RESTART_POS.bat.'
     Quit 0
@@ -95,7 +114,11 @@ Write-Host ''
 Write-Host '[2/6] Mise a jour du code...'
 $rebuild = $false
 $git = Get-Command git -ErrorAction SilentlyContinue
-if ($git) {
+if ($Mode -eq 'start') {
+  # START_POS lance ce qui est deja sur le disque : pas de git pull, pour que
+  # le demarrage du matin reste previsible et rapide.
+  Write-Host '    Mode lancement : mise a jour ignoree (utilisez RESTART_POS.bat).'
+} elseif ($git) {
   git rev-parse --is-inside-work-tree 2>$null | Out-Null
   if ($LASTEXITCODE -eq 0) {
     $before = (git rev-parse HEAD 2>$null)
@@ -209,10 +232,7 @@ Write-Host '[6/6] Attente du demarrage...'
 $ready = $false
 for ($i = 0; $i -lt 60; $i++) {
   Start-Sleep -Seconds 3
-  try {
-    $r = Invoke-WebRequest -Uri "http://localhost:$port/actuator/health" -UseBasicParsing -TimeoutSec 4
-    if ($r.Content -match 'UP') { $ready = $true; break }
-  } catch { }
+  if (Test-PosRunning ([int]$port)) { $ready = $true; break }
 }
 
 if (-not $ready) {
@@ -223,7 +243,7 @@ if (-not $ready) {
 }
 
 Write-Host '    Backend pret.'
-Start-Process "http://localhost:$port" | Out-Null
+Open-Browser "http://localhost:$port"
 Write-Host ''
 Write-Host '=========================================================='
 Write-Host "  PosCaisse est lance : http://localhost:$port"
