@@ -17,7 +17,22 @@ Connexion PIN → Ouverture caisse → POS (catégories / produits / panier) →
 | PostgreSQL | 14+ (testé avec 16) | local **ou** via `docker compose up -d postgres` |
 | Docker (optionnel) | — | uniquement pour PostgreSQL |
 
-## Lancement rapide (Windows)
+## Lancement en un clic (Windows)
+
+Double-cliquez sur **`RESTART_POS.bat`**. Il enchaîne tout, sans aucune autre manipulation :
+
+1. arrête l'instance en cours et libère les ports 8080 / 5173 ;
+2. récupère la dernière version (`git pull`) ;
+3. démarre PostgreSQL (Docker si présent, sinon le service Windows) et **crée la base si elle n'existe pas** ;
+4. recompile l'interface et le backend **uniquement si le code a changé** ;
+5. démarre l'application et ouvre le navigateur sur http://localhost:8080.
+
+Comptez une quinzaine de secondes sans recompilation, une à deux minutes avec.
+Sous Linux / macOS : `./restart.sh` fait exactement la même chose.
+
+Les autres scripts restent disponibles pour un usage ciblé : `START_POS.bat` (démarrer sans mise à jour ni recompilation), `STOP_POS.bat` (arrêter), `BUILD_POS.bat` (compiler seulement), `INIT_DB.bat` (préparer la base seulement).
+
+## Lancement détaillé (Windows)
 
 1. Copiez le dossier dans `D:\PosCaisse` (ou n'importe où).
 2. Double-cliquez **`START_POS.bat`** : démarre PostgreSQL (Docker si présent), le backend (port 8080), le frontend (port 5173 en mode développement, ou servi par le backend si `frontend\dist` existe) et ouvre le navigateur.

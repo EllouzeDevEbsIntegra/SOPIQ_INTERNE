@@ -15,7 +15,11 @@ if command -v psql >/dev/null; then
     psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d postgres -c "CREATE DATABASE $DB_NAME;" >/dev/null || echo "Création impossible : créez la base manuellement."
   fi
 fi
-( cd backend && if [ -f target/poscaisse-backend.jar ]; then java -jar target/poscaisse-backend.jar; else mvn -q spring-boot:run; fi ) > logs/backend.log 2>&1 &
-echo $! > backend.pid
+cd backend
+if [ -f target/poscaisse-backend.jar ]; then nohup java -jar target/poscaisse-backend.jar > ../logs/backend.log 2>&1 &
+else nohup mvn -q spring-boot:run > ../logs/backend.log 2>&1 & fi
+echo $! > ../backend.pid
+disown 2>/dev/null || true
+cd ..
 if [ -f frontend/dist/index.html ]; then URL=http://localhost:${POSCAISSE_PORT:-8080}; else ( cd frontend && [ -d node_modules ] || npm install --no-audit --no-fund; npm run dev ) > logs/frontend.log 2>&1 & echo $! > frontend.pid; URL=http://localhost:5173; fi
 echo "PosCaisse démarre… logs dans ./logs — ouvrez $URL"

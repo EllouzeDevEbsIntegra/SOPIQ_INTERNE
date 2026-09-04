@@ -88,39 +88,14 @@ REM ------------------------------------------------------ 4. compilation
 echo.
 if not exist "frontend\dist\index.html" set "REBUILD=1"
 if not exist "backend\target\poscaisse-backend.jar" set "REBUILD=1"
+set "BUILD_OK=1"
 if "!REBUILD!"=="0" (
   echo [4/6] Aucun changement : compilation inutile.
 ) else (
   echo [4/6] Compilation ^(cela peut prendre 1 a 2 minutes^)...
-  where npm >nul 2>nul
-  if errorlevel 1 (
-    echo     npm introuvable : l'interface ne peut pas etre compilee.
-    echo     Installez Node.js depuis https://nodejs.org puis relancez ce script.
-  ) else (
-    pushd frontend
-    if not exist node_modules (
-      echo     Installation des dependances npm...
-      call npm install --no-audit --no-fund
-    )
-    echo     Construction de l'interface...
-    call npm run build || echo     ECHEC de la construction de l'interface.
-    popd
-  )
-  where mvn >nul 2>nul
-  if errorlevel 1 (
-    echo     Maven introuvable : impossible de construire le backend.
-    goto :fail
-  )
-  pushd backend
-  echo     Construction du backend...
-  call mvn -q -B package -DskipTests
-  if errorlevel 1 (
-    popd
-    echo     ECHEC de la construction du backend.
-    goto :fail
-  )
-  popd
+  call :build
 )
+if not "!BUILD_OK!"=="1" goto :fail
 
 REM ------------------------------------------------------ 5. demarrage
 echo.
@@ -170,6 +145,39 @@ echo.
 pause
 endlocal
 exit /b
+
+REM ============================================================
+REM  Construction : interface Vue puis jar Spring Boot.
+REM  Positionne BUILD_OK=0 en cas d'echec bloquant.
+REM ============================================================
+:build
+where npm >nul 2>nul
+if errorlevel 1 (
+  echo     npm introuvable : l'interface ne peut pas etre compilee.
+  echo     Installez Node.js depuis https://nodejs.org puis relancez ce script.
+) else (
+  pushd frontend
+  if not exist node_modules (
+    echo     Installation des dependances npm...
+    call npm install --no-audit --no-fund
+  )
+  echo     Construction de l'interface...
+  call npm run build
+  popd
+)
+where mvn >nul 2>nul
+if errorlevel 1 (
+  echo     Maven introuvable : impossible de construire le backend.
+  set "BUILD_OK=0"
+  exit /b 1
+)
+pushd backend
+echo     Construction du backend...
+call mvn -q -B package -DskipTests
+if errorlevel 1 set "BUILD_OK=0"
+popd
+if not "!BUILD_OK!"=="1" echo     ECHEC de la construction du backend.
+exit /b 0
 
 REM ============================================================
 REM  Termine le processus qui ecoute sur le port passe en %1

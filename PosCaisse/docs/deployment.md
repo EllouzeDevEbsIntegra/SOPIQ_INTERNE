@@ -1,5 +1,9 @@
 # Déploiement
 
+## Mise à jour et redémarrage (le plus simple)
+
+`RESTART_POS.bat` (Windows) ou `./restart.sh` : arrêt des instances, `git pull`, préparation de la base, recompilation seulement si le code a changé, démarrage et ouverture du navigateur. C'est le script à utiliser au quotidien.
+
 ## Développement (PC caisse ou poste de dev)
 - `START_POS.bat` (Windows) / `./start.sh` : PostgreSQL (Docker si possible), backend `mvn spring-boot:run` (8080), frontend `npm run dev` (5173, proxy `/api`).
 - La base `poscaisse` est créée automatiquement au lancement si elle n'existe pas (`INIT_DB.bat` fait la même chose seul). Variables : `.env.example`, notamment `POSCAISSE_DB_PASSWORD` si votre mot de passe `postgres` n'est pas `postgres`.

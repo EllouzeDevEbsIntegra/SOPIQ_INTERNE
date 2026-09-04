@@ -106,11 +106,19 @@ fi
 # --------------------------------------------------------- 5. démarrage
 echo
 echo "[5/6] Démarrage du backend sur le port $PORT…"
-if [ -f backend/target/poscaisse-backend.jar ]; then
-  ( cd backend && nohup java -jar target/poscaisse-backend.jar > ../logs/backend.log 2>&1 & echo $! > "$ROOT/backend.pid" )
+# Le lancement doit être détaché : un sous-shell « ( … & ) » ferait attendre
+# le script jusqu'à l'arrêt du backend (bash remplace le sous-shell par le
+# processus java et l'attend en avant-plan).
+cd backend
+if [ -f target/poscaisse-backend.jar ]; then
+  nohup java -jar target/poscaisse-backend.jar > ../logs/backend.log 2>&1 &
 else
-  ( cd backend && nohup mvn -q spring-boot:run > ../logs/backend.log 2>&1 & echo $! > "$ROOT/backend.pid" )
+  nohup mvn -q spring-boot:run > ../logs/backend.log 2>&1 &
 fi
+BACKEND_PID=$!
+disown "$BACKEND_PID" 2>/dev/null || true
+cd "$ROOT"
+echo "$BACKEND_PID" > backend.pid
 
 # ----------------------------------------------------------- 6. attente
 echo
