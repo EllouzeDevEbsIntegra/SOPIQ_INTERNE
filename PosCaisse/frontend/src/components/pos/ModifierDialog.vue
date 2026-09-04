@@ -24,6 +24,11 @@ for (const g of props.product.modifierGroups || []) {
 }
 /* Maximum a 0 = illimite : c'est le reglage qui autorise la repetition. */
 const repeatable = (g) => g.multiple && !g.maxSelect
+/* Un groupe dont le maximum effectif vaut 1 est a choix unique, que la case
+   « choix multiple » soit cochee ou non : c'est le maximum qui fait foi.
+   Sans cela, « multiple + max 1 » refusait la seconde option au lieu de
+   remplacer la premiere. */
+const singleChoice = (g) => !g.multiple || g.maxSelect === 1
 const picked = (g) => Object.values(sel[g.id]).reduce((s, n) => s + n, 0)
 // menu components: componentId -> [{productId, quantity, modifiers}]
 const comps = reactive({})
@@ -35,9 +40,15 @@ const subSel = reactive({})
 function toggle(g, m) {
   const s = sel[g.id]
   if (repeatable(g)) { s[m.id] = (s[m.id] || 0) + 1; return }   // chaque appui en ajoute un
+  if (singleChoice(g)) {
+    // Choix unique : la nouvelle option remplace l'ancienne d'un seul geste.
+    const dejaPris = !!s[m.id]
+    for (const k of Object.keys(s)) delete s[k]
+    if (!dejaPris) s[m.id] = 1
+    return
+  }
   if (s[m.id]) { delete s[m.id]; return }
-  if (!g.multiple) for (const k of Object.keys(s)) delete s[k]
-  const max = g.multiple ? g.maxSelect : 1
+  const max = g.maxSelect
   if (picked(g) >= max) { ui.info(`Maximum ${max} option(s) pour « ${g.name} »`); return }
   s[m.id] = 1
 }
@@ -66,9 +77,14 @@ function openSub(comp, entry) {
 }
 function subToggle(g, m) {
   const s = subSel[g.id]
+  if (singleChoice(g)) {                      // meme regle que dans la boite principale
+    const dejaPris = s.has(m.id)
+    s.clear()
+    if (!dejaPris) s.add(m.id)
+    return
+  }
   if (s.has(m.id)) { s.delete(m.id); return }
-  if (!g.multiple) s.clear()
-  const max = g.multiple ? (g.maxSelect || 99) : 1
+  const max = g.maxSelect || 99
   if (s.size >= max) return
   s.add(m.id)
 }
