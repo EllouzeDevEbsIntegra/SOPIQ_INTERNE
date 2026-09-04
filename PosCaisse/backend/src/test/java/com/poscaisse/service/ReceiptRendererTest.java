@@ -90,6 +90,22 @@ class ReceiptRendererTest {
     }
 
     /**
+     * Le bloc de paiement se lit en colonne : libellés au bord gauche, montants suivis
+     * de la devise — y compris le reçu, qu'une indentation détachait de la colonne.
+     */
+    @Test void paymentBlockIsLeftAlignedAndCarriesTheCurrency() {
+        SaleOrder o = order();
+        ReceiptTemplate t = new ReceiptTemplate(); t.setPaperWidth(80);
+        List<String> bloc = renderer.customerReceipt(o, o.getCompany(), t, false, false).lines()
+                .filter(l -> l.startsWith("ESPÈCES") || l.startsWith("Reçu") || l.startsWith("RENDU")).toList();
+        assertThat(bloc).hasSize(3);
+        for (String l : bloc) {
+            assertThat(l).as("libellé collé au bord gauche : " + l).doesNotStartWith(" ");
+            assertThat(l).as("devise sur le montant : " + l).endsWith(" DT");
+        }
+    }
+
+    /**
      * Le commentaire du ticket se lit avec le destinataire, avant les articles : place
      * après les totaux, personne ne l'aurait cherché là.
      */

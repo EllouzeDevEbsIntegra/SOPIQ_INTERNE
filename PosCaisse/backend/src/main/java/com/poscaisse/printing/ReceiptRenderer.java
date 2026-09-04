@@ -212,9 +212,13 @@ public class ReceiptRenderer {
         if (taxEnabled && on(cfg, "showTaxes")) { s.lr("  dont TVA", money(o.getTaxTotal(), dec)); s.lr("  Hors taxes", money(o.getTotal().subtract(o.getTaxTotal()), dec)); }
         if (on(cfg, "showPayments") && !o.getPayments().isEmpty()) {
             s.sep(sepCh);
+            // Moyen, recu et rendu forment un meme bloc : memes libelles au bord gauche et
+            // memes montants suivis de la devise, pour se lire d'un coup d'oeil a la remise
+            // de la monnaie. Indenter « Recu » le detachait de la colonne.
             for (Payment p : o.getPayments()) {
-                s.lr(p.getPaymentMethod().getName().toUpperCase(), money(p.getAmount(), dec));
-                if (p.getTendered() != null && p.getTendered().compareTo(p.getAmount()) > 0) s.lr("  Reçu", money(p.getTendered(), dec));
+                s.lr(p.getPaymentMethod().getName().toUpperCase(), money(p.getAmount(), dec) + " " + cur);
+                if (p.getTendered() != null && p.getTendered().compareTo(p.getAmount()) > 0)
+                    s.lr("Reçu", money(p.getTendered(), dec) + " " + cur);
             }
             if (on(cfg, "showChange") && o.getChangeAmount().signum() > 0) s.lr("RENDU", money(o.getChangeAmount(), dec) + " " + cur);
         }
