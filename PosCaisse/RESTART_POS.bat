@@ -85,9 +85,13 @@ if "!USE_DOCKER!"=="1" (
 call "%ROOT%\_ensure_db.bat"
 
 REM ------------------------------------------------------ 4. compilation
+REM La comparaison des dates source/binaire est la seule fiable : comparer le
+REM commit avant/apres le pull rate le cas d'une mise a jour faite a la main.
 echo.
-if not exist "frontend\dist\index.html" set "REBUILD=1"
-if not exist "backend\target\poscaisse-backend.jar" set "REBUILD=1"
+call :stale "frontend\dist\index.html" "frontend\src','frontend\package.json','frontend\vite.config.js"
+if "!STALE!"=="1" set "REBUILD=1"
+call :stale "backend\target\poscaisse-backend.jar" "backend\src','backend\pom.xml"
+if "!STALE!"=="1" set "REBUILD=1"
 set "BUILD_OK=1"
 if "!REBUILD!"=="0" (
   echo [4/6] Aucun changement : compilation inutile.
@@ -145,6 +149,14 @@ echo.
 pause
 endlocal
 exit /b
+
+REM ============================================================
+REM  STALE=1 si le binaire %1 est absent ou plus ancien qu'une source %2
+REM ============================================================
+:stale
+set "STALE=0"
+for /f %%r in ('powershell -NoProfile -Command ^"$a=Get-Item '%~1' -EA SilentlyContinue; if(-not $a){'1'} else { if(Get-ChildItem '%~2' -Recurse -File -EA SilentlyContinue ^| Where-Object { $_.LastWriteTime -gt $a.LastWriteTime } ^| Select-Object -First 1){'1'}else{'0'} }^"') do set "STALE=%%r"
+exit /b 0
 
 REM ============================================================
 REM  Construction : interface Vue puis jar Spring Boot.

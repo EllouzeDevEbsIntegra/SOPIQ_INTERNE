@@ -82,9 +82,16 @@ else
 fi
 
 # ------------------------------------------------------- 4. compilation
+# La comparaison des dates source/binaire est la seule fiable : comparer le
+# commit avant/après le pull rate le cas où la mise à jour a été faite à la main.
 echo
-[ -f frontend/dist/index.html ] || REBUILD=1
-[ -f backend/target/poscaisse-backend.jar ] || REBUILD=1
+stale() {  # $1 = binaire, $@ = sources
+  local artifact="$1"; shift
+  [ -f "$artifact" ] || return 0
+  [ -n "$(find "$@" -newer "$artifact" -print -quit 2>/dev/null)" ]
+}
+stale frontend/dist/index.html frontend/src frontend/package.json frontend/vite.config.js frontend/index.html && REBUILD=1
+stale backend/target/poscaisse-backend.jar backend/src backend/pom.xml && REBUILD=1
 if [ "$REBUILD" = "0" ]; then
   echo "[4/6] Aucun changement : compilation inutile."
 else

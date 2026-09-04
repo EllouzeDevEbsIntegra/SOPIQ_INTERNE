@@ -24,7 +24,7 @@ Double-cliquez sur **`RESTART_POS.bat`**. Il enchaîne tout, sans aucune autre m
 1. arrête l'instance en cours et libère les ports 8080 / 5173 ;
 2. récupère la dernière version (`git pull`) ;
 3. démarre PostgreSQL (Docker si présent, sinon le service Windows) et **crée la base si elle n'existe pas** ;
-4. recompile l'interface et le backend **uniquement si le code a changé** ;
+4. recompile l'interface et le backend **uniquement si nécessaire** (comparaison des dates entre les sources et les binaires : fiable même si vous avez fait le `git pull` vous-même) ;
 5. démarre l'application et ouvre le navigateur sur http://localhost:8080.
 
 Comptez une quinzaine de secondes sans recompilation, une à deux minutes avec.
