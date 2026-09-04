@@ -34,7 +34,7 @@ if "!USE_DOCKER!"=="1" (
 
 REM ---- 2. Base de donnees : creee automatiquement si absente ----
 echo [2/4] Verification de la base "%POSCAISSE_DB_NAME%"...
-call :ensure_db
+call "%~dp0_ensure_db.bat"
 
 REM ---- 3. Backend Spring Boot ----
 REM Un backend deja lance occuperait le port : on le detecte avant de demarrer.
@@ -101,49 +101,3 @@ echo.
 echo Pour arreter : STOP_POS.bat
 pause
 exit /b
-
-REM ============================================================
-REM  Localise psql, attend PostgreSQL, cree la base si absente.
-REM ============================================================
-:ensure_db
-set "PSQL="
-for /f "delims=" %%P in ('where psql 2^>nul') do if not defined PSQL set "PSQL=%%P"
-if not defined PSQL (
-  for %%V in (18 17 16 15 14 13 12) do (
-    if not defined PSQL if exist "C:\Program Files\PostgreSQL\%%V\bin\psql.exe" set "PSQL=C:\Program Files\PostgreSQL\%%V\bin\psql.exe"
-  )
-)
-if not defined PSQL (
-  echo     psql introuvable : verification automatique impossible.
-  echo     Si le backend signale que la base n'existe pas, creez-la avec pgAdmin ou :
-  echo        "C:\Program Files\PostgreSQL\16\bin\psql.exe" -U %POSCAISSE_DB_USER% -c "CREATE DATABASE %POSCAISSE_DB_NAME%;"
-  exit /b 1
-)
-set "PGPASSWORD=%POSCAISSE_DB_PASSWORD%"
-set "PGCLIENTENCODING=UTF8"
-set /a dbtries=0
-:db_wait
-"%PSQL%" -h %POSCAISSE_DB_HOST% -p %POSCAISSE_DB_PORT% -U %POSCAISSE_DB_USER% -d postgres -tAc "SELECT 1" >nul 2>nul
-if not errorlevel 1 goto db_ready
-set /a dbtries+=1
-if !dbtries! geq 20 (
-  echo     PostgreSQL ne repond pas ^(service arrete, port different ou mot de passe incorrect^).
-  exit /b 1
-)
-timeout /t 2 /nobreak >nul
-goto db_wait
-
-:db_ready
-"%PSQL%" -h %POSCAISSE_DB_HOST% -p %POSCAISSE_DB_PORT% -U %POSCAISSE_DB_USER% -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname='%POSCAISSE_DB_NAME%'" 2>nul | findstr /b /c:"1" >nul
-if not errorlevel 1 (
-  echo     Base "%POSCAISSE_DB_NAME%" presente.
-  exit /b 0
-)
-echo     Base absente : creation de "%POSCAISSE_DB_NAME%"...
-"%PSQL%" -h %POSCAISSE_DB_HOST% -p %POSCAISSE_DB_PORT% -U %POSCAISSE_DB_USER% -d postgres -c "CREATE DATABASE %POSCAISSE_DB_NAME%;" >nul 2>nul
-if errorlevel 1 (
-  echo     Creation impossible ^(droits insuffisants ?^). Creez-la manuellement puis relancez.
-  exit /b 1
-)
-echo     Base creee. Flyway construira le schema au demarrage du backend.
-exit /b 0
