@@ -5,6 +5,7 @@ import { useUiStore } from '../../stores/ui'
 import { useBusy } from '../../composables/useApi'
 import { fmt } from '../../utils/money'
 import { fmtDateTime, fmtDate, isoDate } from '../../utils/dates'
+import Icon from '../../components/common/Icon.vue'
 const ui = useUiStore(); const { busy, run } = useBusy()
 const pos = ref([]); const posId = ref(''); const date = ref(isoDate()); const preview = ref(null); const note = ref(''); const history = ref([]); const tab = ref('today')
 async function load() { if (!posId.value) return; try { preview.value = await api.registers.closurePreview(posId.value, date.value) } catch (e) { ui.error(e.humanMessage) } }
@@ -21,8 +22,8 @@ async function close() {
   <template v-if="tab==='today'">
     <div class="toolbar"><select class="input" v-model="posId" @change="load"><option v-for="p in pos" :key="p.id" :value="p.id">{{ p.name }}</option></select><input class="input" type="date" v-model="date" @change="load" /><button class="btn sm" @click="load">↻</button></div>
     <template v-if="preview">
-      <div v-if="preview.alreadyClosed" class="badge success mb-16" style="font-size:14px;padding:8px 14px">✓ Journée déjà clôturée</div>
-      <div v-else-if="preview.openSessions" class="badge warning mb-16" style="font-size:14px;padding:8px 14px">⚠ {{ preview.openSessions }} caisse(s) encore ouverte(s) — clôturez-les avant la clôture journalière</div>
+      <div v-if="preview.alreadyClosed" class="badge success mb-16" style="font-size:14px;padding:8px 14px"><Icon name="check" :size="16" />Journée déjà clôturée</div>
+      <div v-else-if="preview.openSessions" class="badge warning mb-16" style="font-size:14px;padding:8px 14px"><Icon name="warning" :size="16" />{{ preview.openSessions }} caisse(s) encore ouverte(s) — clôturez-les avant la clôture journalière</div>
       <div class="grid-kpi mb-16">
         <div class="kpi"><span class="label">CA</span><span class="value num">{{ fmt(preview.revenue, true) }}</span></div><div class="kpi"><span class="label">Tickets</span><span class="value num">{{ preview.ticketsCount }}</span><span class="sub">panier moyen {{ fmt(preview.averageTicket) }}</span></div>
         <div class="kpi"><span class="label">Espèces</span><span class="value num">{{ fmt(preview.cashTotal) }}</span></div><div class="kpi"><span class="label">Carte</span><span class="value num">{{ fmt(preview.cardTotal) }}</span></div><div class="kpi"><span class="label">Autres</span><span class="value num">{{ fmt(preview.otherTotal) }}</span></div>

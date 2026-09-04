@@ -9,7 +9,8 @@ export const api = {
   auth: {
     users: () => g('/auth/users'), pin: (userId, pin) => p('/auth/pin', { userId, pin }),
     login: (username, password) => p('/auth/login', { username, password }), me: () => g('/auth/me'),
-    logout: () => p('/auth/logout'), changePin: (currentPin, newPin) => p('/auth/change-pin', { currentPin, newPin })
+    logout: () => p('/auth/logout'), changePin: (currentPin, newPin) => p('/auth/change-pin', { currentPin, newPin }),
+    branding: () => g('/public/branding')
   },
   pos: {
     catalog: () => g('/pos/catalog'), registers: (posId) => g('/pos/registers', { posId }), session: () => g('/pos/session'),

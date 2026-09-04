@@ -2,6 +2,7 @@
 /** Shows the tickets produced by a sale (customer + preparation) with a print button (browser printing). */
 import { computed, ref } from 'vue'
 import Modal from '../common/Modal.vue'
+import Icon from '../common/Icon.vue'
 import { api } from '../../api'
 import { fmt } from '../../utils/money'
 import { printJobs } from '../../composables/usePrinter'
@@ -35,8 +36,8 @@ if (props.autoPrint && props.jobs?.length) setTimeout(() => print(true), 150)
       </div>
     </div>
     <template #foot>
-      <button class="btn lg" @click="print(false)">🖨 Imprimer celui-ci</button>
-      <button class="btn lg primary" @click="print(true)">🖨 Imprimer tout ({{ jobs.reduce((s,j)=>s+j.copies,0) }})</button>
+      <button class="btn lg" @click="print(false)"><Icon name="printer" :size="17" />Imprimer celui-ci</button>
+      <button class="btn lg primary" @click="print(true)"><Icon name="printer" :size="17" />Imprimer tout ({{ jobs.reduce((s,j)=>s+j.copies,0) }})</button>
       <button class="btn lg success" @click="emit('close')">Fermer</button>
     </template>
   </Modal>

@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import Modal from '../common/Modal.vue'
+import Icon from '../common/Icon.vue'
 import { api } from '../../api'
 import { useAuthStore } from '../../stores/auth'
 import { useUiStore } from '../../stores/ui'
@@ -23,11 +24,11 @@ async function abandon(o) {
     <div v-else class="list">
       <div v-for="o in orders" :key="o.id" class="held">
         <div class="grow">
-          <div class="row gap-8"><b style="font-size:18px">{{ o.heldRef }}</b><span class="badge">{{ fmtTime(o.createdAt) }}</span><span class="badge info">{{ o.cashierName }}</span><span v-if="o.customerName" class="badge accent">👤 {{ o.customerName }}</span></div>
+          <div class="row gap-8"><b style="font-size:18px">{{ o.heldRef }}</b><span class="badge">{{ fmtTime(o.createdAt) }}</span><span class="badge info">{{ o.cashierName }}</span><span v-if="o.customerName" class="badge accent"><Icon name="user" :size="13" />{{ o.customerName }}</span></div>
           <div class="muted small">{{ o.lines.map(l => Number(l.quantity) + '× ' + l.productName).join(', ') }}</div>
         </div>
         <b class="num" style="font-size:20px">{{ fmt(o.total, true) }}</b>
-        <button class="btn danger" @click="abandon(o)" v-if="auth.can('ORDER_CANCEL')">✕</button>
+        <button class="btn danger" @click="abandon(o)" v-if="auth.can('ORDER_CANCEL')"><Icon name="trash" :size="16" /></button>
         <button class="btn success lg" @click="emit('resume', o)">REPRENDRE</button>
       </div>
     </div>

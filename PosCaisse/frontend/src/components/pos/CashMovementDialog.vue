@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import Modal from '../common/Modal.vue'
+import Icon from '../common/Icon.vue'
 import NumPad from '../common/NumPad.vue'
 import { api } from '../../api'
 import { useAuthStore } from '../../stores/auth'
@@ -26,14 +27,14 @@ async function save(v) {
   <Modal size="md" title="Mouvement de caisse" @close="emit('close')">
     <div class="grid">
       <div class="col gap-8">
-        <div class="row gap-8"><button class="btn lg grow" :class="{ 'danger solid': type==='OUT' }" @click="type='OUT'">↑ SORTIE</button><button class="btn lg grow" :class="{ success: type==='IN' }" @click="type='IN'">↓ ENTRÉE</button></div>
+        <div class="row gap-8"><button class="btn lg grow" :class="{ 'danger solid': type==='OUT' }" @click="type='OUT'"><Icon name="arrowUp" :size="18" />Sortie</button><button class="btn lg grow" :class="{ success: type==='IN' }" @click="type='IN'"><Icon name="arrowDown" :size="18" />Entrée</button></div>
         <div class="field"><label>Motif</label><div class="row wrap gap-6"><button v-for="r in reasons[type]" :key="r" class="btn chip" :class="{ on: reason===r }" @click="reason=r">{{ r }}</button></div><input class="input" v-model="reason" placeholder="Motif" /></div>
         <div class="field"><label>Commentaire</label><input class="input" v-model="comment" placeholder="ex. Achat pain" /></div>
         <div class="field" v-if="list.length"><label>Mouvements de la session</label>
           <div class="hist scroll"><div v-for="m in list" :key="m.id" class="row between small"><span>{{ fmtTime(m.createdAt) }} · {{ m.type==='OUT' ? '↑' : '↓' }} {{ m.reason }}</span><b class="num" :style="{ color: m.type==='OUT' ? 'var(--danger)' : 'var(--success)' }">{{ m.type==='OUT' ? '−' : '+' }}{{ fmt(m.amount) }}</b></div></div>
         </div>
       </div>
-      <div><NumPad v-model="amount" mode="amount" :ok-label="type==='OUT' ? 'SORTIR' : 'ENTRER'" @ok="save" /></div>
+      <div><NumPad v-model="amount" mode="amount" :ok-label="type === 'OUT' ? 'Enregistrer la sortie' : 'Enregistrer l\'entrée'" @ok="save" /></div>
     </div>
   </Modal>
 </template>

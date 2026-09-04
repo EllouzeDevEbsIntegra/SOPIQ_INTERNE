@@ -2,6 +2,7 @@
 /** Ticket detail with reprint / cancel / refund (permission-gated; the backend re-checks). */
 import { computed, ref } from 'vue'
 import Modal from '../common/Modal.vue'
+import Icon from '../common/Icon.vue'
 import ReceiptDialog from './ReceiptDialog.vue'
 import TextDialog from './TextDialog.vue'
 import AmountDialog from './AmountDialog.vue'
@@ -50,7 +51,7 @@ const statusClass = (s) => ({ PAID: 'success', CANCELLED: 'danger', REFUNDED: 'd
     </template>
     <div v-if="!order" class="spinner"></div>
     <div v-else class="col gap-16">
-      <div v-if="order.customerName" class="badge accent">👤 {{ order.customerName }} {{ order.customerPhone }}</div>
+      <div v-if="order.customerName" class="badge accent"><Icon name="user" :size="14" />{{ order.customerName }} {{ order.customerPhone }}</div>
       <table class="table">
         <thead><tr><th>Qté</th><th>Article</th><th class="right">P.U.</th><th class="right">Total</th></tr></thead>
         <tbody>
@@ -75,7 +76,7 @@ const statusClass = (s) => ({ PAID: 'success', CANCELLED: 'danger', REFUNDED: 'd
       </div>
     </div>
     <template #foot v-if="order">
-      <button class="btn lg" v-if="auth.can('TICKETS_REPRINT') && order.status!=='HELD'" :disabled="busy" @click="reprint">🖨 Réimprimer (duplicata)</button>
+      <button class="btn lg" v-if="auth.can('TICKETS_REPRINT') && order.status!=='HELD'" :disabled="busy" @click="reprint"><Icon name="printer" :size="17" />Réimprimer (duplicata)</button>
       <button class="btn lg" v-if="canRefund" :disabled="busy" @click="dialog={kind:'refund'}">Rembourser</button>
       <button class="btn lg danger" v-if="canCancel" :disabled="busy" @click="dialog={kind:'cancel'}">Annuler le ticket</button>
       <button class="btn lg primary" @click="emit('close')">Fermer</button>
@@ -83,7 +84,7 @@ const statusClass = (s) => ({ PAID: 'success', CANCELLED: 'danger', REFUNDED: 'd
   </Modal>
   <ReceiptDialog v-if="jobs" :jobs="jobs" :order="order" :template="template" title="Réimpression — duplicata" @close="jobs=null" />
   <TextDialog v-if="dialog?.kind==='cancel'" title="Motif d'annulation" label="Motif (obligatoire)" required :suggestions="['Erreur de saisie', 'Client parti', 'Produit indisponible', 'Réclamation client']" @close="dialog=null" @ok="cancel" />
-  <AmountDialog v-if="dialog?.kind==='refund'" title="Montant à rembourser" :hint="`Restant remboursable : ${fmt(remaining, true)}`" :initial="remaining" :options="catalog.paymentMethods.map(m => ({ label: 'Via ' + m.name, value: m.id })).length ? [] : []" ok-label="CONTINUER" @close="dialog=null" @ok="refund" />
+  <AmountDialog v-if="dialog?.kind==='refund'" title="Montant à rembourser" :hint="`Restant remboursable : ${fmt(remaining, true)}`" :initial="remaining" :options="catalog.paymentMethods.map(m => ({ label: 'Via ' + m.name, value: m.id })).length ? [] : []" ok-label="Continuer" @close="dialog=null" @ok="refund" />
   <TextDialog v-if="dialog?.kind==='refund-reason'" title="Motif du remboursement" label="Motif (obligatoire)" required :suggestions="['Erreur article', 'Produit défectueux', 'Réclamation client', 'Geste commercial']" @close="dialog.resolve(null)" @ok="v => dialog.resolve(v)" />
 </template>
 <style scoped>

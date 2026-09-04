@@ -7,6 +7,7 @@ import { useUiStore } from '../../stores/ui'
 import { fmt, parseAmount, sub } from '../../utils/money'
 import { fmtDateTime } from '../../utils/dates'
 import NumPad from '../../components/common/NumPad.vue'
+import Icon from '../../components/common/Icon.vue'
 const router = useRouter(); const auth = useAuthStore(); const ui = useUiStore()
 const summary = ref(null); const counted = ref(''); const note = ref(''); const busy = ref(false); const result = ref(null)
 onMounted(async () => { try { summary.value = await api.pos.summary(auth.session.id) } catch (e) { ui.error(e.humanMessage) } })
@@ -25,9 +26,9 @@ function finish() { auth.logout(); router.replace('/login') }
 <template>
   <div class="close-page">
     <div class="close-card">
-      <div class="row between mb-16"><div><h1>Clôture de caisse</h1><div class="muted">{{ auth.session?.registerName || result?.registerName }} · {{ auth.user.fullName }}</div></div><router-link v-if="!result" class="btn" to="/pos">← Retour au POS</router-link></div>
+      <header class="head"><div><span class="eyebrow">Fin de service</span><h1>Clôture de caisse</h1><div class="muted small">{{ auth.session?.registerName || result?.registerName }} · {{ auth.user?.fullName }}</div></div><router-link v-if="!result" class="btn" to="/pos"><Icon name="arrowLeft" :size="17" />Retour au POS</router-link></header>
       <div v-if="result" class="result">
-        <h2>✅ Session clôturée</h2>
+        <h2 class="ok"><Icon name="check" :size="20" :stroke="2.6" />Session clôturée</h2>
         <div class="grid-kpi mt-16">
           <div class="kpi"><span class="label">Théorique</span><span class="value num">{{ fmt(result.expectedCash, true) }}</span></div>
           <div class="kpi"><span class="label">Réel compté</span><span class="value num">{{ fmt(result.countedCash, true) }}</span></div>
@@ -59,10 +60,10 @@ function finish() { auth.logout(); router.replace('/login') }
         </div>
         <div class="col gap-8">
           <div class="card-title">Espèces réellement comptées</div>
-          <NumPad v-model="counted" mode="amount" ok-label="CLÔTURER" @ok="close" />
-          <div class="ecart" :class="{ ok: diff()===0, bad: diff()!==0 }"><span>THÉORIQUE {{ fmt(summary.expectedCash) }} · RÉEL {{ fmt(parseAmount(counted)) }}</span><b class="num">ÉCART {{ diff() >= 0 ? '+' : '' }}{{ fmt(diff(), true) }}</b></div>
+          <NumPad v-model="counted" mode="amount" ok-label="Clôturer" @ok="close" />
+          <div class="ecart" :class="{ ok: counted && diff()===0, bad: counted && diff()!==0 }"><span>Théorique {{ fmt(summary.expectedCash) }} · réel {{ counted ? fmt(parseAmount(counted)) : '—' }}</span><b class="num">{{ counted ? (diff() >= 0 ? 'Écart +' : 'Écart ') + fmt(diff(), true) : 'Saisissez les espèces comptées' }}</b></div>
           <div class="field"><label>Commentaire</label><input class="input" v-model="note" placeholder="ex. écart dû à…" /></div>
-          <button class="btn danger solid xl block" :disabled="busy || !counted" @click="close">CLÔTURER LA CAISSE</button>
+          <button class="btn danger solid xl block" :disabled="busy || !counted" @click="close"><Icon name="lock" :size="18" />Clôturer la caisse</button>
         </div>
       </div>
       <div v-else class="spinner"></div>
@@ -71,11 +72,18 @@ function finish() { auth.logout(); router.replace('/login') }
 </template>
 <style scoped>
 .close-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; overflow: auto; }
-.close-card { background: var(--surface); border-radius: 22px; padding: 26px; width: min(100%, 1000px); box-shadow: var(--shadow-lg); }
-h1 { font-size: 26px; } .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
-.lines { background: var(--surface-2); border-radius: 12px; padding: 8px 12px; } .l { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed var(--border); }
-.l.total { border: 0; font-size: 18px; padding-top: 8px; }
-.ecart { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-radius: 12px; font-weight: 700; background: var(--surface-2); }
-.ecart b { font-size: 24px; } .ecart.ok { background: var(--success-soft); color: var(--success-2); } .ecart.bad { background: var(--warning-soft); color: #b45309; }
+.close-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-xl); padding: 26px 28px; width: min(100%, 1020px); box-shadow: var(--shadow-2); }
+h1 { font-size: 25px; margin-top: 2px; }
+.head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+.ok { display: flex; align-items: center; gap: 9px; color: var(--pay-2); font-size: 21px; } .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+.lines { background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r); padding: 6px 14px; } .l { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; font-size: 14px; color: var(--ink-2); border-bottom: 1px solid var(--line); }
+.l:last-child { border-bottom: 0; }
+.l.total { border-bottom: 0; font-size: 16px; font-weight: 650; color: var(--ink); padding-top: 9px; }
+.l.total b { font-family: var(--font-display); font-size: 19px; }
+.ecart { display: flex; flex-direction: column; gap: 3px; padding: 13px 15px; border-radius: var(--r); font-weight: 650; background: var(--surface-2); border: 1px solid var(--line); }
+.ecart b { font-family: var(--font-display); font-size: 25px; letter-spacing: -.02em; }
+.ecart:not(.ok):not(.bad) b { font-size: 15px; font-weight: 600; color: var(--ink-3); }
+.ecart.ok { background: var(--pay-soft); border-color: var(--pay-line); color: var(--pay-2); }
+.ecart.bad { background: var(--warn-soft); border-color: var(--warn-line); color: var(--warn); }
 @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
 </style>

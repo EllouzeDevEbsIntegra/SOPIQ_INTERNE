@@ -19,7 +19,7 @@ async function saveSettings() { if (await run(() => api.admin.saveSettings({ 'po
 </script>
 <template>
   <div class="grid-2">
-    <div class="card"><div class="card-title">⭐ Favoris (ordre d'affichage)</div>
+    <div class="card"><div class="card-title">Favoris — ordre d'affichage</div>
       <p class="muted small">Les favoris apparaissent en premier sur le POS. Sélectionnez les produits les plus vendus.</p>
       <div class="col gap-4 mb-8"><div v-for="(f, i) in favorites" :key="f.id" class="row gap-6" style="padding:6px 8px;border:1px solid var(--border);border-radius:10px"><b class="grow">{{ i+1 }}. {{ f.name }}</b><span class="num muted">{{ fmt(f.price) }}</span><button class="btn sm icon" @click="move(favorites,i,-1)">↑</button><button class="btn sm icon" @click="move(favorites,i,1)">↓</button><button class="btn sm icon danger" @click="favorites.splice(i,1)">✕</button></div></div>
       <select class="input mb-8" @change="e => { const p = products.find(x => x.id===Number(e.target.value)); if (p) addFav(p); e.target.value='' }"><option value="">+ Ajouter un produit aux favoris…</option><option v-for="p in products.filter(p => p.active && !favorites.some(f=>f.id===p.id))" :key="p.id" :value="p.id">{{ p.name }} ({{ p.categoryName }})</option></select>

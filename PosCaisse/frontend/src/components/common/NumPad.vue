@@ -44,8 +44,8 @@ defineExpose({ press, onKey })
       <button v-if="mode==='amount'" type="button" @click="press(',')">,</button>
       <button v-else type="button" class="act" @click="press('⌫')">⌫</button>
       <button v-if="mode==='amount'" type="button" class="act" @click="press('⌫')">⌫</button>
-      <button type="button" class="ok" :class="{ wide: mode!=='amount' }" @click="ok">{{ okLabel }}</button>
+      <button type="button" class="ok" :class="mode === 'amount' ? 'wide' : 'full'" @click="ok">{{ okLabel }}</button>
     </div>
-    <div v-if="mode==='amount' && showDisplay" class="tiny muted right">{{ fmt(numeric, true) }}</div>
+    <div v-if="mode === 'amount' && showDisplay && value" class="tiny muted right">{{ fmt(numeric, true) }}</div>
   </div>
 </template>

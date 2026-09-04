@@ -6,6 +6,7 @@ import { useCatalogStore } from '../../stores/catalog'
 import { useBusy } from '../../composables/useApi'
 import { fmt } from '../../utils/money'
 import Modal from '../../components/common/Modal.vue'
+import Icon from '../../components/common/Icon.vue'
 const ui = useUiStore(); const catalog = useCatalogStore(); const { busy, run } = useBusy()
 const rows = ref([]); const cats = ref([]); const groups = ref([]); const dests = ref([]); const edit = ref(null); const q = ref(''); const catFilter = ref(''); const tab = ref('general')
 async function load() { try { [rows.value, cats.value, groups.value, dests.value] = await Promise.all([api.catalog.products(), api.catalog.categories(), api.catalog.modifiers(), api.admin.destinations()]) } catch (e) { ui.error(e.humanMessage) } }
@@ -33,7 +34,7 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
     <tbody><tr v-for="p in filtered" :key="p.id" :style="{ opacity: p.active ? 1 : .55 }">
       <td class="small">{{ p.code }}</td><td><b>{{ p.name }}</b><div class="tiny muted" v-if="p.shortName && p.shortName!==p.name">ticket : {{ p.shortName }}</div></td><td><span class="color-dot" :style="{ background: cats.find(c=>c.id===p.categoryId)?.color }"></span>{{ p.categoryName }}</td><td class="right num bold">{{ fmt(p.price) }}</td>
       <td><span class="badge" :class="p.productType==='MENU' ? 'accent' : ''">{{ p.productType==='MENU' ? 'Menu' : 'Simple' }}</span></td><td class="small">{{ p.modifierGroups.map(g=>g.name).join(', ') }}</td>
-      <td class="small">{{ p.printDestinationIds.length ? p.printDestinationIds.map(id => dests.find(d=>d.id===id)?.name).join(', ') : '(catégorie)' }}</td><td>{{ p.favorite ? '⭐' : '' }}</td>
+      <td class="small">{{ p.printDestinationIds.length ? p.printDestinationIds.map(id => dests.find(d=>d.id===id)?.name).join(', ') : '(catégorie)' }}</td><td><Icon v-if="p.favorite" name="star" :size="16" style="color:var(--warn)" /></td>
       <td><button class="btn sm" :class="p.available ? 'success' : 'danger solid'" @click="toggleAvail(p)">{{ p.available ? 'Disponible' : 'INDISPONIBLE' }}</button></td><td><span class="badge" :class="p.active ? 'success' : 'danger'">{{ p.active ? 'Oui' : 'Non' }}</span></td>
       <td class="actions"><button class="btn sm" @click="open(p)">Modifier</button> <button class="btn sm danger" @click="remove(p)">✕</button></td></tr></tbody></table></div>
   <Modal v-if="edit" size="lg" :title="edit.id ? 'Modifier : ' + edit.name : 'Nouveau produit'" @close="edit=null">
@@ -73,7 +74,7 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
     </div>
     <div v-show="tab==='print'" class="form-grid">
       <div class="field span-2"><label>Destinations d'impression (vide = destination de la catégorie)</label><div class="row wrap gap-6"><label v-for="d in dests.filter(d => d.kind==='PREP')" :key="d.id" class="check"><input type="checkbox" :checked="edit.printDestinationIds.includes(d.id)" @change="toggleIn(edit.printDestinationIds, d.id)" />{{ d.name }}</label></div></div>
-      <label class="check"><input type="checkbox" v-model="edit.favorite" /> ⭐ Favori (catégorie Favoris du POS)</label>
+      <label class="check"><input type="checkbox" v-model="edit.favorite" /> Favori (catégorie Favoris du POS)</label>
       <div class="field"><label>Ordre dans les favoris</label><input class="input" type="number" v-model.number="edit.favoriteOrder" /></div>
       <div class="field"><label>Ordre d'affichage</label><input class="input" type="number" v-model.number="edit.sortOrder" /></div>
     </div>

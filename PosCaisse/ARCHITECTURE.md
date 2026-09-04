@@ -41,6 +41,17 @@
 | `audit` | `AuditService` |
 | `bootstrap` | `DemoDataSeeder` (rôles/paiements/destinations + démo) |
 
+## Système de design
+
+Cible principale : écran tactile 15 pouces (1366 × 768) exploité sur toute la largeur ; vérifié aussi en 1920 × 1080, 1024 × 700 et 800 × 600.
+
+- **Palette** : neutres chauds (`--ink`, `--canvas`, `--surface`, `--line`) plutôt que le gris bleuté par défaut, **un seul accent** vermillon `#C8441C` pour la sélection et la marque, vert `#15784A` réservé à l'encaissement, rouge/ambre/bleu pour les états. Aucune couleur n'est utilisée décorativement : la couleur porte une information (catégorie, état, action).
+- **Typographie** : pile système Segoe UI Variable, échelle resserrée, `font-variant-numeric: tabular-nums` sur tous les montants (les colonnes de chiffres restent alignées), majuscules réservées aux étiquettes courtes (`.eyebrow`).
+- **Formes** : rayons courts (4 → 18 px), **bordures 1 px plutôt qu'ombres diffuses**, ombres réservées aux éléments flottants (modales, bouton d'encaissement).
+- **Icônes** : jeu vectoriel maison (`components/common/Icon.vue`, contour 24×24, trait 1.75) — aucun emoji dans l'interface de l'application ; les emoji restent possibles côté données pour les icônes de catégorie choisies par le commerçant.
+- **Densité tactile** : cibles ≥ 42 px, pavé numérique 54 px, tuiles produits dimensionnées en `clamp()` sur la largeur de fenêtre (la grille remplit l'espace disponible quel que soit l'écran), panier `clamp(322px, 23.5vw, 412px)`.
+- **Hiérarchie du POS** : le TOTAL et le bouton ENCAISSER sont les deux éléments les plus contrastés de l'écran ; tout le reste (rail de catégories, tuiles, panier) est volontairement calme.
+
 ## Frontend — organisation
 
 ```
