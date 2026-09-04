@@ -2,7 +2,16 @@
 
 ## Développement (PC caisse ou poste de dev)
 - `START_POS.bat` (Windows) / `./start.sh` : PostgreSQL (Docker si possible), backend `mvn spring-boot:run` (8080), frontend `npm run dev` (5173, proxy `/api`).
-- Variables : `.env.example`. Sans Docker, créez la base `poscaisse` sur votre PostgreSQL local et ajustez `POSCAISSE_DB_*`.
+- La base `poscaisse` est créée automatiquement au lancement si elle n'existe pas (`INIT_DB.bat` fait la même chose seul). Variables : `.env.example`, notamment `POSCAISSE_DB_PASSWORD` si votre mot de passe `postgres` n'est pas `postgres`.
+
+### Dépannage démarrage
+
+| Message dans la fenêtre backend | Solution |
+|---|---|
+| `la base de données « poscaisse » n'existe pas` | `INIT_DB.bat` ou `psql -U postgres -c "CREATE DATABASE poscaisse;"` |
+| `password authentication failed for user "postgres"` | définir `POSCAISSE_DB_PASSWORD` |
+| `Connection refused` / `Connection to localhost:5432 refused` | démarrer le service PostgreSQL ou Docker Desktop |
+| `Port 8080 was already in use` | définir `POSCAISSE_PORT` sur un autre port |
 
 ## Production locale (un seul port)
 1. `BUILD_POS.bat` (ou `cd frontend && npm run build` puis `cd backend && mvn package`).

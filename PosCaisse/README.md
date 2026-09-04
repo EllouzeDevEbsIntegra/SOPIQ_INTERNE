@@ -20,11 +20,21 @@ Connexion PIN → Ouverture caisse → POS (catégories / produits / panier) →
 ## Lancement rapide (Windows)
 
 1. Copiez le dossier dans `D:\PosCaisse` (ou n'importe où).
-2. Créez la base si vous utilisez un PostgreSQL local : `createdb -U postgres poscaisse` (ou via pgAdmin). Avec Docker, `START_POS.bat` s'en charge.
-3. Double-cliquez **`START_POS.bat`** : démarre PostgreSQL (Docker si présent), le backend (port 8080), le frontend (port 5173 en mode développement, ou servi par le backend si `frontend\dist` existe) et ouvre le navigateur.
+2. Double-cliquez **`START_POS.bat`** : démarre PostgreSQL (Docker si présent), le backend (port 8080), le frontend (port 5173 en mode développement, ou servi par le backend si `frontend\dist` existe) et ouvre le navigateur.
 4. **`STOP_POS.bat`** arrête tout. **`BUILD_POS.bat`** produit un build de production (`backend\target\poscaisse-backend.jar` + `frontend\dist`, alors servis ensemble sur http://localhost:8080).
 
-Linux / macOS : `./start.sh` et `./stop.sh`.
+Linux / macOS : `./start.sh` et `./stop.sh` (créent aussi la base au besoin).
+
+### Si le backend ne démarre pas
+
+Lisez la dernière ligne `Caused by:` dans la fenêtre « PosCaisse Backend » :
+
+| Message | Cause | Solution |
+|---------|-------|----------|
+| `la base de données « poscaisse » n'existe pas` | base absente | lancez `INIT_DB.bat`, ou `psql -U postgres -c "CREATE DATABASE poscaisse;"` |
+| `password authentication failed` | mot de passe PostgreSQL différent | définissez `POSCAISSE_DB_PASSWORD` (voir `.env.example`) avant de lancer |
+| `Connection refused` | PostgreSQL arrêté | démarrez le service PostgreSQL (ou Docker Desktop) |
+| `Port 8080 was already in use` | port occupé | définissez `POSCAISSE_PORT=8081` |
 
 ## Lancement manuel
 
