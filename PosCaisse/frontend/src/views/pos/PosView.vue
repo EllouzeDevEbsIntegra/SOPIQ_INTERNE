@@ -47,6 +47,12 @@ const products = computed(() => {
   return catalog.byCategory(activeCat.value)
 })
 const activeCatObj = computed(() => catalog.categories.find(c => c.id === activeCat.value))
+/* Un seul passage sur le catalogue plutôt qu'un filtre par catégorie à chaque rendu. */
+const counts = computed(() => {
+  const n = {}
+  for (const p of catalog.products) n[p.categoryId] = (n[p.categoryId] || 0) + 1
+  return n
+})
 
 function tap(p) {
   if (!p.available) return ui.info(`${p.name} est indisponible`)
@@ -172,20 +178,19 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
       <aside class="rail scroll">
         <button class="cat" :class="{ on: activeCat === 'FAV' && !search }" style="--c: #C8441C" @click="search = ''; activeCat = 'FAV'">
           <Icon name="star" :size="18" class="glyph" /><span>Favoris</span>
+          <b class="tally num">{{ catalog.favorites.length }}</b>
         </button>
         <button v-for="c in catalog.categories" :key="c.id" class="cat" :class="{ on: activeCat === c.id && !search }"
                 :style="{ '--c': c.color }" @click="search = ''; activeCat = c.id">
           <em v-if="c.icon" class="glyph emoji">{{ c.icon }}</em>
           <i v-else class="glyph chip"></i>
           <span>{{ c.name }}</span>
+          <b class="tally num">{{ counts[c.id] || 0 }}</b>
         </button>
       </aside>
 
       <main class="board">
         <div class="board-head">
-          <h2>{{ search ? 'Résultats' : (activeCat === 'FAV' ? 'Favoris' : activeCatObj?.name) }}</h2>
-          <span class="muted small num">{{ products.length }}</span>
-          <span class="grow"></span>
           <span class="hint tiny">Appui long : options / disponibilité</span>
         </div>
         <div class="grid scroll" :class="tileSize">
@@ -345,7 +350,7 @@ export default { components: { ReceiptInline } }
 .rail { display: flex; flex-direction: column; gap: 3px; padding: 8px 6px; background: var(--surface); border-right: 1px solid var(--line); }
 .cat {
   position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
-  min-height: 64px; padding: 9px 6px; border-radius: var(--r-sm);
+  min-height: 72px; padding: 9px 6px; border-radius: var(--r-sm);
   font-size: 12.5px; font-weight: 600; line-height: 1.15; letter-spacing: -.01em; color: var(--ink-2); text-align: center;
 }
 .cat::before { content: ''; position: absolute; left: 3px; top: 14px; bottom: 14px; width: 3px; border-radius: 2px; background: var(--c); }
@@ -355,10 +360,11 @@ export default { components: { ReceiptInline } }
 .cat .glyph.emoji { font-size: 18px; font-style: normal; line-height: 1; }
 .cat .glyph.chip { width: 20px; border-radius: 5px; background: var(--c); opacity: .85; }
 .cat span { display: block; max-width: 100%; }
+.cat .tally { font-size: 11px; font-weight: 700; letter-spacing: 0; color: var(--ink-4); }
+.cat.on .tally { color: rgba(255, 255, 255, .6); }
 
 .board { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
-.board-head { display: flex; align-items: baseline; gap: 9px; padding: 11px 16px 9px; }
-.board-head h2 { font-size: 16px; font-weight: 650; }
+.board-head { display: flex; justify-content: flex-end; padding: 8px 16px 6px; }
 .hint { color: var(--ink-4); }
 .grid {
   flex: 1; min-height: 0; padding: 0 16px 16px;
@@ -410,7 +416,7 @@ export default { components: { ReceiptInline } }
 /* ---------- adaptations écran ---------- */
 @media (min-width: 1700px) {
   .body { grid-template-columns: 124px minmax(0, 1fr) clamp(370px, 21vw, 452px); }
-  .cat { min-height: 68px; font-size: 13.5px; }
+  .cat { min-height: 76px; font-size: 13.5px; }
 }
 @media (max-width: 1180px) {
   .body { grid-template-columns: 96px minmax(0, 1fr) minmax(320px, 32vw); }
