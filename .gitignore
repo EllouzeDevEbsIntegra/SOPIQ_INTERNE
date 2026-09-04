@@ -2,3 +2,13 @@
 .vscode/.alcache/*.*
 *.json
 *.app
+
+# PosCaisse (Vue + Spring Boot) — re-include its JSON files and ignore build outputs
+!PosCaisse/**/*.json
+PosCaisse/backend/target/
+PosCaisse/frontend/node_modules/
+PosCaisse/frontend/dist/
+PosCaisse/.env
+PosCaisse/logs/
+PosCaisse/*.log
+PosCaisse/*.pid
