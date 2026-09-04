@@ -49,6 +49,25 @@ Réponse : `OrderDto` (ticket, totaux, lignes, paiements, `changeAmount`, `print
 ## Catalogue (permission PRODUCTS_MANAGE)
 `/categories` (CRUD, `/reorder`), `/products` (CRUD, `/{id}/availability`, `/reorder`, `PUT /favorites`), `/modifiers` (CRUD), `/payment-methods` (SETTINGS_MANAGE).
 
+## Import de carte
+
+`POST /api/catalog/import?replace=true|false` (permission `PRODUCTS_MANAGE`) : charge catégories, groupes d'options et produits en une fois.
+
+```json
+{
+  "label": "NUMBER ONE — carte complète",
+  "categories": [{ "name": "Classic", "color": "#C8441C", "sortOrder": 1, "printDestination": "CUISINE" }],
+  "modifierGroups": [{ "name": "Pain — Classic (Simple / Double / 3arbi)", "required": true, "multiple": false,
+                       "minSelect": 1, "maxSelect": 1,
+                       "modifiers": [{ "name": "Simple", "priceDelta": 0 }, { "name": "Double", "priceDelta": 1.0 }] }],
+  "products": [{ "code": "CLA-M04", "name": "Omlette Mozzarella Thon", "shortName": "Omlette Mozza Thon",
+                 "category": "Classic", "price": 6.5, "favorite": true, "favoriteOrder": 2,
+                 "modifierGroups": ["Pain — Classic (Simple / Double / 3arbi)"], "printDestinations": ["CUISINE"] }]
+}
+```
+
+Rapprochement par **nom** (catégories, groupes) et par **code** (produits) : un ré-import met à jour sans créer de doublon. Avec `replace=true`, ce qui n'est pas dans le fichier est supprimé s'il n'a jamais été vendu, sinon désactivé (jamais de suppression qui casserait l'historique). Réponse : compteurs de création/mise à jour/suppression et liste d'avertissements.
+
 ## Caisse & clôtures
 `GET /register-sessions?from&to`, `/register-sessions/{id}`, `/summary`, `/movements` ; `GET /journal?from&to&posId&registerId&userId&sessionId&event&limit` ; `GET /closures`, `GET /closures/preview?posId&date`, `POST /closures {pointOfSaleId, businessDate, note}`.
 

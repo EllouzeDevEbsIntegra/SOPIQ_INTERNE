@@ -30,6 +30,14 @@ Double-cliquez sur **`RESTART_POS.bat`**. Il enchaîne tout, sans aucune autre m
 Comptez une quinzaine de secondes sans recompilation, une à deux minutes avec.
 Sous Linux / macOS : `./restart.sh` fait exactement la même chose.
 
+### Charger votre carte
+
+Le catalogue livré par défaut est un jeu de démonstration. Pour charger une vraie carte, placez son fichier JSON dans `catalogs/` puis double-cliquez sur **`IMPORT_MENU.bat`** (Linux/macOS : `./import-menu.sh`).
+
+La carte **NUMBER ONE** est déjà fournie : `catalogs/number-one.json` — 78 produits (Classic, Classic Spécial, Healthy, Healthy Spécial, Lablebi, Extras) et les variantes de pain (Simple / Double / 3arbi, Céréale / Chia / 3arbi) en options obligatoires avec supplément.
+
+L'import remplace le catalogue : ce qui n'est pas dans le fichier est **supprimé s'il n'a jamais été vendu, sinon simplement désactivé**, afin que l'historique des tickets reste intact. Un ré-import met à jour les produits existants par leur code, sans créer de doublon — c'est le moyen de faire évoluer vos prix. Pour ajouter sans rien retirer : `./import-menu.sh catalogs/ma-carte.json --ajouter`.
+
 Les autres scripts restent disponibles pour un usage ciblé : `START_POS.bat` (démarrer sans mise à jour ni recompilation), `STOP_POS.bat` (arrêter), `BUILD_POS.bat` (compiler seulement), `INIT_DB.bat` (préparer la base seulement).
 
 ## Lancement détaillé (Windows)

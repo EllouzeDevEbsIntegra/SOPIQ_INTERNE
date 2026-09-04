@@ -12,4 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface OrderLineRepo extends JpaRepository<OrderLine, Long> {}
+public interface OrderLineRepo extends JpaRepository<OrderLine, Long> {
+    long countByProductId(Long productId);
+    long countByCategoryId(Long categoryId);
+}

@@ -1,6 +1,9 @@
 package com.poscaisse.web;
 
 import com.poscaisse.dto.CatalogDtos.*;
+import com.poscaisse.dto.CatalogImportDtos.CatalogImport;
+import com.poscaisse.dto.CatalogImportDtos.ImportResult;
+import com.poscaisse.service.CatalogImportService;
 import com.poscaisse.service.CatalogService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,14 @@ import java.util.Map;
 @PreAuthorize("hasAuthority('PRODUCTS_MANAGE')")
 public class CatalogController {
     private final CatalogService catalog;
+    private final CatalogImportService catalogImport;
+
+    /** Import d'une carte complète. replace=true désactive ce qui n'y figure plus (jamais de suppression). */
+    @PostMapping("/catalog/import")
+    public ImportResult importCatalog(@RequestBody CatalogImport payload,
+                                      @RequestParam(defaultValue = "false") boolean replace) {
+        return catalogImport.importCatalog(payload, replace);
+    }
 
     @GetMapping("/categories") public List<CategoryDto> categories() { return catalog.categories(); }
     @PostMapping("/categories") public CategoryDto createCategory(@Valid @RequestBody CategoryRequest r) { return catalog.saveCategory(null, r); }
