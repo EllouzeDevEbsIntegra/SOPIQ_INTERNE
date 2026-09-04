@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { add, mul, pct, round, sub } from '../utils/money'
 
 /**
@@ -94,7 +94,32 @@ export const useCartStore = defineStore('cart', () => {
       lines.value.push(l)
     }
   }
-  return { lines, serviceMode, customer, note, discountPercent, discountAmount, heldOrderId, heldRef, clientRef, selectedKey,
+  // ---- draft persistence: a browser refresh (or crash) must not lose the order being typed ----
+  const DRAFT_KEY = 'poscaisse.cart.draft'
+  function snapshot() {
+    return { lines: lines.value.map(l => ({ ...l, product: undefined })), serviceMode: serviceMode.value, customer: customer.value, note: note.value,
+      discountPercent: discountPercent.value, discountAmount: discountAmount.value, heldOrderId: heldOrderId.value, heldRef: heldRef.value, clientRef: clientRef.value }
+  }
+  watch(() => snapshot(), (d) => { try { if (d.lines.length) localStorage.setItem(DRAFT_KEY, JSON.stringify(d)); else localStorage.removeItem(DRAFT_KEY) } catch { /* ignore */ } }, { deep: true })
+  /** Restore a draft saved before a refresh; products are re-resolved from the current catalog (unknown/inactive products are dropped). */
+  function restoreDraft(productsById) {
+    let d = null
+    try { d = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null') } catch { return false }
+    if (!d || !d.lines?.length || lines.value.length) return false
+    const restored = []
+    for (const l of d.lines) {
+      const product = productsById[l.productId]
+      if (!product || !product.active) continue
+      const components = (l.components || []).map(c => ({ ...c, product: productsById[c.productId] })).filter(c => c.product)
+      restored.push({ ...l, key: ++keySeq, product, components })
+    }
+    if (!restored.length) { try { localStorage.removeItem(DRAFT_KEY) } catch { /* ignore */ } return false }
+    lines.value = restored; serviceMode.value = d.serviceMode || serviceMode.value; customer.value = d.customer || customer.value; note.value = d.note || ''
+    discountPercent.value = d.discountPercent || 0; discountAmount.value = d.discountAmount || 0; heldOrderId.value = d.heldOrderId || null; heldRef.value = d.heldRef || null
+    clientRef.value = d.clientRef || clientRef.value
+    return true
+  }
+  return { lines, serviceMode, customer, note, discountPercent, discountAmount, heldOrderId, heldRef, clientRef, selectedKey, restoreDraft,
     subtotal, lineDiscountTotal, orderDiscount, total, itemCount, isEmpty, lineUnit, lineGross, lineDiscount, lineTotal,
     addLine, find, setQuantity, increment, remove, setLineDiscount, setLinePrice, setLineNote, setLineModifiers, setOrderDiscount, clear, toRequest, loadFromOrder }
 })

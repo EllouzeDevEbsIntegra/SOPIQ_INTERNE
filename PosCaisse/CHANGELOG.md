@@ -8,3 +8,4 @@
 - Back-office : dashboard, tickets, journal, sessions, clôture journalière, rapports + CSV, produits/menus, catégories, options, disposition POS/favoris, clients, utilisateurs, rôles, entreprise/PDV/caisses, moyens de paiement, tickets & impression, paramètres, audit.
 - Corrections après tests : ventes espèces nettes en clôture, erreurs 400 sur paramètres invalides, style de tuile menu, pavé numérique (valeur initiale remplacée), débordement du panier en 768 px, composition de menu (sous-options seulement si obligatoires), aperçu ticket (transaction).
 - Tests unitaires + scénario d'intégration, scripts Windows/Linux, documentation.
+- Passe robustesse : brouillon de panier persistant (refresh), raccourcis Entrée, test de concurrence multi-caisses, aperçu ticket dans l'écran de fin de vente.

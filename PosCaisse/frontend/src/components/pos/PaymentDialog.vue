@@ -37,7 +37,9 @@ function confirm() {
   emit('confirm', payments.value.map(p => ({ paymentMethodId: p.method.id, amount: p.amount, tendered: p.method.kind === 'CASH' ? p.tendered : null })))
 }
 watch(done, d => { if (d && !isCash.value) { /* auto-focus validate */ } })
-function onKey(e) { if (e.key === 'Enter' && done.value) confirm() }
+function onKey(e) { if (e.key === 'Enter' && done.value) { e.preventDefault(); confirm() } }
+import { onMounted, onUnmounted } from 'vue'
+onMounted(() => window.addEventListener('keydown', onKey)); onUnmounted(() => window.removeEventListener('keydown', onKey))
 </script>
 <template>
   <Modal size="lg" title="Encaissement" @close="!busy && emit('close')" :closable="!busy">

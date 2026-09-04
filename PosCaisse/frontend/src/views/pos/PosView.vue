@@ -30,6 +30,7 @@ onMounted(async () => {
   try { await catalog.load(true) } catch (e) { ui.error(e.humanMessage) }
   cart.serviceMode = catalog.serviceModes.includes(cart.serviceMode) ? cart.serviceMode : (catalog.setting('pos.defaultServiceMode', 'TAKEAWAY'))
   if (!catalog.favorites.length && catalog.categories.length) activeCat.value = catalog.categories[0].id
+  if (cart.restoreDraft(catalog.productsById)) ui.info('Commande en cours restaurée')
   api.admin.activeTemplate().then(t => { template.value = { ...t, logoData: catalog.company?.logoData } }).catch(() => {})
   refreshHeld()
   clockTimer = setInterval(() => { clock.value = fmtTime(new Date()) }, 15000)
@@ -131,6 +132,7 @@ function newOrder() { dialog.value = null }
 function goClose() { if (!cart.isEmpty) return ui.error('Videz ou mettez en attente le panier avant la clôture.'); router.push('/close') }
 function logout() { if (!cart.isEmpty) return ui.error('Videz ou mettez en attente le panier avant de vous déconnecter.'); auth.logout(); router.replace('/login') }
 function onKey(e) {
+  if (dialog.value?.kind === 'done' && (e.key === 'Enter' || e.key === 'Escape')) { e.preventDefault(); newOrder(); return }
   if (dialog.value || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
   if (e.key === 'F2') { e.preventDefault(); checkout() }
   if (e.key === 'F4') { e.preventDefault(); holdOrder() }
@@ -222,7 +224,7 @@ const ReceiptInline = defineComponent({
     async function print() { await printJobs(props.jobs, props.template); printed.value = true; try { await vapi.pos.ackPrint(props.jobs.map(j => j.id)) } catch { /* ignore */ } }
     return () => h('div', { class: 'ri' }, [
       h('div', { class: 'ri-jobs' }, (props.jobs || []).map(j => h('span', { class: 'badge', key: j.id }, `${j.title} ×${j.copies}`))),
-      h('pre', { class: 'receipt-paper ri-paper', style: { width: (props.template?.paperWidth || 80) <= 58 ? '220px' : '300px', fontSize: (props.template?.fontSize || 12) + 'px' } }, props.jobs?.[0]?.content || ''),
+      h('pre', { class: 'receipt-paper ri-paper', style: { width: (props.template?.paperWidth || 80) <= 58 ? '200px' : '272px', fontSize: '10.5px' } }, props.jobs?.[0]?.content || ''),
       h('button', { class: 'btn lg primary block', onClick: print }, printed.value ? '🖨 Réimprimer les tickets' : `🖨 Imprimer les tickets (${(props.jobs || []).reduce((s, j) => s + j.copies, 0)})`)
     ])
   }
@@ -250,13 +252,13 @@ export default { components: { ReceiptInline } }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
 .grid.S { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; } .grid.L { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
 .flash { outline: 3px solid var(--success); }
-.done { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.done { display: grid; grid-template-columns: 1fr 1.3fr; gap: 20px; }
 .done-main { display: flex; flex-direction: column; gap: 12px; }
 .big-total { display: flex; flex-direction: column; } .big-total b { font-size: 34px; }
 .big-change { background: var(--success-soft); border: 2px solid #bbf7d0; border-radius: 14px; padding: 14px; display: flex; flex-direction: column; color: var(--success-2); }
 .big-change span { font-weight: 700; letter-spacing: .05em; } .big-change b { font-size: 44px; line-height: 1.1; }
 :deep(.ri) { display: flex; flex-direction: column; gap: 8px; align-items: center; } :deep(.ri-jobs) { display: flex; gap: 6px; flex-wrap: wrap; }
-:deep(.ri-paper) { max-height: 260px; overflow: auto; }
+:deep(.ri-paper) { max-height: 260px; overflow: auto; max-width: 100%; }
 @media (max-width: 1100px) { .body { grid-template-columns: 104px 1fr minmax(300px, 34%); } .cat { min-height: 64px; font-size: 12px; } .cat .ico { font-size: 20px; } }
 @media (max-width: 860px) {
   .body { grid-template-columns: 90px 1fr; } .cart-col { display: none; } .cart-toggle { display: inline-flex; }

@@ -24,6 +24,7 @@ Dernière mise à jour : 2026-09-04
 - Paramètres : entreprise, PDV, caisses, utilisateurs, rôles, catégories, produits, menus, options, paiements, TVA, tickets, destinations, numérotation, POS (modes, seuil remise, boutons espèces, tuiles, images)
 - Audit (connexion, ventes, remises, prix, annulations, remboursements, mouvements, ouverture/clôture, paramètres, catalogue, utilisateurs)
 - Gestion d'erreurs homogène (`ApiError`), messages humains dans l'interface
+- Robustesse : brouillon de commande restauré après rafraîchissement du navigateur (localStorage, re-validé par le backend), Entrée = valider le paiement / nouvelle commande, redirection vers l'ouverture de caisse si la session a été clôturée
 - Scripts `START_POS.bat`, `STOP_POS.bat`, `BUILD_POS.bat`, `start.sh`, `stop.sh`, `docker-compose.yml`, `.env.example`
 - Build : `mvn package` OK, `npm run build` OK ; backend sert `frontend/dist` (mode production sur un seul port)
 
@@ -47,4 +48,5 @@ Voir `TODO.md`.
 
 - **Unitaires (JUnit 5)** : `PricingServiceTest` (8), `TicketNumberFormatTest` (3), `ReceiptRendererTest` (3) — `mvn test` → 14 tests OK.
 - **Intégration (Spring Boot + PostgreSQL, `POSCAISSE_IT=true`)** : `PosIntegrationTest` (5) — login PIN, ouverture/double ouverture, vente 2 Cheeseburgers + fromage + 2 Frites + 2 Coca payée 50 DT (rendu 22), double soumission idempotente, paiement mixte 32,500 (20 espèces + 12,500 carte), paiement insuffisant refusé, remise 30 % refusée au caissier, API `/api/users` refusée (403) au caissier et au manager, annulation refusée au caissier, sortie 20 DT, remboursement 5 DT manager, clôture avec écart −3,000.
+- **Concurrence** : 20 encaissements simultanés sur 2 caisses (threads) → 20 tickets uniques et séquentiels (PV01-2026-000012 … 000031), 0 erreur, 0,83 s.
 - **Scénario navigateur (Playwright, Chromium)** : connexion PIN Ahmed → ouverture CAISSE 01 fond 100 → Burgers → 2 Cheeseburgers → supplément fromage → Frites → Coca → quantité → mise en attente → reprise → ENCAISSER → espèces 50 → rendu 22,000 → validation → vente PostgreSQL → tickets client + cuisine + boissons → nouvelle commande → paiement mixte 32,500 → menu burger → sortie de caisse 20 → historique → détail → réimpression → clôture (écart calculé) ; 0 erreur console. Back-office : 17 écrans chargés sans erreur, création produit + indisponibilité, modèle ticket 58 mm, création utilisateur, aperçu clôture journalière. Responsive : 1920×1080, 1366×768, 1024×700, 800×600 (panier en tiroir).
