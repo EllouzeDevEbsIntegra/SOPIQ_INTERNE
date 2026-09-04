@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PosCaisse — Charte Safran</title>
+<style>
+/* =====================================================================
+   CHARTE « SAFRAN »
+   Disposition et boutons repris de la charte Terre : rail vertical,
+   vignettes en médaillon rond, nom centré, filet pointillé, prix et
+   pastille d'option centrés, filets 1,5 px.
+   Typographie reprise à l'identique de la charte Kiosque : linéale
+   système, titres en 800, aucun romain nulle part.
+   Palette nouvelle : bleu nuit et safran.
+   ===================================================================== */
+:root{
+  --bg:#F4F6F9;          /* gris bleuté très clair */
+  --surf:#FFFFFF;
+  --surf2:#EDF1F6;
+  --line:#DCE3EC;
+  --line2:#C3CEDC;
+
+  --tx:#16263F;          /* bleu nuit — texte et logo */
+  --tx2:#59697E;
+  --tx3:#8A99AC;
+
+  --acc:#E8912B;         /* safran — accent, prix, sélection */
+  --acc2:#C6741A;
+  --accs:#FCEBD2;
+  --accl:#EFCE9B;
+
+  --pay:#0E8A5F;         /* encaissement, jamais utilisé ailleurs */
+  --pay2:#0A6E4B;
+
+  --m1:#DF9C3E;--m2:#A85D0C;--m3:#FFFBF3;   /* teintes des pictogrammes */
+
+  /* Typographie : identique à la charte Kiosque */
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#E8ECF2;color:var(--tx);font:14px/1.45 var(--font);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+.num{font-variant-numeric:tabular-nums}
+svg{display:block}
+
+/* ---------- cadre de présentation (hors charte) ---------- */
+.wrap{padding:16px}
+.head{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+  display:grid;grid-template-columns:1fr auto;gap:22px;align-items:start;margin-bottom:12px}
+.head h1{font-size:17px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+.head p{font-size:13.5px;color:var(--tx2);max-width:80ch}
+.head p+p{margin-top:5px}
+.head b{font-weight:700;color:var(--tx)}
+.sw{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
+.sw span{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--tx2);
+  border:1px solid var(--line);border-radius:20px;padding:3px 10px 3px 4px;font-weight:600}
+.sw i{width:15px;height:15px;border-radius:50%;display:block;border:1px solid rgba(0,0,0,.08)}
+.type{margin-top:9px;font-size:12px;color:var(--tx2);text-align:right;line-height:1.5}
+.note{display:flex;justify-content:space-between;font-size:11.5px;color:var(--tx3);padding:0 3px 6px}
+
+/* ---------- écran de caisse ---------- */
+.pos{
+  height:768px;max-height:calc(100vh - 40px);overflow:hidden;background:var(--bg);
+  display:grid;grid-template-areas:"bar bar bar" "rail grid cart";
+  grid-template-columns:206px 1fr 336px;grid-template-rows:auto 1fr;
+  border-radius:14px;box-shadow:0 12px 34px -14px rgba(22,38,63,.3);
+}
+
+/* barre supérieure */
+.bar{grid-area:bar;display:flex;align-items:center;gap:14px;padding:0 16px;height:58px;
+  background:var(--surf);border-bottom:1.5px solid var(--line)}
+.brand{display:flex;align-items:center;gap:11px;font-size:16.5px;font-weight:800;letter-spacing:-.02em}
+.brand i{width:28px;height:28px;display:block;border-radius:50%;background:var(--acc);
+  box-shadow:0 0 0 3px var(--surf),0 0 0 4.5px var(--acc)}
+.srch{flex:1;max-width:330px;height:38px;padding:0 14px;font:inherit;font-size:13.5px;font-weight:500;
+  background:var(--bg);border:1.5px solid var(--line);border-radius:9px;color:var(--tx)}
+.srch::placeholder{color:var(--tx3);font-weight:500}
+.srch:focus{outline:none;border-color:var(--acc);background:var(--surf)}
+.me{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:600;color:var(--tx2)}
+.me em{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;
+  background:var(--tx);color:#fff;font-style:normal;font-size:11.5px;font-weight:800}
+
+/* rail des catégories — disposition Terre, typographie Kiosque */
+.rail{grid-area:rail;padding:10px;overflow:auto;display:flex;flex-direction:column;gap:4px;
+  background:var(--surf);border-right:1.5px solid var(--line)}
+.cat{display:flex;align-items:center;gap:10px;padding:0 13px;height:52px;flex:0 0 auto;
+  border-radius:9px;font-size:15px;font-weight:700;letter-spacing:-.01em;color:var(--tx2)}
+.cat b{margin-left:auto;font-size:11.5px;font-weight:700;opacity:.65}
+.cat:hover{background:var(--surf2);color:var(--tx)}
+.cat.on{background:var(--acc);color:#fff}
+.cat.on b{opacity:.8}
+
+/* grille — filigrane géométrique repris de Terre, dans la nouvelle teinte */
+.grid{grid-area:grid;padding:12px;overflow:auto;display:grid;gap:9px;align-content:start;
+  grid-auto-rows:min-content;
+  grid-template-columns:repeat(auto-fill,minmax(clamp(150px,14vw,192px),1fr));
+  background-image:repeating-linear-gradient(45deg,rgba(232,145,43,.055) 0 1px,transparent 1px 16px),
+                   repeating-linear-gradient(-45deg,rgba(232,145,43,.055) 0 1px,transparent 1px 16px)}
+
+/* tuile — anatomie Terre : médaillon, nom centré, filet pointillé, prix centré */
+.tile{display:flex;flex-direction:column;gap:7px;padding:10px;overflow:hidden;
+  background:var(--surf);border:1.5px solid var(--line);border-radius:12px}
+.tile:hover{border-color:var(--acc);box-shadow:0 4px 14px -8px rgba(232,145,43,.75)}
+.tile:active{transform:translateY(1px)}
+.thumb{display:grid;place-items:center;height:72px;width:72px;flex:none;margin:2px auto 0;
+  border-radius:50%;background:var(--accs);border:1.5px solid var(--accl)}
+.thumb svg{width:42px;height:42px}
+.nm{font-size:15px;font-weight:700;line-height:1.25;letter-spacing:-.01em;text-align:center;
+  flex:none;min-height:2.5em;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ft{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:9px;
+  padding-top:5px;border-top:1px dashed var(--line2)}
+.pr{font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--acc2)}
+.tag{font-size:9.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--tx3)}
+
+/* panier */
+.cart{grid-area:cart;display:flex;flex-direction:column;overflow:hidden;
+  background:var(--surf);border-left:1.5px solid var(--line)}
+.chd{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px}
+.chd h3{font-size:12.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--tx3)}
+.chd .n{font-size:12px;font-weight:800;padding:1px 10px;border-radius:20px;
+  background:#FDF3E4;color:var(--acc2)}
+.lines{flex:1;overflow:auto;padding:0 10px}
+.ln{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
+  padding:10px 6px;border-bottom:1px dashed var(--line)}
+.qty{display:flex;align-items:center;overflow:hidden;border:1.5px solid var(--line);border-radius:8px}
+.qty button{width:27px;height:29px;font-size:15px;font-weight:700;text-align:center;
+  background:var(--surf2);color:var(--tx2)}
+.qty button:hover{background:var(--line);color:var(--tx)}
+.qty b{min-width:26px;text-align:center;font-size:13.5px;font-weight:800}
+.ld{min-width:0}
+.ld strong{display:block;font-size:14px;font-weight:700;line-height:1.25;letter-spacing:-.01em}
+.chip{display:inline-block;margin-top:4px;padding:1px 9px;border-radius:20px;
+  font-size:11px;font-weight:700;background:#FDF3E4;color:var(--acc2)}
+.la{font-size:14.5px;font-weight:800;letter-spacing:-.01em}
+.empty{padding:36px 16px;text-align:center;font-size:13.5px;color:var(--tx3);font-weight:500}
+
+/* total et encaissement — bouton Terre : rayon 10 px, liseré intérieur */
+.mt{padding:12px 16px;background:var(--surf2);border-top:1.5px solid var(--line)}
+.mt .r{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;
+  color:var(--tx2);margin-bottom:4px}
+.mt .big{display:flex;justify-content:space-between;align-items:baseline;margin:8px 0 0}
+.mt .big span{font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--tx2)}
+.mt .big b{font-size:32px;font-weight:800;letter-spacing:-.035em}
+.pay{display:block;width:100%;height:62px;margin-top:11px;text-align:center;
+  font-size:18px;font-weight:800;letter-spacing:.02em;
+  background:var(--pay);color:#fff;border-radius:10px;
+  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.25)}
+.pay:hover{background:var(--pay2)}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="m-sandwich" viewBox="0 0 48 48">
+    <rect x="9" y="32" width="30" height="9" rx="4.5" fill="var(--m1)"/>
+    <path d="M6 24h36v7c-6 5-12-1-18 3-6 4-12-1-18-3z" fill="var(--m3)"/>
+    <path d="M7 23h34v6c-6 4-11-1-17 2-6 3-11-1-17-2z" fill="var(--m2)"/>
+    <path d="M9 25C9 13 15 7 24 7s15 6 15 18z" fill="var(--m1)"/>
+  </symbol>
+  <symbol id="m-wrap" viewBox="0 0 48 48">
+    <g transform="rotate(-16 24 24)">
+      <rect x="15" y="8" width="18" height="34" rx="9" fill="var(--m1)"/>
+      <ellipse cx="24" cy="11" rx="9" ry="3.8" fill="var(--m3)"/>
+      <circle cx="21" cy="11" r="1.9" fill="var(--m2)"/><circle cx="27" cy="12" r="1.6" fill="var(--m2)"/>
+      <path d="M15 22h18" stroke="var(--m3)" stroke-width="2" opacity=".5"/>
+    </g>
+  </symbol>
+  <symbol id="m-bowl" viewBox="0 0 48 48">
+    <path d="M22 6c-2 3 2 4 0 7M28 8c-1.6 2.4 1.6 3.2 0 5.6" stroke="var(--m1)" stroke-width="2"
+          stroke-linecap="round" fill="none" opacity=".8"/>
+    <path d="M7 22h34a17 17 0 0 1-34 0z" fill="var(--m1)"/>
+    <ellipse cx="24" cy="22" rx="17" ry="4.4" fill="var(--m3)"/>
+    <circle cx="18" cy="21.5" r="2.4" fill="var(--m2)"/><circle cx="27" cy="22.5" r="2.1" fill="var(--m2)"/>
+  </symbol>
+  <symbol id="m-plate" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="18" fill="var(--m3)"/>
+    <circle cx="24" cy="24" r="18" fill="none" stroke="var(--m1)" stroke-width="2"/>
+    <circle cx="24" cy="24" r="11" fill="var(--m1)"/>
+    <path d="M24 13a11 11 0 0 1 0 22z" fill="var(--m2)"/>
+  </symbol>
+</defs></svg>
+
+<div class="wrap">
+  <div class="head">
+    <div>
+      <h1>Charte Safran — disposition Terre, typographie Kiosque</h1>
+      <p>La <b>disposition et les boutons viennent de Terre</b> : rail vertical de catégories,
+         vignettes en médaillon rond, nom centré, filet pointillé sous le nom, prix et pastille
+         d'option centrés, filets à 1,5 px, bouton d'encaissement à liseré intérieur, filigrane
+         géométrique sur la grille.</p>
+      <p>La <b>typographie est celle de Kiosque, à l'identique</b> : linéale système, titres en 800,
+         noms d'articles en 15 px / 700, aucun romain nulle part.</p>
+      <p>Les <b>couleurs sont nouvelles</b> : bleu nuit et safran. Le safran est appétissant et fait
+         écho à l'omelette qui est le cœur de la carte ; le bleu nuit l'ancre et porte tout le texte.
+         Le vert reste réservé au seul geste d'encaissement.</p>
+    </div>
+    <div>
+      <div class="sw">
+        <span><i style="background:#F4F6F9"></i>Fond</span>
+        <span><i style="background:#FFFFFF"></i>Surface</span>
+        <span><i style="background:#16263F"></i>Bleu nuit</span>
+        <span><i style="background:#E8912B"></i>Safran</span>
+        <span><i style="background:#0E8A5F"></i>Encaisser</span>
+      </div>
+      <div class="type">Linéale système · titres 800 · noms 15 px / 700<br>
+        prix 16 px / 800 · rayon 12 px · filets 1,5 px</div>
+    </div>
+  </div>
+  <div class="note"><span>Rail 206 px · médaillons 72 px · grille fluide · panier 336 px</span>
+    <span>1366 × 768 — écran de caisse 15 pouces</span></div>
+  <div id="screen"></div>
+</div>
+
+<script>
+const DATA = {"categories":[{"name":"Classic","mark":"sandwich","products":[{"code":"CLA-M01","name":"Omlette Mozzarella","price":4.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M02","name":"Omlette Mozzarella Kwika","price":5.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M03","name":"Omlette Mozzarella Salami","price":6.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M04","name":"Omlette Mozzarella Thon","price":6.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M05","name":"Omlette Mozzarella Jombon","price":6.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M06","name":"Omlette Mozzarella Chawarma","price":8.7,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M07","name":"Omlette Mozzarella Kabeb","price":8.7,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M08","name":"Omlette Mozzarella Escalope Grillé","price":8.7,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M09","name":"Omlette Mozzarella Escalope Panée","price":9.7,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-M10","name":"Omlette Mozzarella Cordon Bleu","price":9.7,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0},{"n":"3arbi","d":1.0}],"optName":"Pain"},{"code":"CLA-S01","name":"Omlette","price":3.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S02","name":"Kwika","price":3.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S03","name":"Salami","price":3.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":0.5}],"optName":"Format"},{"code":"CLA-S04","name":"Jombon","price":4.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S05","name":"Thon","price":4.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S06","name":"Kabeb","price":6.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S07","name":"Chawarma","price":6.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S08","name":"Escalope Grillé","price":6.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S09","name":"Escalope Panée","price":7.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CLA-S10","name":"Cordon Bleu","price":7.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"}]},{"name":"Classic Spécial","mark":"sandwich","products":[{"code":"CSP-01","name":"Special","price":8.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-02","name":"Number One","price":9.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-03","name":"Number One Plus","price":13.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-04","name":"Spicy","price":13.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-05","name":"Cheese","price":9.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-06","name":"Hot Cheese","price":9.5,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"},{"code":"CSP-07","name":"Full Cheese","price":11.0,"opts":[{"n":"Simple","d":0.0},{"n":"Double","d":1.0}],"optName":"Format"}]},{"name":"Healthy","mark":"wrap","products":[{"code":"HEA-M01","name":"Omlette Mozzarella","price":5.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M02","name":"Omlette Mozzarella Kwika","price":6.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M03","name":"Omlette Mozzarella Salami","price":7.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M04","name":"Omlette Mozzarella Thon","price":7.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M05","name":"Omlette Mozzarella Jombon","price":7.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M06","name":"Omlette Mozzarella Chawarma","price":9.7,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.3},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M07","name":"Omlette Mozzarella Kabeb","price":9.7,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.3},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M08","name":"Omlette Mozzarella Escalope Grillé","price":9.7,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.3},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M09","name":"Omlette Mozzarella Escalope Panée","price":10.7,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.3},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-M10","name":"Omlette Mozzarella Cordon Bleu","price":10.7,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.3},{"n":"3arbi","d":0.0}],"optName":"Pain"},{"code":"HEA-S01","name":"Omlette","price":4.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S02","name":"Kwika","price":4.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S03","name":"Salami","price":4.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S04","name":"Jombon","price":5.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S05","name":"Thon","price":5.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S06","name":"Kabeb","price":7.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S07","name":"Chawarma","price":7.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S08","name":"Escalope Grillé","price":7.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S09","name":"Escalope Panée","price":8.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HEA-S10","name":"Cordon Bleu","price":8.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"}]},{"name":"Healthy Spécial","mark":"wrap","products":[{"code":"HSP-01","name":"Special","price":9.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-02","name":"Number One","price":10.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-03","name":"Number One Plus","price":14.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-04","name":"Spicy","price":14.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-05","name":"Cheese","price":10.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-06","name":"Hot Cheese","price":10.5,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"},{"code":"HSP-07","name":"Full Cheese","price":12.0,"opts":[{"n":"Céréale","d":0.0},{"n":"Chia","d":0.5}],"optName":"Pain"}]},{"name":"Lablebi","mark":"bowl","products":[{"code":"LAB-01","name":"Lablebi Normale","price":4.5,"opts":null,"optName":null},{"code":"LAB-02","name":"Lablebi Oeuf","price":5.0,"opts":null,"optName":null},{"code":"LAB-03","name":"Lablebi Thon","price":7.5,"opts":null,"optName":null},{"code":"LAB-04","name":"Lablebi Double Tête","price":6.0,"opts":null,"optName":null},{"code":"LAB-05","name":"Lablebi Oeuf Thon","price":8.0,"opts":null,"optName":null},{"code":"LAB-06","name":"Lablebi Double Tête Thon","price":9.0,"opts":null,"optName":null}]},{"name":"Extras","mark":"plate","products":[{"code":"EXT-01","name":"Omelette","price":0.7,"opts":null,"optName":null},{"code":"EXT-02","name":"Fromage Triangle","price":0.7,"opts":null,"optName":null},{"code":"EXT-03","name":"Mozzarella","price":2.0,"opts":null,"optName":null},{"code":"EXT-04","name":"Mozzarella 3arbi","price":3.0,"opts":null,"optName":null},{"code":"EXT-05","name":"Gruyère","price":3.0,"opts":null,"optName":null},{"code":"EXT-06","name":"Thon","price":2.5,"opts":null,"optName":null},{"code":"EXT-07","name":"Jombon","price":2.5,"opts":null,"optName":null},{"code":"EXT-08","name":"Salami","price":1.5,"opts":null,"optName":null},{"code":"EXT-09","name":"Kwika","price":1.0,"opts":null,"optName":null},{"code":"EXT-10","name":"Chawarma","price":4.0,"opts":null,"optName":null},{"code":"EXT-11","name":"Kabeb","price":4.0,"opts":null,"optName":null},{"code":"EXT-12","name":"Escalope Grillé","price":4.0,"opts":null,"optName":null},{"code":"EXT-13","name":"Escalope Panné","price":4.5,"opts":null,"optName":null},{"code":"EXT-14","name":"Cordon Bleu","price":4.5,"opts":null,"optName":null},{"code":"EXT-15","name":"Frite","price":3.0,"opts":null,"optName":null},{"code":"EXT-16","name":"Patte Normale","price":1.0,"opts":null,"optName":null},{"code":"EXT-17","name":"Patte Céréale","price":2.0,"opts":null,"optName":null},{"code":"EXT-18","name":"Patte Chia","price":2.5,"opts":null,"optName":null}]}]};
+const S = { cat:0, cart:[] };
+const money = n => n.toFixed(3).replace('.', ',');
+const cats = DATA.categories;
+const all  = cats.flatMap(c => c.products);
+const esc  = s => String(s).replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const total = () => S.cart.reduce((s,l) => s + l.unit*l.qty, 0);
+const count = () => S.cart.reduce((s,l) => s + l.qty, 0);
+
+/* panier de départ : une charte se juge sur un écran rempli, pas sur un écran vide */
+S.cart = [
+  { code:'CLA-M01', name:'Omlette Mozzarella',         opt:'Double', unit:5.5, qty:2 },
+  { code:'CLA-M06', name:'Omlette Mozzarella Chawarma',opt:'Simple', unit:8.7, qty:1 },
+  { code:'LAB-01',  name:'Lablebi Normale',            opt:null,     unit:4.5, qty:1 },
+  { code:'EXT-05',  name:'Gruyère',                    opt:null,     unit:3.0, qty:2 },
+];
+
+function add(code){
+  const p = all.find(x => x.code === code);
+  const opt = p.opts ? p.opts[0] : null;
+  const unit = p.price + (opt ? opt.d : 0);
+  const key = code + '|' + (opt ? opt.n : '');
+  const f = S.cart.find(l => (l.code + '|' + (l.opt || '')) === key);
+  if (f) f.qty++; else S.cart.push({ code, name:p.name, opt: opt ? opt.n : null, unit, qty:1 });
+  render();
+}
+function bump(i, d){ S.cart[i].qty += d; if (S.cart[i].qty <= 0) S.cart.splice(i,1); render(); }
+
+function render(){
+  const cat = cats[S.cat];
+  const lines = S.cart.length ? S.cart.map((l,i) => `<div class="ln">
+      <span class="qty"><button onclick="bump(${i},-1)">−</button><b class="num">${l.qty}</b><button onclick="bump(${i},1)">+</button></span>
+      <span class="ld"><strong>${esc(l.name)}</strong>
+        ${l.opt ? `<span class="chip">Pain : ${esc(l.opt)}</span>` : ''}</span>
+      <span class="la num">${money(l.unit*l.qty)}</span></div>`).join('')
+    : `<div class="empty">Panier vide.<br>Touchez un article pour commencer.</div>`;
+
+  document.getElementById('screen').innerHTML = `<div class="pos">
+    <header class="bar">
+      <span class="brand"><i></i>NUMBER ONE</span>
+      <input class="srch" placeholder="Rechercher un article…">
+      <span class="me"><span>CAISSE 01 · Ahmed</span><em>A</em></span>
+    </header>
+    <nav class="rail">${cats.map((c,i) => `<button class="cat ${i===S.cat?'on':''}"
+      onclick="S.cat=${i};render()">${esc(c.name)}<b>${c.products.length}</b></button>`).join('')}</nav>
+    <main class="grid">${cat.products.map(p => `<button class="tile" onclick="add('${p.code}')">
+        <span class="thumb"><svg><use href="#m-${cat.mark}"/></svg></span>
+        <span class="nm">${esc(p.name)}</span>
+        <span class="ft"><span class="pr num">${money(p.price)}</span>
+          ${p.opts ? `<span class="tag">${esc(p.optName)}</span>` : ''}</span>
+      </button>`).join('')}</main>
+    <aside class="cart">
+      <div class="chd"><h3>Commande</h3><span class="n num">${count()}</span></div>
+      <div class="lines">${lines}</div>
+      <div class="mt">
+        <div class="r"><span>Sous-total</span><span class="num">${money(total())}</span></div>
+        <div class="r"><span>TVA 19 % incluse</span><span class="num">${money(total()*0.19/1.19)}</span></div>
+        <div class="big"><span>Total</span><b class="num">${money(total())} DT</b></div>
+        <button class="pay">ENCAISSER</button>
+      </div>
+    </aside></div>`;
+}
+render();
+</script></body></html>
