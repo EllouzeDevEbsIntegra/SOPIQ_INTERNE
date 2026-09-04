@@ -148,8 +148,11 @@ public class ReceiptRenderer {
         String dateStr = on(cfg, "showDate") ? when.format(DATE) : "";
         String timeStr = on(cfg, "showTime") ? when.format(TIME) : "";
         s.head(() -> {
+            // L'enseigne s'aligne a droite, comme la date en dessous : elle borde le logo
+            // pose a gauche. Le remplissage est calcule ici pour qu'un support qui ignore
+            // le marqueur d'en-tete imprime la meme chose.
             if (company != null && on(cfg, "showCompanyName"))
-                s.center(company.getTradeName() != null && !company.getTradeName().isBlank() ? company.getTradeName() : company.getName());
+                s.lr("", company.getTradeName() != null && !company.getTradeName().isBlank() ? company.getTradeName() : company.getName());
             if (t != null && t.getHeaderText() != null && !t.getHeaderText().isBlank()) s.center(t.getHeaderText());
             if (!dateStr.isEmpty() && !timeStr.isEmpty()) s.lr(dateStr, timeStr);
             else if (!dateStr.isEmpty() || !timeStr.isEmpty()) s.center(dateStr + timeStr);

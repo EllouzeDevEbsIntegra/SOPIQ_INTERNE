@@ -39,7 +39,7 @@ pre.big { font-size: 2em; font-weight: 800; line-height: 1.06; }
 .head { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
 .head .logo { flex: none; width: 34%; max-height: 62px; object-fit: contain; filter: grayscale(1) contrast(1.35); }
 .head-txt { flex: 1; min-width: 0; }
-.head .name { font-size: 1.5em; font-weight: 800; line-height: 1.12; text-align: center; letter-spacing: -.01em; }
+.head .name { font-size: 1.5em; font-weight: 800; line-height: 1.12; text-align: right; letter-spacing: -.01em; }
 .head .when { margin-top: 2px; text-align: center; }
 .head .split { display: flex; justify-content: space-between; gap: 8px; text-align: left; }
 </style>

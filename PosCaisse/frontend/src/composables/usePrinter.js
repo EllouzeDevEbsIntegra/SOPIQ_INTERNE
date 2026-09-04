@@ -23,7 +23,7 @@ export function printJobs(jobs, template) {
       .head { display: flex; align-items: center; gap: 3mm; margin-bottom: 1.5mm; }
       .head .logo { flex: none; width: 34%; max-height: 18mm; object-fit: contain; filter: grayscale(1) contrast(1.4); }
       .head-txt { flex: 1; min-width: 0; }
-      .head .name { font-size: 1.5em; font-weight: 800; line-height: 1.12; text-align: center; }
+      .head .name { font-size: 1.5em; font-weight: 800; line-height: 1.12; text-align: right; }
       .head .when { margin-top: .5mm; text-align: center; }
       .head .split { display: flex; justify-content: space-between; gap: 2mm; text-align: left; }
       .t { page-break-after: always; break-after: page; padding-bottom: 8mm; }
