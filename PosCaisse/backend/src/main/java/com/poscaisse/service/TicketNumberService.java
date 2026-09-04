@@ -1,6 +1,7 @@
 package com.poscaisse.service;
 
 import com.poscaisse.domain.DocumentSequence;
+import com.poscaisse.domain.Enums;
 import com.poscaisse.domain.PointOfSale;
 import com.poscaisse.repository.SequenceRepo;
 import lombok.RequiredArgsConstructor;
@@ -43,13 +44,16 @@ public class TicketNumberService {
     }
 
     /**
-     * Numero de reglement client, sur une sequence distincte de celle des tickets :
-     * melanger les deux ferait des trous dans la numerotation des ventes.
+     * Numero de reglement de compte, sur une sequence distincte de celle des tickets :
+     * melanger les deux ferait des trous dans la numerotation des ventes. Clients et
+     * livreurs ont chacun leur serie, pour que deux comptes ne se renvoient pas le
+     * meme numero de piece.
      */
     @Transactional(propagation = Propagation.MANDATORY)
-    public String nextCustomerPayment() {
+    public String nextAccountPayment(Enums.AccountParty party) {
+        boolean courier = party == Enums.AccountParty.COURIER;
         LocalDate today = LocalDate.now(ZoneId.of("Africa/Tunis"));
-        String scopeKey = "CUSTOMER_PAYMENT:" + today.getYear();
+        String scopeKey = (courier ? "COURIER_PAYMENT:" : "CUSTOMER_PAYMENT:") + today.getYear();
         DocumentSequence seq = sequenceRepo.lockByKey(scopeKey).orElseGet(() -> {
             DocumentSequence s = new DocumentSequence();
             s.setScopeKey(scopeKey);
@@ -59,7 +63,7 @@ public class TicketNumberService {
         long v = seq.getNextValue();
         seq.setNextValue(v + 1);
         sequenceRepo.save(seq);
-        return String.format("REG-%d-%06d", today.getYear(), v);
+        return String.format(courier ? "RLV-%d-%06d" : "REG-%d-%06d", today.getYear(), v);
     }
 
     public interface SeqSource { long next(String scopeKey); }

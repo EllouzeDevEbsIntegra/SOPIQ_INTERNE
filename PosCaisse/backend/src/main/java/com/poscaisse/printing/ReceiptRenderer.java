@@ -28,7 +28,7 @@ public class ReceiptRenderer {
     public static Map<String, Object> defaultConfig() {
         Map<String, Object> c = new LinkedHashMap<>();
         c.put("showTicketNumber", true); c.put("showDate", true); c.put("showTime", true); c.put("showCashier", true);
-        c.put("showRegister", true); c.put("showServiceMode", true); c.put("showCustomer", true); c.put("showUnitPrice", true);
+        c.put("showRegister", false); c.put("showServiceMode", true); c.put("showCustomer", true); c.put("showCourier", true); c.put("showUnitPrice", true);
         c.put("showModifiers", true); c.put("showDiscounts", true); c.put("showTaxes", false); c.put("showSubtotal", true);
         c.put("showPayments", true); c.put("showChange", true); c.put("showCompanyName", true); c.put("showAddress", true);
         c.put("showPhone", true); c.put("showTaxId", true); c.put("separator", "-"); c.put("showItemCount", true);
@@ -55,6 +55,9 @@ public class ReceiptRenderer {
     }
 
     // ---------- text helpers ----------
+    /** Marqueur de ligne mise en avant, en tete de ligne ; invisible en texte brut. */
+    public static final char BOLD = '\u0001';
+
     static final class Sheet {
         final int w; final StringBuilder sb = new StringBuilder();
         Sheet(int w) { this.w = w; }
@@ -63,14 +66,31 @@ public class ReceiptRenderer {
         void center(String s) { for (String part : wrap(s, w)) { int pad = Math.max(0, (w - part.length()) / 2); sb.append(" ".repeat(pad)).append(part).append('\n'); } }
         void sep(String ch) { sb.append((ch == null || ch.isEmpty() ? "-" : ch.substring(0, 1)).repeat(w)).append('\n'); }
         void lr(String l, String r) {
+            // Quand les deux ne tiennent pas sur une ligne, le libelle garde la sienne et
+            // la valeur s'aligne a droite en dessous. Rogner le libelle, comme le ferait
+            // un simple remplissage, le rendrait illisible (« Clie / nt »).
             if (l.length() + r.length() + 1 > w) {
-                List<String> parts = wrap(l, w - r.length() - 1);
-                for (int i = 0; i < parts.size() - 1; i++) sb.append(parts.get(i)).append('\n');
-                l = parts.isEmpty() ? "" : parts.get(parts.size() - 1);
+                line(l);
+                if (r.length() > w) { line(r); return; }
+                sb.append(" ".repeat(w - r.length())).append(r).append('\n');
+                return;
             }
             sb.append(l).append(" ".repeat(Math.max(1, w - l.length() - r.length()))).append(r).append('\n');
         }
         void big(String s) { center(s.toUpperCase()); }
+        /**
+         * Ligne mise en avant : double hauteur et gras. Elle porte un marqueur en tete,
+         * que l'imprimante (navigateur aujourd'hui, ESC/POS demain) traduit dans sa propre
+         * mise en forme. Le texte est donc calibre sur la moitie des colonnes, puisqu'un
+         * caractere double largeur occupe la place de deux.
+         */
+        void bold(String s) {
+            int bw = Math.max(8, w / 2);
+            for (String part : wrap(s, bw)) {
+                int pad = Math.max(0, (bw - part.length()) / 2);
+                sb.append(BOLD).append(" ".repeat(pad)).append(part).append('\n');
+            }
+        }
         static List<String> wrap(String s, int w) {
             List<String> out = new ArrayList<>();
             if (s == null) { out.add(""); return out; }
@@ -105,25 +125,36 @@ public class ReceiptRenderer {
         String cur = company == null ? "DT" : company.getCurrencySymbol();
         String sepCh = String.valueOf(cfg.getOrDefault("separator", "-"));
         Sheet s = new Sheet(w);
-        if (company != null) {
-            if (on(cfg, "showCompanyName")) s.big(company.getTradeName() != null && !company.getTradeName().isBlank() ? company.getTradeName() : company.getName());
-            if (company.getTradeName() != null && !company.getTradeName().isBlank() && !company.getTradeName().equals(company.getName())) s.center(company.getName());
-            if (on(cfg, "showAddress") && company.getAddress() != null) s.center(company.getAddress());
-            if (on(cfg, "showPhone") && company.getPhone() != null) s.center("Tél : " + company.getPhone());
-            if (on(cfg, "showTaxId") && company.getTaxId() != null) s.center("MF : " + company.getTaxId());
-        }
+        // ---- en-tete : logo (pose par l'imprimante), enseigne, date et heure ----
+        // L'adresse et le telephone sont renvoyes en pied : les repeter en haut allongerait
+        // le ticket sans rien apprendre au client qui est deja dans le restaurant.
+        if (company != null && on(cfg, "showCompanyName"))
+            s.bold(company.getTradeName() != null && !company.getTradeName().isBlank() ? company.getTradeName() : company.getName());
         if (t != null && t.getHeaderText() != null && !t.getHeaderText().isBlank()) s.center(t.getHeaderText());
-        s.sep(sepCh);
-        if (duplicate && on(cfg, "showDuplicateLabel")) { s.big("*** DUPLICATA ***"); }
-        if (on(cfg, "showTicketNumber")) s.big("TICKET " + (o.getTicketNumber() == null ? "-" : o.getTicketNumber()));
         var when = (o.getPaidAt() == null ? o.getCreatedAt() : o.getPaidAt()).atZoneSameInstant(TZ);
-        String dateStr = (on(cfg, "showDate") ? when.format(DATE) : "") + (on(cfg, "showTime") ? " " + when.format(TIME) : "");
-        if (!dateStr.isBlank()) s.lr("Date", dateStr.trim());
-        if (on(cfg, "showCashier")) s.lr("Caissier", o.getCashier().getFullName());
+        String dateStr = on(cfg, "showDate") ? when.format(DATE) : "";
+        String timeStr = on(cfg, "showTime") ? when.format(TIME) : "";
+        if (!dateStr.isEmpty() && !timeStr.isEmpty()) s.lr(dateStr, timeStr);
+        else if (!dateStr.isEmpty() || !timeStr.isEmpty()) s.center(dateStr + timeStr);
+        s.sep(sepCh);
+
+        // ---- identification du ticket ----
+        if (duplicate && on(cfg, "showDuplicateLabel")) s.big("*** DUPLICATA ***");
+        if (on(cfg, "showTicketNumber")) s.bold("N° " + (o.getTicketNumber() == null ? "-" : o.getTicketNumber()));
+        String cashier = on(cfg, "showCashier") ? o.getCashier().getFullName() : null;
+        String service = on(cfg, "showServiceMode") ? mode(o.getServiceMode()) : null;
+        // Caissier et service tiennent sur une ligne quand la largeur le permet : une ligne
+        // de moins par ticket, c'est plusieurs metres de papier sur une annee.
+        if (cashier != null && service != null && ("Caissier : " + cashier).length() + service.length() + 1 <= w)
+            s.lr("Caissier : " + cashier, service);
+        else {
+            if (cashier != null) s.lr("Caissier", cashier);
+            if (service != null) s.lr("Service", service);
+        }
         if (on(cfg, "showRegister")) s.lr("Caisse", o.getRegister().getName());
-        if (on(cfg, "showServiceMode")) s.lr("Service", mode(o.getServiceMode()));
         if (on(cfg, "showCustomer") && o.getCustomerName() != null && !o.getCustomerName().isBlank())
             s.lr("Client", o.getCustomerName() + (o.getCustomerPhone() == null ? "" : " " + o.getCustomerPhone()));
+        if (on(cfg, "showCourier") && o.getCourier() != null) s.lr("Livreur", o.getCourier().getName());
         s.sep(sepCh);
         int count = 0;
         for (OrderLine l : o.getLines()) {
@@ -168,8 +199,16 @@ public class ReceiptRenderer {
         if (o.getStatus() == Enums.OrderStatus.CANCELLED) { s.sep(sepCh); s.big("TICKET ANNULÉ"); }
         else if (o.getRefundedTotal() != null && o.getRefundedTotal().signum() > 0) { s.sep(sepCh); s.lr("REMBOURSÉ", money(o.getRefundedTotal(), dec)); }
         if (o.getNote() != null && !o.getNote().isBlank()) { s.sep(sepCh); s.line("Note : " + o.getNote()); }
+        // ---- pied : remerciement, puis les coordonnees pour recommander ----
         s.sep(sepCh);
-        if (t != null && t.getFooterText() != null && !t.getFooterText().isBlank()) s.center(t.getFooterText());
+        String merci = t != null && t.getFooterText() != null && !t.getFooterText().isBlank()
+                ? t.getFooterText() : "Merci pour votre visite";
+        s.center(merci);
+        if (company != null) {
+            if (on(cfg, "showAddress") && notBlank(company.getAddress())) s.center(company.getAddress());
+            if (on(cfg, "showPhone") && notBlank(company.getPhone())) s.center("Tél : " + company.getPhone());
+            if (on(cfg, "showTaxId") && notBlank(company.getTaxId())) s.center("MF : " + company.getTaxId());
+        }
         s.nl();
         return s.toString();
     }
@@ -184,11 +223,12 @@ public class ReceiptRenderer {
         s.big(dest.getName());
         if (duplicate) s.big("*** DUPLICATA ***");
         s.sep("=");
-        s.big("TICKET " + (o.getTicketNumber() == null ? o.getHeldRef() : o.getTicketNumber()));
+        s.bold("N° " + (o.getTicketNumber() == null ? o.getHeldRef() : o.getTicketNumber()));
         var when = (o.getPaidAt() == null ? o.getCreatedAt() : o.getPaidAt()).atZoneSameInstant(TZ);
         if (on(cfg, "prepShowTime")) s.lr(when.format(DATE), when.format(TIME));
         s.lr("Service", mode(o.getServiceMode()));
         if (o.getCustomerName() != null && !o.getCustomerName().isBlank()) s.lr("Client", o.getCustomerName());
+        if (o.getCourier() != null) s.lr("Livreur", o.getCourier().getName());
         s.sep(sepCh);
         for (OrderLine l : lines) {
             String q = qty(l.getQuantity());
@@ -207,6 +247,8 @@ public class ReceiptRenderer {
         s.nl();
         return s.toString();
     }
+
+    private static boolean notBlank(String v) { return v != null && !v.isBlank(); }
 
     private static boolean on(Map<String, Object> cfg, String k) { Object v = cfg.get(k); return v == null || Boolean.TRUE.equals(v) || "true".equals(String.valueOf(v)); }
 

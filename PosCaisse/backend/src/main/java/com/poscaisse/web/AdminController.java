@@ -63,6 +63,11 @@ public class AdminController {
     @PostMapping("/customers") public CustomerDto createCustomer(@Valid @RequestBody CustomerRequest r) { return admin.saveCustomer(null, r); }
     @PutMapping("/customers/{id}") public CustomerDto updateCustomer(@PathVariable Long id, @Valid @RequestBody CustomerRequest r) { return admin.saveCustomer(id, r); }
 
+    // livreurs
+    @GetMapping("/couriers") public List<CourierDto> couriers(@RequestParam(required = false) String q, @RequestParam(defaultValue = "false") boolean activeOnly) { return admin.couriers(q, activeOnly); }
+    @PostMapping("/couriers") public CourierDto createCourier(@Valid @RequestBody CourierRequest r) { return admin.saveCourier(null, r); }
+    @PutMapping("/couriers/{id}") public CourierDto updateCourier(@PathVariable Long id, @Valid @RequestBody CourierRequest r) { return admin.saveCourier(id, r); }
+
     // audit
     @PreAuthorize("hasAuthority('AUDIT_VIEW')")
     @GetMapping("/audit")

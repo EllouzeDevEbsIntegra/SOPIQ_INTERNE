@@ -51,7 +51,9 @@ public class CatalogPurgeService {
     private static final List<String> SALES_TABLES = List.of(
             "print_job", "refund", "payment", "order_line_modifier", "order_line",
             "sale_order", "cash_movement", "register_journal", "daily_closure",
-            "register_session", "document_sequence");
+            // Les reglements de compte pointent la session de caisse : ils doivent partir
+            // avant elle, sinon la remise a zero bute sur la cle etrangere.
+            "account_payment", "register_session", "document_sequence");
 
     @Transactional
     public PurgeResult purge(boolean resetSales, boolean force) {

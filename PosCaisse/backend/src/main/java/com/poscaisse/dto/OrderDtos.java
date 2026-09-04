@@ -18,11 +18,11 @@ public final class OrderDtos {
     public record PaymentRequest(@NotNull Long paymentMethodId, @NotNull BigDecimal amount, BigDecimal tendered, String reference) {}
 
     public record CartRequest(String clientRef, @NotNull Long registerId, String serviceMode, Long customerId, String customerName,
-                              String customerPhone, String note, BigDecimal discountPercent, BigDecimal discountAmount,
+                              String customerPhone, Long courierId, String note, BigDecimal discountPercent, BigDecimal discountAmount,
                               @NotEmpty List<@Valid CartLineRequest> lines, Long heldOrderId) {}
 
     public record CheckoutRequest(@NotBlank String clientRef, @NotNull Long registerId, String serviceMode, Long customerId,
-                                  String customerName, String customerPhone, String note, BigDecimal discountPercent,
+                                  String customerName, String customerPhone, Long courierId, String note, BigDecimal discountPercent,
                                   BigDecimal discountAmount, @NotEmpty List<@Valid CartLineRequest> lines,
                                   @NotEmpty List<@Valid PaymentRequest> payments, Long heldOrderId) {}
 
@@ -36,15 +36,16 @@ public final class OrderDtos {
 
     public record OrderDto(Long id, String clientRef, String ticketNumber, String heldRef, String status, String serviceMode,
                            Long pointOfSaleId, String pointOfSaleName, Long registerId, String registerCode, Long sessionId,
-                           Long cashierId, String cashierName, Long customerId, String customerName, String customerPhone, String note,
+                           Long cashierId, String cashierName, Long customerId, String customerName, String customerPhone,
+                           Long courierId, String courierName, String note,
                            BigDecimal subtotal, BigDecimal lineDiscountTotal, BigDecimal discountPercent, BigDecimal discountAmount,
                            BigDecimal taxTotal, BigDecimal total, BigDecimal paidTotal, BigDecimal changeAmount, BigDecimal refundedTotal,
                            String cancelReason, OffsetDateTime createdAt, OffsetDateTime paidAt, OffsetDateTime cancelledAt,
                            List<OrderLineDto> lines, List<PaymentDto> payments, List<RefundDto> refunds, List<PrintJobDto> printJobs) {}
 
     public record OrderSummaryDto(Long id, String ticketNumber, String heldRef, String status, String serviceMode, String registerCode,
-                                  String cashierName, String customerName, BigDecimal total, BigDecimal refundedTotal, String paymentSummary,
-                                  OffsetDateTime createdAt, OffsetDateTime paidAt, int itemCount) {}
+                                  String cashierName, String customerName, String courierName, BigDecimal total, BigDecimal refundedTotal,
+                                  String paymentSummary, OffsetDateTime createdAt, OffsetDateTime paidAt, int itemCount) {}
 
     public record PrintJobDto(Long id, Long orderId, Long destinationId, String destinationCode, String title, int copies, String content,
                               String status, boolean duplicate, OffsetDateTime createdAt) {}

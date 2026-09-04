@@ -9,14 +9,18 @@ import { useCartStore } from '../../stores/cart'
 import { fmt, fmtQty, add, sub, mul, round, parseAmount } from '../../utils/money'
 
 const props = defineProps({ total: Number, busy: Boolean })
-const emit = defineEmits(['close', 'confirm', 'customer'])
+const emit = defineEmits(['close', 'confirm', 'customer', 'courier'])
 const catalog = useCatalogStore()
 const cart = useCartStore()
 
 const METHOD_ICON = { CASH: 'cash', CARD: 'card', CHECK: 'receipt', MEAL_VOUCHER: 'tag', CREDIT: 'user', OTHER: 'coins' }
 /* Le crédit porte le ticket au compte d'un client : sans client désigné, ce serait
    une dette sans débiteur, donc le moyen reste masqué tant qu'aucun n'est choisi. */
-const methods = computed(() => catalog.paymentMethods.filter(m => m.kind !== 'CREDIT' || !!cart.customer?.id))
+/* Le credit porte la dette sur un compte : il n'apparait donc que si un titulaire est
+   choisi. En livraison c'est le livreur qui la porte, puisque c'est lui qui detient
+   l'argent jusqu'au versement ; a emporter, c'est le client. */
+const holder = computed(() => cart.canPickCourier ? cart.courier : cart.customer)
+const methods = computed(() => catalog.paymentMethods.filter(m => m.kind !== 'CREDIT' || !!holder.value?.id))
 const customer = computed(() => cart.customer)
 const current = ref(methods.value.find(m => m.kind === 'CASH') || methods.value[0])
 const entry = ref('')
@@ -66,10 +70,17 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
     <div class="pay-grid">
       <!-- colonne gauche : client, articles, montants et moyens -->
       <section class="left">
-        <button class="customer" :class="{ set: customer?.id }" @click="emit('customer')">
+        <button v-if="cart.canPickCourier" class="customer" :class="{ set: cart.courier?.id }" @click="emit('courier')">
+          <Icon name="truck" :size="18" />
+          <span class="grow" v-if="cart.courier?.name">Livreur : {{ cart.courier.name }}</span>
+          <span class="grow muted" v-else>Aucun livreur — obligatoire en livraison</span>
+          <em class="act">{{ cart.courier?.id ? 'Changer' : 'Choisir' }}</em>
+        </button>
+
+        <button v-if="cart.canPickCustomer" class="customer" :class="{ set: customer?.id }" @click="emit('customer')">
           <Icon name="user" :size="18" />
           <span class="grow" v-if="customer?.name">{{ customer.name }}<em v-if="customer.phone"> · {{ customer.phone }}</em></span>
-          <span class="grow muted" v-else>Aucun client — nécessaire pour le crédit</span>
+          <span class="grow muted" v-else>Aucun client{{ cart.canPickCourier ? '' : ' — nécessaire pour le crédit' }}</span>
           <em class="act">{{ customer?.id ? 'Changer' : 'Choisir' }}</em>
         </button>
 

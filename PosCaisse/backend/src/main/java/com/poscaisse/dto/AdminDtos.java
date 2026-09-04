@@ -42,4 +42,7 @@ public final class AdminDtos {
     public record AuditDto(Long id, Long userId, String username, String action, String entityType, String entityId, String details, OffsetDateTime createdAt) {}
     public record CustomerDto(Long id, String name, String phone, String note, OffsetDateTime createdAt) {}
     public record CustomerRequest(@NotBlank String name, String phone, String note) {}
+
+    public record CourierDto(Long id, String name, String phone, String note, boolean active, OffsetDateTime createdAt) {}
+    public record CourierRequest(@NotBlank String name, String phone, String note, Boolean active) {}
 }

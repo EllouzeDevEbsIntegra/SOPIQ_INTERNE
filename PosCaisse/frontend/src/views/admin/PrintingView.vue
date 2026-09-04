@@ -4,11 +4,12 @@ import { api } from '../../api'
 import { useUiStore } from '../../stores/ui'
 import { useBusy } from '../../composables/useApi'
 import Modal from '../../components/common/Modal.vue'
+import ReceiptPaper from '../../components/pos/ReceiptPaper.vue'
 const ui = useUiStore(); const { busy, run } = useBusy()
 const tab = ref('template'); const dests = ref([]); const editDest = ref(null); const tpl = ref(null); const preview = ref(null); let timer = null
 const flags = [
   ['showCompanyName', 'Nom commercial'], ['showAddress', 'Adresse'], ['showPhone', 'Téléphone'], ['showTaxId', 'Matricule fiscal'], ['showTicketNumber', 'N° de ticket'], ['showDate', 'Date'], ['showTime', 'Heure'],
-  ['showCashier', 'Caissier'], ['showRegister', 'Caisse'], ['showServiceMode', 'Mode de service'], ['showCustomer', 'Client'], ['showItemCount', "Nombre d'articles"], ['showUnitPrice', 'Prix unitaire'], ['showModifiers', 'Options / suppléments'],
+  ['showCashier', 'Caissier'], ['showRegister', 'Caisse'], ['showServiceMode', 'Mode de service'], ['showCustomer', 'Client'], ['showCourier', 'Livreur'], ['showItemCount', "Nombre d'articles"], ['showUnitPrice', 'Prix unitaire'], ['showModifiers', 'Options / suppléments'],
   ['showDiscounts', 'Remises'], ['showSubtotal', 'Sous-total'], ['showTaxes', 'TVA (si activée)'], ['showPayments', 'Paiements'], ['showChange', 'Monnaie rendue'], ['showDuplicateLabel', 'Mention DUPLICATA'], ['prepShowTime', 'Heure sur tickets préparation']
 ]
 async function load() { try { dests.value = await api.admin.destinations(); const list = await api.admin.templates(); tpl.value = list.find(t => t.code === 'DEFAULT') || list[0]; refresh() } catch (e) { ui.error(e.humanMessage) } }
@@ -37,7 +38,7 @@ async function removeDest(d) { if (!await ui.confirm({ title: 'Supprimer', messa
       <button class="btn primary mt-16" :disabled="busy" @click="saveTpl">Enregistrer le modèle</button>
     </div>
     <div class="card" style="background:#e2e8f0"><div class="card-title">Aperçu (dernière vente)</div>
-      <div v-if="preview" style="display:flex;justify-content:center"><div class="receipt-paper" :style="{ width: (preview.paperWidth <= 58 ? 220 : 300) + 'px', fontSize: preview.fontSize + 'px' }"><img v-if="preview.showLogo && preview.logoData" :src="preview.logoData" style="max-width:60%;display:block;margin:0 auto 6px" /><pre style="margin:0;font:inherit">{{ preview.content }}</pre></div></div>
+      <div v-if="preview" style="display:flex;justify-content:center"><ReceiptPaper :content="preview.content" :paper-width="preview.paperWidth" :font-size="preview.fontSize" :logo="preview.showLogo ? preview.logoData : null" /></div>
     </div>
   </div>
   <div v-if="tab==='dest'">

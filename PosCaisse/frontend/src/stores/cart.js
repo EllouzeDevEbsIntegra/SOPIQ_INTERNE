@@ -21,6 +21,7 @@ export const useCartStore = defineStore('cart', () => {
   const lines = ref([])
   const serviceMode = ref('TAKEAWAY')
   const customer = ref({ id: null, name: '', phone: '' })
+  const courier = ref({ id: null, name: '', phone: '' })
   const note = ref('')
   const discountPercent = ref(0)
   const discountAmount = ref(0)
@@ -46,6 +47,21 @@ export const useCartStore = defineStore('cart', () => {
   const itemCount = computed(() => lines.value.reduce((s, l) => s + Number(l.quantity), 0))
   const isEmpty = computed(() => lines.value.length === 0)
 
+  /* Regle de gestion du destinataire :
+       sur place  -> ni client ni livreur ;
+       a emporter -> un client possible, jamais de livreur ;
+       livraison  -> un livreur obligatoire, et un client si on le connait.
+     Le changement de mode remet donc a zero ce qui n'a plus lieu d'etre, pour que
+     l'ecran ne montre jamais un destinataire que le serveur refusera. */
+  const noParty = () => ({ id: null, name: '', phone: '' })
+  const canPickCustomer = computed(() => serviceMode.value !== 'DINE_IN')
+  const canPickCourier = computed(() => serviceMode.value === 'DELIVERY')
+  const needsCourier = computed(() => canPickCourier.value && !courier.value.id)
+  watch(serviceMode, () => {
+    if (!canPickCustomer.value) customer.value = noParty()
+    if (!canPickCourier.value) courier.value = noParty()
+  })
+
   function sameConfig(a, b) {
     const ids = (x) => (x.modifiers || []).map(m => m.id + '×' + (m.quantity || 1)).sort().join(',')
     const comps = (x) => (x.components || []).map(c => c.productId + ':' + (c.quantity || 1) + ':' + ids(c)).sort().join('|')
@@ -70,13 +86,14 @@ export const useCartStore = defineStore('cart', () => {
   function setLineModifiers(key, mods) { const l = find(key); if (l) l.modifiers = mods }
   function setOrderDiscount(percent, amount) { discountPercent.value = percent || 0; discountAmount.value = amount || 0 }
   function clear() {
-    lines.value = []; customer.value = { id: null, name: '', phone: '' }; note.value = ''; discountPercent.value = 0; discountAmount.value = 0
+    lines.value = []; customer.value = noParty(); courier.value = noParty(); note.value = ''; discountPercent.value = 0; discountAmount.value = 0
     heldOrderId.value = null; heldRef.value = null; clientRef.value = uuid(); selectedKey.value = null
   }
   function toRequest(registerId) {
     return {
       clientRef: clientRef.value, registerId, serviceMode: serviceMode.value, customerId: customer.value.id || null,
-      customerName: customer.value.name || null, customerPhone: customer.value.phone || null, note: note.value || null,
+      customerName: customer.value.name || null, customerPhone: customer.value.phone || null,
+      courierId: courier.value.id || null, note: note.value || null,
       discountPercent: discountPercent.value || 0, discountAmount: discountAmount.value || 0, heldOrderId: heldOrderId.value,
       lines: lines.value.map(l => ({
         productId: l.productId, quantity: l.quantity, unitPrice: l.unitPrice, discountPercent: l.discountPercent || 0, discountAmount: l.discountAmount || 0,
@@ -91,6 +108,7 @@ export const useCartStore = defineStore('cart', () => {
     heldOrderId.value = order.id; heldRef.value = order.heldRef
     serviceMode.value = order.serviceMode || serviceMode.value
     customer.value = { id: order.customerId || null, name: order.customerName || '', phone: order.customerPhone || '' }
+    courier.value = { id: order.courierId || null, name: order.courierName || '', phone: '' }
     note.value = order.note || ''
     discountPercent.value = Number(order.discountPercent) || 0; discountAmount.value = Number(order.discountAmount) || 0
     for (const ol of order.lines) {
@@ -105,7 +123,7 @@ export const useCartStore = defineStore('cart', () => {
   // ---- draft persistence: a browser refresh (or crash) must not lose the order being typed ----
   const DRAFT_KEY = 'poscaisse.cart.draft'
   function snapshot() {
-    return { lines: lines.value.map(l => ({ ...l, product: undefined })), serviceMode: serviceMode.value, customer: customer.value, note: note.value,
+    return { lines: lines.value.map(l => ({ ...l, product: undefined })), serviceMode: serviceMode.value, customer: customer.value, courier: courier.value, note: note.value,
       discountPercent: discountPercent.value, discountAmount: discountAmount.value, heldOrderId: heldOrderId.value, heldRef: heldRef.value, clientRef: clientRef.value }
   }
   watch(() => snapshot(), (d) => { try { if (d.lines.length) localStorage.setItem(DRAFT_KEY, JSON.stringify(d)); else localStorage.removeItem(DRAFT_KEY) } catch { /* ignore */ } }, { deep: true })
@@ -122,12 +140,14 @@ export const useCartStore = defineStore('cart', () => {
       restored.push({ ...l, key: ++keySeq, product, components })
     }
     if (!restored.length) { try { localStorage.removeItem(DRAFT_KEY) } catch { /* ignore */ } return false }
-    lines.value = restored; serviceMode.value = d.serviceMode || serviceMode.value; customer.value = d.customer || customer.value; note.value = d.note || ''
+    lines.value = restored; serviceMode.value = d.serviceMode || serviceMode.value; customer.value = d.customer || customer.value
+    courier.value = d.courier || courier.value; note.value = d.note || ''
     discountPercent.value = d.discountPercent || 0; discountAmount.value = d.discountAmount || 0; heldOrderId.value = d.heldOrderId || null; heldRef.value = d.heldRef || null
     clientRef.value = d.clientRef || clientRef.value
     return true
   }
-  return { lines, serviceMode, customer, note, discountPercent, discountAmount, heldOrderId, heldRef, clientRef, selectedKey, restoreDraft,
+  return { lines, serviceMode, customer, courier, canPickCustomer, canPickCourier, needsCourier,
+    note, discountPercent, discountAmount, heldOrderId, heldRef, clientRef, selectedKey, restoreDraft,
     subtotal, lineDiscountTotal, orderDiscount, total, itemCount, isEmpty, lineUnit, lineGross, lineDiscount, lineTotal,
     addLine, find, setQuantity, increment, remove, setLineDiscount, setLinePrice, setLineNote, setLineModifiers, setOrderDiscount, clear, toRequest, loadFromOrder }
 })

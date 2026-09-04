@@ -15,7 +15,7 @@ import PaymentDialog from '../../components/pos/PaymentDialog.vue'
 import ReceiptDialog from '../../components/pos/ReceiptDialog.vue'
 import AmountDialog from '../../components/pos/AmountDialog.vue'
 import TextDialog from '../../components/pos/TextDialog.vue'
-import CustomerDialog from '../../components/pos/CustomerDialog.vue'
+import PartyDialog from '../../components/pos/PartyDialog.vue'
 import HeldOrdersDialog from '../../components/pos/HeldOrdersDialog.vue'
 import CashMovementDialog from '../../components/pos/CashMovementDialog.vue'
 import TicketsView from './TicketsView.vue'
@@ -24,7 +24,7 @@ import Icon from '../../components/common/Icon.vue'
 
 const router = useRouter(); const auth = useAuthStore(); const catalog = useCatalogStore(); const cart = useCartStore(); const ui = useUiStore()
 const activeCat = ref('FAV'); const search = ref(''); const dialog = ref(null); const paying = ref(false); const lastSale = ref(null); const heldCount = ref(0)
-const customerOverlay = ref(false)   // choix du client par-dessus l'encaissement
+const partyOverlay = ref(null)       // choix du client ou du livreur par-dessus l'encaissement
 const template = ref(null); const clock = ref(fmtTime(new Date())); const menuOpen = ref(false); const cartOpen = ref(false)
 let clockTimer = null
 
@@ -100,8 +100,9 @@ function note(l) { dialog.value = { kind: 'note', line: l } }
 function setNote(v) { const d = dialog.value; dialog.value = null; cart.setLineNote(d.line.key, v) }
 function orderNote() { dialog.value = { kind: 'orderNote' } }
 async function clearCart() { if (cart.isEmpty) return; if (await ui.confirm({ title: 'Vider le panier', message: 'Abandonner la commande en cours ?', okLabel: 'Vider', danger: true })) { if (cart.heldOrderId) { try { await api.pos.abandon(cart.heldOrderId) } catch { /* ignore */ } refreshHeld() } cart.clear() } }
-function customer() { dialog.value = { kind: 'customer' } }
-function setCustomer(c) { dialog.value = null; cart.customer = c }
+function customer() { dialog.value = { kind: 'party', party: 'CUSTOMER' } }
+function courier() { dialog.value = { kind: 'party', party: 'COURIER' } }
+function setParty(c) { const p = dialog.value.party; dialog.value = null; if (p === 'COURIER') cart.courier = c; else cart.customer = c }
 
 // hold / resume
 const holding = ref(false)
@@ -119,7 +120,12 @@ async function resume(o) {
   refreshHeld()
 }
 // checkout
-function checkout() { if (cart.isEmpty) return; dialog.value = { kind: 'pay' } }
+function checkout() {
+  if (cart.isEmpty) return
+  // Une course sans livreur serait une somme sortie de la caisse sans porteur connu.
+  if (cart.needsCourier) { ui.error('Sélectionnez le livreur avant d\'encaisser ce ticket en livraison.'); return courier() }
+  dialog.value = { kind: 'pay' }
+}
 async function pay(payments) {
   if (paying.value) return
   paying.value = true
@@ -200,7 +206,7 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
       </main>
 
       <CartPanel class="cart-col" @edit="editLine" @quantity="quantity" @discount="discount" @price="price"
-                 @note="note" @checkout="checkout" @hold="holdOrder" @clear="clearCart" @customer="customer" />
+                 @note="note" @checkout="checkout" @hold="holdOrder" @clear="clearCart" @customer="customer" @courier="courier" />
     </div>
 
     <!-- tiroir latéral -->
@@ -234,9 +240,10 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
 
     <ModifierDialog v-if="dialog?.kind === 'modifier'" :product="dialog.product" :initial="dialog.initial" @close="dialog = null" @confirm="onModifierConfirm" />
     <PaymentDialog v-if="dialog?.kind === 'pay'" :total="cart.total" :busy="paying" @close="dialog = null" @confirm="pay"
-                   @customer="customerOverlay = true" />
-    <CustomerDialog v-if="customerOverlay" :initial="cart.customer"
-                    @close="customerOverlay = false" @ok="c => { cart.customer = c; customerOverlay = false }" />
+                   @customer="partyOverlay = 'CUSTOMER'" @courier="partyOverlay = 'COURIER'" />
+    <PartyDialog v-if="partyOverlay" :party="partyOverlay" :initial="partyOverlay === 'COURIER' ? cart.courier : cart.customer"
+                 @close="partyOverlay = null"
+                 @ok="c => { if (partyOverlay === 'COURIER') cart.courier = c; else cart.customer = c; partyOverlay = null }" />
     <AmountDialog v-if="dialog?.kind === 'qty'" title="Quantité" mode="integer" :initial="dialog.line.quantity" ok-label="Valider" @close="dialog = null" @ok="setQty" />
     <AmountDialog v-if="dialog?.kind === 'discount'" :title="dialog.line ? 'Remise sur la ligne' : 'Remise sur la commande'" mode="amount"
                   :initial="dialog.line ? dialog.line.discountPercent : cart.discountPercent" hint="Remise exprimée en pourcentage"
@@ -245,7 +252,8 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
     <AmountDialog v-if="dialog?.kind === 'price'" title="Nouveau prix unitaire" mode="amount" :initial="dialog.line.unitPrice" ok-label="Appliquer" @close="dialog = null" @ok="setPrice" />
     <TextDialog v-if="dialog?.kind === 'note'" title="Note sur la ligne" :initial="dialog.line.note" placeholder="ex. sans sel, bien cuit…" @close="dialog = null" @ok="setNote" />
     <TextDialog v-if="dialog?.kind === 'orderNote'" title="Note de commande" :initial="cart.note" placeholder="Remarque pour la préparation ou la livraison" @close="dialog = null" @ok="v => { cart.note = v; dialog = null }" />
-    <CustomerDialog v-if="dialog?.kind === 'customer'" :initial="cart.customer" @close="dialog = null" @ok="setCustomer" />
+    <PartyDialog v-if="dialog?.kind === 'party'" :party="dialog.party"
+                 :initial="dialog.party === 'COURIER' ? cart.courier : cart.customer" @close="dialog = null" @ok="setParty" />
     <HeldOrdersDialog v-if="dialog?.kind === 'held'" @close="dialog = null; refreshHeld()" @resume="resume" />
     <CashMovementDialog v-if="dialog?.kind === 'cash'" @close="dialog = null" />
     <Modal v-if="dialog?.kind === 'tickets'" size="xl" title="Historique des tickets" @close="dialog = null">

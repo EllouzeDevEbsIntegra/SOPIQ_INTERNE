@@ -10,7 +10,7 @@ import Icon from '../common/Icon.vue'
 const cart = useCartStore()
 const auth = useAuthStore()
 const catalog = useCatalogStore()
-const emit = defineEmits(['edit', 'discount', 'quantity', 'checkout', 'hold', 'clear', 'customer', 'price', 'note'])
+const emit = defineEmits(['edit', 'discount', 'quantity', 'checkout', 'hold', 'clear', 'customer', 'courier', 'price', 'note'])
 
 const canDelete = computed(() => auth.can('LINE_DELETE'))
 const modes = computed(() => catalog.serviceModes)
@@ -28,12 +28,20 @@ const hasDiscount = computed(() => cart.lineDiscountTotal > 0 || cart.orderDisco
       </button>
     </div>
 
-    <button class="customer" @click="emit('customer')">
-      <Icon name="user" :size="17" />
-      <span v-if="cart.customer.name" class="truncate grow">{{ cart.customer.name }}<span v-if="cart.customer.phone" class="muted"> · {{ cart.customer.phone }}</span></span>
-      <span v-else class="muted grow">Client (facultatif)</span>
-      <span v-if="cart.heldRef" class="badge warning">{{ cart.heldRef }}</span>
-    </button>
+    <!-- Destinataire : rien sur place, un client a emporter, un livreur en livraison. -->
+    <div class="parties">
+      <button v-if="cart.canPickCustomer" class="party" @click="emit('customer')">
+        <Icon name="user" :size="17" />
+        <span v-if="cart.customer.name" class="truncate grow">{{ cart.customer.name }}<span v-if="cart.customer.phone" class="muted"> · {{ cart.customer.phone }}</span></span>
+        <span v-else class="muted grow">Client (facultatif)</span>
+      </button>
+      <button v-if="cart.canPickCourier" class="party" :class="{ needed: cart.needsCourier }" @click="emit('courier')">
+        <Icon name="truck" :size="17" />
+        <span v-if="cart.courier.name" class="truncate grow">{{ cart.courier.name }}</span>
+        <span v-else class="grow">Choisir un livreur</span>
+      </button>
+      <span v-if="cart.heldRef" class="badge warning held">{{ cart.heldRef }}</span>
+    </div>
 
     <div class="lines scroll">
       <div v-if="cart.isEmpty" class="blank">
@@ -111,11 +119,15 @@ const hasDiscount = computed(() => cart.lineDiscountTotal > 0 || cart.orderDisco
 .mode:hover { background: var(--surface-2); color: var(--ink-2); }
 .mode.on { background: var(--ink); color: #fff; }
 
-.customer {
-  display: flex; align-items: center; gap: 9px; margin: 8px; padding: 0 12px; min-height: 42px;
+.parties { display: flex; flex-direction: column; gap: 4px; margin: 8px; position: relative; }
+.party {
+  display: flex; align-items: center; gap: 9px; padding: 0 12px; min-height: 42px;
   border: 1px dashed var(--line-2); border-radius: var(--r-sm); color: var(--ink-2); font-size: 14px; font-weight: 550; text-align: left;
 }
-.customer:hover { border-color: var(--ink-4); background: var(--surface-2); }
+.party:hover { border-color: var(--ink-4); background: var(--surface-2); }
+/* Tant qu'aucun livreur n'est choisi, la course n'a pas de porteur : le bouton le dit. */
+.party.needed { border-style: solid; border-color: var(--brand); color: var(--brand); background: var(--brand-soft); }
+.parties .held { position: absolute; top: 10px; right: 10px; }
 
 .lines { flex: 1; min-height: 0; padding: 0 8px 8px; }
 .blank { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--ink-4); text-align: center; }

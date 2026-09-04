@@ -29,6 +29,7 @@ public class AdminService {
     private final RegisterRepo registerRepo;
     private final PrintDestinationRepo destinationRepo;
     private final CustomerRepo customerRepo;
+    private final CourierRepo courierRepo;
     private final AuditRepo auditRepo;
     private final SessionRepo sessionRepo;
     private final PasswordEncoder encoder;
@@ -201,6 +202,21 @@ public class AdminService {
         Customer c = id == null ? new Customer() : customerRepo.findById(id).orElseThrow(() -> BusinessException.notFound("Client"));
         c.setName(r.name().trim()); c.setPhone(r.phone() == null ? null : r.phone().trim()); c.setNote(r.note());
         return Mappers.customer(customerRepo.save(c));
+    }
+
+    // ---------- livreurs ----------
+    @Transactional(readOnly = true)
+    public List<CourierDto> couriers(String q, boolean activeOnly) {
+        List<Courier> all = q == null || q.isBlank() ? courierRepo.findAllByOrderByNameAsc() : courierRepo.search(q.trim());
+        return all.stream().filter(c -> !activeOnly || c.isActive()).limit(200).map(Mappers::courier).toList();
+    }
+
+    @Transactional
+    public CourierDto saveCourier(Long id, CourierRequest r) {
+        Courier c = id == null ? new Courier() : courierRepo.findById(id).orElseThrow(() -> BusinessException.notFound("Livreur"));
+        c.setName(r.name().trim()); c.setPhone(r.phone() == null ? null : r.phone().trim()); c.setNote(r.note());
+        if (r.active() != null) c.setActive(r.active());
+        return Mappers.courier(courierRepo.save(c));
     }
 
     // ---------- audit ----------

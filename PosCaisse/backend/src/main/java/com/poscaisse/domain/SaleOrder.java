@@ -20,6 +20,7 @@ public class SaleOrder {
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "session_id") private RegisterSession session;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "cashier_id") private User cashier;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "customer_id") private Customer customer;
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "courier_id") private Courier courier;
     private String customerName;
     private String customerPhone;
     private String note;

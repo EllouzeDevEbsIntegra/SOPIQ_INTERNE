@@ -144,7 +144,8 @@ public final class Mappers {
         return new OrderDto(o.getId(), o.getClientRef(), o.getTicketNumber(), o.getHeldRef(), o.getStatus().name(), o.getServiceMode().name(),
                 o.getPointOfSale().getId(), o.getPointOfSale().getName(), o.getRegister().getId(), o.getRegister().getCode(),
                 o.getSession() == null ? null : o.getSession().getId(), o.getCashier().getId(), o.getCashier().getFullName(),
-                o.getCustomer() == null ? null : o.getCustomer().getId(), o.getCustomerName(), o.getCustomerPhone(), o.getNote(),
+                o.getCustomer() == null ? null : o.getCustomer().getId(), o.getCustomerName(), o.getCustomerPhone(),
+                o.getCourier() == null ? null : o.getCourier().getId(), o.getCourier() == null ? null : o.getCourier().getName(), o.getNote(),
                 o.getSubtotal(), o.getLineDiscountTotal(), o.getDiscountPercent(), o.getDiscountAmount(), o.getTaxTotal(), o.getTotal(),
                 o.getPaidTotal(), o.getChangeAmount(), o.getRefundedTotal(), o.getCancelReason(), o.getCreatedAt(), o.getPaidAt(), o.getCancelledAt(),
                 o.getLines().stream().filter(l -> l.getParentLine() == null).map(Mappers::line).toList(),
@@ -157,7 +158,8 @@ public final class Mappers {
         String pay = o.getPayments().stream().map(p -> p.getPaymentMethod().getName()).distinct().collect(Collectors.joining(" + "));
         int items = o.getLines().stream().filter(l -> l.getParentLine() == null).mapToInt(l -> l.getQuantity().intValue()).sum();
         return new OrderSummaryDto(o.getId(), o.getTicketNumber(), o.getHeldRef(), o.getStatus().name(), o.getServiceMode().name(),
-                o.getRegister().getCode(), o.getCashier().getFullName(), o.getCustomerName(), o.getTotal(), o.getRefundedTotal(), pay,
+                o.getRegister().getCode(), o.getCashier().getFullName(), o.getCustomerName(),
+                o.getCourier() == null ? null : o.getCourier().getName(), o.getTotal(), o.getRefundedTotal(), pay,
                 o.getCreatedAt(), o.getPaidAt(), items);
     }
 
@@ -167,5 +169,9 @@ public final class Mappers {
 
     public static CustomerDto customer(Customer c) {
         return new CustomerDto(c.getId(), c.getName(), c.getPhone(), c.getNote(), c.getCreatedAt());
+    }
+
+    public static CourierDto courier(Courier c) {
+        return new CourierDto(c.getId(), c.getName(), c.getPhone(), c.getNote(), c.isActive(), c.getCreatedAt());
     }
 }

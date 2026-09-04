@@ -4,6 +4,8 @@ public final class Enums {
     private Enums() {}
     public enum OrderStatus { HELD, PAID, CANCELLED, REFUNDED, PARTIALLY_REFUNDED }
     public enum ServiceMode { DINE_IN, TAKEAWAY, DELIVERY }
+    /** Nature du compte qui porte une dette : celui d'un client ou celui d'un livreur. */
+    public enum AccountParty { CUSTOMER, COURIER }
     public enum SessionStatus { OPEN, CLOSED }
     public enum ProductType { SIMPLE, MENU }
     /** CREDIT : porte le ticket au compte du client au lieu d'encaisser. */

@@ -1,21 +1,29 @@
 <script setup>
 /**
- * Comptes clients : soldes, relevé d'un client (tickets à crédit et règlements),
- * et encaissement d'un règlement. Le détail d'un ticket s'ouvre au clic sur sa ligne.
+ * Comptes à crédit : soldes, relevé d'un compte (tickets portés et règlements) et
+ * encaissement d'un règlement. Deux natures de titulaire, tenues à l'identique :
+ * les clients (tickets à emporter portés au compte) et les livreurs (courses confiées,
+ * dont ils détiennent l'argent jusqu'au versement).
  */
 import { computed, onMounted, ref } from 'vue'
 import { api } from '../../api'
 import { useUiStore } from '../../stores/ui'
 import { useBusy } from '../../composables/useApi'
 import { fmt, fmtQty, parseAmount } from '../../utils/money'
-import { fmtDateTime, isoDate, startOfDayIso, endOfDayIso } from '../../utils/dates'
+import { fmtDateTime, startOfDayIso, endOfDayIso } from '../../utils/dates'
 import Modal from '../../components/common/Modal.vue'
-import Icon from '../../components/common/Icon.vue'
 import OrderDetailDialog from '../../components/pos/OrderDetailDialog.vue'
 
 const ui = useUiStore(); const { busy, run } = useBusy()
+const PARTIES = [
+  { key: 'CUSTOMER', tab: 'Clients', one: 'client', charged: 'Porté au compte', empty: 'Aucun client à afficher.', tickets: 'Tickets portés au compte' },
+  { key: 'COURIER', tab: 'Livreurs', one: 'livreur', charged: 'Courses confiées', empty: 'Aucun livreur à afficher.', tickets: 'Courses confiées' }
+]
+const party = ref('CUSTOMER')
+const meta = computed(() => PARTIES.find(p => p.key === party.value))
+
 const rows = ref([]); const withDebtOnly = ref(true); const q = ref('')
-const selected = ref(null)          // relevé du client ouvert
+const selected = ref(null)          // relevé du compte ouvert
 const period = ref({ from: '', to: '' })
 const methods = ref([])
 const pay = ref(null)               // formulaire de règlement
@@ -29,54 +37,57 @@ const totalDebt = computed(() => rows.value.reduce((s, c) => s + Number(c.balanc
 
 async function load() {
   try {
-    rows.value = await api.accounts.balances(withDebtOnly.value)
+    rows.value = await api.accounts.balances(party.value, withDebtOnly.value)
     if (!methods.value.length) methods.value = (await api.admin.paymentMethods()).filter(m => m.kind !== 'CREDIT' && m.active)
   } catch (e) { ui.error(e.humanMessage) }
 }
 onMounted(load)
+function switchParty(k) { party.value = k; selected.value = null; q.value = ''; load() }
 
 async function open(c) {
   try {
-    selected.value = await api.accounts.statement(c.customerId, {
+    selected.value = await api.accounts.statement(party.value, c.partyId, {
       from: period.value.from ? startOfDayIso(period.value.from) : undefined,
       to: period.value.to ? endOfDayIso(period.value.to) : undefined
     })
   } catch (e) { ui.error(e.humanMessage) }
 }
-const reload = () => selected.value && open({ customerId: selected.value.customerId })
+const reload = () => selected.value && open({ partyId: selected.value.partyId })
 
-function startPayment() {
-  pay.value = { paymentMethodId: methods.value[0]?.id, amount: '', note: '' }
-}
+function startPayment() { pay.value = { paymentMethodId: methods.value[0]?.id, amount: '', note: '' } }
 async function savePayment() {
   const amount = parseAmount(pay.value.amount)
   if (!amount) return ui.error('Saisissez un montant.')
-  const r = await run(() => api.accounts.pay({
-    customerId: selected.value.customerId, paymentMethodId: pay.value.paymentMethodId,
+  const r = await run(() => api.accounts.pay(party.value, {
+    partyId: selected.value.partyId, paymentMethodId: pay.value.paymentMethodId,
     amount, note: pay.value.note || null
   }), { success: 'Règlement enregistré' })
   if (r) { pay.value = null; await reload(); await load() }
 }
 async function removePayment(p) {
-  if (!await ui.confirm({ title: 'Supprimer le règlement', message: `Supprimer ${p.number} (${fmt(p.amount)}) ? Le solde du client remontera d'autant.`, okLabel: 'Supprimer', danger: true })) return
-  if (await run(() => api.accounts.deletePayment(p.id), { success: 'Règlement supprimé' })) { await reload(); await load() }
+  if (!await ui.confirm({ title: 'Supprimer le règlement', message: `Supprimer ${p.number} (${fmt(p.amount)}) ? Le solde remontera d'autant.`, okLabel: 'Supprimer', danger: true })) return
+  if (await run(() => api.accounts.deletePayment(party.value, p.id), { success: 'Règlement supprimé' })) { await reload(); await load() }
 }
 </script>
 
 <template>
+  <div class="tabs">
+    <button v-for="p in PARTIES" :key="p.key" :class="{ on: party === p.key }" @click="switchParty(p.key)">{{ p.tab }}</button>
+  </div>
+
   <!-- ---------- liste des soldes ---------- -->
   <div class="toolbar">
-    <input class="input" v-model="q" placeholder="Rechercher un client…" style="max-width:280px" />
-    <label class="check"><input type="checkbox" v-model="withDebtOnly" @change="load" /> Uniquement les clients qui doivent</label>
+    <input class="input" v-model="q" :placeholder="'Rechercher un ' + meta.one + '…'" style="max-width:280px" />
+    <label class="check"><input type="checkbox" v-model="withDebtOnly" @change="load" /> Uniquement ceux qui doivent</label>
     <span class="grow"></span>
-    <span class="muted small">{{ filtered.length }} client(s)</span>
+    <span class="muted small">{{ filtered.length }} {{ meta.one }}(s)</span>
     <span class="total-debt">Encours total <b class="num">{{ fmt(totalDebt, true) }}</b></span>
   </div>
 
   <div class="table-wrap"><table class="table">
-    <thead><tr><th>Client</th><th>Téléphone</th><th class="right">Porté au compte</th><th class="right">Réglé</th><th class="right">Solde</th><th></th></tr></thead>
+    <thead><tr><th>{{ meta.tab.slice(0, -1) }}</th><th>Téléphone</th><th class="right">{{ meta.charged }}</th><th class="right">Réglé</th><th class="right">Solde</th><th></th></tr></thead>
     <tbody>
-      <tr v-for="c in filtered" :key="c.customerId">
+      <tr v-for="c in filtered" :key="c.partyId">
         <td><b>{{ c.name }}</b></td>
         <td class="small">{{ c.phone }}</td>
         <td class="right num">{{ fmt(c.charged) }}</td>
@@ -84,11 +95,11 @@ async function removePayment(p) {
         <td class="right num bold" :class="{ due: Number(c.balance) > 0 }">{{ fmt(c.balance) }}</td>
         <td class="actions"><button class="btn sm" @click="open(c)">Relevé</button></td>
       </tr>
-      <tr v-if="!filtered.length"><td colspan="6" class="muted" style="text-align:center;padding:26px">Aucun client à afficher.</td></tr>
+      <tr v-if="!filtered.length"><td colspan="6" class="muted" style="text-align:center;padding:26px">{{ meta.empty }}</td></tr>
     </tbody>
   </table></div>
 
-  <!-- ---------- relevé d'un client ---------- -->
+  <!-- ---------- relevé d'un compte ---------- -->
   <Modal v-if="selected" size="xl" :title="'Compte : ' + selected.name" @close="selected = null">
     <div class="statement">
       <div class="summary">
@@ -109,7 +120,7 @@ async function removePayment(p) {
 
       <div class="cols">
         <section>
-          <h3 class="card-title">Tickets portés au compte</h3>
+          <h3 class="card-title">{{ meta.tickets }}</h3>
           <p class="tiny muted">Cliquez une ligne pour voir le détail des articles.</p>
           <div class="table-wrap"><table class="table">
             <thead><tr><th>Date</th><th>N° ticket</th><th>Commentaire</th><th class="right">Qté</th><th class="right">Total TTC</th></tr></thead>
@@ -128,7 +139,7 @@ async function removePayment(p) {
 
         <section>
           <h3 class="card-title">Règlements</h3>
-          <p class="tiny muted">Chaque règlement diminue le solde du client.</p>
+          <p class="tiny muted">Chaque règlement diminue le solde du compte.</p>
           <div class="table-wrap"><table class="table">
             <thead><tr><th>Date</th><th>N° règl.</th><th>Moyen</th><th class="right">Montant</th><th></th></tr></thead>
             <tbody>

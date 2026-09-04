@@ -23,13 +23,14 @@ const routes = [
       { path: 'modifiers', name: 'admin-modifiers', component: () => import('../views/admin/ModifiersView.vue'), meta: { title: 'Options & suppléments', perm: 'PRODUCTS_MANAGE' } },
       { path: 'layout', name: 'admin-layout', component: () => import('../views/admin/PosLayoutView.vue'), meta: { title: 'Disposition POS & favoris', perm: 'PRODUCTS_MANAGE' } },
       { path: 'customers', name: 'admin-customers', component: () => import('../views/admin/CustomersView.vue'), meta: { title: 'Clients', perm: 'BACKOFFICE_ACCESS' } },
+      { path: 'couriers', name: 'admin-couriers', component: () => import('../views/admin/CouriersView.vue'), meta: { title: 'Livreurs', perm: 'BACKOFFICE_ACCESS' } },
       { path: 'users', name: 'admin-users', component: () => import('../views/admin/UsersView.vue'), meta: { title: 'Utilisateurs', perm: 'USERS_MANAGE' } },
       { path: 'roles', name: 'admin-roles', component: () => import('../views/admin/RolesView.vue'), meta: { title: 'Rôles & permissions', perm: 'USERS_MANAGE' } },
       { path: 'company', name: 'admin-company', component: () => import('../views/admin/CompanyView.vue'), meta: { title: 'Entreprise, points de vente & caisses', perm: 'SETTINGS_MANAGE' } },
       { path: 'payments', name: 'admin-payments', component: () => import('../views/admin/PaymentMethodsView.vue'), meta: { title: 'Moyens de paiement', perm: 'SETTINGS_MANAGE' } },
       { path: 'printing', name: 'admin-printing', component: () => import('../views/admin/PrintingView.vue'), meta: { title: 'Tickets & impression', perm: 'SETTINGS_MANAGE' } },
       { path: 'settings', name: 'admin-settings', component: () => import('../views/admin/SettingsView.vue'), meta: { title: 'Paramètres POS', perm: 'SETTINGS_MANAGE' } },
-      { path: 'accounts', name: 'admin-accounts', component: () => import('../views/admin/CustomerAccountsView.vue'), meta: { title: 'Comptes clients', perm: 'CUSTOMER_CREDIT' } },
+      { path: 'accounts', name: 'admin-accounts', component: () => import('../views/admin/AccountsView.vue'), meta: { title: 'Comptes clients & livreurs', perm: 'CUSTOMER_CREDIT' } },
       { path: 'audit', name: 'admin-audit', component: () => import('../views/admin/AuditView.vue'), meta: { title: "Journal d'audit", perm: 'AUDIT_VIEW' } }
     ]
   },

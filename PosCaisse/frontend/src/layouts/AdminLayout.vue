@@ -17,13 +17,14 @@ const nav = [
     { to: '/admin/sessions', label: 'Sessions de caisse', icon: 'lock', perm: 'REVENUE_VIEW' },
     { to: '/admin/daily', label: 'Clôture journalière', icon: 'moon', perm: 'DAILY_CLOSE' },
     { to: '/admin/reports', label: 'Rapports', icon: 'trend', perm: 'REPORTS_VIEW' },
-    { to: '/admin/accounts', label: 'Comptes clients', icon: 'coins', perm: 'CUSTOMER_CREDIT' } ] },
+    { to: '/admin/accounts', label: 'Comptes clients & livreurs', icon: 'coins', perm: 'CUSTOMER_CREDIT' } ] },
   { group: 'Catalogue', items: [
     { to: '/admin/products', label: 'Produits & menus', icon: 'box', perm: 'PRODUCTS_MANAGE' },
     { to: '/admin/categories', label: 'Catégories', icon: 'layers', perm: 'PRODUCTS_MANAGE' },
     { to: '/admin/modifiers', label: 'Options & suppléments', icon: 'sliders', perm: 'PRODUCTS_MANAGE' },
     { to: '/admin/layout', label: 'Disposition POS', icon: 'grid', perm: 'PRODUCTS_MANAGE' },
-    { to: '/admin/customers', label: 'Clients', icon: 'users', perm: 'BACKOFFICE_ACCESS' } ] },
+    { to: '/admin/customers', label: 'Clients', icon: 'users', perm: 'BACKOFFICE_ACCESS' },
+    { to: '/admin/couriers', label: 'Livreurs', icon: 'truck', perm: 'BACKOFFICE_ACCESS' } ] },
   { group: 'Paramètres', items: [
     { to: '/admin/users', label: 'Utilisateurs', icon: 'user', perm: 'USERS_MANAGE' },
     { to: '/admin/roles', label: 'Rôles & permissions', icon: 'shield', perm: 'USERS_MANAGE' },

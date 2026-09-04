@@ -36,9 +36,40 @@ class ReceiptRendererTest {
         SaleOrder o = order();
         ReceiptTemplate t = new ReceiptTemplate(); t.setPaperWidth(80); t.setFooterText("Merci");
         String txt = renderer.customerReceipt(o, o.getCompany(), t, false, false);
-        assertThat(txt).contains("TICKET PV01-2026-000001").contains("Cheeseburger").contains("Supplément fromage").contains("17,000").contains("TOTAL").contains("RENDU").contains("33,000").contains("Merci");
+        assertThat(txt).contains("PV01-2026-000001").contains("Cheeseburger").contains("Supplément fromage").contains("17,000").contains("TOTAL").contains("RENDU").contains("33,000").contains("Merci");
         for (String line : txt.split("\n")) assertThat(line.length()).as("line: " + line).isLessThanOrEqualTo(42);
         assertThat(txt).doesNotContain("DUPLICATA");
+    }
+
+    /** Le numéro de ticket et l'enseigne sont les deux lignes mises en avant. */
+    @Test void ticketNumberAndTradeNameAreEmphasised() {
+        SaleOrder o = order();
+        String txt = renderer.customerReceipt(o, o.getCompany(), new ReceiptTemplate(), false, false);
+        List<String> emphasised = txt.lines().filter(l -> !l.isEmpty() && l.charAt(0) == ReceiptRenderer.BOLD)
+                .map(l -> l.substring(1).trim()).toList();
+        assertThat(emphasised).containsExactly("FAST FOOD DEMO", "N° PV01-2026-000001");
+    }
+
+    /**
+     * L'adresse et le téléphone sont en pied, pas en en-tête : un ticket court est
+     * l'objet même de cette mise en page.
+     */
+    @Test void addressAndPhoneSitInTheFooter() {
+        SaleOrder o = order();
+        String txt = renderer.customerReceipt(o, o.getCompany(), new ReceiptTemplate(), false, false);
+        assertThat(txt.indexOf("Tunis")).isGreaterThan(txt.indexOf("TOTAL"));
+        assertThat(txt.indexOf("71 000 000")).isGreaterThan(txt.indexOf("TOTAL"));
+        // Sans texte de pied configuré, le remerciement par défaut est imprimé.
+        assertThat(txt).contains("Merci pour votre visite");
+    }
+
+    /** Un ticket en livraison nomme le livreur qui l'emporte. */
+    @Test void deliveryTicketNamesTheCourier() {
+        SaleOrder o = order();
+        o.setServiceMode(Enums.ServiceMode.DELIVERY);
+        Courier c = new Courier(); c.setName("Mohamed"); o.setCourier(c);
+        String txt = renderer.customerReceipt(o, o.getCompany(), new ReceiptTemplate(), false, false);
+        assertThat(txt).contains("LIVRAISON").contains("Livreur").contains("Mohamed");
     }
 
     @Test void receipt58mmWrapsAndDuplicateLabel() {

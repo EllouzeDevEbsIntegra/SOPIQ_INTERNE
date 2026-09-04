@@ -52,13 +52,15 @@ export const api = {
     templates: () => g('/receipts/templates'), activeTemplate: () => g('/receipts/active'), saveTemplate: (code, b) => put(`/receipts/templates/${code}`, b), previewReceipt: (b) => p('/receipts/preview', b),
     settings: () => g('/settings'), saveSettings: (b) => put('/settings', b),
     customers: (q) => g('/customers', { q }), saveCustomer: (id, b) => id ? put(`/customers/${id}`, b) : p('/customers', b),
+    couriers: (q, activeOnly) => g('/couriers', { q, activeOnly }), saveCourier: (id, b) => id ? put(`/couriers/${id}`, b) : p('/couriers', b),
     audit: (params) => g('/audit', params)
   },
+  /* Comptes a credit : « party » vaut CUSTOMER ou COURIER, les deux se tiennent pareil. */
   accounts: {
-    balances: (withDebtOnly) => g('/customer-accounts', { withDebtOnly }),
-    statement: (customerId, params) => g(`/customer-accounts/${customerId}`, params),
-    pay: (b) => p('/customer-accounts/payments', b),
-    deletePayment: (id) => del(`/customer-accounts/payments/${id}`)
+    balances: (party, withDebtOnly) => g(`/accounts/${party}`, { withDebtOnly }),
+    statement: (party, partyId, params) => g(`/accounts/${party}/${partyId}`, params),
+    pay: (party, b) => p(`/accounts/${party}/payments`, b),
+    deletePayment: (party, id) => del(`/accounts/${party}/payments/${id}`)
   },
   reports: {
     dashboard: (params) => g('/reports/dashboard', params), report: (type, params) => g(`/reports/${type}`, params),

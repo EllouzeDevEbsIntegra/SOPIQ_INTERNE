@@ -33,6 +33,7 @@ public class OrderService {
     private final PaymentMethodRepo paymentMethodRepo;
     private final RegisterRepo registerRepo;
     private final CustomerRepo customerRepo;
+    private final CourierRepo courierRepo;
     private final RefundRepo refundRepo;
     private final SessionRepo sessionRepo;
     private final SequenceRepo sequenceRepo;
@@ -59,8 +60,10 @@ public class OrderService {
         RegisterSession session = sessions.requireOpenSession(reg.getId());
         SaleOrder o = new SaleOrder();
         o.setClientRef(req.clientRef());
-        fillOrder(o, reg, session, me, req.serviceMode(), req.customerId(), req.customerName(), req.customerPhone(), req.note(),
-                req.discountPercent(), req.discountAmount(), req.lines());
+        fillOrder(o, reg, session, me, req.serviceMode(), req.customerId(), req.customerName(), req.customerPhone(), req.courierId(),
+                req.note(), req.discountPercent(), req.discountAmount(), req.lines());
+        if (o.getServiceMode() == Enums.ServiceMode.DELIVERY && o.getCourier() == null)
+            throw new BusinessException("Un ticket en livraison doit être confié à un livreur : sélectionnez-le avant d'encaisser.");
         pricing.computeOrder(o);
         applyPayments(o, req.payments(), session);
         o.setStatus(Enums.OrderStatus.PAID);
@@ -91,14 +94,15 @@ public class OrderService {
     public PriceQuote quote(CartRequest req) {
         Register reg = registerRepo.findById(req.registerId()).orElseThrow(() -> BusinessException.notFound("Caisse"));
         SaleOrder o = new SaleOrder();
-        fillOrder(o, reg, null, currentUser.entity(), req.serviceMode(), null, null, null, null, req.discountPercent(), req.discountAmount(), req.lines());
+        fillOrder(o, reg, null, currentUser.entity(), req.serviceMode(), null, null, null, null, null, req.discountPercent(), req.discountAmount(), req.lines());
         pricing.computeOrder(o);
         return new PriceQuote(o.getSubtotal(), o.getLineDiscountTotal(), o.getDiscountAmount(), o.getTaxTotal(), o.getTotal(),
                 o.getLines().stream().filter(l -> l.getParentLine() == null).map(Mappers::line).toList());
     }
 
     private void fillOrder(SaleOrder o, Register reg, RegisterSession session, User me, String serviceMode, Long customerId, String customerName,
-                           String customerPhone, String note, BigDecimal discountPercent, BigDecimal discountAmount, List<CartLineRequest> lines) {
+                           String customerPhone, Long courierId, String note, BigDecimal discountPercent, BigDecimal discountAmount,
+                           List<CartLineRequest> lines) {
         o.setCompany(reg.getPointOfSale().getCompany());
         o.setPointOfSale(reg.getPointOfSale());
         o.setRegister(reg);
@@ -108,9 +112,20 @@ public class OrderService {
         Set<String> enabledModes = Arrays.stream(settings.get(SettingsService.SERVICE_MODES).split(",")).map(String::trim).collect(Collectors.toSet());
         if (!enabledModes.contains(mode.name())) throw new BusinessException("Ce mode de service est désactivé.");
         o.setServiceMode(mode);
+        // Regle de gestion du destinataire, tenue ici et pas seulement a l'ecran :
+        //   sur place  -> ni client ni livreur, la commande est consommee au comptoir ;
+        //   a emporter -> un client, jamais de livreur ;
+        //   livraison  -> un livreur (exige a l'encaissement), et un client facultatif.
+        boolean hasCustomer = customerId != null || (customerName != null && !customerName.isBlank());
+        if (mode == Enums.ServiceMode.DINE_IN && (hasCustomer || courierId != null))
+            throw new BusinessException("Un ticket sur place ne porte ni client ni livreur.");
+        if (mode != Enums.ServiceMode.DELIVERY && courierId != null)
+            throw new BusinessException("Un livreur ne se choisit que sur un ticket en livraison.");
+        o.setCustomer(null); o.setCustomerName(null); o.setCustomerPhone(null); o.setCourier(null);
         if (customerId != null) customerRepo.findById(customerId).ifPresent(c -> { o.setCustomer(c); if (customerName == null) o.setCustomerName(c.getName()); if (customerPhone == null) o.setCustomerPhone(c.getPhone()); });
         if (customerName != null && !customerName.isBlank()) o.setCustomerName(customerName.trim());
         if (customerPhone != null && !customerPhone.isBlank()) o.setCustomerPhone(customerPhone.trim());
+        if (courierId != null) o.setCourier(courierRepo.findById(courierId).orElseThrow(() -> BusinessException.notFound("Livreur")));
         o.setNote(note);
         checkDiscount(discountPercent, discountAmount, null);
         o.setDiscountPercent(Money.nz(discountPercent));
@@ -224,10 +239,11 @@ public class OrderService {
             PaymentMethod m = paymentMethodRepo.findById(pr.paymentMethodId()).orElseThrow(() -> BusinessException.notFound("Moyen de paiement"));
             if (!m.isActive()) throw new BusinessException("Le moyen de paiement « " + m.getName() + " » est désactivé.");
             if (pr.amount() == null || pr.amount().signum() <= 0) throw new BusinessException("Montant de paiement invalide.");
-            // Un ticket porté à crédit sans client serait une dette sans débiteur :
-            // le contrôle est ici, et pas seulement à l'écran, pour qu'il tienne.
-            if (m.getKind() == Enums.PaymentKind.CREDIT && o.getCustomer() == null)
-                throw new BusinessException("Le paiement à crédit exige un client : sélectionnez-le avant d'encaisser.");
+            // Un ticket porté à crédit sans titulaire serait une dette sans débiteur :
+            // le contrôle est ici, et pas seulement à l'écran, pour qu'il tienne. En
+            // livraison c'est le livreur qui porte la dette : c'est lui qui détient l'argent.
+            if (m.getKind() == Enums.PaymentKind.CREDIT && o.getCustomer() == null && o.getCourier() == null)
+                throw new BusinessException("Le paiement à crédit exige un client ou un livreur : sélectionnez-le avant d'encaisser.");
             Payment p = new Payment();
             p.setOrder(o); p.setSession(session); p.setPaymentMethod(m); p.setAmount(Money.r(pr.amount())); p.setReference(pr.reference());
             if (m.getKind() == Enums.PaymentKind.CASH) {
@@ -269,7 +285,7 @@ public class OrderService {
         if (req.heldOrderId() != null) {
             o = orderRepo.findById(req.heldOrderId()).filter(h -> h.getStatus() == Enums.OrderStatus.HELD).orElseGet(SaleOrder::new);
         } else o = new SaleOrder();
-        fillOrder(o, reg, session, me, req.serviceMode(), req.customerId(), req.customerName(), req.customerPhone(), req.note(), req.discountPercent(), req.discountAmount(), req.lines());
+        fillOrder(o, reg, session, me, req.serviceMode(), req.customerId(), req.customerName(), req.customerPhone(), req.courierId(), req.note(), req.discountPercent(), req.discountAmount(), req.lines());
         pricing.computeOrder(o);
         o.setStatus(Enums.OrderStatus.HELD);
         o.setUpdatedAt(OffsetDateTime.now());

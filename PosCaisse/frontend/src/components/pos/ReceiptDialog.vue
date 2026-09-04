@@ -6,10 +6,11 @@ import Icon from '../common/Icon.vue'
 import { api } from '../../api'
 import { fmt } from '../../utils/money'
 import { printJobs } from '../../composables/usePrinter'
+import ReceiptPaper from './ReceiptPaper.vue'
 const props = defineProps({ jobs: Array, order: Object, title: { type: String, default: 'Tickets' }, autoPrint: Boolean, template: Object })
 const emit = defineEmits(['close'])
 const active = ref(0)
-const width = computed(() => (props.template?.paperWidth || 80) <= 58 ? 220 : 300)
+const paperWidth = computed(() => props.template?.paperWidth || 80)
 const fontSize = computed(() => props.template?.fontSize || 12)
 async function print(all = true) {
   const jobs = all ? props.jobs : [props.jobs[active.value]]
@@ -32,7 +33,8 @@ if (props.autoPrint && props.jobs?.length) setTimeout(() => print(true), 150)
         </div>
       </div>
       <div class="preview scroll">
-        <pre v-if="jobs[active]" class="receipt-paper" :style="{ width: width + 'px', fontSize: fontSize + 'px' }">{{ jobs[active].content }}</pre>
+        <ReceiptPaper v-if="jobs[active]" :content="jobs[active].content" :paper-width="paperWidth" :font-size="fontSize"
+                      :logo="template?.showLogo ? template?.logoData : null" />
       </div>
     </div>
     <template #foot>
