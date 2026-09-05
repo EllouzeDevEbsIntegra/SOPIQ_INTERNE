@@ -1,0 +1,72 @@
+PosCaisse — poste de caisse autonome
+====================================
+
+Ce dossier contient TOUT ce qui est necessaire : l'application, son moteur Java et son
+serveur de base de donnees. Le PC n'a besoin ni d'internet, ni de Java, ni de PostgreSQL,
+ni de droits administrateur. Rien n'est installe dans Windows : copier ce dossier deplace
+l'installation, le supprimer la desinstalle.
+
+
+PREMIERE MISE EN ROUTE
+----------------------
+1. Copiez ce dossier sur le disque du PC — par exemple C:\PosCaisse
+   (evitez le Bureau et « Mes documents » : chemins longs et synchronisation cloud).
+2. Double-cliquez sur INSTALLER.bat et attendez la fin (2 a 3 minutes).
+3. La caisse s'ouvre. Connectez-vous avec  admin / admin123
+4. CHANGEZ CE MOT DE PASSE tout de suite : Back-office -> Utilisateurs.
+
+
+AU QUOTIDIEN
+------------
+DEMARRER.bat     ouvre la caisse (a mettre dans le dossier Demarrage de Windows)
+ARRETER.bat      ferme proprement la caisse et la base
+SAUVEGARDER.bat  ecrit une copie de securite dans « sauvegardes »
+ETAT.bat         dit ce qui tourne et quand remonte la derniere sauvegarde
+RESTAURER.bat    remet les donnees d'une sauvegarde (REMPLACE tout l'existant)
+
+
+SAUVEGARDES — A LIRE
+--------------------
+SAUVEGARDER.bat ecrit dans le sous-dossier « sauvegardes », donc sur le meme disque.
+Cela protege d'une fausse manoeuvre, PAS d'une panne de ce disque ni d'un vol du PC.
+Copiez regulierement ces fichiers sur une cle USB ou un disque externe.
+
+Une sauvegarde par jour, en fin de service, est un bon rythme.
+
+
+CE QU'IL Y A DANS CE DOSSIER
+----------------------------
+poscaisse.jar   l'application (interface comprise)
+jre\            le moteur Java
+pgsql\          le serveur de base de donnees
+donnees\        VOS DONNEES : ventes, articles, clients. Ne pas y toucher a la main.
+sauvegardes\    les copies de securite
+journaux\       les traces techniques, utiles en cas de probleme
+config\         les reglages du poste (ports, mot de passe de la base)
+catalogs\       la carte a importer depuis le back-office
+
+
+REGLAGES
+--------
+config\poscaisse.conf s'ouvre avec le Bloc-notes. Les changements prennent effet au
+redemarrage de la caisse.
+
+  APP_PORT  port de la caisse (8080). A changer si un autre logiciel l'occupe deja.
+  PG_PORT   port de la base (5433). Volontairement different du 5432 habituel, pour
+            cohabiter avec un PostgreSQL deja installe sur le PC.
+  KIOSQUE   1 = le ticket part directement sur l'imprimante par defaut, sans boite de
+            dialogue (necessite Chrome ou Edge). 0 = boite de dialogue habituelle.
+  PASS      mot de passe de la base, tire au hasard a l'installation. Ne le changez pas
+            a la main : la base ne serait plus accessible.
+
+
+EN CAS DE PROBLEME
+------------------
+La caisse ne s'ouvre pas         -> ETAT.bat, puis journaux\poscaisse-erreurs.log
+« port deja utilise »            -> changez APP_PORT dans config\poscaisse.conf
+La base ne demarre pas           -> journaux\postgres.log
+Repartir de zero                 -> ARRETER.bat, renommez « donnees », INSTALLER.bat
+                                    (ATTENTION : toutes les ventes sont perdues)
+
+L'antivirus peut bloquer le premier lancement : autorisez jre\bin\java.exe et
+pgsql\bin\postgres.exe.

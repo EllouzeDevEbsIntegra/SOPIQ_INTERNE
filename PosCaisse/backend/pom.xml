@@ -41,4 +41,39 @@
       <plugin><groupId>org.springframework.boot</groupId><artifactId>spring-boot-maven-plugin</artifactId></plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <!--
+      Profil « bundle » : embarque l'interface compilee dans le JAR.
+
+      En developpement, le backend sert ../frontend/dist depuis le disque, ce qui evite de
+      recompiler le Java a chaque retouche d'ecran. Pour une installation autonome — un PC
+      sans internet, ou l'on depose un dossier et rien d'autre — le JAR doit se suffire a
+      lui-meme : « mvn -Pbundle package » recopie donc dist/ dans le JAR avant de le sceller.
+    -->
+    <profile>
+      <id>bundle</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>frontend-dans-le-jar</id>
+                <phase>prepare-package</phase>
+                <goals><goal>copy-resources</goal></goals>
+                <configuration>
+                  <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+                  <resources>
+                    <resource><directory>${project.basedir}/../frontend/dist</directory><filtering>false</filtering></resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
