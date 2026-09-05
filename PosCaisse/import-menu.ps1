@@ -1,4 +1,4 @@
-<#
+﻿<#
     Import d'une carte dans PosCaisse.
         powershell -File import-menu.ps1 [-File catalogs\number-one.json] [-Ajouter]
     Par defaut : remplacement complet du catalogue.

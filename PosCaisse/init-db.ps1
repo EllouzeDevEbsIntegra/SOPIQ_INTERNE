@@ -1,4 +1,4 @@
-<#
+﻿<#
     Prepare la base PosCaisse : localise psql, attend PostgreSQL, cree la base
     si elle n'existe pas. Utilisable seul ou importe par restart.ps1.
         powershell -File init-db.ps1

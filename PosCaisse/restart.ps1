@@ -1,4 +1,4 @@
-# =====================================================================
+﻿# =====================================================================
 #  PosCaisse - tout en un : arret, mise a jour, base, build, demarrage.
 #  Lance par RESTART_POS.bat (double-clic). Rien d'autre a faire.
 #

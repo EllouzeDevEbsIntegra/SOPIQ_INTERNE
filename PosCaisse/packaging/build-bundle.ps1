@@ -1,12 +1,12 @@
-<#
+﻿<#
     Fabrique le paquet autonome de PosCaisse, a executer sur une machine QUI A INTERNET.
 
-    Le resultat est un dossier — et son ZIP — a copier tel quel sur le PC du client, qui
+    Le resultat est un dossier - et son ZIP - a copier tel quel sur le PC du client, qui
     lui n'a besoin de rien : ni Java, ni PostgreSQL, ni Node, ni droits administrateur.
 
-    Les archives tierces (moteur Java, PostgreSQL) sont conservees dans « telechargements »
-    et reutilisees d'une fabrication a l'autre. Si un telechargement echoue — lien deplace,
-    reseau filtre — le script dit exactement quel fichier deposer la, a la main.
+    Les archives tierces (moteur Java, PostgreSQL) sont conservees dans << telechargements >>
+    et reutilisees d'une fabrication a l'autre. Si un telechargement echoue - lien deplace,
+    reseau filtre - le script dit exactement quel fichier deposer la, a la main.
 #>
 param(
   [string]$Version = (Get-Date -Format 'yyyy.MM.dd'),
@@ -80,7 +80,7 @@ Remove-Item (Join-Path $sortie 'outils\poscaisse.sh') -Force -ErrorAction Silent
 function Extraire($zip, $vers, $strip) {
   $tmp = Join-Path $env:TEMP ('pos-' + [guid]::NewGuid().ToString('N'))
   Expand-Archive -Path $zip -DestinationPath $tmp -Force
-  # Ces archives contiennent un dossier racine (« jdk-21… », « pgsql ») dont on se passe.
+  # Ces archives contiennent un dossier racine (<< jdk-21... >>, << pgsql >>) dont on se passe.
   $src = if ($strip) { (Get-ChildItem $tmp -Directory | Select-Object -First 1).FullName } else { $tmp }
   Move-Item $src $vers -Force
   Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
@@ -93,7 +93,7 @@ Extraire (Join-Path $tele 'postgresql-16-windows-x64-binaries.zip') (Join-Path $
 foreach ($f in @('jre\bin\java.exe', 'pgsql\bin\initdb.exe', 'pgsql\bin\pg_ctl.exe', 'poscaisse.jar', 'INSTALLER.bat')) {
   if (-not (Test-Path (Join-Path $sortie $f))) { Stop-Net "Le paquet est incomplet : $f manque." }
 }
-Set-Content -Path (Join-Path $sortie 'VERSION.txt') -Value "PosCaisse $Version — paquet autonome Windows x64" -Encoding UTF8
+Set-Content -Path (Join-Path $sortie 'VERSION.txt') -Value "PosCaisse $Version - paquet autonome Windows x64" -Encoding UTF8
 
 Etape 'Compression'
 $zip = "$sortie.zip"

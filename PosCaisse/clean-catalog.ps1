@@ -1,4 +1,4 @@
-<#
+﻿<#
     Nettoyage definitif du catalogue PosCaisse.
         powershell -File clean-catalog.ps1 [-ResetVentes] [-Force]
 

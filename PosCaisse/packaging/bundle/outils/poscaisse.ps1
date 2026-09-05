@@ -1,5 +1,5 @@
-<#
-    PosCaisse — poste autonome, sans internet.
+﻿<#
+    PosCaisse - poste autonome, sans internet.
 
     Tout ce dont l'application a besoin vit dans ce dossier : le moteur Java, le serveur
     PostgreSQL, l'application elle-meme et ses donnees. Rien n'est installe dans Windows,
@@ -173,7 +173,7 @@ function Faire-Install {
 
   if (Test-Path (Join-Path $donnees 'PG_VERSION')) {
     Souci 'Une base existe deja dans ce dossier : installation deja faite.'
-    Souci "Pour repartir de zero, renommez le dossier « donnees » puis relancez."
+    Souci "Pour repartir de zero, renommez le dossier << donnees >> puis relancez."
     return
   }
 
@@ -191,12 +191,12 @@ function Faire-Install {
       ForEach-Object { if ($_ -match 'error|FATAL') { Write-Host "  $_" } }
     if (-not (Test-Path (Join-Path $donnees 'PG_VERSION'))) { Stop-Net 'La creation du serveur de base a echoue.' }
   } finally { Remove-Item $pwFile -Force -ErrorAction SilentlyContinue }
-  Info "Serveur cree, compte « $($c.USER) »."
+  Info "Serveur cree, compte << $($c.USER) >>."
 
   Pg-Demarre $c
   $env:PGPASSWORD = $c.PASS
   & $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d postgres -c "CREATE DATABASE $($c.DB);" | Out-Null
-  Info "Base « $($c.DB) » creee."
+  Info "Base << $($c.DB) >> creee."
 
   Etape 'Premier demarrage'
   App-Demarre $c

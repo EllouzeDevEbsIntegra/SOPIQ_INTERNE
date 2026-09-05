@@ -88,3 +88,17 @@ Ne remplacez jamais le dossier `donnees\` : ce sont les ventes du client.
 | `PG_PORT` | port de la base (5433, volontairement différent du 5432 habituel pour cohabiter avec un PostgreSQL déjà installé) |
 | `KIOSQUE` | `1` = ticket imprimé sans boîte de dialogue (Chrome ou Edge requis) |
 | `PASS` | mot de passe de la base, tiré au hasard à l'installation — à ne pas modifier à la main |
+
+---
+
+## Note pour qui modifie les scripts `.ps1`
+
+Windows PowerShell 5.1 — celui livré avec Windows — lit un fichier **sans marque d'ordre des
+octets (BOM)** comme de l'ANSI, pas comme de l'UTF-8. Un tiret cadratin `—` y devient `â€"`,
+dont le dernier caractère est un guillemet fermant que le langage prend pour un **délimiteur
+de chaîne** : le script est coupé en deux et l'erreur signalée tombe des dizaines de lignes
+plus bas que la vraie cause.
+
+Les scripts du dépôt sont donc en **ASCII pur** et portent une **marque d'ordre des octets**.
+`packaging/verifier-scripts.sh` le contrôle, et `build-bundle.sh` l'exécute avant toute
+compilation. PowerShell 7 ne montre pas le problème : il lit l'UTF-8 par défaut.

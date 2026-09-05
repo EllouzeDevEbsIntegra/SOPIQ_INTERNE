@@ -15,6 +15,9 @@ etape() { echo; echo "== $*"; }
 info()  { echo "  $*"; }
 arret() { echo; echo "ARRET : $*" >&2; exit 1; }
 
+etape 'Controle des scripts PowerShell'
+"$ici/verifier-scripts.sh"
+
 etape "Compilation de l'interface"
 ( cd "$projet/frontend" && npm ci --no-audit --no-fund >/dev/null && npm test >/dev/null && npm run build >/dev/null ) \
   || arret "La compilation de l'interface a echoue."
