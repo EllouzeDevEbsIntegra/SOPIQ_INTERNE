@@ -136,22 +136,62 @@ faire_backup() {
   info "Sauvegarde ecrite : $f"
   souci 'Copiez ce fichier hors du poste : ici, il ne survivrait pas a une panne de disque.'
 }
+# Supprime une base, apres avoir coupe ce qui y est encore connecte : la caisse se
+# rebranche des que PostgreSQL revient, et une seule connexion fait echouer la suppression.
+vider_base() {
+  q -d postgres -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '$1' AND pid <> pg_backend_pid();" >/dev/null
+  q -d postgres -v ON_ERROR_STOP=1 -c "DROP DATABASE IF EXISTS $1;" >/dev/null \
+    || arret "La base $1 n'a pas pu etre supprimee : un programme y est encore connecte."
+}
+
 faire_restore() {
   [ -f "${2:-}" ] || arret "Indiquez le fichier de sauvegarde a restaurer."
   lire_config
-  echo "  Cette operation REMPLACE toutes les donnees actuelles par celles de : $2"
-  read -r -p '  Tapez OUI pour confirmer : ' rep; [ "$rep" = OUI ] || { info 'Abandon.'; return 0; }
+  tampon="${DB}_import"
+  q() { "$pgbin/psql" -h 127.0.0.1 -p "$PG_PORT" -U "$USER" "$@"; }
+
+  # 1. Le fichier est-il seulement lisible ? Rien n'est touche tant qu'on n'en est pas sur.
+  etape 'Verification du fichier'
+  taille=$(stat -c%s "$2")
+  [ "$taille" -ge 1024 ] || arret "Le fichier ne fait que $taille octets : il est vide ou incomplet."
+  info "Fichier : $((taille / 1024)) Ko"
+
   app_arrete; pg_demarre
-  PGPASSWORD="$PASS" "$pgbin/psql" -h 127.0.0.1 -p "$PG_PORT" -U "$USER" -d postgres -c "DROP DATABASE IF EXISTS $DB;" >/dev/null
-  PGPASSWORD="$PASS" "$pgbin/psql" -h 127.0.0.1 -p "$PG_PORT" -U "$USER" -d postgres -c "CREATE DATABASE $DB;" >/dev/null
-  # --no-owner et --no-privileges : le dump vient souvent d'une autre installation, ou la
-  # base appartient a un compte qui n'existe pas ici. Sans cela, la restauration s'acheve
-  # sur une avalanche de « role inexistant » et des tables sans proprietaire.
-  PGPASSWORD="$PASS" "$pgbin/pg_restore" -h 127.0.0.1 -p "$PG_PORT" -U "$USER" -d "$DB" \
-    --no-owner --no-privileges "$2" || souci 'La restauration a signale des avertissements.'
-  n=$(PGPASSWORD="$PASS" "$pgbin/psql" -h 127.0.0.1 -p "$PG_PORT" -U "$USER" -d "$DB" -tAc 'select count(*) from product')
-  info "Restauration terminee : $(echo $n) article(s) dans la base."
+  export PGPASSWORD="$PASS"
+  "$pgbin/pg_restore" -l "$2" >/dev/null 2>&1 || arret "Ce fichier n'est pas une sauvegarde PosCaisse lisible."
+  info 'Sauvegarde lisible.'
+
+  # 2. On la depose dans une base a part, pour la regarder. La base en service n'est pas
+  #    touchee : si quoi que ce soit se passe mal, le poste continue de fonctionner.
+  etape 'Lecture du contenu'
+  vider_base "$tampon"
+  q -d postgres -v ON_ERROR_STOP=1 -c "CREATE DATABASE $tampon;" >/dev/null || arret 'Base de travail impossible a creer.'
+  "$pgbin/pg_restore" -h 127.0.0.1 -p "$PG_PORT" -U "$USER" -d "$tampon" --no-owner --no-privileges "$2" 2>&1 | grep -i error || true
+
+  bilan=$(q -d "$tampon" -tAc "select coalesce((select coalesce(trade_name, name) from company limit 1), '(aucune)') || '|' || (select count(*) from product) || '|' || (select count(*) from category) || '|' || (select count(*) from sale_order)" 2>/dev/null || echo '')
+  [ -n "$bilan" ] || { vider_base "$tampon"; arret "Le fichier ne contient pas une base PosCaisse exploitable."; }
+  echo
+  echo '  Ce que contient ce fichier :'
+  echo "    Enseigne   : $(echo "$bilan" | cut -d'|' -f1)"
+  echo "    Articles   : $(echo "$bilan" | cut -d'|' -f2)"
+  echo "    Categories : $(echo "$bilan" | cut -d'|' -f3)"
+  echo "    Tickets    : $(echo "$bilan" | cut -d'|' -f4)"
+
+  # 3. Maintenant seulement, on remplace.
+  actuel=$(q -d "$DB" -tAc "select coalesce((select coalesce(trade_name, name) from company limit 1), '(aucune)') || ', ' || (select count(*) from product) || ' articles'" 2>/dev/null || echo '(base illisible)')
+  echo
+  echo "  Le poste contient aujourd'hui : $actuel"
+  echo '  Tout cela sera REMPLACE par le contenu ci-dessus.'
+  read -r -p '  Tapez OUI pour remplacer : ' rep
+  if [ "$rep" != OUI ]; then vider_base "$tampon"; info "Abandon : le poste n'a pas ete modifie."; return 0; fi
+
+  etape 'Remplacement'
+  vider_base "$DB"
+  q -d postgres -v ON_ERROR_STOP=1 -c "ALTER DATABASE $tampon RENAME TO $DB;" >/dev/null \
+    || arret "Le remplacement a echoue : la base restauree s'appelle encore $tampon."
+  info "Le poste contient maintenant : $(echo "$bilan" | cut -d'|' -f1), $(echo "$bilan" | cut -d'|' -f2) articles."
 }
+
 faire_status() {
   lire_config
   pg_tourne && info "Base de donnees : en service (port $PG_PORT)" || info 'Base de donnees : arretee'

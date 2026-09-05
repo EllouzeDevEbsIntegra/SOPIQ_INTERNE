@@ -90,7 +90,35 @@ if (-not $ventes) {
 Etape 'Export en cours'
 & $pgdump @args
 if ($LASTEXITCODE -ne 0 -or -not (Test-Path $fichier)) { Stop-Net "L'export a echoue." }
-$taille = [math]::Round((Get-Item $fichier).Length / 1KB, 0)
+# pg_dump cree le fichier avant d'ecrire : un echec en cours de route laisse une coquille
+# vide, qu'on decouvrirait seulement au moment de restaurer, chez le client.
+$octets = (Get-Item $fichier).Length
+if ($octets -lt 1024) {
+  Remove-Item $fichier -Force -ErrorAction SilentlyContinue
+  Stop-Net "L'export n'a rien produit ($octets octets). Verifiez que PostgreSQL tourne et que la base $dbName existe."
+}
+$taille = [math]::Round($octets / 1KB, 0)
+
+# Ce qu'on vient d'emporter, lu dans la base source : c'est ici qu'on voit si on exporte
+# bien la bonne installation, pas apres avoir traverse la ville avec une cle USB.
+$psqlExe = Trouver-Outil 'psql.exe'
+if ($psqlExe) {
+  $r = & $psqlExe -h $dbHost -p $dbPort -U $dbUser -d $dbName -tAc `
+    "select coalesce((select coalesce(trade_name, name) from company limit 1), '(aucune)') || '|' || (select count(*) from product) || '|' || (select count(*) from category)"
+  $p = ("$r".Trim() -split '\|')
+  if ($p.Count -ge 3) {
+    Info ""
+    Info ("Enseigne exportee : " + $p[0])
+    Info ("Articles          : " + $p[1])
+    Info ("Categories        : " + $p[2])
+    if ($p[0] -match 'FAST FOOD DEMO') {
+      Souci ''
+      Souci "Cette base contient l'enseigne du jeu de DEMONSTRATION."
+      Souci "Verifiez que vous exportez bien l'installation ou vous avez saisi votre carte"
+      Souci "(variables POSCAISSE_DB_NAME / POSCAISSE_DB_PORT si vous en utilisez plusieurs)."
+    }
+  }
+}
 
 Etape 'Export termine'
 Info "Fichier : $fichier ($taille Ko)"

@@ -340,24 +340,85 @@ function Faire-Backup {
 function Faire-Restore {
   if (-not $Fichier -or -not (Test-Path $Fichier)) { Stop-Net "Indiquez le fichier de sauvegarde a restaurer." }
   $c = Lire-Config
-  Write-Host ''
-  Write-Host "  Cette operation REMPLACE toutes les donnees actuelles par celles de :" -ForegroundColor Yellow
-  Write-Host "  $Fichier" -ForegroundColor Yellow
-  if ((Read-Host '  Tapez OUI pour confirmer') -ne 'OUI') { Info 'Abandon.'; return }
+  $tampon = $c.DB + '_import'
+
+  # --- 1. Le fichier est-il seulement lisible ? ---
+  # Rien n'est touche tant qu'on n'en est pas sur. Un fichier tronque, copie a moitie
+  # depuis une cle USB, ou qui n'est pas une sauvegarde du tout, s'arrete ici.
+  Etape 'Verification du fichier'
+  $taille = (Get-Item $Fichier).Length
+  if ($taille -lt 1024) { Stop-Net "Le fichier ne fait que $taille octets : il est vide ou incomplet." }
+  Info ("Fichier : " + [math]::Round($taille / 1KB, 0) + " Ko")
+
   App-Arrete $c
   Pg-Demarre $c
   $env:PGPASSWORD = $c.PASS
-  & $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d postgres -c "DROP DATABASE IF EXISTS $($c.DB);" | Out-Null
-  & $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d postgres -c "CREATE DATABASE $($c.DB);" | Out-Null
-  # --no-owner et --no-privileges : le dump vient souvent d'une autre installation, ou la
-  # base appartient a un compte (<< postgres >>) qui n'existe pas ici. Sans cela, la
-  # restauration s'acheve sur une avalanche de << role inexistant >> et des tables sans
-  # proprietaire. Les objets restaures appartiennent au compte de ce poste.
-  & $restore -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d $c.DB --no-owner --no-privileges $Fichier
-  if ($LASTEXITCODE -ne 0) { Souci 'La restauration a signale des avertissements (voir ci-dessus).' }
-  $n = & $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d $c.DB -tAc 'select count(*) from product'
-  Info ("Restauration terminee : " + ("$n".Trim()) + " article(s) dans la base.")
+
+  & $restore -l $Fichier | Out-Null
+  if ($LASTEXITCODE -ne 0) { Stop-Net "Ce fichier n'est pas une sauvegarde PosCaisse lisible." }
+  Info 'Sauvegarde lisible.'
+
+  # --- 2. On la depose dans une base a part, pour la regarder ---
+  # La base en service n'est pas touchee : si quoi que ce soit se passe mal, le poste
+  # continue de fonctionner avec ce qu'il avait.
+  Etape 'Lecture du contenu'
+  Vider-Base $c $tampon
+  & $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d postgres -v ON_ERROR_STOP=1 -c "CREATE DATABASE $tampon;" | Out-Null
+  if ($LASTEXITCODE -ne 0) { Stop-Net "Base de travail impossible a creer." }
+  & $restore -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d $tampon --no-owner --no-privileges $Fichier 2>&1 |
+    ForEach-Object { if ($_ -match 'error|ERREUR') { Write-Host "  $_" } }
+
+  $bilan = & $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d $tampon -tAc `
+    "select coalesce((select coalesce(trade_name, name) from company limit 1), '(aucune)') || '|' || (select count(*) from product) || '|' || (select count(*) from category) || '|' || (select count(*) from sale_order)"
+  $p = ("$bilan".Trim() -split '\|')
+  if ($p.Count -lt 4 -or -not $p[1]) { Vider-Base $c $tampon; Stop-Net "Le fichier ne contient pas une base PosCaisse exploitable." }
+
+  Write-Host ''
+  Write-Host "  Ce que contient ce fichier :" -ForegroundColor Cyan
+  Write-Host ("    Enseigne   : " + $p[0])
+  Write-Host ("    Articles   : " + $p[1])
+  Write-Host ("    Categories : " + $p[2])
+  Write-Host ("    Tickets    : " + $p[3])
+  if ($p[0] -match 'FAST FOOD DEMO') {
+    Write-Host ''
+    Souci "Attention : c'est l'enseigne du jeu de DEMONSTRATION."
+    Souci "Ce fichier ne vient probablement pas de la base que vous vouliez exporter."
+  }
+
+  # --- 3. Maintenant seulement, on remplace ---
+  $actuel = & $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d $c.DB -tAc `
+    "select coalesce((select coalesce(trade_name, name) from company limit 1), '(aucune)') || ', ' || (select count(*) from product) || ' articles, ' || (select count(*) from sale_order) || ' tickets'"
+  Write-Host ''
+  Write-Host ("  Le poste contient aujourd'hui : " + ("$actuel".Trim())) -ForegroundColor Yellow
+  Write-Host "  Tout cela sera REMPLACE par le contenu ci-dessus." -ForegroundColor Yellow
+  if ((Read-Host '  Tapez OUI pour remplacer') -ne 'OUI') {
+    Vider-Base $c $tampon
+    Info 'Abandon : le poste n''a pas ete modifie.'
+    return
+  }
+
+  Etape 'Remplacement'
+  Vider-Base $c $c.DB
+  & $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d postgres -v ON_ERROR_STOP=1 -c "ALTER DATABASE $tampon RENAME TO $($c.DB);" | Out-Null
+  if ($LASTEXITCODE -ne 0) { Stop-Net "Le remplacement a echoue : la base restauree s'appelle encore $tampon." }
+  Info 'Termine.'
+  Info ("Le poste contient maintenant : " + $p[0] + ", " + $p[1] + " articles, " + $p[3] + " tickets.")
+  Info ''
   Info 'Relancez avec DEMARRER.bat.'
+}
+
+<# Supprime une base, apres avoir coupe ce qui y est encore connecte : la caisse se
+   rebranche des que PostgreSQL revient, et une seule connexion fait echouer la
+   suppression. #>
+function Vider-Base($c, [string]$nom) {
+  & $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d postgres -c `
+    "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '$nom' AND pid <> pg_backend_pid();" | Out-Null
+  & $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d postgres -v ON_ERROR_STOP=1 -c "DROP DATABASE IF EXISTS $nom;" | Out-Null
+  if ($LASTEXITCODE -ne 0) {
+    Souci "La base $nom n'a pas pu etre supprimee : un programme y est encore connecte."
+    Souci 'Fermez la caisse avec ARRETER.bat, puis recommencez.'
+    Stop-Net 'Operation impossible.'
+  }
 }
 
 function Faire-Status {
