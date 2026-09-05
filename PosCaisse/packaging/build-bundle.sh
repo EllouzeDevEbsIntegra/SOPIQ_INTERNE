@@ -40,6 +40,10 @@ etape 'Assemblage du paquet'
 rm -rf "$sortie"; mkdir -p "$sortie"
 cp "$jarproduit" "$sortie/poscaisse.jar"
 rm -f "$jarproduit" "$jarproduit.original"
+# L'interface copiee dans target/classes par le profil « bundle » n'avait de sens que le
+# temps de la sceller dans le JAR livre. Laissee la, elle passe devant frontend/dist et le
+# poste de developpement sert indefiniment l'interface du jour de cette fabrication.
+rm -rf "$projet/backend/target/classes/static"
 cp -r "$ici/bundle/." "$sortie/"
 [ -d "$projet/catalogs" ] && cp -r "$projet/catalogs" "$sortie/"
 # Les lanceurs Windows n'ont rien a faire dans un paquet Linux.

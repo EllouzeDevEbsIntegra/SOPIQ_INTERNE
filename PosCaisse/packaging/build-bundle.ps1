@@ -179,6 +179,24 @@ New-Item -ItemType Directory -Force -Path $sortie | Out-Null
 Copy-Item $jarProduit (Join-Path $sortie 'poscaisse.jar')
 # Le JAR horodate a joue son role : le garder encombrerait target de 60 Mo par fabrication.
 Remove-Item $jarProduit, "$jarProduit.original" -Force -ErrorAction SilentlyContinue
+
+<#
+    On retire aussi l'interface copiee dans target\classes par le profil << bundle >>.
+
+    Elle n'avait de sens que le temps de la sceller dans le JAR livre. Laissee la, elle
+    empoisonne le poste de developpement : le backend cherche l'interface dans
+    << classpath:/static/ >> AVANT << ../frontend/dist >>, et << mvn package >> - qui ne
+    fait pas de << clean >>, pour ne pas buter sur un JAR tenu ouvert par une caisse -
+    l'embarque telle quelle dans le JAR de developpement.
+
+    On recompile alors sans rien voir changer, et rien ne l'explique. Le poste servait
+    l'interface du jour de la derniere fabrication de paquet.
+#>
+$statiqueFige = Join-Path $backend 'target\classes\static'
+if (Test-Path $statiqueFige) {
+  Remove-Item $statiqueFige -Recurse -Force -ErrorAction SilentlyContinue
+  Info 'Interface retiree de target\classes : le poste de developpement retrouve la sienne.'
+}
 Copy-Item (Join-Path $ici 'bundle\*') $sortie -Recurse -Force
 if (Test-Path (Join-Path $projet 'catalogs')) { Copy-Item (Join-Path $projet 'catalogs') $sortie -Recurse -Force }
 # Le jumeau Linux n'a rien a faire dans un paquet Windows.
