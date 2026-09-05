@@ -26,9 +26,12 @@ function Souci($m) { Write-Host "  $m" -ForegroundColor Yellow }
 function Stop-Net($m) { Write-Host ''; Write-Host "ARRET : $m" -ForegroundColor Red; exit 1 }
 
 <#
-    Une caisse en service tient le JAR ouvert, et Windows refuse alors de le renommer :
-    la compilation echoue sur un << Unable to rename ... to ...jar.original >> qui ne dit
-    pas d'ou vient le blocage. On ferme donc ce qui tourne avant de compiler.
+    Ferme les caisses encore en service. Ce n'est plus indispensable depuis que le JAR de
+    la fabrication porte un nom neuf, qu'aucun programme ne peut retenir, mais cela evite
+    de laisser tourner une ancienne version pendant qu'on en prepare une nouvelle.
+
+    START_POS lance la caisse par << java -jar >> dans une fenetre REDUITE : on l'oublie
+    facilement, et c'est elle qui tenait le fichier.
 #>
 function Arreter-Caisses {
   $procs = @(Get-CimInstance Win32_Process -Filter "Name = 'java.exe'" -ErrorAction SilentlyContinue |
@@ -88,37 +91,41 @@ try {
 } finally { Pop-Location }
 
 Etape 'Compilation de l''application (interface incluse dans le JAR)'
-Push-Location (Join-Path $projet 'backend')
+Arreter-Caisses
+$backend = Join-Path $projet 'backend'
+# Le JAR de cette fabrication porte un nom qui n'a jamais servi. C'est ce qui rend la
+# compilation insensible a une caisse restee ouverte : Windows interdit de supprimer ou de
+# renommer un fichier ouvert, mais rien n'empeche d'en ecrire un autre a cote.
+$nomJar = 'poscaisse-bundle-' + (Get-Date -Format 'yyyyMMdd-HHmmss')
+Push-Location $backend
 try {
+  # Pas de << clean >> : il buterait sur ce meme fichier ouvert. On vide seulement
+  # l'interface deja copiee lors d'une fabrication precedente, pour ne pas laisser
+  # d'anciens ecrans dans le nouveau JAR.
+  $statique = Join-Path $backend 'target\classes\static'
+  if (Test-Path $statique) { Remove-Item $statique -Recurse -Force -ErrorAction SilentlyContinue }
+
   $opts = if ($SansTests) { '-DskipTests' } else { '' }
-  # << clean >> pour repartir d'un dossier target vide : un JAR laisse par une compilation
-  # precedente est la premiere chose que Windows refuse de renommer.
-  $reussi = $false
-  for ($essai = 1; $essai -le 3; $essai++) {
-    cmd /c "mvn -q -B -Pbundle clean package $opts"
-    if ($LASTEXITCODE -eq 0) { $reussi = $true; break }
-    if ($essai -lt 3) {
-      # Un antivirus qui inspecte le JAR a peine ecrit le verrouille une seconde ou deux :
-      # une nouvelle tentative suffit le plus souvent.
-      Souci "Echec (tentative $essai sur 3). Nouvelle tentative dans 8 secondes..."
-      Start-Sleep -Seconds 8
-    }
-  }
-  if (-not $reussi) {
+  cmd /c "mvn -q -B -Pbundle package $opts `"-Dposcaisse.finalName=$nomJar`""
+  if ($LASTEXITCODE -ne 0) {
     Souci ''
-    Souci 'Si le message parle de << Unable to rename >>, un programme tient le fichier :'
-    Souci '  - une caisse encore ouverte (fermez la fenetre noire de PosCaisse) ;'
-    Souci '  - l''Explorateur Windows positionne sur backend\target ;'
-    Souci '  - un antivirus en train d''inspecter le JAR (mettez le dossier en exception).'
+    Souci 'Si le message parle d''un fichier utilise par un autre processus, ouvrez le'
+    Souci 'Moniteur de ressources (touche Windows, tapez << resmon >>), onglet Processeur,'
+    Souci 'section << Handles associes >>, et cherchez le nom du fichier : Windows nomme'
+    Souci 'alors le programme qui le retient.'
     Stop-Net 'La compilation du backend a echoue.'
   }
 } finally { Pop-Location }
+$jarProduit = Join-Path $backend "target\$nomJar.jar"
+if (-not (Test-Path $jarProduit)) { Stop-Net "Le JAR attendu n'a pas ete produit : $jarProduit" }
 
 Etape 'Assemblage du paquet'
 if (Test-Path $sortie) { Remove-Item $sortie -Recurse -Force }
 New-Item -ItemType Directory -Force -Path $sortie | Out-Null
 
-Copy-Item (Join-Path $projet 'backend\target\poscaisse-backend.jar') (Join-Path $sortie 'poscaisse.jar')
+Copy-Item $jarProduit (Join-Path $sortie 'poscaisse.jar')
+# Le JAR horodate a joue son role : le garder encombrerait target de 60 Mo par fabrication.
+Remove-Item $jarProduit, "$jarProduit.original" -Force -ErrorAction SilentlyContinue
 Copy-Item (Join-Path $ici 'bundle\*') $sortie -Recurse -Force
 if (Test-Path (Join-Path $projet 'catalogs')) { Copy-Item (Join-Path $projet 'catalogs') $sortie -Recurse -Force }
 # Le jumeau Linux n'a rien a faire dans un paquet Windows.

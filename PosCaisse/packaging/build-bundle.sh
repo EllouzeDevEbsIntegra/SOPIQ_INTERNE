@@ -24,16 +24,22 @@ etape "Compilation de l'interface"
 info 'Interface compilee.'
 
 etape "Compilation de l'application (interface incluse dans le JAR)"
-# « clean » : un JAR laisse par une compilation precedente est la premiere chose que
-# Windows refuse de renommer. Linux n'a pas ce probleme — un fichier ouvert s'y renomme
-# sans broncher — donc pas d'arret de processus ici : le motif de recherche risquerait
-# d'emporter le script lui-meme.
-( cd "$projet/backend" && mvn -q -B -Pbundle clean package ) || arret 'La compilation du backend a echoue.'
+# Le JAR de cette fabrication porte un nom qui n'a jamais servi : sous Windows, un JAR
+# ouvert par une caisse en service ne peut etre ni supprime ni renomme, et la compilation
+# echouerait sur un fichier sans rapport avec ce qu'on construit. Meme sequence ici, pour
+# que les deux chaines produisent exactement la meme chose.
+nomjar="poscaisse-bundle-$(date +%Y%m%d-%H%M%S)"
+rm -rf "$projet/backend/target/classes/static"
+( cd "$projet/backend" && mvn -q -B -Pbundle package "-Dposcaisse.finalName=$nomjar" ) \
+  || arret 'La compilation du backend a echoue.'
+jarproduit="$projet/backend/target/$nomjar.jar"
+[ -f "$jarproduit" ] || arret "Le JAR attendu n'a pas ete produit : $jarproduit"
 info 'JAR autonome produit.'
 
 etape 'Assemblage du paquet'
 rm -rf "$sortie"; mkdir -p "$sortie"
-cp "$projet/backend/target/poscaisse-backend.jar" "$sortie/poscaisse.jar"
+cp "$jarproduit" "$sortie/poscaisse.jar"
+rm -f "$jarproduit" "$jarproduit.original"
 cp -r "$ici/bundle/." "$sortie/"
 [ -d "$projet/catalogs" ] && cp -r "$projet/catalogs" "$sortie/"
 # Les lanceurs Windows n'ont rien a faire dans un paquet Linux.
