@@ -32,7 +32,7 @@ et relancez :
 | Fichier attendu | Où le prendre |
 |---|---|
 | `jre-21-windows-x64.zip` | adoptium.net → Temurin 21, Windows x64, **JRE**, archive `.zip` |
-| `postgresql-16-windows-x64-binaries.zip` | enterprisedb.com → *PostgreSQL Binaries*, 16, Windows x86-64 |
+| `postgresql-16-windows-x64-binaries.zip` | enterprisedb.com → *PostgreSQL Binaries*, 16, Windows x86-64 (le `16` suit `-VersionPostgres` ; n'importe quelle version mineure convient) |
 
 Sur Linux, `./build-bundle.sh` fait la même chose (`.tar.gz`).
 
@@ -50,8 +50,11 @@ est plus récente que 16, fabriquez le paquet dans cette version :
 .\build-bundle.ps1 -VersionPostgres 17
 ```
 
-Versions acceptées : 14, 15, 16, 17. Le numéro retenu est écrit dans `VERSION.txt` du
-paquet.
+Versions acceptées : 14, 15, 16, 17. Le script essaie plusieurs versions mineures jusqu'à
+ce que le serveur d'EnterpriseDB en serve une — les anciennes y disparaissent sans
+préavis, et seule la version **majeure** compte pour relire une sauvegarde. Si aucune ne
+répond, il indique le nom exact du fichier à déposer à la main. La version réellement
+assemblée est lue dans les binaires et inscrite dans `VERSION.txt` du paquet.
 
 Sur un poste **déjà installé**, changer de version majeure rend illisible le dossier
 `donnees\` : sauvegardez (`SAUVEGARDER.bat`), renommez `donnees\`, relancez

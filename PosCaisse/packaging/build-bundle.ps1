@@ -63,45 +63,69 @@ function Arreter-Caisses {
     cree chez le client. Il faut alors sauvegarder, renommer le dossier et relancer
     INSTALLER.bat, puis restaurer.
 #>
+<#
+    Plusieurs versions mineures par version majeure, de la plus sure a la plus recente.
+
+    EnterpriseDB retire de son serveur les mineures anciennes sans prevenir : un numero
+    ecrit en dur finit toujours par renvoyer une page d'erreur. Le script essaie donc
+    chaque candidate jusqu'a ce qu'une reponde. Seule la version MAJEURE compte pour
+    relire une sauvegarde ; la mineure ne change rien a l'affaire.
+
+    La 16.8-1 est en tete de sa liste parce qu'elle a reellement servi a fabriquer un
+    paquet en service.
+#>
 $versionsPostgres = @{
-  '14' = '14.17-1'
-  '15' = '15.12-1'
-  '16' = '16.8-1'
-  '17' = '17.4-1'
+  '14' = @('14.17-1', '14.18-1', '14.19-1')
+  '15' = @('15.12-1', '15.13-1', '15.14-1')
+  '16' = @('16.8-1', '16.9-1', '16.10-1')
+  '17' = @('17.6-1', '17.5-1', '17.4-1', '17.2-1')
 }
-$pgComplet = $versionsPostgres[$VersionPostgres]
+$pgCandidats = $versionsPostgres[$VersionPostgres]
 $pgArchive = "postgresql-$VersionPostgres-windows-x64-binaries.zip"
 
 # Versions figees : le poste client tourne exactement sur ce qui a ete teste ici.
 $sources = @(
   @{ Nom = 'jre';   Fichier = 'jre-21-windows-x64.zip'
-     Url = 'https://api.adoptium.net/v3/binary/latest/21/ga/windows/x64/jre/hotspot/normal/eclipse'
+     Urls = @('https://api.adoptium.net/v3/binary/latest/21/ga/windows/x64/jre/hotspot/normal/eclipse')
      Aide = 'https://adoptium.net/temurin/releases/?os=windows&arch=x64&package=jre&version=21 (archive .zip)' },
   @{ Nom = 'pgsql'; Fichier = $pgArchive
-     Url = "https://get.enterprisedb.com/postgresql/postgresql-$pgComplet-windows-x64-binaries.zip"
+     Urls = @($pgCandidats | ForEach-Object { "https://get.enterprisedb.com/postgresql/postgresql-$_-windows-x64-binaries.zip" })
      Aide = "https://www.enterprisedb.com/download-postgresql-binaries (PostgreSQL $VersionPostgres, Windows x86-64)" },
   # PostgreSQL fourni en binaires exige cette bibliotheque Microsoft. Elle est presente
   # sur la plupart des Windows recents, mais pas sur tous : l'embarquer evite un
   # deplacement chez le client pour un fichier de 25 Mo qu'il ne peut pas telecharger.
   @{ Nom = 'vcredist'; Fichier = 'vc_redist.x64.exe'; Facultatif = $true
-     Url = 'https://aka.ms/vs/17/release/vc_redist.x64.exe'
+     Urls = @('https://aka.ms/vs/17/release/vc_redist.x64.exe')
      Aide = 'https://aka.ms/vs/17/release/vc_redist.x64.exe' }
 )
 
 Etape 'Recuperation des composants tiers'
-Info "PostgreSQL embarque : version $VersionPostgres ($pgComplet)"
+Info "PostgreSQL embarque : version majeure $VersionPostgres"
 foreach ($s in $sources) {
   $dest = Join-Path $tele $s.Fichier
   if (Test-Path $dest) { Info "$($s.Fichier) : deja present"; continue }
-  Info "$($s.Fichier) : telechargement..."
-  try {
-    Invoke-WebRequest -Uri $s.Url -OutFile $dest -UseBasicParsing
-  } catch {
-    Remove-Item $dest -Force -ErrorAction SilentlyContinue
+  $pris = $false
+  foreach ($url in $s.Urls) {
+    Info "$($s.Fichier) : telechargement depuis $url"
+    try {
+      Invoke-WebRequest -Uri $url -OutFile $dest -UseBasicParsing
+      $pris = $true
+      break
+    } catch {
+      Remove-Item $dest -Force -ErrorAction SilentlyContinue
+      Souci "  indisponible : $($_.Exception.Message)"
+    }
+  }
+  if (-not $pris) {
     Write-Host ''
     Write-Host "  Telechargement impossible : $($s.Fichier)" -ForegroundColor Yellow
     Write-Host "  Recuperez le fichier ici : $($s.Aide)" -ForegroundColor Yellow
     Write-Host "  puis deposez-le sous ce nom exact dans : $tele" -ForegroundColor Yellow
+    if ($s.Nom -eq 'pgsql') {
+      Write-Host '  N''importe quelle version mineure fait l''affaire, du moment que la version' -ForegroundColor Yellow
+      Write-Host "  MAJEURE est $VersionPostgres : c'est elle seule qui decide de la lecture des" -ForegroundColor Yellow
+      Write-Host '  sauvegardes. Renommez l''archive sous le nom exact ci-dessus.' -ForegroundColor Yellow
+    }
     if ($s.Facultatif) {
       Write-Host '  (facultatif : le paquet se fabrique sans, mais le poste client devra' -ForegroundColor Yellow
       Write-Host '   deja disposer de la bibliotheque Microsoft VC++)' -ForegroundColor Yellow
@@ -184,11 +208,18 @@ if (Test-Path $vc) {
 foreach ($f in @('jre\bin\java.exe', 'pgsql\bin\initdb.exe', 'pgsql\bin\pg_ctl.exe', 'poscaisse.jar', 'INSTALLER.bat')) {
   if (-not (Test-Path (Join-Path $sortie $f))) { Stop-Net "Le paquet est incomplet : $f manque." }
 }
+# Version reelle des binaires assembles, pas celle qu'on croit avoir telechargee : si
+# l'archive a ete deposee a la main, c'est la seule qui dise la verite.
+$pgReel = (& (Join-Path $sortie 'pgsql\bin\pg_restore.exe') --version 2>&1 | Out-String).Trim()
 Set-Content -Path (Join-Path $sortie 'VERSION.txt') -Encoding UTF8 -Value @(
   "PosCaisse $Version - paquet autonome Windows x64",
-  "PostgreSQL $VersionPostgres ($pgComplet)",
+  "PostgreSQL embarque : $pgReel",
   "Une sauvegarde a restaurer ici doit venir d'un PostgreSQL $VersionPostgres ou plus ancien."
 )
+if ($pgReel -notmatch "\b$VersionPostgres\.") {
+  Souci "Les binaires assembles annoncent << $pgReel >>, et non la version $VersionPostgres demandee."
+  Souci "Verifiez l'archive $pgArchive dans $tele."
+}
 
 Etape 'Compression'
 $zip = "$sortie.zip"
