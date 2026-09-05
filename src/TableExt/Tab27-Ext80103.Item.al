@@ -453,6 +453,11 @@ tableextension 80103 "Item" extends Item //27
         {
         }
     }
+    var
+        // cache du singleton "Inventory Setup" pour setMgPrincipalFilter
+        InvSetupMagasinCentral: Code[100];
+        InvSetupLoaded, InvSetupFound : Boolean;
+
     trigger OnAfterDelete()
     var
         recItemMaster: Record "items Master";
@@ -636,14 +641,22 @@ tableextension 80103 "Item" extends Item //27
     end;
 
 
+    // Appele une fois par ligne affichee (liste articles, pages Mg STK, etats).
+    // "Inventory Setup" est une table singleton : on ne la lit qu'une seule fois
+    // par instance d'enregistrement au lieu d'un FindFirst a chaque ligne.
     procedure setMgPrincipalFilter(recitem: Record item)
     var
         recInventorySetup: Record "Inventory Setup";
     begin
-        recInventorySetup.Reset();
-        if recInventorySetup.FindFirst() then begin
-            "Mg Principal Filter" := recInventorySetup."Magasin Central";
+        if not InvSetupLoaded then begin
+            recInventorySetup.Reset();
+            InvSetupFound := recInventorySetup.FindFirst();
+            if InvSetupFound then
+                InvSetupMagasinCentral := recInventorySetup."Magasin Central";
+            InvSetupLoaded := true;
         end;
 
+        if InvSetupFound then
+            "Mg Principal Filter" := InvSetupMagasinCentral;
     end;
 }

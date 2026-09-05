@@ -80,11 +80,8 @@ codeunit 50027 "Update Avg Daily Sales"
         DaysWithStock := ItemDailyStats.Count;
 
         ItemDailyStats.SetRange("Has Positive Stock");
-        if ItemDailyStats.FindSet() then begin
-            repeat
-                TotalSold += ItemDailyStats."Total Sold";
-            until ItemDailyStats.Next() = 0;
-        end;
+        ItemDailyStats.CalcSums("Total Sold");
+        TotalSold := ItemDailyStats."Total Sold";
 
         if (DaysWithStock > 0) and (TotalSold > 0) then
             exit(Round(TotalSold / DaysWithStock, 0.0001));
@@ -99,11 +96,8 @@ codeunit 50027 "Update Avg Daily Sales"
         ItemLedgEntry.SetRange("Item No.", ItemNo);
         ItemLedgEntry.SetRange("Posting Date", FromDate, ToDate);
         ItemLedgEntry.SetRange("Entry Type", ItemLedgEntry."Entry Type"::Sale);
-        if ItemLedgEntry.FindSet() then begin
-            ItemLedgEntry.CalcSums(Quantity);
-            exit(-ItemLedgEntry.Quantity);
-        end;
-        exit(0);
+        ItemLedgEntry.CalcSums(Quantity);
+        exit(-ItemLedgEntry.Quantity);
     end;
 
     local procedure CountDaysWithPositiveStock(ItemNo: Code[20]; FromDate: Date; ToDate: Date): Integer
@@ -136,10 +130,8 @@ codeunit 50027 "Update Avg Daily Sales"
         ItemLedgEntry.SetFilter("Posting Date", '..%1', AsOfDate);
         ItemLedgEntry.SetRange(isLocationExclu, false);  // Exclut les locations marquées
 
-        if ItemLedgEntry.FindSet() then begin
-            ItemLedgEntry.CalcSums(Quantity);
-            AvailableStock := ItemLedgEntry.Quantity;
-        end;
+        ItemLedgEntry.CalcSums(Quantity);
+        AvailableStock := ItemLedgEntry.Quantity;
 
         exit(AvailableStock);
     end;

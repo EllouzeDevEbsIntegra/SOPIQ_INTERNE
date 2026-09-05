@@ -38,9 +38,9 @@ codeunit 50025 "KPI Management"
         CustLedEntry.SetRange("Document Type", CustLedEntry."Document Type"::Invoice);
         CustLedEntry.SetRange(Open, true);
         CustLedEntry.SetFilter("Customer Posting Group", '<>CLT-INT');
+        CustLedEntry.SetAutoCalcFields("Remaining Amount");
         if CustLedEntry.FindSet() then
             repeat
-                CustLedEntry.CalcFields("Remaining Amount");
                 Total += CustLedEntry."Remaining Amount";
             until CustLedEntry.Next() = 0;
         exit(Total);
@@ -67,9 +67,9 @@ codeunit 50025 "KPI Management"
         CustLedEntry.SetRange("Document Type", CustLedEntry."Document Type"::"Credit Memo");
         CustLedEntry.SetRange(Open, true);
         CustLedEntry.SetFilter("Customer Posting Group", '<>CLT-INT');
+        CustLedEntry.SetAutoCalcFields("Remaining Amount");
         if CustLedEntry.FindSet() then
             repeat
-                CustLedEntry.CalcFields("Remaining Amount");
                 Total += CustLedEntry."Remaining Amount";
             until CustLedEntry.Next() = 0;
         exit(Total);
@@ -94,9 +94,9 @@ codeunit 50025 "KPI Management"
         Total := 0;
         SalesInvHeader.Reset();
         SalesInvHeader.SetRange(solde, false);
+        SalesInvHeader.SetAutoCalcFields("Amount Including VAT", "Montant reçu caisse");
         if SalesInvHeader.FindSet() then
             repeat
-                SalesInvHeader.CalcFields("Amount Including VAT", "Montant reçu caisse");
                 Total += SalesInvHeader."Amount Including VAT" + SalesInvHeader."STStamp Amount" - SalesInvHeader."Montant reçu caisse";
             until SalesInvHeader.Next() = 0;
         exit(Total);
@@ -110,9 +110,9 @@ codeunit 50025 "KPI Management"
         Total := 0;
         SalesCrMemo.Reset();
         SalesCrMemo.SetRange(solde, false);
+        SalesCrMemo.SetAutoCalcFields("Amount Including VAT", "Montant reçu caisse");
         if SalesCrMemo.FindSet() then
             repeat
-                SalesCrMemo.CalcFields("Amount Including VAT", "Montant reçu caisse");
                 Total += SalesCrMemo."Amount Including VAT" - SalesCrMemo."Montant reçu caisse";
             until SalesCrMemo.Next() = 0;
         exit(Total);
@@ -127,9 +127,9 @@ codeunit 50025 "KPI Management"
         SalesShipment.Reset();
         SalesShipment.SetRange(solde, false);
         SalesShipment.SetRange(BS, false);
+        SalesShipment.SetAutoCalcFields("Line Amount", "Montant reçu caisse");
         if SalesShipment.FindSet() then
             repeat
-                SalesShipment.CalcFields("Line Amount", "Montant reçu caisse");
                 Total += SalesShipment."Line Amount" - SalesShipment."Montant reçu caisse";
             until SalesShipment.Next() = 0;
         exit(Total);
@@ -143,9 +143,9 @@ codeunit 50025 "KPI Management"
         Total := 0;
         ArchiveBS.Reset();
         ArchiveBS.SetRange(solde, false);
+        ArchiveBS.SetAutoCalcFields("Montant TTC", "Montant reçu caisse");
         if ArchiveBS.FindSet() then
             repeat
-                ArchiveBS.CalcFields("Montant TTC", "Montant reçu caisse");
                 Total += ArchiveBS."Montant TTC" - ArchiveBS."Montant reçu caisse";
             until ArchiveBS.Next() = 0;
         exit(Total);
@@ -160,9 +160,9 @@ codeunit 50025 "KPI Management"
         ReturnReceipt.Reset();
         ReturnReceipt.SetRange(solde, false);
         ReturnReceipt.SetRange(BS, false);
+        ReturnReceipt.SetAutoCalcFields("Line Amount", "Montant reçu caisse");
         if ReturnReceipt.FindSet() then
             repeat
-                ReturnReceipt.CalcFields("Line Amount", "Montant reçu caisse");
                 Total += ReturnReceipt."Line Amount" - ReturnReceipt."Montant reçu caisse";
             until ReturnReceipt.Next() = 0;
         exit(Total);
@@ -177,9 +177,9 @@ codeunit 50025 "KPI Management"
         ReturnReceipt.Reset();
         ReturnReceipt.SetRange(solde, false);
         ReturnReceipt.SetRange(BS, true);
+        ReturnReceipt.SetAutoCalcFields("Line Amount", "Montant reçu caisse");
         if ReturnReceipt.FindSet() then
             repeat
-                ReturnReceipt.CalcFields("Line Amount", "Montant reçu caisse");
                 Total += ReturnReceipt."Line Amount" - ReturnReceipt."Montant reçu caisse";
             until ReturnReceipt.Next() = 0;
         exit(Total);
@@ -188,33 +188,23 @@ codeunit 50025 "KPI Management"
     local procedure ComputeTodaySales(): Decimal
     var
         SalesLine: Record "Sales Line";
-        Total: Decimal;
     begin
-        Total := 0;
         SalesLine.Reset();
         SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
         SalesLine.SetRange("Shipment Date", WorkDate());
-        if SalesLine.FindSet() then
-            repeat
-                Total += SalesLine."Line Amount";
-            until SalesLine.Next() = 0;
-        exit(Total);
+        SalesLine.CalcSums("Line Amount");
+        exit(SalesLine."Line Amount");
     end;
 
     local procedure ComputeTodayReturns(): Decimal
     var
         SalesLine: Record "Sales Line";
-        Total: Decimal;
     begin
-        Total := 0;
         SalesLine.Reset();
         SalesLine.SetRange("Document Type", SalesLine."Document Type"::"Return Order");
         SalesLine.SetRange("Shipment Date", WorkDate());
-        if SalesLine.FindSet() then
-            repeat
-                Total += SalesLine."Line Amount";
-            until SalesLine.Next() = 0;
-        exit(Total);
+        SalesLine.CalcSums("Line Amount");
+        exit(SalesLine."Line Amount");
     end;
 
     local procedure ComputeLitigePlusValue(): Decimal
@@ -292,9 +282,9 @@ codeunit 50025 "KPI Management"
         ItemLedgEntry.SetRange("Entry Type", ItemLedgEntry."Entry Type"::"Positive Adjmt.");
         ItemLedgEntry.SetFilter("Posting Date", '%1..%2', DMY2Date(3, 1, Date2DMY(Today, 3)), WorkDate());
         ItemLedgEntry.SetFilter("Remaining Quantity", '<>0');
+        ItemLedgEntry.SetAutoCalcFields("Cost Amount (Actual)");
         if ItemLedgEntry.FindSet() then
             repeat
-                ItemLedgEntry.CalcFields("Cost Amount (Actual)");
                 Total += (ItemLedgEntry."Cost Amount (Actual)" / ItemLedgEntry.Quantity) * ItemLedgEntry."Remaining Quantity";
             until ItemLedgEntry.Next() = 0;
         exit(Total);
@@ -311,9 +301,9 @@ codeunit 50025 "KPI Management"
         ItemLedgEntry.Reset();
         ItemLedgEntry.SetRange("Entry Type", ItemLedgEntry."Entry Type"::"Negative Adjmt.");
         ItemLedgEntry.SetFilter("Posting Date", '%1..', CalcDate('<CD+2D>', GLSetup."Allow Posting From"));
+        ItemLedgEntry.SetAutoCalcFields("Cost Amount (Actual)");
         if ItemLedgEntry.FindSet() then
             repeat
-                ItemLedgEntry.CalcFields("Cost Amount (Actual)");
                 Total += ItemLedgEntry."Cost Amount (Actual)";
             until ItemLedgEntry.Next() = 0;
         exit(Total);
@@ -326,92 +316,67 @@ codeunit 50025 "KPI Management"
     local procedure ComputeChequeEnCoffre(): Decimal
     var
         PaymentLine: Record "Payment Line";
-        Total: Decimal;
     begin
-        Total := 0;
         PaymentLine.Reset();
         PaymentLine.SetRange("Type réglement", 'ENC_CHEQUE');
         PaymentLine.SetRange("Account Type", PaymentLine."Account Type"::Customer);
         PaymentLine.SetRange("Copied To No.", '');
         PaymentLine.SetRange("Status No.", 21000);
-        if PaymentLine.FindSet() then
-            repeat
-                Total += PaymentLine."Amount (LCY)";
-            until PaymentLine.Next() = 0;
-        exit(-Total); // Négatif comme dans FlowField
+        PaymentLine.CalcSums("Amount (LCY)");
+        exit(-PaymentLine."Amount (LCY)"); // Négatif comme dans FlowField
     end;
 
     local procedure ComputeChequeImpaye(): Decimal
     var
         PaymentLine: Record "Payment Line";
-        Total: Decimal;
     begin
-        Total := 0;
         PaymentLine.Reset();
         PaymentLine.SetRange("Type réglement", 'ENC_CHEQUE');
         PaymentLine.SetRange("Account Type", PaymentLine."Account Type"::Customer);
         PaymentLine.SetRange("Copied To No.", '');
         PaymentLine.SetRange("Status No.", 32000);
-        if PaymentLine.FindSet() then
-            repeat
-                Total += PaymentLine."Amount (LCY)";
-            until PaymentLine.Next() = 0;
-        exit(-Total);
+        PaymentLine.CalcSums("Amount (LCY)");
+        exit(-PaymentLine."Amount (LCY)");
     end;
 
     local procedure ComputeTraiteEnCoffre(): Decimal
     var
         PaymentLine: Record "Payment Line";
-        Total: Decimal;
     begin
-        Total := 0;
         PaymentLine.Reset();
         PaymentLine.SetRange("Type réglement", 'ENC_TRAITE');
         PaymentLine.SetRange("Account Type", PaymentLine."Account Type"::Customer);
         PaymentLine.SetRange("Copied To No.", '');
         PaymentLine.SetRange("Status No.", 30000);
-        if PaymentLine.FindSet() then
-            repeat
-                Total += PaymentLine."Amount (LCY)";
-            until PaymentLine.Next() = 0;
-        exit(-Total);
+        PaymentLine.CalcSums("Amount (LCY)");
+        exit(-PaymentLine."Amount (LCY)");
     end;
 
     local procedure ComputeTraiteEnEscompte(): Decimal
     var
         PaymentLine: Record "Payment Line";
-        Total: Decimal;
     begin
-        Total := 0;
         PaymentLine.Reset();
         PaymentLine.SetRange("Type réglement", 'ENC_TRAITE');
         PaymentLine.SetRange("Account Type", PaymentLine."Account Type"::Customer);
         PaymentLine.SetRange("Copied To No.", '');
         PaymentLine.SetRange("Status No.", 50030);
         PaymentLine.SetFilter("Due Date", '>%1', Today); // "Due Date > a" = futur
-        if PaymentLine.FindSet() then
-            repeat
-                Total += PaymentLine."Amount (LCY)";
-            until PaymentLine.Next() = 0;
-        exit(-Total);
+        PaymentLine.CalcSums("Amount (LCY)");
+        exit(-PaymentLine."Amount (LCY)");
     end;
 
     local procedure ComputeTraiteImpayee(): Decimal
     var
         PaymentLine: Record "Payment Line";
-        Total: Decimal;
     begin
-        Total := 0;
         PaymentLine.Reset();
         PaymentLine.SetRange("Type réglement", 'ENC_TRAITE');
         PaymentLine.SetRange("Account Type", PaymentLine."Account Type"::Customer);
         PaymentLine.SetRange("Copied To No.", '');
         PaymentLine.SetFilter("Status No.", '40050|50070');
-        if PaymentLine.FindSet() then
-            repeat
-                Total += PaymentLine."Amount (LCY)";
-            until PaymentLine.Next() = 0;
-        exit(-Total);
+        PaymentLine.CalcSums("Amount (LCY)");
+        exit(-PaymentLine."Amount (LCY)");
     end;
 
     // =============================================================

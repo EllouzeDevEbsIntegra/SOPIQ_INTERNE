@@ -361,8 +361,7 @@ page 50120 "Devis Chercher Article"
         lReservation.setrange("Item No.", ItemNo);
         lReservation.setrange("Location Code", LocCode);
         lReservation.setrange("Source Type", 37);
-        IF lReservation.FINDSET then
-            lReservation.CalcSums("Quantity (Base)");
+        lReservation.CalcSums("Quantity (Base)");
         EXIT(lItem.Inventory + lReservation."Quantity (Base)");
         // END;
     end;

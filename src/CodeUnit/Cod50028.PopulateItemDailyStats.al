@@ -127,11 +127,7 @@ codeunit 50028 "Populate Item Daily Stats"
         ItemLedgEntry.SetFilter("Posting Date", '..%1', AsOfDate);
         ItemLedgEntry.SetRange(isLocationExclu, false);
 
-        if ItemLedgEntry.FindSet() then begin
-            ItemLedgEntry.CalcSums(Quantity);
-            exit(ItemLedgEntry.Quantity);
-        end;
-
-        exit(0);
+        ItemLedgEntry.CalcSums(Quantity);
+        exit(ItemLedgEntry.Quantity);
     end;
 }
