@@ -52,7 +52,10 @@ function Lire-Config {
 function Ecrire-Config($c) {
   $lignes = @('# Reglages du poste PosCaisse. Modifiable avec le Bloc-notes, application au redemarrage.')
   foreach ($k in @('PG_PORT', 'APP_PORT', 'DB', 'USER', 'PASS', 'KIOSQUE', 'AFFICHAGE')) { $lignes += "$k=$($c[$k])" }
-  Set-Content -Path $config -Value $lignes -Encoding UTF8
+  # ASCII : clefs et valeurs le sont toutes (le mot de passe est du base64 filtre sur
+  # [A-Za-z0-9]). Une marque d'ordre des octets se verrait dans une console et ferait
+  # echouer la premiere ligne si ce fichier etait lu par le jumeau Linux.
+  Set-Content -Path $config -Value $lignes -Encoding ASCII
 }
 function Mot-De-Passe {
   # Le compte de la base n'est jamais tape par un humain : un secret long vaut mieux

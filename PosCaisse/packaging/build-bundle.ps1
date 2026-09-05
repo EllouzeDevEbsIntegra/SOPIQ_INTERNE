@@ -212,7 +212,10 @@ foreach ($f in @('jre\bin\java.exe', 'pgsql\bin\initdb.exe', 'pgsql\bin\pg_ctl.e
 # Version reelle des binaires assembles, pas celle qu'on croit avoir telechargee : si
 # l'archive a ete deposee a la main, c'est la seule qui dise la verite.
 $pgReel = (& (Join-Path $sortie 'pgsql\bin\pg_restore.exe') --version 2>&1 | Out-String).Trim()
-Set-Content -Path (Join-Path $sortie 'VERSION.txt') -Encoding UTF8 -Value @(
+# ASCII et non UTF8 : Set-Content -Encoding UTF8 pose une marque d'ordre des octets en
+# tete de fichier, que la console Windows affiche comme trois caracteres parasites. Le
+# contenu est de l'ASCII pur : la marque n'apporte rien et se voit des le premier << type >>.
+Set-Content -Path (Join-Path $sortie 'VERSION.txt') -Encoding ASCII -Value @(
   "PosCaisse $Version - paquet autonome Windows x64",
   "PostgreSQL embarque : $pgReel",
   "Une sauvegarde a restaurer ici doit venir d'un PostgreSQL $VersionPostgres ou plus ancien."
