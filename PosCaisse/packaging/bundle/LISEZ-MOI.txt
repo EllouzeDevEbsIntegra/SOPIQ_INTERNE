@@ -16,6 +16,14 @@ PREMIERE MISE EN ROUTE
 4. CHANGEZ CE MOT DE PASSE tout de suite : Back-office -> Utilisateurs.
 
 
+METTRE LA VRAIE CARTE EN PLACE
+------------------------------
+L'installation pose un jeu de DEMONSTRATION : enseigne fictive, articles d'exemple.
+Votre integrateur vous remet un fichier .dump contenant votre carte et vos reglages.
+Pour l'installer : ARRETER.bat, puis RESTAURER.bat (indiquez le chemin du fichier),
+puis DEMARRER.bat. La restauration remplace tout ce que contient la base.
+
+
 AU QUOTIDIEN
 ------------
 DEMARRER.bat     ouvre la caisse (a mettre dans le dossier Demarrage de Windows)

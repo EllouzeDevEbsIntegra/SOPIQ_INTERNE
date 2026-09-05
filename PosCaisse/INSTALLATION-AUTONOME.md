@@ -47,6 +47,31 @@ L'installation crée un serveur PostgreSQL privé dans le dossier, avec un mot d
 au hasard, à l'écoute de `127.0.0.1` seulement. Aucun service Windows n'est enregistré,
 aucune clé de registre n'est écrite.
 
+## 2 bis. Transférer VOS données sur le poste
+
+Le paquet s'installe avec un jeu de **démonstration** — enseigne fictive, articles
+d'exemple. Ce n'est pas votre carte. Pour mettre le poste en service avec ce que vous avez
+préparé :
+
+**Sur votre poste**, une fois : `EXPORTER_DONNEES.bat`
+
+Il pose une question, et c'est la seule qui compte :
+
+| Réponse | Ce qui part | Quand |
+|---|---|---|
+| **N** (défaut) | carte, entreprise, utilisateurs, réglages, clients, livreurs, remarques | **mise en service** : le client démarre avec un journal vierge et des tickets numérotés à partir de 1 |
+| **O** | tout, vos tickets de test compris | reproduire un problème sur un autre poste |
+
+Le fichier est écrit dans `PosCaisse\exports\`.
+
+**Sur le poste du client** : copiez le `.dump` par clé USB, puis `ARRETER.bat` →
+`RESTAURER.bat` (indiquez le chemin du fichier) → `DEMARRER.bat`.
+
+La restauration **remplace** tout ce que contient la base du poste. Elle rétablit aussi la
+propriété des tables au compte local : votre base appartient à `postgres`, celle du poste à
+`poscaisse`, et sans cela la restauration s'achèverait sur une avalanche de « rôle
+inexistant ».
+
 ## 3. Au quotidien
 
 | Fichier | Rôle |

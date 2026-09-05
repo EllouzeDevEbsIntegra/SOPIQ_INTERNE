@@ -144,8 +144,13 @@ faire_restore() {
   app_arrete; pg_demarre
   PGPASSWORD="$PASS" "$pgbin/psql" -h 127.0.0.1 -p "$PG_PORT" -U "$USER" -d postgres -c "DROP DATABASE IF EXISTS $DB;" >/dev/null
   PGPASSWORD="$PASS" "$pgbin/psql" -h 127.0.0.1 -p "$PG_PORT" -U "$USER" -d postgres -c "CREATE DATABASE $DB;" >/dev/null
-  PGPASSWORD="$PASS" "$pgbin/pg_restore" -h 127.0.0.1 -p "$PG_PORT" -U "$USER" -d "$DB" "$2"
-  info 'Restauration terminee.'
+  # --no-owner et --no-privileges : le dump vient souvent d'une autre installation, ou la
+  # base appartient a un compte qui n'existe pas ici. Sans cela, la restauration s'acheve
+  # sur une avalanche de « role inexistant » et des tables sans proprietaire.
+  PGPASSWORD="$PASS" "$pgbin/pg_restore" -h 127.0.0.1 -p "$PG_PORT" -U "$USER" -d "$DB" \
+    --no-owner --no-privileges "$2" || souci 'La restauration a signale des avertissements.'
+  n=$(PGPASSWORD="$PASS" "$pgbin/psql" -h 127.0.0.1 -p "$PG_PORT" -U "$USER" -d "$DB" -tAc 'select count(*) from product')
+  info "Restauration terminee : $(echo $n) article(s) dans la base."
 }
 faire_status() {
   lire_config

@@ -349,8 +349,15 @@ function Faire-Restore {
   $env:PGPASSWORD = $c.PASS
   & $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d postgres -c "DROP DATABASE IF EXISTS $($c.DB);" | Out-Null
   & $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d postgres -c "CREATE DATABASE $($c.DB);" | Out-Null
-  & $restore -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d $c.DB $Fichier
-  Info 'Restauration terminee. Relancez avec DEMARRER.bat.'
+  # --no-owner et --no-privileges : le dump vient souvent d'une autre installation, ou la
+  # base appartient a un compte (<< postgres >>) qui n'existe pas ici. Sans cela, la
+  # restauration s'acheve sur une avalanche de << role inexistant >> et des tables sans
+  # proprietaire. Les objets restaures appartiennent au compte de ce poste.
+  & $restore -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d $c.DB --no-owner --no-privileges $Fichier
+  if ($LASTEXITCODE -ne 0) { Souci 'La restauration a signale des avertissements (voir ci-dessus).' }
+  $n = & $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d $c.DB -tAc 'select count(*) from product'
+  Info ("Restauration terminee : " + ("$n".Trim()) + " article(s) dans la base.")
+  Info 'Relancez avec DEMARRER.bat.'
 }
 
 function Faire-Status {
