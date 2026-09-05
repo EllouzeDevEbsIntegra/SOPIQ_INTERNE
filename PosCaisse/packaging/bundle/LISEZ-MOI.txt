@@ -68,8 +68,10 @@ INSTALLER.bat s'arrete sur la base -> lisez le message affiche : il donne la rep
                                     * la fenetre a ete ouverte EN TANT QU'ADMINISTRATEUR
                                       (PostgreSQL le refuse) : double-cliquez simplement
                                       sur INSTALLER.bat, sans clic droit ;
-                                    * la bibliotheque Microsoft VC++ manque : lancez
-                                      outils\vc_redist.x64.exe puis relancez.
+                                    * la bibliotheque Microsoft VC++ manque : l'installation
+                                      vous propose de la poser elle-meme, repondez O.
+                                      Vous pouvez aussi lancer outils\vc_redist.x64.exe
+                                      a la main, puis relancer INSTALLER.bat.
 La caisse ne s'ouvre pas         -> ETAT.bat, puis journaux\poscaisse-erreurs.log
 « port deja utilise »            -> changez APP_PORT dans config\poscaisse.conf
 La base ne demarre pas           -> journaux\postgres.log

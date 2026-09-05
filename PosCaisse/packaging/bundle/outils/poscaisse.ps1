@@ -164,6 +164,20 @@ function Navigateur($c) {
 }
 
 # ---------------------------------------------------------------- diagnostics
+<# Lance << initdb --version >>, qui ne touche a rien, et rapporte tout ce qu'on peut
+   savoir : reussite, code de retour, message eventuel. #>
+function Tester-Initdb {
+  $sortie = ''
+  $code = -1
+  try {
+    $sortie = (& $initdb --version 2>&1 | Out-String).Trim()
+    $code = $LASTEXITCODE
+  } catch {
+    $sortie = "$_"
+  }
+  return @{ Ok = ($code -eq 0 -and $sortie -match 'initdb'); Code = $code; Sortie = $sortie }
+}
+
 function Est-Administrateur {
   $id = [Security.Principal.WindowsIdentity]::GetCurrent()
   return (New-Object Security.Principal.WindowsPrincipal($id)).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
@@ -190,22 +204,54 @@ function Verifier-Postgres {
     Stop-Net 'Droits d''administration : installation impossible.'
   }
 
-  $sortie = & $initdb --version 2>&1
-  if ($LASTEXITCODE -ne 0 -or -not ("$sortie" -match 'initdb')) {
-    Souci 'Les programmes PostgreSQL ne demarrent pas sur ce PC.'
-    Souci "Message obtenu : $sortie"
-    Souci ''
-    if ("$sortie" -match 'VCRUNTIME|MSVCP|140\.dll|0xc000007b') {
-      Souci 'Il manque la bibliotheque Microsoft VC++ (Visual C++ Redistributable x64).'
-    } else {
-      Souci 'La cause la plus frequente est l''absence de la bibliotheque Microsoft VC++'
-      Souci '(Visual C++ Redistributable x64), que PostgreSQL exige.'
-    }
-    Souci 'Le fichier vc_redist.x64.exe est fourni dans le sous-dossier << outils >> :'
-    Souci 'lancez-le (il demande les droits administrateur), puis relancez INSTALLER.bat.'
+  $r = Tester-Initdb
+  if ($r.Ok) { Info ("PostgreSQL repond : " + $r.Sortie); return }
+
+  # Un programme dont il manque une DLL n'ecrit RIEN : Windows refuse de le charger avant
+  # meme qu'il ne demarre. Un message vide est donc une information, pas une absence
+  # d'information, a condition de donner le code de retour, qui lui parle.
+  Souci 'Les programmes PostgreSQL ne demarrent pas sur ce PC.'
+  Souci ("Code de retour : " + $r.Code + $(if ($r.Sortie) { " - " + $r.Sortie } else { " (aucun message : Windows n'a pas pu charger le programme)" }))
+  Souci ''
+
+  $vc = Join-Path (Join-Path $racine 'outils') 'vc_redist.x64.exe'
+  if (-not (Test-Path $vc)) {
+    Souci 'Il manque tres probablement la bibliotheque Microsoft VC++ (Visual C++'
+    Souci 'Redistributable x64), que PostgreSQL exige.'
+    Souci 'Elle n''est pas fournie dans ce paquet : recuperez vc_redist.x64.exe sur'
+    Souci 'https://aka.ms/vs/17/release/vc_redist.x64.exe, installez-le, puis relancez.'
     Stop-Net 'Composant Windows manquant.'
   }
-  Info ("PostgreSQL repond : " + ("$sortie".Trim()))
+
+  Souci 'Il manque tres probablement la bibliotheque Microsoft VC++, que PostgreSQL exige.'
+  Souci 'Elle est fournie dans ce paquet et peut etre installee maintenant.'
+  Souci 'Windows demandera votre autorisation (fenetre bleue).'
+  Write-Host ''
+  $rep = Read-Host '  Installer ce composant maintenant ? [O/n]'
+  if ($rep -and $rep -notmatch '^[oOyY]') {
+    Souci "Installez outils\vc_redist.x64.exe vous-meme, puis relancez INSTALLER.bat."
+    Stop-Net 'Composant Windows manquant.'
+  }
+
+  Etape 'Installation du composant Microsoft VC++'
+  try {
+    $p = Start-Process -FilePath $vc -ArgumentList @('/install', '/passive', '/norestart') -Wait -PassThru
+    # 0 = installe, 1638 = une version plus recente est deja la, 3010 = redemarrage demande.
+    Info ("Programme d'installation termine (code " + $p.ExitCode + ").")
+    if ($p.ExitCode -eq 3010) { Souci 'Windows demande un redemarrage : redemarrez le PC puis relancez INSTALLER.bat.'; exit 0 }
+  } catch {
+    Souci "L'installation a ete refusee ou annulee : $_"
+    Stop-Net 'Composant Windows manquant.'
+  }
+
+  $r = Tester-Initdb
+  if (-not $r.Ok) {
+    Souci ("PostgreSQL ne demarre toujours pas (code " + $r.Code + ").")
+    Souci 'Redemarrez le PC, puis relancez INSTALLER.bat. Si le probleme persiste, le'
+    Souci 'paquet ne convient peut-etre pas a ce Windows (il exige un Windows 64 bits).'
+    Stop-Net 'Composant Windows manquant.'
+  }
+  Info ("PostgreSQL repond : " + $r.Sortie)
 }
 
 # ---------------------------------------------------------------- actions
