@@ -25,3 +25,21 @@ export function activerSaisieTactile(racine = document) {
     el.addEventListener('mouseup', ev => ev.preventDefault(), { once: true })
   })
 }
+
+/**
+ * Supprime le menu contextuel du navigateur.
+ *
+ * Sur un ecran tactile, garder le doigt appuye equivaut a un clic droit : le menu du
+ * navigateur - « Enregistrer l'image sous... », « Rechercher... » - s'ouvre par-dessus la
+ * caisse. Il n'a aucun usage ici, et il recouvre l'ecran d'un personnel qui n'a ni souris
+ * pour le fermer ni raison de le comprendre.
+ *
+ * L'exception porte sur les champs de saisie : c'est par ce menu qu'on colle un texte, et
+ * c'est parfois le seul moyen sur un poste sans clavier.
+ */
+export function bloquerMenuContextuel(racine = document) {
+  racine.addEventListener('contextmenu', (e) => {
+    if (e.target.closest?.('input, textarea, [contenteditable]')) return
+    e.preventDefault()
+  })
+}

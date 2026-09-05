@@ -78,6 +78,25 @@ body {
   text-rendering: optimizeLegibility;
 }
 button, input, select, textarea { font: inherit; color: inherit; }
+
+/*
+    Ecran tactile : l'appui long ne doit rien selectionner.
+
+    Sur un navigateur, garder le doigt appuye demarre une selection de texte et fait
+    apparaitre la loupe puis le menu contextuel du systeme. Une caisse s'en sert pour
+    autre chose - ouvrir les options d'un article - et se retrouvait avec un dialogue
+    ouvert sur du texte surligne, quand ce n'etait pas le menu du navigateur par-dessus.
+
+    La regle porte sur toute l'application, et non sur les seuls boutons : le doigt qui
+    glisse d'un millimetre pendant l'appui change d'element, et c'est le voisin non
+    protege qui recevait le geste.
+
+    La selection reste possible la ou l'on saisit du texte : sans cette exception, on ne
+    pourrait plus corriger un mot au milieu d'un nom d'article.
+*/
+body { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+input, textarea, [contenteditable] { user-select: text; -webkit-user-select: text; -webkit-touch-callout: default; }
+
 button { cursor: pointer; border: 0; background: none; user-select: none; touch-action: manipulation; }
 button:disabled { opacity: .4; cursor: not-allowed; }
 h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 650; letter-spacing: -.015em; }
