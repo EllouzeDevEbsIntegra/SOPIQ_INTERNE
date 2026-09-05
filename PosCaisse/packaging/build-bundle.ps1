@@ -31,7 +31,13 @@ $sources = @(
      Aide = 'https://adoptium.net/temurin/releases/?os=windows&arch=x64&package=jre&version=21 (archive .zip)' },
   @{ Nom = 'pgsql'; Fichier = 'postgresql-16-windows-x64-binaries.zip'
      Url = 'https://get.enterprisedb.com/postgresql/postgresql-16.8-1-windows-x64-binaries.zip'
-     Aide = 'https://www.enterprisedb.com/download-postgresql-binaries (PostgreSQL 16, Windows x86-64)' }
+     Aide = 'https://www.enterprisedb.com/download-postgresql-binaries (PostgreSQL 16, Windows x86-64)' },
+  # PostgreSQL fourni en binaires exige cette bibliotheque Microsoft. Elle est presente
+  # sur la plupart des Windows recents, mais pas sur tous : l'embarquer evite un
+  # deplacement chez le client pour un fichier de 25 Mo qu'il ne peut pas telecharger.
+  @{ Nom = 'vcredist'; Fichier = 'vc_redist.x64.exe'; Facultatif = $true
+     Url = 'https://aka.ms/vs/17/release/vc_redist.x64.exe'
+     Aide = 'https://aka.ms/vs/17/release/vc_redist.x64.exe' }
 )
 
 Etape 'Recuperation des composants tiers'
@@ -45,9 +51,14 @@ foreach ($s in $sources) {
     Remove-Item $dest -Force -ErrorAction SilentlyContinue
     Write-Host ''
     Write-Host "  Telechargement impossible : $($s.Fichier)" -ForegroundColor Yellow
-    Write-Host "  Recuperez l'archive ici : $($s.Aide)" -ForegroundColor Yellow
-    Write-Host "  puis deposez-la sous ce nom exact dans : $tele" -ForegroundColor Yellow
-    Stop-Net 'Composant tiers manquant.'
+    Write-Host "  Recuperez le fichier ici : $($s.Aide)" -ForegroundColor Yellow
+    Write-Host "  puis deposez-le sous ce nom exact dans : $tele" -ForegroundColor Yellow
+    if ($s.Facultatif) {
+      Write-Host '  (facultatif : le paquet se fabrique sans, mais le poste client devra' -ForegroundColor Yellow
+      Write-Host '   deja disposer de la bibliotheque Microsoft VC++)' -ForegroundColor Yellow
+    } else {
+      Stop-Net 'Composant tiers manquant.'
+    }
   }
 }
 
@@ -89,6 +100,14 @@ Info 'Moteur Java...'
 Extraire (Join-Path $tele 'jre-21-windows-x64.zip') (Join-Path $sortie 'jre') $true
 Info 'PostgreSQL...'
 Extraire (Join-Path $tele 'postgresql-16-windows-x64-binaries.zip') (Join-Path $sortie 'pgsql') $true
+$vc = Join-Path $tele 'vc_redist.x64.exe'
+if (Test-Path $vc) {
+  Copy-Item $vc (Join-Path $sortie 'outils\vc_redist.x64.exe') -Force
+  Info 'Bibliotheque Microsoft VC++ incluse.'
+} else {
+  Write-Host '  Bibliotheque Microsoft VC++ absente du paquet : le poste client devra deja' -ForegroundColor Yellow
+  Write-Host '  en disposer, sinon PostgreSQL ne demarrera pas.' -ForegroundColor Yellow
+}
 
 foreach ($f in @('jre\bin\java.exe', 'pgsql\bin\initdb.exe', 'pgsql\bin\pg_ctl.exe', 'poscaisse.jar', 'INSTALLER.bat')) {
   if (-not (Test-Path (Join-Path $sortie $f))) { Stop-Net "Le paquet est incomplet : $f manque." }

@@ -163,6 +163,51 @@ function Navigateur($c) {
   Start-Process $url
 }
 
+# ---------------------------------------------------------------- diagnostics
+function Est-Administrateur {
+  $id = [Security.Principal.WindowsIdentity]::GetCurrent()
+  return (New-Object Security.Principal.WindowsPrincipal($id)).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
+<#
+    PostgreSQL doit pouvoir demarrer avant qu'on lui demande quoi que ce soit. Deux
+    obstacles reviennent sans cesse sur un poste Windows neuf, et tous deux produisent
+    le meme echec muet si on ne les nomme pas :
+
+      - le dossier a ete lance en tant qu'administrateur. PostgreSQL refuse par
+        conception de tourner avec des droits d'administration ;
+      - la bibliotheque Microsoft VC++ manque : les binaires ne demarrent meme pas.
+
+    On execute donc << initdb --version >>, qui ne touche a rien, avant tout le reste.
+#>
+function Verifier-Postgres {
+  if (Est-Administrateur) {
+    Souci "Cette fenetre a ete ouverte EN TANT QU'ADMINISTRATEUR."
+    Souci 'PostgreSQL refuse de fonctionner avec des droits d''administration.'
+    Souci ''
+    Souci 'Fermez cette fenetre et double-cliquez simplement sur INSTALLER.bat,'
+    Souci 'sans passer par << Executer en tant qu''administrateur >>.'
+    Stop-Net 'Droits d''administration : installation impossible.'
+  }
+
+  $sortie = & $initdb --version 2>&1
+  if ($LASTEXITCODE -ne 0 -or -not ("$sortie" -match 'initdb')) {
+    Souci 'Les programmes PostgreSQL ne demarrent pas sur ce PC.'
+    Souci "Message obtenu : $sortie"
+    Souci ''
+    if ("$sortie" -match 'VCRUNTIME|MSVCP|140\.dll|0xc000007b') {
+      Souci 'Il manque la bibliotheque Microsoft VC++ (Visual C++ Redistributable x64).'
+    } else {
+      Souci 'La cause la plus frequente est l''absence de la bibliotheque Microsoft VC++'
+      Souci '(Visual C++ Redistributable x64), que PostgreSQL exige.'
+    }
+    Souci 'Le fichier vc_redist.x64.exe est fourni dans le sous-dossier << outils >> :'
+    Souci 'lancez-le (il demande les droits administrateur), puis relancez INSTALLER.bat.'
+    Stop-Net 'Composant Windows manquant.'
+  }
+  Info ("PostgreSQL repond : " + ("$sortie".Trim()))
+}
+
 # ---------------------------------------------------------------- actions
 function Faire-Install {
   Etape 'Verification du contenu du dossier'
@@ -170,6 +215,7 @@ function Faire-Install {
     if (-not (Test-Path $f)) { Stop-Net "Fichier manquant : $f. Le dossier n'est pas complet." }
   }
   Info 'Moteur Java, PostgreSQL et application presents.'
+  Verifier-Postgres
 
   if (Test-Path (Join-Path $donnees 'PG_VERSION')) {
     Souci 'Une base existe deja dans ce dossier : installation deja faite.'
@@ -183,13 +229,24 @@ function Faire-Install {
 
   Etape 'Creation de la base de donnees'
   $pwFile = Join-Path $env:TEMP ("pos-" + [guid]::NewGuid().ToString('N') + '.txt')
+  $logInit = Join-Path $journal 'initdb.log'
   try {
     Set-Content -Path $pwFile -Value $c.PASS -Encoding ASCII -NoNewline
     # Le serveur n'ecoute que la machine elle-meme et exige un mot de passe : aucune
     # autre machine du reseau ne peut s'y connecter, meme si le PC est en Wi-Fi.
+    # Toute la sortie est conservee : filtrer les lignes << interessantes >> revenait a
+    # annoncer un echec sans jamais en donner la raison.
     & $initdb -D $donnees -U $c.USER --pwfile=$pwFile -A scram-sha-256 -E UTF8 --locale=C 2>&1 |
-      ForEach-Object { if ($_ -match 'error|FATAL') { Write-Host "  $_" } }
-    if (-not (Test-Path (Join-Path $donnees 'PG_VERSION'))) { Stop-Net 'La creation du serveur de base a echoue.' }
+      Tee-Object -FilePath $logInit | Out-Null
+    if (-not (Test-Path (Join-Path $donnees 'PG_VERSION'))) {
+      if (Test-Path $logInit) {
+        Souci '--- ce que PostgreSQL a repondu ---'
+        Get-Content $logInit -Tail 15 | ForEach-Object { Write-Host "  $_" }
+        Souci '-----------------------------------'
+      }
+      Souci "Journal complet : $logInit"
+      Stop-Net 'La creation du serveur de base a echoue (raison ci-dessus).'
+    }
   } finally { Remove-Item $pwFile -Force -ErrorAction SilentlyContinue }
   Info "Serveur cree, compte << $($c.USER) >>."
 

@@ -62,6 +62,14 @@ redemarrage de la caisse.
 
 EN CAS DE PROBLEME
 ------------------
+INSTALLER.bat s'arrete sur la base -> lisez le message affiche : il donne la reponse
+                                    exacte de PostgreSQL, et journaux\initdb.log la
+                                    conserve. Deux causes reviennent souvent :
+                                    * la fenetre a ete ouverte EN TANT QU'ADMINISTRATEUR
+                                      (PostgreSQL le refuse) : double-cliquez simplement
+                                      sur INSTALLER.bat, sans clic droit ;
+                                    * la bibliotheque Microsoft VC++ manque : lancez
+                                      outils\vc_redist.x64.exe puis relancez.
 La caisse ne s'ouvre pas         -> ETAT.bat, puis journaux\poscaisse-erreurs.log
 « port deja utilise »            -> changez APP_PORT dans config\poscaisse.conf
 La base ne demarre pas           -> journaux\postgres.log

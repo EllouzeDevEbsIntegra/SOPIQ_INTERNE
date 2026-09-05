@@ -15,11 +15,14 @@ souci=0
 
 while IFS= read -r f; do
   bom=0; [ "$(head -c3 "$f" | od -An -tx1 | tr -d ' ')" = 'efbbbf' ] && bom=1
+  # Une marque en double casse le langage aussi surement que pas de marque du tout :
+  # elle arrive des qu'on relit un fichier deja marque sans le dire a l'outil.
+  double=0; [ "$(head -c6 "$f" | tail -c3 | od -An -tx1 | tr -d ' ')" = 'efbbbf' ] && double=1
   # Octets hors ASCII, marque d'ordre exclue.
   horsascii=$(tail -c +4 "$f" | LC_ALL=C grep -c $'[\x80-\xff]' || true)
-  if [ "$bom" = 0 ] || [ "$horsascii" != 0 ]; then
+  if [ "$bom" = 0 ] || [ "$double" = 1 ] || [ "$horsascii" != 0 ]; then
     souci=1
-    echo "  A REVOIR ${f#$racine/}  (marque d'ordre : $([ $bom = 1 ] && echo oui || echo NON), lignes non-ASCII : $horsascii)"
+    echo "  A REVOIR ${f#$racine/}  (marque : $([ $bom = 1 ] && echo oui || echo NON)$([ $double = 1 ] && echo ' EN DOUBLE'), lignes non-ASCII : $horsascii)"
   else
     echo "  ok       ${f#$racine/}"
   fi
