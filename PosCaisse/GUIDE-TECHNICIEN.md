@@ -37,10 +37,35 @@ Avant de copier quoi que ce soit :
 
 - **Windows 64 bits.** Le paquet ne fonctionne pas sur un Windows 32 bits.
 - **8 Go d'espace libre** au minimum sur le disque cible.
-- **Ne pas ouvrir de session administrateur.** PostgreSQL refuse de démarrer sous un
-  compte administrateur : c'est une protection du moteur, pas un réglage à contourner.
+- **Ne pas ouvrir de session administrateur, et ne jamais lancer `INSTALLER.bat` par
+  « Exécuter en tant qu'administrateur ».** PostgreSQL refuse de fonctionner avec ces
+  droits : c'est une protection du moteur, pas un réglage à contourner. Une fenêtre
+  élevée se reconnaît à son titre, qui commence par `Administrateur :`.
+- **Prévoyez malgré tout un compte administrateur sous la main.** Un seul geste en a
+  besoin — voir l'encadré ci-dessous — et il vaut mieux ne pas le découvrir sur place.
 - **Un antivirus agressif** peut retenir les fichiers pendant l'installation. Si l'étape 3
   échoue sans raison apparente, mettez la protection en pause le temps de l'installation.
+
+---
+
+### Les deux besoins sont opposés
+
+C'est le piège de cette installation, et il vaut d'être compris avant de partir :
+
+| Ce qu'on fait | Droits nécessaires |
+|---|---|
+| Installer la bibliothèque Microsoft VC++ (`outils\vc_redist.x64.exe`) | **administrateur** — c'est un composant de Windows |
+| Tout le reste : `INSTALLER.bat`, la caisse, la base | **surtout pas administrateur** |
+
+Sur un PC qui n'a jamais eu de PostgreSQL, la bibliothèque manque souvent.
+`INSTALLER.bat` le détecte et propose de l'installer : acceptez, et **fournissez le compte
+administrateur** à la fenêtre d'autorisation qui s'ouvre. Elle n'élève que ce composant —
+la caisse, elle, reste sans privilèges.
+
+Si l'autorisation est refusée ou que le compte n'en dispose pas, le programme vous le dit
+et vous donne la marche à suivre en deux temps : installer `outils\vc_redist.x64.exe` par
+clic droit → *Exécuter en tant qu'administrateur*, puis revenir lancer `INSTALLER.bat`
+par un simple double-clic.
 
 ---
 
@@ -251,8 +276,9 @@ Observations : ...........................................................
 
 | Ce qui s'affiche | Cause | Ce qu'il faut faire |
 |---|---|---|
-| `La creation du serveur de base a echoue` | il manque la bibliothèque Microsoft VC++, ou la session est administrateur | le programme propose d'installer la bibliothèque : acceptez. Sinon, rouvrez une session non-administrateur |
-| *(message vide, code de retour non nul)* | bibliothèque Microsoft VC++ manquante — Windows n'a pas pu charger le programme, donc rien ne s'affiche | acceptez l'installation proposée par le programme |
+| `Droits d'administration : installation impossible` | la fenêtre a été ouverte élevée (titre `Administrateur :`) | fermez-la, simple double-clic sur `INSTALLER.bat`. Si le titre revient, UAC est désactivé : créez un compte Windows standard pour la caisse et installez depuis là |
+| `Les programmes PostgreSQL ne demarrent pas` + `code de retour : -1073741515` | bibliothèque Microsoft VC++ manquante — Windows n'a pas pu charger le programme, donc aucun message ne s'affiche | acceptez l'installation proposée, et fournissez le compte administrateur à la fenêtre d'autorisation |
+| `Ce composant n'a PAS ete installe` *(code 5, 1223 ou 1602)* | l'autorisation administrateur a été refusée, ou le compte n'en dispose pas | installez `outils\vc_redist.x64.exe` par clic droit → *Exécuter en tant qu'administrateur*, puis relancez `INSTALLER.bat` **sans** élévation |
 | `Le port 5433 est deja pris` | un autre PostgreSQL occupe le port | ouvrez `config\poscaisse.conf`, mettez `PG_PORT=5434`, relancez |
 | `Le port 8080 est deja pris` | un autre programme occupe le port | ouvrez `config\poscaisse.conf`, mettez `APP_PORT=8081`, relancez |
 | `version non supportee` à la restauration | le `.dump` vient d'un PostgreSQL plus récent que ce paquet | **ne touchez à rien sur place.** Le poste est intact. Signalez-le : c'est le paquet qu'il faut refabriquer |

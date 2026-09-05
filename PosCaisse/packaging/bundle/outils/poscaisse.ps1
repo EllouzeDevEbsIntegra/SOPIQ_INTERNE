@@ -268,23 +268,70 @@ function Verifier-Postgres {
 
   Souci 'Il manque tres probablement la bibliotheque Microsoft VC++, que PostgreSQL exige.'
   Souci 'Elle est fournie dans ce paquet et peut etre installee maintenant.'
-  Souci 'Windows demandera votre autorisation (fenetre bleue).'
+  Write-Host ''
+  <#
+      Les deux besoins sont OPPOSES, et c'est tout le piege de cette etape :
+
+        - la bibliotheque Microsoft VC++ s'installe dans Windows, elle EXIGE les droits
+          d'administration ;
+        - PostgreSQL, lui, REFUSE de fonctionner avec ces memes droits.
+
+      D'ou l'enchainement : on demande a Windows d'elever ce seul programme (-Verb RunAs,
+      qui fait apparaitre la fenetre d'autorisation et accepte un compte administrateur
+      different de celui ouvert), la fenetre en cours restant, elle, sans privileges.
+  #>
+  Souci 'Windows demandera une autorisation administrateur pour ce composant seul :'
+  Souci 'c''est normal, et cela ne donne aucun droit a la caisse elle-meme.'
   Write-Host ''
   $rep = Read-Host '  Installer ce composant maintenant ? [O/n]'
   if ($rep -and $rep -notmatch '^[oOyY]') {
-    Souci "Installez outils\vc_redist.x64.exe vous-meme, puis relancez INSTALLER.bat."
+    Souci "Installez outils\vc_redist.x64.exe vous-meme (clic droit, << Executer en tant"
+    Souci "qu'administrateur >>), puis relancez INSTALLER.bat SANS elevation."
     Stop-Net 'Composant Windows manquant.'
   }
 
   Etape 'Installation du composant Microsoft VC++'
+  $code = $null
   try {
-    $p = Start-Process -FilePath $vc -ArgumentList @('/install', '/passive', '/norestart') -Wait -PassThru
-    # 0 = installe, 1638 = une version plus recente est deja la, 3010 = redemarrage demande.
-    Info ("Programme d'installation termine (code " + $p.ExitCode + ").")
-    if ($p.ExitCode -eq 3010) { Souci 'Windows demande un redemarrage : redemarrez le PC puis relancez INSTALLER.bat.'; exit 0 }
+    $p = Start-Process -FilePath $vc -ArgumentList @('/install', '/passive', '/norestart') `
+                       -Verb RunAs -Wait -PassThru
+    $code = $p.ExitCode
   } catch {
-    Souci "L'installation a ete refusee ou annulee : $_"
-    Stop-Net 'Composant Windows manquant.'
+    # Refus de la fenetre d'autorisation : Windows leve une exception, sans code de sortie.
+    $code = 1223
+  }
+  Info ("Programme d'installation termine (code $code).")
+
+  # Codes du programme d'installation Microsoft. Sans cette lecture, un echec passait pour
+  # une reussite et l'on accusait ensuite un redemarrage ou un Windows 32 bits.
+  switch ($code) {
+    0     { }
+    1638  { Info 'Une version plus recente etait deja installee.' }
+    1641  { Souci 'Windows redemarre : relancez INSTALLER.bat apres le redemarrage.'; exit 0 }
+    3010  { Souci 'Windows demande un redemarrage : redemarrez le PC puis relancez INSTALLER.bat.'; exit 0 }
+    default {
+      Souci ''
+      if ($code -eq 5 -or $code -eq 1223 -or $code -eq 1602) {
+        Souci "Ce composant n'a PAS ete installe : l'autorisation administrateur a ete"
+        Souci 'refusee, annulee, ou le compte ouvert n''en dispose pas.'
+      } else {
+        Souci "Ce composant n'a PAS ete installe (code $code)."
+      }
+      Souci ''
+      Souci 'La marche a suivre, en deux temps - les deux besoins sont opposes :'
+      Souci ''
+      Souci '  1. AVEC les droits d''administration, une seule fois :'
+      Souci "     clic droit sur  outils\vc_redist.x64.exe"
+      Souci '     puis << Executer en tant qu''administrateur >>.'
+      Souci '     Si ce compte n''est pas administrateur, ouvrez la session qui l''est,'
+      Souci '     installez le composant depuis la, puis revenez sur ce compte.'
+      Souci ''
+      Souci '  2. SANS les droits d''administration :'
+      Souci '     revenez ici et double-cliquez sur INSTALLER.bat.'
+      Souci '     PostgreSQL refuse de fonctionner avec des droits d''administration :'
+      Souci "     c'est bien un simple double-clic qu'il faut, pas une elevation."
+      Stop-Net 'Composant Windows manquant.'
+    }
   }
 
   $r = Tester-Initdb
