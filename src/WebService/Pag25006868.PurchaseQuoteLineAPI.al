@@ -181,6 +181,27 @@ page 25006868 "Purchase Quote Line API"
                     Caption = 'quoteLineComment';
                     ApplicationArea = All;
                 }
+
+                // --- Proposition IA REAPRO -------------------------------
+                // Le nom JSON expose par une page API est celui du CONTROLE,
+                // pas le Caption : ces trois controles sont donc nommes
+                // exactement comme les proprietes attendues par REAPRO.
+                // Lecture et ecriture ; aucun effet de bord sur la ligne.
+                field(aiProposedQty; Rec."AI Proposed Qty")
+                {
+                    Caption = 'aiProposedQty';
+                    ApplicationArea = All;
+                }
+                field(aiProposalReason; Rec."AI Proposal Reason")
+                {
+                    Caption = 'aiProposalReason';
+                    ApplicationArea = All;
+                }
+                field(aiComputedAt; Rec."AI Computed At")
+                {
+                    Caption = 'aiComputedAt';
+                    ApplicationArea = All;
+                }
                 field(askingPrice; Rec."asking price")
                 {
                     Caption = 'askingPrice';

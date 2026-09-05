@@ -248,7 +248,9 @@
         ItemVendor.Validate("Variant Code", '');
         ItemVendor.Validate("Vendor Item No.", vendorNo);
         ItemVendor.Validate("Lead Time Calculation", Vendor."Lead Time Calculation");
-        ItemVendor.Insert(true);
+        // Idempotent : le trigger standard a pu deja creer la ligne
+        if not ItemVendor.Insert(true) then
+            ItemVendor.Modify(true);
 
         // ---- Reference externe
         ItemCrossReference.Init();
@@ -259,7 +261,10 @@
                                     ItemCrossReference."Cross-Reference Type"::Vendor);
         ItemCrossReference.Validate("Cross-Reference Type No.", VendCode);
         ItemCrossReference.Validate("Cross-Reference No.", vendorNo);
-        ItemCrossReference.Insert(true);
+        // Idempotent : Item Vendor.Insert(true) cree deja la reference
+        // externe correspondante via le trigger standard.
+        if not ItemCrossReference.Insert(true) then
+            ItemCrossReference.Modify(true);
     end;
 
 }

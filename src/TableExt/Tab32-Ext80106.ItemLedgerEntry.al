@@ -23,6 +23,19 @@ tableextension 80106 "Item Ledger Entry" extends "Item Ledger Entry"//32
             Editable = false;
             FieldClass = FlowField;
         }
+        field(80090; isStorageLocation; Boolean)
+        {
+            CalcFormula = lookup(Location.isStorage where("Code" = field("Location Code")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(80091; isMainLocation; Boolean)
+        {
+            CalcFormula = lookup(Location.isMain where("Code" = field("Location Code")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
 
         field(80108; year; Integer)
         {

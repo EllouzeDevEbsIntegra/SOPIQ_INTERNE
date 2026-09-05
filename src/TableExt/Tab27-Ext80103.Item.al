@@ -2,7 +2,6 @@ tableextension 80103 "Item" extends Item //27
 {
     fields
     {
-
         field(80100; "Available Inventory"; Decimal)
         {
             CalcFormula = Sum("Item Ledger Entry".Quantity WHERE("Item No." = FIELD("No."),
@@ -34,6 +33,42 @@ tableextension 80103 "Item" extends Item //27
                                                                   "Serial No." = FIELD("Serial No. Filter"),
                                                                   "Unit of Measure Code" = FIELD("Unit of Measure Filter")));
             Caption = 'Stock Import';
+            DecimalPlaces = 0 : 5;
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(80001; "StorageQty"; Decimal)
+        {
+            CalcFormula = Sum("Item Ledger Entry".Quantity WHERE("Item No." = FIELD("No."),
+                                                                  isStorageLocation = const(true),
+                                                                  "Global Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
+                                                                  "Global Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
+                                                                  "Location Code" = FIELD("Location Filter"),
+                                                                  "Drop Shipment" = FIELD("Drop Shipment Filter"),
+                                                                  "Variant Code" = FIELD("Variant Filter"),
+                                                                  "Lot No." = FIELD("Lot No. Filter"),
+                                                                  "Serial No." = FIELD("Serial No. Filter"),
+                                                                  "Unit of Measure Code" = FIELD("Unit of Measure Filter")));
+            Caption = 'Mg STOCK';
+            DecimalPlaces = 0 : 5;
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(80002; "MainQty"; Decimal)
+        {
+            CalcFormula = Sum("Item Ledger Entry".Quantity WHERE("Item No." = FIELD("No."),
+                                                                  isMainLocation = const(true),
+                                                                  "Global Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
+                                                                  "Global Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
+                                                                  "Location Code" = FIELD("Location Filter"),
+                                                                  "Drop Shipment" = FIELD("Drop Shipment Filter"),
+                                                                  "Variant Code" = FIELD("Variant Filter"),
+                                                                  "Lot No." = FIELD("Lot No. Filter"),
+                                                                  "Serial No." = FIELD("Serial No. Filter"),
+                                                                  "Unit of Measure Code" = FIELD("Unit of Measure Filter")));
+            Caption = 'Mg PRINCIPAL';
             DecimalPlaces = 0 : 5;
             Editable = false;
             FieldClass = FlowField;
@@ -384,6 +419,20 @@ tableextension 80103 "Item" extends Item //27
             DecimalPlaces = 0 : 5;
         }
 
+        field(50159; "Sous Min Mg Principal"; Boolean)
+        {
+            Caption = 'Sous stock min Mg principal';
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
+
+        field(50160; "Mg STK Sans Qte Min"; Boolean)
+        {
+            Caption = 'Stock Mg stockage sans qté min';
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
+
 
 
         modify("No.")
@@ -399,7 +448,10 @@ tableextension 80103 "Item" extends Item //27
 
     keys
     {
-
+        // sert au comptage des cues et au drill-down des alertes magasin de stockage
+        key(AlerteMgStk; "Sous Min Mg Principal", "Mg STK Sans Qte Min")
+        {
+        }
     }
     trigger OnAfterDelete()
     var

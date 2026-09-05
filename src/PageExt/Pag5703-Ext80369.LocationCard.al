@@ -16,8 +16,18 @@ pageextension 80369 "Location Card" extends "Location Card" //5703
                 ApplicationArea = all;
                 Caption = 'Magasin Occasion';
             }
+            field(isStorage; isStorage)
+            {
+                ApplicationArea = all;
+                Caption = 'Magasin Stockage';
+            }
+            field(isMain; isMain)
+            {
+                ApplicationArea = all;
+                Caption = 'Magasin Principal';
+            }
 
-            
+
         }
 
     }

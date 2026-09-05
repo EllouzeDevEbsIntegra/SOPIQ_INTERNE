@@ -1,5 +1,7 @@
 codeunit 50025 "KPI Management"
 {
+    Permissions = tabledata Item = rimd;
+
     Subtype = Normal;
 
     // =============================================================
@@ -655,7 +657,159 @@ codeunit 50025 "KPI Management"
     end;
 
     // =============================================================
-    // 5. NETTOYAGE
+    // 5. ALERTES MAGASINS DE STOCKAGE
+    // =============================================================
+    // Recalcule les deux drapeaux stockes sur l'article :
+    //   "Sous Min Mg Principal" : stock en Mg de stockage ET stock Mg principal < qte min
+    //   "Mg STK Sans Qte Min"   : stock en Mg de stockage ET aucune qte min definie
+    //
+    // Le calcul passe par Inventory + "Location Filter" (cle N° article / Code magasin,
+    // avec les totaux SIFT) et JAMAIS par StorageQty / MainQty : leur filtre
+    // isStorageLocation / isMainLocation est un FlowField lookup sur Location, ce qui
+    // interdit a SQL d'utiliser les index des ecritures article. Un filtre pose sur ces
+    // champs a l'echelle de la table article fait tomber le service.
+    procedure UpdateAlertesMgStk()
+    var
+        Item: Record Item;
+        ItemAEffacer: Record Item;
+        TempItemMgStk: Record Item temporary;
+        TempAEffacer: Record Item temporary;
+        StorageFilter: Text;
+        MainFilter: Text;
+        SansQteMin: Boolean;
+        SousMin: Boolean;
+    begin
+        StorageFilter := GetLocationFilter(true);
+        MainFilter := GetLocationFilter(false);
+
+        // 1. articles ayant du stock dans les magasins de stockage
+        //    (une seule requete ensembliste) + drapeau "sans qte min"
+        if StorageFilter <> '' then begin
+            Item.Reset();
+            Item.SetRange(Type, Item.Type::Inventory);
+            Item.SetRange(Blocked, false);
+            Item.SetFilter("Location Filter", StorageFilter);
+            Item.SetFilter(Inventory, '>0');
+            if Item.FindSet() then
+                repeat
+                    TempItemMgStk.Init();
+                    TempItemMgStk."No." := Item."No.";
+                    TempItemMgStk.Insert();
+
+                    SansQteMin := Item."Qte Min Mg Principal" = 0;
+                    if Item."Mg STK Sans Qte Min" <> SansQteMin then begin
+                        Item."Mg STK Sans Qte Min" := SansQteMin;
+                        Item.Modify(false);
+                    end;
+                until Item.Next() = 0;
+        end;
+
+        // 2. articles a seuil dont le stock magasin principal est sous la qte min
+        if MainFilter <> '' then begin
+            Item.Reset();
+            Item.SetRange(Type, Item.Type::Inventory);
+            Item.SetRange(Blocked, false);
+            Item.SetFilter("Qte Min Mg Principal", '>0');
+            Item.SetFilter("Location Filter", MainFilter);
+            Item.SetAutoCalcFields(Item.Inventory);
+            if Item.FindSet() then
+                repeat
+                    SousMin := (Item.Inventory < Item."Qte Min Mg Principal") and
+                               TempItemMgStk.Get(Item."No.");
+                    if Item."Sous Min Mg Principal" <> SousMin then begin
+                        Item."Sous Min Mg Principal" := SousMin;
+                        Item.Modify(false);
+                    end;
+                until Item.Next() = 0;
+        end;
+
+        // 3. drapeaux devenus obsoletes (article sorti du perimetre des passes 1 et 2)
+        //    on collecte avant d'ecrire : la boucle filtre sur le champ modifie
+        TempAEffacer.Reset();
+        TempAEffacer.DeleteAll();
+        Item.Reset();
+        Item.SetRange("Mg STK Sans Qte Min", true);
+        if Item.FindSet() then
+            repeat
+                if (Item."Qte Min Mg Principal" <> 0) or Item.Blocked or
+                   (Item.Type <> Item.Type::Inventory) or (not TempItemMgStk.Get(Item."No."))
+                then begin
+                    TempAEffacer.Init();
+                    TempAEffacer."No." := Item."No.";
+                    TempAEffacer.Insert();
+                end;
+            until Item.Next() = 0;
+        if TempAEffacer.FindSet() then
+            repeat
+                if ItemAEffacer.Get(TempAEffacer."No.") then begin
+                    ItemAEffacer."Mg STK Sans Qte Min" := false;
+                    ItemAEffacer.Modify(false);
+                end;
+            until TempAEffacer.Next() = 0;
+
+        TempAEffacer.Reset();
+        TempAEffacer.DeleteAll();
+        Item.Reset();
+        Item.SetRange("Sous Min Mg Principal", true);
+        if Item.FindSet() then
+            repeat
+                if (Item."Qte Min Mg Principal" <= 0) or Item.Blocked or
+                   (Item.Type <> Item.Type::Inventory) or (not TempItemMgStk.Get(Item."No."))
+                then begin
+                    TempAEffacer.Init();
+                    TempAEffacer."No." := Item."No.";
+                    TempAEffacer.Insert();
+                end;
+            until Item.Next() = 0;
+        if TempAEffacer.FindSet() then
+            repeat
+                if ItemAEffacer.Get(TempAEffacer."No.") then begin
+                    ItemAEffacer."Sous Min Mg Principal" := false;
+                    ItemAEffacer.Modify(false);
+                end;
+            until TempAEffacer.Next() = 0;
+    end;
+
+    // Liste des magasins a utiliser en "Location Filter" : 'MG1|MG2|...'
+    local procedure GetLocationFilter(MagasinsDeStockage: Boolean): Text
+    var
+        Location: Record Location;
+        LocFilter: Text;
+    begin
+        Location.Reset();
+        if MagasinsDeStockage then
+            Location.SetRange(isStorage, true)
+        else
+            Location.SetRange(isMain, true);
+        if Location.FindSet() then
+            repeat
+                if LocFilter <> '' then
+                    LocFilter += '|';
+                LocFilter += Location.Code;
+            until Location.Next() = 0;
+        exit(LocFilter);
+    end;
+
+    procedure GetNbArtMgStkSousMin(): Integer
+    var
+        Item: Record Item;
+    begin
+        Item.Reset();
+        Item.SetRange("Sous Min Mg Principal", true);
+        exit(Item.Count);
+    end;
+
+    procedure GetNbArtMgStkSansQteMin(): Integer
+    var
+        Item: Record Item;
+    begin
+        Item.Reset();
+        Item.SetRange("Mg STK Sans Qte Min", true);
+        exit(Item.Count);
+    end;
+
+    // =============================================================
+    // 6. NETTOYAGE
     // =============================================================
     procedure CleanupOldCache(DaysToKeep: Integer)
     var

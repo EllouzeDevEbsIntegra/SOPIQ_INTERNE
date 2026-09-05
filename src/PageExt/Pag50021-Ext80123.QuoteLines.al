@@ -103,6 +103,31 @@ pageextension 80123 "Quote Lines" extends "Quote Lines" //50021
                 Editable = true;
             }
 
+            // --- Proposition IA REAPRO ---------------------------------
+            // Affichage en LECTURE SEULE : la proposition provient du calcul
+            // nocturne de REAPRO et ne se saisit pas dans BC. L'acheteur
+            // garde la main sur la quantite confirmee, que ces champs ne
+            // modifient jamais.
+            field("AI Proposed Qty"; "AI Proposed Qty")
+            {
+                Caption = 'Qté proposée IA';
+                ApplicationArea = All;
+                Editable = false;
+            }
+            field("AI Proposal Reason"; "AI Proposal Reason")
+            {
+                Caption = 'Justification IA';
+                ApplicationArea = All;
+                Editable = false;
+            }
+            field("AI Computed At"; "AI Computed At")
+            {
+                Caption = 'Calcul IA du';
+                ToolTip = 'Date du calcul REAPRO dont provient la proposition. Vide = aucune proposition publiée pour cette ligne.';
+                ApplicationArea = All;
+                Editable = false;
+            }
+
 
             field("asking Price"; "asking price")
             {

@@ -154,6 +154,40 @@ page 50124 "KPI vente Détails"
                     DrillDown = true;
                 }
 
+                field(ArtMgStkSousMin; NbArtMgStkSousMin)
+                {
+                    Caption = 'Mg STK à transférer';
+                    ApplicationArea = All;
+                    StyleExpr = StyleSousMin;
+                    ToolTip = 'Articles avec du stock en magasin de stockage et un stock magasin principal inférieur à la qté min.';
+
+                    trigger OnDrillDown()
+                    var
+                        lItem: Record Item;
+                    begin
+                        lItem.Reset();
+                        lItem.SetRange("Sous Min Mg Principal", true);
+                        Page.Run(Page::"Art. a transferer Mg STK", lItem);
+                    end;
+                }
+
+                field(ArtMgStkSansQteMin; NbArtMgStkSansQteMin)
+                {
+                    Caption = 'Mg STK sans Qté min';
+                    ApplicationArea = All;
+                    StyleExpr = StyleSansQteMin;
+                    ToolTip = 'Articles avec du stock en magasin de stockage et aucune quantité minimum définie pour le magasin principal.';
+
+                    trigger OnDrillDown()
+                    var
+                        lItem: Record Item;
+                    begin
+                        lItem.Reset();
+                        lItem.SetRange("Mg STK Sans Qte Min", true);
+                        Page.Run(Page::"Art. Mg STK sans Qte Min", lItem);
+                    end;
+                }
+
             }
 
             cuegroup("Paiment")
@@ -263,6 +297,13 @@ page 50124 "KPI vente Détails"
         RoleCenterNotificationMgt.ShowNotifications;
         ConfPersonalizationMgt.RaiseOnOpenRoleCenterEvent;
 
+        KPIManagement.UpdateAlertesMgStk();
+        NbArtMgStkSousMin := KPIManagement.GetNbArtMgStkSousMin();
+        NbArtMgStkSansQteMin := KPIManagement.GetNbArtMgStkSansQteMin();
+        if NbArtMgStkSousMin > 0 then
+            StyleSousMin := 'Unfavorable';
+        if NbArtMgStkSansQteMin > 0 then
+            StyleSansQteMin := 'Ambiguous';
     end;
 
     var
@@ -277,6 +318,13 @@ page 50124 "KPI vente Détails"
         OpenCreditMemosCnt: Integer;
         InvSetup: Record "Inventory Setup";
         PurchSetup: Record "Purchases & Payables Setup";
+        KPIManagement: Codeunit "KPI Management";
+        NbArtMgStkSousMin: Integer;
+        NbArtMgStkSansQteMin: Integer;
+        [InDataSet]
+        StyleSousMin: Code[20];
+        [InDataSet]
+        StyleSansQteMin: Code[20];
 
 
 

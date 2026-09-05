@@ -122,6 +122,41 @@ tableextension 80104 "Purchase Line" extends "Purchase Line" //39
             Caption = 'Commentaire Ligne Devis';
         }
 
+        // --- Proposition IA REAPRO -------------------------------------
+        // Champs alimentes par REAPRO via l'API quoteLines, a partir de son
+        // calcul nocturne. Purement INFORMATIFS : aucun calcul metier n'est
+        // fait dans BC, aucune quantite confirmee n'est modifiee, aucun
+        // document n'est declenche. Ils n'entrent dans aucun flux standard.
+        field(80173; "AI Proposed Qty"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Qté proposée IA';
+            DecimalPlaces = 0 : 5;
+            MinValue = 0;
+            Editable = true;
+        }
+
+        field(80174; "AI Proposal Reason"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Justification IA';
+            Editable = true;
+        }
+
+        // Horodatage du calcul dont provient la proposition.
+        // Il rend surtout une ABSENCE de proposition distinguable d'une
+        // proposition EGALE A ZERO : un Decimal BC ne peut pas etre nul, il
+        // vaut toujours 0. Vide (0DT) = aucune proposition publiee ;
+        // renseigne = proposition publiee, dont la valeur peut etre 0.
+        // Il donne accessoirement la fraicheur de la proposition dans BC,
+        // sans passer par REAPRO.
+        field(80175; "AI Computed At"; DateTime)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Calcul IA du';
+            Editable = true;
+        }
+
         field(80150; "Controle"; Boolean)
         {
             Caption = 'Contrôlé';

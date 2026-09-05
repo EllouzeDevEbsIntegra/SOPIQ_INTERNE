@@ -13,6 +13,18 @@ tableextension 80362 "Location" extends "Location" //14
             DataClassification = ToBeClassified;
             InitValue = false;
         }
+
+        field(80364; isStorage; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            InitValue = false;
+        }
+
+        field(80365; isMain; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            InitValue = false;
+        }
     }
 
     keys

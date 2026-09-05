@@ -23,6 +23,21 @@ pageextension 80118 "item" extends "Item List" //31
                 Caption = 'Qté Disponible';
                 ApplicationArea = All;
             }
+            field("Storage Qty"; "StorageQty")
+            {
+                Caption = 'Magasin STK';
+                ApplicationArea = all;
+            }
+            field("Main Qty"; "MainQty")
+            {
+                Caption = 'Magasin Principal';
+                ApplicationArea = all;
+            }
+            field("Qte Min Mg Principal"; "Qte Min Mg Principal")
+            {
+                Caption = 'Qté Min Mg Principal';
+                ApplicationArea = all;
+            }
             field("Default Bin"; "Default Bin")
             {
                 Caption = 'Emplacement par défaut';
@@ -372,7 +387,7 @@ pageextension 80118 "item" extends "Item List" //31
         // end;
         rec.setMgPrincipalFilter(rec);
 
-        CalcFields(rec."Available Inventory", rec."Default Bin", rec."Total Vendu", rec."Last Purch Price Devise", rec.isOem);
+        CalcFields(rec."Available Inventory", rec."Default Bin", rec."Total Vendu", rec."Last Purch Price Devise", rec.isOem, rec."StorageQty", rec."MainQty");
 
         // recItem.ChangeCompany(Parvente."Société base analyseur prix");
         // IF recItem.GET("No.") then begin

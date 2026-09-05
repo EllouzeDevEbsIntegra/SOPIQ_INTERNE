@@ -2613,6 +2613,26 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control Article - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 3413719664 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Articles avec du stock en magasin de stockage et aucune quantité minimum définie pour le magasin principal.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control ArtMgStkSansQteMin - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 3413719664 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Mg STK sans Qté min</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control ArtMgStkSansQteMin - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 3650221715 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Articles avec du stock en magasin de stockage et un stock magasin principal inférieur à la qté min.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control ArtMgStkSousMin - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 3650221715 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Mg STK à transférer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control ArtMgStkSousMin - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3667168034 - Control 2802434628 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>En Stock &amp; Sans prix vente</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -2772,6 +2792,111 @@
           <source>Appliquer les nouveaux valeurs</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Analyse des prix - Action Appliquer les nouveaux valeurs - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 8593942 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Articles à transférer depuis Mg Stockage</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. a transferer Mg STK - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 8593942 - Control 2103017514 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Emplacement par défaut</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. a transferer Mg STK - Control Default Bin - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 8593942 - Control 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Désignation</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. a transferer Mg STK - Control Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 8593942 - Control 2811914297 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Stock Mg Principal</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. a transferer Mg STK - Control MainQty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 8593942 - Control 4200184881 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Réf.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. a transferer Mg STK - Control No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 8593942 - Control 2178986790 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Qté Min Mg Principal</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. a transferer Mg STK - Control Qte Min Mg Principal - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 8593942 - Control 1660048055 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Stock Mg STOCK</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. a transferer Mg STK - Control StorageQty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 8593942 - Action 2738821773 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Recalcule la liste des articles à transférer depuis les magasins de stockage.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. a transferer Mg STK - Action Actualiser - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 8593942 - Action 2738821773 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Actualiser</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. a transferer Mg STK - Action Actualiser - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 8593942 - Action 2363185391 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Imprime l'état des articles affichés dans cette liste, filtres compris.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. a transferer Mg STK - Action Imprimer - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 8593942 - Action 2363185391 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Imprimer la liste</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. a transferer Mg STK - Action Imprimer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2490000574 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Articles en Mg Stockage sans Qté min</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. Mg STK sans Qte Min - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2490000574 - Control 2103017514 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Emplacement par défaut</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. Mg STK sans Qte Min - Control Default Bin - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2490000574 - Control 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Désignation</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. Mg STK sans Qte Min - Control Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2490000574 - Control 2811914297 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Stock Mg Principal</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. Mg STK sans Qte Min - Control MainQty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2490000574 - Control 4200184881 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Réf.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. Mg STK sans Qte Min - Control No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2490000574 - Control 2178986790 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Saisir ici la quantité minimum : l'article quitte cette liste au prochain recalcul.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. Mg STK sans Qte Min - Control Qte Min Mg Principal - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2490000574 - Control 2178986790 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Qté Min Mg Principal</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. Mg STK sans Qte Min - Control Qte Min Mg Principal - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2490000574 - Control 1660048055 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Stock Mg STOCK</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. Mg STK sans Qte Min - Control StorageQty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2490000574 - Action 2738821773 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Recalcule les alertes magasin de stockage.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. Mg STK sans Qte Min - Action Actualiser - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2490000574 - Action 2738821773 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Actualiser</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Art. Mg STK sans Qte Min - Action Actualiser - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 301198960 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Détails Article Tecdoc</source>
@@ -4612,6 +4737,26 @@
           <source>Articles</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Commerce de Gros KPI - Control Article - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2082978657 - Control 3413719664 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Articles avec du stock en magasin de stockage et aucune quantité minimum définie pour le magasin principal.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Commerce de Gros KPI - Control ArtMgStkSansQteMin - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2082978657 - Control 3413719664 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Mg STK sans Qté min</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Commerce de Gros KPI - Control ArtMgStkSansQteMin - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2082978657 - Control 3650221715 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Articles avec du stock en magasin de stockage et un stock magasin principal inférieur à la qté min.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Commerce de Gros KPI - Control ArtMgStkSousMin - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2082978657 - Control 3650221715 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Mg STK à transférer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Commerce de Gros KPI - Control ArtMgStkSousMin - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2082978657 - Control 2703198109 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Article avec +Emplacement</source>
@@ -8013,6 +8158,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page ItemCopyAPI - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3303523868 - NamedType 378073847" size-unit="char" translate="yes" xml:space="preserve">
+          <source>L'article %1 existe deja.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = No article</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page ItemCopyAPI - NamedType ArticleExisteDejaErr</note>
+        </trans-unit>
         <trans-unit id="Page 3303523868 - Control 2735992580 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Category</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -8367,6 +8517,26 @@
           <source>Article</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page KPI vente Détails - Control Item - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1555262596 - Control 3413719664 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Articles avec du stock en magasin de stockage et aucune quantité minimum définie pour le magasin principal.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page KPI vente Détails - Control ArtMgStkSansQteMin - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1555262596 - Control 3413719664 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Mg STK sans Qté min</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page KPI vente Détails - Control ArtMgStkSansQteMin - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1555262596 - Control 3650221715 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Articles avec du stock en magasin de stockage et un stock magasin principal inférieur à la qté min.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page KPI vente Détails - Control ArtMgStkSousMin - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1555262596 - Control 3650221715 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Mg STK à transférer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page KPI vente Détails - Control ArtMgStkSousMin - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 1555262596 - Control 2703198109 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Avec +Casier</source>
@@ -12847,6 +13017,21 @@
           <source>Valider Demande de prix</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Quote Check - Action Validate Quote - Property caption</note>
+        </trans-unit>
+        <trans-unit id="Page 308559961 - Control 2329573752 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>aiComputedAt</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Quote Line API - Control aiComputedAt - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 308559961 - Control 4011229012 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>aiProposalReason</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Quote Line API - Control aiProposalReason - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 308559961 - Control 3603159976 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>aiProposedQty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Purchase Quote Line API - Control aiProposedQty - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 308559961 - Control 1145741192 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>askingPrice</source>
@@ -18818,6 +19003,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report DEVIS COPIM - Control PrintItemNo - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Report 1117201003 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Etat articles à transférer depuis Mg Stockage</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Etat Art. Transf. Mg STK - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Report 2694183196 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Liste Bl</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -21613,10 +21803,25 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Control ImportQty - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 979344903 - Control 2617438505 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
+          <source>Magasin Principal</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Control Main Qty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 979344903 - Control 2178986790 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
+          <source>Qté Min Mg Principal</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Control Qte Min Mg Principal - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 979344903 - Control 2540402093 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
           <source>Petite Fourniture</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Control Small Parts - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 979344903 - Control 469916855 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
+          <source>Magasin STK</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension item - Control Storage Qty - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 979344903 - Control 763388767 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
           <source>Fabricant est Actif</source>
@@ -21853,10 +22058,20 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Location Card - Control ExculreStock - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 3870787835 - Control 1743093683 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3870787835">
+          <source>Magasin Principal</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Location Card - Control isMain - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 3870787835 - Control 1272074849 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3870787835">
           <source>Magasin Occasion</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Location Card - Control isMgOcc - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3870787835 - Control 2997219669 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3870787835">
+          <source>Magasin Stockage</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Location Card - Control isStorage - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 2011898816 - Control 2704986715 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2011898816">
           <source>Actif</source>
@@ -22457,6 +22672,26 @@
           <source>Date Dernier Achat</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Quote Lines - Control Date Dernier Achat - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1071220633 - Control 3463026560 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1071220633">
+          <source>Date du calcul REAPRO dont provient la proposition. Vide = aucune proposition publiée pour cette ligne.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Quote Lines - Control AI Computed At - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1071220633 - Control 3463026560 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1071220633">
+          <source>Calcul IA du</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Quote Lines - Control AI Computed At - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1071220633 - Control 3482439540 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1071220633">
+          <source>Justification IA</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Quote Lines - Control AI Proposal Reason - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1071220633 - Control 3653124952 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1071220633">
+          <source>Qté proposée IA</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Quote Lines - Control AI Proposed Qty - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 1071220633 - Control 3627318856 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1071220633">
           <source>Prix Demandé</source>
@@ -23233,6 +23468,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Vehicle SO Proc. Activities - Control Neg Ajust Year - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 3087690892 - Control 515058442 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3087690892">
+          <source>Fabricant</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Vendor By Manufacturer - Control fabricant - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3087690892 - Control 2236528010 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3087690892">
+          <source>Format Référence Furnisseur</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Vendor By Manufacturer - Control Vendor No Format - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 848916957 - Control 1556704682 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4055858012">
           <source>Remise Par défaut en %</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -23628,10 +23873,20 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field LastPurchPricePrincipalVendor - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3276313895 - Field 2811914297 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Mg PRINCIPAL</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field MainQty - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3276313895 - Field 2945122260 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>Mg Principal Filter</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Mg Principal Filter - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3276313895 - Field 310094461 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Stock Mg stockage sans qté min</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Mg STK Sans Qte Min - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3276313895 - Field 2312931536 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>MRF ID</source>
@@ -23673,6 +23928,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Qty Stock - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3276313895 - Field 1918549556 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Sous stock min Mg principal</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Sous Min Mg Principal - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3276313895 - Field 1550494878 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>Rotation Stock N</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -23687,6 +23947,11 @@
           <source>Rotation Stock N-2</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field Stock Rotation N-2 - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3276313895 - Field 1660048055 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Mg STOCK</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item - Field StorageQty - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3276313895 - Field 284074200 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>To verify</source>
@@ -23778,6 +24043,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Ledger Entry - Field isLocationExclu - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 4089294192 - Field 1914978480 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4089294192">
+          <source>isMainLocation</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Ledger Entry - Field isMainLocation - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4089294192 - Field 3755552210 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4089294192">
+          <source>isStorageLocation</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Ledger Entry - Field isStorageLocation - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 4089294192 - Field 3915309917 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4089294192">
           <source>itemDescription</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -23833,10 +24108,20 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Location - Field ExculreStock - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3891454143 - Field 1743093683 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3891454143">
+          <source>isMain</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Location - Field isMain - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3891454143 - Field 1272074849 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3891454143">
           <source>isMgOcc</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Location - Field isMgOcc - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3891454143 - Field 2997219669 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3891454143">
+          <source>isStorage</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Location - Field isStorage - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3647128553 - Field 2704986715 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3647128553">
           <source>Actif</source>
@@ -24002,6 +24287,21 @@
           <source>Total Line</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchase Header - Field Total Line - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1519909599 - Field 3463026560 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1519909599">
+          <source>Calcul IA du</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchase Line - Field AI Computed At - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1519909599 - Field 3482439540 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1519909599">
+          <source>Justification IA</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchase Line - Field AI Proposal Reason - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1519909599 - Field 3653124952 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1519909599">
+          <source>Qté proposée IA</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Purchase Line - Field AI Proposed Qty - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 1519909599 - Field 617486952 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1519909599">
           <source>Prix demandé</source>
