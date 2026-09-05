@@ -29,11 +29,23 @@ refabriquera le paquet dans la bonne version.
 
 AU QUOTIDIEN
 ------------
-DEMARRER.bat     ouvre la caisse
-DEMARRER-AUTO.vbs  ouvre la caisse SANS fenetre noire. C'est ce fichier-la qu'on met
-                 dans le dossier Demarrage de Windows, pas DEMARRER.bat : Windows
-                 ouvre toujours une console pour un .bat. Si la caisse ne demarre
-                 pas, il affiche un message au lieu de rester muet.
+  >>> POUR OUVRIR LA CAISSE, UTILISEZ TOUJOURS L'ICONE << Caisse PosCaisse >> <<<
+      posee sur le Bureau. Elle est aussi dans le menu Demarrer.
+
+      C'est important, et la raison n'est pas evidente : l'impression directe -
+      le ticket qui part sans boite de dialogue - depend de la FACON dont la
+      caisse est ouverte. L'icone lance ce qu'il faut ; le navigateur habituel
+      du poste, ou une application installee depuis la page, non. Si la boite
+      de dialogue d'impression revient, c'est presque toujours qu'on a ouvert
+      la caisse autrement : fermez la fenetre et repassez par l'icone.
+
+      L'icone sert dans les deux cas : elle demarre tout si rien ne tourne, et
+      se contente de rouvrir la fenetre si la caisse est deja en service.
+
+RACCOURCIS.bat   repose l'icone du Bureau si elle a ete supprimee, et propose de
+                 remettre la caisse au demarrage de Windows
+DEMARRER.bat     ouvre la caisse depuis une fenetre de commande (equivalent de
+                 l'icone, avec le detail de ce qui se passe)
 ARRETER.bat      ferme proprement la caisse et la base
 SAUVEGARDER.bat  ecrit une copie de securite dans « sauvegardes »
 ETAT.bat         dit ce qui tourne et quand remonte la derniere sauvegarde

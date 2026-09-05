@@ -9,7 +9,7 @@
     Actions : install | start | stop | backup | restore | status
 #>
 param(
-  [ValidateSet('install', 'start', 'stop', 'backup', 'restore', 'status')]
+  [ValidateSet('install', 'start', 'stop', 'backup', 'restore', 'status', 'raccourcis')]
   [string]$Action = 'start',
   [string]$Fichier = ''
 )
@@ -345,6 +345,66 @@ function Verifier-Postgres {
 }
 
 # ---------------------------------------------------------------- actions
+<#
+    Pose les raccourcis de la caisse : sur le Bureau, dans le menu Demarrer, et - si on
+    l'accepte - dans le dossier Demarrage de Windows.
+
+    Tous les trois pointent sur le MEME lanceur que le demarrage automatique. C'est tout
+    l'enjeu, et il ne saute pas aux yeux :
+
+    << --kiosk-printing >> n'est pas un reglage de Chrome, c'est un drapeau de LANCEMENT.
+    Une caisse ouverte par le navigateur habituel du poste, ou par une application
+    installee depuis la page, demarre sans ce drapeau : la boite de dialogue d'impression
+    revient, et le ticket ne part plus tout seul. Seul un redemarrage du PC retablissait
+    l'impression directe, parce que c'est le dossier Demarrage qui relancait Chrome avec
+    les bons drapeaux.
+
+    Un raccourci qui passe par ce lanceur n'a jamais ce probleme. Et comme << start >> ne
+    fait rien de ce qui tourne deja, le meme raccourci sert aussi bien a tout demarrer le
+    matin qu'a rouvrir la fenetre fermee par megarde.
+#>
+function Creer-Raccourcis([switch]$AuDemarrage) {
+  $vbs = Join-Path $racine 'DEMARRER-AUTO.vbs'
+  if (-not (Test-Path $vbs)) { Souci 'DEMARRER-AUTO.vbs est absent : raccourcis non crees.'; return }
+  $icone = Join-Path (Join-Path $racine 'outils') 'poscaisse.ico'
+  $shell = New-Object -ComObject WScript.Shell
+
+  function Poser([string]$chemin) {
+    $l = $shell.CreateShortcut($chemin)
+    # wscript.exe et non le .vbs lui-meme : Windows ouvrirait sinon une fenetre de console.
+    $l.TargetPath = Join-Path $env:WINDIR 'System32\wscript.exe'
+    $l.Arguments = '"' + $vbs + '"'
+    $l.WorkingDirectory = $racine
+    $l.Description = 'Ouvre la caisse PosCaisse avec l''impression directe'
+    if (Test-Path $icone) { $l.IconLocation = $icone }
+    $l.Save()
+  }
+
+  $nom = 'Caisse PosCaisse.lnk'
+  Poser (Join-Path ([Environment]::GetFolderPath('Desktop')) $nom)
+  Info 'Raccourci pose sur le Bureau.'
+
+  $menu = Join-Path ([Environment]::GetFolderPath('StartMenu')) 'Programs'
+  if (Test-Path $menu) { Poser (Join-Path $menu $nom); Info 'Raccourci pose dans le menu Demarrer.' }
+
+  if ($AuDemarrage) {
+    $dep = Join-Path ([Environment]::GetFolderPath('Startup')) $nom
+    Poser $dep
+    Info 'La caisse s''ouvrira desormais au demarrage de Windows.'
+  }
+}
+
+function Faire-Raccourcis {
+  Etape 'Raccourcis de la caisse'
+  Write-Host ''
+  Write-Host '  Ces raccourcis ouvrent la caisse avec l''impression directe.' -ForegroundColor Cyan
+  Write-Host '  Utilisez-les toujours : une caisse ouverte depuis le navigateur habituel' -ForegroundColor Cyan
+  Write-Host '  du poste imprime avec une boite de dialogue, pas directement.' -ForegroundColor Cyan
+  Write-Host ''
+  $rep = Read-Host '  Ouvrir aussi la caisse au demarrage de Windows ? [O/n]'
+  if ($rep -and $rep -notmatch '^[oOyY]') { Creer-Raccourcis } else { Creer-Raccourcis -AuDemarrage }
+}
+
 function Faire-Install {
   Etape 'Verification du contenu du dossier'
   foreach ($f in @($java, $initdb, $pgctl, $jar)) {
@@ -394,8 +454,11 @@ function Faire-Install {
   Etape 'Premier demarrage'
   App-Demarre $c
   Info 'Tables et donnees de depart installees.'
+  Faire-Raccourcis
+
   Etape 'Installation terminee'
-  Info "Ouvrez la caisse avec DEMARRER.bat. Identifiants de depart : admin / admin123."
+  Info "Ouvrez la caisse par l'icone << Caisse PosCaisse >> du Bureau."
+  Info "Identifiants de depart : admin / admin123."
   Souci 'Changez ce mot de passe des la premiere connexion (Back-office -> Utilisateurs).'
   Navigateur $c
 }
@@ -554,4 +617,5 @@ switch ($Action) {
   'backup'  { Faire-Backup }
   'restore' { Faire-Restore }
   'status'  { Faire-Status }
+  'raccourcis' { Faire-Raccourcis }
 }

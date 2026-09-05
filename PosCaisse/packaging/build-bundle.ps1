@@ -224,7 +224,7 @@ if (Test-Path $vc) {
 }
 
 foreach ($f in @('jre\bin\java.exe', 'pgsql\bin\initdb.exe', 'pgsql\bin\pg_ctl.exe', 'poscaisse.jar',
-                 'INSTALLER.bat', 'DEMARRER-AUTO.vbs')) {
+                 'INSTALLER.bat', 'DEMARRER-AUTO.vbs', 'RACCOURCIS.bat', 'outils\poscaisse.ico')) {
   if (-not (Test-Path (Join-Path $sortie $f))) { Stop-Net "Le paquet est incomplet : $f manque." }
 }
 # Version reelle des binaires assembles, pas celle qu'on croit avoir telechargee : si
