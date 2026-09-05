@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <title>POS Resto — logo empilé</title>
+  <style>@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;800&amp;display=swap');
+    .w{font-family:'Outfit','Poppins','Segoe UI',Arial,sans-serif;font-weight:800;font-size:56px;letter-spacing:-1.5px;text-anchor:middle}
+    .t{font-family:'Outfit','Poppins','Segoe UI',Arial,sans-serif;font-weight:500;font-size:13px;letter-spacing:3px;text-anchor:middle}</style>
+  <g transform="translate(90 20)">
+    <rect width="120" height="120" rx="28" fill="#E8552B"/>
+    <path d="M28 72a32 32 0 0 1 64 0Z" fill="#FBF3E8"/>
+    <rect x="22" y="72" width="76" height="9" rx="4.5" fill="#FBF3E8"/>
+    <rect x="57.5" y="30" width="5" height="12" rx="2.5" fill="#FBF3E8"/>
+    <circle cx="60" cy="29" r="5.5" fill="#FBF3E8"/>
+    <path d="M46 58l9 9 19-19" fill="none" stroke="#E8552B" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M40 90h40M40 98h26" stroke="#FBF3E8" stroke-width="4" stroke-linecap="round" opacity=".85"/>
+  </g>
+  <text x="150" y="220" class="w" fill="#16233A">POS <tspan fill="#E8552B">Resto</tspan></text>
+  <text x="150" y="250" class="t" fill="#16233A" opacity=".7">ENCAISSEZ · SERVEZ · PILOTEZ</text>
+</svg>

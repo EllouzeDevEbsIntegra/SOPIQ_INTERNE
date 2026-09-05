@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <title>POS Resto — icône</title>
+  <rect width="120" height="120" rx="28" fill="#E8552B"/>
+  <!-- cloche -->
+  <path d="M28 72a32 32 0 0 1 64 0Z" fill="#FBF3E8"/>
+  <rect x="22" y="72" width="76" height="9" rx="4.5" fill="#FBF3E8"/>
+  <rect x="57.5" y="30" width="5" height="12" rx="2.5" fill="#FBF3E8"/>
+  <circle cx="60" cy="29" r="5.5" fill="#FBF3E8"/>
+  <!-- coche : commande validée -->
+  <path d="M46 58l9 9 19-19" fill="none" stroke="#E8552B" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- ticket qui sort -->
+  <path d="M40 90h40M40 98h26" stroke="#FBF3E8" stroke-width="4" stroke-linecap="round" opacity=".85"/>
+</svg>
