@@ -47,5 +47,7 @@ public final class AdminDtos {
     public record CourierRequest(@NotBlank String name, String phone, String note, Boolean active) {}
 
     public record KitchenNoteDto(Long id, String label, int sortOrder, boolean active) {}
+    public record IngredientDto(Long id, String name, int sortOrder, boolean active) {}
+    public record IngredientRequest(@NotBlank String name, Integer sortOrder, Boolean active) {}
     public record KitchenNoteRequest(@NotBlank String label, Integer sortOrder, Boolean active) {}
 }

@@ -24,6 +24,7 @@ const routes = [
       { path: 'layout', name: 'admin-layout', component: () => import('../views/admin/PosLayoutView.vue'), meta: { title: 'Disposition POS & favoris', perm: 'PRODUCTS_MANAGE' } },
       { path: 'customers', name: 'admin-customers', component: () => import('../views/admin/CustomersView.vue'), meta: { title: 'Clients', perm: 'BACKOFFICE_ACCESS' } },
       { path: 'kitchen-notes', name: 'admin-kitchen-notes', component: () => import('../views/admin/KitchenNotesView.vue'), meta: { title: 'Remarques cuisine', perm: 'PRODUCTS_MANAGE' } },
+      { path: 'ingredients', name: 'admin-ingredients', component: () => import('../views/admin/IngredientsView.vue'), meta: { title: 'Ingrédients', perm: 'PRODUCTS_MANAGE' } },
       { path: 'couriers', name: 'admin-couriers', component: () => import('../views/admin/CouriersView.vue'), meta: { title: 'Livreurs', perm: 'BACKOFFICE_ACCESS' } },
       { path: 'users', name: 'admin-users', component: () => import('../views/admin/UsersView.vue'), meta: { title: 'Utilisateurs', perm: 'USERS_MANAGE' } },
       { path: 'roles', name: 'admin-roles', component: () => import('../views/admin/RolesView.vue'), meta: { title: 'Rôles & permissions', perm: 'USERS_MANAGE' } },

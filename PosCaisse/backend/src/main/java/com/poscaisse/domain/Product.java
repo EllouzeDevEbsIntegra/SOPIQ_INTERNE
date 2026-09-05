@@ -44,4 +44,18 @@ public class Product {
     @OneToMany(mappedBy = "menuProduct", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy("sortOrder ASC")
     private List<MenuComponent> menuComponents = new ArrayList<>();
+
+    /**
+     * Ingrédients composant le nom, dans l'ordre où ils ont été touchés :
+     * « Omelette Thon Salami » ne se lit pas comme « Salami Thon Omelette ».
+     *
+     * Une liste et non un ensemble, donc, avec la colonne d'ordre portée par la table
+     * de liaison. Ce lien sert la recherche par ingrédient en caisse ; le nom, lui,
+     * reste une chaîne libre que l'on peut corriger à la main sans rien casser ici.
+     */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "product_ingredient", joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
+    @OrderColumn(name = "sort_order")
+    private List<Ingredient> ingredients = new ArrayList<>();
 }

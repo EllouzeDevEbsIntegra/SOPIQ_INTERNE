@@ -24,6 +24,7 @@ public class CatalogService {
     private final PaymentMethodRepo paymentMethodRepo;
     private final CompanyRepo companyRepo;
     private final KitchenNoteRepo kitchenNoteRepo;
+    private final IngredientRepo ingredientRepo;
     private final SettingsService settings;
     private final AuditService audit;
 
@@ -43,7 +44,11 @@ public class CatalogService {
         // de la caisse doit pouvoir les proposer sans aller-retour supplementaire.
         List<AdminDtos.KitchenNoteDto> notes = kitchenNoteRepo.findByActiveTrueOrderBySortOrderAscIdAsc()
                 .stream().map(Mappers::kitchenNote).toList();
-        return new CatalogResponse(cats, products, methods, settings.all(), info, notes);
+        // Les ingredients voyagent avec le catalogue, comme les remarques : la caisse en
+        // aura besoin pour filtrer les articles sans aller-retour supplementaire.
+        List<AdminDtos.IngredientDto> ingredients = ingredientRepo.findByActiveTrueOrderBySortOrderAscIdAsc()
+                .stream().map(Mappers::ingredient).toList();
+        return new CatalogResponse(cats, products, methods, settings.all(), info, notes, ingredients);
     }
 
     // ---------- Categories ----------
@@ -119,6 +124,21 @@ public class CatalogService {
                 ProductModifierGroup pmg = new ProductModifierGroup();
                 pmg.setProduct(p); pmg.setModifierGroup(g); pmg.setSortOrder(i++);
                 p.getModifierGroups().add(pmg);
+            }
+        }
+        /*
+            Les ingredients sont remplaces en bloc, dans l'ordre recu : c'est cet ordre
+            qui a compose le nom, et le reordonner ici le contredirait.
+
+            Les doublons sont ecartes - la table les refuse, et deux fois « Thon » sur un
+            article fausserait la recherche par ingredient.
+        */
+        p.getIngredients().clear();
+        if (r.ingredientIds() != null) {
+            java.util.Set<Long> vus = new java.util.LinkedHashSet<>(r.ingredientIds());
+            for (Long iid : vus) {
+                p.getIngredients().add(ingredientRepo.findById(iid)
+                        .orElseThrow(() -> BusinessException.notFound("Ingrédient")));
             }
         }
         p.getMenuComponents().clear();

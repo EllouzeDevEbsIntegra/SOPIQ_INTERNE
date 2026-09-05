@@ -10,7 +10,7 @@ import Icon from '../../components/common/Icon.vue'
 const ui = useUiStore(); const catalog = useCatalogStore(); const { busy, run } = useBusy()
 const rows = ref([]); const cats = ref([]); const groups = ref([]); const dests = ref([]); const edit = ref(null); const q = ref(''); const catFilter = ref(''); const tab = ref('general')
 async function load() { try { [rows.value, cats.value, groups.value, dests.value] = await Promise.all([api.catalog.products(), api.catalog.categories(), api.catalog.modifiers(), api.admin.destinations()]) } catch (e) { ui.error(e.humanMessage) } }
-onMounted(load)
+onMounted(() => { load(); chargerIngredients() })
 /* Sans filtre, la liste est groupée par catégorie : l'ordre étant propre à
    chaque catégorie, une liste globale triée sur le seul rang les entrelacerait. */
 const catRank = computed(() => Object.fromEntries(cats.value.map((c, i) => [c.id, i])))
@@ -23,6 +23,34 @@ const filtered = computed(() => rows.value
    et l'ordre réel devient faux sans que personne ne le voie. */
 const canReorder = computed(() => !!catFilter.value && !q.value.trim())
 const dragId = ref(null)
+
+/*
+    Composition du nom par ingredients.
+
+    Toucher « Omelette », « Thon », « Salami » ecrit « Omelette Thon Salami ». C'est une
+    aide a la saisie : le champ reste librement modifiable ensuite, et rien n'oblige a
+    passer par la.
+
+    Les ingredients retenus sont aussi ENREGISTRES avec l'article, separement du nom. Le
+    nom est une chaine de caracteres, qu'on ne peut pas relire a coup sur - « Thon »
+    apparait dans « Thonine ». Le lien, lui, permettra de retrouver en caisse les articles
+    qui contiennent tel et tel ingredient.
+*/
+const ingredients = ref([])
+async function chargerIngredients() { try { ingredients.value = await api.admin.ingredients() } catch { /* liste facultative */ } }
+
+function nomCompose(ids) {
+  return ids.map(id => ingredients.value.find(i => i.id === id)?.name).filter(Boolean).join(' ')
+}
+/* On ne reecrit le nom que s'il decoule encore des ingredients : des qu'il a ete retouche
+   a la main, une touche d'ingredient ne doit pas effacer ce que l'utilisateur a ecrit. */
+function basculerIngredient(id) {
+  const liste = edit.value.ingredientIds || (edit.value.ingredientIds = [])
+  const i = liste.indexOf(id)
+  const suivait = edit.value.name === nomCompose(liste)
+  if (i >= 0) liste.splice(i, 1); else liste.push(id)
+  if (suivait || !edit.value.name?.trim()) edit.value.name = nomCompose(liste)
+}
 
 function move(from, to) {
   if (from === to) return
@@ -53,8 +81,8 @@ async function onDrop() {
 }
 const simpleProducts = computed(() => rows.value.filter(p => p.productType === 'SIMPLE'))
 function nextCode(catId) { const c = cats.value.find(x => x.id === catId); const pre = (c?.name || 'PRD').slice(0, 3).toUpperCase().replace(/[^A-Z]/g, 'X'); let n = 1; while (rows.value.some(p => p.code === `${pre}-${String(n).padStart(3, '0')}`)) n++; return `${pre}-${String(n).padStart(3, '0')}` }
-function create() { const catId = Number(catFilter.value) || cats.value[0]?.id; edit.value = { code: nextCode(catId), reference: '', name: '', shortName: '', description: '', categoryId: catId, productType: 'SIMPLE', price: 0, taxRate: 0, imageUrl: '', color: '', sortOrder: rows.value.length + 1, active: true, available: true, favorite: false, favoriteOrder: 0, printDestinationIds: [], modifierGroupIds: [], menuComponents: [] }; tab.value = 'general' }
-function open(p) { edit.value = { ...p, modifierGroupIds: p.modifierGroups.map(g => g.id), menuComponents: p.menuComponents.map(c => ({ name: c.name, quantity: c.quantity, sortOrder: c.sortOrder, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) })) })) }; tab.value = 'general' }
+function create() { const catId = Number(catFilter.value) || cats.value[0]?.id; edit.value = { code: nextCode(catId), reference: '', name: '', shortName: '', description: '', categoryId: catId, productType: 'SIMPLE', price: 0, taxRate: 0, imageUrl: '', color: '', sortOrder: rows.value.length + 1, active: true, available: true, favorite: false, favoriteOrder: 0, printDestinationIds: [], modifierGroupIds: [], menuComponents: [], ingredientIds: [] }; tab.value = 'general' }
+function open(p) { edit.value = { ...p, ingredientIds: [...(p.ingredientIds || [])], modifierGroupIds: p.modifierGroups.map(g => g.id), menuComponents: p.menuComponents.map(c => ({ name: c.name, quantity: c.quantity, sortOrder: c.sortOrder, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) })) })) }; tab.value = 'general' }
 async function save() {
   const b = { ...edit.value, price: Number(String(edit.value.price).replace(',', '.')), taxRate: Number(edit.value.taxRate) || 0, menuComponents: edit.value.productType === 'MENU' ? edit.value.menuComponents.map((c, i) => ({ ...c, sortOrder: i, quantity: Number(c.quantity) || 1, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) || 0 })) })) : [] }
   const r = await run(() => api.catalog.saveProduct(edit.value.id, b), { success: 'Produit enregistré' }); if (r) { edit.value = null; load(); catalog.load(true).catch(() => {}) }
@@ -89,7 +117,22 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
     <div v-show="tab==='general'" class="form-grid">
       <div class="field"><label>Type</label><select class="input" v-model="edit.productType"><option value="SIMPLE">Produit simple</option><option value="MENU">Menu / formule</option></select></div>
       <div class="field"><label>Catégorie</label><select class="input" v-model="edit.categoryId"><option v-for="c in cats" :key="c.id" :value="c.id">{{ c.name }}</option></select></div>
-      <div class="field"><label>Nom</label><input class="input" v-model="edit.name" /></div>
+      <div class="field span-2">
+        <label>Nom</label>
+        <input class="input" v-model="edit.name" />
+        <!-- Touches de composition : le nom s'ecrit dans l'ordre des appuis. Les
+             ingredients retenus sont enregistres avec l'article, ce qui permettra de le
+             retrouver par eux en caisse - un nom seul ne s'analyse pas de facon sure. -->
+        <div class="ingr" v-if="ingredients.length">
+          <button v-for="ing in ingredients.filter(i => i.active)" :key="ing.id" type="button"
+                  class="chip-ingr" :class="{ on: (edit.ingredientIds || []).includes(ing.id) }"
+                  @click="basculerIngredient(ing.id)">
+            <span v-if="(edit.ingredientIds || []).includes(ing.id)" class="rang num">{{ (edit.ingredientIds || []).indexOf(ing.id) + 1 }}</span>
+            {{ ing.name }}
+          </button>
+          <span class="ingr-aide">Touchez dans l'ordre voulu — le nom reste modifiable à la main.</span>
+        </div>
+      </div>
       <!-- Laisse vide, le ticket imprime deja le nom complet : l'invite le montre, pour
            qu'on n'ait plus a le deviner. Le bouton recopie le nom quand on veut partir de
            lui pour l'abreger - « Sandwich Escalope Complet » en « Sandw. Escalope ». -->
@@ -144,6 +187,22 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
 </template>
 
 <style scoped>
+/* --- composition du nom par ingredients --- */
+.ingr { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px; }
+.chip-ingr {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 12px;
+  border: 1px solid var(--line-2); border-radius: 999px; background: var(--surface);
+  font-size: 13px; font-weight: 600; color: var(--ink-2);
+}
+.chip-ingr:hover { border-color: var(--brand); color: var(--ink); }
+/* La pastille porte le RANG, pas une simple coche : c'est l'ordre qui fait le nom. */
+.chip-ingr.on { background: var(--brand-soft); border-color: var(--brand); color: var(--ink); }
+.chip-ingr .rang {
+  display: inline-flex; align-items: center; justify-content: center; width: 17px; height: 17px;
+  border-radius: 50%; background: var(--brand); color: #fff; font-size: 10.5px; font-weight: 700;
+}
+.ingr-aide { font-size: 11.5px; color: var(--ink-4); margin-left: 4px; }
+
 /* L'indication vit a cote du selecteur de categorie, pas reléguée au bout de la barre :
    c'est ce selecteur qui commande le glisser-deposer, et une mention pale a l'autre bout
    de l'ecran passait inapercue — on croyait la fonction absente. */

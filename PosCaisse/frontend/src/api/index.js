@@ -68,6 +68,8 @@ export const api = {
     couriers: (q, activeOnly) => g('/couriers', { q, activeOnly }), saveCourier: (id, b) => id ? put(`/couriers/${id}`, b) : p('/couriers', b),
     kitchenNotes: () => g('/kitchen-notes'), saveKitchenNote: (id, b) => id ? put(`/kitchen-notes/${id}`, b) : p('/kitchen-notes', b),
     deleteKitchenNote: (id) => del(`/kitchen-notes/${id}`), reorderKitchenNotes: (ids) => p('/kitchen-notes/reorder', { ids }),
+    ingredients: () => g('/ingredients'), saveIngredient: (id, b) => id ? put(`/ingredients/${id}`, b) : p('/ingredients', b),
+    deleteIngredient: (id) => del(`/ingredients/${id}`), reorderIngredients: (ids) => p('/ingredients/reorder', { ids }),
     audit: (params) => g('/audit', params)
   },
   /* Comptes a credit : « party » vaut CUSTOMER ou COURIER, les deux se tiennent pareil. */

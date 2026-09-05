@@ -31,6 +31,7 @@ public class AdminService {
     private final CustomerRepo customerRepo;
     private final CourierRepo courierRepo;
     private final KitchenNoteRepo kitchenNoteRepo;
+    private final IngredientRepo ingredientRepo;
     private final AuditRepo auditRepo;
     private final SessionRepo sessionRepo;
     private final PasswordEncoder encoder;
@@ -256,6 +257,51 @@ public class AdminService {
         for (Long id : ids) {
             KitchenNote n = kitchenNoteRepo.findById(id).orElse(null);
             if (n != null) { n.setSortOrder(i++); kitchenNoteRepo.save(n); }
+        }
+    }
+
+    // ---------- ingredients ----------
+    @Transactional(readOnly = true)
+    public List<IngredientDto> ingredients() {
+        return ingredientRepo.findAllByOrderBySortOrderAscIdAsc().stream().map(Mappers::ingredient).toList();
+    }
+
+    @Transactional
+    public IngredientDto saveIngredient(Long id, IngredientRequest r) {
+        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de modifier les ingrédients.");
+        String nom = r.name().trim();
+        // Deux « Thon » dans la liste rendraient le filtre de la caisse incomprehensible :
+        // l'utilisateur en cocherait un et manquerait les articles portant l'autre.
+        ingredientRepo.findByNameIgnoreCase(nom).filter(o -> !o.getId().equals(id))
+                .ifPresent(o -> { throw BusinessException.conflict("L'ingrédient « " + nom + " » existe déjà."); });
+        Ingredient i = id == null ? new Ingredient() : ingredientRepo.findById(id).orElseThrow(() -> BusinessException.notFound("Ingrédient"));
+        // Un nouvel ingredient se range en fin de liste, comme les remarques : les touches
+        // deja connues ne bougent pas sous les doigts.
+        if (id == null) i.setSortOrder(ingredientRepo.findAll().stream().mapToInt(Ingredient::getSortOrder).max().orElse(0) + 1);
+        i.setName(nom);
+        if (r.sortOrder() != null) i.setSortOrder(r.sortOrder());
+        if (r.active() != null) i.setActive(r.active());
+        return Mappers.ingredient(ingredientRepo.save(i));
+    }
+
+    @Transactional
+    public void deleteIngredient(Long id) {
+        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de supprimer un ingrédient.");
+        // Le lien avec les articles tombe avec lui (ON DELETE CASCADE), mais leur NOM
+        // garde le mot : il a ete copie a la saisie. Seule la recherche par cet
+        // ingredient cesse de les trouver, ce que la confirmation annonce.
+        ingredientRepo.deleteById(id);
+        audit.log("INGREDIENT_DELETE", "Ingredient", id, null);
+    }
+
+    /** Ordre des touches dans la fiche article : la liste recue fait foi. */
+    @Transactional
+    public void reorderIngredients(List<Long> ids) {
+        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de réordonner les ingrédients.");
+        int i = 0;
+        for (Long id : ids) {
+            Ingredient n = ingredientRepo.findById(id).orElse(null);
+            if (n != null) { n.setSortOrder(i++); ingredientRepo.save(n); }
         }
     }
 

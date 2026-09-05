@@ -42,7 +42,9 @@ public final class Mappers {
                 p.getPrintDestinations().stream().map(PrintDestination::getId).sorted().toList(),
                 p.getModifierGroups().stream().sorted(Comparator.comparingInt(ProductModifierGroup::getSortOrder))
                         .map(ProductModifierGroup::getModifierGroup).filter(ModifierGroup::isActive).map(Mappers::modifierGroup).toList(),
-                p.getMenuComponents().stream().sorted(Comparator.comparingInt(MenuComponent::getSortOrder)).map(Mappers::menuComponent).toList());
+                p.getMenuComponents().stream().sorted(Comparator.comparingInt(MenuComponent::getSortOrder)).map(Mappers::menuComponent).toList(),
+                // L'ordre est celui de la liste : c'est lui qui a compose le nom.
+                p.getIngredients().stream().map(Ingredient::getId).toList());
     }
 
     public static PaymentMethodDto paymentMethod(PaymentMethod m) {
@@ -169,6 +171,10 @@ public final class Mappers {
 
     public static CustomerDto customer(Customer c) {
         return new CustomerDto(c.getId(), c.getName(), c.getPhone(), c.getNote(), c.getCreatedAt());
+    }
+
+    public static IngredientDto ingredient(Ingredient i) {
+        return new IngredientDto(i.getId(), i.getName(), i.getSortOrder(), i.isActive());
     }
 
     public static KitchenNoteDto kitchenNote(KitchenNote n) {

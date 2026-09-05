@@ -75,6 +75,13 @@ public class AdminController {
     @DeleteMapping("/kitchen-notes/{id}") public Map<String, Boolean> deleteKitchenNote(@PathVariable Long id) { admin.deleteKitchenNote(id); return Map.of("ok", true); }
     @PostMapping("/kitchen-notes/reorder") public Map<String, Boolean> reorderKitchenNotes(@RequestBody Map<String, List<Long>> body) { admin.reorderKitchenNotes(body.get("ids")); return Map.of("ok", true); }
 
+    // ingredients
+    @GetMapping("/ingredients") public List<IngredientDto> ingredients() { return admin.ingredients(); }
+    @PostMapping("/ingredients") public IngredientDto createIngredient(@Valid @RequestBody IngredientRequest r) { return admin.saveIngredient(null, r); }
+    @PutMapping("/ingredients/{id}") public IngredientDto updateIngredient(@PathVariable Long id, @Valid @RequestBody IngredientRequest r) { return admin.saveIngredient(id, r); }
+    @DeleteMapping("/ingredients/{id}") public Map<String, Boolean> deleteIngredient(@PathVariable Long id) { admin.deleteIngredient(id); return Map.of("ok", true); }
+    @PostMapping("/ingredients/reorder") public Map<String, Boolean> reorderIngredients(@RequestBody Map<String, List<Long>> body) { admin.reorderIngredients(body.get("ids")); return Map.of("ok", true); }
+
     // audit
     @PreAuthorize("hasAuthority('AUDIT_VIEW')")
     @GetMapping("/audit")
