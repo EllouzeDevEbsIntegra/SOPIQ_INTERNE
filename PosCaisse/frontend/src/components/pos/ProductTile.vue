@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { fmt } from '../../utils/money'
 import Icon from '../common/Icon.vue'
+import { useCatalogStore } from '../../stores/catalog'
 
 const props = defineProps({
   product: Object,
@@ -29,6 +30,24 @@ const tint = computed(() => {
   }
 })
 const hasOptions = computed(() => (props.product.modifierGroups || []).length > 0)
+
+/*
+    Version vendue par un appui court, annoncee sur la tuile.
+
+    Le badge dit ce que le caissier obtient sans reflechir : sans lui, il vendrait une
+    moyenne en croyant vendre une large. Le prix affiche est celui de cette version, et non
+    celui de l'article, qui ne veut plus rien dire des qu'il se decline.
+*/
+const catalog = useCatalogStore()
+const version = computed(() => {
+  const p = props.product
+  if (!p.variantId || !p.defaultVariantValueId) return null
+  const axe = catalog.variants.find(v => v.id === p.variantId)
+  const val = axe?.values.find(v => v.id === p.defaultVariantValueId)
+  if (!val) return null
+  return { nom: val.shortName || val.name, prix: Number((p.variantPrices || []).find(x => x.variantValueId === val.id)?.price || 0) }
+})
+const prixAffiche = computed(() => version.value ? version.value.prix : props.product.price)
 /* La vignette est toujours présente, avec ou sans photo : sans image elle porte
    l'initiale dans la teinte de la catégorie, pour qu'une carte partiellement
    illustrée garde une grille régulière. */
@@ -53,10 +72,13 @@ function cancel() { if (timer) { clearTimeout(timer); timer = null } }
         <span class="cat">{{ product.categoryName }}</span>
         <span v-if="product.productType === 'MENU'" class="flag">Menu</span>
         <Icon v-else-if="hasOptions" name="plus" :size="13" :stroke="2.4" class="opt" />
-        <span class="price num">{{ fmt(product.price) }}</span>
+        <span class="price num">{{ fmt(prixAffiche) }}</span>
       </span>
       <span class="rule"></span>
       <span class="name">{{ product.name }}</span>
+      <!-- Ce que vend un appui court : sans ce badge, on vend une moyenne en croyant
+           vendre une large. -->
+      <span v-if="version" class="version">{{ version.nom }}</span>
     </span>
     <span v-if="!product.available" class="veil">Indisponible</span>
   </button>
@@ -101,6 +123,13 @@ function cancel() { if (timer) { clearTimeout(timer); timer = null } }
 .opt { color: var(--c); opacity: .8; }
 
 .rule { height: 1px; background: var(--c-line); }
+
+/* La version se lit d'un coup d'oeil, sans concurrencer le nom du plat. */
+.version {
+  align-self: flex-start; margin-top: 3px; padding: 1px 7px; border-radius: 999px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .03em;
+  background: var(--c-bg-press); color: var(--c); border: 1px solid var(--c-line);
+}
 
 .name {
   flex: 1; min-width: 0;

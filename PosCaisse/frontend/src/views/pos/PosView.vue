@@ -64,22 +64,47 @@ const counts = computed(() => {
 
 function tap(p) {
   if (!p.available) return ui.info(`${p.name} est indisponible`)
-  const needsDialog = p.productType === 'MENU' || (p.modifierGroups || []).some(g => g.required)
+  /*
+      L'appui court vend, l'appui long choisit — sauf quand il faut demander.
+
+      Un article a variante se vend d'un appui sur sa valeur par defaut : au coup de feu,
+      neuf mlewi sur dix sont en pate normale et une touche suffit. Mais quand les versions
+      se valent — les trois tailles d'une pizza — vendre la moyenne par reflexe serait une
+      erreur : le reglage « toujours demander » de la fiche article ouvre alors le choix.
+  */
+  const needsDialog = p.productType === 'MENU'
+    || (p.modifierGroups || []).some(g => g.required)
+    || (p.variantId && p.askVariant)
   if (needsDialog) { dialog.value = { kind: 'modifier', product: p }; return }
-  cart.addLine({ product: p })
+  cart.addLine({ product: p, variantValue: varianteParDefaut(p) })
   flash(p)
+}
+/* Valeur vendue par un appui court : celle par defaut, avec son prix. */
+function varianteParDefaut(p) {
+  if (!p.variantId || !p.defaultVariantValueId) return null
+  const axe = catalog.variants.find(v => v.id === p.variantId)
+  const val = axe?.values.find(v => v.id === p.defaultVariantValueId)
+  if (!val) return null
+  return { ...val, price: Number((p.variantPrices || []).find(x => x.variantValueId === val.id)?.price || 0) }
 }
 function hold(p) {
   // long press: options (if any) or availability toggle for managers
-  if (p.modifierGroups?.length || p.productType === 'MENU') dialog.value = { kind: 'modifier', product: p }
+  if (p.modifierGroups?.length || p.productType === 'MENU' || p.variantId) dialog.value = { kind: 'modifier', product: p }
   else if (auth.can('PRODUCTS_MANAGE') || auth.can('SELL')) toggleAvailability(p)
 }
 const flashed = ref(null)
 function flash(p) { flashed.value = p.id; setTimeout(() => { if (flashed.value === p.id) flashed.value = null }, 250) }
-function onModifierConfirm({ quantity, modifiers, components, note }) {
+function onModifierConfirm({ quantity, modifiers, components, note, variantValue }) {
   const d = dialog.value; dialog.value = null
-  if (d.line) { const l = cart.find(d.line.key); if (l) { l.quantity = quantity; l.modifiers = modifiers; l.components = components; l.note = note } }
-  else cart.addLine({ product: d.product, quantity, modifiers, components, note })
+  /* Modifier une ligne existante change aussi sa version - et donc son prix : c'est tout
+     l'interet de pouvoir y revenir quand le client dit « finalement, en large ». */
+  if (d.line) {
+    const l = cart.find(d.line.key)
+    if (l) {
+      l.quantity = quantity; l.modifiers = modifiers; l.components = components; l.note = note
+      if (variantValue) { l.variantValueId = variantValue.id; l.variantValueName = variantValue.name; l.unitPrice = Number(variantValue.price) }
+    }
+  } else cart.addLine({ product: d.product, quantity, modifiers, components, note, variantValue })
 }
 async function toggleAvailability(p) {
   const target = !p.available

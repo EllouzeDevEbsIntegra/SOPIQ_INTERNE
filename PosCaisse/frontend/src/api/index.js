@@ -68,6 +68,8 @@ export const api = {
     couriers: (q, activeOnly) => g('/couriers', { q, activeOnly }), saveCourier: (id, b) => id ? put(`/couriers/${id}`, b) : p('/couriers', b),
     kitchenNotes: () => g('/kitchen-notes'), saveKitchenNote: (id, b) => id ? put(`/kitchen-notes/${id}`, b) : p('/kitchen-notes', b),
     deleteKitchenNote: (id) => del(`/kitchen-notes/${id}`), reorderKitchenNotes: (ids) => p('/kitchen-notes/reorder', { ids }),
+    variants: () => g('/variants'), saveVariant: (id, b) => id ? put(`/variants/${id}`, b) : p('/variants', b),
+    deleteVariant: (id) => del(`/variants/${id}`), reorderVariants: (ids) => p('/variants/reorder', { ids }),
     ingredients: () => g('/ingredients'), saveIngredient: (id, b) => id ? put(`/ingredients/${id}`, b) : p('/ingredients', b),
     deleteIngredient: (id) => del(`/ingredients/${id}`), reorderIngredients: (ids) => p('/ingredients/reorder', { ids }),
     audit: (params) => g('/audit', params)

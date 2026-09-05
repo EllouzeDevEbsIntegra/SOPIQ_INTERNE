@@ -53,6 +53,31 @@ public class Product {
      * de liaison. Ce lien sert la recherche par ingrédient en caisse ; le nom, lui,
      * reste une chaîne libre que l'on peut corriger à la main sans rien casser ici.
      */
+    /**
+     * Axe de déclinaison de l'article — au plus un, et souvent aucun.
+     *
+     * C'est cette limite à un seul axe qui évite la combinatoire : trois pâtes fois deux
+     * fromages donneraient six articles à saisir et une grille tactile illisible. Quand
+     * deux caractéristiques varient, la seconde se traite en articles distincts.
+     */
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "variant_id") private Variant variant;
+
+    /** Ce que vend un appui court. Obligatoire dès qu'un axe est choisi, et à prix non nul. */
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "default_variant_value_id")
+    private VariantValue defaultVariantValue;
+
+    /**
+     * Vrai : l'appui court ouvre le choix. Faux : il vend la valeur par défaut.
+     *
+     * Réglage par article et non par carte — sur un mlewi où neuf pâtes sur dix sont
+     * normales, un appui suffit ; sur une pizza où les trois tailles se valent, mieux vaut
+     * demander que de vendre une moyenne par réflexe.
+     */
+    private boolean askVariant;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ProductVariantPrice> variantPrices = new ArrayList<>();
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "product_ingredient", joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id"))

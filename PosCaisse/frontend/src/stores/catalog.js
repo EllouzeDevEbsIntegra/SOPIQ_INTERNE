@@ -8,6 +8,8 @@ export const useCatalogStore = defineStore('catalog', () => {
   const products = ref([])
   const paymentMethods = ref([])
   const kitchenNotes = ref([])   // remarques de cuisine proposees sur une ligne
+  const variants = ref([])       // axes de declinaison : Taille, Pate, Format
+  const ingredients = ref([])    // mots composant le nom des articles
   const settings = ref({})
   const company = ref(null)
   const loaded = ref(false)
@@ -20,6 +22,7 @@ export const useCatalogStore = defineStore('catalog', () => {
       const c = await api.pos.catalog()
       categories.value = c.categories; products.value = c.products; paymentMethods.value = c.paymentMethods
       settings.value = c.settings || {}; company.value = c.company; kitchenNotes.value = c.kitchenNotes || []
+      variants.value = c.variants || []; ingredients.value = c.ingredients || []
       if (c.company) configureMoney({ decimals: c.company.decimals, symbol: c.company.currencySymbol })
       loaded.value = true
     } finally { loading.value = false }
@@ -37,5 +40,5 @@ export const useCatalogStore = defineStore('catalog', () => {
     if (!s) return []
     return products.value.filter(p => p.name.toLowerCase().includes(s) || (p.code || '').toLowerCase().includes(s) || (p.reference || '').toLowerCase().includes(s) || (p.shortName || '').toLowerCase().includes(s)).slice(0, 40)
   }
-  return { categories, products, paymentMethods, settings, company, loaded, loading, load, productsById, favorites, byCategory, setting, serviceModes, kitchenNotes, quickCash, cashMethod, updateProduct, search }
+  return { categories, products, paymentMethods, settings, company, loaded, loading, load, productsById, favorites, byCategory, setting, serviceModes, kitchenNotes, quickCash, cashMethod, updateProduct, search, variants, ingredients }
 })

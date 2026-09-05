@@ -82,6 +82,13 @@ public class AdminController {
     @DeleteMapping("/ingredients/{id}") public Map<String, Boolean> deleteIngredient(@PathVariable Long id) { admin.deleteIngredient(id); return Map.of("ok", true); }
     @PostMapping("/ingredients/reorder") public Map<String, Boolean> reorderIngredients(@RequestBody Map<String, List<Long>> body) { admin.reorderIngredients(body.get("ids")); return Map.of("ok", true); }
 
+    // variantes
+    @GetMapping("/variants") public List<VariantDto> variants() { return admin.variants(); }
+    @PostMapping("/variants") public VariantDto createVariant(@Valid @RequestBody VariantRequest r) { return admin.saveVariant(null, r); }
+    @PutMapping("/variants/{id}") public VariantDto updateVariant(@PathVariable Long id, @Valid @RequestBody VariantRequest r) { return admin.saveVariant(id, r); }
+    @DeleteMapping("/variants/{id}") public Map<String, Boolean> deleteVariant(@PathVariable Long id) { admin.deleteVariant(id); return Map.of("ok", true); }
+    @PostMapping("/variants/reorder") public Map<String, Boolean> reorderVariants(@RequestBody Map<String, List<Long>> body) { admin.reorderVariants(body.get("ids")); return Map.of("ok", true); }
+
     // audit
     @PreAuthorize("hasAuthority('AUDIT_VIEW')")
     @GetMapping("/audit")

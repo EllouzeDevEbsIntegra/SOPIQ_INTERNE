@@ -10,7 +10,7 @@ import Icon from '../../components/common/Icon.vue'
 const ui = useUiStore(); const catalog = useCatalogStore(); const { busy, run } = useBusy()
 const rows = ref([]); const cats = ref([]); const groups = ref([]); const dests = ref([]); const edit = ref(null); const q = ref(''); const catFilter = ref(''); const tab = ref('general')
 async function load() { try { [rows.value, cats.value, groups.value, dests.value] = await Promise.all([api.catalog.products(), api.catalog.categories(), api.catalog.modifiers(), api.admin.destinations()]) } catch (e) { ui.error(e.humanMessage) } }
-onMounted(() => { load(); chargerIngredients() })
+onMounted(() => { load(); chargerIngredients(); chargerVariantes() })
 /* Sans filtre, la liste est groupée par catégorie : l'ordre étant propre à
    chaque catégorie, une liste globale triée sur le seul rang les entrelacerait. */
 const catRank = computed(() => Object.fromEntries(cats.value.map((c, i) => [c.id, i])))
@@ -37,6 +37,37 @@ const dragId = ref(null)
     qui contiennent tel et tel ingredient.
 */
 const ingredients = ref([])
+
+/*
+    Variantes : au plus une par article.
+
+    Le prix se tient ici, par version, et non sur la variante : la meme « Large » ne vaut
+    pas le meme prix sur une pizza thon et sur une pizza fruits de mer. Un prix a zero
+    signifie « pas encore tarifee » — la version apparait alors grisee en caisse, ce qui
+    dit au gerant ce qui lui reste a faire, plutot que de la faire disparaitre sans un mot.
+*/
+const variantes = ref([])
+async function chargerVariantes() { try { variantes.value = await api.admin.variants() } catch { /* liste facultative */ } }
+const axeChoisi = computed(() => variantes.value.find(v => v.id === edit.value?.variantId) || null)
+const versionsAxe = computed(() => (axeChoisi.value?.values || []).filter(v => v.active))
+
+function prixVersion(id) {
+  return (edit.value.variantPrices || []).find(p => p.variantValueId === id)?.price ?? ''
+}
+function setPrixVersion(id, v) {
+  const liste = edit.value.variantPrices || (edit.value.variantPrices = [])
+  const ligne = liste.find(p => p.variantValueId === id)
+  const n = Number(String(v).replace(',', '.')) || 0
+  if (ligne) ligne.price = n; else liste.push({ variantValueId: id, price: n })
+}
+/* Changer d'axe rend la grille de prix precedente absurde : on repart a zero plutot que
+   de garder des prix qui se rattachaient a des versions disparues. */
+function changerAxe(id) {
+  edit.value.variantId = id || null
+  edit.value.variantPrices = []
+  edit.value.defaultVariantValueId = null
+  if (!id) edit.value.askVariant = false
+}
 
 /* Meme palette que les categories : deux jeux de couleurs differents dans un meme
    back-office donneraient deux cartes qui ne se ressemblent pas. */
@@ -88,8 +119,8 @@ async function onDrop() {
 }
 const simpleProducts = computed(() => rows.value.filter(p => p.productType === 'SIMPLE'))
 function nextCode(catId) { const c = cats.value.find(x => x.id === catId); const pre = (c?.name || 'PRD').slice(0, 3).toUpperCase().replace(/[^A-Z]/g, 'X'); let n = 1; while (rows.value.some(p => p.code === `${pre}-${String(n).padStart(3, '0')}`)) n++; return `${pre}-${String(n).padStart(3, '0')}` }
-function create() { const catId = Number(catFilter.value) || cats.value[0]?.id; edit.value = { code: nextCode(catId), reference: '', name: '', shortName: '', description: '', categoryId: catId, productType: 'SIMPLE', price: 0, taxRate: 0, imageUrl: '', color: '', sortOrder: rows.value.length + 1, active: true, available: true, favorite: false, favoriteOrder: 0, printDestinationIds: [], modifierGroupIds: [], menuComponents: [], ingredientIds: [] }; tab.value = 'general' }
-function open(p) { edit.value = { ...p, ingredientIds: [...(p.ingredientIds || [])], modifierGroupIds: p.modifierGroups.map(g => g.id), menuComponents: p.menuComponents.map(c => ({ name: c.name, quantity: c.quantity, sortOrder: c.sortOrder, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) })) })) }; tab.value = 'general' }
+function create() { const catId = Number(catFilter.value) || cats.value[0]?.id; edit.value = { code: nextCode(catId), reference: '', name: '', shortName: '', description: '', categoryId: catId, productType: 'SIMPLE', price: 0, taxRate: 0, imageUrl: '', color: '', sortOrder: rows.value.length + 1, active: true, available: true, favorite: false, favoriteOrder: 0, printDestinationIds: [], modifierGroupIds: [], menuComponents: [], ingredientIds: [], variantId: null, defaultVariantValueId: null, askVariant: false, variantPrices: [] }; tab.value = 'general' }
+function open(p) { edit.value = { ...p, ingredientIds: [...(p.ingredientIds || [])], variantPrices: (p.variantPrices || []).map(x => ({ ...x })), modifierGroupIds: p.modifierGroups.map(g => g.id), menuComponents: p.menuComponents.map(c => ({ name: c.name, quantity: c.quantity, sortOrder: c.sortOrder, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) })) })) }; tab.value = 'general' }
 async function save() {
   const b = { ...edit.value, price: Number(String(edit.value.price).replace(',', '.')), taxRate: Number(edit.value.taxRate) || 0, menuComponents: edit.value.productType === 'MENU' ? edit.value.menuComponents.map((c, i) => ({ ...c, sortOrder: i, quantity: Number(c.quantity) || 1, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) || 0 })) })) : [] }
   const r = await run(() => api.catalog.saveProduct(edit.value.id, b), { success: 'Produit enregistré' }); if (r) { edit.value = null; load(); catalog.load(true).catch(() => {}) }
@@ -160,6 +191,46 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
       <div class="field"><label>Prix TTC</label><input class="input lg" v-model="edit.price" inputmode="decimal" /></div>
       <div class="field"><label>TVA % (si activée)</label><input class="input" v-model="edit.taxRate" inputmode="decimal" /></div>
       <div class="field span-2"><label>Description</label><input class="input" v-model="edit.description" /></div>
+      <!--
+          Variante : les versions du meme plat, chacune a son prix.
+
+          Le prix affiche plus haut ne sert plus des qu'un axe est choisi : c'est la grille
+          qui fait foi. Le prix est COMPLET et non un supplement - « Large = 18 DT » -, ce
+          qui evite toute hypothese sur la decomposabilite des tarifs.
+      -->
+      <div class="variante span-2">
+        <div class="row wrap gap-12 items-end">
+          <div class="field" style="min-width:230px">
+            <label>Versions de cet article</label>
+            <select class="input" :value="edit.variantId || ''" @change="changerAxe(Number($event.target.value) || null)">
+              <option value="">Aucune — prix unique</option>
+              <option v-for="v in variantes.filter(x => x.active)" :key="v.id" :value="v.id">{{ v.name }}</option>
+            </select>
+          </div>
+          <label v-if="axeChoisi" class="check demander">
+            <input type="checkbox" v-model="edit.askVariant" />
+            <span><b>Toujours demander</b><em>Sinon, un appui court vend la version par défaut</em></span>
+          </label>
+        </div>
+
+        <div v-if="axeChoisi" class="grille">
+          <div class="entetes"><span>Version</span><span>Prix</span><span>Par défaut</span></div>
+          <label v-for="v in versionsAxe" :key="v.id" class="ligne" :class="{ def: edit.defaultVariantValueId === v.id }">
+            <span class="nom">{{ v.name }}<em v-if="v.shortName"> · ticket : {{ v.shortName }}</em></span>
+            <input class="input" inputmode="decimal" :value="prixVersion(v.id)" placeholder="0,000"
+                   @input="setPrixVersion(v.id, $event.target.value)" />
+            <span class="radio">
+              <input type="radio" name="versionDefaut" :checked="edit.defaultVariantValueId === v.id"
+                     @change="edit.defaultVariantValueId = v.id" />
+            </span>
+          </label>
+          <p class="tiny muted mt-8">
+            La version par défaut est obligatoire et doit avoir un prix : c'est elle que vend un appui court.
+            Une version laissée à 0 apparaît grisée en caisse — elle n'est pas vendable tant qu'elle n'est pas tarifée.
+          </p>
+        </div>
+      </div>
+
       <!--
           Apparence et etat de l'article.
 
@@ -248,6 +319,26 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
 </template>
 
 <style scoped>
+/* --- variante --- */
+.variante { padding: 16px 0 4px; margin-top: 4px; border-top: 1px solid var(--line); }
+.variante .demander { align-items: flex-start; gap: 9px; padding: 8px 13px; border: 1px solid var(--line-2); border-radius: var(--r-lg); }
+.variante .demander span { display: flex; flex-direction: column; line-height: 1.25; }
+.variante .demander b { font-size: 13.5px; font-weight: 650; }
+.variante .demander em { font-style: normal; font-size: 11.5px; color: var(--ink-3); }
+
+.grille { margin-top: 14px; max-width: 520px; }
+.grille .entetes, .grille .ligne { display: grid; grid-template-columns: 1fr 130px 84px; gap: 10px; align-items: center; }
+.grille .entetes { margin-bottom: 6px; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
+.grille .ligne { min-height: 48px; padding: 0 11px; border: 1px solid var(--line); border-radius: var(--r); cursor: pointer; }
+.grille .ligne + .ligne { margin-top: 6px; }
+/* La ligne par defaut se distingue : c'est elle que vend un appui court. */
+.grille .ligne.def { border-color: var(--brand-line); background: var(--brand-soft); }
+.grille .nom { font-size: 14px; font-weight: 600; }
+.grille .nom em { font-style: normal; font-size: 11.5px; font-weight: 500; color: var(--ink-3); }
+.grille .ligne .input { min-height: 36px; text-align: right; }
+.grille .radio { display: flex; justify-content: center; }
+.grille .radio input { width: 20px; height: 20px; accent-color: var(--brand); }
+
 /* --- apparence et etat --- */
 .apparence {
   display: flex; flex-wrap: wrap; gap: 22px 28px; align-items: flex-start;

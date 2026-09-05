@@ -25,6 +25,18 @@ public class OrderLine {
     private BigDecimal taxRate = BigDecimal.ZERO;
     private BigDecimal lineTotal = BigDecimal.ZERO;
     private String note;
+
+    /**
+     * Variante vendue, et sa copie figée.
+     *
+     * Le nom est recopié parce que renommer « Large » en « XL » l'an prochain ne doit pas
+     * réécrire les tickets de cette année. La référence, elle, sert les statistiques :
+     * « combien de large ce mois-ci » ne se répond pas sur une chaîne de caractères.
+     */
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "variant_value_id") private VariantValue variantValue;
+    private String variantValueName;
+    private String variantValueShortName;
+
     private int sortOrder;
     @OneToMany(mappedBy = "orderLine", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy("id ASC")

@@ -4,6 +4,7 @@ import { useCartStore } from '../../stores/cart'
 import { useAuthStore } from '../../stores/auth'
 import { useCatalogStore } from '../../stores/catalog'
 import { fmt, fmtQty, mul } from '../../utils/money'
+import { nomAvecVariante } from '../../utils/receipt'
 import { serviceModeLabel } from '../../utils/i18n'
 import Icon from '../common/Icon.vue'
 
@@ -52,7 +53,7 @@ const hasDiscount = computed(() => cart.lineDiscountTotal > 0 || cart.orderDisco
       <article v-for="l in cart.lines" :key="l.key" class="line" :class="{ on: cart.selectedKey === l.key }" @click="cart.selectedKey = l.key">
         <div class="head">
           <span class="qty num">{{ fmtQty(l.quantity) }}</span>
-          <span class="label">{{ l.product.name }}</span>
+          <span class="label">{{ nomAvecVariante(l, catalog.variants) }}</span>
           <span class="amount num">{{ fmt(cart.lineTotal(l)) }}</span>
         </div>
 

@@ -25,6 +25,8 @@ public class CatalogService {
     private final CompanyRepo companyRepo;
     private final KitchenNoteRepo kitchenNoteRepo;
     private final IngredientRepo ingredientRepo;
+    private final VariantRepo variantRepo;
+    private final VariantValueRepo variantValueRepo;
     private final SettingsService settings;
     private final AuditService audit;
 
@@ -48,7 +50,11 @@ public class CatalogService {
         // aura besoin pour filtrer les articles sans aller-retour supplementaire.
         List<AdminDtos.IngredientDto> ingredients = ingredientRepo.findByActiveTrueOrderBySortOrderAscIdAsc()
                 .stream().map(Mappers::ingredient).toList();
-        return new CatalogResponse(cats, products, methods, settings.all(), info, notes, ingredients);
+        // Les variantes voyagent avec le catalogue : la caisse doit pouvoir proposer les
+        // versions d'un article sans aller-retour, et connaitre leurs prix.
+        List<AdminDtos.VariantDto> variants = variantRepo.findByActiveTrueOrderBySortOrderAscIdAsc()
+                .stream().map(Mappers::variant).toList();
+        return new CatalogResponse(cats, products, methods, settings.all(), info, notes, ingredients, variants);
     }
 
     // ---------- Categories ----------
@@ -133,6 +139,51 @@ public class CatalogService {
             Les doublons sont ecartes - la table les refuse, et deux fois « Thon » sur un
             article fausserait la recherche par ingredient.
         */
+        /*
+            Variante de l'article : au plus une, souvent aucune.
+
+            Deux controles ici, et non a l'ecran : l'ecran peut etre contourne, la caisse
+            non. Ils garantissent ensemble qu'un article a variante est TOUJOURS vendable
+            d'un appui court.
+
+              - une valeur par defaut est obligatoire : sans elle, la tuile ne saurait meme
+                pas quel prix afficher ;
+              - cette valeur par defaut doit porter un prix. Les autres peuvent rester a
+                zero - c'est le cas d'une valeur ajoutee a l'axe apres coup, qui apparait
+                grisee en caisse jusqu'a ce que le gerant la tarife.
+        */
+        p.getVariantPrices().clear();
+        p.setVariant(null);
+        p.setDefaultVariantValue(null);
+        p.setAskVariant(false);
+        if (r.variantId() != null) {
+            Variant axe = variantRepo.findById(r.variantId()).orElseThrow(() -> BusinessException.notFound("Variante"));
+            p.setVariant(axe);
+            p.setAskVariant(Boolean.TRUE.equals(r.askVariant()));
+            Map<Long, BigDecimal> prix = new LinkedHashMap<>();
+            if (r.variantPrices() != null) for (VariantPriceDto vp : r.variantPrices()) {
+                if (vp.variantValueId() == null) continue;
+                BigDecimal m = Money.nz(vp.price());
+                if (m.signum() < 0) throw new BusinessException("Un prix de version ne peut pas etre negatif.");
+                prix.put(vp.variantValueId(), Money.r(m));
+            }
+            for (VariantValue val : axe.getValues()) {
+                BigDecimal m = prix.getOrDefault(val.getId(), BigDecimal.ZERO);
+                ProductVariantPrice pvp = new ProductVariantPrice();
+                pvp.setProduct(p); pvp.setValue(val); pvp.setPrice(m);
+                p.getVariantPrices().add(pvp);
+            }
+            if (r.defaultVariantValueId() == null)
+                throw new BusinessException("Choisissez la version vendue par defaut pour « " + p.getName() + " ».");
+            VariantValue def = axe.getValues().stream().filter(v -> v.getId().equals(r.defaultVariantValueId())).findFirst()
+                    .orElseThrow(() -> new BusinessException("La version par defaut ne fait pas partie de « " + axe.getName() + " »."));
+            if (prix.getOrDefault(def.getId(), BigDecimal.ZERO).signum() <= 0)
+                throw new BusinessException("La version par defaut « " + def.getName() + " » doit avoir un prix.");
+            p.setDefaultVariantValue(def);
+        } else if (r.defaultVariantValueId() != null) {
+            throw new BusinessException("Une version par defaut sans variante n'a pas de sens.");
+        }
+
         p.getIngredients().clear();
         if (r.ingredientIds() != null) {
             java.util.Set<Long> vus = new java.util.LinkedHashSet<>(r.ingredientIds());

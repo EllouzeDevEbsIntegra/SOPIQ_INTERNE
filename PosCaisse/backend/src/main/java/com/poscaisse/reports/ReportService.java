@@ -46,6 +46,7 @@ public class ReportService {
                 "from sale_order o where " + SALES + filters() + " group by 1 order by 1", p));
         out.put("byCategory", byCategory(p));
         out.put("topProducts", byProduct(p, 10));
+        out.put("byVariant", byVariant(p));
         out.put("byCashier", jdbc.queryForList("select u.id, u.full_name as name, count(*) as tickets, coalesce(sum(o.total - o.refunded_total),0) as revenue " +
                 "from sale_order o join app_user u on u.id=o.cashier_id where " + SALES + filters() + " group by 1,2 order by 3 desc", p));
         out.put("byRegister", jdbc.queryForList("select r.id, r.name, count(*) as tickets, coalesce(sum(o.total - o.refunded_total),0) as revenue " +
@@ -65,6 +66,22 @@ public class ReportService {
                 "from order_line l join sale_order o on o.id=l.order_id where " + SALES + filters() + " group by 1,2 order by 3 desc " + (limit > 0 ? "limit " + limit : ""), p);
     }
 
+    /**
+     * Ventes par version : « 40 Pizza Thon, dont 25 large ».
+     *
+     * On groupe sur le NOM recopie dans la ligne, et non sur la reference au catalogue :
+     * une version renommee ou retiree depuis doit continuer d'apparaitre dans les mois
+     * qu'elle a servis, sous le nom qu'elle portait alors. C'est ce que le gerant a vendu,
+     * pas ce que la carte affiche aujourd'hui.
+     */
+    public List<Map<String, Object>> byVariant(MapSqlParameterSource p) {
+        return jdbc.queryForList("select l.product_name as product, l.variant_value_name as variant, " +
+                "coalesce(sum(l.quantity),0) as quantity, coalesce(sum(l.line_total),0) as revenue, count(distinct o.id) as tickets " +
+                "from order_line l join sale_order o on o.id=l.order_id " +
+                "where l.variant_value_name is not null and l.parent_line_id is null and " + SALES + filters() +
+                " group by 1,2 order by 1, 3 desc", p);
+    }
+
     public List<Map<String, Object>> byPaymentMethod(MapSqlParameterSource p) {
         return jdbc.queryForList("select m.code, m.name, m.kind, count(*) as payments, coalesce(sum(pay.amount),0) as amount " +
                 "from payment pay join payment_method m on m.id=pay.payment_method_id join sale_order o on o.id=pay.order_id where " + SALES + filters() + " group by 1,2,3 order by 5 desc", p);
@@ -80,6 +97,7 @@ public class ReportService {
                     "from sale_order o where " + SALES + filters() + " group by 1 order by 1", p);
             case "products" -> byProduct(p, 0);
             case "categories" -> byCategory(p);
+            case "variants" -> byVariant(p);
             case "cashiers" -> jdbc.queryForList("select u.full_name as name, count(*) as tickets, coalesce(sum(o.total - o.refunded_total),0) as revenue, coalesce(avg(o.total),0) as average_ticket, coalesce(sum(o.discount_amount + o.line_discount_total),0) as discounts " +
                     "from sale_order o join app_user u on u.id=o.cashier_id where " + SALES + filters() + " group by 1 order by 3 desc", p);
             case "registers" -> jdbc.queryForList("select r.code, r.name, count(*) as tickets, coalesce(sum(o.total - o.refunded_total),0) as revenue " +

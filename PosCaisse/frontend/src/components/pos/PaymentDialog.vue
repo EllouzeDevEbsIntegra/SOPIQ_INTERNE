@@ -7,6 +7,7 @@ import Icon from '../common/Icon.vue'
 import { useCatalogStore } from '../../stores/catalog'
 import { useCartStore } from '../../stores/cart'
 import { fmt, fmtQty, add, sub, mul, round, parseAmount } from '../../utils/money'
+import { nomAvecVariante } from '../../utils/receipt'
 
 const props = defineProps({ total: Number, busy: Boolean })
 const emit = defineEmits(['close', 'confirm', 'customer', 'courier'])
@@ -120,7 +121,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
           <ul>
             <li v-for="l in cart.lines" :key="l.key">
               <b class="q num">{{ fmtQty(l.quantity) }}</b>
-              <span class="n">{{ l.product.name }}
+              <span class="n">{{ nomAvecVariante(l, catalog.variants) }}
                 <em v-if="l.modifiers?.length">{{ l.modifiers.map(m => ((m.quantity || 1) > 1 ? m.quantity + ' × ' : '') + m.name).join(', ') }}</em>
               </span>
               <b class="a num">{{ fmt(mul(l.unitPrice, l.quantity)) }}</b>

@@ -7,7 +7,7 @@ import { fmtDateTime, isoDate } from '../../utils/dates'
 import PeriodPicker from '../../components/common/PeriodPicker.vue'
 const ui = useUiStore()
 const types = [
-  { k: 'daily', l: 'CA journalier' }, { k: 'hourly', l: 'Ventes par heure' }, { k: 'products', l: 'Ventes par produit' }, { k: 'categories', l: 'Ventes par catégorie' },
+  { k: 'daily', l: 'CA journalier' }, { k: 'hourly', l: 'Ventes par heure' }, { k: 'products', l: 'Ventes par produit' }, { k: 'variants', l: 'Ventes par version' }, { k: 'categories', l: 'Ventes par catégorie' },
   { k: 'cashiers', l: 'Ventes par caissier' }, { k: 'registers', l: 'Ventes par caisse' }, { k: 'pos', l: 'Ventes par point de vente' }, { k: 'payments', l: 'Moyens de paiement' },
   { k: 'discounts', l: 'Remises' }, { k: 'cancellations', l: 'Annulations' }, { k: 'refunds', l: 'Remboursements' }, { k: 'movements', l: 'Mouvements de caisse' }, { k: 'closures', l: 'Clôtures de caisse' }, { k: 'differences', l: 'Écarts de caisse' }
 ]

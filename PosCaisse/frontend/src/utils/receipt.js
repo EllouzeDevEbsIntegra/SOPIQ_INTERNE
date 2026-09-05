@@ -52,3 +52,21 @@ export function receiptHtml(content, logo = '') {
     return `<div class="head">${logo}<div class="head-txt">${rows}</div></div>`
   }).join('')
 }
+
+/**
+ * Nom d'une ligne, variante comprise.
+ *
+ * Jumeau de VariantNaming cote serveur. Les deux doivent donner la meme chaine : le
+ * caissier lirait « Pizza Thon Large » a l'ecran et le client « Large Pizza Thon » sur son
+ * ticket. La position vient de l'axe, parce que le francais ne place pas toutes les
+ * declinaisons du meme cote : « Pizza Thon Large », mais « 1/2 Sandwich Omelette Thon ».
+ */
+export function nomAvecVariante(ligne, variantes) {
+  const base = ligne.product?.name || ligne.productName || ''
+  if (!ligne.variantValueId) return base
+  const axe = (variantes || []).find(v => (v.values || []).some(x => x.id === ligne.variantValueId))
+  const val = axe?.values.find(x => x.id === ligne.variantValueId)
+  const mot = val?.shortName || val?.name || ligne.variantValueName
+  if (!mot) return base
+  return axe?.namePosition === 'PREFIX' ? mot + ' ' + base : base + ' ' + mot
+}

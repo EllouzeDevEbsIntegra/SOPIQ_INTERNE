@@ -69,10 +69,19 @@ export const useCartStore = defineStore('cart', () => {
   function sameConfig(a, b) {
     const ids = (x) => (x.modifiers || []).map(m => m.id + '×' + (m.quantity || 1)).sort().join(',')
     const comps = (x) => (x.components || []).map(c => c.productId + ':' + (c.quantity || 1) + ':' + ids(c)).sort().join('|')
-    return a.productId === b.productId && ids(a) === ids(b) && comps(a) === comps(b) && (a.note || '') === (b.note || '') && a.unitPrice === b.unitPrice && !a.discountPercent && !a.discountAmount
+    /* La variante fait partie de l'identite de la ligne : une pizza large et une pizza
+       petite ne se regroupent pas, meme article ou non. Sans ce test, deux versions se
+       fondraient en une seule ligne et la moins chere l'emporterait — la meme famille de
+       bug que la remise avalee lors d'une fusion. */
+    return a.productId === b.productId && (a.variantValueId || null) === (b.variantValueId || null)
+      && ids(a) === ids(b) && comps(a) === comps(b) && (a.note || '') === (b.note || '') && a.unitPrice === b.unitPrice && !a.discountPercent && !a.discountAmount
   }
-  function addLine({ product, quantity = 1, modifiers = [], components = [], note = '' }) {
-    const candidate = { productId: product.id, product, quantity, unitPrice: Number(product.price), modifiers, components, note, discountPercent: 0, discountAmount: 0 }
+  function addLine({ product, quantity = 1, modifiers = [], components = [], note = '', variantValue = null }) {
+    /* Le prix vient de la variante quand il y en a une : c'est un prix complet, pas un
+       supplement ajoute a celui de l'article. */
+    const prix = variantValue ? Number(variantValue.price) : Number(product.price)
+    const candidate = { productId: product.id, product, quantity, unitPrice: prix, modifiers, components, note, discountPercent: 0, discountAmount: 0,
+                        variantValueId: variantValue?.id || null, variantValueName: variantValue?.name || null }
     const existing = lines.value.find(l => sameConfig(l, candidate))
     if (existing) { existing.quantity = add(existing.quantity, quantity); selectedKey.value = existing.key; return existing }
     candidate.key = ++keySeq
@@ -162,7 +171,7 @@ export const useCartStore = defineStore('cart', () => {
       discountPercent: discountPercent.value || 0, discountAmount: discountAmount.value || 0, heldOrderId: heldOrderId.value,
       lines: lines.value.map(l => ({
         productId: l.productId, quantity: l.quantity, unitPrice: l.unitPrice, discountPercent: l.discountPercent || 0, discountAmount: l.discountAmount || 0,
-        note: l.note || null, modifierIds: expandModifiers(l.modifiers),
+        note: l.note || null, modifierIds: expandModifiers(l.modifiers), variantValueId: l.variantValueId || null,
         components: (l.components || []).map(c => ({ productId: c.productId, quantity: c.quantity || 1, modifierIds: expandModifiers(c.modifiers), note: c.note || null }))
       }))
     }

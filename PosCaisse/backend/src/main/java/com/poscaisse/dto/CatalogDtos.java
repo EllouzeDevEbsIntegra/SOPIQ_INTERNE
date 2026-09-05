@@ -26,13 +26,20 @@ public final class CatalogDtos {
                              Long categoryId, String categoryName, String productType, BigDecimal price, BigDecimal taxRate,
                              String imageUrl, String color, int sortOrder, boolean active, boolean available, boolean favorite,
                              int favoriteOrder, List<Long> printDestinationIds, List<ModifierGroupDto> modifierGroups,
-                             List<MenuComponentDto> menuComponents, List<Long> ingredientIds) {}
+                             List<MenuComponentDto> menuComponents, List<Long> ingredientIds,
+                             Long variantId, Long defaultVariantValueId, boolean askVariant,
+                             List<VariantPriceDto> variantPrices) {}
+
+    /** Prix de l'article pour une valeur. Un prix nul signifie « pas encore tarifee ». */
+    public record VariantPriceDto(Long variantValueId, BigDecimal price) {}
 
     public record ProductRequest(@NotBlank String code, String reference, @NotBlank String name, String shortName, String description,
                                  @NotNull Long categoryId, String productType, @NotNull BigDecimal price, BigDecimal taxRate,
                                  String imageUrl, String color, Integer sortOrder, Boolean active, Boolean available, Boolean favorite,
                                  Integer favoriteOrder, List<Long> printDestinationIds, List<Long> modifierGroupIds,
-                                 List<MenuComponentRequest> menuComponents, List<Long> ingredientIds) {}
+                                 List<MenuComponentRequest> menuComponents, List<Long> ingredientIds,
+                                 Long variantId, Long defaultVariantValueId, Boolean askVariant,
+                                 List<VariantPriceDto> variantPrices) {}
 
     public record PaymentMethodDto(Long id, String code, String name, String kind, boolean opensDrawer, int sortOrder, boolean active) {}
     public record PaymentMethodRequest(@NotBlank String code, @NotBlank String name, @NotBlank String kind, Boolean opensDrawer, Integer sortOrder, Boolean active) {}
@@ -43,6 +50,6 @@ public final class CatalogDtos {
 
     public record CatalogResponse(List<CategoryDto> categories, List<ProductDto> products, List<PaymentMethodDto> paymentMethods,
                                   Map<String, String> settings, CompanyInfo company, List<AdminDtos.KitchenNoteDto> kitchenNotes,
-                                  List<AdminDtos.IngredientDto> ingredients) {}
+                                  List<AdminDtos.IngredientDto> ingredients, List<AdminDtos.VariantDto> variants) {}
     public record CompanyInfo(String name, String tradeName, String currency, String currencySymbol, int decimals, String logoData) {}
 }

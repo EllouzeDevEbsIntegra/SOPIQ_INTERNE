@@ -10,6 +10,26 @@ const props = defineProps({ product: Object, initial: Object })
 const emit = defineEmits(['close', 'confirm'])
 const catalog = useCatalogStore(); const ui = useUiStore()
 const isMenu = computed(() => props.product.productType === 'MENU')
+
+/*
+    Variante de l'article : la rangee du haut, avant les options.
+
+    Elle vient en premier parce qu'elle decide du PRIX de la ligne, pas d'un supplement :
+    « Pizza Thon Large » se vend 18 DT, ce n'est pas « Pizza Thon » plus trois dinars.
+
+    Une version sans prix apparait grisee au lieu de disparaitre : c'est le cas d'une
+    valeur ajoutee a l'axe apres le parametrage de l'article. Le gerant la voit, comprend
+    qu'il lui reste a la tarifer, et ne cherche pas pourquoi elle manque.
+*/
+const axe = computed(() => catalog.variants.find(v => v.id === props.product.variantId) || null)
+const prixVariante = computed(() => Object.fromEntries((props.product.variantPrices || []).map(p => [p.variantValueId, Number(p.price)])))
+const versions = computed(() => (axe.value?.values || []).filter(v => v.active)
+  .map(v => ({ ...v, price: prixVariante.value[v.id] || 0 })))
+const version = ref(props.initial?.variantValueId
+  || props.product.defaultVariantValueId
+  || versions.value.find(v => v.price > 0)?.id
+  || null)
+const versionChoisie = computed(() => versions.value.find(v => v.id === version.value) || null)
 const quantity = ref(props.initial?.quantity || 1)
 const note = ref(props.initial?.note || '')
 /* Selection : groupId -> { modifierId: quantite }. Un compteur et non un simple
@@ -104,7 +124,7 @@ const modifiers = computed(() => {
 })
 const components = computed(() => Object.values(comps).flat())
 const unit = computed(() => {
-  let u = Number(props.product.price)
+  let u = versionChoisie.value ? versionChoisie.value.price : Number(props.product.price)
   for (const m of modifiers.value) u = add(u, mul(m.priceDelta, m.quantity))
   for (const c of components.value) u = add(u, mul(add(c.priceDelta, c.modifiers.reduce((s, m) => add(s, m.priceDelta), 0)), c.quantity))
   return u
@@ -115,14 +135,33 @@ const problems = computed(() => {
   for (const c of props.product.menuComponents || []) { const n = comps[c.id].reduce((s, x) => s + x.quantity, 0); if (n !== c.quantity) p.push(`Choisissez ${c.quantity} « ${c.name} »`) }
   return p
 })
-function confirm() { if (problems.value.length) return ui.error(problems.value[0]); emit('confirm', { quantity: quantity.value, modifiers: modifiers.value, components: components.value, note: note.value }) }
+function confirm() {
+  if (problems.value.length) return ui.error(problems.value[0])
+  if (axe.value && !versionChoisie.value) return ui.error(`Choisissez « ${axe.value.name} »`)
+  emit('confirm', { quantity: quantity.value, modifiers: modifiers.value, components: components.value, note: note.value,
+                    variantValue: versionChoisie.value })
+}
 </script>
 <template>
   <Modal size="md" @close="emit('close')">
     <template #head>
-      <div class="grow"><h2>{{ product.name }}</h2><div class="muted small">{{ isMenu ? 'Composez le menu' : 'Options & suppléments' }} — {{ fmt(product.price, true) }}</div></div>
+      <div class="grow"><h2>{{ product.name }}</h2><div class="muted small">{{ isMenu ? 'Composez le menu' : (axe ? axe.name + ' & options' : 'Options & suppléments') }} — {{ fmt(unit, true) }}</div></div>
       <div class="qty row gap-4"><button class="btn lg icon" @click="quantity=Math.max(1,quantity-1)">−</button><span class="qv num">{{ quantity }}</span><button class="btn lg icon" @click="quantity++">+</button></div>
     </template>
+    <!-- Les versions passent avant les options : elles decident du prix, pas d'un ajout. -->
+    <div v-if="axe && !activeComponent" class="versions">
+      <div class="gname">{{ axe.name }} <span class="badge">version</span></div>
+      <div class="opts">
+        <button v-for="v in versions" :key="v.id" class="opt version"
+                :class="{ on: version === v.id, sansprix: !v.price }" :disabled="!v.price"
+                :title="v.price ? '' : 'Aucun prix : à renseigner dans la fiche article'"
+                @click="version = v.id">
+          <span>{{ v.name }}</span>
+          <span class="delta num">{{ fmt(v.price) }}</span>
+        </button>
+      </div>
+    </div>
+
     <div v-if="activeComponent" class="sub">
       <div class="row between mb-8"><h3>{{ activeComponent.entry.product.name }} — options</h3><button class="btn sm" @click="subOk">Terminer</button></div>
       <div v-for="g in activeComponent.entry.product.modifierGroups" :key="g.id" class="group">
@@ -169,6 +208,14 @@ function confirm() { if (problems.value.length) return ui.error(problems.value[0
 .opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
 .opt { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 58px; padding: 8px 12px; border-radius: 12px; border: 2px solid var(--border); background: var(--surface-2); font-weight: 600; text-align: left; }
 .opt.on { border-color: var(--success); background: var(--success-soft); } .opt.off { opacity: .4; }
+
+/* --- versions (variante) --- */
+.versions { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+/* Une version se distingue d'une option : elle decide du prix, elle n'ajoute rien. */
+.versions .opt.version { border-color: var(--line-2); }
+.versions .opt.version.on { border-color: var(--brand); background: var(--brand-soft); }
+/* Grisee et non masquee : le gerant voit qu'il lui reste a la tarifer. */
+.versions .opt.sansprix { opacity: .45; cursor: not-allowed; }
 .delta { font-size: 13px; color: var(--accent-2); font-weight: 700; }
 .sub { border: 2px dashed var(--border); border-radius: 12px; padding: 12px; }
 

@@ -13,7 +13,8 @@ public final class OrderDtos {
 
     public record CartLineRequest(@NotNull Long productId, @NotNull BigDecimal quantity, BigDecimal unitPrice,
                                   BigDecimal discountPercent, BigDecimal discountAmount, String note,
-                                  List<Long> modifierIds, List<CartLineRequest> components) {}
+                                  List<Long> modifierIds, List<CartLineRequest> components,
+                                  Long variantValueId) {}
 
     public record PaymentRequest(@NotNull Long paymentMethodId, @NotNull BigDecimal amount, BigDecimal tendered, String reference) {}
 
@@ -30,7 +31,8 @@ public final class OrderDtos {
     public record OrderLineDto(Long id, Long productId, String productCode, String productName, Long categoryId, BigDecimal quantity,
                                BigDecimal originalUnitPrice, BigDecimal unitPrice, BigDecimal modifiersTotal, BigDecimal discountPercent,
                                BigDecimal discountAmount, BigDecimal taxRate, BigDecimal lineTotal, String note,
-                               List<LineModifierDto> modifiers, List<OrderLineDto> components) {}
+                               List<LineModifierDto> modifiers, List<OrderLineDto> components,
+                               Long variantValueId, String variantValueName) {}
     public record PaymentDto(Long id, Long paymentMethodId, String methodCode, String methodName, BigDecimal amount, BigDecimal tendered, BigDecimal changeGiven, String reference, OffsetDateTime createdAt) {}
     public record RefundDto(Long id, Long orderId, String ticketNumber, BigDecimal amount, String reason, String methodName, String userName, OffsetDateTime createdAt, String kind) {}
 

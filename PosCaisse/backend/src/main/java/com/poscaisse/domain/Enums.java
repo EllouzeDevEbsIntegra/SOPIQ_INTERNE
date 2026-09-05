@@ -8,6 +8,8 @@ public final class Enums {
     public enum AccountParty { CUSTOMER, COURIER }
     public enum SessionStatus { OPEN, CLOSED }
     public enum ProductType { SIMPLE, MENU }
+    /** Ou la valeur d'une variante se place dans le nom : « 1/2 Sandwich » ou « Pizza Large ». */
+    public enum NamePosition { PREFIX, SUFFIX }
     /** CREDIT : porte le ticket au compte du client au lieu d'encaisser. */
     public enum PaymentKind { CASH, CARD, CHECK, MEAL_VOUCHER, CREDIT, OTHER }
     public enum MovementType { IN, OUT }

@@ -281,10 +281,24 @@ public class ReceiptRenderer {
 
     private static boolean on(Map<String, Object> cfg, String k) { Object v = cfg.get(k); return v == null || Boolean.TRUE.equals(v) || "true".equals(String.valueOf(v)); }
 
+    /**
+     * Nom imprime d'une ligne : nom court de l'article s'il existe, puis la variante
+     * vendue, en prefixe ou en suffixe selon l'axe.
+     *
+     * La variante entre DANS le nom, et non sur une ligne « + » en dessous : le client ne
+     * commande pas « une pizza thon avec du large », il commande « une pizza thon large ».
+     * Un supplement, lui, garde sa ligne - c'est un ajout, pas le produit.
+     */
     private static String shortName(OrderLine l) {
         Product p = l.getProduct();
-        if (p != null && p.getShortName() != null && !p.getShortName().isBlank()) return p.getShortName();
-        return l.getProductName();
+        String base = p != null && p.getShortName() != null && !p.getShortName().isBlank()
+                ? p.getShortName() : l.getProductName();
+        if (l.getVariantValueName() == null) return base;
+        String mot = l.getVariantValueShortName() == null || l.getVariantValueShortName().isBlank()
+                ? l.getVariantValueName() : l.getVariantValueShortName();
+        boolean prefixe = l.getVariantValue() != null && l.getVariantValue().getVariant() != null
+                && l.getVariantValue().getVariant().getNamePosition() == Enums.NamePosition.PREFIX;
+        return prefixe ? mot + " " + base : base + " " + mot;
     }
 
     /** « Mozarilla » ou « 3 x Mozarilla » : la quantite n'apparait que si elle depasse 1. */

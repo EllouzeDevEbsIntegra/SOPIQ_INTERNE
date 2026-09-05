@@ -138,6 +138,23 @@ public class OrderService {
         }
     }
 
+    /**
+     * Prix de vente : celui de la variante s'il y en a une, celui de l'article sinon.
+     *
+     * Un prix nul sur une variante n'est pas un article gratuit, c'est une version que le
+     * gerant n'a pas encore tarifee - elle apparait grisee en caisse. La refuser ici evite
+     * qu'un catalogue charge avant sa mise a jour ne la fasse passer.
+     */
+    private BigDecimal prixDeVente(Product p, VariantValue v) {
+        if (v == null) return p.getPrice();
+        BigDecimal prix = p.getVariantPrices().stream()
+                .filter(vp -> vp.getValue().getId().equals(v.getId()))
+                .map(ProductVariantPrice::getPrice).findFirst().orElse(BigDecimal.ZERO);
+        if (prix.signum() <= 0)
+            throw new BusinessException("La version « " + v.getName() + " » de « " + p.getName() + " » n'a pas de prix.");
+        return prix;
+    }
+
     private OrderLine buildLine(SaleOrder o, CartLineRequest lr, OrderLine parent, int sortOrder) {
         Product p = productRepo.findById(lr.productId()).orElseThrow(() -> BusinessException.notFound("Produit #" + lr.productId()));
         if (!p.isActive()) throw new BusinessException("Le produit « " + p.getName() + " » n'est plus au catalogue.");
@@ -147,7 +164,35 @@ public class OrderService {
         l.setOrder(o); l.setParentLine(parent); l.setProduct(p); l.setCategory(p.getCategory());
         l.setProductCode(p.getCode()); l.setProductName(p.getName()); l.setQuantity(lr.quantity()); l.setSortOrder(sortOrder);
         l.setTaxRate(p.getTaxRate()); l.setNote(lr.note());
-        BigDecimal basePrice = parent == null ? p.getPrice() : componentDelta(parent.getProduct(), p);
+        /*
+            Variante : elle fixe le prix de la ligne, et non un supplement.
+
+            La valeur demandee doit appartenir a l'axe de l'article et porter un prix non
+            nul : un prix nul signifie « pas encore tarifee », et la caisse ne la propose
+            deja pas. Le controle est refait ici parce qu'une caisse peut travailler sur un
+            catalogue charge il y a une heure, pendant que le gerant modifiait la carte.
+
+            Le nom et le prix de la valeur sont RECOPIES dans la ligne : renommer « Large »
+            en « XL » l'an prochain ne doit pas reecrire les tickets de cette annee.
+        */
+        VariantValue variante = null;
+        if (parent == null && p.getVariant() != null) {
+            Long demandee = lr.variantValueId() != null ? lr.variantValueId()
+                    : (p.getDefaultVariantValue() == null ? null : p.getDefaultVariantValue().getId());
+            if (demandee == null)
+                throw new BusinessException("« " + p.getName() + " » se vend en plusieurs versions : choisissez-en une.");
+            variante = p.getVariant().getValues().stream().filter(v -> v.getId().equals(demandee)).findFirst()
+                    .orElseThrow(() -> new BusinessException("Cette version n'existe pas pour « " + p.getName() + " »."));
+            if (!variante.isActive())
+                throw new BusinessException("La version « " + variante.getName() + " » n'est plus proposee.");
+            l.setVariantValue(variante);
+            l.setVariantValueName(variante.getName());
+            l.setVariantValueShortName(variante.getShortName());
+        } else if (lr.variantValueId() != null) {
+            throw new BusinessException("« " + p.getName() + " » ne se decline pas.");
+        }
+
+        BigDecimal basePrice = parent == null ? prixDeVente(p, variante) : componentDelta(parent.getProduct(), p);
         l.setOriginalUnitPrice(basePrice);
         if (lr.unitPrice() != null && lr.unitPrice().compareTo(basePrice) != 0) {
             if (!currentUser.has(Permission.PRICE_EDIT)) throw BusinessException.forbidden("Vous n'avez pas la permission de modifier un prix.");
@@ -202,7 +247,11 @@ public class OrderService {
             for (CartLineRequest c : comps) {
                 boolean known = p.getMenuComponents().stream().anyMatch(mc -> mc.getOptions().stream().anyMatch(x -> x.getProduct().getId().equals(c.productId())));
                 if (!known) throw new BusinessException("Composant de menu invalide.");
-                l.getComponents().add(buildLine(o, new CartLineRequest(c.productId(), c.quantity(), null, null, null, c.note(), c.modifierIds(), null), l, j++));
+                // Un composant de menu prend la valeur par defaut de sa variante, s'il en a
+                // une : proposer le choix ici rouvrirait la combinatoire qu'on a fermee.
+                // Un menu en grande taille se fait en menu distinct.
+                l.getComponents().add(buildLine(o, new CartLineRequest(c.productId(), c.quantity(), null, null, null,
+                        c.note(), c.modifierIds(), null, null), l, j++));
             }
         } else if (lr.components() != null && !lr.components().isEmpty()) throw new BusinessException("« " + p.getName() + " » n'est pas un menu.");
         return l;

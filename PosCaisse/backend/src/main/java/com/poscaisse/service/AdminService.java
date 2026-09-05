@@ -32,6 +32,8 @@ public class AdminService {
     private final CourierRepo courierRepo;
     private final KitchenNoteRepo kitchenNoteRepo;
     private final IngredientRepo ingredientRepo;
+    private final VariantRepo variantRepo;
+    private final VariantValueRepo variantValueRepo;
     private final AuditRepo auditRepo;
     private final SessionRepo sessionRepo;
     private final PasswordEncoder encoder;
@@ -302,6 +304,93 @@ public class AdminService {
         for (Long id : ids) {
             Ingredient n = ingredientRepo.findById(id).orElse(null);
             if (n != null) { n.setSortOrder(i++); ingredientRepo.save(n); }
+        }
+    }
+
+    // ---------- variantes ----------
+    @Transactional(readOnly = true)
+    public List<VariantDto> variants() {
+        return variantRepo.findAllByOrderBySortOrderAscIdAsc().stream().map(Mappers::variant).toList();
+    }
+
+    @Transactional
+    public VariantDto saveVariant(Long id, VariantRequest r) {
+        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de modifier les variantes.");
+        String nom = r.name().trim();
+        variantRepo.findByNameIgnoreCase(nom).filter(o -> !o.getId().equals(id))
+                .ifPresent(o -> { throw BusinessException.conflict("La variante « " + nom + " » existe déjà."); });
+        Variant v = id == null ? new Variant() : variantRepo.findById(id).orElseThrow(() -> BusinessException.notFound("Variante"));
+        if (id == null) v.setSortOrder(variantRepo.findAll().stream().mapToInt(Variant::getSortOrder).max().orElse(0) + 1);
+        v.setName(nom);
+        if (r.namePosition() != null) v.setNamePosition(Enums.NamePosition.valueOf(r.namePosition()));
+        if (r.sortOrder() != null) v.setSortOrder(r.sortOrder());
+        if (r.active() != null) v.setActive(r.active());
+
+        /*
+            Les valeurs arrivent en bloc. Celles qui portent un id sont mises a jour, les
+            autres creees ; celles qui ne reviennent pas sont retirees.
+
+            Retirer une valeur deja vendue est sans effet sur l'historique : la ligne de
+            vente en garde une COPIE du nom. En revanche, si elle sert de valeur par
+            defaut a un article, celui-ci deviendrait invendable sans que personne ne
+            l'apprenne avant le premier client - d'ou le refus, avec les noms en clair.
+        */
+        List<VariantValue> gardees = new ArrayList<>();
+        if (r.values() != null) {
+            int rang = 0;
+            for (VariantValueRequest vr : r.values()) {
+                VariantValue val = vr.id() == null ? new VariantValue()
+                        : v.getValues().stream().filter(x -> x.getId().equals(vr.id())).findFirst()
+                            .orElseThrow(() -> BusinessException.notFound("Valeur de variante"));
+                val.setVariant(v);
+                val.setName(vr.name().trim());
+                val.setShortName(vr.shortName() == null || vr.shortName().isBlank() ? null : vr.shortName().trim());
+                val.setSortOrder(vr.sortOrder() == null ? rang : vr.sortOrder());
+                if (vr.active() != null) val.setActive(vr.active());
+                rang++;
+                gardees.add(val);
+            }
+        }
+        for (VariantValue ancienne : List.copyOf(v.getValues())) {
+            if (ancienne.getId() != null && gardees.stream().noneMatch(g -> ancienne.getId().equals(g.getId()))) {
+                refuserSiDefaut(ancienne, "supprimer");
+            }
+        }
+        // Une valeur desactivee disparait des ecrans : meme consequence qu'une suppression
+        // pour un article qui l'avait en defaut.
+        for (VariantValue g : gardees) if (!g.isActive() && g.getId() != null) refuserSiDefaut(g, "désactiver");
+
+        v.getValues().clear();
+        v.getValues().addAll(gardees);
+        return Mappers.variant(variantRepo.save(v));
+    }
+
+    private void refuserSiDefaut(VariantValue val, String verbe) {
+        List<String> articles = variantRepo.produitsAyantPourDefaut(val.getId());
+        if (articles.isEmpty()) return;
+        String liste = articles.size() > 4
+                ? String.join(", ", articles.subList(0, 4)) + " et " + (articles.size() - 4) + " autre(s)"
+                : String.join(", ", articles);
+        throw new BusinessException("Impossible de " + verbe + " « " + val.getName() + " » : c'est la valeur par défaut de "
+                + articles.size() + " article(s) — " + liste + ". Changez leur valeur par défaut d'abord.");
+    }
+
+    @Transactional
+    public void deleteVariant(Long id) {
+        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de supprimer une variante.");
+        Variant v = variantRepo.findById(id).orElseThrow(() -> BusinessException.notFound("Variante"));
+        for (VariantValue val : v.getValues()) refuserSiDefaut(val, "supprimer");
+        variantRepo.deleteById(id);
+        audit.log("VARIANT_DELETE", "Variant", id, v.getName());
+    }
+
+    @Transactional
+    public void reorderVariants(List<Long> ids) {
+        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de réordonner les variantes.");
+        int i = 0;
+        for (Long id : ids) {
+            Variant v = variantRepo.findById(id).orElse(null);
+            if (v != null) { v.setSortOrder(i++); variantRepo.save(v); }
         }
     }
 

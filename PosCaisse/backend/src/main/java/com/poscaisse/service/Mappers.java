@@ -44,7 +44,13 @@ public final class Mappers {
                         .map(ProductModifierGroup::getModifierGroup).filter(ModifierGroup::isActive).map(Mappers::modifierGroup).toList(),
                 p.getMenuComponents().stream().sorted(Comparator.comparingInt(MenuComponent::getSortOrder)).map(Mappers::menuComponent).toList(),
                 // L'ordre est celui de la liste : c'est lui qui a compose le nom.
-                p.getIngredients().stream().map(Ingredient::getId).toList());
+                p.getIngredients().stream().map(Ingredient::getId).toList(),
+                p.getVariant() == null ? null : p.getVariant().getId(),
+                p.getDefaultVariantValue() == null ? null : p.getDefaultVariantValue().getId(),
+                p.isAskVariant(),
+                p.getVariantPrices().stream()
+                        .map(vp -> new VariantPriceDto(vp.getValue().getId(), vp.getPrice()))
+                        .sorted(Comparator.comparingLong(VariantPriceDto::variantValueId)).toList());
     }
 
     public static PaymentMethodDto paymentMethod(PaymentMethod m) {
@@ -124,7 +130,8 @@ public final class Mappers {
                 l.getCategory() == null ? null : l.getCategory().getId(), l.getQuantity(), l.getOriginalUnitPrice(), l.getUnitPrice(),
                 l.getModifiersTotal(), l.getDiscountPercent(), l.getDiscountAmount(), l.getTaxRate(), l.getLineTotal(), l.getNote(),
                 l.getModifiers().stream().map(m -> new LineModifierDto(m.getModifier() == null ? null : m.getModifier().getId(), m.getModifierName(), m.getPriceDelta(), m.getQuantity())).toList(),
-                l.getComponents().stream().map(Mappers::line).toList());
+                l.getComponents().stream().map(Mappers::line).toList(),
+                l.getVariantValue() == null ? null : l.getVariantValue().getId(), l.getVariantValueName());
     }
 
     public static PaymentDto payment(Payment p) {
@@ -171,6 +178,15 @@ public final class Mappers {
 
     public static CustomerDto customer(Customer c) {
         return new CustomerDto(c.getId(), c.getName(), c.getPhone(), c.getNote(), c.getCreatedAt());
+    }
+
+    public static VariantValueDto variantValue(VariantValue v) {
+        return new VariantValueDto(v.getId(), v.getName(), v.getShortName(), v.getSortOrder(), v.isActive());
+    }
+
+    public static VariantDto variant(Variant v) {
+        return new VariantDto(v.getId(), v.getName(), v.getNamePosition().name(), v.getSortOrder(), v.isActive(),
+                v.getValues().stream().map(Mappers::variantValue).toList());
     }
 
     public static IngredientDto ingredient(Ingredient i) {
