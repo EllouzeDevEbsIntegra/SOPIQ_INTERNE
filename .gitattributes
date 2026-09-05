@@ -4,6 +4,8 @@
 *.bat  text eol=crlf
 *.cmd  text eol=crlf
 *.ps1  text eol=crlf
+# Le LISEZ-MOI du paquet est ouvert au Bloc-notes sur le poste du client.
+*.txt  text eol=crlf
 *.sh   text eol=lf
 *.json text eol=lf
 *.sql  text eol=lf
