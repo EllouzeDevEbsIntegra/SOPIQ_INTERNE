@@ -40,7 +40,8 @@ function Stop-Net($m) { Write-Host ''; Write-Host "ARRET : $m" -ForegroundColor 
 
 # ---------------------------------------------------------------- configuration
 function Lire-Config {
-  $c = @{ PG_PORT = '5433'; APP_PORT = '8080'; DB = 'poscaisse'; USER = 'poscaisse'; PASS = ''; KIOSQUE = '1' }
+  $c = @{ PG_PORT = '5433'; APP_PORT = '8080'; DB = 'poscaisse'; USER = 'poscaisse'; PASS = ''
+          KIOSQUE = '1'; AFFICHAGE = 'plein-ecran' }
   if (Test-Path $config) {
     foreach ($l in Get-Content $config) {
       if ($l -match '^\s*([A-Z_]+)\s*=\s*(.*?)\s*$') { $c[$Matches[1]] = $Matches[2] }
@@ -50,7 +51,7 @@ function Lire-Config {
 }
 function Ecrire-Config($c) {
   $lignes = @('# Reglages du poste PosCaisse. Modifiable avec le Bloc-notes, application au redemarrage.')
-  foreach ($k in @('PG_PORT', 'APP_PORT', 'DB', 'USER', 'PASS', 'KIOSQUE')) { $lignes += "$k=$($c[$k])" }
+  foreach ($k in @('PG_PORT', 'APP_PORT', 'DB', 'USER', 'PASS', 'KIOSQUE', 'AFFICHAGE')) { $lignes += "$k=$($c[$k])" }
   Set-Content -Path $config -Value $lignes -Encoding UTF8
 }
 function Mot-De-Passe {
@@ -142,25 +143,64 @@ function App-Arrete($c) {
     ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
 }
 
+<#
+    Ouvre la caisse dans Chrome ou Edge.
+
+    Deux reglages, distincts a dessein :
+
+      KIOSQUE    concerne l'IMPRESSION. A 1, le ticket part sur l'imprimante par defaut
+                 sans boite de dialogue.
+      AFFICHAGE  concerne l'ECRAN. Trois valeurs :
+                   fenetre      fenetre ordinaire, avec barre d'adresse et onglets ;
+                   plein-ecran  comme la touche F11 : plus aucune barre, et F11 rend
+                                la main. C'est le reglage d'un poste de caisse ;
+                   kiosque      plein ecran verrouille : ni F11, ni onglets, ni raccourci
+                                de navigation. On n'en sort que par Alt+F4.
+
+    Le mode << kiosque >> a un cout a connaitre : sans barre d'outils, le navigateur
+    n'affiche plus ce qu'il vient de telecharger. Le releve de compte en PDF arrive
+    quand meme dans le dossier Telechargements, mais personne ne le voit partir. Sur un
+    poste ou l'on consulte les releves, preferez << plein-ecran >>.
+#>
 function Navigateur($c) {
   $url = "http://127.0.0.1:$($c.APP_PORT)/"
-  if ($c.KIOSQUE -eq '1') {
-    $exe = @(
-      "$env:ProgramFiles\Google\Chrome\Application\chrome.exe",
-      "${env:ProgramFiles(x86)}\Google\Chrome\Application\chrome.exe",
-      "$env:ProgramFiles\Microsoft\Edge\Application\msedge.exe",
-      "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe"
-    ) | Where-Object { Test-Path $_ } | Select-Object -First 1
-    if ($exe) {
-      # Sans profil dedie, le drapeau est ignore si une fenetre du navigateur est deja ouverte.
-      $profil = Join-Path $env:LOCALAPPDATA 'PosCaisse\navigateur'
-      Start-Process -FilePath $exe -ArgumentList @('--kiosk-printing', "--user-data-dir=$profil",
-        '--no-first-run', '--no-default-browser-check', $url) | Out-Null
-      return
-    }
-    Souci "Ni Chrome ni Edge : impression directe indisponible, le navigateur par defaut s'ouvre."
+  $affichage = "$($c.AFFICHAGE)".ToLower()
+  if ($affichage -notin @('fenetre', 'plein-ecran', 'kiosque')) {
+    if ($affichage) { Souci "AFFICHAGE=$affichage n'est pas une valeur connue : plein ecran par defaut." }
+    $affichage = 'plein-ecran'
   }
-  Start-Process $url
+
+  # Sans impression directe ni plein ecran, aucun drapeau n'est utile : on rend la main
+  # au navigateur par defaut du poste, comme le faisait KIOSQUE=0 avant ce reglage.
+  if ($c.KIOSQUE -ne '1' -and $affichage -eq 'fenetre') { Start-Process $url; return }
+
+  # Sinon il faut Chrome ou Edge : l'impression directe comme le plein ecran passent par
+  # des drapeaux de lancement.
+  $exe = @(
+    "$env:ProgramFiles\Google\Chrome\Application\chrome.exe",
+    "${env:ProgramFiles(x86)}\Google\Chrome\Application\chrome.exe",
+    "$env:ProgramFiles\Microsoft\Edge\Application\msedge.exe",
+    "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe"
+  ) | Where-Object { Test-Path $_ } | Select-Object -First 1
+
+  if (-not $exe) {
+    Souci "Ni Chrome ni Edge : impression directe et plein ecran indisponibles."
+    Souci "Le navigateur par defaut s'ouvre, en fenetre ordinaire."
+    Start-Process $url
+    return
+  }
+
+  # Sans profil dedie, les drapeaux sont ignores si une fenetre du navigateur est deja ouverte.
+  $profil = Join-Path $env:LOCALAPPDATA 'PosCaisse\navigateur'
+  # Pas $args : c'est une variable automatique de PowerShell.
+  $drapeaux = @("--user-data-dir=$profil", '--no-first-run', '--no-default-browser-check')
+  if ($c.KIOSQUE -eq '1') { $drapeaux += '--kiosk-printing' }
+  switch ($affichage) {
+    'plein-ecran' { $drapeaux += '--start-fullscreen' }
+    'kiosque'     { $drapeaux += '--kiosk' }
+  }
+  $drapeaux += $url
+  Start-Process -FilePath $exe -ArgumentList $drapeaux | Out-Null
 }
 
 # ---------------------------------------------------------------- diagnostics

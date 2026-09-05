@@ -22,14 +22,14 @@ souci() { echo "  $*" >&2; }
 arret() { echo; echo "ARRET : $*" >&2; exit 1; }
 
 lire_config() {
-  PG_PORT=5433; APP_PORT=8080; DB=poscaisse; USER=poscaisse; PASS=""; KIOSQUE=0
+  PG_PORT=5433; APP_PORT=8080; DB=poscaisse; USER=poscaisse; PASS=""; KIOSQUE=0; AFFICHAGE=plein-ecran
   # « if » et non « && » : sans fichier de configuration, une liste ET renvoie un echec,
   # et sous « set -e » c'est l'appelant qui s'arrete, sans le moindre message.
   if [ -f "$config" ]; then . "$config"; fi
 }
 ecrire_config() {
   { echo "# Reglages du poste PosCaisse."
-    for k in PG_PORT APP_PORT DB USER PASS KIOSQUE; do echo "$k=${!k}"; done
+    for k in PG_PORT APP_PORT DB USER PASS KIOSQUE AFFICHAGE; do echo "$k=${!k}"; done
   } > "$config"
   chmod 600 "$config"
 }
@@ -126,6 +126,9 @@ faire_start() {
   [ -f "$donnees/PG_VERSION" ] || arret "Rien n'est installe : lancez d'abord « install »."
   lire_config; pg_demarre; app_demarre
   info "Caisse ouverte : http://127.0.0.1:$APP_PORT/"
+  # AFFICHAGE n'a pas d'effet ici : xdg-open passe la main au navigateur par defaut, sans
+  # drapeau. Le reglage est tout de meme conserve dans le fichier, pour que les deux
+  # chaines ecrivent la meme configuration.
   [ "${KIOSQUE:-0}" = 1 ] && command -v xdg-open >/dev/null && xdg-open "http://127.0.0.1:$APP_PORT/" >/dev/null 2>&1 || true
 }
 faire_stop()   { lire_config; app_arrete; pg_arrete; info 'Caisse et base arretees.'; }

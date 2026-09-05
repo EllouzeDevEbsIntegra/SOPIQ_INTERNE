@@ -67,6 +67,19 @@ redemarrage de la caisse.
             cohabiter avec un PostgreSQL deja installe sur le PC.
   KIOSQUE   1 = le ticket part directement sur l'imprimante par defaut, sans boite de
             dialogue (necessite Chrome ou Edge). 0 = boite de dialogue habituelle.
+  AFFICHAGE comment la caisse s'ouvre a l'ecran (necessite Chrome ou Edge) :
+              plein-ecran  (defaut) comme la touche F11 : plus aucune barre du
+                           navigateur. F11 rend la main quand on en a besoin.
+              kiosque      plein ecran VERROUILLE : ni F11, ni onglets, ni barre
+                           d'adresse. On n'en sort que par Alt+F4. A reserver aux
+                           postes ou le personnel ne doit rien faire d'autre.
+                           A savoir : sans barre d'outils, le navigateur n'affiche
+                           plus ce qu'il telecharge. Un releve de compte en PDF
+                           arrive bien dans le dossier Telechargements, mais rien
+                           ne le signale a l'ecran.
+              fenetre      fenetre ordinaire, avec barre d'adresse et onglets.
+            Si la ligne AFFICHAGE ne figure pas dans le fichier, ajoutez-la : sans
+            elle, la caisse s'ouvre en plein ecran.
   PASS      mot de passe de la base, tire au hasard a l'installation. Ne le changez pas
             a la main : la base ne serait plus accessible.
 

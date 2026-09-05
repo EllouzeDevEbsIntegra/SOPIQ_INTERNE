@@ -144,6 +144,7 @@ Ne remplacez jamais le dossier `donnees\` : ce sont les ventes du client.
 |---|---|
 | `APP_PORT` | port de la caisse (8080) |
 | `PG_PORT` | port de la base (5433, volontairement différent du 5432 habituel pour cohabiter avec un PostgreSQL déjà installé) |
+| `AFFICHAGE` | `plein-ecran` (défaut) comme F11, `kiosque` pour un plein écran verrouillé sans F11 ni onglets, `fenetre` pour une fenêtre ordinaire. Demande Chrome ou Edge. En `kiosque`, la barre d'outils disparaît et avec elle l'indication de téléchargement : le relevé de compte en PDF arrive dans le dossier Téléchargements sans que rien ne le signale — à éviter sur un poste où l'on consulte les relevés |
 | `KIOSQUE` | `1` = ticket imprimé sans boîte de dialogue (Chrome ou Edge requis) |
 | `PASS` | mot de passe de la base, tiré au hasard à l'installation — à ne pas modifier à la main |
 
