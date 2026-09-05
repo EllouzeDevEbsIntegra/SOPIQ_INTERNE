@@ -22,7 +22,24 @@ New-Item -ItemType Directory -Force -Path $tele | Out-Null
 
 function Etape($m) { Write-Host ''; Write-Host "== $m" -ForegroundColor Cyan }
 function Info($m)  { Write-Host "  $m" }
+function Souci($m) { Write-Host "  $m" -ForegroundColor Yellow }
 function Stop-Net($m) { Write-Host ''; Write-Host "ARRET : $m" -ForegroundColor Red; exit 1 }
+
+<#
+    Une caisse en service tient le JAR ouvert, et Windows refuse alors de le renommer :
+    la compilation echoue sur un << Unable to rename ... to ...jar.original >> qui ne dit
+    pas d'ou vient le blocage. On ferme donc ce qui tourne avant de compiler.
+#>
+function Arreter-Caisses {
+  $procs = @(Get-CimInstance Win32_Process -Filter "Name = 'java.exe'" -ErrorAction SilentlyContinue |
+             Where-Object { $_.CommandLine -like '*poscaisse*' })
+  if (-not $procs) { return }
+  foreach ($p in $procs) {
+    Souci "Une caisse tourne encore (PID $($p.ProcessId)) : arret avant compilation."
+    Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue
+  }
+  Start-Sleep -Seconds 3
+}
 
 # Versions figees : le poste client tourne exactement sur ce qui a ete teste ici.
 $sources = @(
@@ -74,8 +91,27 @@ Etape 'Compilation de l''application (interface incluse dans le JAR)'
 Push-Location (Join-Path $projet 'backend')
 try {
   $opts = if ($SansTests) { '-DskipTests' } else { '' }
-  cmd /c "mvn -q -B -Pbundle package $opts"
-  if ($LASTEXITCODE -ne 0) { Stop-Net 'La compilation du backend a echoue.' }
+  # << clean >> pour repartir d'un dossier target vide : un JAR laisse par une compilation
+  # precedente est la premiere chose que Windows refuse de renommer.
+  $reussi = $false
+  for ($essai = 1; $essai -le 3; $essai++) {
+    cmd /c "mvn -q -B -Pbundle clean package $opts"
+    if ($LASTEXITCODE -eq 0) { $reussi = $true; break }
+    if ($essai -lt 3) {
+      # Un antivirus qui inspecte le JAR a peine ecrit le verrouille une seconde ou deux :
+      # une nouvelle tentative suffit le plus souvent.
+      Souci "Echec (tentative $essai sur 3). Nouvelle tentative dans 8 secondes..."
+      Start-Sleep -Seconds 8
+    }
+  }
+  if (-not $reussi) {
+    Souci ''
+    Souci 'Si le message parle de << Unable to rename >>, un programme tient le fichier :'
+    Souci '  - une caisse encore ouverte (fermez la fenetre noire de PosCaisse) ;'
+    Souci '  - l''Explorateur Windows positionne sur backend\target ;'
+    Souci '  - un antivirus en train d''inspecter le JAR (mettez le dossier en exception).'
+    Stop-Net 'La compilation du backend a echoue.'
+  }
 } finally { Pop-Location }
 
 Etape 'Assemblage du paquet'

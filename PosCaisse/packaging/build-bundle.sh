@@ -24,7 +24,11 @@ etape "Compilation de l'interface"
 info 'Interface compilee.'
 
 etape "Compilation de l'application (interface incluse dans le JAR)"
-( cd "$projet/backend" && mvn -q -B -Pbundle package ) || arret 'La compilation du backend a echoue.'
+# « clean » : un JAR laisse par une compilation precedente est la premiere chose que
+# Windows refuse de renommer. Linux n'a pas ce probleme — un fichier ouvert s'y renomme
+# sans broncher — donc pas d'arret de processus ici : le motif de recherche risquerait
+# d'emporter le script lui-meme.
+( cd "$projet/backend" && mvn -q -B -Pbundle clean package ) || arret 'La compilation du backend a echoue.'
 info 'JAR autonome produit.'
 
 etape 'Assemblage du paquet'
