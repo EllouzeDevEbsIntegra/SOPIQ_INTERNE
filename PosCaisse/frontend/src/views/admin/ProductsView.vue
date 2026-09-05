@@ -90,7 +90,21 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
       <div class="field"><label>Type</label><select class="input" v-model="edit.productType"><option value="SIMPLE">Produit simple</option><option value="MENU">Menu / formule</option></select></div>
       <div class="field"><label>Catégorie</label><select class="input" v-model="edit.categoryId"><option v-for="c in cats" :key="c.id" :value="c.id">{{ c.name }}</option></select></div>
       <div class="field"><label>Nom</label><input class="input" v-model="edit.name" /></div>
-      <div class="field"><label>Nom court (ticket)</label><input class="input" v-model="edit.shortName" maxlength="40" /></div>
+      <!-- Laisse vide, le ticket imprime deja le nom complet : l'invite le montre, pour
+           qu'on n'ait plus a le deviner. Le bouton recopie le nom quand on veut partir de
+           lui pour l'abreger - « Sandwich Escalope Complet » en « Sandw. Escalope ». -->
+      <div class="field">
+        <label>Nom court (ticket)</label>
+        <div class="row gap-6">
+          <input class="input grow" v-model="edit.shortName" maxlength="40"
+                 :placeholder="edit.name ? edit.name + '  (nom complet)' : 'vide = le nom ci-dessus'" />
+          <button class="btn icon" type="button" :disabled="!edit.name"
+                  :title="'Reprendre le nom : ' + (edit.name || '')"
+                  @click="edit.shortName = (edit.name || '').slice(0, 40)">
+            <Icon name="copy" :size="17" />
+          </button>
+        </div>
+      </div>
       <div class="field"><label>Code</label><input class="input" v-model="edit.code" /></div>
       <div class="field"><label>Référence</label><input class="input" v-model="edit.reference" /></div>
       <div class="field"><label>Prix TTC</label><input class="input lg" v-model="edit.price" inputmode="decimal" /></div>
