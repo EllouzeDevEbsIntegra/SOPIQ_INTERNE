@@ -28,7 +28,10 @@ public class ReceiptRenderer {
     public static Map<String, Object> defaultConfig() {
         Map<String, Object> c = new LinkedHashMap<>();
         c.put("showTicketNumber", true); c.put("showDate", true); c.put("showTime", true); c.put("showCashier", true);
-        c.put("showRegister", false); c.put("showServiceMode", true); c.put("showCustomer", true); c.put("showCourier", true); c.put("showUnitPrice", true);
+        c.put("showRegister", false); c.put("showServiceMode", true); c.put("showCustomer", true); c.put("showCourier", true);
+        // Le prix unitaire chargeait le ticket sans etre reclame : il reste disponible dans
+        // les reglages d'impression, mais un ticket neuf sort sans lui.
+        c.put("showUnitPrice", false);
         c.put("showModifiers", true); c.put("showDiscounts", true); c.put("showTaxes", false); c.put("showSubtotal", true);
         c.put("showPayments", true); c.put("showChange", true); c.put("showCompanyName", true); c.put("showAddress", true);
         c.put("showPhone", true); c.put("showTaxId", true); c.put("separator", "-"); c.put("showItemCount", true);
@@ -188,19 +191,34 @@ public class ReceiptRenderer {
             count += l.getQuantity().intValue();
             String name = shortName(l);
             BigDecimal unit = l.getUnitPrice().add(l.getModifiersTotal());
-            String left = qty(l.getQuantity()) + " x " + name;
-            if (on(cfg, "showUnitPrice") && l.getQuantity().compareTo(BigDecimal.ONE) != 0 && l.getComponents().isEmpty()) {
-                s.line(left + " @ " + money(unit, dec));
-                s.lr("", money(l.getLineTotal().add(l.getDiscountAmount()), dec));
-            } else {
-                s.lr(left, money(l.getLineTotal().add(l.getDiscountAmount()), dec));
-            }
+
+            /*
+                UN SEUL montant par ligne, dans la colonne de droite : le total de la ligne.
+
+                Ce total contient DEJA les supplements. Les reimprimer a droite, sous lui,
+                se lit comme une addition : « 1 x Chia Kwika 7,000 » puis
+                « + Mozarilla 3arbi 3,000 » a fait compter 10,000 a un client, alors que
+                7,000 valait deja 4,000 + 3,000. Les supplements gardent donc leur ligne,
+                mais sans montant - ils disent CE QU'ON MANGE, pas ce qu'on paie en plus.
+
+                Il n'y a pas de reglage pour revenir en arriere : un montant faux a la
+                lecture n'est pas une preference d'affichage.
+            */
+            s.lr(qty(l.getQuantity()) + " x " + name, money(l.getLineTotal().add(l.getDiscountAmount()), dec));
+
+            /*
+                Le prix unitaire, lui, reste utile quand le client conteste « pourquoi 8,000
+                pour deux ». On l'ecrit en toutes lettres, HORS de la colonne des montants :
+                aligne a droite, il redeviendrait une addition apparente.
+            */
+            if (on2(cfg, "showUnitPrice") && l.getQuantity().compareTo(BigDecimal.ONE) != 0 && l.getComponents().isEmpty())
+                s.line("   à " + money(unit, dec) + " l'unité");
+
             if (on(cfg, "showModifiers")) {
-                for (OrderLineModifier m : l.getModifiers())
-                    s.lr("   + " + modLabel(m), modAmount(m).signum() == 0 ? "" : money(modAmount(m), dec));
+                for (OrderLineModifier m : l.getModifiers()) s.line("   + " + modLabel(m));
                 for (OrderLine c : l.getComponents()) {
-                    s.lr("   • " + qty(c.getQuantity()) + " " + shortName(c), c.getLineTotal().signum() == 0 ? "" : "+" + money(c.getLineTotal(), dec));
-                    for (OrderLineModifier m : c.getModifiers()) s.lr("       + " + modLabel(m), modAmount(m).signum() == 0 ? "" : money(modAmount(m), dec));
+                    s.line("   • " + qty(c.getQuantity()) + " " + shortName(c));
+                    for (OrderLineModifier m : c.getModifiers()) s.line("       + " + modLabel(m));
                 }
             }
             if (on(cfg, "showDiscounts") && l.getDiscountAmount().signum() > 0) s.lr("   Remise " + l.getDiscountPercent().stripTrailingZeros().toPlainString() + "%", "-" + money(l.getDiscountAmount(), dec));
@@ -281,6 +299,9 @@ public class ReceiptRenderer {
 
     private static boolean on(Map<String, Object> cfg, String k) { Object v = cfg.get(k); return v == null || Boolean.TRUE.equals(v) || "true".equals(String.valueOf(v)); }
 
+    /** Comme {@link #on} mais par defaut a NON : pour ce qui charge le ticket sans etre reclame. */
+    private static boolean on2(Map<String, Object> cfg, String k) { Object v = cfg.get(k); return Boolean.TRUE.equals(v) || "true".equals(String.valueOf(v)); }
+
     /**
      * Nom imprime d'une ligne : nom court de l'article s'il existe, puis la variante
      * vendue, en prefixe ou en suffixe selon l'axe.
@@ -304,10 +325,5 @@ public class ReceiptRenderer {
     /** « Mozarilla » ou « 3 x Mozarilla » : la quantite n'apparait que si elle depasse 1. */
     private static String modLabel(OrderLineModifier m) {
         return m.getQuantity() > 1 ? m.getQuantity() + " x " + m.getModifierName() : m.getModifierName();
-    }
-
-    /** Montant reellement facture pour l'option : le supplement multiplie par sa quantite. */
-    private static BigDecimal modAmount(OrderLineModifier m) {
-        return Money.nz(m.getPriceDelta()).multiply(BigDecimal.valueOf(Math.max(1, m.getQuantity())));
     }
 }

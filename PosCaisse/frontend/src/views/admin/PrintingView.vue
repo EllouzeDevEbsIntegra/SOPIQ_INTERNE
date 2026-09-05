@@ -9,7 +9,7 @@ const ui = useUiStore(); const { busy, run } = useBusy()
 const tab = ref('template'); const dests = ref([]); const editDest = ref(null); const tpl = ref(null); const preview = ref(null); let timer = null
 const flags = [
   ['showCompanyName', 'Nom commercial'], ['showAddress', 'Adresse'], ['showPhone', 'Téléphone'], ['showTaxId', 'Matricule fiscal'], ['showTicketNumber', 'N° de ticket'], ['showDate', 'Date'], ['showTime', 'Heure'],
-  ['showCashier', 'Caissier'], ['showRegister', 'Caisse'], ['showServiceMode', 'Mode de service'], ['showCustomer', 'Client'], ['showCourier', 'Livreur'], ['showItemCount', "Nombre d'articles"], ['showUnitPrice', 'Prix unitaire'], ['showModifiers', 'Options / suppléments'],
+  ['showCashier', 'Caissier'], ['showRegister', 'Caisse'], ['showServiceMode', 'Mode de service'], ['showCustomer', 'Client'], ['showCourier', 'Livreur'], ['showItemCount', "Nombre d'articles"], ['showUnitPrice', "Prix unitaire (si quantité > 1)"], ['showModifiers', 'Options / suppléments'],
   ['showDiscounts', 'Remises'], ['showSubtotal', 'Sous-total'], ['showTaxes', 'TVA (si activée)'], ['showPayments', 'Paiements'], ['showChange', 'Monnaie rendue'], ['showDuplicateLabel', 'Mention DUPLICATA'], ['prepShowTime', 'Heure sur tickets préparation']
 ]
 async function load() { try { dests.value = await api.admin.destinations(); const list = await api.admin.templates(); tpl.value = list.find(t => t.code === 'DEFAULT') || list[0]; refresh() } catch (e) { ui.error(e.humanMessage) } }
