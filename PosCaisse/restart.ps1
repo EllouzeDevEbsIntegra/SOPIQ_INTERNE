@@ -197,6 +197,28 @@ function Test-Stale([string]$artifact, [string[]]$sources) {
   return $false
 }
 
+<#
+    Purge de l'interface figee dans le JAR.
+
+    Le backend cherche l'interface a deux endroits, DANS CET ORDRE :
+    << classpath:/static/ >> puis << ../frontend/dist >>. La fabrication du paquet
+    autonome (mvn -Pbundle) copie l'interface du moment dans
+    backend\target\classes\static, pour la sceller dans le JAR livre au client.
+
+    Ce dossier survit aux compilations suivantes, et il passe AVANT frontend\dist :
+    apres une seule fabrication de paquet, le poste de developpement sert
+    indefiniment cette copie gelee. On recompile, on ne voit rien changer, et rien
+    ne l'explique.
+
+    En developpement, l'interface a servir est celle de frontend\dist. On retire
+    donc la copie a chaque demarrage : elle n'a de sens que dans un JAR livre.
+#>
+$fige = Join-Path $root 'backend\target\classes\static'
+if (Test-Path -LiteralPath $fige) {
+  Write-Host "    Retrait de l'interface figee par une fabrication de paquet."
+  Remove-Item -LiteralPath $fige -Recurse -Force -ErrorAction SilentlyContinue
+}
+
 if (Test-Stale 'frontend\dist\index.html' @('frontend\src', 'frontend\package.json', 'frontend\vite.config.js', 'frontend\index.html')) { $rebuild = $true }
 if (Test-Stale 'backend\target\poscaisse-backend.jar' @('backend\src', 'backend\pom.xml')) { $rebuild = $true }
 
