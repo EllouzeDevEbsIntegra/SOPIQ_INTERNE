@@ -43,7 +43,7 @@ rm -f "$jarproduit" "$jarproduit.original"
 cp -r "$ici/bundle/." "$sortie/"
 [ -d "$projet/catalogs" ] && cp -r "$projet/catalogs" "$sortie/"
 # Les lanceurs Windows n'ont rien a faire dans un paquet Linux.
-rm -f "$sortie"/*.bat
+rm -f "$sortie"/*.bat "$sortie"/*.vbs
 chmod +x "$sortie/outils/poscaisse.sh"
 echo "PosCaisse $version — paquet autonome" > "$sortie/VERSION.txt"
 

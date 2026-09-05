@@ -29,7 +29,11 @@ refabriquera le paquet dans la bonne version.
 
 AU QUOTIDIEN
 ------------
-DEMARRER.bat     ouvre la caisse (a mettre dans le dossier Demarrage de Windows)
+DEMARRER.bat     ouvre la caisse
+DEMARRER-AUTO.vbs  ouvre la caisse SANS fenetre noire. C'est ce fichier-la qu'on met
+                 dans le dossier Demarrage de Windows, pas DEMARRER.bat : Windows
+                 ouvre toujours une console pour un .bat. Si la caisse ne demarre
+                 pas, il affiche un message au lieu de rester muet.
 ARRETER.bat      ferme proprement la caisse et la base
 SAUVEGARDER.bat  ecrit une copie de securite dans « sauvegardes »
 ETAT.bat         dit ce qui tourne et quand remonte la derniere sauvegarde

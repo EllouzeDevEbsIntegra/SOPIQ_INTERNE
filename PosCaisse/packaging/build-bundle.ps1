@@ -205,7 +205,8 @@ if (Test-Path $vc) {
   Write-Host '  en disposer, sinon PostgreSQL ne demarrera pas.' -ForegroundColor Yellow
 }
 
-foreach ($f in @('jre\bin\java.exe', 'pgsql\bin\initdb.exe', 'pgsql\bin\pg_ctl.exe', 'poscaisse.jar', 'INSTALLER.bat')) {
+foreach ($f in @('jre\bin\java.exe', 'pgsql\bin\initdb.exe', 'pgsql\bin\pg_ctl.exe', 'poscaisse.jar',
+                 'INSTALLER.bat', 'DEMARRER-AUTO.vbs')) {
   if (-not (Test-Path (Join-Path $sortie $f))) { Stop-Net "Le paquet est incomplet : $f manque." }
 }
 # Version reelle des binaires assembles, pas celle qu'on croit avoir telechargee : si
