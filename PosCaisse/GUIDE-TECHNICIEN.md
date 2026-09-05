@@ -184,16 +184,28 @@ doit pas survivre à votre visite.
 
 ---
 
-## 8. Démarrage automatique
+## 8. L'icône du Bureau, et le démarrage automatique
 
-Pour que la caisse s'ouvre toute seule quand le PC s'allume :
+`INSTALLER.bat` a déjà posé l'icône **« Caisse PosCaisse »** sur le Bureau et dans le menu
+Démarrer, et vous a demandé si la caisse devait s'ouvrir au démarrage de Windows. Si
+l'icône a été supprimée par mégarde, **`RACCOURCIS.bat`** la repose.
 
-1. `Windows + R`, tapez `shell:startup`, Entrée.
-2. Faites un raccourci vers **`C:\PosCaisse\DEMARRER-AUTO.vbs`**.
+### Expliquez au client que c'est la SEULE façon d'ouvrir la caisse
 
-**Ce fichier-là, pas `DEMARRER.bat`.** Windows ouvre toujours une fenêtre noire pour un
-`.bat` ; le `.vbs` démarre la caisse sans rien afficher, et prévient par un message si le
-démarrage échoue.
+L'impression directe — le ticket qui part sans boîte de dialogue — dépend de la **manière
+dont la caisse est lancée**, pas d'un réglage. L'icône passe par le bon chemin ; le
+navigateur habituel du poste, ou une application installée depuis la page, non.
+
+C'est le motif d'appel le plus probable après votre départ : *« le ticket ne s'imprime plus
+tout seul »*. La réponse tient en une phrase :
+
+> **Fermez la fenêtre et rouvrez la caisse par l'icône.**
+
+Un redémarrage du PC produit le même effet, mais pour une mauvaise raison — c'est le
+démarrage automatique qui relance alors la caisse correctement.
+
+L'icône sert dans les deux cas : elle démarre tout si rien ne tourne, et se contente de
+rouvrir la fenêtre si la caisse est déjà en service.
 
 ---
 
@@ -261,7 +273,9 @@ Technicien : ..................................
 [ ]  Ticket d'essai imprime, numero 1, rendu papier conforme
 [ ]  Mot de passe administrateur change par le client
 [ ]  Imprimante a tickets definie par defaut dans Windows
-[ ]  Demarrage automatique en place (DEMARRER-AUTO.vbs)
+[ ]  Icone << Caisse PosCaisse >> sur le Bureau, demarrage automatique en place
+[ ]  Explique au client : on ouvre TOUJOURS par l'icone, sinon plus d'impression
+     directe. Si la boite de dialogue revient : fermer la fenetre, rouvrir par l'icone
 [ ]  AFFICHAGE choisi : ........................
 [ ]  Premiere sauvegarde faite ET copiee sur cle USB
 [ ]  Les trois gestes expliques au client
