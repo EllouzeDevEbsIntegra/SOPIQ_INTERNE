@@ -33,8 +33,25 @@ const isCash = computed(() => current.value?.kind === 'CASH')
 const changePreview = computed(() => isCash.value && entryValue.value > remaining.value ? sub(entryValue.value, remaining.value) : 0)
 const change = computed(() => payments.value.reduce((s, p) => add(s, p.tendered > p.amount ? sub(p.tendered, p.amount) : 0), 0))
 const tendered = computed(() => payments.value.reduce((s, p) => add(s, p.tendered ?? p.amount), 0))
-const done = computed(() => remaining.value <= 0 && payments.value.length > 0)
 const quick = computed(() => catalog.quickCash)
+
+/*
+   Le solde restant se regle sur le moyen selectionne, au moment de valider.
+
+   Auparavant il fallait d'abord CREER une ligne de reglement - taper le montant puis
+   << Recu >>, ou toucher << Montant exact >> - avant que le bouton de validation ne
+   s'active. Sur le cas de loin le plus courant, un ticket paye d'un seul coup, cela
+   faisait une touche pour ne rien dire de plus que ce que l'ecran affichait deja.
+
+   La zone << Recu >> reste facultative : vide ou a zero, elle vaut compte juste. Elle ne
+   sert qu'a annoncer ce que le client tend, donc a calculer la monnaie - et seulement en
+   especes, une carte ne rend pas la monnaie.
+*/
+const tenderNow = computed(() => (isCash.value && entryValue.value > remaining.value ? entryValue.value : 0))
+const canConfirm = computed(() => props.total > 0 && !!current.value)
+// Ce que le bandeau doit montrer : l'etat APRES validation, pas avant.
+const boardTendered = computed(() => add(tendered.value, tenderNow.value || (remaining.value > 0 ? remaining.value : 0)))
+const boardChange = computed(() => (remaining.value > 0 ? changePreview.value : change.value))
 
 function pick(m) { current.value = m; entry.value = '' }
 /* Si le client est retiré alors que le crédit était sélectionné, on retombe sur
@@ -53,14 +70,22 @@ const exact = () => addPayment(remaining.value)
 const removePayment = (i) => payments.value.splice(i, 1)
 
 function confirm() {
-  if (!done.value || props.busy) return
-  emit('confirm', payments.value.map(p => ({
+  if (!canConfirm.value || props.busy) return
+  const list = payments.value.slice()
+  if (remaining.value > 0) {
+    // Un montant saisi INFERIEUR au reste du est une frappe en cours, pas un rendu de
+    // monnaie : on ne le retient que s'il couvre le solde, sinon le ticket sortirait
+    // avec un << recu >> plus petit que son propre total.
+    const given = tenderNow.value || remaining.value
+    list.push({ method: current.value, amount: round(remaining.value), tendered: round(given) })
+  }
+  emit('confirm', list.map(p => ({
     paymentMethodId: p.method.id,
     amount: p.amount,
     tendered: p.method.kind === 'CASH' ? p.tendered : null
   })))
 }
-function onKey(e) { if (e.key === 'Enter' && done.value && !props.busy) { e.preventDefault(); confirm() } }
+function onKey(e) { if (e.key === 'Enter' && canConfirm.value && !props.busy) { e.preventDefault(); confirm() } }
 onMounted(() => window.addEventListener('keydown', onKey))
 onUnmounted(() => window.removeEventListener('keydown', onKey))
 </script>
@@ -111,13 +136,13 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
             <span>À payer</span>
             <b class="num">{{ fmt(total, true) }}</b>
           </div>
-          <div class="row-amount sub" v-if="payments.length">
+          <div class="row-amount sub" v-if="payments.length || tenderNow">
             <span>Reçu</span>
-            <b class="num">{{ fmt(tendered) }}</b>
+            <b class="num">{{ fmt(boardTendered) }}</b>
           </div>
-          <div class="row-amount main" :class="remaining > 0 ? 'due' : 'ok'">
-            <span>{{ remaining > 0 ? 'Reste à payer' : 'Monnaie à rendre' }}</span>
-            <b class="num">{{ fmt(remaining > 0 ? remaining : change, true) }}</b>
+          <div class="row-amount main" :class="remaining > 0 && !tenderNow ? 'due' : 'ok'">
+            <span>{{ remaining > 0 && !tenderNow ? 'Reste à payer' : 'Monnaie à rendre' }}</span>
+            <b class="num">{{ fmt(remaining > 0 && !tenderNow ? remaining : boardChange, true) }}</b>
           </div>
         </div>
 
@@ -128,15 +153,18 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
           </button>
         </div>
 
+        <!-- Raccourcis de billets : ils remplissent la zone << Recu >>, ils ne valident rien.
+             << Montant exact >> ne s'affiche que pendant un paiement mixte : hors de ce cas
+             le bouton de validation solde deja le reste tout seul. -->
         <div class="quick" v-if="isCash">
-          <button v-for="q in quick" :key="q" class="chip num" :disabled="remaining <= 0" @click="addPayment(q)">
+          <button v-for="q in quick" :key="q" class="chip num" :disabled="remaining <= 0" @click="entry = String(q)">
             {{ q }} {{ catalog.company?.currencySymbol || 'DT' }}
           </button>
-          <button class="chip exact" :disabled="remaining <= 0" @click="exact">
+          <button v-if="payments.length" class="chip exact" :disabled="remaining <= 0" @click="exact">
             Montant exact <b class="num">{{ fmt(remaining) }}</b>
           </button>
         </div>
-        <button v-else class="chip exact solo" :disabled="remaining <= 0" @click="exact">
+        <button v-else-if="payments.length" class="chip exact solo" :disabled="remaining <= 0" @click="exact">
           {{ current?.name }} <b class="num">{{ fmt(remaining) }}</b>
         </button>
 
@@ -155,7 +183,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
 
       <!-- colonne droite : saisie -->
       <section class="right">
-        <NumPad v-model="entry" mode="amount" :ok-label="isCash ? 'Reçu' : 'Ajouter'" :placeholder="fmt(remaining)" @ok="addPayment()" />
+        <NumPad v-model="entry" mode="amount" ok-label="Paiement partiel" :placeholder="fmt(remaining)" @ok="addPayment()" />
 
         <p class="change" v-if="changePreview">Monnaie à rendre <b class="num">{{ fmt(changePreview, true) }}</b></p>
       </section>
@@ -163,8 +191,8 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
 
     <template #foot>
       <button class="btn lg" :disabled="busy" @click="emit('close')">Annuler</button>
-      <button class="btn success xl grow" :disabled="!done || busy" @click="confirm">
-        {{ busy ? 'Enregistrement…' : 'Valider le paiement' }}
+      <button class="btn success xl grow" :disabled="!canConfirm || busy" @click="confirm">
+        {{ busy ? 'Enregistrement…' : 'Valider et imprimer' }}
       </button>
     </template>
   </Modal>

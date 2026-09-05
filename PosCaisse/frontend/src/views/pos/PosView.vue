@@ -12,7 +12,6 @@ import ProductTile from '../../components/pos/ProductTile.vue'
 import CartPanel from '../../components/pos/CartPanel.vue'
 import ModifierDialog from '../../components/pos/ModifierDialog.vue'
 import PaymentDialog from '../../components/pos/PaymentDialog.vue'
-import ReceiptDialog from '../../components/pos/ReceiptDialog.vue'
 import AmountDialog from '../../components/pos/AmountDialog.vue'
 import TextDialog from '../../components/pos/TextDialog.vue'
 import PartyDialog from '../../components/pos/PartyDialog.vue'
@@ -22,9 +21,10 @@ import CashMovementDialog from '../../components/pos/CashMovementDialog.vue'
 import TicketsView from './TicketsView.vue'
 import Modal from '../../components/common/Modal.vue'
 import Icon from '../../components/common/Icon.vue'
+import { printJobs } from '../../composables/usePrinter'
 
 const router = useRouter(); const auth = useAuthStore(); const catalog = useCatalogStore(); const cart = useCartStore(); const ui = useUiStore()
-const activeCat = ref('FAV'); const search = ref(''); const dialog = ref(null); const paying = ref(false); const lastSale = ref(null); const heldCount = ref(0)
+const activeCat = ref('FAV'); const search = ref(''); const dialog = ref(null); const paying = ref(false); const heldCount = ref(0)
 const partyOverlay = ref(null)       // choix du client ou du livreur par-dessus l'encaissement
 const template = ref(null); const clock = ref(fmtTime(new Date())); const menuOpen = ref(false); const cartOpen = ref(false)
 let clockTimer = null
@@ -137,21 +137,37 @@ async function pay(payments) {
   paying.value = true
   try {
     const order = await api.pos.checkout({ ...cart.toRequest(auth.session.registerId), payments })
-    lastSale.value = order
     cart.clear()
-    dialog.value = { kind: 'done', order }
+    dialog.value = null
     refreshHeld()
-    if (catalog.setting('print.autoPreview', 'true') === 'true' && order.printJobs?.length) { /* preview shown in done dialog */ }
+    /*
+        Le ticket part directement. L'ecran de fin de vente qui l'a precede ne montrait
+        rien que le caissier ne vienne de lire sur l'ecran d'encaissement, et coutait une
+        touche de plus a chaque commande - au comptoir, a l'heure du coup de feu, c'est la
+        seule chose qui compte.
+
+        Ce qu'il portait d'utile, le numero de ticket et la monnaie a rendre, passe dans la
+        notification. Un duplicata reste imprimable depuis l'historique des tickets.
+    */
+    if (catalog.setting('print.autoPreview', 'true') === 'true' && order.printJobs?.length) {
+      try {
+        await printJobs(order.printJobs, template.value)
+        await api.pos.ackPrint(order.printJobs.map(j => j.id))
+      } catch (err) {
+        // L'impression a echoue, mais la vente est enregistree : le dire sans l'annuler.
+        ui.error('Vente enregistree, mais le ticket n\'a pas pu s\'imprimer. Reimprimez-le depuis l\'historique.')
+      }
+    }
+    const rendu = Number(order.changeAmount) > 0 ? ` — rendu ${fmt(order.changeAmount, true)}` : ''
+    ui.success(`Ticket ${order.ticketNumber} encaissé${rendu}`)
   } catch (e) {
     ui.error(e.humanMessage)
     if (e.response?.status === 409 && /session/i.test(e.humanMessage || '')) { auth.setSession(null); router.replace('/open') }
   } finally { paying.value = false }
 }
-function newOrder() { dialog.value = null }
 function goClose() { if (!cart.isEmpty) return ui.error('Videz ou mettez en attente le panier avant la clôture.'); router.push('/close') }
 function logout() { if (!cart.isEmpty) return ui.error('Videz ou mettez en attente le panier avant de vous déconnecter.'); auth.logout(); router.replace('/login') }
 function onKey(e) {
-  if (dialog.value?.kind === 'done' && (e.key === 'Enter' || e.key === 'Escape')) { e.preventDefault(); newOrder(); return }
   if (dialog.value || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
   if (e.key === 'F2') { e.preventDefault(); checkout() }
   if (e.key === 'F4') { e.preventDefault(); holdOrder() }
@@ -266,62 +282,9 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
       <TicketsView embedded />
     </Modal>
 
-    <Modal v-if="dialog?.kind === 'done'" size="md" :closable="false">
-      <template #head>
-        <span class="done-mark"><Icon name="check" :size="20" :stroke="2.6" /></span>
-        <div class="grow">
-          <h2>Vente enregistrée</h2>
-          <span class="tiny muted">Ticket {{ dialog.order.ticketNumber }}</span>
-        </div>
-      </template>
-      <div class="done">
-        <div class="done-left">
-          <div class="done-total">
-            <span class="eyebrow">Total encaissé</span>
-            <b class="num">{{ fmt(dialog.order.total, true) }}</b>
-            <span class="small muted">{{ dialog.order.payments.map(p => p.methodName + ' ' + fmt(p.amount)).join('  +  ') }}</span>
-          </div>
-          <div class="done-change" v-if="Number(dialog.order.changeAmount) > 0">
-            <span class="eyebrow">Monnaie à rendre</span>
-            <b class="num">{{ fmt(dialog.order.changeAmount, true) }}</b>
-          </div>
-        </div>
-        <ReceiptInline :jobs="dialog.order.printJobs" :order="dialog.order" :template="template" />
-      </div>
-      <template #foot>
-        <button class="btn success xl grow" @click="newOrder" autofocus>Nouvelle commande</button>
-      </template>
-    </Modal>
   </div>
 </template>
 
-<script>
-/* Aperçu du ticket et impression, dans l'écran de fin de vente. */
-import { defineComponent, h, ref as vref } from 'vue'
-import { printJobs } from '../../composables/usePrinter'
-import { api as vapi } from '../../api'
-const ReceiptInline = defineComponent({
-  props: { jobs: Array, order: Object, template: Object },
-  setup(props) {
-    const printed = vref(false)
-    async function print() {
-      await printJobs(props.jobs, props.template)
-      printed.value = true
-      try { await vapi.pos.ackPrint(props.jobs.map(j => j.id)) } catch { /* ignore */ }
-    }
-    const copies = () => (props.jobs || []).reduce((s, j) => s + j.copies, 0)
-    return () => h('div', { class: 'ri' }, [
-      h('div', { class: 'ri-tabs' }, (props.jobs || []).map(j => h('span', { class: 'badge', key: j.id }, `${j.title} ×${j.copies}`))),
-      h('pre', {
-        class: 'receipt-paper ri-paper',
-        style: { width: (props.template?.paperWidth || 80) <= 58 ? '208px' : '278px', fontSize: '10.5px' }
-      }, props.jobs?.[0]?.content || ''),
-      h('button', { class: 'btn primary lg block', onClick: print }, printed.value ? 'Réimprimer les tickets' : `Imprimer les tickets (${copies()})`)
-    ])
-  }
-})
-export default { components: { ReceiptInline } }
-</script>
 
 <style scoped>
 .pos { display: flex; flex-direction: column; height: 100vh; overflow: hidden; background: var(--canvas); }
@@ -419,13 +382,6 @@ export default { components: { ReceiptInline } }
 .drawer-foot { padding: 12px 16px; margin: 0; color: var(--ink-4); border-top: 1px solid var(--line); }
 
 /* ---------- fin de vente ---------- */
-.done-mark { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--pay-soft); color: var(--pay); border: 1px solid var(--pay-line); }
-.done { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start; }
-.done-left { display: flex; flex-direction: column; gap: 14px; }
-.done-total { display: flex; flex-direction: column; gap: 3px; }
-.done-total b { font-family: var(--font-display); font-size: 36px; font-weight: 750; letter-spacing: -.03em; line-height: 1.05; }
-.done-change { display: flex; flex-direction: column; gap: 3px; padding: 14px 16px; border-radius: var(--r-lg); background: var(--pay-soft); border: 1px solid var(--pay-line); color: var(--pay-2); }
-.done-change b { font-family: var(--font-display); font-size: 42px; font-weight: 750; letter-spacing: -.035em; line-height: 1.05; }
 :deep(.ri) { display: flex; flex-direction: column; gap: 9px; align-items: stretch; width: 278px; }
 :deep(.ri-tabs) { display: flex; gap: 5px; flex-wrap: wrap; }
 :deep(.ri-paper) { max-height: 244px; overflow: auto; }
