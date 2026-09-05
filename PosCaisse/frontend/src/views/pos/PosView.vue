@@ -132,7 +132,7 @@ function checkout() {
   if (cart.needsCourier) { ui.error('Sélectionnez le livreur avant d\'encaisser ce ticket en livraison.'); return courier() }
   dialog.value = { kind: 'pay' }
 }
-async function pay(payments) {
+async function pay(payments, imprimer = true) {
   if (paying.value) return
   paying.value = true
   try {
@@ -149,7 +149,7 @@ async function pay(payments) {
         Ce qu'il portait d'utile, le numero de ticket et la monnaie a rendre, passe dans la
         notification. Un duplicata reste imprimable depuis l'historique des tickets.
     */
-    if (catalog.setting('print.autoPreview', 'true') === 'true' && order.printJobs?.length) {
+    if (imprimer && order.printJobs?.length) {
       try {
         await printJobs(order.printJobs, template.value)
         await api.pos.ackPrint(order.printJobs.map(j => j.id))
@@ -159,7 +159,7 @@ async function pay(payments) {
       }
     }
     const rendu = Number(order.changeAmount) > 0 ? ` — rendu ${fmt(order.changeAmount, true)}` : ''
-    ui.success(`Ticket ${order.ticketNumber} encaissé${rendu}`)
+    ui.success(`Ticket ${order.ticketNumber} encaissé${rendu}${imprimer ? '' : ' · sans ticket'}`)
   } catch (e) {
     ui.error(e.humanMessage)
     if (e.response?.status === 409 && /session/i.test(e.humanMessage || '')) { auth.setSession(null); router.replace('/open') }

@@ -29,7 +29,6 @@ async function save() {
     <div class="card"><div class="card-title">Numérotation & impression</div>
       <div class="form-grid">
         <div class="field span-2"><label>Format des numéros de ticket</label><input class="input" v-model="s['ticket.pattern']" /><div class="tiny muted">Variables : {POS} code point de vente, {REG} code caisse, {YYYY} {YY} {MM} {DD}, {SEQ:6} compteur (6 chiffres). Le compteur redémarre quand le préfixe change (ex. nouvelle année). Exemples : <code>{SEQ:6}</code> → 000001 · <code>{POS}-{YYYY}-{SEQ:6}</code> → PV01-2026-000001</div></div>
-        <div class="field"><label>Après encaissement</label><select class="input" v-model="s['print.autoPreview']"><option value="true">Imprimer le ticket automatiquement</option><option value="false">Ne rien imprimer (duplicata depuis l'historique)</option></select></div>
         <div class="field"><label>Écran de connexion</label><select class="input" v-model="s['auth.showUserTiles']"><option value="true">Afficher les tuiles caissiers</option><option value="false">PIN seul</option></select></div>
       </div>
     </div>

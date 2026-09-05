@@ -69,7 +69,12 @@ function addPayment(amountGiven) {
 const exact = () => addPayment(remaining.value)
 const removePayment = (i) => payments.value.splice(i, 1)
 
-function confirm() {
+/*
+   << imprimer >> est porte par le bouton, pas par un reglage : le caissier est seul a
+   savoir, au moment ou il encaisse, si le client veut son ticket. Une bobine de papier
+   thermique passe vite quand on imprime des tickets que personne ne prend.
+*/
+function confirm(imprimer) {
   if (!canConfirm.value || props.busy) return
   const list = payments.value.slice()
   if (remaining.value > 0) {
@@ -83,9 +88,10 @@ function confirm() {
     paymentMethodId: p.method.id,
     amount: p.amount,
     tendered: p.method.kind === 'CASH' ? p.tendered : null
-  })))
+  })), imprimer)
 }
-function onKey(e) { if (e.key === 'Enter' && canConfirm.value && !props.busy) { e.preventDefault(); confirm() } }
+// Entree vaut le bouton principal : le ticket s'imprime dans la plupart des ventes.
+function onKey(e) { if (e.key === 'Enter' && canConfirm.value && !props.busy) { e.preventDefault(); confirm(true) } }
 onMounted(() => window.addEventListener('keydown', onKey))
 onUnmounted(() => window.removeEventListener('keydown', onKey))
 </script>
@@ -191,7 +197,12 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
 
     <template #foot>
       <button class="btn lg" :disabled="busy" @click="emit('close')">Annuler</button>
-      <button class="btn success xl grow" :disabled="!canConfirm || busy" @click="confirm">
+      <!-- Vente enregistree sans ticket : le client n'en veut pas, ou l'imprimante est a
+           court de papier. Le duplicata reste tirable depuis l'historique. -->
+      <button class="btn lg sans-ticket" :disabled="!canConfirm || busy" @click="confirm(false)">
+        Valider<em>sans ticket</em>
+      </button>
+      <button class="btn success xl grow" :disabled="!canConfirm || busy" @click="confirm(true)">
         {{ busy ? 'Enregistrement…' : 'Valider et imprimer' }}
       </button>
     </template>
@@ -199,6 +210,11 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
 </template>
 
 <style scoped>
+/* Le bouton secondaire porte sa precision sur une seconde ligne : « Valider » seul se
+   confondrait avec le bouton principal au coup d'oeil, et c'est le papier qui trancherait. */
+.sans-ticket { display: flex; flex-direction: column; gap: 1px; line-height: 1.15; }
+.sans-ticket em { font-style: normal; font-size: 11px; font-weight: 600; color: var(--ink-3); }
+
 .pay-grid { display: grid; grid-template-columns: minmax(0, 1fr) 316px; gap: 20px; align-items: start; }
 
 /* --- commentaire du ticket --- */
