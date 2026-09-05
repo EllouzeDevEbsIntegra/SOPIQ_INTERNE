@@ -37,6 +37,13 @@ const dragId = ref(null)
     qui contiennent tel et tel ingredient.
 */
 const ingredients = ref([])
+
+/* Meme palette que les categories : deux jeux de couleurs differents dans un meme
+   back-office donneraient deux cartes qui ne se ressemblent pas. */
+const COULEURS = ['#f97316', '#eab308', '#ef4444', '#8b5cf6', '#0ea5e9', '#ec4899', '#22c55e', '#10b981', '#3b82f6', '#64748b', '#a16207', '#0f172a']
+/* Couleur reellement appliquee quand le champ reste vide : la montrer vaut mieux que de
+   l'ecrire entre parentheses dans un libelle que personne ne lit. */
+const couleurCategorie = computed(() => cats.value.find(c => c.id === edit.value?.categoryId)?.color || '#8A8178')
 async function chargerIngredients() { try { ingredients.value = await api.admin.ingredients() } catch { /* liste facultative */ } }
 
 function nomCompose(ids) {
@@ -153,10 +160,64 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
       <div class="field"><label>Prix TTC</label><input class="input lg" v-model="edit.price" inputmode="decimal" /></div>
       <div class="field"><label>TVA % (si activée)</label><input class="input" v-model="edit.taxRate" inputmode="decimal" /></div>
       <div class="field span-2"><label>Description</label><input class="input" v-model="edit.description" /></div>
-      <div class="field"><label>Image</label><div class="row"><img v-if="edit.imageUrl" :src="edit.imageUrl" style="width:56px;height:56px;object-fit:cover;border-radius:8px" /><input type="file" accept="image/*" @change="onImage" /><button v-if="edit.imageUrl" class="btn sm" @click="edit.imageUrl=''">Retirer</button></div></div>
-      <div class="field"><label>Couleur de la tuile (vide = couleur catégorie)</label><input class="input" v-model="edit.color" placeholder="#f97316" /></div>
-      <label class="check"><input type="checkbox" v-model="edit.active" /> Actif (au catalogue)</label>
-      <label class="check"><input type="checkbox" v-model="edit.available" /> Disponible à la vente</label>
+      <!--
+          Apparence et etat de l'article.
+
+          Ces trois reglages n'ont rien a voir entre eux et se disputaient une meme rangee
+          de la grille. Ils forment desormais une bande a part, chacun avec la cible que
+          reclame un doigt :
+
+          - le selecteur de fichier natif, dont Windows n'ecrit meme pas le texte en
+            francais, disparait derriere la vignette elle-meme ;
+          - la couleur se choisissait au clavier, en hexadecimal : impossible sur un poste
+            tactile. Les pastilles la rendent touchable, et « Categorie » remplace le
+            « vide = couleur categorie » du libelle par un choix qu'on voit ;
+          - « Actif » et « Disponible » se ressemblaient trop pour qu'on sache lequel
+            retirer un plat de la carte et lequel dit qu'il est en rupture ce midi.
+      -->
+      <div class="apparence span-2">
+        <section class="bloc">
+          <span class="titre">Image</span>
+          <div class="row gap-10">
+            <label class="vignette" :class="{ vide: !edit.imageUrl }" title="Choisir une photo">
+              <img v-if="edit.imageUrl" :src="edit.imageUrl" alt="" />
+              <template v-else><Icon name="image" :size="24" /><span>Ajouter</span></template>
+              <input type="file" accept="image/*" hidden @change="onImage" />
+            </label>
+            <div class="col gap-6" v-if="edit.imageUrl">
+              <label class="btn sm">Remplacer<input type="file" accept="image/*" hidden @change="onImage" /></label>
+              <button type="button" class="btn sm danger" @click="edit.imageUrl = ''">Retirer</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="bloc grow">
+          <span class="titre">Couleur de la tuile</span>
+          <div class="pastilles">
+            <button type="button" class="herite" :class="{ on: !edit.color }"
+                    title="Reprendre la couleur de la catégorie" @click="edit.color = ''">
+              <i :style="{ background: couleurCategorie }"></i>Catégorie
+            </button>
+            <button v-for="c in COULEURS" :key="c" type="button" class="sw" :class="{ on: edit.color === c }"
+                    :style="{ background: c }" :title="c" @click="edit.color = c"></button>
+            <input class="input hex" v-model="edit.color" placeholder="#C8441C" maxlength="7" title="Couleur précise" />
+          </div>
+        </section>
+
+        <section class="bloc">
+          <span class="titre">État</span>
+          <div class="etats">
+            <label class="etat" :class="{ on: edit.active }">
+              <input type="checkbox" v-model="edit.active" />
+              <span><b>Actif</b><em>Figure au catalogue</em></span>
+            </label>
+            <label class="etat" :class="{ on: edit.available }">
+              <input type="checkbox" v-model="edit.available" />
+              <span><b>Disponible</b><em>Vendable aujourd'hui</em></span>
+            </label>
+          </div>
+        </section>
+      </div>
     </div>
     <div v-show="tab==='options'" class="col gap-8">
       <p class="muted small">Cochez les groupes d'options proposés au caissier lors de l'ajout de ce produit. L'ordre suit l'ordre de sélection.</p>
@@ -187,6 +248,53 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
 </template>
 
 <style scoped>
+/* --- apparence et etat --- */
+.apparence {
+  display: flex; flex-wrap: wrap; gap: 22px 28px; align-items: flex-start;
+  padding: 16px 0 4px; margin-top: 4px; border-top: 1px solid var(--line);
+}
+.apparence .bloc { display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+.apparence .bloc.grow { flex: 1; min-width: 260px; }
+.apparence .titre {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3);
+}
+
+/* La vignette EST le bouton : plus de selecteur de fichier natif a l'ecran. */
+.vignette {
+  width: 88px; height: 88px; flex: none; border-radius: var(--r-lg); overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  background: var(--surface-2); border: 1px solid var(--line-2); cursor: pointer;
+  color: var(--ink-3); font-size: 11.5px; font-weight: 600;
+}
+.vignette img { width: 100%; height: 100%; object-fit: cover; }
+.vignette.vide { border-style: dashed; }
+.vignette:hover { border-color: var(--brand); color: var(--brand); }
+
+.pastilles { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+.sw { width: 34px; height: 34px; border-radius: 10px; border: 3px solid transparent; }
+.sw.on { border-color: var(--ink); }
+/* « Categorie » est une pastille comme les autres : le defaut devient un choix visible. */
+.herite {
+  display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 12px;
+  border: 1px solid var(--line-2); border-radius: 999px; background: var(--surface);
+  font-size: 12.5px; font-weight: 600; color: var(--ink-2);
+}
+.herite i { width: 15px; height: 15px; border-radius: 50%; border: 1px solid rgba(0,0,0,.12); }
+.herite.on { border-color: var(--ink); background: var(--surface-2); color: var(--ink); }
+.hex { width: 104px; min-height: 34px; padding: 4px 9px; font-size: 12.5px; text-align: center; }
+
+/* Deux etats voisins mais distincts : chacun sa carte, chacun sa phrase. */
+.etats { display: flex; gap: 8px; }
+.etat {
+  display: flex; align-items: center; gap: 9px; min-height: 56px; padding: 8px 13px 8px 11px;
+  border: 1px solid var(--line-2); border-radius: var(--r-lg); background: var(--surface); cursor: pointer;
+}
+.etat input { width: 19px; height: 19px; accent-color: var(--brand); flex: none; }
+.etat span { display: flex; flex-direction: column; line-height: 1.25; }
+.etat b { font-size: 13.5px; font-weight: 650; }
+.etat em { font-style: normal; font-size: 11.5px; color: var(--ink-3); }
+.etat.on { border-color: var(--brand-line); background: var(--brand-soft); }
+
 /* --- composition du nom par ingredients --- */
 .ingr { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px; }
 .chip-ingr {
