@@ -10,6 +10,8 @@
 #>
 param(
   [string]$Version = (Get-Date -Format 'yyyy.MM.dd'),
+  [ValidateSet('14', '15', '16', '17')]
+  [string]$VersionPostgres = '16',
   [switch]$SansTests
 )
 
@@ -44,14 +46,40 @@ function Arreter-Caisses {
   Start-Sleep -Seconds 3
 }
 
+<#
+    Version de PostgreSQL embarquee dans le paquet.
+
+    Elle compte au-dela du seul moteur : une sauvegarde produite par pg_dump ne se relit
+    que par un pg_restore de version egale ou superieure. Si le poste de developpement
+    exporte en PostgreSQL 17, un paquet en 16 refusera le fichier avec
+    << version non supportee (1.16) dans le fichier d'en-tete >>.
+
+    EXPORTER_DONNEES.bat affiche la version du serveur de developpement : fabriquez le
+    paquet avec la meme, ou une plus recente.
+
+        .\build-bundle.ps1 -VersionPostgres 17
+
+    Attention : changer de version majeure rend illisible un dossier << donnees >> deja
+    cree chez le client. Il faut alors sauvegarder, renommer le dossier et relancer
+    INSTALLER.bat, puis restaurer.
+#>
+$versionsPostgres = @{
+  '14' = '14.17-1'
+  '15' = '15.12-1'
+  '16' = '16.8-1'
+  '17' = '17.4-1'
+}
+$pgComplet = $versionsPostgres[$VersionPostgres]
+$pgArchive = "postgresql-$VersionPostgres-windows-x64-binaries.zip"
+
 # Versions figees : le poste client tourne exactement sur ce qui a ete teste ici.
 $sources = @(
   @{ Nom = 'jre';   Fichier = 'jre-21-windows-x64.zip'
      Url = 'https://api.adoptium.net/v3/binary/latest/21/ga/windows/x64/jre/hotspot/normal/eclipse'
      Aide = 'https://adoptium.net/temurin/releases/?os=windows&arch=x64&package=jre&version=21 (archive .zip)' },
-  @{ Nom = 'pgsql'; Fichier = 'postgresql-16-windows-x64-binaries.zip'
-     Url = 'https://get.enterprisedb.com/postgresql/postgresql-16.8-1-windows-x64-binaries.zip'
-     Aide = 'https://www.enterprisedb.com/download-postgresql-binaries (PostgreSQL 16, Windows x86-64)' },
+  @{ Nom = 'pgsql'; Fichier = $pgArchive
+     Url = "https://get.enterprisedb.com/postgresql/postgresql-$pgComplet-windows-x64-binaries.zip"
+     Aide = "https://www.enterprisedb.com/download-postgresql-binaries (PostgreSQL $VersionPostgres, Windows x86-64)" },
   # PostgreSQL fourni en binaires exige cette bibliotheque Microsoft. Elle est presente
   # sur la plupart des Windows recents, mais pas sur tous : l'embarquer evite un
   # deplacement chez le client pour un fichier de 25 Mo qu'il ne peut pas telecharger.
@@ -61,6 +89,7 @@ $sources = @(
 )
 
 Etape 'Recuperation des composants tiers'
+Info "PostgreSQL embarque : version $VersionPostgres ($pgComplet)"
 foreach ($s in $sources) {
   $dest = Join-Path $tele $s.Fichier
   if (Test-Path $dest) { Info "$($s.Fichier) : deja present"; continue }
@@ -141,8 +170,8 @@ function Extraire($zip, $vers, $strip) {
 }
 Info 'Moteur Java...'
 Extraire (Join-Path $tele 'jre-21-windows-x64.zip') (Join-Path $sortie 'jre') $true
-Info 'PostgreSQL...'
-Extraire (Join-Path $tele 'postgresql-16-windows-x64-binaries.zip') (Join-Path $sortie 'pgsql') $true
+Info "PostgreSQL $VersionPostgres..."
+Extraire (Join-Path $tele $pgArchive) (Join-Path $sortie 'pgsql') $true
 $vc = Join-Path $tele 'vc_redist.x64.exe'
 if (Test-Path $vc) {
   Copy-Item $vc (Join-Path $sortie 'outils\vc_redist.x64.exe') -Force
@@ -155,7 +184,11 @@ if (Test-Path $vc) {
 foreach ($f in @('jre\bin\java.exe', 'pgsql\bin\initdb.exe', 'pgsql\bin\pg_ctl.exe', 'poscaisse.jar', 'INSTALLER.bat')) {
   if (-not (Test-Path (Join-Path $sortie $f))) { Stop-Net "Le paquet est incomplet : $f manque." }
 }
-Set-Content -Path (Join-Path $sortie 'VERSION.txt') -Value "PosCaisse $Version - paquet autonome Windows x64" -Encoding UTF8
+Set-Content -Path (Join-Path $sortie 'VERSION.txt') -Encoding UTF8 -Value @(
+  "PosCaisse $Version - paquet autonome Windows x64",
+  "PostgreSQL $VersionPostgres ($pgComplet)",
+  "Une sauvegarde a restaurer ici doit venir d'un PostgreSQL $VersionPostgres ou plus ancien."
+)
 
 Etape 'Compression'
 $zip = "$sortie.zip"
@@ -167,3 +200,7 @@ Etape 'Paquet pret'
 Info "Dossier : $sortie"
 Info "Archive : $zip ($taille Mo)"
 Info 'Copiez cette archive sur le PC du client, decompressez-la, puis lancez INSTALLER.bat.'
+Info ''
+Info "Ce paquet tourne en PostgreSQL $VersionPostgres : il relit les sauvegardes produites par un"
+Info "PostgreSQL $VersionPostgres ou plus ancien. EXPORTER_DONNEES.bat affiche la version du serveur"
+Info 'de developpement ; si elle est plus recente, refabriquez avec -VersionPostgres <version>.'

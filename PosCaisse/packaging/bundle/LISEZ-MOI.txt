@@ -22,6 +22,9 @@ L'installation pose un jeu de DEMONSTRATION : enseigne fictive, articles d'exemp
 Votre integrateur vous remet un fichier .dump contenant votre carte et vos reglages.
 Pour l'installer : ARRETER.bat, puis RESTAURER.bat (indiquez le chemin du fichier),
 puis DEMARRER.bat. La restauration remplace tout ce que contient la base.
+Si elle annonce << version non supportee >>, le fichier vient d'un PostgreSQL plus
+recent que celui de ce poste : rien n'est casse, prevenez votre integrateur, qui
+refabriquera le paquet dans la bonne version.
 
 
 AU QUOTIDIEN

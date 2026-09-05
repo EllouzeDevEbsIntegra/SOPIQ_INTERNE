@@ -354,8 +354,33 @@ function Faire-Restore {
   Pg-Demarre $c
   $env:PGPASSWORD = $c.PASS
 
-  & $restore -l $Fichier | Out-Null
-  if ($LASTEXITCODE -ne 0) { Stop-Net "Ce fichier n'est pas une sauvegarde PosCaisse lisible." }
+  $lecture = & $restore -l $Fichier 2>&1
+  if ($LASTEXITCODE -ne 0) {
+    <#
+        Un cas revient assez souvent pour meriter son propre message : le fichier vient
+        d'un PostgreSQL plus recent que celui embarque ici. pg_restore refuse alors net,
+        avec un numero de format ( << version non supportee (1.16) >> ) qui ne dit rien a
+        personne. Le poste n'a rien de casse : c'est le paquet qui est trop ancien.
+    #>
+    $texte = ($lecture | Out-String)
+    if ($texte -match 'unsupported version|version non support') {
+      $mienne = (& $restore --version 2>&1 | Out-String)
+      Write-Host ''
+      Souci 'Cette sauvegarde vient d''un PostgreSQL plus RECENT que celui de ce poste.'
+      Souci ("  Ce poste lit du : " + ("$mienne".Trim()))
+      Souci 'Deux facons d''en sortir, au choix :'
+      Souci '  1. Sur le poste de developpement, exporter avec le pg_dump de la meme'
+      Souci '     version que le serveur (EXPORTER_DONNEES.bat affiche les deux et'
+      Souci '     previent lorsqu''elles different).'
+      Souci '  2. Refabriquer le paquet dans la version du serveur de developpement :'
+      Souci '     build-bundle.ps1 -VersionPostgres <version>, puis reinstaller ici'
+      Souci '     (le dossier donnees devra etre recree).'
+      Write-Host ''
+      Stop-Net 'Sauvegarde illisible par cette version de PostgreSQL.'
+    }
+    Write-Host ($lecture | Select-Object -First 5)
+    Stop-Net "Ce fichier n'est pas une sauvegarde PosCaisse lisible."
+  }
   Info 'Sauvegarde lisible.'
 
   # --- 2. On la depose dans une base a part, pour la regarder ---

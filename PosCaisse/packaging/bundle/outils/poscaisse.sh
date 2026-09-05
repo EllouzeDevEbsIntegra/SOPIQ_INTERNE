@@ -158,7 +158,19 @@ faire_restore() {
 
   app_arrete; pg_demarre
   export PGPASSWORD="$PASS"
-  "$pgbin/pg_restore" -l "$2" >/dev/null 2>&1 || arret "Ce fichier n'est pas une sauvegarde PosCaisse lisible."
+  if ! lecture=$("$pgbin/pg_restore" -l "$2" 2>&1); then
+    # Fichier produit par un PostgreSQL plus recent que celui embarque ici : pg_restore
+    # refuse avec un numero de format qui ne parle a personne.
+    if echo "$lecture" | grep -qiE 'unsupported version|version non support'; then
+      echo "  Cette sauvegarde vient d'un PostgreSQL plus RECENT que celui de ce poste."
+      echo "  Ce poste lit du : $("$pgbin/pg_restore" --version 2>&1)"
+      echo "  Exportez avec le pg_dump de la version du serveur, ou refabriquez le paquet"
+      echo "  avec build-bundle.ps1 -VersionPostgres <version>."
+      arret "Sauvegarde illisible par cette version de PostgreSQL."
+    fi
+    echo "$lecture" | head -5
+    arret "Ce fichier n'est pas une sauvegarde PosCaisse lisible."
+  fi
   info 'Sauvegarde lisible.'
 
   # 2. On la depose dans une base a part, pour la regarder. La base en service n'est pas

@@ -36,6 +36,27 @@ et relancez :
 
 Sur Linux, `./build-bundle.sh` fait la même chose (`.tar.gz`).
 
+### Quelle version de PostgreSQL embarquer
+
+Par défaut la **16**. Elle n'a d'importance que sur un point, mais il est décisif : une
+sauvegarde écrite par `pg_dump` ne se relit que par un `pg_restore` de version **égale ou
+supérieure**. Un poste en 16 refuse un fichier exporté en 17, avec le message
+`version non supportée (1.16) dans le fichier d'en-tête`.
+
+`EXPORTER_DONNEES.bat` affiche la version de **votre serveur** de développement. Si elle
+est plus récente que 16, fabriquez le paquet dans cette version :
+
+```powershell
+.\build-bundle.ps1 -VersionPostgres 17
+```
+
+Versions acceptées : 14, 15, 16, 17. Le numéro retenu est écrit dans `VERSION.txt` du
+paquet.
+
+Sur un poste **déjà installé**, changer de version majeure rend illisible le dossier
+`donnees\` : sauvegardez (`SAUVEGARDER.bat`), renommez `donnees\`, relancez
+`INSTALLER.bat`, puis `RESTAURER.bat`.
+
 ## 2. Installer sur le poste (sans internet)
 
 1. Copier le ZIP par clé USB, le décompresser dans **`C:\PosCaisse`**
@@ -71,6 +92,15 @@ La restauration **remplace** tout ce que contient la base du poste. Elle rétabl
 propriété des tables au compte local : votre base appartient à `postgres`, celle du poste à
 `poscaisse`, et sans cela la restauration s'achèverait sur une avalanche de « rôle
 inexistant ».
+
+**Si `RESTAURER.bat` répond « version non supportée »** : le fichier vient d'un PostgreSQL
+plus récent que celui du poste. Le poste n'a rien de cassé — c'est le paquet qui est trop
+ancien. Deux issues, au choix :
+
+1. exporter avec les outils PostgreSQL de la version du serveur (l'export prévient
+   lorsqu'il utilise un `pg_dump` d'une autre version que le serveur) ;
+2. refabriquer le paquet dans la version du serveur — voir *Quelle version de PostgreSQL
+   embarquer* — et réinstaller.
 
 ## 3. Au quotidien
 

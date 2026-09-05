@@ -38,23 +38,39 @@ $tablesDeVentes = @(
   'register_session', 'document_sequence', 'audit_log'
 )
 
-function Trouver-Outil([string]$nom) {
-  $cmd = Get-Command $nom -ErrorAction SilentlyContinue
-  if ($cmd) { return $cmd.Source }
+<#
+    Cherche un outil PostgreSQL, en privilegiant une version majeure precise.
+
+    C'est tout l'enjeu de ce script : pg_dump ecrit une archive dont le format porte le
+    numero de sa propre version majeure, et un pg_restore plus ancien REFUSE de la lire.
+    Exporter avec les outils 17 alors que le poste client tourne en 16 produit un fichier
+    parfaitement valide... et parfaitement inutilisable la-bas.
+#>
+function Trouver-Outil([string]$nom, [string]$majeure) {
+  if ($majeure) {
+    $p = "C:\Program Files\PostgreSQL\$majeure\bin\$nom"
+    if (Test-Path $p) { return $p }
+  }
   foreach ($v in @('17', '16', '15', '14')) {
     $p = "C:\Program Files\PostgreSQL\$v\bin\$nom"
     if (Test-Path $p) { return $p }
   }
-  # A defaut, celui du paquet autonome, s'il a deja ete fabrique.
-  $p = Join-Path $racine "packaging\telechargements\pgsql\bin\$nom"
-  if (Test-Path $p) { return $p }
+  $cmd = Get-Command $nom -ErrorAction SilentlyContinue
+  if ($cmd) { return $cmd.Source }
   return $null
 }
 
-$pgdump = Trouver-Outil 'pg_dump.exe'
-if (-not $pgdump) {
-  Stop-Net "pg_dump.exe est introuvable. Installez les outils PostgreSQL ou ajoutez-les au PATH."
+function Version-Majeure([string]$exe) {
+  if (-not $exe) { return '' }
+  $v = & $exe --version 2>&1
+  if ("$v" -match '(\d+)\.\d+') { return $Matches[1] }
+  return ''
 }
+
+# On interroge d'abord le serveur : c'est SA version majeure qui doit guider le choix de
+# l'outil, pas ce qui traine sur la machine.
+$psqlAny = Trouver-Outil 'psql.exe' ''
+if (-not $psqlAny) { Stop-Net "psql.exe est introuvable. Installez les outils PostgreSQL ou ajoutez-les au PATH." }
 
 $dbHost = if ($env:POSCAISSE_DB_HOST) { $env:POSCAISSE_DB_HOST } else { 'localhost' }
 $dbPort = if ($env:POSCAISSE_DB_PORT) { $env:POSCAISSE_DB_PORT } else { '5432' }
@@ -64,7 +80,31 @@ $env:PGPASSWORD = if ($env:POSCAISSE_DB_PASSWORD) { $env:POSCAISSE_DB_PASSWORD }
 
 Etape 'Base a exporter'
 Info "$dbUser@${dbHost}:$dbPort/$dbName"
-Info "Outil : $pgdump"
+
+$versionServeur = & $psqlAny -h $dbHost -p $dbPort -U $dbUser -d $dbName -tAc 'show server_version' 2>&1
+if ($LASTEXITCODE -ne 0) { Stop-Net "Connexion impossible a la base : $versionServeur" }
+$majeure = if ("$versionServeur" -match '^(\d+)') { $Matches[1] } else { '' }
+Info "Serveur PostgreSQL : $(("$versionServeur").Trim())"
+
+$pgdump = Trouver-Outil 'pg_dump.exe' $majeure
+if (-not $pgdump) { Stop-Net "pg_dump.exe est introuvable." }
+$majeureOutil = Version-Majeure $pgdump
+Info "Outil pg_dump      : $majeureOutil  ($pgdump)"
+
+if ($majeure -and $majeureOutil -and $majeureOutil -ne $majeure) {
+  Souci ''
+  Souci "L'outil pg_dump ($majeureOutil) n'a pas la version du serveur ($majeure)."
+  if ([int]$majeureOutil -lt [int]$majeure) {
+    # pg_dump refuse net de lire un serveur plus recent que lui : autant le dire avant.
+    Souci "pg_dump refusera de lire un serveur plus recent que lui."
+    Souci "Installez les outils PostgreSQL $majeure, ou exportez depuis une machine qui les a."
+    Stop-Net "Outils PostgreSQL trop anciens pour ce serveur."
+  }
+  Souci "L'archive produite portera le format de la version $majeureOutil, et le poste"
+  Souci "client la refusera s'il tourne sur une version plus ancienne."
+  Souci "Installez les outils PostgreSQL $majeure, ou fabriquez le paquet avec :"
+  Souci "  build-bundle.ps1 -VersionPostgres $majeureOutil"
+}
 
 $ventes = $AvecLesVentes.IsPresent
 if (-not $SansQuestion -and -not $AvecLesVentes) {
@@ -101,7 +141,7 @@ $taille = [math]::Round($octets / 1KB, 0)
 
 # Ce qu'on vient d'emporter, lu dans la base source : c'est ici qu'on voit si on exporte
 # bien la bonne installation, pas apres avoir traverse la ville avec une cle USB.
-$psqlExe = Trouver-Outil 'psql.exe'
+$psqlExe = $psqlAny
 if ($psqlExe) {
   $r = & $psqlExe -h $dbHost -p $dbPort -U $dbUser -d $dbName -tAc `
     "select coalesce((select coalesce(trade_name, name) from company limit 1), '(aucune)') || '|' || (select count(*) from product) || '|' || (select count(*) from category)"
@@ -122,6 +162,7 @@ if ($psqlExe) {
 
 Etape 'Export termine'
 Info "Fichier : $fichier ($taille Ko)"
+Info "Format  : archive PostgreSQL $majeureOutil (le poste client doit tourner en $majeureOutil ou plus recent)"
 Info ("Contenu : carte, entreprise, utilisateurs, reglages" + $(if ($ventes) { ", ET les ventes" } else { " (sans les ventes)" }))
 Write-Host ''
 Info 'Sur le poste du client :'
