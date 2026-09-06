@@ -49,7 +49,22 @@ function Appel($methode, $route, $corps) {
     $p['Body'] = [System.Text.Encoding]::UTF8.GetBytes($json)
     $p['ContentType'] = 'application/json; charset=utf-8'
   }
-  return Invoke-RestMethod @p
+  <#
+      La reponse est relue OCTET PAR OCTET, puis decodee en UTF-8 a la main.
+
+      Invoke-RestMethod, sous Windows PowerShell 5.1, decode le JSON en ISO-8859-1
+      quand l'en-tete ne porte pas explicitement le jeu de caracteres. Les noms
+      revenaient donc mutiles - << Escalope Grille >> devenait << Escalope GrillA(c) >> -
+      et se comparaient a la carte, elle correctement lue depuis le fichier. Les deux
+      ne se rejoignaient jamais : c'est ce qui laissait orphelines les dix photos
+      d'escalope, les seuls articles accentues.
+
+      Le defaut est INVISIBLE : rien n'echoue, les noms sont simplement faux.
+  #>
+  $r = Invoke-WebRequest @p
+  $octets = $r.RawContentStream.ToArray()
+  if (-not $octets.Length) { return $null }
+  return ([Text.Encoding]::UTF8.GetString($octets) | ConvertFrom-Json)
 }
 
 if (-not (Test-Path $Fichier)) { Stop-Net "Fichier de carte introuvable : $Fichier" }
