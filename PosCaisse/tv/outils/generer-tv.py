@@ -371,8 +371,7 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
   font-size: calc(%(fcol)s * var(--u)); letter-spacing: .12em;
   color: var(--sourd); text-align: right;
 }
-.matrice .ligne .n { font-size: calc(%(fmnom)s * var(--u)); }
-.matrice .ligne .p { font-size: calc(%(fmprix)s * var(--u)); }
+
 """
 
 MODELE = """<div class="tableau">%(fond)s
@@ -429,34 +428,50 @@ def rendu_matrice(familles, lignes):
             % (groupes, pates, corps))
 
 
-def tableau(rubriques, logo, fond):
-    matricielle = isinstance(rubriques, dict)
-    if matricielle:
-        familles = rubriques['matrice']
-        lignes = matrice(familles)
+def contenu(rubriques):
+    """Ce qu'un ecran doit poser, et ce que cela coute en hauteurs de ligne."""
+    if isinstance(rubriques, dict):
+        lignes = matrice(rubriques['matrice'])
         # Deux rangees d'en-tete au lieu d'une : la famille, puis les trois pates.
-        haut = len(lignes) + TITRE + 0.85
+        return ('matrice', (rubriques['matrice'], lignes), len(lignes) + TITRE + 0.85)
+    items = flux(rubriques)
+    colonnes, haut = couper(items)
+    return ('liste', (items, colonnes), haut)
+
+
+def tableau(rubriques, logo, fond, l):
+    """
+    Un tableau, a la hauteur de ligne COMMUNE aux trois ecrans.
+
+    Elle est commune, et non calculee ecran par ecran, parce que les trois dalles sont
+    cote a cote sur le meme mur : un titre de 30 px a gauche et de 28 a droite ne se
+    remarque pas ecran par ecran, mais se voit des qu'on prend du recul. L'ecran le plus
+    charge decide donc pour les trois, et les autres finissent simplement plus haut -
+    du noir en bas, la ou l'image de fond vit deja.
+    """
+    genre, charge, _ = contenu(rubriques)
+    matricielle = genre == 'matrice'
+    if matricielle:
+        familles, lignes = charge
     else:
-        items = flux(rubriques)
-        (g, d), haut = couper(items)
-    # La hauteur de ligne descend juste ce qu'il faut pour que la plus haute des deux
-    # colonnes tienne dans la dalle - jamais plus bas que necessaire.
-    l = min(LIGNE_MAX, DISPO / haut)
+        items, (g, d) = charge
     css = CSS % {
         'marge': MARGE, 'entete': ENTETE, 'bandeau': BANDEAU, 'ecart': ECART,
         'ligne': round(l, 2), 'titre': round(l * TITRE - l * .30, 2),
         'apres': round(l * .30, 2), 'ftitre': round(l * .74, 2),
         'fnom': round(l * .62, 2), 'fprix': round(l * .66, 2),
-        'fpoint': round(l * .06, 2), 'fcol': round(l * .34, 2),
+        # Les intitules de pate se lisent de la salle, eux aussi : ils disent quelle
+        # colonne on regarde, et une ligne de six chiffres sans eux ne veut rien dire.
+        'fpoint': round(l * .06, 2), 'fcol': round(l * .46, 2),
         'colonne': round(l * 2.55, 2), 'opacite': OPACITE,
-        # La matrice n'a que 19 lignes la ou une liste en aurait 38 : la place gagnee
-        # a droite passe dans la taille des chiffres, pas dans du vide.
+        # La matrice n'a que 19 lignes la ou une liste en aurait 38. La place gagnee
+        # passe dans la LARGEUR des colonnes et dans l'ecart entre les deux familles,
+        # pas dans la taille du texte : celle-la est la meme sur les trois ecrans.
         'mcol': round(l * MCOL, 2), 'mecart': round(l * MECART, 2),
         # Le filet qui separe les deux familles, pose au milieu de la colonne d'ecart :
         # trois colonnes de prix, leurs deux intervalles, puis la moitie de l'ecart.
         'msep': round(l * MCOL * 3 + 30 + l * MECART / 2, 2),
-        'fgroupe': round(l * .78, 2), 'msous': round(l * .9, 2),
-        'fmnom': round(l * .70, 2), 'fmprix': round(l * .76, 2),
+        'fgroupe': round(l * .78, 2), 'msous': round(l * 1.0, 2),
     }
     couche = ('<div class="fond" style="background-image:url(%s)"></div>' % fond) if fond else ''
     if matricielle:
@@ -492,10 +507,14 @@ def polices(incruster):
 
 
 logo = logo_data()
+
+# Une seule hauteur de ligne pour les trois ecrans : celle que le plus charge supporte.
+LIGNE = min(LIGNE_MAX, DISPO / max(contenu(r)[2] for _, _, r in ECRANS))
+
 sorties = []
 for code, place, rubriques in ECRANS:
     fond, poids_fond = fond_data(code)
-    css, corps, l, n = tableau(rubriques, logo, fond)
+    css, corps, l, n = tableau(rubriques, logo, fond, LIGNE)
     page = ('<!doctype html><html lang="fr"><head><meta charset="utf-8">'
             '<meta name="viewport" content="width=device-width,initial-scale=1">'
             '<title>NUMBER ONE - ecran %s</title>' % place

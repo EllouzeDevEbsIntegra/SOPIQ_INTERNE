@@ -69,7 +69,11 @@ sur le site.
 **Chaque écran se suffit.** L'enseigne, le bandeau des pâtes et le téléphone figurent
 sur les trois : on ne regarde pas trois écrans, on regarde celui qui est en face de soi.
 
-**La hauteur de ligne est calculée, pas choisie.** Le script répartit chaque écran en
-deux colonnes de hauteur égale, puis descend la ligne juste ce qu'il faut pour que la
-plus haute tienne dans la dalle — jamais plus bas. Aujourd'hui : 40,3 px à gauche,
-41,1 px au centre, 38,5 px à droite, sur une base de 1920 × 1080.
+**La hauteur de ligne est calculée, pas choisie — et elle est la même sur les trois.**
+Le script répartit chaque écran en deux colonnes de hauteur égale, puis descend la ligne
+juste ce qu'il faut pour que la plus chargée des trois dalles tienne — jamais plus bas.
+C'est donc l'écran le plus rempli qui décide pour tous : les trois sont côte à côte sur
+le même mur, et un titre de 30 px à gauche contre 28 à droite ne se remarque pas écran
+par écran, mais se voit dès qu'on prend du recul. Aujourd'hui, sur une base de
+1920 × 1080 : ligne 38,5 px, titre de rubrique 28,5, nom d'article 23,9, prix 25,4,
+intitulé de pâte 17,7 — identiques sur les trois écrans.
