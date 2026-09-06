@@ -1,0 +1,21 @@
+import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
+import assert from 'node:assert/strict';
+const require = createRequire(import.meta.url);
+const { normalise, matches } = require('../app.js');
+const carte = JSON.parse(readFileSync(new URL('../carte.json', import.meta.url), 'utf8'));
+const articles = carte.categories.flatMap(category => category.articles.map(article => ({ ...article, category: category.nom })));
+const find = query => articles.filter(article => matches(article, query));
+
+assert.equal(normalise('  CÉRÉALE — Grillé  '), 'cereale grille');
+assert.equal(find('').length, articles.length);
+assert.equal(find('  ').length, articles.length);
+assert.deepEqual(find('escalope grille'), find('ESCALOPE GRILLÉ'));
+assert.deepEqual(find('mozarilla thon'), find('  THON   MOZARILLA  '));
+assert.ok(find('3arbi').length > 0);
+assert.ok(find('Omlette').some(article => article.nom === 'Omlette'));
+assert.ok(find('Jombon').some(article => article.nom === 'Jombon'));
+assert.equal(find('unproduitabsentdelacarte').length, 0);
+assert.equal(find('<script>alert(1)</script>').length, 0);
+for (const article of articles) assert.ok(matches(article, article.nom), `Article introuvable par son nom : ${article.nom}`);
+console.log('Recherche : noms exacts, accents, casse, espaces, mots inversés et absence de résultat vérifiés.');
