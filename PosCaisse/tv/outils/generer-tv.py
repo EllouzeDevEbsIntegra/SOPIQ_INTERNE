@@ -43,10 +43,17 @@ POLICES = os.path.join(ICI, 'outils', 'polices')
 
 # Repartition des rubriques sur les trois ecrans. L'ecran de gauche ouvre sur les
 # compositions de la maison - c'est par la que le regard entre.
+#
+# Un ecran porte soit une suite de rubriques en deux colonnes, soit une MATRICE : les
+# memes garnitures a gauche, et a droite un bloc de trois prix par famille de fromage.
+# Mozarilla et Mozarilla 3arbi portent exactement les memes 19 garnitures, dans le meme
+# ordre : les ecrire deux fois en 38 lignes faisait lire deux fois la meme liste, et
+# obligeait a chercher d'une colonne a l'autre pour comparer.
+#
 ECRANS = [
-    ('1-gauche', 'Gauche',  ['Spécial', 'Classic', 'Lablebi']),
-    ('2-centre', 'Centre',  ['Mozarilla', 'Mozarilla 3arbi']),
-    ('3-droite', 'Droite',  ['Fromage', 'Boissons', 'Extras']),
+    ('1-gauche', 'Gauche', ['Spécial', 'Classic', 'Lablebi']),
+    ('2-centre', 'Centre', {'matrice': ['Mozarilla', 'Mozarilla 3arbi']}),
+    ('3-droite', 'Droite', ['Fromage', 'Boissons', 'Extras']),
 ]
 
 # Geometrie, en pixels d'un ecran 1920 x 1080. Toute la page est ecrite dans cette
@@ -132,6 +139,43 @@ def flux(rubriques):
             else:
                 out.append(('ligne', a['nom'], [prix(a['prix'])]))
     return out
+
+
+def garniture(nom, famille):
+    """Le nom d'un article, prive de sa famille : << Omlette Mozarilla 3arbi Kwika >>
+    redevient << Omlette Kwika >>. C'est la colonne de gauche de la matrice."""
+    return nom.replace(famille + ' ', '').replace(' ' + famille, '').strip()
+
+
+def matrice(familles):
+    """
+    Les garnitures a gauche, un bloc de trois prix par famille a droite.
+
+    Les familles doivent porter les memes garnitures, dans le meme ordre - sinon une
+    ligne comparerait deux plats differents. On le verifie ici plutot que de le
+    supposer : le jour ou un article n'existe que d'un cote, le script s'arrete au lieu
+    de publier un tableau faux.
+    """
+    listes = []
+    for f in familles:
+        arts = par_nom[f]['articles']
+        listes.append([(garniture(a['nom'], f), a) for a in arts])
+    base = [x[0] for x in listes[0]]
+    for f, l in zip(familles[1:], listes[1:]):
+        if [x[0] for x in l] != base:
+            raise SystemExit(
+                'ARRET : << %s >> ne porte pas les memes garnitures que << %s >>.\n'
+                '        Seulement d\'un cote : %s'
+                % (f, familles[0], sorted(set(base) ^ set(x[0] for x in l))))
+    lignes = []
+    for i, nom in enumerate(base):
+        blocs = []
+        for l in listes:
+            pp = l[i][1].get('prixParPate') or {}
+            blocs.append([prix(pp[x]) if pp.get(x) is not None else '&mdash;'
+                          for x in carte['pates']])
+        lignes.append((nom, blocs))
+    return lignes
 
 
 def couper(items):
@@ -278,6 +322,41 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
 /* Un article qui ne se decline pas garde un seul prix, aligne sur la derniere colonne :
    trois cases vides feraient croire a des prix manquants. */
 .ligne .p.seul { grid-column: 2 / -1; }
+
+/*
+    La matrice : les garnitures a gauche, un bloc de trois prix par famille a droite.
+    Une seule grille tient les trois rangees - le nom de la famille, les intitules de
+    pate, les prix - donc rien ne peut glisser d'une colonne. L'ecart entre les deux
+    blocs est plus large que celui qui separe les pates : c'est lui qui dit ou finit
+    une famille et ou commence l'autre, sans avoir a tracer un trait.
+*/
+.colonnes.seule { display: block; }
+.matrice { display: contents; }
+.matrice .rubrique, .matrice .soustitre, .matrice .ligne {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) repeat(3, calc(%(mcol)s * var(--u)))
+                         calc(%(mecart)s * var(--u)) repeat(3, calc(%(mcol)s * var(--u)));
+  gap: calc(10 * var(--u)); align-items: baseline;
+}
+/* La colonne d'ecart n'est qu'un vide : les cases sautent par-dessus. */
+.matrice .ligne .p:nth-child(5), .matrice .soustitre .col:nth-child(5) { grid-column: 6; }
+.matrice .ligne .p:nth-child(6), .matrice .soustitre .col:nth-child(6) { grid-column: 7; }
+.matrice .ligne .p:nth-child(7), .matrice .soustitre .col:nth-child(7) { grid-column: 8; }
+
+.matrice .rubrique .groupe {
+  font-family: Anton, 'Arial Narrow', sans-serif; font-size: calc(%(fgroupe)s * var(--u));
+  color: var(--or); letter-spacing: .03em; text-align: center;
+}
+.matrice .rubrique .groupe:nth-child(2) { grid-column: 2 / 5; }
+.matrice .rubrique .groupe:nth-child(3) { grid-column: 6 / 9; }
+.matrice .soustitre { height: calc(%(msous)s * var(--u)); margin-bottom: calc(%(apres)s * var(--u)); }
+.matrice .soustitre .col {
+  font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 600;
+  font-size: calc(%(fcol)s * var(--u)); letter-spacing: .12em;
+  color: var(--sourd); text-align: right;
+}
+.matrice .ligne .n { font-size: calc(%(fmnom)s * var(--u)); }
+.matrice .ligne .p { font-size: calc(%(fmprix)s * var(--u)); }
 """
 
 MODELE = """<div class="tableau">%(fond)s
@@ -298,10 +377,7 @@ MODELE = """<div class="tableau">%(fond)s
     <span class="sep"></span>
     <span class="note">Prix en dinars tunisiens</span>
   </div>
-  <div class="colonnes">
-    <div class="colonne">%(g)s</div>
-    <div class="colonne">%(d)s</div>
-  </div>
+  %(interieur)s
 </div>"""
 
 
@@ -322,9 +398,31 @@ def rendu_colonne(items, l):
     return out
 
 
+def rendu_matrice(familles, lignes):
+    groupes = ''.join('<span class="groupe">%s</span>' % e(f.upper()) for f in familles)
+    pates = ''.join(''.join('<span class="col">%s</span>' % e(p) for p in carte['pates'])
+                    for _ in familles)
+    corps = ''
+    for nom, blocs in lignes:
+        cases = ''.join(''.join('<span class="p">%s</span>' % v for v in b) for b in blocs)
+        corps += ('<div class="ligne"><span class="n">%s<i class="pointille"></i></span>%s</div>'
+                  % (e(nom), cases))
+    return ('<div class="matrice">'
+            '<div class="rubrique"><span class="t">GARNITURE</span>%s</div>'
+            '<div class="soustitre"><span></span>%s</div>%s</div>'
+            % (groupes, pates, corps))
+
+
 def tableau(rubriques, logo, fond):
-    items = flux(rubriques)
-    (g, d), haut = couper(items)
+    matricielle = isinstance(rubriques, dict)
+    if matricielle:
+        familles = rubriques['matrice']
+        lignes = matrice(familles)
+        # Deux rangees d'en-tete au lieu d'une : la famille, puis les trois pates.
+        haut = len(lignes) + TITRE + 0.85
+    else:
+        items = flux(rubriques)
+        (g, d), haut = couper(items)
     # La hauteur de ligne descend juste ce qu'il faut pour que la plus haute des deux
     # colonnes tienne dans la dalle - jamais plus bas que necessaire.
     l = min(LIGNE_MAX, DISPO / haut)
@@ -335,11 +433,24 @@ def tableau(rubriques, logo, fond):
         'fnom': round(l * .62, 2), 'fprix': round(l * .66, 2),
         'fpoint': round(l * .06, 2), 'fcol': round(l * .34, 2),
         'colonne': round(l * 2.55, 2), 'opacite': OPACITE,
+        # La matrice n'a que 19 lignes la ou une liste en aurait 38 : la place gagnee
+        # a droite passe dans la taille des chiffres, pas dans du vide.
+        'mcol': round(l * 3.55, 2), 'mecart': round(l * 1.3, 2),
+        'fgroupe': round(l * .78, 2), 'msous': round(l * .9, 2),
+        'fmnom': round(l * .70, 2), 'fmprix': round(l * .76, 2),
     }
     couche = ('<div class="fond" style="background-image:url(%s)"></div>' % fond) if fond else ''
-    corps = MODELE % {'logo': logo, 'lieu': R['ville'], 'tel': R['telephone'], 'fond': couche,
-                      'g': rendu_colonne(g, l), 'd': rendu_colonne(d, l)}
-    return css, corps, l, len([x for x in items if x[0] == 'ligne'])
+    if matricielle:
+        interieur = '<div class="colonnes seule">%s</div>' % rendu_matrice(familles, lignes)
+        articles = len(lignes) * len(familles)
+    else:
+        interieur = ('<div class="colonnes"><div class="colonne">%s</div>'
+                     '<div class="colonne">%s</div></div>'
+                     % (rendu_colonne(g, l), rendu_colonne(d, l)))
+        articles = len([x for x in items if x[0] == 'ligne'])
+    corps = MODELE % {'logo': logo, 'lieu': R['ville'], 'tel': R['telephone'],
+                      'fond': couche, 'interieur': interieur}
+    return css, corps, l, articles
 
 
 def polices(incruster):
