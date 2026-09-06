@@ -82,26 +82,46 @@ Etape 'Valeurs de l axe'
 $axe = Appel 'GET' '/api/variants' $null | Where-Object { (Nu $_.name) -like 'pate*' } | Select-Object -First 1
 if (-not $axe) { Stop-Net "Aucun axe de variante nomme << Pate >>." }
 
-# Une valeur dont le nom contient << double >> est le double de celle qui porte le meme
-# mot une fois << double >> et << pate >> retires : Double Pate Cereale -> Cereale.
-$simples = @{}; $doubles = @{}
-foreach ($v in $axe.values) {
-  if (-not $v.active) { continue }
-  $n = Nu $v.name
-  if ($n -match 'double') { $doubles[(($n -replace 'double','' -replace 'pate','') -replace '[^a-z0-9]','')] = $v }
-  else                    { $simples[(Mot $v.name)] = $v }
+<#
+    Rapprocher une pate double de sa pate simple par le NOM, sans exiger que le gerant
+    ait ecrit exactement ce que le script attend.
+
+    Le nom est reduit a son mot utile : on retire << double >> et << pate >>, les
+    accents, les espaces, puis on ramene les formes voisines a une seule -
+    Normal / Normale, Cereale / Cereales - parce que celui qui saisit ecrit ce qui lui
+    vient, et qu'il a raison : c'est au script de s'adapter.
+#>
+function Canon([string] $nom) {
+  $x = (Nu $nom) -replace 'double', '' -replace 'pates', '' -replace 'pate', ''
+  $x = $x -replace '[^a-z0-9]', ''
+  if ($x -like 'normal*')  { return 'normale' }
+  if ($x -like 'cereal*')  { return 'cereale' }
+  if ($x -like '*chia*')   { return 'chia' }
+  return $x
 }
-$supplements = @{ 'normale' = $SupplementNormale; 'normal' = $SupplementNormale
-                  'cereale' = $SupplementCereale; 'cereales' = $SupplementCereale
-                  'chia' = $SupplementChia }
+$supplements = @{ 'normale' = $SupplementNormale; 'cereale' = $SupplementCereale; 'chia' = $SupplementChia }
+
+$simples = @{}; $doubles = @{}
+Write-Host ''
+Write-Host '  Valeurs de l axe, telles qu elles sont enregistrees :' -ForegroundColor DarkGray
+foreach ($v in $axe.values) {
+  $cle = Canon $v.name
+  $estDouble = (Nu $v.name) -match 'double'
+  $etat = if ($v.active) { '' } else { '  (eteinte)' }
+  Write-Host ("      {0,-26} {1,-8} -> {2}{3}" -f $v.name, $(if ($estDouble) { 'double' } else { 'simple' }), $cle, $etat) -ForegroundColor DarkGray
+  if (-not $v.active) { continue }
+  if ($estDouble) { $doubles[$cle] = $v } elseif (-not $simples.ContainsKey($cle)) { $simples[$cle] = $v }
+}
+
 $paires = @()
 foreach ($k in $doubles.Keys) {
-  if (-not $simples.ContainsKey($k)) { Souci "<< $($doubles[$k].name) >> : pas de pate simple correspondante, ignoree."; continue }
-  if (-not $supplements.ContainsKey($k)) { Souci "<< $($doubles[$k].name) >> : aucun supplement connu pour cette pate, ignoree."; continue }
+  if (-not $simples.ContainsKey($k)) { Souci "<< $($doubles[$k].name) >> : aucune pate simple ne se ramene a << $k >>."; continue }
+  if (-not $supplements.ContainsKey($k)) { Souci "<< $($doubles[$k].name) >> : aucun supplement connu pour << $k >>."; continue }
   $paires += [pscustomobject]@{ Simple = $simples[$k]; Double = $doubles[$k]; Supplement = $supplements[$k] }
 }
-if (-not $paires.Count) { Stop-Net "Aucune paire << pate simple / pate double >> trouvee." }
-foreach ($p in $paires) { Info ("{0,-22} + {1,-6} -> {2}" -f $p.Simple.name, $p.Supplement, $p.Double.name) }
+if (-not $paires.Count) { Stop-Net "Aucune paire << pate simple / pate double >> trouvee. La liste ci-dessus dit ce que le script a lu." }
+Write-Host ''
+foreach ($p in $paires) { Info ("{0,-22} + {1,-5} -> {2}" -f $p.Simple.name, $p.Supplement, $p.Double.name) }
 
 Etape 'Articles'
 $produits = Appel 'GET' '/api/products' $null
