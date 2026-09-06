@@ -1,363 +1,368 @@
 <title>Number One Chihia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
 <style>
 /*
-    Une carte de fast-food se lit sur un telephone, debout, en trente secondes. Tout ici
-    sert cela : la pate en tete, parce que c'est le seul choix que le client a a faire ;
-    les trois prix sur la meme ligne, parce qu'il ne doit pas calculer ; la photo a
-    gauche, parce qu'on reconnait un sandwich avant de lire son nom.
+    La charte vient de la proposition de Codex : papier creme, titres en condense lourd,
+    filets d'un pixel, angles francs, un seul rouge. Ce qui suit la reprend et lui ajoute
+    ce que cette page-ci sait faire de plus : le choix de la pate, qui allume sa colonne
+    de prix sur les 83 articles declines, et la double pate d'une case a cocher.
 
-    Les photos sont detourees sur blanc : leur logement reste blanc dans les deux themes,
-    sinon un carre blanc flotterait sur un fond sombre.
+    UN SEUL THEME, assume. Les photos sont detourees sur blanc et se fondent dans le
+    papier par mix-blend-mode : les retourner en sombre ferait un carre gris sur chaque
+    carte. Toutes les couleurs sont donc posees explicitement, aucune n'est heritee de
+    l'appareil qui affiche la page.
 */
 :root {
-  --papier:   #ffffff;
-  --surface:  #f6f2f1;
-  --encre:    #17140f;
-  --sourd:    #6e645e;
-  --filet:    #e6dfdb;
-  --accent:   #c8341f;
-  --sur-accent: #fff6f4;
-  --puits:    #ffffff;      /* le logement de la photo, blanc dans les deux themes */
-  --ombre:    0 1px 2px rgba(23, 20, 15, .06);
-  --r:        14px;
+  --papier: #f6f3e9;
+  --blanc:  #fffefa;
+  --encre:  #25271f;
+  --sourd:  #65675c;
+  --rouge:  #bb3524;
+  --filet:  #dcded0;
+  --doux:   #eceee1;
+  --titre:  'Barlow Condensed', 'Arial Narrow', Impact, sans-serif;
+  --texte:  'DM Sans', system-ui, Arial, sans-serif;
+  --entete: 84px;
+  --bord:   clamp(18px, 4.5vw, 72px);
 }
-:root:not([data-theme="light"]) {
-  color-scheme: light;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --papier:   #14110f;
-    --surface:  #1e1a17;
-    --encre:    #f2ede8;
-    --sourd:    #a79c94;
-    --filet:    #322c27;
-    --accent:   #ff6a4d;
-    --sur-accent: #2a0e07;
-    --ombre:    0 1px 2px rgba(0, 0, 0, .5);
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --papier:   #14110f;
-  --surface:  #1e1a17;
-  --encre:    #f2ede8;
-  --sourd:    #a79c94;
-  --filet:    #322c27;
-  --accent:   #ff6a4d;
-  --sur-accent: #2a0e07;
-  --ombre:    0 1px 2px rgba(0, 0, 0, .5);
-  color-scheme: dark;
-}
-
 * { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: var(--papier);
-  color: var(--encre);
-  font: 400 16px/1.5 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  -webkit-text-size-adjust: 100%;
-}
-h1, h2, h3 { font-family: 'Bricolage Grotesque', 'Instrument Sans', system-ui, sans-serif; margin: 0; text-wrap: balance; }
-a { color: inherit; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
-.large { width: min(1080px, 100% - 32px); margin-inline: auto; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--entete) + 88px); -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--papier); color: var(--encre); font: 400 16px/1.5 var(--texte); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, p, dl, dd, figure { margin: 0; }
+h1, h2, h3 { font-weight: 700; }
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+img { display: block; max-width: 100%; height: auto; }
+::selection { background: var(--rouge); color: #fff; }
+:focus-visible { outline: 3px solid var(--rouge); outline-offset: 4px; }
+.wrap { max-width: 1408px; margin-inline: auto; padding-inline: var(--bord); }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.sq { display: inline-block; width: 7px; height: 7px; background: var(--rouge); margin-right: 9px; vertical-align: 1px; }
 
 /* ---------------------------------------------------------------- en-tete */
-.entete {
-  position: sticky; top: 0; z-index: 30;
-  background: color-mix(in srgb, var(--papier) 92%, transparent);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--filet);
+.site-header { position: sticky; top: 0; z-index: 30; background: var(--papier); border-bottom: 1px solid var(--filet); }
+.site-header .wrap { min-height: var(--entete); display: flex; align-items: center; gap: 24px; }
+.brand { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.brand img { width: 54px; height: 54px; flex: none; }
+.brand b { display: block; font-size: 15px; font-weight: 700; letter-spacing: .01em; }
+.brand small { display: block; font-size: 12px; color: var(--sourd); }
+.header-call {
+  margin-left: auto; flex: none; display: flex; align-items: center; gap: 11px;
+  padding: 12px 18px; background: var(--rouge); color: #fff; border-radius: 3px;
+  font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums; white-space: nowrap;
+  transition: background .18s;
 }
-.entete .large { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
-.marque { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.marque img { width: 40px; height: 40px; flex: none; border-radius: 8px; background: var(--puits); padding: 2px; }
-.marque .txt { min-width: 0; }
-.marque .txt b { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 19px; letter-spacing: -.02em; line-height: 1.05; display: block; }
-.marque .txt i { font-style: normal; font-family: 'DM Mono', ui-monospace, monospace; font-size: 11px; color: var(--sourd); letter-spacing: .04em; text-transform: uppercase; }
-.appel {
-  margin-left: auto; flex: none;
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--accent); color: var(--sur-accent);
-  font-family: 'DM Mono', ui-monospace, monospace; font-weight: 500; font-size: 15px;
-  padding: 10px 14px; border-radius: 999px; text-decoration: none; white-space: nowrap;
-}
-.appel svg { width: 15px; height: 15px; fill: currentColor; }
+.header-call:hover { background: var(--encre); }
+.header-call svg { width: 18px; height: 18px; fill: currentColor; }
 
 /* ---------------------------------------------------------------- ouverture */
-.ouverture { padding: 22px 0 16px; }
-.ouverture h1 { font-size: clamp(28px, 7.4vw, 48px); font-weight: 800; letter-spacing: -.03em; line-height: .98; }
-.ouverture h1 em { font-style: normal; color: var(--accent); }
-.ouverture p { max-width: 44ch; color: var(--sourd); margin: 10px 0 0; }
+.hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; column-gap: 60px; align-items: center; padding-top: 44px; padding-bottom: 30px; }
+.hero h1 { font-family: var(--titre); font-size: clamp(62px, 10vw, 132px); line-height: .82; letter-spacing: -.015em; margin-top: 12px; }
+.hero h1 span { color: var(--rouge); }
+.lede { margin-top: 22px; max-width: 42ch; color: var(--sourd); font-size: 15px; }
 
-.pates { margin-top: 16px; }
-.pates .titre {
-  font-family: 'DM Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--sourd); display: block; margin-bottom: 8px;
-}
+.pates { margin-top: 26px; }
+.pates .eyebrow { color: var(--sourd); display: block; margin-bottom: 10px; }
 .choix { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .pate {
-  font: 500 15px/1 'Instrument Sans', sans-serif;
-  background: var(--surface); color: var(--encre);
-  border: 1px solid var(--filet); border-radius: 999px;
-  padding: 10px 16px; cursor: pointer;
+  min-height: 46px; padding: 11px 20px; border: 1px solid var(--encre); border-radius: 3px;
+  background: transparent; font-weight: 600; font-size: 15px; transition: background .18s, color .18s;
 }
-.pate[aria-pressed="true"] { background: var(--encre); color: var(--papier); border-color: var(--encre); }
-.double {
-  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
-  font-size: 14px; color: var(--sourd); padding: 8px 4px; user-select: none;
-}
-.double input { accent-color: var(--accent); width: 16px; height: 16px; }
-.regle {
-  margin: 12px 0 0; font-family: 'DM Mono', ui-monospace, monospace;
-  font-size: 12.5px; color: var(--sourd); letter-spacing: .01em;
-}
-.regle b { color: var(--encre); font-weight: 500; }
-.regle span { opacity: .5; padding: 0 6px; }
+.pate:hover { background: var(--doux); }
+.pate[aria-pressed="true"] { background: var(--encre); color: var(--papier); }
+.dbl { display: inline-flex; align-items: center; gap: 9px; min-height: 46px; padding-inline: 6px; font-size: 14px; color: var(--sourd); cursor: pointer; }
+.dbl input { width: 17px; height: 17px; accent-color: var(--rouge); }
+.regle { margin-top: 14px; font-size: 13px; color: var(--sourd); font-variant-numeric: tabular-nums; }
+.regle b { color: var(--encre); font-weight: 700; }
+.regle i { font-style: normal; color: var(--rouge); padding-inline: 7px; }
 
-/* ---------------------------------------------------------------- navigation */
-.barre {
-  position: sticky; top: 61px; z-index: 20;
-  background: var(--papier); border-bottom: 1px solid var(--filet);
-  padding: 10px 0;
-}
-.barre .large { display: flex; gap: 10px; align-items: center; }
-.rubriques {
-  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; flex: 1;
-  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
-  mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
-  padding-right: 10px;
-}
-.rubriques::-webkit-scrollbar { display: none; }
-.onglet {
-  flex: none; cursor: pointer; white-space: nowrap;
-  font: 500 14px/1 'Instrument Sans', sans-serif;
-  background: transparent; color: var(--sourd);
-  border: 1px solid transparent; border-radius: 999px; padding: 9px 13px;
-}
-.onglet:hover { color: var(--encre); }
-.onglet.on { background: var(--accent); color: var(--sur-accent); }
-.chercher {
-  flex: none; width: 168px;
-  font: 400 14px/1 'Instrument Sans', sans-serif;
-  color: var(--encre); background: var(--surface);
-  border: 1px solid var(--filet); border-radius: 999px; padding: 9px 13px;
-}
-.chercher::placeholder { color: var(--sourd); }
+/* La vedette : un article de la maison, incline, comme une photo posee sur la table. */
+.vedette { justify-self: end; width: min(100%, 400px); background: var(--doux); border-radius: 3px; padding: 16px 22px 18px; transform: rotate(2deg); }
+.vedette .haut, .vedette figcaption { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--sourd); }
+.vedette .haut { border-bottom: 1px solid #cbd0bd; padding-bottom: 12px; }
+.vedette img { width: min(100%, 280px); margin: 6px auto 4px; aspect-ratio: 1; object-fit: contain; mix-blend-mode: multiply; }
+.vedette figcaption { border-top: 1px solid #cbd0bd; padding-top: 12px; align-items: flex-end; text-transform: none; letter-spacing: 0; }
+.vedette figcaption strong { font-size: 17px; font-weight: 600; color: var(--encre); }
+.vedette .prix { color: var(--rouge); font-size: 17px; font-weight: 700; letter-spacing: -.03em; white-space: nowrap; font-variant-numeric: tabular-nums; }
 
-/* ---------------------------------------------------------------- panneaux */
-main { padding: 22px 0 60px; }
-.panneau-tete { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-bottom: 14px; }
-.panneau-tete h2 { font-size: 24px; font-weight: 800; letter-spacing: -.02em; }
-.panneau-tete .compte { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--sourd); margin-left: auto; flex: none; }
-.panneau-tete .dit { color: var(--sourd); font-size: 14px; }
-.liste { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); }
+/* ---------------------------------------------------------------- la carte */
+.menu { padding-bottom: 90px; }
+.menu-tete { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; border-top: 1px solid var(--encre); padding-top: 24px; padding-bottom: 20px; }
+.menu-tete h2 { font-family: var(--titre); font-size: clamp(40px, 6vw, 72px); line-height: 1; letter-spacing: -.025em; }
+.menu-tete h2 span { color: var(--rouge); }
+.menu-tete p { font-size: 14px; text-align: right; padding-bottom: 6px; }
+.menu-tete p span { display: block; font-size: 12px; color: var(--sourd); }
 
-.plat {
-  display: grid; grid-template-columns: 72px 1fr; grid-template-areas: "photo nom" "photo tarifs";
-  gap: 4px 12px; align-items: center;
-  padding: 10px; border: 1px solid var(--filet); border-radius: var(--r);
-  background: var(--papier); box-shadow: var(--ombre);
-}
-.plat img, .plat .sans-photo { grid-area: photo; width: 72px; height: 72px; border-radius: 10px; background: var(--puits); object-fit: contain; display: block; }
-.plat .sans-photo { border: 1px dashed var(--filet); background: transparent; }
-.plat h3 { grid-area: nom; font-family: 'Instrument Sans', sans-serif; font-size: 15px; font-weight: 600; line-height: 1.25; align-self: end; }
-.tarifs { grid-area: tarifs; display: flex; gap: 6px; align-self: start; }
-.tarif {
-  flex: 1; min-width: 0; text-align: center; padding: 5px 2px 4px;
-  border-radius: 8px; background: var(--surface);
-}
-.tarif span {
-  display: block; font-family: 'DM Mono', monospace; font-size: 9.5px; letter-spacing: .06em;
-  text-transform: uppercase; color: var(--sourd);
-}
-.tarif b {
-  display: block; font-family: 'DM Mono', monospace; font-weight: 500; font-size: 14px;
-  font-variant-numeric: tabular-nums; color: var(--encre);
-}
-.tarifs.un { justify-content: flex-start; }
-.tarifs.un .tarif { flex: none; min-width: 96px; background: transparent; padding-left: 0; text-align: left; }
-.tarifs.un .tarif b { font-size: 17px; }
+.barre { position: sticky; top: var(--entete); z-index: 21; background: var(--papier); border-top: 1px solid var(--filet); border-bottom: 1px solid var(--filet); padding-block: 14px; display: flex; align-items: center; gap: 18px; }
+.chercher { display: flex; align-items: center; gap: 12px; flex: 1; max-width: 620px; height: 48px; padding-inline: 15px; background: var(--blanc); border: 1px solid var(--filet); border-radius: 3px; }
+.chercher:focus-within { border-color: var(--encre); }
+.chercher svg { width: 19px; height: 19px; fill: var(--sourd); flex: none; }
+.chercher input { flex: 1; min-width: 0; border: 0; background: none; outline: none; font-size: 15px; }
+.chercher input::placeholder { color: var(--sourd); }
+.compte-res { margin-left: auto; font-size: 13px; color: var(--sourd); white-space: nowrap; }
 
-/* La pate choisie sort du lot. Les deux autres restent lisibles : ce n'est pas une
-   indisponibilite, c'est une preference. */
+.disposition { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 36px; align-items: start; }
+.rail { position: sticky; top: calc(var(--entete) + 90px); padding-top: 26px; }
+.rail nav { display: flex; flex-direction: column; gap: 4px; }
+.rubrique-lien { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 44px; padding: 10px 13px; border-radius: 3px; font-size: 14px; font-weight: 500; transition: background .18s, color .18s; }
+.rubrique-lien:hover { background: var(--doux); }
+.rubrique-lien.on { background: var(--encre); color: var(--papier); }
+.rubrique-lien span { font-size: 12px; opacity: .65; font-variant-numeric: tabular-nums; }
+.note { border-top: 1px solid var(--filet); margin-top: 28px; padding: 22px 10px 0; }
+.note p { font-family: var(--titre); font-size: 28px; line-height: 1.05; text-transform: uppercase; margin-block: 12px; }
+.note small { font-size: 12px; color: var(--sourd); }
+
+.contenu { min-width: 0; padding-top: 26px; }
+.rubrique + .rubrique { margin-top: 46px; }
+.rubrique-tete { margin-bottom: 18px; }
+.rubrique-tete .ligne { display: flex; align-items: baseline; gap: 12px; }
+.rubrique-tete h3 { font-size: 26px; font-weight: 600; letter-spacing: -.04em; }
+.numero { font-family: var(--titre); color: var(--rouge); font-size: 18px; letter-spacing: .03em; }
+.combien { color: var(--sourd); font-size: 12px; }
+.rubrique-tete .dit { margin-top: 6px; font-size: 14px; color: var(--sourd); }
+
+.grille { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.plat { display: flex; flex-direction: column; min-width: 0; background: var(--blanc); border: 1px solid var(--filet); border-radius: 4px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
+.plat:hover { border-color: #c0c5b0; box-shadow: 0 5px 14px rgba(37, 39, 31, .05); }
+.plat .haut { flex: 1; display: flex; flex-direction: column; gap: 6px; padding: 12px 16px 14px; }
+.photo { height: 150px; display: flex; align-items: center; justify-content: center; mix-blend-mode: multiply; }
+.photo img { width: 146px; height: 146px; object-fit: contain; transition: transform .3s; }
+.plat:hover .photo img { transform: scale(1.035); }
+.sans-photo { height: 150px; display: flex; align-items: center; justify-content: center; font-family: var(--titre); font-size: 56px; color: var(--filet); }
+.plat h4 { font-size: 16px; font-weight: 600; line-height: 1.35; letter-spacing: -.025em; min-height: 2.7em; overflow-wrap: break-word; }
+
+.tarifs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--filet); background: #f9faf3; }
+.tarif { text-align: center; padding: 11px 4px; }
+.tarif + .tarif { border-left: 1px solid var(--filet); }
+.tarif dt { font-size: 12px; color: var(--sourd); margin-bottom: 3px; }
+.tarif dd { font-size: 14px; font-weight: 700; letter-spacing: -.03em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* La pate choisie allume sa colonne : c'est le seul choix que le client ait a faire. */
 html[data-pate="normale"] .tarif[data-pate="normale"],
 html[data-pate="cereale"] .tarif[data-pate="cereale"],
-html[data-pate="chia"]    .tarif[data-pate="chia"] { background: var(--accent); }
-html[data-pate="normale"] .tarif[data-pate="normale"] b,
-html[data-pate="cereale"] .tarif[data-pate="cereale"] b,
-html[data-pate="chia"]    .tarif[data-pate="chia"]    b,
-html[data-pate="normale"] .tarif[data-pate="normale"] span,
-html[data-pate="cereale"] .tarif[data-pate="cereale"] span,
-html[data-pate="chia"]    .tarif[data-pate="chia"]    span { color: var(--sur-accent); }
+html[data-pate="chia"]    .tarif[data-pate="chia"] { background: var(--rouge); }
+html[data-pate="normale"] .tarif[data-pate="normale"] dt,
+html[data-pate="cereale"] .tarif[data-pate="cereale"] dt,
+html[data-pate="chia"]    .tarif[data-pate="chia"]    dt,
+html[data-pate="normale"] .tarif[data-pate="normale"] dd,
+html[data-pate="cereale"] .tarif[data-pate="cereale"] dd,
+html[data-pate="chia"]    .tarif[data-pate="chia"]    dd { color: #fff; }
+.tarifs.un { grid-template-columns: 1fr; }
+.tarifs.un .tarif { display: flex; align-items: center; justify-content: space-between; text-align: left; padding: 14px 16px; min-height: 62px; }
+.tarifs.un dd { font-size: 17px; color: var(--rouge); }
 
-.vide { color: var(--sourd); padding: 30px 0; }
+.rien { border-top: 1px solid var(--filet); padding: 54px 16px 64px; text-align: center; }
+.rien b { display: block; font-family: var(--titre); font-size: 60px; color: var(--rouge); line-height: 1; margin-bottom: 14px; }
+.rien p { color: var(--sourd); }
 
 /* ---------------------------------------------------------------- pied */
-.pied { border-top: 1px solid var(--filet); background: var(--surface); padding: 30px 0 40px; }
-.pied .large { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
-.pied h3 { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 400; letter-spacing: .1em; text-transform: uppercase; color: var(--sourd); margin-bottom: 6px; }
-.pied p, .pied a { margin: 0; font-size: 15px; text-decoration: none; }
-.pied a:hover { color: var(--accent); }
-.mention { margin-top: 24px; font-size: 12px; color: var(--sourd); }
+.pied { background: var(--doux); border-top: 1px solid var(--filet); padding-block: 60px 100px; }
+.pied .wrap { display: grid; gap: 34px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.pied h3 { font-family: var(--titre); font-size: 40px; line-height: .95; letter-spacing: -.015em; text-transform: uppercase; }
+.pied h3 span { color: var(--rouge); }
+.pied .eyebrow { color: var(--sourd); display: block; margin-bottom: 8px; }
+.pied p { font-size: 15px; margin-top: 4px; }
+.pied a:hover { color: var(--rouge); }
+.pied .mention { grid-column: 1 / -1; border-top: 1px solid #d1d6c2; padding-top: 18px; font-size: 12px; color: var(--sourd); }
 
-@media (max-width: 560px) {
-  .large { width: calc(100% - 24px); }
-  .panneau-tete .dit { flex: 1 1 100%; order: 3; }
-  .barre { top: 61px; }
-  .liste { grid-template-columns: 1fr; }
-  .chercher { width: 108px; }
-  .appel { padding: 9px 12px; font-size: 14px; }
+/* L'appel, toujours a portee de pouce : 90 % des visites viennent d'un telephone. */
+.appel-mobile { display: none; }
+
+@media (max-width: 1000px) {
+  .hero .wrap { grid-template-columns: 1fr; row-gap: 28px; }
+  .vedette { justify-self: start; transform: rotate(-1.5deg); }
+  /* minmax(0, ...) et min-width : sans quoi le rail des rubriques, qui defile
+     lateralement, elargirait sa colonne et ferait deborder toute la page. */
+  .disposition { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .rail { min-width: 0; position: sticky; top: calc(var(--entete) + 77px); z-index: 20; padding: 10px 0; background: var(--papier); border-bottom: 1px solid var(--filet); }
+  .rail nav { flex-direction: row; overflow-x: auto; gap: 6px; scrollbar-width: none;
+              -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 26px), transparent);
+              mask-image: linear-gradient(to right, #000 calc(100% - 26px), transparent); }
+  .rail nav::-webkit-scrollbar { display: none; }
+  .rubrique-lien { flex: none; white-space: nowrap; border: 1px solid var(--filet); }
+  .note { display: none; }
+  .grille { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media (max-width: 620px) {
+  .site-header .wrap { gap: 12px; }
+  .brand img { width: 44px; height: 44px; }
+  .header-call span { display: none; }
+  .grille { grid-template-columns: 1fr; }
+  .plat { flex-direction: row; align-items: stretch; }
+  .plat .photo, .plat .sans-photo { width: 108px; height: auto; flex: none; align-self: center; }
+  .plat .photo img { width: 96px; height: 96px; }
+  .plat .haut { padding: 12px 14px; }
+  .plat h4 { min-height: 0; }
+  .tarifs { border-top: 0; border-left: 1px solid var(--filet); grid-template-columns: 1fr; align-self: stretch; }
+  .tarif + .tarif { border-left: 0; border-top: 1px solid var(--filet); }
+  .tarif { display: flex; align-items: center; justify-content: space-between; gap: 10px; text-align: left; padding: 8px 12px; min-width: 104px; }
+  .tarif dt { margin: 0; }
+  /* Un article non decline n'a qu'un prix : sur un telephone, il ne doit pas prendre
+     la moitie de la carte au detriment du nom. */
+  .tarifs.un .tarif { padding: 8px 12px; min-height: 0; }
+  .compte-res { display: none; }
+  body { padding-bottom: 76px; }
+  .appel-mobile {
+    display: flex; position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 40;
+    align-items: center; gap: 14px; padding: 13px 18px; background: var(--rouge); color: #fff;
+    border-radius: 3px; box-shadow: 0 8px 24px rgba(37, 39, 31, .22);
+  }
+  .appel-mobile svg { width: 22px; height: 22px; fill: currentColor; flex: none; }
+  .appel-mobile small { display: block; font-size: 12px; opacity: .85; }
+  .appel-mobile b { font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: .01em; }
+  .appel-mobile i { margin-left: auto; font-style: normal; font-size: 20px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 </style>
 
-<header class="entete">
-  <div class="large">
-    <div class="marque">
-      <img src="{{LOGO}}" alt="" width="40" height="40">
-      <span class="txt"><b>NUMBER ONE</b><i>Chihia &middot; Sfax</i></span>
-    </div>
-    <a class="appel" href="tel:{{LIEN}}">
+<header class="site-header" id="haut">
+  <div class="wrap">
+    <a class="brand" href="#haut">
+      <img src="{{LOGO}}" alt="" width="54" height="54">
+      <span><b>NUMBER ONE</b><small>Chihia, Sfax</small></span>
+    </a>
+    <a class="header-call" href="tel:{{LIEN}}">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.3 2.2z"></path></svg>
-      26 473 741
+      <span>{{TEL}}</span>
     </a>
   </div>
 </header>
 
-<section class="ouverture large">
-  <h1>Trois p&acirc;tes,<br>une <em>galette</em>.</h1>
-  <p>Le m&ecirc;me sandwich en p&acirc;te normale, c&eacute;r&eacute;ale ou chia. Choisissez la v&ocirc;tre&nbsp;:
-     les {{NB}} prix de la carte suivent, en dinars.</p>
-
-  <div class="pates">
-    <span class="titre">Votre p&acirc;te</span>
-    <div class="choix">
-      <button class="pate" type="button" data-pate="normale" aria-pressed="true">Normale</button>
-      <button class="pate" type="button" data-pate="cereale" aria-pressed="false">C&eacute;r&eacute;ale</button>
-      <button class="pate" type="button" data-pate="chia" aria-pressed="false">Chia</button>
-      <label class="double"><input type="checkbox" id="dbl"> Double p&acirc;te</label>
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow"><i class="sq"></i>Fast-food &middot; Chihia, Sfax</p>
+      <h1>Trois p&acirc;tes,<br><span>une galette.</span></h1>
+      <p class="lede">Le m&ecirc;me sandwich en p&acirc;te normale, c&eacute;r&eacute;ale ou chia. Choisissez la v&ocirc;tre&nbsp;:
+         les {{NB}} prix de la carte suivent, en dinars.</p>
+      <div class="pates">
+        <span class="eyebrow">Votre p&acirc;te</span>
+        <div class="choix">
+          <button class="pate" type="button" data-pate="normale" aria-pressed="true">Normale</button>
+          <button class="pate" type="button" data-pate="cereale" aria-pressed="false">C&eacute;r&eacute;ale</button>
+          <button class="pate" type="button" data-pate="chia" aria-pressed="false">Chia</button>
+          <label class="dbl"><input type="checkbox" id="dbl"> Double p&acirc;te</label>
+        </div>
+        <p class="regle">C&eacute;r&eacute;ale <b>+1,000</b><i>&middot;</i>Chia <b>+1,500</b><i>&middot;</i>Double p&acirc;te <b>+1,000</b>, en chia <b>+1,500</b></p>
+      </div>
     </div>
-    <p class="regle">C&eacute;r&eacute;ale <b>+1,000</b><span>&middot;</span>Chia <b>+1,500</b><span>&middot;</span>Double p&acirc;te <b>+1,000</b>, en chia <b>+1,500</b></p>
+    {{VEDETTE}}
   </div>
 </section>
 
-<div class="barre">
-  <div class="large">
-    <div class="rubriques" role="tablist">{{ONGLETS}}</div>
-    <input class="chercher" id="q" type="search" placeholder="Chercher&hellip;" aria-label="Chercher un article">
-  </div>
-</div>
+<section class="menu">
+  <div class="wrap">
+    <div class="menu-tete">
+      <h2>La carte<span>.</span></h2>
+      <p><strong>{{NB}} articles</strong><span>{{NBCAT}} rubriques</span></p>
+    </div>
 
-<main class="large" id="carte">{{PANNEAUX}}
-  <section class="panneau" id="cat-resultats" hidden>
-    <div class="panneau-tete"><h2>R&eacute;sultats</h2><span class="compte" id="nb-res"></span></div>
-    <div class="liste" id="res"></div>
-    <p class="vide" id="rien" hidden>Aucun article ne porte ce nom.</p>
-  </section>
-</main>
+    <div class="barre">
+      <label class="chercher">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a8 8 0 1 0 4.9 14.3l5.4 5.4 1.4-1.4-5.4-5.4A8 8 0 0 0 10 2zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12z"></path></svg>
+        <input id="q" type="search" placeholder="Chercher un article&hellip;" aria-label="Chercher un article">
+      </label>
+      <span class="compte-res" id="compte"></span>
+    </div>
+
+    <div class="disposition">
+      <aside class="rail">
+        <nav aria-label="Rubriques de la carte">{{ONGLETS}}</nav>
+        <div class="note">
+          <span class="eyebrow">La maison</span>
+          <p>Sur place,<br>&agrave; emporter,<br>en livraison.</p>
+          <small>{{ADRESSE}}</small>
+        </div>
+      </aside>
+      <div class="contenu" id="carte">
+        {{PANNEAUX}}
+        <div class="rien" id="rien" hidden><b>0</b><p>Aucun article ne porte ce nom.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <footer class="pied">
-  <div class="large">
+  <div class="wrap">
     <div>
-      <h3>Adresse</h3>
+      <span class="eyebrow">Nous trouver</span>
+      <h3>Route Tenyour<br><span>Km 5</span></h3>
       <p>{{ADRESSE}}</p>
-      <p><a href="{{MAPS}}" target="_blank" rel="noopener">Voir sur Google&nbsp;Maps</a></p>
+      <p><a href="{{MAPS}}" target="_blank" rel="noopener">Voir sur Google&nbsp;Maps &rarr;</a></p>
     </div>
     <div>
-      <h3>Commander</h3>
-      <p><a href="tel:{{LIEN}}">{{TEL}}</a></p>
+      <span class="eyebrow">Commander</span>
+      <p><a href="tel:{{LIEN}}" style="font-family:var(--titre);font-size:44px;letter-spacing:-.01em">{{TEL}}</a></p>
       <p style="color:var(--sourd)">Sur place, &agrave; emporter ou en livraison.</p>
     </div>
-    <div>
-      <h3>La carte</h3>
-      <p>{{NB}} articles, {{NBCAT}} rubriques.</p>
-      <p style="color:var(--sourd)">Prix en dinars tunisiens.</p>
-    </div>
+    <p class="mention">Carte du {{DATE}} &middot; {{NB}} articles &middot; prix en dinars tunisiens.
+       Les prix peuvent changer&nbsp;; ceux annonc&eacute;s en caisse font foi.</p>
   </div>
-  <p class="mention large">Carte du {{DATE}}. Les prix peuvent changer&nbsp;; ceux annonc&eacute;s en caisse font foi.</p>
 </footer>
+
+<a class="appel-mobile" href="tel:{{LIEN}}">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.3 2.2z"></path></svg>
+  <span><small>Commander par t&eacute;l&eacute;phone</small><b>{{TEL}}</b></span>
+  <i>&#8599;</i>
+</a>
 
 <script>
 (function () {
   var html = document.documentElement;
-  var panneaux = [].slice.call(document.querySelectorAll('#carte .panneau'));
-  var onglets = [].slice.call(document.querySelectorAll('.onglet'));
-  var resultats = document.getElementById('cat-resultats');
-  var q = document.getElementById('q');
 
-  /* Le choix de la pate : une lettre sur <html>, tout le reste est du CSS. */
-  [].forEach.call(document.querySelectorAll('.pate'), function (b) {
+  /* La pate choisie : une lettre sur <html>, tout le reste est du CSS. */
+  var pates = [].slice.call(document.querySelectorAll('.pate'));
+  pates.forEach(function (b) {
     b.addEventListener('click', function () {
       html.setAttribute('data-pate', b.dataset.pate);
-      [].forEach.call(document.querySelectorAll('.pate'), function (x) {
-        x.setAttribute('aria-pressed', String(x === b));
-      });
+      pates.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
     });
   });
   html.setAttribute('data-pate', 'normale');
 
   /* La double pate : chaque prix porte ses deux valeurs, on echange le texte. */
-  document.getElementById('dbl').addEventListener('change', function (e) {
-    var cle = e.target.checked ? 'd' : 'p';
-    [].forEach.call(document.querySelectorAll('b[data-p]'), function (n) {
-      n.textContent = n.dataset[cle];
-    });
+  var dbl = document.getElementById('dbl');
+  dbl.addEventListener('change', function () {
+    var cle = dbl.checked ? 'd' : 'p';
+    [].forEach.call(document.querySelectorAll('dd[data-p]'), function (n) { n.textContent = n.dataset[cle]; });
   });
 
   /*
-      Les rubriques changent de panneau, et rien d'autre ne bouge.
+      Les rubriques sont des ancres, et rien ne suit le defilement.
 
-      Pas d'observateur de defilement, pas de scrollIntoView : c'etait la cause de la
-      vibration a chaque glissement du doigt, la page se recadrant sous celui qui la
-      faisait defiler.
+      Aucun observateur ne deplace la barre des rubriques pendant qu'on fait defiler la
+      page : c'etait la cause de la vibration, la page se recadrant sous le doigt qui la
+      faisait bouger. Le lien s'allume au clic, et c'est tout.
   */
-  function montrer(id) {
-    panneaux.forEach(function (p) { p.hidden = (p.id !== id); });
-    onglets.forEach(function (o) {
-      var actif = o.dataset.cible === id;
-      o.classList.toggle('on', actif);
-      o.setAttribute('aria-selected', String(actif));
-    });
-  }
-  onglets.forEach(function (o) {
-    o.addEventListener('click', function () {
-      q.value = '';
-      montrer(o.dataset.cible);
-      var y = document.getElementById('carte').offsetTop - 110;
-      if (window.scrollY > y) window.scrollTo({ top: y });
+  var liens = [].slice.call(document.querySelectorAll('.rubrique-lien'));
+  liens.forEach(function (a) {
+    a.addEventListener('click', function () {
+      liens.forEach(function (x) { x.classList.toggle('on', x === a); });
     });
   });
 
-  /* La recherche : 111 articles, c'est le chemin le plus court vers le sien. */
-  var tous = [].slice.call(document.querySelectorAll('#carte .plat'));
-  var res = document.getElementById('res');
-  var nb = document.getElementById('nb-res');
+  /* La recherche : 108 articles, c'est le chemin le plus court vers le sien. */
+  var q = document.getElementById('q');
+  var compte = document.getElementById('compte');
   var rien = document.getElementById('rien');
-  function sansAccent(s) {
-    return s.normalize ? s.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : s;
-  }
+  var plats = [].slice.call(document.querySelectorAll('.plat'));
+  var rubriques = [].slice.call(document.querySelectorAll('.rubrique'));
+  function sansAccent(s) { return s.normalize ? s.normalize('NFD').replace(/[̀-ͯ]/g, '') : s; }
   q.addEventListener('input', function () {
     var t = sansAccent(q.value.trim().toLowerCase());
-    if (!t) { montrer(onglets[0].dataset.cible); return; }
-    var trouves = tous.filter(function (p) { return p.dataset.nom.indexOf(t) >= 0; });
-    res.innerHTML = '';
-    var dbl = document.getElementById('dbl').checked;
-    trouves.slice(0, 60).forEach(function (p) {
-      var n = p.cloneNode(true);
-      // Les copies naissent avec le prix simple : si la double pate est cochee, on
-      // rejoue l'echange sur elles, sinon la recherche annulerait le reglage en cours.
-      if (dbl) [].forEach.call(n.querySelectorAll('b[data-p]'), function (x) { x.textContent = x.dataset.d; });
-      res.appendChild(n);
+    var n = 0;
+    plats.forEach(function (p) {
+      var ok = !t || p.dataset.nom.indexOf(t) >= 0;
+      p.hidden = !ok;
+      if (ok) n++;
     });
-    nb.textContent = trouves.length + (trouves.length > 1 ? ' articles' : ' article');
-    rien.hidden = trouves.length > 0;
-    panneaux.forEach(function (p) { p.hidden = true; });
-    onglets.forEach(function (o) { o.classList.remove('on'); o.setAttribute('aria-selected', 'false'); });
-    resultats.hidden = false;
+    rubriques.forEach(function (r) {
+      r.hidden = ![].some.call(r.querySelectorAll('.plat'), function (p) { return !p.hidden; });
+    });
+    rien.hidden = n > 0;
+    compte.textContent = t ? (n + (n > 1 ? ' articles' : ' article')) : '';
   });
 })();
 </script>

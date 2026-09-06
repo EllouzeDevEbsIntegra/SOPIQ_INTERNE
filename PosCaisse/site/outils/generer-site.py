@@ -201,52 +201,95 @@ cats = [c for c in categories if par_cat.get(c['name'])]
 
 
 # ---------------------------------------------------------------- rendu
-def plat(p):
+# L'article mis en couverture. S'il quittait la carte, la page prendrait le premier
+# venu plutot que de se casser - une couverture vide se voit, une page blanche aussi.
+VEDETTE = 'Number One'
+
+
+def vignette(p, taille=146):
     """
-    Une ligne par article : la photo a gauche sur toute la hauteur, le nom au-dessus de
-    ses prix. La photo est reconnue avant le nom - c'est elle qui commande la lecture.
+    La photo d'un article, ou son initiale. Les photos du poste sont detourees sur
+    blanc : la carte les fond dans le papier (mix-blend-mode), et un article sans photo
+    laisse une lettre claire, jamais un cadre casse.
+    """
+    f = photos.get(slug(p['name']))
+    if not f:
+        return '<div class="sans-photo" aria-hidden="true">%s</div>' % e(p['name'][:1].upper())
+    return ('<div class="photo"><img src="{{IMG:%s}}" alt="" loading="lazy" decoding="async" '
+            'width="%d" height="%d"></div>' % (f, taille, taille))
+
+
+def tarifs(p):
+    """
+    Trois colonnes pour un article decline, une seule sinon. Chaque prix porte aussi sa
+    valeur en double pate (data-d) : la case a cocher echange le texte, sans recharger
+    ni recalculer quoi que ce soit.
     """
     pv = prix_pates(p)
     if pv and any(x is not None for x in pv):
         cases = ''
         for n, v in zip(PATES, pv):
             if v is None:
-                cases += '<div class="tarif" data-pate="%s"><span>%s</span><b>&mdash;</b></div>' % (CLE[n], e(n))
+                cases += ('<div class="tarif" data-pate="%s"><dt>%s</dt><dd>&mdash;</dd></div>'
+                          % (CLE[n], e(n)))
             else:
-                cases += ('<div class="tarif" data-pate="%s"><span>%s</span>'
-                          '<b data-p="%s" data-d="%s">%s</b></div>'
+                cases += ('<div class="tarif" data-pate="%s"><dt>%s</dt>'
+                          '<dd data-p="%s" data-d="%s">%s</dd></div>'
                           % (CLE[n], e(n), prix(v), prix(float(v) + DOUBLE[n]), prix(v)))
-        tarifs = '<div class="tarifs">%s</div>' % cases
-    else:
-        tarifs = '<div class="tarifs un"><div class="tarif"><b>%s DT</b></div></div>' % prix(p['price'])
-    f = photos.get(slug(p['name']))
-    img = ('<img src="{{IMG:%s}}" alt="" loading="lazy" decoding="async" width="72" height="72">' % f) if f \
-        else '<span class="sans-photo" aria-hidden="true"></span>'
-    return '<article class="plat" data-nom="%s">%s<h3>%s</h3>%s</article>' % (
-        e(sans_accent(p['name']).lower()), img, e(p['name']), tarifs)
+        return '<dl class="tarifs">%s</dl>' % cases
+    return ('<dl class="tarifs un"><div class="tarif"><dt>Prix</dt><dd>%s DT</dd></div></dl>'
+            % prix(p['price']))
 
 
-def panneau(c, premier):
+def plat(p):
+    """La carte d'un article : sa photo, son nom, ses prix. data-nom sert a la recherche."""
+    return ('<article class="plat" data-nom="%s">%s<div class="haut"><h4>%s</h4></div>%s</article>'
+            % (e(sans_accent(p['name']).lower()), vignette(p), e(p['name']), tarifs(p)))
+
+
+def panneau(c, rang):
+    """Une rubrique, numerotee : les huit se suivent, on n'en cache aucune."""
     liste = par_cat[c['name']]
     dit = DITS.get(c['name'], '')
     return (
-      '<section class="panneau" id="cat-%s" role="tabpanel" aria-labelledby="ong-%s"%s>'
-        '<div class="panneau-tete"><h2>%s</h2>%s<span class="compte">%d articles</span></div>'
-        '<div class="liste">%s</div>'
+      '<section class="rubrique" id="cat-%s">'
+        '<div class="rubrique-tete">'
+          '<div class="ligne"><span class="numero">%02d</span><h3>%s</h3>'
+          '<span class="combien">%d articles</span></div>%s'
+        '</div>'
+        '<div class="grille">%s</div>'
       '</section>'
-    ) % (slug(c['name']), slug(c['name']), '' if premier else ' hidden', e(c['name']),
-         ('<span class="dit">%s</span>' % e(dit)) if dit else '',
-         len(liste), ''.join(plat(p) for p in liste))
+    ) % (slug(c['name']), rang, e(c['name']), len(liste),
+         ('<p class="dit">%s</p>' % e(dit)) if dit else '',
+         ''.join(plat(p) for p in liste))
 
 
+def vedette():
+    """
+    La couverture : un article de la maison, incline comme une photo posee sur la table.
+    Le prix montre est celui de la pate normale - le plus bas, celui qu'on annonce.
+    """
+    p = next((x for x in produits if x['name'] == VEDETTE), produits[0])
+    pv = prix_pates(p)
+    montant = pv[0] if pv and pv[0] is not None else p['price']
+    f = photos.get(slug(p['name']))
+    img = ('<img src="{{IMG:%s}}" alt="%s" width="280" height="280">' % (f, e(p['name']))) if f else ''
+    return (
+      '<figure class="vedette">'
+        '<div class="haut"><span>La maison</span><span>%s</span></div>%s'
+        '<figcaption><strong>%s</strong><span class="prix">%s DT</span></figcaption>'
+      '</figure>'
+    ) % (e(p['category']), img, e(p['name']), prix(montant))
+
+
+# Les rubriques sont des ancres, pas des onglets : la page entiere se fait defiler, et
+# le rail sert de raccourci. Le nombre d'articles y est dit, pour savoir ou l'on va.
 onglets = ''.join(
-    '<button class="onglet%s" role="tab" type="button" id="ong-%s" data-cible="cat-%s" '
-    'aria-controls="cat-%s" aria-selected="%s">%s</button>'
-    % (' on' if i == 0 else '', slug(c['name']), slug(c['name']), slug(c['name']),
-       'true' if i == 0 else 'false', e(c['name']))
+    '<a class="rubrique-lien%s" href="#cat-%s">%s<span>%d</span></a>'
+    % (' on' if i == 0 else '', slug(c['name']), e(c['name']), len(par_cat[c['name']]))
     for i, c in enumerate(cats))
 
-panneaux = ''.join(panneau(c, i == 0) for i, c in enumerate(cats))
+panneaux = ''.join(panneau(c, i + 1) for i, c in enumerate(cats))
 
 MOIS = ['janvier', 'fevrier', 'mars', 'avril', 'mai', 'juin', 'juillet', 'aout',
         'septembre', 'octobre', 'novembre', 'decembre']
@@ -254,6 +297,7 @@ h = datetime.date.today()
 CORPS = open(os.path.join(ICI, 'outils', 'modele.html'), encoding='utf-8').read()
 for cle, valeur in (('{{TEL}}', TEL_AFFICHE), ('{{LIEN}}', TEL_LIEN), ('{{ADRESSE}}', ADRESSE),
                     ('{{MAPS}}', MAPS), ('{{ONGLETS}}', onglets), ('{{PANNEAUX}}', panneaux),
+                    ('{{VEDETTE}}', vedette()),
                     ('{{NB}}', str(len(produits))), ('{{NBCAT}}', str(len(cats))),
                     ('{{DATE}}', '%d %s %d' % (h.day, MOIS[h.month - 1], h.year))):
     CORPS = CORPS.replace(cle, valeur)
