@@ -10,6 +10,7 @@ const props = defineProps({
   showImages: { type: Boolean, default: true }
 })
 const emit = defineEmits(['tap', 'hold'])
+const catalog = useCatalogStore()
 
 /* La teinte de catégorie est calculée en JS : rendu identique sur tous les moteurs,
    sans dépendre de color-mix(). */
@@ -19,10 +20,23 @@ function rgb(hex) {
   const n = parseInt(v, 16)
   return [(n >> 16) & 255, (n >> 8) & 255, n & 255]
 }
+/*
+    La couleur de la tuile : celle de l'article, sinon celle de sa rubrique.
+
+    La fiche article propose un bouton << Categorie >>, qui vide la couleur de l'article.
+    Il promet donc l'heritage, et la tuile rendait un gris neutre : le reglage ne faisait
+    pas ce que son intitule annoncait. Un article sans couleur prend desormais vraiment
+    celle de sa rubrique, et le gris ne sert plus que si la rubrique elle-meme n'en a pas.
+*/
+const couleur = computed(() =>
+  props.product.color
+  || catalog.categories.find(c => c.id === props.product.categoryId)?.color
+  || '#8A8178')
+
 const tint = computed(() => {
-  const [r, g, b] = rgb(props.product.color)
+  const [r, g, b] = rgb(couleur.value)
   return {
-    '--c': props.product.color || '#8A8178',
+    '--c': couleur.value,
     '--c-bg': `rgba(${r},${g},${b},.055)`,
     '--c-bg-press': `rgba(${r},${g},${b},.16)`,
     '--c-line': `rgba(${r},${g},${b},.28)`,
@@ -38,7 +52,6 @@ const hasOptions = computed(() => (props.product.modifierGroups || []).length > 
     moyenne en croyant vendre une large. Le prix affiche est celui de cette version, et non
     celui de l'article, qui ne veut plus rien dire des qu'il se decline.
 */
-const catalog = useCatalogStore()
 const version = computed(() => {
   const p = props.product
   if (!p.variantId || !p.defaultVariantValueId) return null
