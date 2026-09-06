@@ -46,12 +46,13 @@ POLICES = os.path.join(ICI, 'outils', 'polices')
 #
 # Un ecran porte soit une suite de rubriques en deux colonnes, soit une MATRICE : les
 # memes garnitures a gauche, et a droite un bloc de trois prix par famille de fromage.
-# Mozarilla et Mozarilla 3arbi portent exactement les memes 19 garnitures, dans le meme
-# ordre : les ecrire deux fois en 38 lignes faisait lire deux fois la meme liste, et
-# obligeait a chercher d'une colonne a l'autre pour comparer.
+# Deux ecrans sur trois sont des matrices, parce que la carte est batie ainsi : les
+# memes 19 garnitures se declinent nature, au fromage, a la mozarilla et a la mozarilla
+# 3arbi. Les ecrire quatre fois en listes faisait lire quatre fois la meme suite de
+# noms, et obligeait a chercher d'une colonne a l'autre pour comparer deux versions.
 #
 ECRANS = [
-    ('1-gauche', 'Gauche', ['Classic', 'Fromage']),
+    ('1-gauche', 'Gauche', {'matrice': ['Classic', 'Fromage']}),
     ('2-centre', 'Centre', {'matrice': ['Mozarilla', 'Mozarilla 3arbi']}),
     ('3-droite', 'Droite', ['Spécial', 'Lablebi', 'Boissons', 'Extras']),
 ]

@@ -5,7 +5,7 @@ n'a plus besoin de rien : polices et logo sont dans le fichier, aucun appel au r
 
 | Fichier | Écran | Contenu |
 |---|---|---|
-| `ecran-1-gauche.html` | gauche | Classic, Fromage |
+| `ecran-1-gauche.html` | gauche | Classic + Fromage, en tableau croisé |
 | `ecran-2-centre.html` | centre | Mozarilla + Mozarilla 3arbi, en tableau croisé |
 | `ecran-3-droite.html` | droite | Spécial, Lablebi, Boissons, Extras |
 
@@ -50,12 +50,16 @@ la taille du texte, et elle ne change pas — les trois prix tiennent dans la la
 restait libre à droite. Seule la **double pâte** reste une règle, dans le bandeau rouge :
 +1,000, et +1,500 en chia.
 
-**L'écran du centre est un tableau croisé.** Mozarilla et Mozarilla 3arbi portent
-exactement les mêmes 19 garnitures, dans le même ordre — vérifié article par article, le
-script s'arrête si ce n'est plus vrai. Les écrire deux fois faisait lire deux fois la
-même liste sur 38 lignes, et obligeait à sauter d'une colonne à l'autre pour comparer les
-deux fromages. Une garniture par ligne, six prix à droite en deux blocs : **19 lignes au
-lieu de 38**, et la place gagnée passe dans la taille des chiffres.
+**Les deux premiers écrans sont des tableaux croisés**, parce que la carte est bâtie
+ainsi : les mêmes **19 garnitures** se déclinent nature, au fromage, à la mozarilla et à
+la mozarilla 3arbi. Les écrire quatre fois en listes faisait lire quatre fois la même
+suite de noms, et obligeait à sauter d'une colonne à l'autre pour comparer deux versions.
+Une garniture par ligne, six prix à droite en deux blocs : **19 lignes au lieu de 38**.
+
+Les familles s'apparient par le **nom** de la garniture, pas par leur rang : déplacer un
+article dans le back-office ne peut donc pas décaler une colonne d'une ligne, ce qui
+ferait comparer deux plats différents sans que rien ne le signale. Ce qui manque d'un
+côté **arrête le script** au lieu de publier un tableau troué.
 
 **Une image de fond par écran**, dans `fond/` — voir le `LISEZ-MOI.txt` qui s'y trouve.
 Elle s'affiche à 15 % dans le bas de la dalle et s'efface en montant, pour réchauffer le
