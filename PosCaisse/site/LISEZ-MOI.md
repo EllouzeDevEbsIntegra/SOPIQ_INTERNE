@@ -33,15 +33,32 @@ reste correcte : le nom est un lettrage en texte, l'image se retire d'elle-même
 
 ## Mettre la carte à jour
 
-Les prix vivent dans la caisse, pas ici. Après une modification en back-office, exportez
-la carte puis relancez :
+Les prix vivent dans la caisse, pas ici. Deux commandes, dans cet ordre.
+
+**1. Prendre la carte du poste** (la caisse doit tourner) :
+
+```
+D:\SOPIQ_INTERNE_POS\PosCaisse\EXPORTER_CARTE_SITE.bat
+```
+
+Il écrit `site/carte-live.json` : les catégories dans leur ordre d'affichage, les
+articles avec leur nom, leur prix, leurs trois prix de pâte **et leurs photos**, tels
+qu'ils sont dans la caisse aujourd'hui. Il annonce au passage les articles sans photo et
+ceux restés à 0,000.
+
+**2. Réécrire la page** :
 
 ```
 python3 outils/generer-site.py
 ```
 
-Il relit `../catalogs/number-one-2026.json` et réécrit `index.html`. Aucun prix n'est
-retapé à la main — c'est la seule façon d'avoir un site qui ne ment pas.
+Il lit `carte-live.json` s'il existe, sinon le fichier d'import
+`../catalogs/number-one-2026.json`. Les photos de la caisse sont posées dans `img/` pour
+les articles qui n'en ont pas encore — un fichier déjà présent n'est **jamais écrasé**,
+il vient du dossier d'origine en pleine définition alors que la caisse ne garde qu'une
+vignette de 240 px.
+
+Aucun prix n'est retapé à la main : c'est la seule façon d'avoir un site qui ne ment pas.
 
 ## Ce qu'il reste à fournir
 

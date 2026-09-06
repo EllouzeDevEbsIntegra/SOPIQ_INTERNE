@@ -18,8 +18,14 @@ Regles tenues ici, et nulle part ailleurs :
 """
 import json, os, re, unicodedata, html
 
+import base64
+
 ICI = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CARTE = os.path.join(ICI, '..', 'catalogs', 'number-one-2026.json')
+# La carte exportee du poste passe AVANT le fichier d'import : depuis ce chargement, des
+# articles ont ete ajoutes a la main, des noms corriges, des prix rectifies et les
+# categories reordonnees. Le fichier d'import ne sait rien de tout cela, la caisse si.
+LIVE = os.path.join(ICI, 'carte-live.json')
+IMPORT = os.path.join(ICI, '..', 'catalogs', 'number-one-2026.json')
 IMG = os.path.join(ICI, 'img')
 
 TEL_AFFICHE = '26 473 741'
@@ -42,10 +48,46 @@ def prix(v):
 def e(s):
     return html.escape(str(s), quote=True)
 
+PATES = ['Normale', 'Céréale', 'Chia']
+
+def pate(nom):
+    """
+    Le nom d'une version, ramene a la pate qu'il designe : la caisse les appelle
+    << Pate Normale >>, << Normale >> ou << Cereale >> selon la saisie, et les doubles
+    portent le meme mot precede de << Double >>. Le site n'affiche que les trois
+    simples, sur une ligne : un tableau a six colonnes ne se lit pas sur un telephone.
+    """
+    t = sans_accent(nom).lower().replace('pate', ' ').strip()
+    if 'double' in t: return None
+    if t.startswith('normal'): return 'Normale'
+    if t.startswith('cereal'): return 'Céréale'
+    if 'chia' in t: return 'Chia'
+    return None
+
+def depuis_le_poste(c):
+    """La carte telle que la caisse l'a rendue, ramenee a la forme attendue ici."""
+    noms = {v['id']: v['name'] for a in c.get('variants', []) for v in a.get('values', [])}
+    cats = {x['id']: x['name'] for x in c['categories']}
+    out = []
+    for p in c['products']:
+        pv = [{'value': pate(noms.get(v['variantValueId'], '')), 'price': v['price']}
+              for v in (p.get('variantPrices') or [])]
+        out.append({'name': p['name'], 'price': p['price'], 'category': cats.get(p['categoryId'], '?'),
+                    'imageUrl': p.get('imageUrl'), 'variant': bool(p.get('variantId')),
+                    'variantPrices': [v for v in pv if v['value'] and v['price'] is not None]})
+    return [{'name': x['name']} for x in c['categories']], out
+
 # ---------------------------------------------------------------- donnees
-carte = json.load(open(CARTE, encoding='utf-8'))
-produits = [p for p in carte['products'] if float(p['price']) > 0]
-ecartes = [p['name'] for p in carte['products'] if float(p['price']) <= 0]
+if os.path.exists(LIVE):
+    categories, tous = depuis_le_poste(json.load(open(LIVE, encoding='utf-8')))
+    source = 'carte-live.json (poste)'
+else:
+    carte = json.load(open(IMPORT, encoding='utf-8'))
+    categories, tous = carte['categories'], carte['products']
+    source = 'catalogs/number-one-2026.json (fichier d\'import)'
+
+produits = [p for p in tous if float(p['price']) > 0]
+ecartes = [p['name'] for p in tous if float(p['price']) <= 0]
 
 photos = set()
 if os.path.isdir(IMG):
@@ -54,7 +96,28 @@ if os.path.isdir(IMG):
         if ext.lower() in ('.png', '.jpg', '.jpeg', '.webp'):
             photos.add(base)
 
-PATES = ['Normale', 'Céréale', 'Chia']
+def poser_photos():
+    """
+    Les vignettes du poste, ecrites dans img/ pour les articles qui n'ont pas deja leur
+    fichier. Un fichier deja present N'EST PAS ecrase : il vient du dossier d'origine,
+    en pleine definition, alors que la caisse ne garde qu'une vignette de 240 px.
+    """
+    poses = 0
+    for p in produits:
+        u = p.get('imageUrl') or ''
+        if not u.startswith('data:image/') or slug(p['name']) in photos: continue
+        tete, _, data = u.partition(',')
+        ext = tete.split('/')[1].split(';')[0].replace('jpeg', 'jpg')
+        try: octets = base64.b64decode(data)
+        except Exception: continue
+        open(os.path.join(IMG, slug(p['name']) + '.' + ext), 'wb').write(octets)
+        photos.add(slug(p['name']))
+        poses += 1
+    return poses
+
+os.makedirs(IMG, exist_ok=True)
+posees = poser_photos()
+
 def prix_pates(p):
     m = {v['value']: v['price'] for v in p.get('variantPrices', [])}
     return [m.get(x) for x in PATES] if p.get('variant') else None
@@ -62,7 +125,7 @@ def prix_pates(p):
 par_cat = {}
 for p in produits:
     par_cat.setdefault(p['category'], []).append(p)
-cats = [c for c in carte['categories'] if par_cat.get(c['name'])]
+cats = [c for c in categories if par_cat.get(c['name'])]
 
 # ---------------------------------------------------------------- rendu
 def carte_article(p):
@@ -114,8 +177,10 @@ for cle, valeur in (('{{TEL}}', TEL_AFFICHE), ('{{LIEN}}', TEL_LIEN), ('{{ADRESS
     PAGE = PAGE.replace(cle, valeur)
 
 open(os.path.join(ICI, 'index.html'), 'w', encoding='utf-8').write(PAGE)
+print('Source : %s' % source)
 print('%d articles publies, %d ecartes faute de prix : %s'
       % (len(produits), len(ecartes), ', '.join(ecartes)))
 manquantes = [p['name'] for p in produits if slug(p['name']) not in photos]
-print('%d categories. Photos : %d presentes dans site/img/, %d manquantes.'
-      % (len(cats), len(produits) - len(manquantes), len(manquantes)))
+print('%d categories. Photos : %d dans site/img/ (%d reprises du poste), %d manquantes.'
+      % (len(cats), len(produits) - len(manquantes), posees, len(manquantes)))
+if manquantes: print('Sans photo : ' + ', '.join(manquantes))
