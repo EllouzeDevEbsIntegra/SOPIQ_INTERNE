@@ -155,27 +155,29 @@ def matrice(familles):
     """
     Les garnitures a gauche, un bloc de trois prix par famille a droite.
 
-    Les familles doivent porter les memes garnitures, dans le meme ordre - sinon une
-    ligne comparerait deux plats differents. On le verifie ici plutot que de le
-    supposer : le jour ou un article n'existe que d'un cote, le script s'arrete au lieu
-    de publier un tableau faux.
+    Les familles doivent porter les MEMES garnitures ; l'ordre dans lequel elles sont
+    rangees en caisse, lui, n'a pas d'importance - les lignes s'apparient par le nom de
+    la garniture, pas par leur rang. Deplacer un article dans le back-office ne peut
+    donc pas decaler une colonne d'une ligne, ce qui ferait comparer deux plats
+    differents sans que rien ne le signale.
+
+    L'ordre affiche est celui de la premiere famille. Ce qui manque d'un cote arrete le
+    script au lieu de publier un tableau troue.
     """
-    listes = []
-    for f in familles:
-        arts = par_nom[f]['articles']
-        listes.append([(garniture(a['nom'], f), a) for a in arts])
-    base = [x[0] for x in listes[0]]
-    for f, l in zip(familles[1:], listes[1:]):
-        if [x[0] for x in l] != base:
+    tables = [{garniture(a['nom'], f): a for a in par_nom[f]['articles']} for f in familles]
+    base = [garniture(a['nom'], familles[0]) for a in par_nom[familles[0]]['articles']]
+    for f, t in zip(familles[1:], tables[1:]):
+        manque = set(base) ^ set(t)
+        if manque:
             raise SystemExit(
-                'ARRET : << %s >> ne porte pas les memes garnitures que << %s >>.\n'
+                'ARRET : << %s >> et << %s >> ne portent pas les memes garnitures.\n'
                 '        Seulement d\'un cote : %s'
-                % (f, familles[0], sorted(set(base) ^ set(x[0] for x in l))))
+                % (familles[0], f, ', '.join(sorted(manque))))
     lignes = []
-    for i, nom in enumerate(base):
+    for nom in base:
         blocs = []
-        for l in listes:
-            pp = l[i][1].get('prixParPate') or {}
+        for t in tables:
+            pp = t[nom].get('prixParPate') or {}
             blocs.append([prix(pp[x]) if pp.get(x) is not None else '&mdash;'
                           for x in carte['pates']])
         lignes.append((nom, blocs))

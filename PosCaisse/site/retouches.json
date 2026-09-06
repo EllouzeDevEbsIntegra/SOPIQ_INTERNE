@@ -1,0 +1,20 @@
+{
+  "_lisez_moi": [
+    "Retouches appliquees a la carte AVANT d'engendrer le site et les tableaux des",
+    "televiseurs, en attendant qu'elles soient faites dans la caisse.",
+    "",
+    "Chacune devient sans effet le jour ou la caisse dit la meme chose : le script",
+    "l'annonce alors comme << deja faite >>, et la ligne peut etre retiree d'ici.",
+    "",
+    "Elles ne changent RIEN dans la caisse : le poste continue de vendre ces articles",
+    "tant que le gerant ne les a pas desactives lui-meme."
+  ],
+  "retirer": [
+    "Fromage",
+    "Mozarilla",
+    "Mozarilla 3arbi"
+  ],
+  "deplacer": [
+    { "article": "Omlette Fromage", "vers": "Fromage", "position": "debut" }
+  ]
+}

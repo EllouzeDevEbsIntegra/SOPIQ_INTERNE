@@ -28,6 +28,7 @@ ICI = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # articles ont ete ajoutes a la main, des noms corriges, des prix rectifies et les
 # categories reordonnees. Le fichier d'import ne sait rien de tout cela, la caisse si.
 LIVE = os.path.join(ICI, 'carte-live.json')
+RETOUCHES = os.path.join(ICI, 'retouches.json')
 IMPORT = os.path.join(ICI, '..', 'catalogs', 'number-one-2026.json')
 IMG = os.path.join(ICI, 'img')
 
@@ -114,6 +115,41 @@ else:
     categories, tous = carte['categories'], carte['products']
     source = 'catalogs/number-one-2026.json (fichier d\'import)'
 
+def retoucher(tous):
+    """
+    Les corrections decidees pour la carte publiee, en attendant qu'elles soient faites
+    dans la caisse.
+
+    Elles vivent dans un fichier a part, nommees une par une, et le script dit a chaque
+    passage lesquelles il a appliquees - et lesquelles sont devenues inutiles parce que
+    la caisse les porte enfin. Sans cela, une correction faite ici disparaitrait au
+    prochain export sans que personne ne s'en apercoive, ou survivrait des annees apres
+    etre devenue fausse.
+    """
+    if not os.path.exists(RETOUCHES): return tous, [], []
+    r = json.load(open(RETOUCHES, encoding='utf-8'))
+    faites, inutiles = [], []
+
+    retirer = set(r.get('retirer', []))
+    presents = {p['name'] for p in tous}
+    for nom in sorted(retirer):
+        (faites if nom in presents else inutiles).append('retire   ' + nom)
+    tous = [p for p in tous if p['name'] not in retirer]
+
+    for d in r.get('deplacer', []):
+        cible = next((p for p in tous if p['name'] == d['article']), None)
+        if cible is None:
+            inutiles.append('deplace  %s (absent de la carte)' % d['article'])
+        elif cible['category'] == d['vers']:
+            inutiles.append('deplace  %s (deja dans %s)' % (d['article'], d['vers']))
+        else:
+            faites.append('deplace  %s : %s -> %s' % (d['article'], cible['category'], d['vers']))
+            cible['category'] = d['vers']
+            cible['_tete'] = d.get('position') == 'debut'
+    return tous, faites, inutiles
+
+
+tous, faites, inutiles = retoucher(tous)
 produits = [p for p in tous if float(p['price']) > 0]
 ecartes = [p['name'] for p in tous if float(p['price']) <= 0]
 
@@ -157,7 +193,10 @@ def prix_pates(p):
 
 par_cat = {}
 for p in produits:
-    par_cat.setdefault(p['category'], []).append(p)
+    # Un article deplace en tete y va vraiment : range a la suite, il se lirait comme
+    # une exception ajoutee apres coup.
+    if p.get('_tete'): par_cat.setdefault(p['category'], []).insert(0, p)
+    else: par_cat.setdefault(p['category'], []).append(p)
 cats = [c for c in categories if par_cat.get(c['name'])]
 
 
@@ -282,6 +321,12 @@ n1 = rendu('index.html', False)
 n2 = rendu('apercu-artifact.html', True)
 
 print('Source : %s' % source)
+if faites:
+    print('Retouches appliquees - LA CAISSE NE LES DIT PAS ENCORE :')
+    for x in faites: print('  ' + x)
+    print('  (site/retouches.json ; sans effet une fois faites en caisse)')
+for x in inutiles:
+    print('Retouche devenue inutile, la caisse la porte deja : ' + x)
 print('%d articles publies, %d ecartes faute de prix%s'
       % (len(produits), len(ecartes), (' : ' + ', '.join(ecartes)) if ecartes else ''))
 manquantes = [p['name'] for p in produits if slug(p['name']) not in photos]

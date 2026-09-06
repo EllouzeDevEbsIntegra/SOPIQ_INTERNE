@@ -126,36 +126,6 @@
           }
         },
         {
-          "nom": "Mozarilla",
-          "prix": 3.5,
-          "photo": "img/mozarilla.jpg",
-          "prixParPate": {
-            "Normale": 3.5,
-            "Céréale": 4.5,
-            "Chia": 5.0
-          }
-        },
-        {
-          "nom": "Mozarilla 3arbi",
-          "prix": 4.5,
-          "photo": "img/mozarilla-3arbi.jpg",
-          "prixParPate": {
-            "Normale": 4.5,
-            "Céréale": 5.5,
-            "Chia": 6.0
-          }
-        },
-        {
-          "nom": "Fromage",
-          "prix": 2.2,
-          "photo": "img/fromage.jpg",
-          "prixParPate": {
-            "Normale": 2.2,
-            "Céréale": 3.2,
-            "Chia": 3.7
-          }
-        },
-        {
           "nom": "Omlette Kwika",
           "prix": 4.0,
           "photo": "img/omlette-kwika.jpg",
@@ -243,16 +213,6 @@
             "Normale": 8.2,
             "Céréale": 9.2,
             "Chia": 9.7
-          }
-        },
-        {
-          "nom": "Omlette Fromage",
-          "prix": 3.7,
-          "photo": "img/omlette-fromage.jpg",
-          "prixParPate": {
-            "Normale": 3.7,
-            "Céréale": 4.7,
-            "Chia": 5.2
           }
         }
       ]
@@ -653,6 +613,16 @@
       "nom": "Fromage",
       "description": "Les mêmes, avec le fromage.",
       "articles": [
+        {
+          "nom": "Omlette Fromage",
+          "prix": 3.7,
+          "photo": "img/omlette-fromage.jpg",
+          "prixParPate": {
+            "Normale": 3.7,
+            "Céréale": 4.7,
+            "Chia": 5.2
+          }
+        },
         {
           "nom": "Omlette Fromage Kwika",
           "prix": 4.7,
