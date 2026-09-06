@@ -25,8 +25,9 @@ IMG = os.path.join(ICI, 'img')
 TEL_AFFICHE = '26 473 741'
 TEL_LIEN = '+21626473741'
 ADRESSE = 'Route Tenyour Km 5, Chihia, Sfax'
-MAPS = 'https://www.google.com/maps/search/?api=1&query=' + \
-       'Number+One+Route+Tenyour+Km+5+Chihia+Sfax'
+# Le lien donne par le client, pas une recherche : il mene a SA fiche, avec ses avis et
+# son itineraire, la ou une recherche par adresse peut tomber sur le voisin.
+MAPS = 'https://maps.app.goo.gl/KzE3dShY9iCtMxAB9'
 
 def sans_accent(s):
     return ''.join(c for c in unicodedata.normalize('NFD', s)
