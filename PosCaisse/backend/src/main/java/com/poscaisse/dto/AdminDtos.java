@@ -47,7 +47,7 @@ public final class AdminDtos {
     public record CourierRequest(@NotBlank String name, String phone, String note, Boolean active) {}
 
     public record KitchenNoteDto(Long id, String label, int sortOrder, boolean active) {}
-    public record IngredientDto(Long id, String name, int sortOrder, boolean active) {}
+    public record IngredientDto(Long id, String name, String shortName, int sortOrder, boolean active) {}
 
     public record VariantValueDto(Long id, String name, String shortName, int sortOrder, boolean active) {}
     public record VariantValueRequest(Long id, @NotBlank String name, String shortName, Integer sortOrder, Boolean active) {}
@@ -55,6 +55,6 @@ public final class AdminDtos {
                              List<VariantValueDto> values) {}
     public record VariantRequest(@NotBlank String name, String namePosition, Integer sortOrder, Boolean active,
                                  List<VariantValueRequest> values) {}
-    public record IngredientRequest(@NotBlank String name, Integer sortOrder, Boolean active) {}
+    public record IngredientRequest(@NotBlank String name, String shortName, Integer sortOrder, Boolean active) {}
     public record KitchenNoteRequest(@NotBlank String label, Integer sortOrder, Boolean active) {}
 }

@@ -281,6 +281,9 @@ public class AdminService {
         // deja connues ne bougent pas sous les doigts.
         if (id == null) i.setSortOrder(ingredientRepo.findAll().stream().mapToInt(Ingredient::getSortOrder).max().orElse(0) + 1);
         i.setName(nom);
+        // Sans abreviation, le nom du ticket reprend le nom entier : mieux vaut un ticket
+        // long qu'un ticket vide, et le gerant la renseigne quand il la choisit.
+        i.setShortName(r.shortName() == null || r.shortName().isBlank() ? null : r.shortName().trim());
         if (r.sortOrder() != null) i.setSortOrder(r.sortOrder());
         if (r.active() != null) i.setActive(r.active());
         return Mappers.ingredient(ingredientRepo.save(i));

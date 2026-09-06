@@ -27,6 +27,12 @@ public class Product {
     private int sortOrder;
     private boolean active = true;
     private boolean available = true;
+    /**
+     * Prix a confirmer par le gerant : il ne vient pas de la carte du client mais d'une
+     * regle de calcul, ou d'une estimation. L'article se vend quand meme - le drapeau
+     * n'empeche rien, il rend visible ce qui reste a verifier dans la liste.
+     */
+    private boolean priceToCheck = false;
     private boolean favorite;
     private int favoriteOrder;
     private OffsetDateTime createdAt = OffsetDateTime.now();

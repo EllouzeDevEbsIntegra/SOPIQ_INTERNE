@@ -46,6 +46,7 @@ export const api = {
     reorderCategories: (ids) => p('/categories/reorder', { ids }),
     products: () => g('/products'), product: (id) => g(`/products/${id}`), saveProduct: (id, b) => id ? put(`/products/${id}`, b) : p('/products', b),
     deleteProduct: (id) => del(`/products/${id}`), availability: (id, available) => patch(`/products/${id}/availability`, { available }),
+    setProductImage: (id, imageUrl) => put(`/products/${id}/image`, { imageUrl }),
     reorderProducts: (ids) => p('/products/reorder', { ids }), favorites: (productIds) => put('/products/favorites', { productIds }),
     modifiers: () => g('/modifiers'), saveModifier: (id, b) => id ? put(`/modifiers/${id}`, b) : p('/modifiers', b), deleteModifier: (id) => del(`/modifiers/${id}`),
     paymentMethods: () => g('/payment-methods'), savePaymentMethod: (id, b) => id ? put(`/payment-methods/${id}`, b) : p('/payment-methods', b)

@@ -98,6 +98,15 @@ public class CatalogService {
     @Transactional(readOnly = true)
     public ProductDto product(Long id) { return Mappers.product(productRepo.findById(id).orElseThrow(() -> BusinessException.notFound("Produit"))); }
 
+    /** Remplace la seule vignette. Une chaine vide retire l'image. */
+    @Transactional
+    public ProductDto setProductImage(Long id, String imageUrl) {
+        Product p = productRepo.findById(id).orElseThrow(() -> BusinessException.notFound("Produit"));
+        p.setImageUrl(imageUrl == null || imageUrl.isBlank() ? null : imageUrl);
+        p.setUpdatedAt(OffsetDateTime.now());
+        return Mappers.product(productRepo.save(p));
+    }
+
     @Transactional
     public ProductDto saveProduct(Long id, ProductRequest r) {
         Product p = id == null ? new Product() : productRepo.findById(id).orElseThrow(() -> BusinessException.notFound("Produit"));
@@ -119,6 +128,7 @@ public class CatalogService {
         if (r.available() != null) p.setAvailable(r.available());
         if (r.favorite() != null) p.setFavorite(r.favorite());
         if (r.favoriteOrder() != null) p.setFavoriteOrder(r.favoriteOrder());
+        if (r.priceToCheck() != null) p.setPriceToCheck(r.priceToCheck());
         p.setUpdatedAt(OffsetDateTime.now());
         p.getPrintDestinations().clear();
         if (r.printDestinationIds() != null) r.printDestinationIds().forEach(d -> destinationRepo.findById(d).ifPresent(p.getPrintDestinations()::add));

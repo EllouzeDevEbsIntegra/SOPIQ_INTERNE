@@ -25,7 +25,7 @@ public final class CatalogDtos {
     public record ProductDto(Long id, String code, String reference, String name, String shortName, String description,
                              Long categoryId, String categoryName, String productType, BigDecimal price, BigDecimal taxRate,
                              String imageUrl, String color, int sortOrder, boolean active, boolean available, boolean favorite,
-                             int favoriteOrder, List<Long> printDestinationIds, List<ModifierGroupDto> modifierGroups,
+                             int favoriteOrder, boolean priceToCheck, List<Long> printDestinationIds, List<ModifierGroupDto> modifierGroups,
                              List<MenuComponentDto> menuComponents, List<Long> ingredientIds,
                              Long variantId, Long defaultVariantValueId, boolean askVariant,
                              List<VariantPriceDto> variantPrices) {}
@@ -36,7 +36,7 @@ public final class CatalogDtos {
     public record ProductRequest(@NotBlank String code, String reference, @NotBlank String name, String shortName, String description,
                                  @NotNull Long categoryId, String productType, @NotNull BigDecimal price, BigDecimal taxRate,
                                  String imageUrl, String color, Integer sortOrder, Boolean active, Boolean available, Boolean favorite,
-                                 Integer favoriteOrder, List<Long> printDestinationIds, List<Long> modifierGroupIds,
+                                 Integer favoriteOrder, Boolean priceToCheck, List<Long> printDestinationIds, List<Long> modifierGroupIds,
                                  List<MenuComponentRequest> menuComponents, List<Long> ingredientIds,
                                  Long variantId, Long defaultVariantValueId, Boolean askVariant,
                                  List<VariantPriceDto> variantPrices) {}

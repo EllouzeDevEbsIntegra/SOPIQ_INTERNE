@@ -14,14 +14,22 @@ onMounted(() => { load(); chargerIngredients(); chargerVariantes() })
 /* Sans filtre, la liste est groupée par catégorie : l'ordre étant propre à
    chaque catégorie, une liste globale triée sur le seul rang les entrelacerait. */
 const catRank = computed(() => Object.fromEntries(cats.value.map((c, i) => [c.id, i])))
+/* Deux filtres qui ne servent qu'une fois, mais ce jour-la ils font tout : apres l'import
+   d'une carte entiere, retrouver les prix qui restent a confirmer et les articles qu'on a
+   oublie de decliner - sans ouvrir les fiches une par une. */
+const aVerifier = ref(false)
+const sansVariante = ref(false)
 const filtered = computed(() => rows.value
   .filter(p => (!catFilter.value || p.categoryId === Number(catFilter.value)) && (!q.value || (p.name + ' ' + p.code + ' ' + (p.reference || '')).toLowerCase().includes(q.value.toLowerCase())))
+  .filter(p => !aVerifier.value || p.priceToCheck)
+  .filter(p => !sansVariante.value || !p.variantId)
   .sort((a, b) => (catRank.value[a.categoryId] ?? 99) - (catRank.value[b.categoryId] ?? 99)))
 
 /* Réordonner n'a de sens que si la liste affichée est exactement une catégorie
    entière : sur une liste filtrée ou cherchée, on renumérote un sous-ensemble
    et l'ordre réel devient faux sans que personne ne le voie. */
-const canReorder = computed(() => !!catFilter.value && !q.value.trim())
+const nbAVerifier = computed(() => rows.value.filter(p => p.priceToCheck).length)
+const canReorder = computed(() => !!catFilter.value && !q.value.trim() && !aVerifier.value && !sansVariante.value)
 const dragId = ref(null)
 
 /*
@@ -48,6 +56,10 @@ const ingredients = ref([])
 */
 const variantes = ref([])
 async function chargerVariantes() { try { variantes.value = await api.admin.variants() } catch { /* liste facultative */ } }
+function nomValeur(variantId, valueId) {
+  const v = variantes.value.find(x => x.id === variantId)
+  return v?.values?.find(x => x.id === valueId)?.name || 'sans defaut'
+}
 const axeChoisi = computed(() => variantes.value.find(v => v.id === edit.value?.variantId) || null)
 const versionsAxe = computed(() => (axeChoisi.value?.values || []).filter(v => v.active))
 
@@ -80,14 +92,24 @@ async function chargerIngredients() { try { ingredients.value = await api.admin.
 function nomCompose(ids) {
   return ids.map(id => ingredients.value.find(i => i.id === id)?.name).filter(Boolean).join(' ')
 }
+/* Le nom du ticket suit les memes touches, en abrege : « Omlette Mozarilla Thon » d'un
+   cote, « Oml Moz Thon » de l'autre. Un ingredient sans abreviation donne son nom entier
+   plutot que rien - un ticket long vaut mieux qu'un ticket muet. */
+function ticketCompose(ids) {
+  return ids.map(id => { const i = ingredients.value.find(x => x.id === id); return i && (i.shortName || i.name) })
+            .filter(Boolean).join(' ')
+}
 /* On ne reecrit le nom que s'il decoule encore des ingredients : des qu'il a ete retouche
-   a la main, une touche d'ingredient ne doit pas effacer ce que l'utilisateur a ecrit. */
+   a la main, une touche d'ingredient ne doit pas effacer ce que l'utilisateur a ecrit.
+   Le nom du ticket suit la meme regle, jugee sur SA propre composition. */
 function basculerIngredient(id) {
   const liste = edit.value.ingredientIds || (edit.value.ingredientIds = [])
   const i = liste.indexOf(id)
   const suivait = edit.value.name === nomCompose(liste)
+  const suivaitTicket = !edit.value.shortName?.trim() || edit.value.shortName === ticketCompose(liste)
   if (i >= 0) liste.splice(i, 1); else liste.push(id)
   if (suivait || !edit.value.name?.trim()) edit.value.name = nomCompose(liste)
+  if (suivaitTicket) edit.value.shortName = ticketCompose(liste)
 }
 
 function move(from, to) {
@@ -119,7 +141,7 @@ async function onDrop() {
 }
 const simpleProducts = computed(() => rows.value.filter(p => p.productType === 'SIMPLE'))
 function nextCode(catId) { const c = cats.value.find(x => x.id === catId); const pre = (c?.name || 'PRD').slice(0, 3).toUpperCase().replace(/[^A-Z]/g, 'X'); let n = 1; while (rows.value.some(p => p.code === `${pre}-${String(n).padStart(3, '0')}`)) n++; return `${pre}-${String(n).padStart(3, '0')}` }
-function create() { const catId = Number(catFilter.value) || cats.value[0]?.id; edit.value = { code: nextCode(catId), reference: '', name: '', shortName: '', description: '', categoryId: catId, productType: 'SIMPLE', price: 0, taxRate: 0, imageUrl: '', color: '', sortOrder: rows.value.length + 1, active: true, available: true, favorite: false, favoriteOrder: 0, printDestinationIds: [], modifierGroupIds: [], menuComponents: [], ingredientIds: [], variantId: null, defaultVariantValueId: null, askVariant: false, variantPrices: [] }; tab.value = 'general' }
+function create() { const catId = Number(catFilter.value) || cats.value[0]?.id; edit.value = { code: nextCode(catId), reference: '', name: '', shortName: '', description: '', categoryId: catId, productType: 'SIMPLE', price: 0, taxRate: 0, imageUrl: '', color: '', sortOrder: rows.value.length + 1, active: true, available: true, favorite: false, favoriteOrder: 0, priceToCheck: false, printDestinationIds: [], modifierGroupIds: [], menuComponents: [], ingredientIds: [], variantId: null, defaultVariantValueId: null, askVariant: false, variantPrices: [] }; tab.value = 'general' }
 function open(p) { edit.value = { ...p, ingredientIds: [...(p.ingredientIds || [])], variantPrices: (p.variantPrices || []).map(x => ({ ...x })), modifierGroupIds: p.modifierGroups.map(g => g.id), menuComponents: p.menuComponents.map(c => ({ name: c.name, quantity: c.quantity, sortOrder: c.sortOrder, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) })) })) }; tab.value = 'general' }
 async function save() {
   const b = { ...edit.value, price: Number(String(edit.value.price).replace(',', '.')), taxRate: Number(edit.value.taxRate) || 0, menuComponents: edit.value.productType === 'MENU' ? edit.value.menuComponents.map((c, i) => ({ ...c, sortOrder: i, quantity: Number(c.quantity) || 1, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) || 0 })) })) : [] }
@@ -134,18 +156,31 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
 </script>
 <template>
   <div class="toolbar"><button class="btn primary" @click="create">+ Nouveau produit / menu</button><input class="input" v-model="q" placeholder="Rechercher…" /><select class="input" v-model="catFilter"><option value="">Toutes catégories</option><option v-for="c in cats" :key="c.id" :value="c.id">{{ c.name }}</option></select><span class="muted small">{{ filtered.length }} produit(s)</span>
+    <button class="btn sm" :class="{ 'warn solid': aVerifier }" @click="aVerifier = !aVerifier">
+      Prix à vérifier<span class="pastille num" v-if="nbAVerifier">{{ nbAVerifier }}</span>
+    </button>
+    <button class="btn sm" :class="{ 'warn solid': sansVariante }" @click="sansVariante = !sansVariante">Sans variante</button>
     <span class="reorder-hint" :class="canReorder ? 'on' : 'off'">
       <b>Ordre d'affichage</b>
       <template v-if="canReorder">glissez une ligne par sa poignée pour la déplacer</template>
       <template v-else>choisissez une catégorie{{ q.trim() ? ' et videz la recherche' : '' }} pour pouvoir réordonner</template>
     </span></div>
   <div class="table-wrap"><table class="table">
-    <thead><tr><th class="ord">Ordre</th><th>Code</th><th>Produit</th><th>Catégorie</th><th class="right">Prix</th><th>Type</th><th>Options</th><th>Impression</th><th>Favori</th><th>Dispo</th><th>Actif</th><th></th></tr></thead>
+    <thead><tr><th class="ord">Ordre</th><th>Code</th><th>Produit</th><th>Catégorie</th><th class="right">Prix</th><th>Variante</th><th>Type</th><th>Options</th><th>Impression</th><th>Favori</th><th>Dispo</th><th>Actif</th><th></th></tr></thead>
     <tbody><tr v-for="(p, i) in filtered" :key="p.id" :style="{ opacity: p.active ? 1 : .55 }"
                  :class="{ drag: canReorder, dragging: dragId === p.id }" :draggable="canReorder"
                  @dragstart="onDragStart(p)" @dragover="onDragOver($event, i)" @drop.prevent="onDrop" @dragend="onDrop">
       <td class="ord"><span v-if="canReorder" class="grip" aria-hidden="true"></span><b class="num">{{ i + 1 }}</b></td>
-      <td class="small">{{ p.code }}</td><td><b>{{ p.name }}</b><div class="tiny muted" v-if="p.shortName && p.shortName!==p.name">ticket : {{ p.shortName }}</div></td><td><span class="color-dot" :style="{ background: cats.find(c=>c.id===p.categoryId)?.color }"></span>{{ p.categoryName }}</td><td class="right num bold">{{ fmt(p.price) }}</td>
+      <td class="small">{{ p.code }}</td><td><b>{{ p.name }}</b><div class="tiny muted" v-if="p.shortName && p.shortName!==p.name">ticket : {{ p.shortName }}</div></td><td><span class="color-dot" :style="{ background: cats.find(c=>c.id===p.categoryId)?.color }"></span>{{ p.categoryName }}</td><td class="right num bold">{{ fmt(p.price) }}<span v-if="p.priceToCheck" class="flag" title="Prix a verifier : il ne vient pas de la carte">a verifier</span></td>
+      <!-- Colonne des variantes : d'un coup d'oeil, qui est decline et qui ne l'est pas.
+           Sans elle, il faudrait ouvrir 97 fiches pour trouver celle qu'on a oubliee. -->
+      <td class="small">
+        <template v-if="p.variantId">
+          <b>{{ variantes.find(v => v.id === p.variantId)?.name }}</b>
+          <div class="tiny muted">{{ nomValeur(p.variantId, p.defaultVariantValueId) }}<span v-if="p.askVariant"> · demande</span></div>
+        </template>
+        <span v-else class="muted">&mdash;</span>
+      </td>
       <td><span class="badge" :class="p.productType==='MENU' ? 'accent' : ''">{{ p.productType==='MENU' ? 'Menu' : 'Simple' }}</span></td><td class="small">{{ p.modifierGroups.map(g=>g.name).join(', ') }}</td>
       <td class="small">{{ p.printDestinationIds.length ? p.printDestinationIds.map(id => dests.find(d=>d.id===id)?.name).join(', ') : '(catégorie)' }}</td><td><Icon v-if="p.favorite" name="star" :size="16" style="color:var(--warn)" /></td>
       <td><button class="btn sm" :class="p.available ? 'success' : 'danger solid'" @click="toggleAvail(p)">{{ p.available ? 'Disponible' : 'INDISPONIBLE' }}</button></td><td><span class="badge" :class="p.active ? 'success' : 'danger'">{{ p.active ? 'Oui' : 'Non' }}</span></td>
@@ -188,7 +223,13 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
       </div>
       <div class="field"><label>Code</label><input class="input" v-model="edit.code" /></div>
       <div class="field"><label>Référence</label><input class="input" v-model="edit.reference" /></div>
-      <div class="field"><label>Prix TTC</label><input class="input lg" v-model="edit.price" inputmode="decimal" /></div>
+      <div class="field">
+        <label>Prix TTC</label>
+        <input class="input lg" v-model="edit.price" inputmode="decimal" />
+        <!-- La case s'eteint quand le gerant a confirme le tarif : c'est elle qui vide
+             peu a peu la colonne « a verifier » de la liste. -->
+        <label class="check mt-6"><input type="checkbox" v-model="edit.priceToCheck" /> Prix à vérifier</label>
+      </div>
       <div class="field"><label>TVA % (si activée)</label><input class="input" v-model="edit.taxRate" inputmode="decimal" /></div>
       <div class="field span-2"><label>Description</label><input class="input" v-model="edit.description" /></div>
       <!--
@@ -319,6 +360,18 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
 </template>
 
 <style scoped>
+.pastille {
+  display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 999px;
+  font-size: 11px; font-weight: 700; background: var(--warn); color: #fff;
+}
+.btn.warn.solid .pastille { background: rgba(255,255,255,.28); }
+/* Le drapeau se lit dans la colonne du prix, la ou le doute porte. Il n'empeche rien :
+   l'article se vend, mais on sait qu'il reste a confirmer. */
+.flag {
+  display: inline-block; margin-left: 8px; padding: 1px 7px; border-radius: 999px;
+  font-size: 11px; font-weight: 600; letter-spacing: .02em; white-space: nowrap;
+  color: var(--warn); border: 1px solid var(--warn); background: transparent;
+}
 /* --- variante --- */
 .variante { padding: 16px 0 4px; margin-top: 4px; border-top: 1px solid var(--line); }
 .variante .demander { align-items: flex-start; gap: 9px; padding: 8px 13px; border: 1px solid var(--line-2); border-radius: var(--r-lg); }

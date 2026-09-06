@@ -16,15 +16,30 @@ public final class CatalogImportDtos {
     public record ImportCategory(@NotBlank String name, String color, String icon, Integer sortOrder,
                                  String printDestination) {}
 
+    /** Ingredient nomme : « Thon », abrege « Thon » ; « Mozarilla 3arbi », abrege « Moz3 ». */
+    public record ImportIngredient(@NotBlank String name, String shortName) {}
+
+    public record ImportVariantValue(@NotBlank String name, String shortName) {}
+
+    /** Axe de declinaison : « Pate », valeurs Normale / Cereale / Chia. */
+    public record ImportVariant(@NotBlank String name, String namePosition, List<ImportVariantValue> values) {}
+
+    /** Prix complet de l'article pour une valeur, jamais un supplement. */
+    public record ImportVariantPrice(@NotBlank String value, BigDecimal price) {}
+
     public record ImportProduct(@NotBlank String code, @NotBlank String name, String shortName, String description,
                                 @NotBlank String category, BigDecimal price, BigDecimal taxRate, String color,
                                 Integer sortOrder, Boolean favorite, Integer favoriteOrder,
-                                List<String> modifierGroups, List<String> printDestinations) {}
+                                List<String> modifierGroups, List<String> printDestinations,
+                                List<String> ingredients, String variant, String defaultVariantValue,
+                                Boolean askVariant, List<ImportVariantPrice> variantPrices, Boolean priceToCheck) {}
 
     public record CatalogImport(String label, List<ImportCategory> categories,
-                                List<ImportModifierGroup> modifierGroups, List<ImportProduct> products) {}
+                                List<ImportModifierGroup> modifierGroups, List<ImportIngredient> ingredients,
+                                List<ImportVariant> variants, List<ImportProduct> products) {}
 
     public record ImportResult(String label, int categoriesCreated, int categoriesUpdated, int groupsCreated,
                                int groupsUpdated, int productsCreated, int productsUpdated, int productsDeactivated,
-                               int categoriesDeactivated, List<String> warnings) {}
+                               int categoriesDeactivated, int ingredientsCreated, int variantsCreated,
+                               int pricesToCheck, List<String> warnings) {}
 }

@@ -39,6 +39,7 @@ public final class Mappers {
         return new ProductDto(p.getId(), p.getCode(), p.getReference(), p.getName(), p.getShortName(), p.getDescription(),
                 p.getCategory().getId(), p.getCategory().getName(), p.getProductType().name(), p.getPrice(), p.getTaxRate(),
                 p.getImageUrl(), p.getColor(), p.getSortOrder(), p.isActive(), p.isAvailable(), p.isFavorite(), p.getFavoriteOrder(),
+                p.isPriceToCheck(),
                 p.getPrintDestinations().stream().map(PrintDestination::getId).sorted().toList(),
                 p.getModifierGroups().stream().sorted(Comparator.comparingInt(ProductModifierGroup::getSortOrder))
                         .map(ProductModifierGroup::getModifierGroup).filter(ModifierGroup::isActive).map(Mappers::modifierGroup).toList(),
@@ -190,7 +191,7 @@ public final class Mappers {
     }
 
     public static IngredientDto ingredient(Ingredient i) {
-        return new IngredientDto(i.getId(), i.getName(), i.getSortOrder(), i.isActive());
+        return new IngredientDto(i.getId(), i.getName(), i.getShortName(), i.getSortOrder(), i.isActive());
     }
 
     public static KitchenNoteDto kitchenNote(KitchenNote n) {

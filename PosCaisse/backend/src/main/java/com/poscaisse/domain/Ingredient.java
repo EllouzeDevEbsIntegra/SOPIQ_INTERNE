@@ -16,6 +16,8 @@ import java.time.OffsetDateTime;
 public class Ingredient {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
     private String name;
+    /** Nom du ticket : « Oml » pour Omlette. 42 colonnes de papier ne tiennent pas les noms longs. */
+    private String shortName;
     private int sortOrder;
     private boolean active = true;
     private OffsetDateTime createdAt = OffsetDateTime.now();

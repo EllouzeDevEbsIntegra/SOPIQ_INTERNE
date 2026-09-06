@@ -53,6 +53,15 @@ public class CatalogController {
     @PostMapping("/products") public ProductDto createProduct(@Valid @RequestBody ProductRequest r) { return catalog.saveProduct(null, r); }
     @PutMapping("/products/{id}") public ProductDto updateProduct(@PathVariable Long id, @Valid @RequestBody ProductRequest r) { return catalog.saveProduct(id, r); }
     @DeleteMapping("/products/{id}") public Map<String, Boolean> deleteProduct(@PathVariable Long id) { catalog.deleteProduct(id); return Map.of("ok", true); }
+    /**
+     * Pose la vignette d'un article, seule. Poser 97 photos par la fiche complete
+     * obligerait a renvoyer tout l'article - donc a reconstruire ses options, ses
+     * ingredients et ses prix de variante depuis un script, avec le risque d'en perdre
+     * un au passage. Ici on ne touche qu'a l'image.
+     */
+    @PutMapping("/products/{id}/image") public ProductDto setImage(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        return catalog.setProductImage(id, body.get("imageUrl"));
+    }
     @PatchMapping("/products/{id}/availability") public ProductDto availability(@PathVariable Long id, @Valid @RequestBody AvailabilityRequest r) { return catalog.setAvailability(id, r.available()); }
     @PostMapping("/products/reorder") public Map<String, Boolean> reorderProducts(@RequestBody ReorderRequest r) { catalog.reorderProducts(r.ids()); return Map.of("ok", true); }
     @PutMapping("/products/favorites") public Map<String, Boolean> favorites(@RequestBody FavoritesRequest r) { catalog.setFavorites(r.productIds()); return Map.of("ok", true); }

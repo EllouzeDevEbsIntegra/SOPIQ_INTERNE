@@ -28,6 +28,8 @@ public class CatalogImportService {
     private final ProductRepo productRepo;
     private final ModifierGroupRepo groupRepo;
     private final PrintDestinationRepo destinationRepo;
+    private final IngredientRepo ingredientRepo;
+    private final VariantRepo variantRepo;
     private final OrderLineRepo orderLineRepo;
     private final OrderLineModifierRepo orderLineModifierRepo;
     private final AuditService audit;
@@ -39,6 +41,88 @@ public class CatalogImportService {
 
         List<String> warnings = new ArrayList<>();
         int catCreated = 0, catUpdated = 0, grpCreated = 0, grpUpdated = 0, prodCreated = 0, prodUpdated = 0;
+        int ingCreated = 0, varCreated = 0, aVerifier = 0;
+
+        /*
+            INGREDIENTS ET VARIANTES AVANT LES PRODUITS : un article y renvoie par NOM.
+
+            Les deux sont rapproches par nom, jamais crees en double : ré-importer la meme
+            carte deux fois ne doit pas donner deux « Thon », sans quoi le filtre en caisse
+            en manquerait la moitie. Une valeur d'axe deja vendue garde son identifiant -
+            les tickets de l'annee derniere y renvoient.
+        */
+        Map<String, Ingredient> ingredients = new HashMap<>();
+        ingredientRepo.findAll().forEach(i -> ingredients.put(key(i.getName()), i));
+        if (payload.ingredients() != null) {
+            int ordre = 0;
+            for (ImportIngredient in : payload.ingredients()) {
+                Ingredient e = ingredients.get(key(in.name()));
+                if (e == null) { e = new Ingredient(); e.setName(in.name().trim()); ingCreated++; }
+                if (in.shortName() != null && !in.shortName().isBlank()) e.setShortName(in.shortName().trim());
+                e.setSortOrder(++ordre);
+                e.setActive(true);
+                ingredients.put(key(in.name()), ingredientRepo.save(e));
+            }
+        }
+
+        Map<String, Variant> variants = new HashMap<>();
+        Map<String, Map<String, VariantValue>> variantValues = new HashMap<>();
+        variantRepo.findAll().forEach(v -> variants.put(key(v.getName()), v));
+        if (payload.variants() != null) {
+            int ordre = 0;
+            for (ImportVariant v : payload.variants()) {
+                Variant e = variants.get(key(v.name()));
+                if (e == null) { e = new Variant(); e.setName(v.name().trim()); varCreated++; }
+                if (v.namePosition() != null)
+                    e.setNamePosition(Enums.NamePosition.valueOf(v.namePosition().trim().toUpperCase()));
+                e.setSortOrder(++ordre);
+                e.setActive(true);
+                Map<String, VariantValue> existantes = new HashMap<>();
+                e.getValues().forEach(x -> existantes.put(key(x.getName()), x));
+                List<VariantValue> suite = new ArrayList<>();
+                int i = 0;
+                for (ImportVariantValue val : Optional.ofNullable(v.values()).orElse(List.of())) {
+                    VariantValue x = existantes.getOrDefault(key(val.name()), new VariantValue());
+                    x.setVariant(e);
+                    x.setName(val.name().trim());
+                    x.setShortName(val.shortName() == null || val.shortName().isBlank() ? null : val.shortName().trim());
+                    x.setSortOrder(i++);
+                    x.setActive(true);
+                    suite.add(x);
+                }
+                /*
+                    Les valeurs absentes du fichier ne sont jamais SUPPRIMEES - les tickets
+                    deja imprimes y renvoient - mais elles sont eteintes. Sans cela, la
+                    valeur << Cereales >> du jeu de depart resterait a cote de la
+                    << Cereale >> du client : deux fois la meme pate dans le choix, dont
+                    une grisee a jamais faute de prix.
+
+                    Une valeur qui sert encore de defaut a un article reste allumee : la
+                    fermer rendrait cet article invendable d'un appui court, ce que les
+                    controles de la fiche interdisent deja.
+                */
+                for (VariantValue x : e.getValues()) {
+                    if (suite.stream().anyMatch(y -> key(y.getName()).equals(key(x.getName())))) continue;
+                    boolean sertDeDefaut = x.getId() != null && !variantRepo.produitsAyantPourDefaut(x.getId()).isEmpty();
+                    if (!sertDeDefaut) x.setActive(false);
+                    else warnings.add("Valeur << " + x.getName() + " >> gardee active : elle est la valeur par defaut d'articles conserves.");
+                    suite.add(x);
+                }
+                e.getValues().clear();
+                e.getValues().addAll(suite);
+                e = variantRepo.save(e);
+                variants.put(key(e.getName()), e);
+                Map<String, VariantValue> parNom = new HashMap<>();
+                e.getValues().forEach(x -> parNom.put(key(x.getName()), x));
+                variantValues.put(key(e.getName()), parNom);
+            }
+        }
+        for (Variant v : variants.values())
+            variantValues.computeIfAbsent(key(v.getName()), k -> {
+                Map<String, VariantValue> m = new HashMap<>();
+                v.getValues().forEach(x -> m.put(key(x.getName()), x));
+                return m;
+            });
 
         // ---- groupes d'options ----
         Map<String, ModifierGroup> groups = new HashMap<>();
@@ -127,6 +211,8 @@ public class CatalogImportService {
             entity.setAvailable(true);
             entity.setFavorite(Boolean.TRUE.equals(p.favorite()));
             entity.setFavoriteOrder(p.favoriteOrder() == null ? 0 : p.favoriteOrder());
+            entity.setPriceToCheck(Boolean.TRUE.equals(p.priceToCheck()));
+            if (entity.isPriceToCheck()) aVerifier++;
             entity.setUpdatedAt(OffsetDateTime.now());
 
             entity.getPrintDestinations().clear();
@@ -146,6 +232,48 @@ public class CatalogImportService {
                     entity.getModifierGroups().add(link);
                 }
             }
+            entity.getIngredients().clear();
+            if (p.ingredients() != null)
+                for (String nom : p.ingredients()) {
+                    Ingredient in = ingredients.get(key(nom));
+                    if (in == null) { warnings.add("Ingredient inconnu pour « " + p.name() + " » : " + nom); continue; }
+                    if (!entity.getIngredients().contains(in)) entity.getIngredients().add(in);
+                }
+
+            /*
+                La variante en dernier, et d'un bloc : l'axe, les prix, puis le defaut.
+                L'ordre compte - le defaut est refuse s'il n'a pas de prix, et son prix
+                vient d'etre pose. C'est le meme controle qu'a l'ecran : un article a
+                variante doit rester vendable d'un seul appui.
+            */
+            entity.getVariantPrices().clear();
+            entity.setVariant(null);
+            entity.setDefaultVariantValue(null);
+            entity.setAskVariant(false);
+            if (p.variant() != null && !p.variant().isBlank()) {
+                Variant axe = variants.get(key(p.variant()));
+                Map<String, VariantValue> valeurs = variantValues.getOrDefault(key(p.variant()), Map.of());
+                if (axe == null) warnings.add("Variante inconnue pour « " + p.name() + " » : " + p.variant());
+                else {
+                    entity.setVariant(axe);
+                    entity.setAskVariant(Boolean.TRUE.equals(p.askVariant()));
+                    for (ImportVariantPrice vp : Optional.ofNullable(p.variantPrices()).orElse(List.of())) {
+                        VariantValue val = valeurs.get(key(vp.value()));
+                        if (val == null) { warnings.add("Valeur inconnue de « " + axe.getName() + " » pour « " + p.name() + " » : " + vp.value()); continue; }
+                        ProductVariantPrice ligne = new ProductVariantPrice();
+                        ligne.setProduct(entity); ligne.setValue(val); ligne.setPrice(Money.r(vp.price()));
+                        entity.getVariantPrices().add(ligne);
+                    }
+                    VariantValue defaut = p.defaultVariantValue() == null ? null : valeurs.get(key(p.defaultVariantValue()));
+                    if (defaut == null)
+                        warnings.add("« " + p.name() + " » : valeur par defaut manquante, la variante n'est pas posee.");
+                    else if (entity.getVariantPrices().stream().noneMatch(x -> x.getValue().getId().equals(defaut.getId()) && x.getPrice().signum() > 0))
+                        warnings.add("« " + p.name() + " » : la valeur par defaut « " + defaut.getName() + " » n'a pas de prix, la variante n'est pas posee.");
+                    else { entity.setDefaultVariantValue(defaut); }
+                    if (entity.getDefaultVariantValue() == null) { entity.setVariant(null); entity.getVariantPrices().clear(); entity.setAskVariant(false); }
+                }
+            }
+
             entity = productRepo.save(entity);
             products.put(key(entity.getCode()), entity);
             importedCodes.add(key(entity.getCode()));
@@ -191,7 +319,8 @@ public class CatalogImportService {
                 + " mis à jour, " + prodDeleted + " supprimés, " + prodOff + " désactivés" + (replace ? " (mode remplacement)" : ""));
         log.info("Import de carte « {} » : {} produits créés, {} mis à jour, {} supprimés, {} désactivés",
                 label, prodCreated, prodUpdated, prodDeleted, prodOff);
-        return new ImportResult(label, catCreated, catUpdated, grpCreated, grpUpdated, prodCreated, prodUpdated, prodOff, catOff, warnings);
+        return new ImportResult(label, catCreated, catUpdated, grpCreated, grpUpdated, prodCreated, prodUpdated, prodOff, catOff,
+                ingCreated, varCreated, aVerifier, warnings);
     }
 
     private static String key(String s) { return s == null ? "" : s.trim().toLowerCase(); }

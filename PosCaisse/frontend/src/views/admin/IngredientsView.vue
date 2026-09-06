@@ -48,7 +48,7 @@ async function onDrop() {
 
 <template>
   <div class="toolbar">
-    <button class="btn primary" @click="edit = { name: '', active: true }">+ Nouvel ingrédient</button>
+    <button class="btn primary" @click="edit = { name: '', shortName: '', active: true }">+ Nouvel ingrédient</button>
     <span class="muted small">{{ rows.length }} ingrédient(s)</span>
     <span class="hint">Glissez une ligne pour changer l'ordre des touches dans la fiche article</span>
     <span class="grow"></span>
@@ -56,25 +56,34 @@ async function onDrop() {
   </div>
 
   <div class="table-wrap"><table class="table">
-    <thead><tr><th class="ord">Ordre</th><th>Ingrédient</th><th>Active</th><th></th></tr></thead>
+    <thead><tr><th class="ord">Ordre</th><th>Ingrédient</th><th>Abréviation (ticket)</th><th>Active</th><th></th></tr></thead>
     <tbody>
       <tr v-for="(n, i) in rows" :key="n.id" class="drag" :class="{ dragging: dragId === n.id }" draggable="true"
           @dragstart="dragId = n.id" @dragover="onDragOver($event, i)" @drop.prevent="onDrop" @dragend="onDrop">
         <td class="ord"><span class="grip" aria-hidden="true"></span><b class="num">{{ i + 1 }}</b></td>
         <td><b>{{ n.name }}</b></td>
+        <td><span v-if="n.shortName" class="abrev">{{ n.shortName }}</span><span v-else class="muted small">{{ n.name }}</span></td>
         <td><span class="badge" :class="n.active ? 'success' : 'danger'">{{ n.active ? 'Oui' : 'Non' }}</span></td>
         <td class="actions">
           <button class="btn sm" @click="edit = { ...n }">Modifier</button>
           <button class="btn sm danger" @click="remove(n)">✕</button>
         </td>
       </tr>
-      <tr v-if="!rows.length"><td colspan="4" class="empty">Aucun ingrédient. Le nom des articles reste saisissable à la main.</td></tr>
+      <tr v-if="!rows.length"><td colspan="5" class="empty">Aucun ingrédient. Le nom des articles reste saisissable à la main.</td></tr>
     </tbody>
   </table></div>
 
   <Modal v-if="edit" :title="edit.id ? 'Modifier l\'ingrédient' : 'Nouvel ingrédient'" @close="edit = null">
     <div class="col gap-16">
       <div class="field"><label>Nom</label><input class="input" v-model="edit.name" maxlength="60" autofocus placeholder="ex. Thon" @keyup.enter="save" /></div>
+      <!-- Le ticket fait 42 colonnes et le passeur lit vite : « Oml Moz Thon » se saisit
+           d'un coup d'oeil la ou « Omlette Mozarilla Thon » deborde. Laissee vide,
+           l'abreviation est le nom entier - jamais rien. -->
+      <div class="field">
+        <label>Abréviation (nom du ticket)</label>
+        <input class="input" v-model="edit.shortName" maxlength="20"
+               :placeholder="edit.name ? edit.name + '  (nom complet)' : 'ex. Thon'" @keyup.enter="save" />
+      </div>
       <label class="check"><input type="checkbox" v-model="edit.active" /> Proposé dans la fiche article</label>
     </div>
     <template #foot>
@@ -90,6 +99,10 @@ async function onDrop() {
   background: var(--surface-2); color: var(--ink-3); border: 1px dashed var(--line-2);
 }
 .ord { width: 74px; white-space: nowrap; }
+.abrev {
+  font-family: ui-monospace, monospace; font-size: 13px; padding: 1px 7px;
+  border: 1px solid var(--line-2); border-radius: 4px; background: var(--surface-2);
+}
 .ord b { font-size: 13px; font-weight: 700; color: var(--ink-2); }
 .grip {
   display: inline-block; width: 9px; height: 14px; margin-right: 8px; vertical-align: -2px;
