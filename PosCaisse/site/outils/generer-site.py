@@ -244,6 +244,40 @@ def rendu(fichier, incruster):
     return len(txt)
 
 
+def carte_lisible():
+    """
+    La carte en petit : le meme contenu que carte-live.json, sans les photos, avec les
+    noms de pate en clair. carte-live.json fait 16 Mo - il porte les images en base64,
+    et aucun outil ne le relit confortablement. Celui-ci fait quelques dizaines de Ko :
+    c'est lui qu'on donne a qui doit refaire la page.
+    """
+    data = {
+        'restaurant': {
+            'nom': 'NUMBER ONE', 'ville': 'Chihia, Sfax', 'adresse': ADRESSE,
+            'telephone': TEL_AFFICHE, 'telephoneLien': TEL_LIEN, 'maps': MAPS,
+            'monnaie': 'TND', 'symbole': 'DT', 'decimales': 3,
+        },
+        'pates': PATES,
+        'supplementDoublePate': DOUBLE,
+        'categories': [],
+    }
+    for c in cats:
+        rub = {'nom': c['name'], 'description': DITS.get(c['name'], ''), 'articles': []}
+        for p in par_cat[c['name']]:
+            a = {'nom': p['name'], 'prix': float(p['price'])}
+            f = photos.get(slug(p['name']))
+            if f: a['photo'] = 'img/' + f
+            pv = prix_pates(p)
+            if pv and any(x is not None for x in pv):
+                a['prixParPate'] = {n: (None if v is None else float(v)) for n, v in zip(PATES, pv)}
+            rub['articles'].append(a)
+        data['categories'].append(rub)
+    open(os.path.join(ICI, 'carte.json'), 'w', encoding='utf-8').write(
+        json.dumps(data, ensure_ascii=False, indent=2))
+    return os.path.getsize(os.path.join(ICI, 'carte.json'))
+
+
+n3 = carte_lisible()
 n1 = rendu('index.html', False)
 n2 = rendu('apercu-artifact.html', True)
 
@@ -254,4 +288,5 @@ manquantes = [p['name'] for p in produits if slug(p['name']) not in photos]
 print('%d rubriques. Photos : %d dans site/img/ (%d reprises du poste), %d manquantes.'
       % (len(cats), len(produits) - len(manquantes), posees, len(manquantes)))
 if manquantes: print('Sans photo : ' + ', '.join(manquantes))
-print('index.html %d Ko, apercu-artifact.html %d Ko.' % (n1 // 1024, n2 // 1024))
+print('index.html %d Ko, apercu-artifact.html %d Ko, carte.json %d Ko.'
+      % (n1 // 1024, n2 // 1024, n3 // 1024))
