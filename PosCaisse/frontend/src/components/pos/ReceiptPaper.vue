@@ -7,7 +7,7 @@
  * pleines dès que la police changeait de taille.
  */
 import { computed } from 'vue'
-import { headFields, receiptBlocks } from '../../utils/receipt'
+import { emphSegments, headFields, receiptBlocks } from '../../utils/receipt'
 const props = defineProps({
   content: String, logo: String,
   paperWidth: { type: Number, default: 80 },
@@ -16,6 +16,8 @@ const props = defineProps({
 const blocks = computed(() => receiptBlocks(props.content))
 const columns = computed(() => (props.paperWidth <= 58 ? 32 : 42))
 const rows = (block) => block.lines.map(headFields).filter(p => p.length)
+// Le bloc est rendu d'un seul tenant : l'emphase ne franchit jamais une fin de ligne.
+const segments = (block) => emphSegments(block.lines.join('\n'))
 </script>
 <template>
   <div class="receipt-paper" :style="{ width: `calc(${columns}ch + 18px)`, fontSize: fontSize + 'px' }">
@@ -28,12 +30,14 @@ const rows = (block) => block.lines.map(headFields).filter(p => p.length)
           </div>
         </div>
       </div>
-      <pre v-else :class="{ big: b.kind === 'big' }">{{ b.lines.join('\n') }}</pre>
+      <pre v-else :class="{ big: b.kind === 'big' }"><template v-for="(s, j) in segments(b)" :key="j"><b v-if="s.emph">{{ s.text }}</b><template v-else>{{ s.text }}</template></template></pre>
     </template>
   </div>
 </template>
 <style scoped>
 pre { margin: 0; font: inherit; white-space: pre; }
+/* La variante vendue, en gras au milieu du nom : le passeur la lit sans lire la ligne. */
+pre b { font-weight: 800; }
 pre.big { font-size: 2em; font-weight: 800; line-height: 1.06; }
 
 .head { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }

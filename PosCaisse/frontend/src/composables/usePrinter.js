@@ -20,6 +20,7 @@ export function printJobs(jobs, template) {
       body { margin: 0; font-family: 'Consolas','Courier New',monospace; font-size: ${fontPx}px; line-height: 1.2; width: ${widthMm - 2 * margin}mm; }
       pre { margin: 0; white-space: pre; font: inherit; }
       pre.big { font-size: 2em; font-weight: 800; line-height: 1.06; }
+      pre b { font-weight: 800; }
       .head { display: flex; align-items: center; gap: 3mm; margin-bottom: 1.5mm; }
       .head .logo { flex: none; width: 34%; max-height: 18mm; object-fit: contain; filter: grayscale(1) contrast(1.4); }
       .head-txt { flex: 1; min-width: 0; }

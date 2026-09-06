@@ -11,9 +11,17 @@
  *           la date et l'heure en dessous, séparées par l'espace qui les tient aux deux
  *           bords. Ces lignes restent remplies pour la largeur du papier, donc lisibles
  *           telles quelles sur un support qui ignore le marqueur.
+ *
+ * Une troisième paire encadre un passage DANS une ligne, et non la ligne entière :
+ *
+ *   U+000E / U+000F  emphase ouverte puis refermée — la variante vendue, « Céréale »,
+ *           au milieu du nom de l'article. Ces marqueurs ne prennent pas de place sur
+ *           le papier : le serveur a calibré ses colonnes sans les compter.
  */
 const BIG = 0x01
 const HEAD = 0x02
+const EMPH_ON = '\u000E'
+const EMPH_OFF = '\u000F'
 
 /** Découpe le ticket en blocs homogènes : { kind: 'text' | 'big' | 'head', lines }. */
 export function receiptBlocks(content) {
@@ -34,7 +42,30 @@ export function receiptBlocks(content) {
  * tient aux deux bords du papier : deux espaces ou plus marquent donc la coupure.
  */
 export function headFields(line) {
-  return line.trim().split(/\s{2,}/).filter(Boolean)
+  return sansEmphase(line).trim().split(/\s{2,}/).filter(Boolean)
+}
+
+/** Le texte sans ses marqueurs d'emphase, pour un support qui ne sait pas les rendre. */
+export function sansEmphase(text) {
+  return String(text ?? '').replace(/[\u000E\u000F]/g, '')
+}
+
+/**
+ * Découpe un texte en segments { text, emph } : ce qui est encadré par les marqueurs
+ * d'emphase d'un côté, le reste de l'autre. Les marqueurs eux-mêmes disparaissent.
+ */
+export function emphSegments(text) {
+  const out = []
+  let emph = false
+  let buf = ''
+  for (const ch of String(text ?? '')) {
+    if (ch !== EMPH_ON && ch !== EMPH_OFF) { buf += ch; continue }
+    if (buf) out.push({ text: buf, emph })
+    buf = ''
+    emph = ch === EMPH_ON
+  }
+  if (buf || !out.length) out.push({ text: buf, emph })
+  return out
 }
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
@@ -42,7 +73,11 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
 /** Le même ticket en HTML, pour la fenêtre d'impression. `logo` est une balise img déjà prête. */
 export function receiptHtml(content, logo = '') {
   return receiptBlocks(content).map(b => {
-    if (b.kind !== 'head') return `<pre${b.kind === 'big' ? ' class="big"' : ''}>${esc(b.lines.join('\n'))}</pre>`
+    if (b.kind !== 'head') {
+      const txt = emphSegments(b.lines.join('\n'))
+        .map(s => (s.emph ? `<b>${esc(s.text)}</b>` : esc(s.text))).join('')
+      return `<pre${b.kind === 'big' ? ' class="big"' : ''}>${txt}</pre>`
+    }
     const rows = b.lines.map((l, i) => {
       const parts = headFields(l)
       if (!parts.length) return ''

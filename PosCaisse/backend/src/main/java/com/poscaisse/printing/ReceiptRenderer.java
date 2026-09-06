@@ -69,24 +69,47 @@ public class ReceiptRenderer {
      */
     public static final char HEAD = '\u0002';
 
+    /**
+     * Emphase DANS une ligne, entre ces deux marqueurs. BOLD et HEAD valent pour la ligne
+     * entiere ; la variante, elle, n'est qu'un mot au milieu d'un nom.
+     *
+     * Le passeur cherche la pate avant tout le reste : sur << 2 x Oml Moz Thon Cereale >>,
+     * c'est le dernier mot qui decide de ce qu'il attrape, et c'est celui qui se perd dans
+     * la ligne. En gras, il se lit sans lire le reste.
+     *
+     * Les deux caracteres choisis sont ceux que les imprimantes emploient depuis toujours
+     * pour cela - SO et SI - et ils ne peuvent pas apparaitre dans un nom d'article.
+     */
+    public static final char EMPH_ON = '\u000E';
+    public static final char EMPH_OFF = '\u000F';
+
+    static boolean marqueur(char c) { return c == EMPH_ON || c == EMPH_OFF; }
+
+    /** Longueur VISIBLE : les marqueurs ne prennent pas de place sur le papier. */
+    static int vlen(String s) {
+        int n = 0;
+        for (int i = 0; i < s.length(); i++) if (!marqueur(s.charAt(i))) n++;
+        return n;
+    }
+
     static final class Sheet {
         final int w; final StringBuilder sb = new StringBuilder();
         Sheet(int w) { this.w = w; }
         void nl() { sb.append('\n'); }
         void line(String s) { for (String part : wrap(s, w)) sb.append(part).append('\n'); }
-        void center(String s) { for (String part : wrap(s, w)) { int pad = Math.max(0, (w - part.length()) / 2); sb.append(" ".repeat(pad)).append(part).append('\n'); } }
+        void center(String s) { for (String part : wrap(s, w)) { int pad = Math.max(0, (w - vlen(part)) / 2); sb.append(" ".repeat(pad)).append(part).append('\n'); } }
         void sep(String ch) { sb.append((ch == null || ch.isEmpty() ? "-" : ch.substring(0, 1)).repeat(w)).append('\n'); }
         void lr(String l, String r) {
             // Quand les deux ne tiennent pas sur une ligne, le libelle garde la sienne et
             // la valeur s'aligne a droite en dessous. Rogner le libelle, comme le ferait
             // un simple remplissage, le rendrait illisible (« Clie / nt »).
-            if (l.length() + r.length() + 1 > w) {
+            if (vlen(l) + vlen(r) + 1 > w) {
                 line(l);
-                if (r.length() > w) { line(r); return; }
-                sb.append(" ".repeat(w - r.length())).append(r).append('\n');
+                if (vlen(r) > w) { line(r); return; }
+                sb.append(" ".repeat(w - vlen(r))).append(r).append('\n');
                 return;
             }
-            sb.append(l).append(" ".repeat(Math.max(1, w - l.length() - r.length()))).append(r).append('\n');
+            sb.append(l).append(" ".repeat(Math.max(1, w - vlen(l) - vlen(r)))).append(r).append('\n');
         }
         void big(String s) { center(s.toUpperCase()); }
         /**
@@ -98,7 +121,7 @@ public class ReceiptRenderer {
         void bold(String s) {
             int bw = Math.max(8, w / 2);
             for (String part : wrap(s, bw)) {
-                int pad = Math.max(0, (bw - part.length()) / 2);
+                int pad = Math.max(0, (bw - vlen(part)) / 2);
                 sb.append(BOLD).append(" ".repeat(pad)).append(part).append('\n');
             }
         }
@@ -115,15 +138,45 @@ public class ReceiptRenderer {
             if (s == null) { out.add(""); return out; }
             for (String raw : s.split("\n")) {
                 String t = raw;
-                while (t.length() > w) {
-                    int cut = t.lastIndexOf(' ', w);
-                    if (cut <= 0) cut = w;
+                while (vlen(t) > w) {
+                    int max = indexApres(t, w);
+                    int cut = t.lastIndexOf(' ', max);
+                    if (cut <= 0) cut = max;
                     out.add(t.substring(0, cut).stripTrailing());
                     t = t.substring(cut).stripLeading();
                 }
                 out.add(t);
             }
+            /*
+                Une coupure au milieu d'un passage en gras laisserait la premiere moitie
+                ouverte et la seconde sans marqueur : on referme et on rouvre. Le cas est
+                rare - la variante est le dernier mot d'un nom - mais il donnerait un
+                ticket a moitie gras, ce qui se remarque plus qu'un ticket sans gras.
+            */
+            boolean ouvert = false;
+            for (int i = 0; i < out.size(); i++) {
+                String l = out.get(i);
+                if (ouvert) l = EMPH_ON + l;
+                boolean finitOuvert = ouvert;
+                for (int k = 0; k < l.length(); k++) {
+                    char c = l.charAt(k);
+                    if (c == EMPH_ON) finitOuvert = true; else if (c == EMPH_OFF) finitOuvert = false;
+                }
+                if (finitOuvert) l = l + EMPH_OFF;
+                out.set(i, l);
+                ouvert = finitOuvert;
+            }
             return out;
+        }
+
+        /** Index du caractere ou la largeur visible w est atteinte. */
+        static int indexApres(String s, int w) {
+            int n = 0;
+            for (int i = 0; i < s.length(); i++) {
+                if (!marqueur(s.charAt(i))) n++;
+                if (n > w) return i;
+            }
+            return s.length();
         }
         @Override public String toString() { return sb.toString(); }
     }
@@ -319,7 +372,8 @@ public class ReceiptRenderer {
                 ? l.getVariantValueName() : l.getVariantValueShortName();
         boolean prefixe = l.getVariantValue() != null && l.getVariantValue().getVariant() != null
                 && l.getVariantValue().getVariant().getNamePosition() == Enums.NamePosition.PREFIX;
-        return prefixe ? mot + " " + base : base + " " + mot;
+        String gras = EMPH_ON + mot + EMPH_OFF;
+        return prefixe ? gras + " " + base : base + " " + gras;
     }
 
     /** « Mozarilla » ou « 3 x Mozarilla » : la quantite n'apparait que si elle depasse 1. */

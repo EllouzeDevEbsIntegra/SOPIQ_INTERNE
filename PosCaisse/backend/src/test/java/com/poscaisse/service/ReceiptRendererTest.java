@@ -17,9 +17,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ReceiptRendererTest {
     private final ReceiptRenderer renderer = new ReceiptRenderer(new ObjectMapper());
 
-    /** Le marqueur de mise en forme ne s'imprime pas : il ne compte pas dans la largeur. */
+    /**
+     * Le texte tel qu'il sort sur le papier : les marqueurs de mise en forme (ligne mise
+     * en avant, en-tete, emphase dans la ligne) ne s'impriment pas, donc ils ne comptent
+     * pas dans la largeur.
+     */
     private static String printable(String line) {
-        return line.isEmpty() || line.charAt(0) >= ' ' ? line : line.substring(1);
+        return line.replaceAll("[\\u0001\\u0002\\u000E\\u000F]", "");
     }
 
     private SaleOrder order() {
@@ -137,6 +141,49 @@ class ReceiptRendererTest {
         String txt = renderer.customerReceipt(o, o.getCompany(), t, true, false);
         assertThat(txt).contains("DUPLICATA");
         for (String line : txt.split("\n")) assertThat(printable(line).length()).isLessThanOrEqualTo(32);
+    }
+
+    /**
+     * La variante vendue s'imprime en gras AU MILIEU du nom : sur « 2 x Oml Moz Thon
+     * Cereale », c'est le dernier mot qui decide de ce que le passeur attrape, et c'est
+     * celui qui se perd dans la ligne. Les marqueurs ne prennent pas de place : la
+     * colonne des montants reste alignee sur celle des lignes sans variante.
+     */
+    @Test void variantWordIsPrintedInBold() {
+        SaleOrder o = order();
+        Variant axe = new Variant(); axe.setName("Pâte"); axe.setNamePosition(Enums.NamePosition.SUFFIX);
+        VariantValue val = new VariantValue(); val.setVariant(axe); val.setName("Pâte Céréale"); val.setShortName("Cér");
+        OrderLine l = o.getLines().get(0);
+        l.setVariantValue(val); l.setVariantValueName(val.getName()); l.setVariantValueShortName(val.getShortName());
+
+        ReceiptTemplate t = new ReceiptTemplate(); t.setPaperWidth(80);
+        String txt = renderer.customerReceipt(o, o.getCompany(), t, false, false);
+        String ligne = txt.lines().filter(x -> x.contains("Cheeseburger")).findFirst().orElseThrow();
+
+        assertThat(ligne).contains(ReceiptRenderer.EMPH_ON + "Cér" + ReceiptRenderer.EMPH_OFF);
+        assertThat(printable(ligne)).isEqualTo("2 x Cheeseburger Cér" + " ".repeat(42 - 20 - 6) + "17,000");
+        for (String x : txt.split("\n")) assertThat(printable(x).length()).as("line: " + x).isLessThanOrEqualTo(42);
+    }
+
+    /** Sur 32 colonnes, une coupure au milieu du gras le referme et le rouvre. */
+    @Test void boldSurvivesAWrap() {
+        SaleOrder o = order();
+        Variant axe = new Variant(); axe.setName("Pâte"); axe.setNamePosition(Enums.NamePosition.SUFFIX);
+        VariantValue val = new VariantValue(); val.setVariant(axe); val.setName("Pâte Céréale complète");
+        OrderLine l = o.getLines().get(0);
+        l.setProductName("Omelette Mozarilla Thon Merguez");
+        l.getProduct().setShortName("Omelette Mozarilla Thon Merguez");
+        l.setVariantValue(val); l.setVariantValueName(val.getName());
+
+        ReceiptTemplate t = new ReceiptTemplate(); t.setPaperWidth(58);
+        String txt = renderer.customerReceipt(o, o.getCompany(), t, false, false);
+        for (String x : txt.split("\n")) {
+            assertThat(printable(x).length()).as("line: " + x).isLessThanOrEqualTo(32);
+            long on = x.chars().filter(c -> c == ReceiptRenderer.EMPH_ON).count();
+            long off = x.chars().filter(c -> c == ReceiptRenderer.EMPH_OFF).count();
+            assertThat(on).as("gras ouvert puis referme sur la meme ligne : " + x).isEqualTo(off);
+        }
+        assertThat(printable(txt)).contains("Pâte Céréale");
     }
 
     @Test void prepTicketHidesPricesByDefault() {
