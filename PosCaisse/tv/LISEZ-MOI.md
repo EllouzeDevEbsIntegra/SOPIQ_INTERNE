@@ -43,11 +43,17 @@ Puis recopier les trois fichiers sur les postes des téléviseurs.
 
 ## Ce qui a été décidé, et pourquoi
 
-**Un seul prix par ligne**, celui de la pâte normale. La carte en porte trois par
-article ; à l'écran, trois colonnes divisent la taille du texte par deux et le tableau
-devient illisible du fond de la salle. L'écart est le même partout — vérifié sur les
-86 articles déclinés : céréale +1,000, chia +1,500 — donc il est dit **une fois, en
-grand**, dans le bandeau rouge que porte chacun des trois écrans.
+**Les trois prix sur la ligne** — normale, céréale, chia. Un client qui doit ajouter
++1,000 de tête devant un tableau hésite, et un client qui hésite ne commande pas. Les
+colonnes ne coûtent rien à la lisibilité : c'est la **hauteur** de la ligne qui commande
+la taille du texte, et elle ne change pas — les trois prix tiennent dans la largeur qui
+restait libre à droite. Seule la **double pâte** reste une règle, dans le bandeau rouge :
++1,000, et +1,500 en chia.
+
+**Une image de fond par écran**, dans `fond/` — voir le `LISEZ-MOI.txt` qui s'y trouve.
+Elle s'affiche à 15 % dans le bas de la dalle et s'efface en montant, pour réchauffer le
+noir sans jamais disputer un chiffre. Sans image, l'écran reste noir : le tableau ne
+dépend pas d'elle.
 
 **Pas de photo dans les listes.** À cette densité une vignette coûte deux lignes de
 texte, et le client qui lève les yeux cherche un prix. Les photos sont sur la caisse et

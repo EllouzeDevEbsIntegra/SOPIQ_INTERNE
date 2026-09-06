@@ -10,11 +10,12 @@ secondes, sans pouvoir cliquer ni faire defiler. Tout en decoule.
 
 CE QUI EST DECIDE ICI, ET POURQUOI
 
-  Un seul prix par ligne, celui de la pate normale. La carte porte trois prix par
-  article - a l'ecran, trois colonnes divisent la taille du texte par deux et le
-  tableau devient illisible du fond de la salle. L'ecart est le meme partout (verifie
-  sur les 86 articles declines : cereale +1,000, chia +1,500), donc il se dit UNE fois,
-  en grand, dans le bandeau rouge que porte chacun des trois ecrans.
+  Les trois prix sur la ligne : normale, cereale, chia. Un client qui doit ajouter
+  +1,000 de tete devant un tableau hesite, et un client qui hesite ne commande pas. Les
+  colonnes ne coutent rien a la lisibilite : c'est la HAUTEUR de la ligne qui commande
+  la taille du texte, et elle ne change pas - les trois prix tiennent dans la largeur
+  qui restait libre a droite. Seule la double pate reste une regle, dans le bandeau
+  rouge : elle vaut pour toute la carte (+1,000, et +1,500 en chia).
 
   Rien ne tourne, rien ne defile, rien ne clignote. Un client qui arrive au milieu d'une
   rotation attend son tour pour lire un prix ; et un ecran fixe ne demande pas qu'on
@@ -36,6 +37,8 @@ import base64, io, json, os, re, unicodedata
 ICI = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CARTE = os.path.join(ICI, '..', 'site', 'carte.json')
 LOGO = os.path.join(ICI, '..', 'site', 'img', 'logo-number-one.png')
+FONDS = os.path.join(ICI, 'fond')          # ecran-1-gauche.jpg, ecran-2-centre.jpg, ...
+OPACITE = 0.15                              # ce qui reste de l'image sous le texte
 POLICES = os.path.join(ICI, 'outils', 'polices')
 
 # Repartition des rubriques sur les trois ecrans. L'ecran de gauche ouvre sur les
@@ -78,6 +81,26 @@ def logo_data():
     return 'data:image/png;base64,' + base64.b64encode(tampon.getvalue()).decode()
 
 
+def fond_data(code):
+    """
+    L'image de fond d'un ecran, si elle existe.
+
+    Elle est ramenee a 1600 px et compressee : elle ne se voit qu'a 15 %, un fichier de
+    trois megaoctets n'y ajouterait rien. Absente, l'ecran reste noir - le tableau ne
+    depend jamais d'elle.
+    """
+    from PIL import Image
+    for ext in ('jpg', 'jpeg', 'png', 'webp'):
+        chemin = os.path.join(FONDS, 'ecran-%s.%s' % (code, ext))
+        if os.path.exists(chemin):
+            im = Image.open(chemin).convert('RGB')
+            im.thumbnail((1600, 1600), Image.LANCZOS)
+            t = io.BytesIO()
+            im.save(t, 'JPEG', quality=74, optimize=True)
+            return 'data:image/jpeg;base64,' + base64.b64encode(t.getvalue()).decode(), len(t.getvalue())
+    return None, 0
+
+
 def e(s):
     return (str(s).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
             .replace('"', '&quot;'))
@@ -90,13 +113,24 @@ R = carte['restaurant']
 
 
 def flux(rubriques):
-    """La suite des elements d'un ecran : un titre, ses lignes, le titre suivant."""
+    """
+    La suite des elements d'un ecran : un titre, ses lignes, le titre suivant.
+
+    Une ligne porte soit ses trois prix de pate, soit un prix unique - lablebi,
+    boissons et extras ne se declinent pas. Le titre sait lequel des deux vient, pour
+    poser les intitules des colonnes seulement quand il y a des colonnes.
+    """
     out = []
     for nom in rubriques:
         c = par_nom[nom]
-        out.append(('titre', nom))
+        declinee = any(a.get('prixParPate') for a in c['articles'])
+        out.append(('titre', nom, declinee))
         for a in c['articles']:
-            out.append(('ligne', a['nom'], prix(a['prix'])))
+            pp = a.get('prixParPate')
+            if pp:
+                out.append(('ligne', a['nom'], [prix(pp[x]) for x in carte['pates']]))
+            else:
+                out.append(('ligne', a['nom'], [prix(a['prix'])]))
     return out
 
 
@@ -119,8 +153,8 @@ def couper(items):
             g, d = items[:i], items[i:]
         else:
             # la colonne de droite reprend le titre de la rubrique en cours
-            titre = next(x[1] for x in reversed(items[:i]) if x[0] == 'titre')
-            g, d = items[:i], [('titre', titre + ' (suite)')] + items[i:]
+            t = next(x for x in reversed(items[:i]) if x[0] == 'titre')
+            g, d = items[:i], [('titre', t[1] + ' (suite)', t[2])] + items[i:]
         m = max(cout(g), cout(d))
         if meilleur is None or m < meilleur:
             meilleur, coupe, colonnes = m, i, (g, d)
@@ -147,6 +181,21 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
   color: var(--creme); background: var(--nuit);
   position: relative; overflow: hidden;
 }
+
+/*
+    L'image de fond. Elle habite le bas de la dalle - la ou les colonnes s'arretent et
+    ou le noir restait vide - et s'efface en montant : au niveau des prix il n'en reste
+    presque rien, et au niveau du bandeau rouge, rien du tout. A 15 %%, elle rechauffe
+    le tableau sans jamais disputer un chiffre.
+*/
+.fond {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-size: cover; background-position: center bottom;
+  opacity: %(opacite)s;
+  -webkit-mask-image: linear-gradient(to top, #000 0%%, #000 34%%, rgba(0,0,0,.30) 66%%, transparent 88%%);
+  mask-image: linear-gradient(to top, #000 0%%, #000 34%%, rgba(0,0,0,.30) 66%%, transparent 88%%);
+}
+.entete, .bandeau, .colonnes { position: relative; z-index: 1; }
 
 .entete { height: calc(%(entete)d * var(--u)); display: flex; align-items: center; gap: calc(20 * var(--u)); }
 .entete .logo { height: calc(%(entete)d * var(--u)); width: auto; }
@@ -190,32 +239,48 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
 .colonnes { flex: 1; display: flex; gap: calc(46 * var(--u)); margin-top: calc(%(ecart)d * var(--u)); }
 .colonne { flex: 1; min-width: 0; }
 
+.rubrique, .ligne {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) repeat(3, calc(%(colonne)s * var(--u)));
+  gap: calc(10 * var(--u)); align-items: baseline;
+}
+
 .rubrique {
   font-family: Anton, 'Arial Narrow', sans-serif; color: var(--or);
   letter-spacing: .03em; text-transform: uppercase;
-  height: calc(%(titre)s * var(--u)); display: flex; align-items: flex-end; gap: calc(14 * var(--u));
+  height: calc(%(titre)s * var(--u)); align-items: flex-end;
   font-size: calc(%(ftitre)s * var(--u));
   border-bottom: calc(2 * var(--u)) solid rgba(254, 204, 48, .32);
   margin-bottom: calc(%(apres)s * var(--u));
 }
-.rubrique span { flex: 1; }
-
-.ligne {
-  height: calc(%(ligne)s * var(--u)); display: flex; align-items: baseline; gap: calc(10 * var(--u));
+/* Les intitules de colonnes se posent au-dessus des prix qu'ils nomment, pas ailleurs :
+   c'est la meme grille que les lignes qui les place. */
+.rubrique .col {
+  font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 600;
+  font-size: calc(%(fcol)s * var(--u)); letter-spacing: .12em;
+  color: var(--sourd); text-align: right;
 }
-.ligne .n { font-weight: 500; font-size: calc(%(fnom)s * var(--u)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ligne .pointille {
-  flex: 1; height: calc(1 * var(--u)); margin-bottom: calc(%(fpoint)s * var(--u));
-  background-image: radial-gradient(circle, rgba(246, 239, 227, .34) calc(1 * var(--u)), transparent calc(1 * var(--u)));
+
+.ligne { height: calc(%(ligne)s * var(--u)); }
+.ligne .n {
+  font-weight: 500; font-size: calc(%(fnom)s * var(--u));
+  display: flex; align-items: baseline; gap: calc(10 * var(--u)); min-width: 0;
+}
+.ligne .n .pointille {
+  flex: 1; height: calc(1 * var(--u)); align-self: center; margin-top: calc(%(fpoint)s * var(--u));
+  background-image: radial-gradient(circle, rgba(246, 239, 227, .30) calc(1 * var(--u)), transparent calc(1 * var(--u)));
   background-size: calc(9 * var(--u)) calc(2 * var(--u)); background-repeat: repeat-x;
 }
 .ligne .p {
   font-weight: 600; font-size: calc(%(fprix)s * var(--u)); color: var(--or);
-  font-variant-numeric: tabular-nums; white-space: nowrap;
+  font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right;
 }
+/* Un article qui ne se decline pas garde un seul prix, aligne sur la derniere colonne :
+   trois cases vides feraient croire a des prix manquants. */
+.ligne .p.seul { grid-column: 2 / -1; }
 """
 
-MODELE = """<div class="tableau">
+MODELE = """<div class="tableau">%(fond)s
   <div class="entete">
     <img class="logo" src="%(logo)s" alt="">
     <div>
@@ -226,12 +291,12 @@ MODELE = """<div class="tableau">
     <div class="tel"><i>Commandes</i><b>%(tel)s</b></div>
   </div>
   <div class="bandeau">
-    <span class="cle">P&Acirc;TES</span>
-    <span class="p">Normale <b>prix affich&eacute;</b></span>
+    <span class="cle">DOUBLE P&Acirc;TE</span>
+    <span class="p">Normale <b>+1,000</b></span>
     <span class="p">C&eacute;r&eacute;ale <b>+1,000</b></span>
     <span class="p">Chia <b>+1,500</b></span>
     <span class="sep"></span>
-    <span class="note">Double p&acirc;te : +1,000 &middot; en chia +1,500</span>
+    <span class="note">Prix en dinars tunisiens</span>
   </div>
   <div class="colonnes">
     <div class="colonne">%(g)s</div>
@@ -244,15 +309,20 @@ def rendu_colonne(items, l):
     out = ''
     for x in items:
         if x[0] == 'titre':
-            out += '<div class="rubrique"><span>%s</span></div>' % e(x[1].upper())
+            cols = ''.join('<span class="col">%s</span>' % e(p) for p in carte['pates']) if x[2] else ''
+            out += '<div class="rubrique"><span class="t">%s</span>%s</div>' % (e(x[1].upper()), cols)
         else:
-            out += ('<div class="ligne"><span class="n">%s</span>'
-                    '<span class="pointille"></span><span class="p">%s</span></div>'
-                    % (e(x[1]), e(x[2])))
+            p = x[2]
+            if len(p) == 1:
+                cases = '<span class="p seul">%s</span>' % e(p[0])
+            else:
+                cases = ''.join('<span class="p">%s</span>' % e(v) for v in p)
+            out += ('<div class="ligne"><span class="n">%s<i class="pointille"></i></span>%s</div>'
+                    % (e(x[1]), cases))
     return out
 
 
-def tableau(rubriques, logo):
+def tableau(rubriques, logo, fond):
     items = flux(rubriques)
     (g, d), haut = couper(items)
     # La hauteur de ligne descend juste ce qu'il faut pour que la plus haute des deux
@@ -262,10 +332,12 @@ def tableau(rubriques, logo):
         'marge': MARGE, 'entete': ENTETE, 'bandeau': BANDEAU, 'ecart': ECART,
         'ligne': round(l, 2), 'titre': round(l * TITRE - l * .30, 2),
         'apres': round(l * .30, 2), 'ftitre': round(l * .74, 2),
-        'fnom': round(l * .62, 2), 'fprix': round(l * .68, 2),
-        'fpoint': round(l * .17, 2),
+        'fnom': round(l * .62, 2), 'fprix': round(l * .66, 2),
+        'fpoint': round(l * .06, 2), 'fcol': round(l * .34, 2),
+        'colonne': round(l * 2.55, 2), 'opacite': OPACITE,
     }
-    corps = MODELE % {'logo': logo, 'lieu': R['ville'], 'tel': R['telephone'],
+    couche = ('<div class="fond" style="background-image:url(%s)"></div>' % fond) if fond else ''
+    corps = MODELE % {'logo': logo, 'lieu': R['ville'], 'tel': R['telephone'], 'fond': couche,
                       'g': rendu_colonne(g, l), 'd': rendu_colonne(d, l)}
     return css, corps, l, len([x for x in items if x[0] == 'ligne'])
 
@@ -292,7 +364,8 @@ def polices(incruster):
 logo = logo_data()
 sorties = []
 for code, place, rubriques in ECRANS:
-    css, corps, l, n = tableau(rubriques, logo)
+    fond, poids_fond = fond_data(code)
+    css, corps, l, n = tableau(rubriques, logo, fond)
     page = ('<!doctype html><html lang="fr"><head><meta charset="utf-8">'
             '<meta name="viewport" content="width=device-width,initial-scale=1">'
             '<title>NUMBER ONE - ecran %s</title>' % place
@@ -305,7 +378,7 @@ for code, place, rubriques in ECRANS:
         '<title>Tableau %s Number One</title>' % place.lower()
         + polices(False) + '<style>' + css
         + 'body{background:#000;height:100vh}</style>' + corps)
-    sorties.append((place, rubriques, l, n, os.path.getsize(f), css, corps))
+    sorties.append((place, rubriques, l, n, os.path.getsize(f), css, corps, poids_fond))
 
 # ---------------------------------------------------------------- apercu du mur
 mur = ('<title>Menu mural Number One</title>' + polices(False) + '<style>'
@@ -327,7 +400,7 @@ body { margin: 0; background: #0b0b0c; color: #cfc7ba;
 <p class="dit">Les trois dalles a l'echelle, dans l'ordre ou elles sont accrochees.
 Chaque tableau est un fichier a part, affiche en plein ecran sur son televiseur.</p>
 <div class="rangee">""")
-for i, (place, rubriques, l, n, taille, css, corps) in enumerate(sorties):
+for i, (place, rubriques, l, n, taille, css, corps, pf) in enumerate(sorties):
     mur += ('<div class="poste"><div class="cadre">%s</div>'
             '<p class="etiquette"><b>%s</b> &middot; %s &middot; %d articles</p></div>'
             % (corps, place, ' + '.join(rubriques), n))
@@ -335,8 +408,9 @@ mur += '</div></div>'
 open(os.path.join(ICI, 'mur-apercu.html'), 'w', encoding='utf-8').write(mur)
 
 print('Trois tableaux engendres depuis site/carte.json :')
-for place, rubriques, l, n, taille, _, _ in sorties:
-    print('  %-8s %-38s %3d articles, ligne de %4.1f px, %d Ko'
-          % (place, ' + '.join(rubriques), n, l, taille // 1024))
+for place, rubriques, l, n, taille, _, _, pf in sorties:
+    print('  %-8s %-38s %3d articles, ligne de %4.1f px, %d Ko%s'
+          % (place, ' + '.join(rubriques), n, l, taille // 1024,
+             (', fond %d Ko' % (pf // 1024)) if pf else ', SANS FOND'))
 print('  Total : %d articles.' % sum(s[3] for s in sorties))
 print('  Apercu du mur : mur-apercu.html')
