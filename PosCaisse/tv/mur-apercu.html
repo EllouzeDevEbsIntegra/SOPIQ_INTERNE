@@ -87,7 +87,7 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
   letter-spacing: .03em; text-transform: uppercase;
   height: calc(45.14 * var(--u)); align-items: flex-end;
   font-size: calc(29.83 * var(--u));
-  border-bottom: calc(2 * var(--u)) solid rgba(254, 204, 48, .32);
+  border-bottom: calc(3 * var(--u)) solid rgba(254, 204, 48, .55);
   margin-bottom: calc(12.09 * var(--u));
 }
 /* Les intitules de colonnes se posent au-dessus des prix qu'ils nomment, pas ailleurs :
@@ -133,14 +133,14 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
     il sert a ouvrir la lecture, pas a couper le tableau en deux.
 */
 .matrice .separateur {
-  position: absolute; top: calc(45.14 * var(--u)); bottom: calc(4 * var(--u));
-  right: calc(485.47 * var(--u)); width: calc(2 * var(--u));
-  background: linear-gradient(to bottom, rgba(254, 204, 48, .34), rgba(254, 204, 48, .06));
+  position: absolute; top: calc((45.14 - 3) * var(--u)); bottom: calc(4 * var(--u));
+  right: calc(515.7 * var(--u)); width: calc(3 * var(--u));
+  background: linear-gradient(to bottom, rgba(254, 204, 48, .55), rgba(254, 204, 48, .07));
 }
 .matrice .rubrique, .matrice .soustitre, .matrice .ligne {
   display: grid;
   grid-template-columns: minmax(0, 1fr) repeat(3, calc(143.09 * var(--u)))
-                         calc(52.4 * var(--u)) repeat(3, calc(143.09 * var(--u)));
+                         calc(112.86 * var(--u)) repeat(3, calc(143.09 * var(--u)));
   gap: calc(10 * var(--u)); align-items: baseline;
 }
 /* La colonne d'ecart n'est qu'un vide : les cases sautent par-dessus. */
@@ -148,11 +148,6 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
 .matrice .ligne .p:nth-child(6), .matrice .soustitre .col:nth-child(6) { grid-column: 7; }
 .matrice .ligne .p:nth-child(7), .matrice .soustitre .col:nth-child(7) { grid-column: 8; }
 
-.matrice .rubrique { border-bottom: 0; }
-.matrice .rubrique .t, .matrice .rubrique .groupe {
-  border-bottom: calc(2 * var(--u)) solid rgba(254, 204, 48, .32);
-  padding-bottom: calc(6 * var(--u));
-}
 .matrice .rubrique .groupe {
   font-family: Anton, 'Arial Narrow', sans-serif; font-size: calc(31.44 * var(--u));
   color: var(--or); letter-spacing: .03em; text-align: center;

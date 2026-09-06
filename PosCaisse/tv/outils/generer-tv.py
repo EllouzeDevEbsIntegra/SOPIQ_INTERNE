@@ -67,6 +67,10 @@ MARGE, ENTETE, BANDEAU, ECART = 40, 80, 52, 14
 RESERVE = 14
 DISPO = HAUT - 2 * MARGE - ENTETE - BANDEAU - ECART - RESERVE
 LIGNE_MAX, TITRE = 46, 1.42                           # hauteur de ligne, cout d'un titre
+# Matrice : largeur d'une colonne de prix, et ecart entre deux familles, en hauteurs de
+# ligne. L'ecart vaut presque une colonne entiere - c'est lui, plus que le filet, qui
+# dit ou finit une famille ; la place vient du nom, qui en avait de reste.
+MCOL, MECART = 3.55, 2.8
 
 
 def prix(v):
@@ -294,7 +298,7 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
   letter-spacing: .03em; text-transform: uppercase;
   height: calc(%(titre)s * var(--u)); align-items: flex-end;
   font-size: calc(%(ftitre)s * var(--u));
-  border-bottom: calc(2 * var(--u)) solid rgba(254, 204, 48, .32);
+  border-bottom: calc(3 * var(--u)) solid rgba(254, 204, 48, .55);
   margin-bottom: calc(%(apres)s * var(--u));
 }
 /* Les intitules de colonnes se posent au-dessus des prix qu'ils nomment, pas ailleurs :
@@ -340,9 +344,9 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
     il sert a ouvrir la lecture, pas a couper le tableau en deux.
 */
 .matrice .separateur {
-  position: absolute; top: calc(%(titre)s * var(--u)); bottom: calc(4 * var(--u));
-  right: calc(%(msep)s * var(--u)); width: calc(2 * var(--u));
-  background: linear-gradient(to bottom, rgba(254, 204, 48, .34), rgba(254, 204, 48, .06));
+  position: absolute; top: calc((%(titre)s - 3) * var(--u)); bottom: calc(4 * var(--u));
+  right: calc(%(msep)s * var(--u)); width: calc(3 * var(--u));
+  background: linear-gradient(to bottom, rgba(254, 204, 48, .55), rgba(254, 204, 48, .07));
 }
 .matrice .rubrique, .matrice .soustitre, .matrice .ligne {
   display: grid;
@@ -355,11 +359,6 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
 .matrice .ligne .p:nth-child(6), .matrice .soustitre .col:nth-child(6) { grid-column: 7; }
 .matrice .ligne .p:nth-child(7), .matrice .soustitre .col:nth-child(7) { grid-column: 8; }
 
-.matrice .rubrique { border-bottom: 0; }
-.matrice .rubrique .t, .matrice .rubrique .groupe {
-  border-bottom: calc(2 * var(--u)) solid rgba(254, 204, 48, .32);
-  padding-bottom: calc(6 * var(--u));
-}
 .matrice .rubrique .groupe {
   font-family: Anton, 'Arial Narrow', sans-serif; font-size: calc(%(fgroupe)s * var(--u));
   color: var(--or); letter-spacing: .03em; text-align: center;
@@ -452,10 +451,10 @@ def tableau(rubriques, logo, fond):
         'colonne': round(l * 2.55, 2), 'opacite': OPACITE,
         # La matrice n'a que 19 lignes la ou une liste en aurait 38 : la place gagnee
         # a droite passe dans la taille des chiffres, pas dans du vide.
-        'mcol': round(l * 3.55, 2), 'mecart': round(l * 1.3, 2),
+        'mcol': round(l * MCOL, 2), 'mecart': round(l * MECART, 2),
         # Le filet qui separe les deux familles, pose au milieu de la colonne d'ecart :
         # trois colonnes de prix, leurs deux intervalles, puis la moitie de l'ecart.
-        'msep': round(l * 3.55 * 3 + 30 + l * 1.3 / 2, 2),
+        'msep': round(l * MCOL * 3 + 30 + l * MECART / 2, 2),
         'fgroupe': round(l * .78, 2), 'msous': round(l * .9, 2),
         'fmnom': round(l * .70, 2), 'fmprix': round(l * .76, 2),
     }
