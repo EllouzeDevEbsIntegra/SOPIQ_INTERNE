@@ -1,0 +1,21 @@
+Les images de fond des trois televiseurs.
+
+Deposez ici, aux noms exacts :
+
+    ecran-1-gauche.jpg
+    ecran-2-centre.jpg
+    ecran-3-droite.jpg
+
+(.png, .jpeg et .webp sont acceptes aussi.)
+
+Puis relancez :
+
+    python3 outils\generer-tv.py
+
+Chaque image est ramenee a 1600 px, compressee, et embarquee dans le fichier de son
+ecran. Elle s'affiche a 15 % dans le bas de la dalle et s'efface en montant : au niveau
+des prix il n'en reste presque rien, au niveau du bandeau rouge, rien du tout.
+
+Un ecran sans image reste noir. Le tableau ne depend jamais d'elle.
+
+Pour changer la force du fond, la ligne OPACITE en tete de outils\generer-tv.py.
