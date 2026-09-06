@@ -1,14 +1,22 @@
 ﻿<#
-    Copie les photos generees vers site\img\ en les renommant comme la page les attend.
+    Copie les photos vers site\img\ en les renommant comme la page les attend.
 
     La page cherche site\img\<article-en-minuscules-avec-des-tirets>.png : << Omlette
-    Mozarilla Thon >> devient << omlette-mozarilla-thon.png >>. Renommer 110 fichiers a la
-    main, c'est en manquer trois, et trois vignettes vides qu'on ne remarquera que des
-    mois plus tard.
+    Mozarilla Thon >> devient << omlette-mozarilla-thon.png >>.
 
-    Le rapprochement se fait sur le NOM de l'article, accents, casse et ponctuation
-    ignores. Un fichier qui ne correspond a rien est NOMME a la fin : mieux vaut une
-    liste a relire qu'une photo avalee en silence.
+    VOS FICHIERS NE PORTENT PAS CES NOMS, et c'est tres bien ainsi : ils s'appellent
+    << oml thon Moz.png >>, << Chaw Form.png >>, << corBleu.png >>. Le script les lit
+    donc comme une LISTE D'INGREDIENTS, pas comme un nom :
+
+        oml thon Moz  ->  Omlette + Thon + Mozarilla  ->  Omlette Mozarilla Thon
+
+    L'ordre n'a aucune importance - c'est l'ensemble des ingredients qui designe
+    l'article, pas la suite des mots. << omlt thon Moz >> et << oml Moz thon >>
+    tombent sur le meme article.
+
+    Ce qui ne correspond a rien est NOMME a la fin, et chaque rapprochement est
+    affiche : une photo posee sur le mauvais article se verrait en caisse, des
+    semaines plus tard, et personne ne saurait d'ou elle vient.
 
     Exemple :
         .\outils\copier-photos.ps1 -Source 'C:\Users\administrateur\Downloads\image POS\reduit'
@@ -17,65 +25,118 @@
 param(
   [Parameter(Mandatory = $true)] [string] $Source,
   [string] $Destination = '',
-  [string] $Carte = ''
+  [string] $FichierCarte = ''
 )
 
 $ErrorActionPreference = 'Stop'
 $site = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
-if (-not $Destination) { $Destination = Join-Path $site 'img' }
-if (-not $Carte) { $Carte = Join-Path (Split-Path -Parent $site) 'catalogs\number-one-2026.json' }
+if (-not $Destination)   { $Destination = Join-Path $site 'img' }
+if (-not $FichierCarte)  { $FichierCarte = Join-Path (Split-Path -Parent $site) 'catalogs\number-one-2026.json' }
 
 function Info($t)  { Write-Host "  $t" -ForegroundColor Green }
 function Souci($t) { Write-Host "  $t" -ForegroundColor Yellow }
 function Stop-Net($t) { Write-Host ''; Write-Host "ARRET : $t" -ForegroundColor Red; exit 1 }
 
-if (-not (Test-Path $Source)) { Stop-Net "Dossier introuvable : $Source" }
-if (-not (Test-Path $Carte))  { Stop-Net "Carte introuvable : $Carte" }
+if (-not (Test-Path $Source))       { Stop-Net "Dossier introuvable : $Source" }
+if (-not (Test-Path $FichierCarte)) { Stop-Net "Carte introuvable : $FichierCarte" }
 New-Item -ItemType Directory -Force -Path $Destination | Out-Null
 
-# Meme regle que le generateur de la page : sans accents, en minuscules, tirets.
-function Ardoise([string] $s) {
+# Sans accents, en minuscules : la comparaison ne doit buter ni sur << Grille >> ni sur
+# une majuscule de debut de mot.
+function Nu([string] $s) {
   $d = $s.Normalize([Text.NormalizationForm]::FormD).ToCharArray() | Where-Object {
          [Globalization.CharUnicodeInfo]::GetUnicodeCategory($_) -ne 'NonSpacingMark' }
-  $t = (-join $d).ToLower()
-  return (($t -replace '[^a-z0-9]+', '-') -replace '-+', '-').Trim('-')
+  return (-join $d).ToLower()
+}
+# Nom de fichier attendu par la page.
+function Ardoise([string] $s) {
+  return (((Nu $s) -replace '[^a-z0-9]+', '-') -replace '-+', '-').Trim('-')
+}
+# Cle de comparaison : ni espaces, ni ponctuation.
+function Cle([string] $s) { return (Nu $s) -replace '[^a-z0-9]', '' }
+
+<#
+    Les abreviations que vous employez dans les noms de fichiers. Les formes de DEUX
+    mots viennent en premier : << moz 3arbi >> doit etre reconnu avant << moz >>, sans
+    quoi la mozarilla ordinaire prendrait la place de la 3arbi.
+#>
+$doubles = [ordered]@{
+  'moz 3arbi' = 'Mozarilla 3arbi'; 'moz3arbi' = 'Mozarilla 3arbi'; 'mozarilla 3arbi' = 'Mozarilla 3arbi'
+  'esc g' = 'Escalope Grille';     'escg' = 'Escalope Grille';     'esc grille' = 'Escalope Grille'
+  'esc p' = 'Escalope Pane';       'escp' = 'Escalope Pane';       'esc pane' = 'Escalope Pane'
+  'cord b' = 'Cordon Bleu';        'corbleu' = 'Cordon Bleu';      'cord bleu' = 'Cordon Bleu'
+  'cordon bleu' = 'Cordon Bleu';   'form slice' = 'Fromage Slice'; 'fromage slice' = 'Fromage Slice'
+}
+$simples = @{
+  'oml' = 'Omlette'; 'omlt' = 'Omlette'; 'omlette' = 'Omlette'; 'omelette' = 'Omlette'
+  'thon' = 'Thon'
+  'moz' = 'Mozarilla'; 'mozarilla' = 'Mozarilla'; 'mozzarella' = 'Mozarilla'
+  'form' = 'Fromage'; 'from' = 'Fromage'; 'fromage' = 'Fromage'; 'frm' = 'Fromage'
+  'chaw' = 'Chawarma'; 'chawarma' = 'Chawarma'
+  'kab' = 'Kabeb'; 'kabeb' = 'Kabeb'
+  'jamb' = 'Jombon'; 'jam' = 'Jombon'; 'jambon' = 'Jombon'; 'jombon' = 'Jombon'
+  'kwik' = 'Kwika'; 'kwika' = 'Kwika'
+  'sal' = 'Salami'; 'salami' = 'Salami'
+  'slice' = 'Fromage Slice'
 }
 
-$carte = Get-Content $Carte -Raw -Encoding UTF8 | ConvertFrom-Json
-$parCle = @{}
-foreach ($p in $carte.products) {
-  if ([double] $p.price -le 0) { continue }
-  $cible = Ardoise $p.name
-  foreach ($nom in @($p.name, $p.shortName)) {
-    if (-not $nom) { continue }
-    $k = Ardoise $nom
-    if (-not $parCle.ContainsKey($k)) { $parCle[$k] = $cible }
+$menu = Get-Content $FichierCarte -Raw -Encoding UTF8 | ConvertFrom-Json
+$publies = @($menu.products | Where-Object { [double] $_.price -gt 0 })
+if (-not $publies.Count) { Stop-Net "Aucun article a prix dans $FichierCarte." }
+
+# Deux facons de retrouver un article : par son nom, ou par l'ensemble de ses ingredients.
+$parNom = @{}; $parIngredients = @{}
+foreach ($p in $publies) {
+  foreach ($n in @($p.name, $p.shortName, ($p.name -replace '^Extra\s+', ''))) {
+    if ($n) { $k = Cle $n; if (-not $parNom.ContainsKey($k)) { $parNom[$k] = $p.name } }
+  }
+  if ($p.ingredients -and $p.ingredients.Count) {
+    $k = (($p.ingredients | ForEach-Object { Cle $_ } | Sort-Object) -join '|')
+    if (-not $parIngredients.ContainsKey($k)) { $parIngredients[$k] = $p.name }
   }
 }
 
-$copiees = 0; $orphelins = @()
-foreach ($f in Get-ChildItem -Path $Source -File) {
-  if ($f.Extension.ToLower() -notin @('.png', '.jpg', '.jpeg', '.webp')) { continue }
-  $cible = $parCle[(Ardoise $f.BaseName)]
-  if (-not $cible) { $orphelins += $f.Name; continue }
-  Copy-Item $f.FullName (Join-Path $Destination ($cible + '.png')) -Force
-  $copiees++
+function ArticleDeFichier([string] $base) {
+  # 1. Le nom entier, tel quel : Cheese, Spicy, Number One, Thon...
+  $k = Cle ($base -replace '\+', ' plus ')
+  if ($parNom.ContainsKey($k)) { return $parNom[$k] }
+  # 2. Sinon, on lit le fichier comme une liste d'ingredients.
+  $texte = ' ' + ((Nu $base) -replace '[^a-z0-9]+', ' ').Trim() + ' '
+  $trouves = @()
+  foreach ($d in $doubles.Keys) {
+    if ($texte -like ('* ' + $d + ' *')) { $trouves += $doubles[$d]; $texte = $texte -replace [regex]::Escape(' ' + $d + ' '), ' ' }
+  }
+  foreach ($mot in ($texte.Trim() -split '\s+')) {
+    if ($mot -and $simples.ContainsKey($mot)) { $trouves += $simples[$mot] }
+  }
+  if (-not $trouves.Count) { return $null }
+  $k = (($trouves | ForEach-Object { Cle $_ } | Sort-Object -Unique) -join '|')
+  if ($parIngredients.ContainsKey($k)) { return $parIngredients[$k] }
+  if ($parNom.ContainsKey(($k -replace '\|', ''))) { return $parNom[($k -replace '\|', '')] }
+  return $null
 }
 
-$attendues = ($carte.products | Where-Object { [double] $_.price -gt 0 }).Count
-$posees = (Get-ChildItem $Destination -Filter *.png -File | Where-Object { $_.Name -ne 'logo-number-one.png' }).Count
+$copiees = 0; $orphelins = @(); $prises = @{}
+foreach ($f in Get-ChildItem -Path $Source -File | Sort-Object Name) {
+  if ($f.Extension.ToLower() -notin @('.png', '.jpg', '.jpeg', '.webp')) { continue }
+  $article = ArticleDeFichier $f.BaseName
+  if (-not $article) { $orphelins += $f.Name; continue }
+  Copy-Item $f.FullName (Join-Path $Destination ((Ardoise $article) + '.png')) -Force
+  $copiees++
+  $deja = $prises[$article]
+  $prises[$article] = $f.Name
+  Write-Host ("  {0,-26} -> {1}" -f $f.BaseName, $article) -ForegroundColor DarkGray
+  if ($deja) { Souci "    (remplace la photo posee par $deja)" }
+}
+
 Write-Host ''
 Info "$copiees fichier(s) copie(s) dans $Destination"
-Info "$posees photo(s) en place sur $attendues articles publies."
+Info ("{0} article(s) publie(s) sur {1} ont leur photo." -f $prises.Count, $publies.Count)
 if ($orphelins.Count) {
-  Souci "$($orphelins.Count) fichier(s) sans article correspondant :"
+  Souci "$($orphelins.Count) fichier(s) que je n'ai pas su rapprocher :"
   foreach ($o in $orphelins) { Souci "    $o" }
 }
-$manque = @()
-foreach ($p in $carte.products) {
-  if ([double] $p.price -le 0) { continue }
-  if (-not (Test-Path (Join-Path $Destination ((Ardoise $p.name) + '.png')))) { $manque += $p.name }
-}
+$manque = @($publies | Where-Object { -not $prises.ContainsKey($_.name) } | ForEach-Object { $_.name })
 if ($manque.Count) {
   Souci "$($manque.Count) article(s) sans photo (l'initiale s'affichera a la place) :"
   foreach ($m in $manque) { Souci "    $m" }
