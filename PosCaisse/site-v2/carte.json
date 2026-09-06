@@ -126,36 +126,6 @@
           }
         },
         {
-          "nom": "Mozarilla",
-          "prix": 3.5,
-          "photo": "img/mozarilla.jpg",
-          "prixParPate": {
-            "Normale": 3.5,
-            "Céréale": 4.5,
-            "Chia": 5.0
-          }
-        },
-        {
-          "nom": "Mozarilla 3arbi",
-          "prix": 4.5,
-          "photo": "img/mozarilla-3arbi.jpg",
-          "prixParPate": {
-            "Normale": 4.5,
-            "Céréale": 5.5,
-            "Chia": 6.0
-          }
-        },
-        {
-          "nom": "Fromage",
-          "prix": 2.2,
-          "photo": "img/fromage.jpg",
-          "prixParPate": {
-            "Normale": 2.2,
-            "Céréale": 3.2,
-            "Chia": 3.7
-          }
-        },
-        {
           "nom": "Omlette Kwika",
           "prix": 4.0,
           "photo": "img/omlette-kwika.jpg",
@@ -244,7 +214,13 @@
             "Céréale": 9.2,
             "Chia": 9.7
           }
-        },
+        }
+      ]
+    },
+    {
+      "nom": "Fromage",
+      "description": "Les mêmes, avec le fromage.",
+      "articles": [
         {
           "nom": "Omlette Fromage",
           "prix": 3.7,
@@ -253,6 +229,186 @@
             "Normale": 3.7,
             "Céréale": 4.7,
             "Chia": 5.2
+          }
+        },
+        {
+          "nom": "Kwika Fromage",
+          "prix": 3.7,
+          "photo": "img/kwika-fromage.jpg",
+          "prixParPate": {
+            "Normale": 3.7,
+            "Céréale": 4.7,
+            "Chia": 5.2
+          }
+        },
+        {
+          "nom": "Salami Fromage",
+          "prix": 4.2,
+          "photo": "img/salami-fromage.jpg",
+          "prixParPate": {
+            "Normale": 4.2,
+            "Céréale": 5.2,
+            "Chia": 5.7
+          }
+        },
+        {
+          "nom": "Thon Fromage",
+          "prix": 5.2,
+          "photo": "img/thon-fromage.jpg",
+          "prixParPate": {
+            "Normale": 5.2,
+            "Céréale": 6.2,
+            "Chia": 6.7
+          }
+        },
+        {
+          "nom": "Jombon Fromage",
+          "prix": 5.2,
+          "photo": "img/jombon-fromage.jpg",
+          "prixParPate": {
+            "Normale": 5.2,
+            "Céréale": 6.2,
+            "Chia": 6.7
+          }
+        },
+        {
+          "nom": "Kabeb Fromage",
+          "prix": 6.7,
+          "photo": "img/kabeb-fromage.jpg",
+          "prixParPate": {
+            "Normale": 6.7,
+            "Céréale": 7.7,
+            "Chia": 8.2
+          }
+        },
+        {
+          "nom": "Chawarma Fromage",
+          "prix": 6.7,
+          "photo": "img/chawarma-fromage.jpg",
+          "prixParPate": {
+            "Normale": 6.7,
+            "Céréale": 7.7,
+            "Chia": 8.2
+          }
+        },
+        {
+          "nom": "Escalope Grillé Fromage",
+          "prix": 6.7,
+          "photo": "img/escalope-grille-fromage.jpg",
+          "prixParPate": {
+            "Normale": 6.7,
+            "Céréale": 7.7,
+            "Chia": 8.2
+          }
+        },
+        {
+          "nom": "Escalope Pané Fromage",
+          "prix": 7.7,
+          "photo": "img/escalope-pane-fromage.jpg",
+          "prixParPate": {
+            "Normale": 7.7,
+            "Céréale": 8.7,
+            "Chia": 9.2
+          }
+        },
+        {
+          "nom": "Cordon Bleu Fromage",
+          "prix": 7.7,
+          "photo": "img/cordon-bleu-fromage.jpg",
+          "prixParPate": {
+            "Normale": 7.7,
+            "Céréale": 8.7,
+            "Chia": 9.2
+          }
+        },
+        {
+          "nom": "Omlette Fromage Kwika",
+          "prix": 4.7,
+          "photo": "img/omlette-fromage-kwika.jpg",
+          "prixParPate": {
+            "Normale": 4.7,
+            "Céréale": 5.7,
+            "Chia": 6.2
+          }
+        },
+        {
+          "nom": "Omlette Fromage Salami",
+          "prix": 5.2,
+          "photo": "img/omlette-fromage-salami.jpg",
+          "prixParPate": {
+            "Normale": 5.2,
+            "Céréale": 6.2,
+            "Chia": 6.7
+          }
+        },
+        {
+          "nom": "Omlette Fromage Thon",
+          "prix": 5.7,
+          "photo": "img/omlette-fromage-thon.jpg",
+          "prixParPate": {
+            "Normale": 5.7,
+            "Céréale": 6.7,
+            "Chia": 7.2
+          }
+        },
+        {
+          "nom": "Omlette Fromage Jombon",
+          "prix": 5.7,
+          "photo": "img/omlette-fromage-jombon.jpg",
+          "prixParPate": {
+            "Normale": 5.7,
+            "Céréale": 6.7,
+            "Chia": 7.2
+          }
+        },
+        {
+          "nom": "Omlette Fromage Kabeb",
+          "prix": 7.9,
+          "photo": "img/omlette-fromage-kabeb.jpg",
+          "prixParPate": {
+            "Normale": 7.9,
+            "Céréale": 8.9,
+            "Chia": 9.4
+          }
+        },
+        {
+          "nom": "Omlette Fromage Chawarma",
+          "prix": 7.9,
+          "photo": "img/omlette-fromage-chawarma.jpg",
+          "prixParPate": {
+            "Normale": 7.9,
+            "Céréale": 8.9,
+            "Chia": 9.4
+          }
+        },
+        {
+          "nom": "Omlette Fromage Escalope Grillé",
+          "prix": 7.9,
+          "photo": "img/omlette-fromage-escalope-grille.jpg",
+          "prixParPate": {
+            "Normale": 7.9,
+            "Céréale": 8.9,
+            "Chia": 9.4
+          }
+        },
+        {
+          "nom": "Omlette Fromage Escalope Pané",
+          "prix": 8.9,
+          "photo": "img/omlette-fromage-escalope-pane.jpg",
+          "prixParPate": {
+            "Normale": 8.9,
+            "Céréale": 9.9,
+            "Chia": 10.4
+          }
+        },
+        {
+          "nom": "Omlette Fromage Cordon Bleu",
+          "prix": 8.9,
+          "photo": "img/omlette-fromage-cordon-bleu.jpg",
+          "prixParPate": {
+            "Normale": 8.9,
+            "Céréale": 9.9,
+            "Chia": 10.4
           }
         }
       ]
@@ -269,96 +425,6 @@
             "Normale": 4.5,
             "Céréale": 5.5,
             "Chia": 6.0
-          }
-        },
-        {
-          "nom": "Omlette Mozarilla Kwika",
-          "prix": 5.5,
-          "photo": "img/omlette-mozarilla-kwika.jpg",
-          "prixParPate": {
-            "Normale": 5.5,
-            "Céréale": 6.5,
-            "Chia": 7.0
-          }
-        },
-        {
-          "nom": "Omlette Mozarilla Salami",
-          "prix": 6.0,
-          "photo": "img/omlette-mozarilla-salami.jpg",
-          "prixParPate": {
-            "Normale": 6.0,
-            "Céréale": 7.0,
-            "Chia": 7.5
-          }
-        },
-        {
-          "nom": "Omlette Mozarilla Thon",
-          "prix": 6.5,
-          "photo": "img/omlette-mozarilla-thon.jpg",
-          "prixParPate": {
-            "Normale": 6.5,
-            "Céréale": 7.5,
-            "Chia": 8.0
-          }
-        },
-        {
-          "nom": "Omlette Mozarilla Jombon",
-          "prix": 6.5,
-          "photo": "img/omlette-mozarilla-jombon.jpg",
-          "prixParPate": {
-            "Normale": 6.5,
-            "Céréale": 7.5,
-            "Chia": 8.0
-          }
-        },
-        {
-          "nom": "Omlette Mozarilla Kabeb",
-          "prix": 8.7,
-          "photo": "img/omlette-mozarilla-kabeb.jpg",
-          "prixParPate": {
-            "Normale": 8.7,
-            "Céréale": 9.7,
-            "Chia": 10.2
-          }
-        },
-        {
-          "nom": "Omlette Mozarilla Chawarma",
-          "prix": 8.7,
-          "photo": "img/omlette-mozarilla-chawarma.jpg",
-          "prixParPate": {
-            "Normale": 8.7,
-            "Céréale": 9.7,
-            "Chia": 10.2
-          }
-        },
-        {
-          "nom": "Omlette Mozarilla Escalope Grillé",
-          "prix": 8.7,
-          "photo": "img/omlette-mozarilla-escalope-grille.jpg",
-          "prixParPate": {
-            "Normale": 8.7,
-            "Céréale": 9.7,
-            "Chia": 10.2
-          }
-        },
-        {
-          "nom": "Omlette Mozarilla Escalope Pané",
-          "prix": 9.7,
-          "photo": "img/omlette-mozarilla-escalope-pane.jpg",
-          "prixParPate": {
-            "Normale": 9.7,
-            "Céréale": 10.7,
-            "Chia": 11.2
-          }
-        },
-        {
-          "nom": "Omlette Mozarilla Cordon Bleu",
-          "prix": 9.7,
-          "photo": "img/omlette-mozarilla-cordon-bleu.jpg",
-          "prixParPate": {
-            "Normale": 9.7,
-            "Céréale": 10.7,
-            "Chia": 11.2
           }
         },
         {
@@ -449,6 +515,96 @@
             "Normale": 8.5,
             "Céréale": 9.5,
             "Chia": 10.0
+          }
+        },
+        {
+          "nom": "Omlette Mozarilla Kwika",
+          "prix": 5.5,
+          "photo": "img/omlette-mozarilla-kwika.jpg",
+          "prixParPate": {
+            "Normale": 5.5,
+            "Céréale": 6.5,
+            "Chia": 7.0
+          }
+        },
+        {
+          "nom": "Omlette Mozarilla Salami",
+          "prix": 6.0,
+          "photo": "img/omlette-mozarilla-salami.jpg",
+          "prixParPate": {
+            "Normale": 6.0,
+            "Céréale": 7.0,
+            "Chia": 7.5
+          }
+        },
+        {
+          "nom": "Omlette Mozarilla Thon",
+          "prix": 6.5,
+          "photo": "img/omlette-mozarilla-thon.jpg",
+          "prixParPate": {
+            "Normale": 6.5,
+            "Céréale": 7.5,
+            "Chia": 8.0
+          }
+        },
+        {
+          "nom": "Omlette Mozarilla Jombon",
+          "prix": 6.5,
+          "photo": "img/omlette-mozarilla-jombon.jpg",
+          "prixParPate": {
+            "Normale": 6.5,
+            "Céréale": 7.5,
+            "Chia": 8.0
+          }
+        },
+        {
+          "nom": "Omlette Mozarilla Kabeb",
+          "prix": 8.7,
+          "photo": "img/omlette-mozarilla-kabeb.jpg",
+          "prixParPate": {
+            "Normale": 8.7,
+            "Céréale": 9.7,
+            "Chia": 10.2
+          }
+        },
+        {
+          "nom": "Omlette Mozarilla Chawarma",
+          "prix": 8.7,
+          "photo": "img/omlette-mozarilla-chawarma.jpg",
+          "prixParPate": {
+            "Normale": 8.7,
+            "Céréale": 9.7,
+            "Chia": 10.2
+          }
+        },
+        {
+          "nom": "Omlette Mozarilla Escalope Grillé",
+          "prix": 8.7,
+          "photo": "img/omlette-mozarilla-escalope-grille.jpg",
+          "prixParPate": {
+            "Normale": 8.7,
+            "Céréale": 9.7,
+            "Chia": 10.2
+          }
+        },
+        {
+          "nom": "Omlette Mozarilla Escalope Pané",
+          "prix": 9.7,
+          "photo": "img/omlette-mozarilla-escalope-pane.jpg",
+          "prixParPate": {
+            "Normale": 9.7,
+            "Céréale": 10.7,
+            "Chia": 11.2
+          }
+        },
+        {
+          "nom": "Omlette Mozarilla Cordon Bleu",
+          "prix": 9.7,
+          "photo": "img/omlette-mozarilla-cordon-bleu.jpg",
+          "prixParPate": {
+            "Normale": 9.7,
+            "Céréale": 10.7,
+            "Chia": 11.2
           }
         }
       ]
@@ -645,192 +801,6 @@
             "Normale": 9.5,
             "Céréale": 10.5,
             "Chia": 11.0
-          }
-        }
-      ]
-    },
-    {
-      "nom": "Fromage",
-      "description": "Les mêmes, avec le fromage.",
-      "articles": [
-        {
-          "nom": "Omlette Fromage Kwika",
-          "prix": 4.7,
-          "photo": "img/omlette-fromage-kwika.jpg",
-          "prixParPate": {
-            "Normale": 4.7,
-            "Céréale": 5.7,
-            "Chia": 6.2
-          }
-        },
-        {
-          "nom": "Omlette Fromage Salami",
-          "prix": 5.2,
-          "photo": "img/omlette-fromage-salami.jpg",
-          "prixParPate": {
-            "Normale": 5.2,
-            "Céréale": 6.2,
-            "Chia": 6.7
-          }
-        },
-        {
-          "nom": "Omlette Fromage Thon",
-          "prix": 5.7,
-          "photo": "img/omlette-fromage-thon.jpg",
-          "prixParPate": {
-            "Normale": 5.7,
-            "Céréale": 6.7,
-            "Chia": 7.2
-          }
-        },
-        {
-          "nom": "Omlette Fromage Jombon",
-          "prix": 5.7,
-          "photo": "img/omlette-fromage-jombon.jpg",
-          "prixParPate": {
-            "Normale": 5.7,
-            "Céréale": 6.7,
-            "Chia": 7.2
-          }
-        },
-        {
-          "nom": "Omlette Fromage Kabeb",
-          "prix": 7.9,
-          "photo": "img/omlette-fromage-kabeb.jpg",
-          "prixParPate": {
-            "Normale": 7.9,
-            "Céréale": 8.9,
-            "Chia": 9.4
-          }
-        },
-        {
-          "nom": "Omlette Fromage Chawarma",
-          "prix": 7.9,
-          "photo": "img/omlette-fromage-chawarma.jpg",
-          "prixParPate": {
-            "Normale": 7.9,
-            "Céréale": 8.9,
-            "Chia": 9.4
-          }
-        },
-        {
-          "nom": "Omlette Fromage Escalope Grillé",
-          "prix": 7.9,
-          "photo": "img/omlette-fromage-escalope-grille.jpg",
-          "prixParPate": {
-            "Normale": 7.9,
-            "Céréale": 8.9,
-            "Chia": 9.4
-          }
-        },
-        {
-          "nom": "Omlette Fromage Escalope Pané",
-          "prix": 8.9,
-          "photo": "img/omlette-fromage-escalope-pane.jpg",
-          "prixParPate": {
-            "Normale": 8.9,
-            "Céréale": 9.9,
-            "Chia": 10.4
-          }
-        },
-        {
-          "nom": "Omlette Fromage Cordon Bleu",
-          "prix": 8.9,
-          "photo": "img/omlette-fromage-cordon-bleu.jpg",
-          "prixParPate": {
-            "Normale": 8.9,
-            "Céréale": 9.9,
-            "Chia": 10.4
-          }
-        },
-        {
-          "nom": "Kwika Fromage",
-          "prix": 3.7,
-          "photo": "img/kwika-fromage.jpg",
-          "prixParPate": {
-            "Normale": 3.7,
-            "Céréale": 4.7,
-            "Chia": 5.2
-          }
-        },
-        {
-          "nom": "Salami Fromage",
-          "prix": 4.2,
-          "photo": "img/salami-fromage.jpg",
-          "prixParPate": {
-            "Normale": 4.2,
-            "Céréale": 5.2,
-            "Chia": 5.7
-          }
-        },
-        {
-          "nom": "Thon Fromage",
-          "prix": 5.2,
-          "photo": "img/thon-fromage.jpg",
-          "prixParPate": {
-            "Normale": 5.2,
-            "Céréale": 6.2,
-            "Chia": 6.7
-          }
-        },
-        {
-          "nom": "Jombon Fromage",
-          "prix": 5.2,
-          "photo": "img/jombon-fromage.jpg",
-          "prixParPate": {
-            "Normale": 5.2,
-            "Céréale": 6.2,
-            "Chia": 6.7
-          }
-        },
-        {
-          "nom": "Kabeb Fromage",
-          "prix": 6.7,
-          "photo": "img/kabeb-fromage.jpg",
-          "prixParPate": {
-            "Normale": 6.7,
-            "Céréale": 7.7,
-            "Chia": 8.2
-          }
-        },
-        {
-          "nom": "Chawarma Fromage",
-          "prix": 6.7,
-          "photo": "img/chawarma-fromage.jpg",
-          "prixParPate": {
-            "Normale": 6.7,
-            "Céréale": 7.7,
-            "Chia": 8.2
-          }
-        },
-        {
-          "nom": "Escalope Grillé Fromage",
-          "prix": 6.7,
-          "photo": "img/escalope-grille-fromage.jpg",
-          "prixParPate": {
-            "Normale": 6.7,
-            "Céréale": 7.7,
-            "Chia": 8.2
-          }
-        },
-        {
-          "nom": "Escalope Pané Fromage",
-          "prix": 7.7,
-          "photo": "img/escalope-pane-fromage.jpg",
-          "prixParPate": {
-            "Normale": 7.7,
-            "Céréale": 8.7,
-            "Chia": 9.2
-          }
-        },
-        {
-          "nom": "Cordon Bleu Fromage",
-          "prix": 7.7,
-          "photo": "img/cordon-bleu-fromage.jpg",
-          "prixParPate": {
-            "Normale": 7.7,
-            "Céréale": 8.7,
-            "Chia": 9.2
           }
         }
       ]
