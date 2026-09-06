@@ -23,7 +23,8 @@ param(
   [string] $Fichier = '',
   [string] $Images = '',
   [string] $Supplements = '',
-  [switch] $SansRemplacement
+  [switch] $SansRemplacement,
+  [switch] $PhotosSeulement
 )
 
 $ErrorActionPreference = 'Stop'
@@ -68,6 +69,11 @@ Etape 'Lecture de la carte'
 $carte = Get-Content $Fichier -Raw -Encoding UTF8 | ConvertFrom-Json
 Info ("{0} : {1} categories, {2} articles, {3} ingredients." -f $carte.label,
       $carte.categories.Count, $carte.products.Count, $carte.ingredients.Count)
+
+if ($PhotosSeulement) {
+  Info 'Carte laissee telle quelle : on ne pose que les photos.'
+  if (-not $Images) { Stop-Net 'Indiquez -Images "<dossier>" avec -PhotosSeulement.' }
+} else {
 
 Etape 'Options existantes du poste'
 $groupes = Appel 'GET' '/api/modifiers' $null
@@ -115,6 +121,7 @@ Info ("Articles   : {0} crees, {1} mis a jour, {2} desactives." -f $r.productsCr
 Info ("Ingredients crees : {0}   Variantes creees : {1}" -f $r.ingredientsCreated, $r.variantsCreated)
 Info ("Prix a verifier   : {0}  (filtre << Prix a verifier >> dans Back-office > Produits)" -f $r.pricesToCheck)
 foreach ($w in $r.warnings) { Souci $w }
+}
 
 if (-not $Images) { Write-Host ''; Info 'Termine. Relancez avec -Images "<dossier>" pour poser les photos.'; exit 0 }
 
@@ -130,36 +137,103 @@ if (-not $Images) { Write-Host ''; Info 'Termine. Relancez avec -Images "<dossie
 #>
 Etape 'Photos des tuiles'
 if (-not (Test-Path $Images)) { Stop-Net "Dossier d images introuvable : $Images" }
-function Cle($s) {
-  $t = [Text.NormalizationForm]::FormD
-  $n = ($s.Normalize($t).ToCharArray() | Where-Object {
-          [Globalization.CharUnicodeInfo]::GetUnicodeCategory($_) -ne 'NonSpacingMark' }) -join ''
-  return ($n.ToLower() -replace '[^a-z0-9]', '')
+
+function Nu([string] $s) {
+  $d = $s.Normalize([Text.NormalizationForm]::FormD).ToCharArray() | Where-Object {
+         [Globalization.CharUnicodeInfo]::GetUnicodeCategory($_) -ne 'NonSpacingMark' }
+  return (-join $d).ToLower()
 }
+function Cle([string] $s) { return (Nu $s) -replace '[^a-z0-9]', '' }
+
+<#
+    Les abreviations employees dans les noms de fichiers. Les formes de DEUX mots
+    viennent en premier : << moz 3arbi >> doit etre reconnu avant << moz >>, sans quoi
+    la mozarilla ordinaire prendrait la place de la 3arbi.
+#>
+$doubles = [ordered]@{
+  'moz 3arbi' = 'Mozarilla 3arbi'; 'moz3arbi' = 'Mozarilla 3arbi'; 'mozarilla 3arbi' = 'Mozarilla 3arbi'
+  'esc g' = 'Escalope Grille';     'escg' = 'Escalope Grille';     'esc grille' = 'Escalope Grille'
+  'esc p' = 'Escalope Pane';       'escp' = 'Escalope Pane';       'esc pane' = 'Escalope Pane'
+  'cord b' = 'Cordon Bleu';        'corbleu' = 'Cordon Bleu';      'cord bleu' = 'Cordon Bleu'
+  'cordon bleu' = 'Cordon Bleu';   'form slice' = 'Fromage Slice'; 'fromage slice' = 'Fromage Slice'
+}
+$simples = @{
+  'oml' = 'Omlette'; 'omlt' = 'Omlette'; 'omlette' = 'Omlette'; 'omelette' = 'Omlette'
+  'thon' = 'Thon'
+  'moz' = 'Mozarilla'; 'mozarilla' = 'Mozarilla'; 'mozzarella' = 'Mozarilla'
+  'form' = 'Fromage'; 'from' = 'Fromage'; 'fromage' = 'Fromage'; 'frm' = 'Fromage'
+  'chaw' = 'Chawarma'; 'chawarma' = 'Chawarma'
+  'kab' = 'Kabeb'; 'kabeb' = 'Kabeb'
+  'jamb' = 'Jombon'; 'jam' = 'Jombon'; 'jambon' = 'Jombon'; 'jombon' = 'Jombon'
+  'kwik' = 'Kwika'; 'kwika' = 'Kwika'
+  'sal' = 'Salami'; 'salami' = 'Salami'
+  'slice' = 'Fromage Slice'
+}
+
+<#
+    Deux facons de retrouver l'article d'un fichier :
+
+      1. son NOM entier - Cheese, Spicy, Number One, Thon ;
+      2. a defaut, la LISTE DE SES INGREDIENTS, lue dans le nom du fichier :
+         << oml thon Moz >> donne Omlette + Thon + Mozarilla, donc
+         << Omlette Mozarilla Thon >>. L'ordre des mots n'a aucune importance :
+         c'est l'ensemble qui designe l'article.
+
+    Les ingredients viennent du fichier de carte, pas de la caisse : c'est lui qui les
+    porte par leur nom.
+#>
 $articles = Appel 'GET' '/api/products' $null
-$parCle = @{}
-foreach ($a in $articles) {
-  $k = Cle $a.name
-  if (-not $parCle.ContainsKey($k)) { $parCle[$k] = $a }
+$parId = @{}
+foreach ($a in $articles) { $k = Cle $a.name; if (-not $parId.ContainsKey($k)) { $parId[$k] = $a } }
+
+$parNom = @{}; $parIngredients = @{}
+foreach ($p in $carte.products) {
+  if ([double] $p.price -le 0) { continue }
+  foreach ($n in @($p.name, $p.shortName, ($p.name -replace '^Extra\s+', ''))) {
+    if ($n) { $k = Cle $n; if (-not $parNom.ContainsKey($k)) { $parNom[$k] = $p.name } }
+  }
+  if ($p.ingredients -and $p.ingredients.Count) {
+    $k = (($p.ingredients | ForEach-Object { Cle $_ } | Sort-Object) -join '|')
+    if (-not $parIngredients.ContainsKey($k)) { $parIngredients[$k] = $p.name }
+  }
 }
+
+function ArticleDeFichier([string] $base) {
+  $k = Cle ($base -replace '\+', ' plus ')
+  if ($parNom.ContainsKey($k)) { return $parNom[$k] }
+  $texte = ' ' + ((Nu $base) -replace '[^a-z0-9]+', ' ').Trim() + ' '
+  $trouves = @()
+  foreach ($d in $doubles.Keys) {
+    if ($texte -like ('* ' + $d + ' *')) { $trouves += $doubles[$d]; $texte = $texte -replace [regex]::Escape(' ' + $d + ' '), ' ' }
+  }
+  foreach ($mot in ($texte.Trim() -split '\s+')) {
+    if ($mot -and $simples.ContainsKey($mot)) { $trouves += $simples[$mot] }
+  }
+  if (-not $trouves.Count) { return $null }
+  $k = (($trouves | ForEach-Object { Cle $_ } | Sort-Object -Unique) -join '|')
+  if ($parIngredients.ContainsKey($k)) { return $parIngredients[$k] }
+  return $parNom[($k -replace '\|', '')]
+}
+
 $types = @{ '.png' = 'image/png'; '.jpg' = 'image/jpeg'; '.jpeg' = 'image/jpeg'; '.webp' = 'image/webp'; '.gif' = 'image/gif' }
 $poses = 0; $orphelins = @(); $octets = 0
 foreach ($f in Get-ChildItem -Path $Images -File) {
   $mime = $types[$f.Extension.ToLower()]
   if (-not $mime) { continue }
-  $a = $parCle[(Cle $f.BaseName)]
+  $nom = ArticleDeFichier $f.BaseName
+  $a = if ($nom) { $parId[(Cle $nom)] } else { $null }
   if (-not $a) { $orphelins += $f.Name; continue }
   $data = 'data:' + $mime + ';base64,' + [Convert]::ToBase64String([IO.File]::ReadAllBytes($f.FullName))
   Appel 'PUT' ("/api/products/" + $a.id + "/image") @{ imageUrl = $data } | Out-Null
   $poses++; $octets += $f.Length
-  Write-Host ("  " + $a.name) -ForegroundColor DarkGray
+  Write-Host ("  {0,-26} -> {1}" -f $f.BaseName, $a.name) -ForegroundColor DarkGray
 }
 Info ("{0} photo(s) posee(s), {1} Ko au total." -f $poses, [math]::Round($octets / 1KB))
 if ($orphelins.Count) {
   Souci ("{0} fichier(s) sans article correspondant :" -f $orphelins.Count)
   foreach ($o in $orphelins) { Souci "    $o" }
 }
-$sans = @($articles | Where-Object { -not $_.imageUrl }).Count
-if ($sans -gt 0) { Souci "$sans article(s) restent sans photo." }
+$avecPhoto = @(Appel 'GET' '/api/products' $null | Where-Object { $_.imageUrl }).Count
+Info ("{0} article(s) ont desormais une photo." -f $avecPhoto)
 Write-Host ''
 Info 'Termine.'
