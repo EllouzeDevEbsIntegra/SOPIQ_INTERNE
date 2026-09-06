@@ -299,6 +299,12 @@ for code, place, rubriques in ECRANS:
             + polices(True) + '<style>' + css + '</style></head><body>' + corps + '</body></html>')
     f = os.path.join(ICI, 'ecran-%s.html' % code)
     open(f, 'w', encoding='utf-8').write(page)
+    # Le meme tableau, seul, pour se regarder en grand : polices en ligne, pas de
+    # doctype - c'est un apercu, pas le fichier qui tourne sur la dalle.
+    open(os.path.join(ICI, 'apercu-ecran-%s.html' % code), 'w', encoding='utf-8').write(
+        '<title>Tableau %s Number One</title>' % place.lower()
+        + polices(False) + '<style>' + css
+        + 'body{background:#000;height:100vh}</style>' + corps)
     sorties.append((place, rubriques, l, n, os.path.getsize(f), css, corps))
 
 # ---------------------------------------------------------------- apercu du mur
@@ -310,10 +316,10 @@ body { margin: 0; background: #0b0b0c; color: #cfc7ba;
 .mur h1 { font-family: Anton, sans-serif; font-size: 22px; letter-spacing: .16em;
           text-transform: uppercase; color: #FECC30; margin: 0 0 4px; }
 .mur .dit { font-size: 15px; color: #8B8072; margin: 0 0 18px; max-width: 88ch; }
-.rangee { display: flex; gap: 14px; align-items: flex-start; overflow-x: auto; padding-bottom: 10px; }
+.rangee { display: flex; gap: 14px; align-items: flex-start; }
 .poste { flex: none; }
 .poste .cadre { border: 3px solid #22201d; border-radius: 6px; background: #000; padding: 3px; width: fit-content; }
-.poste .tableau { --u: 0.3333px; }
+.poste .tableau { --u: calc((100vw - 108px) / 5760); }
 .poste .etiquette { font-size: 13px; letter-spacing: .18em; text-transform: uppercase;
                     color: #8B8072; margin: 8px 0 0; }
 .poste .etiquette b { color: #F6EFE3; font-weight: 600; }
