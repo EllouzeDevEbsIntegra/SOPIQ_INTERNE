@@ -124,7 +124,19 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
     une famille et ou commence l'autre, sans avoir a tracer un trait.
 */
 .colonnes.seule { display: block; }
-.matrice { display: contents; }
+.matrice { position: relative; }
+
+/*
+    Un filet entre les deux familles. L'ecart seul suffisait a l'oeil de pres, pas a
+    quatre metres : a cette distance les six chiffres d'une ligne se lisent comme une
+    seule suite, et on cherche ou finit la mozarilla. Le filet s'eteint vers le bas -
+    il sert a ouvrir la lecture, pas a couper le tableau en deux.
+*/
+.matrice .separateur {
+  position: absolute; top: calc(45.14 * var(--u)); bottom: calc(4 * var(--u));
+  right: calc(485.47 * var(--u)); width: calc(2 * var(--u));
+  background: linear-gradient(to bottom, rgba(254, 204, 48, .34), rgba(254, 204, 48, .06));
+}
 .matrice .rubrique, .matrice .soustitre, .matrice .ligne {
   display: grid;
   grid-template-columns: minmax(0, 1fr) repeat(3, calc(143.09 * var(--u)))
@@ -136,6 +148,11 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
 .matrice .ligne .p:nth-child(6), .matrice .soustitre .col:nth-child(6) { grid-column: 7; }
 .matrice .ligne .p:nth-child(7), .matrice .soustitre .col:nth-child(7) { grid-column: 8; }
 
+.matrice .rubrique { border-bottom: 0; }
+.matrice .rubrique .t, .matrice .rubrique .groupe {
+  border-bottom: calc(2 * var(--u)) solid rgba(254, 204, 48, .32);
+  padding-bottom: calc(6 * var(--u));
+}
 .matrice .rubrique .groupe {
   font-family: Anton, 'Arial Narrow', sans-serif; font-size: calc(31.44 * var(--u));
   color: var(--or); letter-spacing: .03em; text-align: center;

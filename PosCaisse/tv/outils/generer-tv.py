@@ -331,7 +331,19 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
     une famille et ou commence l'autre, sans avoir a tracer un trait.
 */
 .colonnes.seule { display: block; }
-.matrice { display: contents; }
+.matrice { position: relative; }
+
+/*
+    Un filet entre les deux familles. L'ecart seul suffisait a l'oeil de pres, pas a
+    quatre metres : a cette distance les six chiffres d'une ligne se lisent comme une
+    seule suite, et on cherche ou finit la mozarilla. Le filet s'eteint vers le bas -
+    il sert a ouvrir la lecture, pas a couper le tableau en deux.
+*/
+.matrice .separateur {
+  position: absolute; top: calc(%(titre)s * var(--u)); bottom: calc(4 * var(--u));
+  right: calc(%(msep)s * var(--u)); width: calc(2 * var(--u));
+  background: linear-gradient(to bottom, rgba(254, 204, 48, .34), rgba(254, 204, 48, .06));
+}
 .matrice .rubrique, .matrice .soustitre, .matrice .ligne {
   display: grid;
   grid-template-columns: minmax(0, 1fr) repeat(3, calc(%(mcol)s * var(--u)))
@@ -343,6 +355,11 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
 .matrice .ligne .p:nth-child(6), .matrice .soustitre .col:nth-child(6) { grid-column: 7; }
 .matrice .ligne .p:nth-child(7), .matrice .soustitre .col:nth-child(7) { grid-column: 8; }
 
+.matrice .rubrique { border-bottom: 0; }
+.matrice .rubrique .t, .matrice .rubrique .groupe {
+  border-bottom: calc(2 * var(--u)) solid rgba(254, 204, 48, .32);
+  padding-bottom: calc(6 * var(--u));
+}
 .matrice .rubrique .groupe {
   font-family: Anton, 'Arial Narrow', sans-serif; font-size: calc(%(fgroupe)s * var(--u));
   color: var(--or); letter-spacing: .03em; text-align: center;
@@ -407,7 +424,7 @@ def rendu_matrice(familles, lignes):
         cases = ''.join(''.join('<span class="p">%s</span>' % v for v in b) for b in blocs)
         corps += ('<div class="ligne"><span class="n">%s<i class="pointille"></i></span>%s</div>'
                   % (e(nom), cases))
-    return ('<div class="matrice">'
+    return ('<div class="matrice"><i class="separateur"></i>'
             '<div class="rubrique"><span class="t">GARNITURE</span>%s</div>'
             '<div class="soustitre"><span></span>%s</div>%s</div>'
             % (groupes, pates, corps))
@@ -436,6 +453,9 @@ def tableau(rubriques, logo, fond):
         # La matrice n'a que 19 lignes la ou une liste en aurait 38 : la place gagnee
         # a droite passe dans la taille des chiffres, pas dans du vide.
         'mcol': round(l * 3.55, 2), 'mecart': round(l * 1.3, 2),
+        # Le filet qui separe les deux familles, pose au milieu de la colonne d'ecart :
+        # trois colonnes de prix, leurs deux intervalles, puis la moitie de l'ecart.
+        'msep': round(l * 3.55 * 3 + 30 + l * 1.3 / 2, 2),
         'fgroupe': round(l * .78, 2), 'msous': round(l * .9, 2),
         'fmnom': round(l * .70, 2), 'fmprix': round(l * .76, 2),
     }
