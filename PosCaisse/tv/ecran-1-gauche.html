@@ -82,38 +82,38 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
 
 .rubrique, .ligne {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) repeat(3, calc(98.08 * var(--u)));
+  grid-template-columns: minmax(0, 1fr) repeat(3, calc(100.71 * var(--u)));
   gap: calc(10 * var(--u)); align-items: baseline;
 }
 
 .rubrique {
   font-family: Anton, 'Arial Narrow', sans-serif; color: var(--or);
   letter-spacing: .03em; text-transform: uppercase;
-  height: calc(43.08 * var(--u)); align-items: flex-end;
-  font-size: calc(28.46 * var(--u));
+  height: calc(44.23 * var(--u)); align-items: flex-end;
+  font-size: calc(29.22 * var(--u));
   border-bottom: calc(3 * var(--u)) solid rgba(254, 204, 48, .55);
-  margin-bottom: calc(11.54 * var(--u));
+  margin-bottom: calc(11.85 * var(--u));
 }
 /* Les intitules de colonnes se posent au-dessus des prix qu'ils nomment, pas ailleurs :
    c'est la meme grille que les lignes qui les place. */
 .rubrique .col {
   font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 600;
-  font-size: calc(17.69 * var(--u)); letter-spacing: .12em;
+  font-size: calc(18.17 * var(--u)); letter-spacing: .12em;
   color: var(--sourd); text-align: right;
 }
 
-.ligne { height: calc(38.46 * var(--u)); }
+.ligne { height: calc(39.49 * var(--u)); }
 .ligne .n {
-  font-weight: 500; font-size: calc(23.85 * var(--u));
+  font-weight: 500; font-size: calc(24.49 * var(--u));
   display: flex; align-items: baseline; gap: calc(10 * var(--u)); min-width: 0;
 }
 .ligne .n .pointille {
-  flex: 1; height: calc(1 * var(--u)); align-self: center; margin-top: calc(2.31 * var(--u));
+  flex: 1; height: calc(1 * var(--u)); align-self: center; margin-top: calc(2.37 * var(--u));
   background-image: radial-gradient(circle, rgba(246, 239, 227, .30) calc(1 * var(--u)), transparent calc(1 * var(--u)));
   background-size: calc(9 * var(--u)) calc(2 * var(--u)); background-repeat: repeat-x;
 }
 .ligne .p {
-  font-weight: 600; font-size: calc(25.38 * var(--u)); color: var(--or);
+  font-weight: 600; font-size: calc(26.06 * var(--u)); color: var(--or);
   font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right;
 }
 /* Un article qui ne se decline pas garde un seul prix, aligne sur la derniere colonne :
@@ -137,14 +137,14 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
     il sert a ouvrir la lecture, pas a couper le tableau en deux.
 */
 .matrice .separateur {
-  position: absolute; top: calc((43.08 - 3) * var(--u)); bottom: calc(4 * var(--u));
-  right: calc(493.46 * var(--u)); width: calc(3 * var(--u));
+  position: absolute; top: calc((44.23 - 3) * var(--u)); bottom: calc(4 * var(--u));
+  right: calc(505.88 * var(--u)); width: calc(3 * var(--u));
   background: linear-gradient(to bottom, rgba(254, 204, 48, .55), rgba(254, 204, 48, .07));
 }
 .matrice .rubrique, .matrice .soustitre, .matrice .ligne {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) repeat(3, calc(136.54 * var(--u)))
-                         calc(107.69 * var(--u)) repeat(3, calc(136.54 * var(--u)));
+  grid-template-columns: minmax(0, 1fr) repeat(3, calc(140.2 * var(--u)))
+                         calc(110.58 * var(--u)) repeat(3, calc(140.2 * var(--u)));
   gap: calc(10 * var(--u)); align-items: baseline;
 }
 /* La colonne d'ecart n'est qu'un vide : les cases sautent par-dessus. */
@@ -153,15 +153,15 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
 .matrice .ligne .p:nth-child(7), .matrice .soustitre .col:nth-child(7) { grid-column: 8; }
 
 .matrice .rubrique .groupe {
-  font-family: Anton, 'Arial Narrow', sans-serif; font-size: calc(30.0 * var(--u));
+  font-family: Anton, 'Arial Narrow', sans-serif; font-size: calc(30.8 * var(--u));
   color: var(--or); letter-spacing: .03em; text-align: center;
 }
 .matrice .rubrique .groupe:nth-child(2) { grid-column: 2 / 5; }
 .matrice .rubrique .groupe:nth-child(3) { grid-column: 6 / 9; }
-.matrice .soustitre { height: calc(38.46 * var(--u)); margin-bottom: calc(11.54 * var(--u)); }
+.matrice .soustitre { height: calc(39.49 * var(--u)); margin-bottom: calc(11.85 * var(--u)); }
 .matrice .soustitre .col {
   font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 600;
-  font-size: calc(17.69 * var(--u)); letter-spacing: .12em;
+  font-size: calc(18.17 * var(--u)); letter-spacing: .12em;
   color: var(--sourd); text-align: right;
 }
 
@@ -183,5 +183,5 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
     <span class="sep"></span>
     <span class="note">Prix en dinars tunisiens</span>
   </div>
-  <div class="colonnes"><div class="colonne"><div class="rubrique"><span class="t">SPÉCIAL</span><span class="col">Normale</span><span class="col">Céréale</span><span class="col">Chia</span></div><div class="ligne"><span class="n">Special<i class="pointille"></i></span><span class="p">8,000</span><span class="p">9,000</span><span class="p">9,500</span></div><div class="ligne"><span class="n">Number One<i class="pointille"></i></span><span class="p">9,000</span><span class="p">10,000</span><span class="p">10,500</span></div><div class="ligne"><span class="n">Number One Plus<i class="pointille"></i></span><span class="p">13,000</span><span class="p">14,000</span><span class="p">14,500</span></div><div class="ligne"><span class="n">Spicy<i class="pointille"></i></span><span class="p">13,000</span><span class="p">14,000</span><span class="p">14,500</span></div><div class="ligne"><span class="n">Cheese<i class="pointille"></i></span><span class="p">9,000</span><span class="p">10,000</span><span class="p">10,500</span></div><div class="ligne"><span class="n">Hot Cheese<i class="pointille"></i></span><span class="p">9,500</span><span class="p">10,500</span><span class="p">11,000</span></div><div class="ligne"><span class="n">Full Cheese<i class="pointille"></i></span><span class="p">11,000</span><span class="p">12,000</span><span class="p">12,500</span></div><div class="rubrique"><span class="t">CLASSIC</span><span class="col">Normale</span><span class="col">Céréale</span><span class="col">Chia</span></div><div class="ligne"><span class="n">Omlette<i class="pointille"></i></span><span class="p">3,000</span><span class="p">4,000</span><span class="p">4,500</span></div><div class="ligne"><span class="n">Kwika<i class="pointille"></i></span><span class="p">3,000</span><span class="p">4,000</span><span class="p">4,500</span></div><div class="ligne"><span class="n">Salami<i class="pointille"></i></span><span class="p">3,500</span><span class="p">4,500</span><span class="p">5,000</span></div><div class="ligne"><span class="n">Thon<i class="pointille"></i></span><span class="p">4,500</span><span class="p">5,500</span><span class="p">6,000</span></div><div class="ligne"><span class="n">Jombon<i class="pointille"></i></span><span class="p">4,500</span><span class="p">5,500</span><span class="p">6,000</span></div><div class="ligne"><span class="n">Kabeb<i class="pointille"></i></span><span class="p">6,000</span><span class="p">7,000</span><span class="p">7,500</span></div><div class="ligne"><span class="n">Chawarma<i class="pointille"></i></span><span class="p">6,000</span><span class="p">7,000</span><span class="p">7,500</span></div><div class="ligne"><span class="n">Escalope Grillé<i class="pointille"></i></span><span class="p">6,000</span><span class="p">7,000</span><span class="p">7,500</span></div><div class="ligne"><span class="n">Escalope Pané<i class="pointille"></i></span><span class="p">7,000</span><span class="p">8,000</span><span class="p">8,500</span></div></div><div class="colonne"><div class="rubrique"><span class="t">CLASSIC (SUITE)</span><span class="col">Normale</span><span class="col">Céréale</span><span class="col">Chia</span></div><div class="ligne"><span class="n">Cordon Bleu<i class="pointille"></i></span><span class="p">7,000</span><span class="p">8,000</span><span class="p">8,500</span></div><div class="ligne"><span class="n">Omlette Kwika<i class="pointille"></i></span><span class="p">4,000</span><span class="p">5,000</span><span class="p">5,500</span></div><div class="ligne"><span class="n">Omlette Salami<i class="pointille"></i></span><span class="p">4,500</span><span class="p">5,500</span><span class="p">6,000</span></div><div class="ligne"><span class="n">Omlette Thon<i class="pointille"></i></span><span class="p">5,000</span><span class="p">6,000</span><span class="p">6,500</span></div><div class="ligne"><span class="n">Omlette Jombon<i class="pointille"></i></span><span class="p">5,000</span><span class="p">6,000</span><span class="p">6,500</span></div><div class="ligne"><span class="n">Omlette Kabeb<i class="pointille"></i></span><span class="p">7,200</span><span class="p">8,200</span><span class="p">8,700</span></div><div class="ligne"><span class="n">Omlette Chawarma<i class="pointille"></i></span><span class="p">7,200</span><span class="p">8,200</span><span class="p">8,700</span></div><div class="ligne"><span class="n">Omlette Escalope Grillé<i class="pointille"></i></span><span class="p">7,200</span><span class="p">8,200</span><span class="p">8,700</span></div><div class="ligne"><span class="n">Omlette Escalope Pané<i class="pointille"></i></span><span class="p">8,200</span><span class="p">9,200</span><span class="p">9,700</span></div><div class="ligne"><span class="n">Omlette Cordon Bleu<i class="pointille"></i></span><span class="p">8,200</span><span class="p">9,200</span><span class="p">9,700</span></div><div class="rubrique"><span class="t">LABLEBI</span></div><div class="ligne"><span class="n">Lablebi Normale<i class="pointille"></i></span><span class="p seul">4,500</span></div><div class="ligne"><span class="n">Lablebi Oeuf<i class="pointille"></i></span><span class="p seul">5,000</span></div><div class="ligne"><span class="n">Lablebi Double Tête<i class="pointille"></i></span><span class="p seul">6,000</span></div><div class="ligne"><span class="n">Lablebi Thon<i class="pointille"></i></span><span class="p seul">7,500</span></div><div class="ligne"><span class="n">Lablebi Oeuf Thon<i class="pointille"></i></span><span class="p seul">8,000</span></div><div class="ligne"><span class="n">Lablebi Double Tête Thon<i class="pointille"></i></span><span class="p seul">9,000</span></div></div></div>
+  <div class="colonnes"><div class="colonne"><div class="rubrique"><span class="t">CLASSIC</span><span class="col">Normale</span><span class="col">Céréale</span><span class="col">Chia</span></div><div class="ligne"><span class="n">Omlette<i class="pointille"></i></span><span class="p">3,000</span><span class="p">4,000</span><span class="p">4,500</span></div><div class="ligne"><span class="n">Kwika<i class="pointille"></i></span><span class="p">3,000</span><span class="p">4,000</span><span class="p">4,500</span></div><div class="ligne"><span class="n">Salami<i class="pointille"></i></span><span class="p">3,500</span><span class="p">4,500</span><span class="p">5,000</span></div><div class="ligne"><span class="n">Thon<i class="pointille"></i></span><span class="p">4,500</span><span class="p">5,500</span><span class="p">6,000</span></div><div class="ligne"><span class="n">Jombon<i class="pointille"></i></span><span class="p">4,500</span><span class="p">5,500</span><span class="p">6,000</span></div><div class="ligne"><span class="n">Kabeb<i class="pointille"></i></span><span class="p">6,000</span><span class="p">7,000</span><span class="p">7,500</span></div><div class="ligne"><span class="n">Chawarma<i class="pointille"></i></span><span class="p">6,000</span><span class="p">7,000</span><span class="p">7,500</span></div><div class="ligne"><span class="n">Escalope Grillé<i class="pointille"></i></span><span class="p">6,000</span><span class="p">7,000</span><span class="p">7,500</span></div><div class="ligne"><span class="n">Escalope Pané<i class="pointille"></i></span><span class="p">7,000</span><span class="p">8,000</span><span class="p">8,500</span></div><div class="ligne"><span class="n">Cordon Bleu<i class="pointille"></i></span><span class="p">7,000</span><span class="p">8,000</span><span class="p">8,500</span></div><div class="ligne"><span class="n">Omlette Kwika<i class="pointille"></i></span><span class="p">4,000</span><span class="p">5,000</span><span class="p">5,500</span></div><div class="ligne"><span class="n">Omlette Salami<i class="pointille"></i></span><span class="p">4,500</span><span class="p">5,500</span><span class="p">6,000</span></div><div class="ligne"><span class="n">Omlette Thon<i class="pointille"></i></span><span class="p">5,000</span><span class="p">6,000</span><span class="p">6,500</span></div><div class="ligne"><span class="n">Omlette Jombon<i class="pointille"></i></span><span class="p">5,000</span><span class="p">6,000</span><span class="p">6,500</span></div><div class="ligne"><span class="n">Omlette Kabeb<i class="pointille"></i></span><span class="p">7,200</span><span class="p">8,200</span><span class="p">8,700</span></div><div class="ligne"><span class="n">Omlette Chawarma<i class="pointille"></i></span><span class="p">7,200</span><span class="p">8,200</span><span class="p">8,700</span></div><div class="ligne"><span class="n">Omlette Escalope Grillé<i class="pointille"></i></span><span class="p">7,200</span><span class="p">8,200</span><span class="p">8,700</span></div><div class="ligne"><span class="n">Omlette Escalope Pané<i class="pointille"></i></span><span class="p">8,200</span><span class="p">9,200</span><span class="p">9,700</span></div><div class="ligne"><span class="n">Omlette Cordon Bleu<i class="pointille"></i></span><span class="p">8,200</span><span class="p">9,200</span><span class="p">9,700</span></div></div><div class="colonne"><div class="rubrique"><span class="t">FROMAGE</span><span class="col">Normale</span><span class="col">Céréale</span><span class="col">Chia</span></div><div class="ligne"><span class="n">Omlette Fromage<i class="pointille"></i></span><span class="p">3,700</span><span class="p">4,700</span><span class="p">5,200</span></div><div class="ligne"><span class="n">Omlette Fromage Kwika<i class="pointille"></i></span><span class="p">4,700</span><span class="p">5,700</span><span class="p">6,200</span></div><div class="ligne"><span class="n">Omlette Fromage Salami<i class="pointille"></i></span><span class="p">5,200</span><span class="p">6,200</span><span class="p">6,700</span></div><div class="ligne"><span class="n">Omlette Fromage Thon<i class="pointille"></i></span><span class="p">5,700</span><span class="p">6,700</span><span class="p">7,200</span></div><div class="ligne"><span class="n">Omlette Fromage Jombon<i class="pointille"></i></span><span class="p">5,700</span><span class="p">6,700</span><span class="p">7,200</span></div><div class="ligne"><span class="n">Omlette Fromage Kabeb<i class="pointille"></i></span><span class="p">7,900</span><span class="p">8,900</span><span class="p">9,400</span></div><div class="ligne"><span class="n">Omlette Fromage Chawarma<i class="pointille"></i></span><span class="p">7,900</span><span class="p">8,900</span><span class="p">9,400</span></div><div class="ligne"><span class="n">Omlette Fromage Escalope Grillé<i class="pointille"></i></span><span class="p">7,900</span><span class="p">8,900</span><span class="p">9,400</span></div><div class="ligne"><span class="n">Omlette Fromage Escalope Pané<i class="pointille"></i></span><span class="p">8,900</span><span class="p">9,900</span><span class="p">10,400</span></div><div class="ligne"><span class="n">Omlette Fromage Cordon Bleu<i class="pointille"></i></span><span class="p">8,900</span><span class="p">9,900</span><span class="p">10,400</span></div><div class="ligne"><span class="n">Kwika Fromage<i class="pointille"></i></span><span class="p">3,700</span><span class="p">4,700</span><span class="p">5,200</span></div><div class="ligne"><span class="n">Salami Fromage<i class="pointille"></i></span><span class="p">4,200</span><span class="p">5,200</span><span class="p">5,700</span></div><div class="ligne"><span class="n">Thon Fromage<i class="pointille"></i></span><span class="p">5,200</span><span class="p">6,200</span><span class="p">6,700</span></div><div class="ligne"><span class="n">Jombon Fromage<i class="pointille"></i></span><span class="p">5,200</span><span class="p">6,200</span><span class="p">6,700</span></div><div class="ligne"><span class="n">Kabeb Fromage<i class="pointille"></i></span><span class="p">6,700</span><span class="p">7,700</span><span class="p">8,200</span></div><div class="ligne"><span class="n">Chawarma Fromage<i class="pointille"></i></span><span class="p">6,700</span><span class="p">7,700</span><span class="p">8,200</span></div><div class="ligne"><span class="n">Escalope Grillé Fromage<i class="pointille"></i></span><span class="p">6,700</span><span class="p">7,700</span><span class="p">8,200</span></div><div class="ligne"><span class="n">Escalope Pané Fromage<i class="pointille"></i></span><span class="p">7,700</span><span class="p">8,700</span><span class="p">9,200</span></div><div class="ligne"><span class="n">Cordon Bleu Fromage<i class="pointille"></i></span><span class="p">7,700</span><span class="p">8,700</span><span class="p">9,200</span></div></div></div>
 </div></body></html>

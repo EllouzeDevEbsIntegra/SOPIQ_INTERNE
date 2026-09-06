@@ -5,9 +5,9 @@ n'a plus besoin de rien : polices et logo sont dans le fichier, aucun appel au r
 
 | Fichier | Écran | Contenu |
 |---|---|---|
-| `ecran-1-gauche.html` | gauche | Spécial, Classic, Lablebi |
+| `ecran-1-gauche.html` | gauche | Classic, Fromage |
 | `ecran-2-centre.html` | centre | Mozarilla + Mozarilla 3arbi, en tableau croisé |
-| `ecran-3-droite.html` | droite | Fromage, Boissons, Extras |
+| `ecran-3-droite.html` | droite | Spécial, Lablebi, Boissons, Extras |
 
 `mur-apercu.html` montre les trois à l'échelle, côte à côte — pour juger avant d'accrocher.
 
@@ -75,5 +75,5 @@ juste ce qu'il faut pour que la plus chargée des trois dalles tienne — jamais
 C'est donc l'écran le plus rempli qui décide pour tous : les trois sont côte à côte sur
 le même mur, et un titre de 30 px à gauche contre 28 à droite ne se remarque pas écran
 par écran, mais se voit dès qu'on prend du recul. Aujourd'hui, sur une base de
-1920 × 1080 : ligne 38,5 px, titre de rubrique 28,5, nom d'article 23,9, prix 25,4,
+1920 × 1080 : ligne 39,5 px, titre de rubrique 28,5, nom d'article 23,9, prix 25,4,
 intitulé de pâte 17,7 — identiques sur les trois écrans.

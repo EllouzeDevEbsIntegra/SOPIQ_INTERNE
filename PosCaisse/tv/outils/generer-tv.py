@@ -51,9 +51,9 @@ POLICES = os.path.join(ICI, 'outils', 'polices')
 # obligeait a chercher d'une colonne a l'autre pour comparer.
 #
 ECRANS = [
-    ('1-gauche', 'Gauche', ['Spécial', 'Classic', 'Lablebi']),
+    ('1-gauche', 'Gauche', ['Classic', 'Fromage']),
     ('2-centre', 'Centre', {'matrice': ['Mozarilla', 'Mozarilla 3arbi']}),
-    ('3-droite', 'Droite', ['Fromage', 'Boissons', 'Extras']),
+    ('3-droite', 'Droite', ['Spécial', 'Lablebi', 'Boissons', 'Extras']),
 ]
 
 # Geometrie, en pixels d'un ecran 1920 x 1080. Toute la page est ecrite dans cette
