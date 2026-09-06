@@ -122,7 +122,13 @@ public class CatalogService {
         p.setPrice(Money.r(r.price()));
         p.setTaxRate(r.taxRate() == null ? BigDecimal.ZERO : r.taxRate());
         p.setImageUrl(r.imageUrl());
-        p.setColor(r.color());
+        /*
+            Pas de couleur : la tuile prendra celle de sa rubrique, et la suivra partout -
+            y compris le jour ou l'article change de rubrique. On enregistre donc l'ABSENCE
+            de couleur, et non une chaine vide : une case vide et une couleur nommee << >>
+            se lisent pareil a l'ecran, mais pas dans une requete.
+        */
+        p.setColor(r.color() == null || r.color().isBlank() ? null : r.color().trim());
         if (r.sortOrder() != null) p.setSortOrder(r.sortOrder());
         if (r.active() != null) p.setActive(r.active());
         if (r.available() != null) p.setAvailable(r.available());

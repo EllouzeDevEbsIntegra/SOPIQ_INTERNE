@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { api } from '../../api'
 import { useUiStore } from '../../stores/ui'
 import { useCatalogStore } from '../../stores/catalog'
@@ -87,6 +87,24 @@ const COULEURS = ['#f97316', '#eab308', '#ef4444', '#8b5cf6', '#0ea5e9', '#ec489
 /* Couleur reellement appliquee quand le champ reste vide : la montrer vaut mieux que de
    l'ecrire entre parentheses dans un libelle que personne ne lit. */
 const couleurCategorie = computed(() => cats.value.find(c => c.id === edit.value?.categoryId)?.color || '#8A8178')
+
+/*
+    Changer un article de rubrique lui donne la couleur de sa nouvelle rubrique.
+
+    La couleur d'une tuile est vide par defaut : la tuile prend alors celle de sa
+    rubrique, et suit donc toute seule. Mais un article peut porter EN DUR la couleur de
+    l'ancienne rubrique - c'est le cas de tous ceux qu'un import a colories - et il
+    debarquerait en rouge au milieu des verts sans que rien ne le signale.
+
+    On ne remet a l'heritage que dans ce cas precis : couleur vide, ou identique a celle
+    de la rubrique qu'on quitte. Une couleur choisie exprimee pour cet article-la, elle,
+    est respectee - c'est un choix, pas un reste.
+*/
+watch(() => edit.value?.categoryId, (vers, avant) => {
+  if (!edit.value || vers == null || avant == null || vers === avant) return
+  const ancienne = cats.value.find(c => c.id === avant)?.color
+  if (!edit.value.color || edit.value.color === ancienne) edit.value.color = ''
+})
 async function chargerIngredients() { try { ingredients.value = await api.admin.ingredients() } catch { /* liste facultative */ } }
 
 function nomCompose(ids) {
