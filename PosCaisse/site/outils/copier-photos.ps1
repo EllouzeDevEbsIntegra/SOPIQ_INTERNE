@@ -41,12 +41,30 @@ if (-not (Test-Path $Source))       { Stop-Net "Dossier introuvable : $Source" }
 if (-not (Test-Path $FichierCarte)) { Stop-Net "Carte introuvable : $FichierCarte" }
 New-Item -ItemType Directory -Force -Path $Destination | Out-Null
 
-# Sans accents, en minuscules : la comparaison ne doit buter ni sur << Grille >> ni sur
-# une majuscule de debut de mot.
+<#
+    Sans accents, en minuscules.
+
+    La voie savante - normaliser en FormD puis jeter les marques - a echoue en clair
+    sur ce poste : << Escalope Grille >> et << Escalope Grille >> ne se rejoignaient
+    pas, et les dix photos d'escalope finissaient orphelines. Le caractere accentue
+    survivait a la normalisation, puis << [^a-z0-9] >> le SUPPRIMAIT au lieu de le
+    remplacer : il manquait une lettre au mot, et plus rien ne correspondait.
+
+    Une table explicite ne depend d'aucun comportement de plateforme. Elle est plus
+    longue, elle est sure.
+#>
+# Les caracteres accentues sont donnes par leur code : ce fichier doit rester en ASCII
+# pur, PowerShell 5.1 lisant tout octet au-dela comme de l'ANSI.
+$accents = -join (@(224,225,226,227,228,229,231,232,233,234,235,236,237,238,239,241,
+                    242,243,244,245,246,249,250,251,252,253,255) | ForEach-Object { [char] $_ })
+$nus     = 'aaaaaaceeeeiiiinooooouuuuyy'
 function Nu([string] $s) {
-  $d = $s.Normalize([Text.NormalizationForm]::FormD).ToCharArray() | Where-Object {
-         [Globalization.CharUnicodeInfo]::GetUnicodeCategory($_) -ne 'NonSpacingMark' }
-  return (-join $d).ToLower()
+  $b = New-Object Text.StringBuilder
+  foreach ($c in $s.ToLower().ToCharArray()) {
+    $i = $accents.IndexOf($c)
+    [void] $b.Append($(if ($i -ge 0) { $nus[$i] } else { $c }))
+  }
+  return $b.ToString()
 }
 # Nom de fichier attendu par la page.
 function Ardoise([string] $s) {

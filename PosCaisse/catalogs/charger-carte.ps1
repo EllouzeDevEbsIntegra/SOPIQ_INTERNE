@@ -24,7 +24,9 @@ param(
   [string] $Images = '',
   [string] $Supplements = '',
   [switch] $SansRemplacement,
-  [switch] $PhotosSeulement
+  [switch] $PhotosSeulement,
+  [int] $TaillePhoto = 240,
+  [int] $QualitePhoto = 78
 )
 
 $ErrorActionPreference = 'Stop'
@@ -138,10 +140,30 @@ if (-not $Images) { Write-Host ''; Info 'Termine. Relancez avec -Images "<dossie
 Etape 'Photos des tuiles'
 if (-not (Test-Path $Images)) { Stop-Net "Dossier d images introuvable : $Images" }
 
+<#
+    Sans accents, en minuscules.
+
+    La voie savante - normaliser en FormD puis jeter les marques - a echoue en clair
+    sur ce poste : << Escalope Grille >> et << Escalope Grille >> ne se rejoignaient
+    pas, et les dix photos d'escalope finissaient orphelines. Le caractere accentue
+    survivait a la normalisation, puis << [^a-z0-9] >> le SUPPRIMAIT au lieu de le
+    remplacer : il manquait une lettre au mot, et plus rien ne correspondait.
+
+    Une table explicite ne depend d'aucun comportement de plateforme. Elle est plus
+    longue, elle est sure.
+#>
+# Les caracteres accentues sont donnes par leur code : ce fichier doit rester en ASCII
+# pur, PowerShell 5.1 lisant tout octet au-dela comme de l'ANSI.
+$accents = -join (@(224,225,226,227,228,229,231,232,233,234,235,236,237,238,239,241,
+                    242,243,244,245,246,249,250,251,252,253,255) | ForEach-Object { [char] $_ })
+$nus     = 'aaaaaaceeeeiiiinooooouuuuyy'
 function Nu([string] $s) {
-  $d = $s.Normalize([Text.NormalizationForm]::FormD).ToCharArray() | Where-Object {
-         [Globalization.CharUnicodeInfo]::GetUnicodeCategory($_) -ne 'NonSpacingMark' }
-  return (-join $d).ToLower()
+  $b = New-Object Text.StringBuilder
+  foreach ($c in $s.ToLower().ToCharArray()) {
+    $i = $accents.IndexOf($c)
+    [void] $b.Append($(if ($i -ge 0) { $nus[$i] } else { $c }))
+  }
+  return $b.ToString()
 }
 function Cle([string] $s) { return (Nu $s) -replace '[^a-z0-9]', '' }
 
@@ -216,24 +238,70 @@ function ArticleDeFichier([string] $base) {
 }
 
 $types = @{ '.png' = 'image/png'; '.jpg' = 'image/jpeg'; '.jpeg' = 'image/jpeg'; '.webp' = 'image/webp'; '.gif' = 'image/gif' }
-$poses = 0; $orphelins = @(); $octets = 0
+
+<#
+    LA PHOTO EST REDUITE AVANT D'ETRE POSEE, et ce n'est pas un detail.
+
+    Elle est rangee DANS la base, donc dans la sauvegarde, et surtout dans le catalogue
+    que la caisse telecharge a chaque ouverture. Les images d'origine pesent environ
+    200 Ko piece : cent photos feraient vingt megaoctets a charger avant d'afficher la
+    premiere tuile, sur un poste tactile qui doit repondre tout de suite.
+
+    La tuile fait 111 pixels. Une image de 240, en JPEG, est deja plus fine que ce que
+    l'ecran montre - et pese vingt fois moins.
+
+    Si System.Drawing manque, on envoie l'image telle quelle : une caisse lente vaut
+    mieux qu'une caisse sans photos.
+#>
+$reduction = $true
+try { Add-Type -AssemblyName System.Drawing -ErrorAction Stop } catch { $reduction = $false }
+$encodeurJpeg = $null
+if ($reduction) {
+  $encodeurJpeg = [Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object { $_.MimeType -eq 'image/jpeg' }
+  if (-not $encodeurJpeg) { $reduction = $false }
+}
+if (-not $reduction) { Souci 'Reduction des images indisponible : elles partent en pleine taille.' }
+
+function Reduire([string] $chemin) {
+  if (-not $reduction) { return $null }
+  try {
+    $img = [Drawing.Image]::FromFile($chemin)
+    $bmp = New-Object Drawing.Bitmap $TaillePhoto, $TaillePhoto
+    $g = [Drawing.Graphics]::FromImage($bmp)
+    $g.InterpolationMode = 'HighQualityBicubic'
+    $g.SmoothingMode = 'HighQuality'
+    $g.PixelOffsetMode = 'HighQuality'
+    $g.DrawImage($img, 0, 0, $TaillePhoto, $TaillePhoto)
+    $par = New-Object Drawing.Imaging.EncoderParameters 1
+    $par.Param[0] = New-Object Drawing.Imaging.EncoderParameter ([Drawing.Imaging.Encoder]::Quality, [long] $QualitePhoto)
+    $flux = New-Object IO.MemoryStream
+    $bmp.Save($flux, $encodeurJpeg, $par)
+    $octets = $flux.ToArray()
+    $flux.Dispose(); $par.Dispose(); $g.Dispose(); $bmp.Dispose(); $img.Dispose()
+    return $octets
+  } catch { return $null }
+}
+$poses = 0; $orphelins = @(); $octets = 0; $prises = @{}
 foreach ($f in Get-ChildItem -Path $Images -File) {
   $mime = $types[$f.Extension.ToLower()]
   if (-not $mime) { continue }
   $nom = ArticleDeFichier $f.BaseName
   $a = if ($nom) { $parId[(Cle $nom)] } else { $null }
   if (-not $a) { $orphelins += $f.Name; continue }
-  $data = 'data:' + $mime + ';base64,' + [Convert]::ToBase64String([IO.File]::ReadAllBytes($f.FullName))
+  $petite = Reduire $f.FullName
+  if ($petite) { $mime = 'image/jpeg' } else { $petite = [IO.File]::ReadAllBytes($f.FullName) }
+  $data = 'data:' + $mime + ';base64,' + [Convert]::ToBase64String($petite)
   Appel 'PUT' ("/api/products/" + $a.id + "/image") @{ imageUrl = $data } | Out-Null
-  $poses++; $octets += $f.Length
+  $poses++; $octets += $petite.Length
+  $prises[$a.name] = $true
   Write-Host ("  {0,-26} -> {1}" -f $f.BaseName, $a.name) -ForegroundColor DarkGray
 }
-Info ("{0} photo(s) posee(s), {1} Ko au total." -f $poses, [math]::Round($octets / 1KB))
+Info ("{0} photo(s) posee(s), {1} Ko au total ({2} px, qualite {3})." -f $poses,
+      [math]::Round($octets / 1KB), $TaillePhoto, $QualitePhoto)
 if ($orphelins.Count) {
   Souci ("{0} fichier(s) sans article correspondant :" -f $orphelins.Count)
   foreach ($o in $orphelins) { Souci "    $o" }
 }
-$avecPhoto = @(Appel 'GET' '/api/products' $null | Where-Object { $_.imageUrl }).Count
-Info ("{0} article(s) ont desormais une photo." -f $avecPhoto)
+Info ("{0} article(s) sur {1} ont desormais une photo." -f $prises.Count, $articles.Count)
 Write-Host ''
 Info 'Termine.'
