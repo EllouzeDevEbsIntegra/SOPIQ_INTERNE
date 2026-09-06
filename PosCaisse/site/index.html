@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NUMBER ONE — Mlewi &amp; sandwichs à Chihia, Sfax</title>
+<meta name="description" content="NUMBER ONE, fast-food à Chihia (Sfax) : mlewi, omlette, chawarma, escalope, lablebi. Commandez par téléphone au 26 473 741. Route Tenyour Km 5, Chihia, Sfax.">
+<meta name="theme-color" content="#0B0908">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_TN">
+<meta property="og:site_name" content="NUMBER ONE">
+<meta property="og:title" content="NUMBER ONE — Mlewi &amp; sandwichs à Chihia, Sfax">
+<meta property="og:description" content="Mlewi, omlette, chawarma, escalope, lablebi. Commande par téléphone au 26 473 741. Route Tenyour Km 5, Chihia, Sfax.">
+<meta property="og:image" content="img/logo-number-one.png">
+<meta property="og:image:alt" content="Logo NUMBER ONE">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="img/logo-number-one.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;600;800&amp;display=swap">
+
+<style>
+:root{
+  --noir:#0B0908;
+  --noir-2:#151110;
+  --noir-3:#1F1917;
+  --rouge:#D93A2B;
+  --rouge-sombre:#8E2214;
+  --jaune:#E8A33A;
+  --creme:#F2E4C9;
+  --creme-doux:rgba(242,228,201,.70);
+  --trait:rgba(242,228,201,.16);
+  --titre:"Anton","Haettenschweiler","Arial Narrow",Impact,sans-serif;
+  --texte:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --barre-haute:56px;
+  --rayon:14px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--barre-haute) + 10px)}
+body{
+  margin:0;
+  background:var(--noir);
+  color:var(--creme);
+  font-family:var(--texte);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-text-size-adjust:100%;
+  overflow-x:hidden;
+  padding-bottom:calc(72px + env(safe-area-inset-bottom,0px));
+}
+@media (min-width:721px){ body{padding-bottom:0} }
+
+img{max-width:100%;display:block}
+a{color:var(--jaune)}
+a:focus-visible,button:focus-visible,input:focus-visible{
+  outline:3px solid var(--jaune);
+  outline-offset:3px;
+  border-radius:4px;
+}
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+.saut{
+  position:absolute;left:-9999px;top:0;z-index:100;
+  background:var(--jaune);color:#000;padding:.7rem 1rem;font-weight:800;
+}
+.saut:focus{left:8px;top:8px}
+
+.enveloppe{width:min(100% - 2rem,1080px);margin-inline:auto}
+
+/* ---------- Bandeau haut ---------- */
+.bandeau{
+  background:var(--rouge-sombre);
+  color:var(--creme);
+  font-size:.8rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  text-align:center;
+  padding:.45rem 1rem;
+  font-weight:600;
+}
+
+/* ---------- Héros ---------- */
+.heros{
+  position:relative;
+  overflow:hidden;
+  padding:1.6rem 0 0;
+  background:
+    radial-gradient(90% 70% at 50% 0%,rgba(217,58,43,.38),transparent 62%),
+    radial-gradient(70% 55% at 50% 8%,rgba(232,163,58,.22),transparent 70%),
+    var(--noir);
+  text-align:center;
+}
+.heros-contenu{position:relative;z-index:2;padding-bottom:2.2rem}
+
+.logo{
+  width:132px;height:132px;object-fit:contain;margin:0 auto .6rem;
+  filter:drop-shadow(0 6px 18px rgba(0,0,0,.6));
+}
+
+h1{margin:0;line-height:.86}
+.marque{
+  display:block;
+  font-family:var(--titre);
+  font-weight:400;
+  text-transform:uppercase;
+  letter-spacing:.02em;
+}
+.marque .m1{
+  display:block;
+  font-size:clamp(3.1rem,17vw,6.4rem);
+  color:var(--creme);
+  text-shadow:0 3px 0 var(--rouge-sombre);
+}
+.marque .m2{
+  display:block;
+  font-size:clamp(3.1rem,17vw,6.4rem);
+  color:var(--rouge);
+  text-shadow:0 0 26px rgba(217,58,43,.55);
+}
+.accroche{
+  margin:.7rem auto 0;
+  max-width:34ch;
+  color:var(--creme-doux);
+  font-size:1.02rem;
+}
+.badges{
+  list-style:none;display:flex;flex-wrap:wrap;justify-content:center;
+  gap:.4rem;padding:0;margin:1rem 0 0;
+}
+.badges li{
+  background:var(--jaune);color:#140D06;
+  font-weight:800;font-size:.76rem;letter-spacing:.05em;text-transform:uppercase;
+  padding:.3rem .65rem;border-radius:999px;
+}
+
+/* ---------- Appel principal ---------- */
+.appel{
+  display:block;
+  margin:1.4rem auto 0;
+  max-width:420px;
+  background:linear-gradient(180deg,var(--jaune),#D08C22);
+  color:#140D06;
+  text-decoration:none;
+  border-radius:var(--rayon);
+  padding:.85rem 1rem .95rem;
+  box-shadow:0 10px 28px rgba(232,163,58,.28);
+}
+.appel .appel-quoi{
+  display:block;font-size:.76rem;font-weight:800;letter-spacing:.14em;
+  text-transform:uppercase;opacity:.78;
+}
+.appel .appel-num{
+  display:block;
+  font-family:var(--titre);
+  font-size:clamp(2.2rem,11vw,3.2rem);
+  line-height:1.02;
+  letter-spacing:.02em;
+  font-variant-numeric:tabular-nums;
+}
+.appel:hover{filter:brightness(1.06)}
+
+.lieu{
+  margin:.9rem auto 0;max-width:36ch;font-size:.95rem;color:var(--creme-doux);
+}
+.lieu a{font-weight:600}
+.vers-menu{
+  display:inline-block;margin-top:1.1rem;
+  border:2px solid var(--rouge);color:var(--creme);
+  text-decoration:none;font-weight:800;text-transform:uppercase;
+  letter-spacing:.08em;font-size:.82rem;
+  padding:.6rem 1.2rem;border-radius:999px;
+}
+.vers-menu:hover{background:var(--rouge)}
+
+/* ---------- Flammes ---------- */
+.flammes{display:block;width:100%;height:44px;margin-bottom:-1px}
+.flammes .f1{fill:var(--rouge)}
+.flammes .f2{fill:var(--jaune);opacity:.85}
+.braise{
+  position:absolute;inset:auto 0 0;height:120px;z-index:1;pointer-events:none;
+  background:radial-gradient(60% 100% at 50% 100%,rgba(232,163,58,.30),transparent 70%);
+  animation:respire 5s ease-in-out infinite;
+}
+@keyframes respire{0%,100%{opacity:.55}50%{opacity:1}}
+
+/* ---------- Navigation collante ---------- */
+.nav-carte{
+  position:sticky;top:0;z-index:40;
+  background:rgba(11,9,8,.96);
+  border-bottom:2px solid var(--rouge);
+  backdrop-filter:blur(8px);
+}
+.nav-rangee{display:flex;align-items:center;gap:.4rem;height:var(--barre-haute)}
+.chercher-bouton{
+  flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:10px;
+  background:var(--noir-3);border:1px solid var(--trait);color:var(--creme);
+  font-size:1.05rem;line-height:1;cursor:pointer;
+}
+.chercher-bouton:hover{background:var(--rouge)}
+.puces{
+  flex:1 1 auto;min-width:0;
+  list-style:none;display:flex;gap:.4rem;margin:0;padding:.5rem .2rem;
+  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.puces::-webkit-scrollbar{display:none}
+.puce{
+  display:block;white-space:nowrap;text-decoration:none;
+  background:var(--noir-3);border:1px solid var(--trait);
+  color:var(--creme);font-size:.82rem;font-weight:600;
+  padding:.38rem .8rem;border-radius:999px;
+}
+.puce:hover{border-color:var(--jaune)}
+.puce[aria-current="true"]{background:var(--rouge);border-color:var(--rouge);color:#fff}
+
+/* ---------- Sections ---------- */
+.section{padding:2.4rem 0 .6rem}
+.section-titre{
+  font-family:var(--titre);font-weight:400;text-transform:uppercase;
+  font-size:clamp(1.9rem,8vw,2.8rem);line-height:1;letter-spacing:.02em;
+  margin:0 0 .4rem;color:var(--creme);
+}
+.section-titre .point{color:var(--rouge)}
+.section-chapo{margin:0 0 1.4rem;color:var(--creme-doux);max-width:62ch}
+
+/* ---------- Encadré pâtes ---------- */
+.pates{
+  background:linear-gradient(180deg,var(--noir-2),var(--noir));
+  border:1px solid var(--trait);border-left:5px solid var(--jaune);
+  border-radius:var(--rayon);padding:1.1rem 1.1rem 1.2rem;margin:0 0 1.6rem;
+}
+.pates h3{
+  font-family:var(--titre);font-weight:400;text-transform:uppercase;
+  font-size:1.5rem;margin:0 0 .5rem;letter-spacing:.03em;
+}
+.pates p{margin:0 0 .9rem;color:var(--creme-doux)}
+.pates-liste{list-style:none;margin:0;padding:0;display:grid;gap:.45rem}
+.pates-liste li{
+  display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  background:var(--noir-3);border-radius:10px;padding:.55rem .8rem;
+}
+.pates-liste b{font-weight:600}
+.pates-liste span{
+  font-weight:800;color:var(--jaune);white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+
+/* ---------- Recherche ---------- */
+.recherche{margin:0 0 1.6rem}
+.recherche label{display:block;font-weight:600;font-size:.9rem;margin-bottom:.35rem}
+.recherche input{
+  width:100%;background:var(--noir-3);color:var(--creme);
+  border:1px solid var(--trait);border-radius:10px;
+  padding:.7rem .85rem;font:inherit;
+}
+.recherche input::placeholder{color:rgba(242,228,201,.45)}
+.recherche-bilan{margin:.5rem 0 0;font-size:.9rem;color:var(--creme-doux)}
+
+/* ---------- Catégories ---------- */
+.categorie{
+  scroll-margin-top:calc(var(--barre-haute) + 12px);
+  padding:1.3rem 0 1.5rem;border-top:1px solid var(--trait);
+}
+.categorie-tete{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:.8rem;flex-wrap:wrap;
+}
+.categorie-tete h3{
+  font-family:var(--titre);font-weight:400;text-transform:uppercase;
+  font-size:clamp(1.55rem,6.5vw,2.15rem);line-height:1.05;
+  margin:0;color:var(--rouge);letter-spacing:.02em;
+}
+.categorie-compte{
+  margin:0;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--creme-doux);white-space:nowrap;
+}
+.categorie-intro{margin:.5rem 0 0;font-size:.9rem;color:var(--creme-doux)}
+
+.carte{list-style:none;margin:1rem 0 0;padding:0}
+@media (min-width:760px){
+  .carte{columns:2;column-gap:2.6rem}
+  .article{break-inside:avoid}
+}
+.article{
+  display:flex;align-items:baseline;justify-content:space-between;gap:.6rem;
+  padding:.62rem .1rem;border-bottom:1px dashed var(--trait);
+}
+.article-nom{min-width:0;overflow-wrap:anywhere}
+.article-prix{
+  flex:none;font-weight:800;color:var(--jaune);white-space:nowrap;
+  font-variant-numeric:tabular-nums;letter-spacing:.01em;
+}
+.article-prix .plus{color:var(--creme-doux);font-weight:600}
+.article[hidden]{display:none}
+
+/* ---------- Contact ---------- */
+.contact-grille{display:grid;gap:1rem}
+@media (min-width:760px){.contact-grille{grid-template-columns:1fr 1fr}}
+.fiche{
+  background:var(--noir-2);border:1px solid var(--trait);
+  border-radius:var(--rayon);padding:1.1rem;
+}
+.fiche h3{
+  font-family:var(--titre);font-weight:400;text-transform:uppercase;
+  font-size:1.25rem;margin:0 0 .5rem;letter-spacing:.03em;color:var(--jaune);
+}
+.fiche p{margin:0 0 .5rem;color:var(--creme-doux)}
+.fiche .tel-grand{
+  display:inline-block;font-family:var(--titre);font-size:2rem;line-height:1.1;
+  color:var(--creme);text-decoration:none;font-variant-numeric:tabular-nums;
+  letter-spacing:.02em;
+}
+.fiche .tel-grand:hover{color:var(--jaune)}
+.lien-plan{
+  display:inline-block;margin-top:.3rem;font-weight:700;
+  border-bottom:2px solid var(--rouge);text-decoration:none;padding-bottom:2px;
+}
+
+/* ---------- Pied ---------- */
+.pied{
+  margin-top:2.4rem;border-top:2px solid var(--rouge);
+  background:var(--noir-2);padding:1.6rem 0 2rem;text-align:center;
+  font-size:.88rem;color:var(--creme-doux);
+}
+.pied-marque{
+  font-family:var(--titre);font-size:1.4rem;color:var(--creme);
+  text-transform:uppercase;letter-spacing:.06em;margin:0 0 .4rem;
+}
+.pied a{font-weight:700}
+
+/* ---------- Barre d'appel fixe (mobile) ---------- */
+.barre-appel{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;
+  background:var(--rouge);
+  padding:.6rem 1rem calc(.6rem + env(safe-area-inset-bottom,0px));
+  box-shadow:0 -8px 24px rgba(0,0,0,.55);
+}
+.barre-appel a{
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  color:#fff;text-decoration:none;font-weight:800;font-size:1.12rem;
+  font-variant-numeric:tabular-nums;letter-spacing:.02em;
+}
+@media (min-width:721px){ .barre-appel{display:none} }
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+
+<a class="saut" href="#menu">Aller au menu</a>
+
+<p class="bandeau">Fast-food · Chihia, Sfax · Commande par téléphone</p>
+
+<header class="heros">
+  <div class="enveloppe heros-contenu">
+    <img class="logo" src="img/logo-number-one.png" alt="" onerror="this.remove()" width="132" height="132">
+
+    <h1><span class="marque"><span class="m1">Number</span><span class="m2">One</span></span></h1>
+
+    <p class="accroche">Mlewi, omlette, chawarma, escalope, lablebi — préparés à la commande, à Chihia.</p>
+
+    <ul class="badges">
+      <li>Mlewi</li>
+      <li>Sandwichs</li>
+      <li>Lablebi</li>
+      <li>Sur place &amp; à emporter</li>
+    </ul>
+
+    <a class="appel" href="tel:+21626473741">
+      <span class="appel-quoi">Commandez maintenant</span>
+      <span class="appel-num">26&nbsp;473&nbsp;741</span>
+    </a>
+
+    <p class="lieu">
+      Route Tenyour Km 5, Chihia, Sfax —
+      <a href="https://www.google.com/maps/search/?api=1&amp;query=Route%20Tenyour%20Km%205%2C%20Chihia%2C%20Sfax" target="_blank" rel="noopener">voir sur Google&nbsp;Maps</a>
+    </p>
+
+    <a class="vers-menu" href="#menu">Voir la carte</a>
+  </div>
+
+  <div class="braise" aria-hidden="true"></div>
+  <svg class="flammes" viewBox="0 0 1200 44" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <path class="f1" d="M0 44V22c22 0 30-14 44-14s18 10 34 10 24-16 44-16 26 18 44 18 26-14 44-14 24 12 42 12 28-16 48-16 26 16 44 16 24-12 42-12 28 14 46 14 26-18 46-18 26 18 44 18 24-12 42-12 30 14 48 14 26-16 46-16 26 16 44 16 26-12 44-12 28 12 46 12 26-14 46-14 26 14 44 14 26-10 44-10 28 8 46 8 26-12 44-12v36z"/>
+    <path class="f2" d="M0 44V34c18 0 26-10 40-10s18 8 32 8 22-12 40-12 24 14 40 14 24-10 40-10 22 8 38 8 26-12 44-12 24 12 40 12 22-8 38-8 26 10 42 10 24-14 42-14 24 14 40 14 22-8 38-8 28 10 44 10 24-12 42-12 24 12 40 12 24-8 40-8 26 8 42 8 24-10 42-10 24 10 40 10 24-6 40-6 26 6 42 6 24-8 40-8v22z"/>
+  </svg>
+</header>
+
+<nav class="nav-carte" aria-label="Catégories de la carte">
+  <div class="enveloppe nav-rangee">
+    <button class="chercher-bouton" type="button" id="bouton-recherche" aria-label="Rechercher un article">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>
+    </button>
+    <ul class="puces">
+      <!-- NAV:DEBUT -->
+        <li><a class="puce" href="#cat-garnitures">Garnitures</a></li>
+        <li><a class="puce" href="#cat-omlette">Omlette</a></li>
+        <li><a class="puce" href="#cat-omlette-mozarilla">Omlette Mozarilla</a></li>
+        <li><a class="puce" href="#cat-omlette-moz-3arbi">Omlette Moz 3arbi</a></li>
+        <li><a class="puce" href="#cat-omlette-fromage">Omlette Fromage</a></li>
+        <li><a class="puce" href="#cat-avec-mozarilla">Avec Mozarilla</a></li>
+        <li><a class="puce" href="#cat-avec-mozarilla-3arbi">Avec Mozarilla 3arbi</a></li>
+        <li><a class="puce" href="#cat-avec-fromage">Avec Fromage</a></li>
+        <li><a class="puce" href="#cat-special">Spécial</a></li>
+        <li><a class="puce" href="#cat-lablebi">Lablebi</a></li>
+        <li><a class="puce" href="#cat-a-cote">À côté</a></li>
+        <li><a class="puce" href="#cat-extras">Extras</a></li>
+      <!-- NAV:FIN -->
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="section enveloppe" id="menu" aria-labelledby="titre-menu">
+    <h2 class="section-titre" id="titre-menu">La carte<span class="point">.</span></h2>
+    <p class="section-chapo">Tous les prix sont en dinars tunisiens, service compris. La carte évolue&nbsp;: le prix annoncé au téléphone fait foi.</p>
+
+    <div class="pates" id="les-pates">
+      <h3>Les pâtes</h3>
+      <p>Les sandwichs sont préparés avec la pâte de votre choix. <strong>Les prix de la carte sont ceux de la pâte Normale.</strong> Pour changer de pâte, ajoutez simplement&nbsp;:</p>
+      <ul class="pates-liste">
+        <li><b>Normale</b> <span>prix affiché</span></li>
+        <li><b>Céréale</b> <span>+&nbsp;1,000&nbsp;DT</span></li>
+        <li><b>Chia</b> <span>+&nbsp;1,500&nbsp;DT</span></li>
+      </ul>
+    </div>
+
+    <div class="recherche" id="zone-recherche" hidden>
+      <label for="champ-recherche">Trouver un article</label>
+      <input type="search" id="champ-recherche" placeholder="Ex.&nbsp;: thon, chawarma, lablebi…" autocomplete="off">
+      <p class="recherche-bilan" id="bilan-recherche" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="liste-categories">
+      <!-- MENU:DEBUT -->
+      <section class="categorie" id="cat-garnitures" aria-labelledby="cat-garnitures-titre">
+        <header class="categorie-tete">
+          <h3 id="cat-garnitures-titre">Garnitures</h3>
+          <p class="categorie-compte">13 articles</p>
+        </header>
+        <p class="categorie-intro">Tarif de la pâte Normale — <a href="#les-pates">voir les autres pâtes</a>.</p>
+        <ul class="carte">
+          <li class="article" data-recherche="omlette"><span class="article-nom">Omlette</span><span class="article-prix"><span class="sr-only">Prix : </span>3,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="kwika"><span class="article-nom">Kwika</span><span class="article-prix"><span class="sr-only">Prix : </span>3,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="salami"><span class="article-nom">Salami</span><span class="article-prix"><span class="sr-only">Prix : </span>3,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="thon"><span class="article-nom">Thon</span><span class="article-prix"><span class="sr-only">Prix : </span>4,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="jombon"><span class="article-nom">Jombon</span><span class="article-prix"><span class="sr-only">Prix : </span>4,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="kabeb"><span class="article-nom">Kabeb</span><span class="article-prix"><span class="sr-only">Prix : </span>6,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="chawarma"><span class="article-nom">Chawarma</span><span class="article-prix"><span class="sr-only">Prix : </span>6,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="escalope grillé"><span class="article-nom">Escalope Grillé</span><span class="article-prix"><span class="sr-only">Prix : </span>6,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="escalope pané"><span class="article-nom">Escalope Pané</span><span class="article-prix"><span class="sr-only">Prix : </span>7,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="cordon bleu"><span class="article-nom">Cordon Bleu</span><span class="article-prix"><span class="sr-only">Prix : </span>7,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="mozarilla"><span class="article-nom">Mozarilla</span><span class="article-prix"><span class="sr-only">Prix : </span>3,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="mozarilla 3arbi"><span class="article-nom">Mozarilla 3arbi</span><span class="article-prix"><span class="sr-only">Prix : </span>4,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="fromage"><span class="article-nom">Fromage</span><span class="article-prix"><span class="sr-only">Prix : </span>2,200&nbsp;DT</span></li>
+        </ul>
+      </section>
+
+      <section class="categorie" id="cat-omlette" aria-labelledby="cat-omlette-titre">
+        <header class="categorie-tete">
+          <h3 id="cat-omlette-titre">Omlette</h3>
+          <p class="categorie-compte">12 articles</p>
+        </header>
+        <p class="categorie-intro">Tarif de la pâte Normale — <a href="#les-pates">voir les autres pâtes</a>.</p>
+        <ul class="carte">
+          <li class="article" data-recherche="omlette kwika"><span class="article-nom">Omlette Kwika</span><span class="article-prix"><span class="sr-only">Prix : </span>4,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette salami"><span class="article-nom">Omlette Salami</span><span class="article-prix"><span class="sr-only">Prix : </span>4,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette thon"><span class="article-nom">Omlette Thon</span><span class="article-prix"><span class="sr-only">Prix : </span>5,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette jombon"><span class="article-nom">Omlette Jombon</span><span class="article-prix"><span class="sr-only">Prix : </span>5,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette kabeb"><span class="article-nom">Omlette Kabeb</span><span class="article-prix"><span class="sr-only">Prix : </span>7,200&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette chawarma"><span class="article-nom">Omlette Chawarma</span><span class="article-prix"><span class="sr-only">Prix : </span>7,200&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette escalope grillé"><span class="article-nom">Omlette Escalope Grillé</span><span class="article-prix"><span class="sr-only">Prix : </span>7,200&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette escalope pané"><span class="article-nom">Omlette Escalope Pané</span><span class="article-prix"><span class="sr-only">Prix : </span>8,200&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette cordon bleu"><span class="article-nom">Omlette Cordon Bleu</span><span class="article-prix"><span class="sr-only">Prix : </span>8,200&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla"><span class="article-nom">Omlette Mozarilla</span><span class="article-prix"><span class="sr-only">Prix : </span>4,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla 3arbi"><span class="article-nom">Omlette Mozarilla 3arbi</span><span class="article-prix"><span class="sr-only">Prix : </span>5,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette fromage"><span class="article-nom">Omlette Fromage</span><span class="article-prix"><span class="sr-only">Prix : </span>3,700&nbsp;DT</span></li>
+        </ul>
+      </section>
+
+      <section class="categorie" id="cat-omlette-mozarilla" aria-labelledby="cat-omlette-mozarilla-titre">
+        <header class="categorie-tete">
+          <h3 id="cat-omlette-mozarilla-titre">Omlette Mozarilla</h3>
+          <p class="categorie-compte">9 articles</p>
+        </header>
+        <p class="categorie-intro">Tarif de la pâte Normale — <a href="#les-pates">voir les autres pâtes</a>.</p>
+        <ul class="carte">
+          <li class="article" data-recherche="omlette mozarilla kwika"><span class="article-nom">Omlette Mozarilla Kwika</span><span class="article-prix"><span class="sr-only">Prix : </span>5,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla salami"><span class="article-nom">Omlette Mozarilla Salami</span><span class="article-prix"><span class="sr-only">Prix : </span>6,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla thon"><span class="article-nom">Omlette Mozarilla Thon</span><span class="article-prix"><span class="sr-only">Prix : </span>6,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla jombon"><span class="article-nom">Omlette Mozarilla Jombon</span><span class="article-prix"><span class="sr-only">Prix : </span>6,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla kabeb"><span class="article-nom">Omlette Mozarilla Kabeb</span><span class="article-prix"><span class="sr-only">Prix : </span>8,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla chawarma"><span class="article-nom">Omlette Mozarilla Chawarma</span><span class="article-prix"><span class="sr-only">Prix : </span>8,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla escalope grillé"><span class="article-nom">Omlette Mozarilla Escalope Grillé</span><span class="article-prix"><span class="sr-only">Prix : </span>8,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla escalope pané"><span class="article-nom">Omlette Mozarilla Escalope Pané</span><span class="article-prix"><span class="sr-only">Prix : </span>9,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla cordon bleu"><span class="article-nom">Omlette Mozarilla Cordon Bleu</span><span class="article-prix"><span class="sr-only">Prix : </span>9,700&nbsp;DT</span></li>
+        </ul>
+      </section>
+
+      <section class="categorie" id="cat-omlette-moz-3arbi" aria-labelledby="cat-omlette-moz-3arbi-titre">
+        <header class="categorie-tete">
+          <h3 id="cat-omlette-moz-3arbi-titre">Omlette Moz 3arbi</h3>
+          <p class="categorie-compte">9 articles</p>
+        </header>
+        <p class="categorie-intro">Tarif de la pâte Normale — <a href="#les-pates">voir les autres pâtes</a>.</p>
+        <ul class="carte">
+          <li class="article" data-recherche="omlette mozarilla 3arbi kwika"><span class="article-nom">Omlette Mozarilla 3arbi Kwika</span><span class="article-prix"><span class="sr-only">Prix : </span>6,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla 3arbi salami"><span class="article-nom">Omlette Mozarilla 3arbi Salami</span><span class="article-prix"><span class="sr-only">Prix : </span>7,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla 3arbi thon"><span class="article-nom">Omlette Mozarilla 3arbi Thon</span><span class="article-prix"><span class="sr-only">Prix : </span>7,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla 3arbi jombon"><span class="article-nom">Omlette Mozarilla 3arbi Jombon</span><span class="article-prix"><span class="sr-only">Prix : </span>7,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla 3arbi kabeb"><span class="article-nom">Omlette Mozarilla 3arbi Kabeb</span><span class="article-prix"><span class="sr-only">Prix : </span>9,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla 3arbi chawarma"><span class="article-nom">Omlette Mozarilla 3arbi Chawarma</span><span class="article-prix"><span class="sr-only">Prix : </span>9,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla 3arbi escalope grillé"><span class="article-nom">Omlette Mozarilla 3arbi Escalope Grillé</span><span class="article-prix"><span class="sr-only">Prix : </span>9,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla 3arbi escalope pané"><span class="article-nom">Omlette Mozarilla 3arbi Escalope Pané</span><span class="article-prix"><span class="sr-only">Prix : </span>10,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette mozarilla 3arbi cordon bleu"><span class="article-nom">Omlette Mozarilla 3arbi Cordon Bleu</span><span class="article-prix"><span class="sr-only">Prix : </span>10,700&nbsp;DT</span></li>
+        </ul>
+      </section>
+
+      <section class="categorie" id="cat-omlette-fromage" aria-labelledby="cat-omlette-fromage-titre">
+        <header class="categorie-tete">
+          <h3 id="cat-omlette-fromage-titre">Omlette Fromage</h3>
+          <p class="categorie-compte">9 articles</p>
+        </header>
+        <p class="categorie-intro">Tarif de la pâte Normale — <a href="#les-pates">voir les autres pâtes</a>.</p>
+        <ul class="carte">
+          <li class="article" data-recherche="omlette fromage kwika"><span class="article-nom">Omlette Fromage Kwika</span><span class="article-prix"><span class="sr-only">Prix : </span>4,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette fromage salami"><span class="article-nom">Omlette Fromage Salami</span><span class="article-prix"><span class="sr-only">Prix : </span>5,200&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette fromage thon"><span class="article-nom">Omlette Fromage Thon</span><span class="article-prix"><span class="sr-only">Prix : </span>5,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette fromage jombon"><span class="article-nom">Omlette Fromage Jombon</span><span class="article-prix"><span class="sr-only">Prix : </span>5,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette fromage kabeb"><span class="article-nom">Omlette Fromage Kabeb</span><span class="article-prix"><span class="sr-only">Prix : </span>7,900&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette fromage chawarma"><span class="article-nom">Omlette Fromage Chawarma</span><span class="article-prix"><span class="sr-only">Prix : </span>7,900&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette fromage escalope grillé"><span class="article-nom">Omlette Fromage Escalope Grillé</span><span class="article-prix"><span class="sr-only">Prix : </span>7,900&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette fromage escalope pané"><span class="article-nom">Omlette Fromage Escalope Pané</span><span class="article-prix"><span class="sr-only">Prix : </span>8,900&nbsp;DT</span></li>
+          <li class="article" data-recherche="omlette fromage cordon bleu"><span class="article-nom">Omlette Fromage Cordon Bleu</span><span class="article-prix"><span class="sr-only">Prix : </span>8,900&nbsp;DT</span></li>
+        </ul>
+      </section>
+
+      <section class="categorie" id="cat-avec-mozarilla" aria-labelledby="cat-avec-mozarilla-titre">
+        <header class="categorie-tete">
+          <h3 id="cat-avec-mozarilla-titre">Avec Mozarilla</h3>
+          <p class="categorie-compte">9 articles</p>
+        </header>
+        <p class="categorie-intro">Tarif de la pâte Normale — <a href="#les-pates">voir les autres pâtes</a>.</p>
+        <ul class="carte">
+          <li class="article" data-recherche="kwika mozarilla"><span class="article-nom">Kwika Mozarilla</span><span class="article-prix"><span class="sr-only">Prix : </span>4,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="salami mozarilla"><span class="article-nom">Salami Mozarilla</span><span class="article-prix"><span class="sr-only">Prix : </span>5,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="thon mozarilla"><span class="article-nom">Thon Mozarilla</span><span class="article-prix"><span class="sr-only">Prix : </span>6,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="jombon mozarilla"><span class="article-nom">Jombon Mozarilla</span><span class="article-prix"><span class="sr-only">Prix : </span>6,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="kabeb mozarilla"><span class="article-nom">Kabeb Mozarilla</span><span class="article-prix"><span class="sr-only">Prix : </span>7,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="chawarma mozarilla"><span class="article-nom">Chawarma Mozarilla</span><span class="article-prix"><span class="sr-only">Prix : </span>7,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="escalope grillé mozarilla"><span class="article-nom">Escalope Grillé Mozarilla</span><span class="article-prix"><span class="sr-only">Prix : </span>7,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="escalope pané mozarilla"><span class="article-nom">Escalope Pané Mozarilla</span><span class="article-prix"><span class="sr-only">Prix : </span>8,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="cordon bleu mozarilla"><span class="article-nom">Cordon Bleu Mozarilla</span><span class="article-prix"><span class="sr-only">Prix : </span>8,500&nbsp;DT</span></li>
+        </ul>
+      </section>
+
+      <section class="categorie" id="cat-avec-mozarilla-3arbi" aria-labelledby="cat-avec-mozarilla-3arbi-titre">
+        <header class="categorie-tete">
+          <h3 id="cat-avec-mozarilla-3arbi-titre">Avec Mozarilla 3arbi</h3>
+          <p class="categorie-compte">9 articles</p>
+        </header>
+        <p class="categorie-intro">Tarif de la pâte Normale — <a href="#les-pates">voir les autres pâtes</a>.</p>
+        <ul class="carte">
+          <li class="article" data-recherche="kwika mozarilla 3arbi"><span class="article-nom">Kwika Mozarilla 3arbi</span><span class="article-prix"><span class="sr-only">Prix : </span>5,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="salami mozarilla 3arbi"><span class="article-nom">Salami Mozarilla 3arbi</span><span class="article-prix"><span class="sr-only">Prix : </span>6,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="thon mozarilla 3arbi"><span class="article-nom">Thon Mozarilla 3arbi</span><span class="article-prix"><span class="sr-only">Prix : </span>7,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="jombon mozarilla 3arbi"><span class="article-nom">Jombon Mozarilla 3arbi</span><span class="article-prix"><span class="sr-only">Prix : </span>7,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="kabeb mozarilla 3arbi"><span class="article-nom">Kabeb Mozarilla 3arbi</span><span class="article-prix"><span class="sr-only">Prix : </span>8,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="chawarma mozarilla 3arbi"><span class="article-nom">Chawarma Mozarilla 3arbi</span><span class="article-prix"><span class="sr-only">Prix : </span>8,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="escalope grillé mozarilla 3arbi"><span class="article-nom">Escalope Grillé Mozarilla 3arbi</span><span class="article-prix"><span class="sr-only">Prix : </span>8,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="escalope pané mozarilla 3arbi"><span class="article-nom">Escalope Pané Mozarilla 3arbi</span><span class="article-prix"><span class="sr-only">Prix : </span>9,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="cordon bleu mozarilla 3arbi"><span class="article-nom">Cordon Bleu Mozarilla 3arbi</span><span class="article-prix"><span class="sr-only">Prix : </span>9,500&nbsp;DT</span></li>
+        </ul>
+      </section>
+
+      <section class="categorie" id="cat-avec-fromage" aria-labelledby="cat-avec-fromage-titre">
+        <header class="categorie-tete">
+          <h3 id="cat-avec-fromage-titre">Avec Fromage</h3>
+          <p class="categorie-compte">9 articles</p>
+        </header>
+        <p class="categorie-intro">Tarif de la pâte Normale — <a href="#les-pates">voir les autres pâtes</a>.</p>
+        <ul class="carte">
+          <li class="article" data-recherche="kwika fromage"><span class="article-nom">Kwika Fromage</span><span class="article-prix"><span class="sr-only">Prix : </span>3,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="salami fromage"><span class="article-nom">Salami Fromage</span><span class="article-prix"><span class="sr-only">Prix : </span>4,200&nbsp;DT</span></li>
+          <li class="article" data-recherche="thon fromage"><span class="article-nom">Thon Fromage</span><span class="article-prix"><span class="sr-only">Prix : </span>5,200&nbsp;DT</span></li>
+          <li class="article" data-recherche="jombon fromage"><span class="article-nom">Jombon Fromage</span><span class="article-prix"><span class="sr-only">Prix : </span>5,200&nbsp;DT</span></li>
+          <li class="article" data-recherche="kabeb fromage"><span class="article-nom">Kabeb Fromage</span><span class="article-prix"><span class="sr-only">Prix : </span>6,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="chawarma fromage"><span class="article-nom">Chawarma Fromage</span><span class="article-prix"><span class="sr-only">Prix : </span>6,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="escalope grillé fromage"><span class="article-nom">Escalope Grillé Fromage</span><span class="article-prix"><span class="sr-only">Prix : </span>6,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="escalope pané fromage"><span class="article-nom">Escalope Pané Fromage</span><span class="article-prix"><span class="sr-only">Prix : </span>7,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="cordon bleu fromage"><span class="article-nom">Cordon Bleu Fromage</span><span class="article-prix"><span class="sr-only">Prix : </span>7,700&nbsp;DT</span></li>
+        </ul>
+      </section>
+
+      <section class="categorie" id="cat-special" aria-labelledby="cat-special-titre">
+        <header class="categorie-tete">
+          <h3 id="cat-special-titre">Spécial</h3>
+          <p class="categorie-compte">7 articles</p>
+        </header>
+        <p class="categorie-intro">Tarif de la pâte Normale — <a href="#les-pates">voir les autres pâtes</a>.</p>
+        <ul class="carte">
+          <li class="article" data-recherche="special"><span class="article-nom">Special</span><span class="article-prix"><span class="sr-only">Prix : </span>8,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="number one"><span class="article-nom">Number One</span><span class="article-prix"><span class="sr-only">Prix : </span>9,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="number one plus"><span class="article-nom">Number One Plus</span><span class="article-prix"><span class="sr-only">Prix : </span>13,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="spicy"><span class="article-nom">Spicy</span><span class="article-prix"><span class="sr-only">Prix : </span>13,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="cheese"><span class="article-nom">Cheese</span><span class="article-prix"><span class="sr-only">Prix : </span>9,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="hot cheese"><span class="article-nom">Hot Cheese</span><span class="article-prix"><span class="sr-only">Prix : </span>9,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="full cheese"><span class="article-nom">Full Cheese</span><span class="article-prix"><span class="sr-only">Prix : </span>11,000&nbsp;DT</span></li>
+        </ul>
+      </section>
+
+      <section class="categorie" id="cat-lablebi" aria-labelledby="cat-lablebi-titre">
+        <header class="categorie-tete">
+          <h3 id="cat-lablebi-titre">Lablebi</h3>
+          <p class="categorie-compte">6 articles</p>
+        </header>
+        <ul class="carte">
+          <li class="article" data-recherche="lablebi normale"><span class="article-nom">Lablebi Normale</span><span class="article-prix"><span class="sr-only">Prix : </span>4,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="lablebi oeuf"><span class="article-nom">Lablebi Oeuf</span><span class="article-prix"><span class="sr-only">Prix : </span>5,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="lablebi double tête"><span class="article-nom">Lablebi Double Tête</span><span class="article-prix"><span class="sr-only">Prix : </span>6,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="lablebi thon"><span class="article-nom">Lablebi Thon</span><span class="article-prix"><span class="sr-only">Prix : </span>7,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="lablebi oeuf thon"><span class="article-nom">Lablebi Oeuf Thon</span><span class="article-prix"><span class="sr-only">Prix : </span>8,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="lablebi double tête thon"><span class="article-nom">Lablebi Double Tête Thon</span><span class="article-prix"><span class="sr-only">Prix : </span>9,000&nbsp;DT</span></li>
+        </ul>
+      </section>
+
+      <section class="categorie" id="cat-a-cote" aria-labelledby="cat-a-cote-titre">
+        <header class="categorie-tete">
+          <h3 id="cat-a-cote-titre">À côté</h3>
+          <p class="categorie-compte">1 article</p>
+        </header>
+        <ul class="carte">
+          <li class="article" data-recherche="frite"><span class="article-nom">Frite</span><span class="article-prix"><span class="sr-only">Prix : </span>3,000&nbsp;DT</span></li>
+        </ul>
+      </section>
+
+      <section class="categorie" id="cat-extras" aria-labelledby="cat-extras-titre">
+        <header class="categorie-tete">
+          <h3 id="cat-extras-titre">Extras</h3>
+          <p class="categorie-compte">17 articles</p>
+        </header>
+        <p class="categorie-intro">Suppléments à ajouter sur n’importe quel sandwich — ce ne sont pas des plats.</p>
+        <ul class="carte">
+          <li class="article" data-recherche="extra omlette"><span class="article-nom">Extra Omlette</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>0,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="extra kwika"><span class="article-nom">Extra Kwika</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>1,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="extra salami"><span class="article-nom">Extra Salami</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>1,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="extra thon"><span class="article-nom">Extra Thon</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>2,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="extra jombon"><span class="article-nom">Extra Jombon</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>2,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="extra chawarma"><span class="article-nom">Extra Chawarma</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>4,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="extra kabeb"><span class="article-nom">Extra Kabeb</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>4,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="extra escalope grillé"><span class="article-nom">Extra Escalope Grillé</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>4,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="extra escalope pané"><span class="article-nom">Extra Escalope Pané</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>4,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="extra cordon bleu"><span class="article-nom">Extra Cordon Bleu</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>4,500&nbsp;DT</span></li>
+          <li class="article" data-recherche="extra mozarilla"><span class="article-nom">Extra Mozarilla</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>2,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="extra mozarilla 3arbi"><span class="article-nom">Extra Mozarilla 3arbi</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>3,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="extra fromage"><span class="article-nom">Extra Fromage</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>0,700&nbsp;DT</span></li>
+          <li class="article" data-recherche="extra frite"><span class="article-nom">Extra Frite</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>3,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="extra pâte normale"><span class="article-nom">Extra Pâte Normale</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>1,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="extra pâte céréale"><span class="article-nom">Extra Pâte Céréale</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>2,000&nbsp;DT</span></li>
+          <li class="article" data-recherche="extra pâte chia"><span class="article-nom">Extra Pâte Chia</span><span class="article-prix"><span class="plus" aria-hidden="true">+</span> <span class="sr-only">Supplément : </span>2,500&nbsp;DT</span></li>
+        </ul>
+      </section>
+      <!-- MENU:FIN -->
+    </div>
+  </section>
+
+  <section class="section enveloppe" id="infos" aria-labelledby="titre-infos">
+    <h2 class="section-titre" id="titre-infos">Nous trouver<span class="point">.</span></h2>
+    <div class="contact-grille">
+
+      <div class="fiche">
+        <h3>Commander</h3>
+        <p>La commande se fait par téléphone. Appelez, on prépare.</p>
+        <a class="tel-grand" href="tel:+21626473741">26&nbsp;473&nbsp;741</a>
+        <!-- EMPLACEMENT À COMPLÉTER : horaires d'ouverture (non communiqués à ce jour).
+             Exemple une fois connus :
+             <p><strong>Horaires :</strong> tous les jours, 11h – 23h</p> -->
+      </div>
+
+      <div class="fiche">
+        <h3>Adresse</h3>
+        <p>Route Tenyour Km 5<br>Chihia, Sfax<br>Tunisie</p>
+        <a class="lien-plan" href="https://www.google.com/maps/search/?api=1&amp;query=Route%20Tenyour%20Km%205%2C%20Chihia%2C%20Sfax" target="_blank" rel="noopener">Ouvrir dans Google&nbsp;Maps</a>
+        <!-- EMPLACEMENT À COMPLÉTER : réseaux sociaux (Facebook / Instagram) et e-mail,
+             non communiqués à ce jour. Exemple une fois connus :
+             <p><a href="https://www.facebook.com/…">Facebook</a> · <a href="https://www.instagram.com/…">Instagram</a></p> -->
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="pied">
+  <div class="enveloppe">
+    <p class="pied-marque">Number One</p>
+    <p>Route Tenyour Km 5, Chihia, Sfax</p>
+    <p>Téléphone&nbsp;: <a href="tel:+21626473741">26&nbsp;473&nbsp;741</a></p>
+    <p>Prix en dinars tunisiens. Carte 2026, sous réserve de modification.</p>
+  </div>
+</footer>
+
+<div class="barre-appel">
+  <a href="tel:+21626473741"><span aria-hidden="true">📞</span> Appeler&nbsp;: 26&nbsp;473&nbsp;741</a>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* --- Recherche : activée seulement si JavaScript fonctionne --- */
+  var zone = document.getElementById("zone-recherche");
+  var champ = document.getElementById("champ-recherche");
+  var bilan = document.getElementById("bilan-recherche");
+  var bouton = document.getElementById("bouton-recherche");
+  var articles = [].slice.call(document.querySelectorAll(".article"));
+  var sections = [].slice.call(document.querySelectorAll(".categorie"));
+  var puces = [].slice.call(document.querySelectorAll(".puce"));
+
+  if (zone && champ && articles.length) {
+    zone.hidden = false;
+
+    var sansAccent = function (t) {
+      return t.normalize ? t.normalize("NFD").replace(/[\u0300-\u036f]/g, "") : t;
+    };
+
+    var filtrer = function () {
+      var q = sansAccent(champ.value.trim().toLowerCase());
+      var visibles = 0;
+      articles.forEach(function (a) {
+        var ok = !q || sansAccent(a.dataset.recherche || "").indexOf(q) !== -1;
+        a.hidden = !ok;
+        if (ok) { visibles++; }
+      });
+      sections.forEach(function (s) {
+        var reste = s.querySelector(".article:not([hidden])");
+        s.hidden = !reste;
+      });
+      bilan.textContent = q
+        ? visibles + (visibles > 1 ? " articles trouvés" : " article trouvé")
+        : "";
+    };
+
+    champ.addEventListener("input", filtrer);
+  }
+
+  if (bouton && champ) {
+    bouton.addEventListener("click", function () {
+      document.getElementById("zone-recherche").scrollIntoView({ block: "center" });
+      champ.focus();
+    });
+  }
+
+  /* --- Mise en évidence de la catégorie en cours de lecture --- */
+  if ("IntersectionObserver" in window && sections.length && puces.length) {
+    var parId = {};
+    puces.forEach(function (p) { parId[p.getAttribute("href").slice(1)] = p; });
+
+    var actuelle = null;
+    var marquer = function (id) {
+      if (id === actuelle) { return; }
+      actuelle = id;
+      puces.forEach(function (p) { p.removeAttribute("aria-current"); });
+      var p = parId[id];
+      if (p) {
+        p.setAttribute("aria-current", "true");
+        var liste = p.parentNode.parentNode;
+        var g = p.parentNode.offsetLeft - liste.offsetLeft;
+        liste.scrollTo({ left: g - 16, behavior: "smooth" });
+      }
+    };
+
+    var observateur = new IntersectionObserver(function (entrees) {
+      var visibles = entrees.filter(function (e) { return e.isIntersecting; });
+      if (visibles.length) {
+        visibles.sort(function (a, b) {
+          return a.boundingClientRect.top - b.boundingClientRect.top;
+        });
+        marquer(visibles[0].target.id);
+      }
+    }, { rootMargin: "-64px 0px -70% 0px", threshold: 0 });
+
+    sections.forEach(function (s) { observateur.observe(s); });
+  }
+})();
+</script>
+
+</body>
+</html>
