@@ -3,22 +3,25 @@
 Engendre site/index.html depuis la carte de la caisse.
 
 Pourquoi engendrer plutot qu'ecrire la page : les prix vivent en caisse. Recopier
-110 articles a la main, c'est se condamner a un site qui ment des la premiere hausse.
+111 articles a la main, c'est se condamner a un site qui ment des la premiere hausse.
 On relance ce script, la page suit.
 
     python3 outils/generer-site.py
 
+Deux fichiers sortent :
+  - index.html          la page, qui va chercher ses photos dans img/ ;
+  - apercu-artifact.html la meme, photos embarquees, pour la publier d'un bloc.
+
 Regles tenues ici, et nulle part ailleurs :
   - un article sans prix (0) n'est PAS publie. Un menu public faux coute plus cher
     qu'un menu incomplet ;
-  - trois colonnes de prix pour un article decline : Normale, Cereale, Chia. Le
-    client lit son prix, il ne fait pas l'addition ;
+  - trois colonnes de prix pour un article decline : Normale, Cereale, Chia. Les
+    doubles pates ne font pas trois colonnes de plus - la regle est dite une fois en
+    tete de page, et chaque prix porte sa valeur double, que la case a cocher revele ;
   - la photo est cherchee par le nom de l'article, accents et casse ignores. Absente,
-    la vignette laisse une initiale, jamais un cadre casse.
+    la vignette laisse un logement vide, jamais un cadre casse.
 """
-import json, os, re, unicodedata, html
-
-import base64
+import json, os, re, base64, unicodedata, html, datetime
 
 ICI = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # La carte exportee du poste passe AVANT le fichier d'import : depuis ce chargement, des
@@ -35,27 +38,50 @@ ADRESSE = 'Route Tenyour Km 5, Chihia, Sfax'
 # son itineraire, la ou une recherche par adresse peut tomber sur le voisin.
 MAPS = 'https://maps.app.goo.gl/KzE3dShY9iCtMxAB9'
 
+# Ce que chaque rubrique contient, dit en une ligne. La caisse ne porte que des noms :
+# << Fromage >> ne dit pas a un client que ce sont les memes sandwichs, au fromage.
+DITS = {
+    'Classic':          'La garniture seule, ou avec l’omelette.',
+    'Mozarilla':        'Les mêmes, avec la mozarilla.',
+    'Mozarilla 3arbi':  'Les mêmes, avec la mozarilla 3arbi.',
+    'Fromage':          'Les mêmes, avec le fromage.',
+    'Spécial':     'Les compositions de la maison.',
+    'Lablebi':          'Le bol de pois chiches, servi chaud.',
+    'Boissons':         'Fraîches.',
+    'Extras':           'À ajouter dans n’importe quel sandwich.',
+}
+
+PATES = ['Normale', 'Céréale', 'Chia']
+CLE = {'Normale': 'normale', 'Céréale': 'cereale', 'Chia': 'chia'}
+# Ecart de la double pate, verifie sur les 86 articles declines de la carte : partout
+# +1,000 en normale et cereale, +1,500 en chia.
+DOUBLE = {'Normale': 1.0, 'Céréale': 1.0, 'Chia': 1.5}
+
+
 def sans_accent(s):
     return ''.join(c for c in unicodedata.normalize('NFD', s)
                    if unicodedata.category(c) != 'Mn')
 
+
 def slug(s):
     return re.sub(r'-+', '-', re.sub(r'[^a-z0-9]+', '-', sans_accent(s).lower())).strip('-')
+
 
 def prix(v):
     return ('%.3f' % float(v)).replace('.', ',')
 
+
 def e(s):
     return html.escape(str(s), quote=True)
 
-PATES = ['Normale', 'Céréale', 'Chia']
 
 def pate(nom):
     """
     Le nom d'une version, ramene a la pate qu'il designe : la caisse les appelle
     << Pate Normale >>, << Normale >> ou << Cereale >> selon la saisie, et les doubles
     portent le meme mot precede de << Double >>. Le site n'affiche que les trois
-    simples, sur une ligne : un tableau a six colonnes ne se lit pas sur un telephone.
+    simples : six colonnes ne se lisent pas sur un telephone, et l'ecart des doubles
+    est le meme partout - il se dit une fois, en tete de page.
     """
     t = sans_accent(nom).lower().replace('pate', ' ').strip()
     if 'double' in t: return None
@@ -63,6 +89,7 @@ def pate(nom):
     if t.startswith('cereal'): return 'Céréale'
     if 'chia' in t: return 'Chia'
     return None
+
 
 def depuis_le_poste(c):
     """La carte telle que la caisse l'a rendue, ramenee a la forme attendue ici."""
@@ -77,6 +104,7 @@ def depuis_le_poste(c):
                     'variantPrices': [v for v in pv if v['value'] and v['price'] is not None]})
     return [{'name': x['name']} for x in c['categories']], out
 
+
 # ---------------------------------------------------------------- donnees
 if os.path.exists(LIVE):
     categories, tous = depuis_le_poste(json.load(open(LIVE, encoding='utf-8')))
@@ -89,18 +117,19 @@ else:
 produits = [p for p in tous if float(p['price']) > 0]
 ecartes = [p['name'] for p in tous if float(p['price']) <= 0]
 
-photos = set()
+photos = {}
 if os.path.isdir(IMG):
-    for f in os.listdir(IMG):
+    for f in sorted(os.listdir(IMG)):
         base, ext = os.path.splitext(f)
-        if ext.lower() in ('.png', '.jpg', '.jpeg', '.webp'):
-            photos.add(base)
+        if ext.lower() in ('.jpg', '.jpeg', '.png', '.webp') and base not in photos:
+            photos[base] = f
+
 
 def poser_photos():
     """
     Les vignettes du poste, ecrites dans img/ pour les articles qui n'ont pas deja leur
-    fichier. Un fichier deja present N'EST PAS ecrase : il vient du dossier d'origine,
-    en pleine definition, alors que la caisse ne garde qu'une vignette de 240 px.
+    fichier. Un fichier deja present N'EST PAS ecrase : il peut venir du dossier
+    d'origine, en pleine definition, alors que la caisse n'en garde qu'une vignette.
     """
     poses = 0
     for p in produits:
@@ -110,77 +139,119 @@ def poser_photos():
         ext = tete.split('/')[1].split(';')[0].replace('jpeg', 'jpg')
         try: octets = base64.b64decode(data)
         except Exception: continue
-        open(os.path.join(IMG, slug(p['name']) + '.' + ext), 'wb').write(octets)
-        photos.add(slug(p['name']))
+        nom = slug(p['name']) + '.' + ext
+        open(os.path.join(IMG, nom), 'wb').write(octets)
+        photos[slug(p['name'])] = nom
         poses += 1
     return poses
+
 
 os.makedirs(IMG, exist_ok=True)
 posees = poser_photos()
 
+
 def prix_pates(p):
     m = {v['value']: v['price'] for v in p.get('variantPrices', [])}
     return [m.get(x) for x in PATES] if p.get('variant') else None
+
 
 par_cat = {}
 for p in produits:
     par_cat.setdefault(p['category'], []).append(p)
 cats = [c for c in categories if par_cat.get(c['name'])]
 
-# ---------------------------------------------------------------- rendu
-def carte_article(p):
-    """
-    Une carte par article : photo, nom, et ses prix.
 
-    La photo et l'initiale sont toujours toutes les deux posees, l'une par-dessus
-    l'autre. Deposer un fichier dans site/img/ suffit donc a le voir, sans rien
-    regenerer ; et un fichier absent laisse l'initiale, jamais un cadre casse.
+# ---------------------------------------------------------------- rendu
+def plat(p):
+    """
+    Une ligne par article : la photo a gauche sur toute la hauteur, le nom au-dessus de
+    ses prix. La photo est reconnue avant le nom - c'est elle qui commande la lecture.
     """
     pv = prix_pates(p)
     if pv and any(x is not None for x in pv):
-        prix_html = '<div class="tarifs">' + ''.join(
-            '<div class="tarif"><span>%s</span><b>%s</b></div>' % (e(n), prix(v) if v is not None else '&mdash;')
-            for n, v in zip(PATES, pv)) + '</div>'
+        cases = ''
+        for n, v in zip(PATES, pv):
+            if v is None:
+                cases += '<div class="tarif" data-pate="%s"><span>%s</span><b>&mdash;</b></div>' % (CLE[n], e(n))
+            else:
+                cases += ('<div class="tarif" data-pate="%s"><span>%s</span>'
+                          '<b data-p="%s" data-d="%s">%s</b></div>'
+                          % (CLE[n], e(n), prix(v), prix(float(v) + DOUBLE[n]), prix(v)))
+        tarifs = '<div class="tarifs">%s</div>' % cases
     else:
-        prix_html = '<div class="tarifs un"><div class="tarif"><b>%s</b><i>DT</i></div></div>' % prix(p['price'])
-    return (
-      '<article class="fiche" data-nom="%s">'
-        '<span class="photo"><i aria-hidden="true">%s</i>'
-          '<img src="img/%s.png" alt="" loading="lazy" decoding="async" onerror="this.remove()"></span>'
-        '<div class="corps"><h3>%s</h3>%s</div>'
-      '</article>'
-    ) % (e(sans_accent(p['name']).lower()), e(p['name'][0]), e(slug(p['name'])), e(p['name']), prix_html)
+        tarifs = '<div class="tarifs un"><div class="tarif"><b>%s DT</b></div></div>' % prix(p['price'])
+    f = photos.get(slug(p['name']))
+    img = ('<img src="{{IMG:%s}}" alt="" loading="lazy" decoding="async" width="72" height="72">' % f) if f \
+        else '<span class="sans-photo" aria-hidden="true"></span>'
+    return '<article class="plat" data-nom="%s">%s<h3>%s</h3>%s</article>' % (
+        e(sans_accent(p['name']).lower()), img, e(p['name']), tarifs)
 
 
 def panneau(c, premier):
     liste = par_cat[c['name']]
+    dit = DITS.get(c['name'], '')
     return (
       '<section class="panneau" id="cat-%s" role="tabpanel" aria-labelledby="ong-%s"%s>'
-        '<div class="panneau-tete"><h2>%s</h2><span>%d articles</span></div>'
-        '<div class="grille">%s</div>'
+        '<div class="panneau-tete"><h2>%s</h2>%s<span class="compte">%d articles</span></div>'
+        '<div class="liste">%s</div>'
       '</section>'
-    ) % (slug(c['name']), slug(c['name']), '' if premier else ' hidden',
-         e(c['name']), len(liste), ''.join(carte_article(p) for p in liste))
+    ) % (slug(c['name']), slug(c['name']), '' if premier else ' hidden', e(c['name']),
+         ('<span class="dit">%s</span>' % e(dit)) if dit else '',
+         len(liste), ''.join(plat(p) for p in liste))
 
 
 onglets = ''.join(
-    '<button class="onglet%s" role="tab" id="ong-%s" aria-controls="cat-%s" aria-selected="%s" type="button">%s</button>'
-    % (' on' if i == 0 else '', slug(c['name']), slug(c['name']), 'true' if i == 0 else 'false', e(c['name']))
+    '<button class="onglet%s" role="tab" type="button" id="ong-%s" data-cible="cat-%s" '
+    'aria-controls="cat-%s" aria-selected="%s">%s</button>'
+    % (' on' if i == 0 else '', slug(c['name']), slug(c['name']), slug(c['name']),
+       'true' if i == 0 else 'false', e(c['name']))
     for i, c in enumerate(cats))
 
 panneaux = ''.join(panneau(c, i == 0) for i, c in enumerate(cats))
 
-PAGE = open(os.path.join(ICI, 'outils', 'modele.html'), encoding='utf-8').read()
+MOIS = ['janvier', 'fevrier', 'mars', 'avril', 'mai', 'juin', 'juillet', 'aout',
+        'septembre', 'octobre', 'novembre', 'decembre']
+h = datetime.date.today()
+CORPS = open(os.path.join(ICI, 'outils', 'modele.html'), encoding='utf-8').read()
 for cle, valeur in (('{{TEL}}', TEL_AFFICHE), ('{{LIEN}}', TEL_LIEN), ('{{ADRESSE}}', ADRESSE),
                     ('{{MAPS}}', MAPS), ('{{ONGLETS}}', onglets), ('{{PANNEAUX}}', panneaux),
-                    ('{{NB}}', str(len(produits)))):
-    PAGE = PAGE.replace(cle, valeur)
+                    ('{{NB}}', str(len(produits))), ('{{NBCAT}}', str(len(cats))),
+                    ('{{DATE}}', '%d %s %d' % (h.day, MOIS[h.month - 1], h.year))):
+    CORPS = CORPS.replace(cle, valeur)
 
-open(os.path.join(ICI, 'index.html'), 'w', encoding='utf-8').write(PAGE)
+
+def rendu(fichier, incruster):
+    """
+    Deux sorties du meme corps. La page du dossier va chercher ses photos dans img/ ;
+    celle de l'apercu les porte, pour tenir dans un seul fichier qu'on publie ou qu'on
+    envoie d'un bloc. Les chemins ne sont donc ecrits qu'ici, une fois.
+    """
+    def source_image(f):
+        chemin = os.path.join(IMG, f)
+        if not incruster or not os.path.exists(chemin): return 'img/' + f
+        t = 'image/png' if f.lower().endswith('.png') else 'image/jpeg'
+        return 'data:%s;base64,%s' % (t, base64.b64encode(open(chemin, 'rb').read()).decode())
+
+    txt = re.sub(r'\{\{IMG:([^}]+)\}\}', lambda m: source_image(m.group(1)), CORPS)
+    txt = txt.replace('{{LOGO}}', source_image('logo-number-one.png'))
+    if not incruster:
+        txt = ('<!doctype html><html lang="fr"><head><meta charset="utf-8">'
+               '<meta name="viewport" content="width=device-width, initial-scale=1">'
+               '<meta name="description" content="La carte de NUMBER ONE, Chihia, Sfax. '
+               'Sandwichs en pate normale, cereale ou chia. Tel 26 473 741.">'
+               + txt + '</body></html>')
+    open(os.path.join(ICI, fichier), 'w', encoding='utf-8').write(txt)
+    return len(txt)
+
+
+n1 = rendu('index.html', False)
+n2 = rendu('apercu-artifact.html', True)
+
 print('Source : %s' % source)
-print('%d articles publies, %d ecartes faute de prix : %s'
-      % (len(produits), len(ecartes), ', '.join(ecartes)))
+print('%d articles publies, %d ecartes faute de prix%s'
+      % (len(produits), len(ecartes), (' : ' + ', '.join(ecartes)) if ecartes else ''))
 manquantes = [p['name'] for p in produits if slug(p['name']) not in photos]
-print('%d categories. Photos : %d dans site/img/ (%d reprises du poste), %d manquantes.'
+print('%d rubriques. Photos : %d dans site/img/ (%d reprises du poste), %d manquantes.'
       % (len(cats), len(produits) - len(manquantes), posees, len(manquantes)))
 if manquantes: print('Sans photo : ' + ', '.join(manquantes))
+print('index.html %d Ko, apercu-artifact.html %d Ko.' % (n1 // 1024, n2 // 1024))
