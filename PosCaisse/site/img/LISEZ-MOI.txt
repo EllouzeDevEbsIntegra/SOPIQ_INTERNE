@@ -1,23 +1,16 @@
-DOSSIER IMAGES — SITE VITRINE NUMBER ONE
-========================================
+Photos du site.
 
-Un seul fichier est attendu ici pour l'instant :
+Les fichiers portent le nom de l'article, en minuscules, sans accents, les espaces
+remplaces par des tirets :
+
+    Omlette Mozarilla Thon  ->  omlette-mozarilla-thon.png
+
+Ne les renommez pas a la main : lancez depuis le dossier site\
+
+    .\outils\copier-photos.ps1 -Source '<dossier de vos images>'
+
+Il copie, renomme, et signale ce qui ne correspond a rien.
+
+Le logo officiel va ici aussi, sous le nom exact :
 
     logo-number-one.png
-
-C'est le logo NUMBER ONE (fond noir, flammes, rouge et jaune).
-
-Conseils pour le fichier a deposer :
-  - format PNG avec fond transparent (sinon le carre noir du logo se verra
-    sur le fond de la page, ce qui reste acceptable) ;
-  - carre, 512 x 512 pixels minimum (il sert aussi d'icone d'onglet et
-    d'image de partage sur Facebook / WhatsApp) ;
-  - poids conseille : moins de 300 Ko.
-
-Le nom du fichier doit etre EXACTEMENT « logo-number-one.png », en
-minuscules, sans accent et sans espace : la page l'appelle sous ce nom a
-trois endroits (logo en haut de page, icone d'onglet, image de partage).
-
-Tant que le fichier n'est pas depose, la page reste correcte : le nom
-NUMBER ONE s'affiche en gros en lettres, et l'emplacement de l'image
-disparait proprement au lieu de laisser un cadre vide.
