@@ -211,6 +211,20 @@ function confirm() {
 
 /* --- versions (variante) --- */
 .versions { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+/*
+    Les versions se rangent par TROIS, quoi qu'il arrive - la ou les options se
+    repartissent selon la place disponible.
+
+    Un axe de pate se lit en deux rangees qui se repondent : Normale, Cereale, Chia
+    au-dessus, et les memes en double au-dessous, chacune sous la sienne. Laisser la
+    grille remplir la largeur mettait quatre versions sur la premiere rangee et cassait
+    cette lecture : le doigt cherchait la double de la chia sous la cereale.
+
+    Sur un ecran etroit, deux colonnes plutot que trois - trois pastilles de 105 px
+    deviennent illisibles avant de devenir pratiques.
+*/
+.versions .opts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 560px) { .versions .opts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 /* Une version se distingue d'une option : elle decide du prix, elle n'ajoute rien. */
 .versions .opt.version { border-color: var(--line-2); }
 .versions .opt.version.on { border-color: var(--brand); background: var(--brand-soft); }
