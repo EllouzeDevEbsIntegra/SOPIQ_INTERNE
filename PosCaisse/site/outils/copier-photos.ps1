@@ -78,10 +78,24 @@ function Cle([string] $s) { return (Nu $s) -replace '[^a-z0-9]', '' }
     mots viennent en premier : << moz 3arbi >> doit etre reconnu avant << moz >>, sans
     quoi la mozarilla ordinaire prendrait la place de la 3arbi.
 #>
+<#
+    Les valeurs de cette table sont les noms EXACTS des ingredients de la carte,
+    accents compris - et c'est tout l'enjeu.
+
+    Ecrire ici << Escalope Grille >> sans accent obligeait a esperer que le
+    rapprochement retire l'accent des DEUX cotes de la meme facon. Il ne le faisait
+    pas : les dix photos d'escalope, les seuls ingredients accentues de la carte,
+    restaient orphelines. En ecrivant le nom tel qu'il est dans la carte, les deux
+    cotes sont identiques caractere pour caractere, et plus rien ne depend de la
+    facon dont la plateforme traite les accents.
+
+    L'accent est donne par son code : ce fichier doit rester en ASCII pur.
+#>
+$e = [char] 233   # e accent aigu
 $doubles = [ordered]@{
   'moz 3arbi' = 'Mozarilla 3arbi'; 'moz3arbi' = 'Mozarilla 3arbi'; 'mozarilla 3arbi' = 'Mozarilla 3arbi'
-  'esc g' = 'Escalope Grille';     'escg' = 'Escalope Grille';     'esc grille' = 'Escalope Grille'
-  'esc p' = 'Escalope Pane';       'escp' = 'Escalope Pane';       'esc pane' = 'Escalope Pane'
+  'esc g' = ('Escalope Grill' + $e); 'escg' = ('Escalope Grill' + $e); 'esc grille' = ('Escalope Grill' + $e)
+  'esc p' = ('Escalope Pan' + $e);   'escp' = ('Escalope Pan' + $e);   'esc pane' = ('Escalope Pan' + $e)
   'cord b' = 'Cordon Bleu';        'corbleu' = 'Cordon Bleu';      'cord bleu' = 'Cordon Bleu'
   'cordon bleu' = 'Cordon Bleu';   'form slice' = 'Fromage Slice'; 'fromage slice' = 'Fromage Slice'
 }
