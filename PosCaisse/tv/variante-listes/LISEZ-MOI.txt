@@ -1,0 +1,25 @@
+VARIANTE — LISTES SÉPARÉES
+==========================
+
+Les mêmes 108 articles et les mêmes prix que les fichiers du dossier au-dessus.
+Seule change la mise en page des écrans de gauche et du centre :
+
+  dossier tv/            les quatre familles en TABLEAUX CROISÉS
+                         (une ligne par garniture, six prix à droite)
+  dossier variante-listes/  chaque famille en LISTE séparée, avec son titre
+                         et ses trois prix
+
+L'écran de droite est identique dans les deux versions.
+
+Un seul des deux dossiers part sur les téléviseurs — celui que le restaurateur a
+choisi. Les deux se comparent d'un bouton dans tv/comparaison.html.
+
+Mesuré : la version en listes tient à 41,1 px de hauteur de ligne, contre 39,5 en
+tableaux croisés. Elle n'est donc pas plus petite — les 38 articles d'un écran se
+rangent en deux colonnes de 19, soit la même hauteur que les 19 lignes d'une matrice.
+
+Pour refaire les fichiers après un changement de prix :
+
+    EXPORTER_CARTE_SITE.bat
+    cd site  && python outils\generer-site.py
+    cd ..\tv && python outils\generer-tv.py listes

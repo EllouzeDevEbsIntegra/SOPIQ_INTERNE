@@ -11,6 +11,32 @@ n'a plus besoin de rien : polices et logo sont dans le fichier, aucun appel au r
 
 `mur-apercu.html` montre les trois à l'échelle, côte à côte — pour juger avant d'accrocher.
 
+## Deux mises en page, à faire choisir
+
+Les mêmes articles et les mêmes prix se rangent de deux façons sur les écrans de gauche
+et du centre. L'écran de droite ne change pas.
+
+| Version | Où | Comment ça se lit |
+|---|---|---|
+| **Tableaux croisés** | `tv/` | Une ligne par garniture, six prix à droite en deux blocs. On compare deux versions d'un même sandwich d'un coup d'œil, mais il faut lire l'en-tête pour savoir quelle colonne est laquelle. |
+| **Listes séparées** | `tv/variante-listes/` | Chaque famille forme un bloc entier, avec son titre et ses trois prix. On lit droit devant soi, mais le même nom revient quatre fois sur le mur. |
+
+```
+python3 outils/generer-tv.py            les tableaux croisés
+python3 outils/generer-tv.py listes     les listes séparées
+python3 outils/comparer.py              comparaison.html, les deux d'un bouton
+```
+
+Contrairement à ce qu'on croirait, la version en listes ne rapetisse rien : **41,1 px de
+hauteur de ligne contre 39,5**. Les 38 articles d'un écran se rangent en deux colonnes de
+19, soit la même hauteur que les 19 lignes d'une matrice — qui paie en plus une rangée
+d'en-tête de second niveau. Le choix se joue donc sur la lecture, pas sur la taille.
+
+`comparaison.html` rend les deux **à la même hauteur de ligne**, pour que l'œil juge la
+mise en page et non le corps du texte.
+
+Un seul des deux dossiers part sur les téléviseurs.
+
 ## Afficher
 
 Sur le PC (ou la clé Android / mini-PC) branché à chaque téléviseur :

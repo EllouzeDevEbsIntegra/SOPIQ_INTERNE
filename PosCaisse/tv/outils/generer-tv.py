@@ -32,7 +32,7 @@ CE QUI EST DECIDE ICI, ET POURQUOI
   Les fichiers sont autonomes : polices et logo embarques, aucun appel au reseau. Un
   tableau de menu qui depend d'internet s'eteint le jour ou la connexion tombe.
 """
-import base64, io, json, os, re, unicodedata
+import base64, io, json, os, re, sys, unicodedata
 
 ICI = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CARTE = os.path.join(ICI, '..', 'site', 'carte.json')
@@ -51,11 +51,49 @@ POLICES = os.path.join(ICI, 'outils', 'polices')
 # 3arbi. Les ecrire quatre fois en listes faisait lire quatre fois la meme suite de
 # noms, et obligeait a chercher d'une colonne a l'autre pour comparer deux versions.
 #
-ECRANS = [
-    ('1-gauche', 'Gauche', {'matrice': ['Classic', 'Fromage']}),
-    ('2-centre', 'Centre', {'matrice': ['Mozarilla', 'Mozarilla 3arbi']}),
-    ('3-droite', 'Droite', ['Spécial', 'Lablebi', 'Boissons', 'Extras']),
-]
+# DEUX VERSIONS, pour laisser le choix au restaurateur devant son mur :
+#
+#   python3 outils/generer-tv.py            les deux premiers ecrans en MATRICE
+#   python3 outils/generer-tv.py listes     les quatre familles en LISTES separees
+#
+# La seconde ecrit dans variante-listes/ et ne touche a rien de la premiere : on peut
+# donc les montrer cote a cote sans avoir a regenerer entre deux.
+#
+# Contrairement a ce qu'on croirait, la version en listes ne rapetisse RIEN : mesure,
+# 41,1 px de ligne contre 39,5 en matrice. Les 38 articles d'un ecran se rangent en
+# deux colonnes de 19, soit la meme hauteur que les 19 lignes d'une matrice - qui paie
+# en plus une rangee d'en-tete de second niveau. Le choix ne se joue donc pas sur la
+# taille du texte, mais sur la lecture :
+#   matrice : un nom, six prix cote a cote - on compare deux versions d'un coup d'oeil,
+#             mais il faut lire l'en-tete pour savoir quelle colonne est quoi ;
+#   listes  : chaque famille est un bloc entier avec son titre - on lit droit devant
+#             soi, mais le meme nom se repete quatre fois sur le mur.
+VERSIONS = {
+    'croise': ('', [
+        ('1-gauche', 'Gauche', {'matrice': ['Classic', 'Fromage']}),
+        ('2-centre', 'Centre', {'matrice': ['Mozarilla', 'Mozarilla 3arbi']}),
+        ('3-droite', 'Droite', ['Spécial', 'Lablebi', 'Boissons', 'Extras']),
+    ]),
+    'listes': ('variante-listes', [
+        ('1-gauche', 'Gauche', ['Classic', 'Fromage']),
+        ('2-centre', 'Centre', ['Mozarilla', 'Mozarilla 3arbi']),
+        ('3-droite', 'Droite', ['Spécial', 'Lablebi', 'Boissons', 'Extras']),
+    ]),
+}
+VERSION = (sys.argv[1] if len(sys.argv) > 1 else 'croise').lower()
+if VERSION not in VERSIONS:
+    raise SystemExit('Version inconnue : %s. Attendu : %s' % (VERSION, ' ou '.join(VERSIONS)))
+DOSSIER, ECRANS = VERSIONS[VERSION]
+SORTIE = os.path.join(ICI, DOSSIER) if DOSSIER else ICI
+# Hauteur de ligne imposee, pour comparer les deux versions a taille egale : sinon
+# l'oeil juge la taille du texte au lieu de juger la mise en page.
+#     python3 outils/generer-tv.py listes 39.5
+FORCEE = float(sys.argv[2]) if len(sys.argv) > 2 else None
+
+
+def libelle(rubriques):
+    """Ce que porte un ecran, dit pareil qu'il soit en matrice ou en listes."""
+    return ' + '.join(rubriques['matrice'] if isinstance(rubriques, dict) else rubriques)
 
 # Geometrie, en pixels d'un ecran 1920 x 1080. Toute la page est ecrite dans cette
 # unite puis mise a l'echelle par le navigateur : la composition est donc la meme sur
@@ -509,10 +547,11 @@ def polices(incruster):
     return '<style>\n' + css + '</style>'
 
 
+os.makedirs(SORTIE, exist_ok=True)
 logo = logo_data()
 
 # Une seule hauteur de ligne pour les trois ecrans : celle que le plus charge supporte.
-LIGNE = min(LIGNE_MAX, DISPO / max(contenu(r)[2] for _, _, r in ECRANS))
+LIGNE = FORCEE or min(LIGNE_MAX, DISPO / max(contenu(r)[2] for _, _, r in ECRANS))
 
 sorties = []
 for code, place, rubriques in ECRANS:
@@ -522,11 +561,11 @@ for code, place, rubriques in ECRANS:
             '<meta name="viewport" content="width=device-width,initial-scale=1">'
             '<title>NUMBER ONE - ecran %s</title>' % place
             + polices(True) + '<style>' + css + '</style></head><body>' + corps + '</body></html>')
-    f = os.path.join(ICI, 'ecran-%s.html' % code)
+    f = os.path.join(SORTIE, 'ecran-%s.html' % code)
     open(f, 'w', encoding='utf-8').write(page)
     # Le meme tableau, seul, pour se regarder en grand : polices en ligne, pas de
     # doctype - c'est un apercu, pas le fichier qui tourne sur la dalle.
-    open(os.path.join(ICI, 'apercu-ecran-%s.html' % code), 'w', encoding='utf-8').write(
+    open(os.path.join(SORTIE, 'apercu-ecran-%s.html' % code), 'w', encoding='utf-8').write(
         '<title>Tableau %s Number One</title>' % place.lower()
         + polices(False) + '<style>' + css
         + 'body{background:#000;height:100vh}</style>' + corps)
@@ -555,14 +594,14 @@ Chaque tableau est un fichier a part, affiche en plein ecran sur son televiseur.
 for i, (place, rubriques, l, n, taille, css, corps, pf) in enumerate(sorties):
     mur += ('<div class="poste"><div class="cadre">%s</div>'
             '<p class="etiquette"><b>%s</b> &middot; %s &middot; %d articles</p></div>'
-            % (corps, place, ' + '.join(rubriques), n))
+            % (corps, place, libelle(rubriques), n))
 mur += '</div></div>'
-open(os.path.join(ICI, 'mur-apercu.html'), 'w', encoding='utf-8').write(mur)
+open(os.path.join(SORTIE, 'mur-apercu.html'), 'w', encoding='utf-8').write(mur)
 
-print('Trois tableaux engendres depuis site/carte.json :')
+print('Trois tableaux engendres depuis site/carte.json (version %s) :' % VERSION)
 for place, rubriques, l, n, taille, _, _, pf in sorties:
     print('  %-8s %-38s %3d articles, ligne de %4.1f px, %d Ko%s'
-          % (place, ' + '.join(rubriques), n, l, taille // 1024,
+          % (place, libelle(rubriques), n, l, taille // 1024,
              (', fond %d Ko' % (pf // 1024)) if pf else ', SANS FOND'))
 print('  Total : %d articles.' % sum(s[3] for s in sorties))
-print('  Apercu du mur : mur-apercu.html')
+print('  Apercu du mur : %smur-apercu.html' % (DOSSIER + '/' if DOSSIER else ''))
