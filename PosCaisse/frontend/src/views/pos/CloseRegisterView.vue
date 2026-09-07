@@ -33,11 +33,25 @@ async function imprimerEtat() {
   await printJobs([{ title: etat.value.title, content: etat.value.content, copies: 1 }], template.value)
 }
 const diff = () => sub(parseAmount(counted.value), summary.value?.expectedCash || 0)
+/*
+    Rien de compté : la caisse se clôture sur le théorique, sans écart.
+
+    Le caissier qui n'a pas recompté son tiroir ne veut pas déclarer zéro dinar - il
+    veut dire << c'est bon >>. Saisir zéro enregistrait pourtant un manquant égal à
+    tout le fond de caisse, et le bouton, lui, restait éteint : la clôture ne partait
+    pas et rien ne disait pourquoi. On reprend donc le théorique, et la confirmation
+    le dit en toutes lettres, pour que ce ne soit jamais un choix fait à sa place.
+*/
+const sansSaisie = () => parseAmount(counted.value) <= 0
 async function close() {
   if (busy.value || !summary.value) return
-  const c = parseAmount(counted.value)
-  const d = diff()
-  if (!await ui.confirm({ title: 'Clôturer la caisse', message: `Espèces théoriques : ${fmt(summary.value.expectedCash, true)}\nEspèces comptées : ${fmt(c, true)}\nÉcart : ${d >= 0 ? '+' : ''}${fmt(d, true)}\n\nConfirmer la clôture ?`, okLabel: 'Clôturer' })) return
+  const vide = sansSaisie()
+  const c = vide ? Number(summary.value.expectedCash) : parseAmount(counted.value)
+  const d = vide ? 0 : diff()
+  const message = vide
+    ? `Aucune somme comptée n'a été saisie.\n\nLa caisse sera clôturée sur les espèces théoriques : ${fmt(c, true)}\nÉcart : ${fmt(0, true)}\n\nConfirmer la clôture ?`
+    : `Espèces théoriques : ${fmt(summary.value.expectedCash, true)}\nEspèces comptées : ${fmt(c, true)}\nÉcart : ${d >= 0 ? '+' : ''}${fmt(d, true)}\n\nConfirmer la clôture ?`
+  if (!await ui.confirm({ title: 'Clôturer la caisse', message, okLabel: 'Clôturer' })) return
   busy.value = true
   try { result.value = await api.pos.close(auth.session.id, { countedCash: c, note: note.value || null }); sessionId.value = result.value.id; etat.value = null; auth.setSession(null); ui.success('Caisse clôturée') }
   catch (e) { ui.error(e.humanMessage) } finally { busy.value = false }
@@ -89,9 +103,9 @@ function finish() { auth.logout(); router.replace('/login') }
         <div class="col gap-8">
           <div class="card-title">Espèces réellement comptées</div>
           <NumPad v-model="counted" mode="amount" ok-label="Clôturer" @ok="close" />
-          <div class="ecart" :class="{ ok: counted && diff()===0, bad: counted && diff()!==0 }"><span>Théorique {{ fmt(summary.expectedCash) }} · réel {{ counted ? fmt(parseAmount(counted)) : '—' }}</span><b class="num">{{ counted ? (diff() >= 0 ? 'Écart +' : 'Écart ') + fmt(diff(), true) : 'Saisissez les espèces comptées' }}</b></div>
+          <div class="ecart" :class="{ ok: !sansSaisie() && diff()===0, bad: !sansSaisie() && diff()!==0 }"><span>Théorique {{ fmt(summary.expectedCash) }} · réel {{ sansSaisie() ? '—' : fmt(parseAmount(counted)) }}</span><b class="num">{{ !sansSaisie() ? (diff() >= 0 ? 'Écart +' : 'Écart ') + fmt(diff(), true) : 'Sans saisie : clôture sur le théorique, sans écart' }}</b></div>
           <div class="field"><label>Commentaire</label><input class="input" v-model="note" placeholder="ex. écart dû à…" /></div>
-          <button class="btn danger solid xl block" :disabled="busy || !counted" @click="close"><Icon name="lock" :size="18" />Clôturer la caisse</button>
+          <button class="btn danger solid xl block" :disabled="busy" @click="close"><Icon name="lock" :size="18" />Clôturer la caisse</button>
         </div>
       </div>
       <div v-else class="spinner"></div>
