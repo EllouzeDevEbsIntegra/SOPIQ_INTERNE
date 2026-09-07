@@ -42,15 +42,38 @@ const quantity = ref(props.initial?.quantity || 1)
 const versions = computed(() => (axe.value?.values || []).filter(v => v.active)
   .map(v => {
     const porteur = v.stockManaged ? v.id : (v.stockSourceId || null)
-    const pas = Number(v.stockStep || 1) * Number(quantity.value || 1)
+    const pas = Number(v.stockStep || 1)
     const reste = porteur ? Number(props.stock?.[porteur] ?? Infinity) : Infinity
-    return { ...v, price: prixVariante.value[v.id] || 0, porteur, reste, epuisee: porteur != null && reste < pas }
+    /*
+        << epuisee >> ne depend PAS de la quantite demandee : une version est epuisee
+        quand il n'en reste pas de quoi en servir UNE. Faire dependre le grisage de la
+        quantite eteignait la version choisie des qu'on montait le compteur - elle
+        semblait alors s'etre deselectionnee toute seule, et le regard partait sur la
+        premiere version encore allumee.
+
+        La quantite, elle, est bornee plus bas : c'est la version CHOISIE qui decide de
+        son maximum, et rien ne change de soi-meme.
+    */
+    const max = porteur == null ? Infinity : Math.floor((reste + 1e-9) / pas)
+    return { ...v, price: prixVariante.value[v.id] || 0, porteur, reste, pas, max, epuisee: max < 1 }
   }))
 const version = ref(props.initial?.variantValueId
   || props.product.defaultVariantValueId
   || versions.value.find(v => v.price > 0)?.id
   || null)
 const versionChoisie = computed(() => versions.value.find(v => v.id === version.value) || null)
+/*
+    Ce que la version CHOISIE autorise. C'est elle qui commande, et elle seule : changer
+    de version parce que celle-ci manque serait servir au client autre chose que ce qu'il
+    a demande, sans le lui dire.
+*/
+const maxChoisi = computed(() => versionChoisie.value ? versionChoisie.value.max : Infinity)
+const borne = computed(() => Number.isFinite(maxChoisi.value))
+const tropDemande = computed(() => borne.value && quantity.value > maxChoisi.value)
+function plus() {
+  if (borne.value && quantity.value >= maxChoisi.value) return
+  quantity.value++
+}
 const note = ref(props.initial?.note || '')
 /* Selection : groupId -> { modifierId: quantite }. Un compteur et non un simple
    ensemble, car dans un groupe sans maximum la meme option peut etre ajoutee
@@ -158,6 +181,10 @@ const problems = computed(() => {
 function confirm() {
   if (problems.value.length) return ui.error(problems.value[0])
   if (axe.value && !versionChoisie.value) return ui.error(`Choisissez « ${axe.value.name} »`)
+  // La version choisie decide. Rien n'est bascule vers une autre : on refuse, on nomme
+  // la pate et son reste, et le caissier tranche - moins d'articles, ou une autre pate.
+  if (tropDemande.value || versionChoisie.value?.epuisee)
+    return ui.error(`Stock insuffisant : il reste ${versionChoisie.value.reste} « ${versionChoisie.value.name} », soit ${maxChoisi.value} au maximum.`)
   emit('confirm', { quantity: quantity.value, modifiers: modifiers.value, components: components.value, note: note.value,
                     variantValue: versionChoisie.value })
 }
@@ -166,7 +193,7 @@ function confirm() {
   <Modal size="md" @close="emit('close')">
     <template #head>
       <div class="grow"><h2>{{ product.name }}</h2><div class="muted small">{{ isMenu ? 'Composez le menu' : (axe ? axe.name + ' & options' : 'Options & suppléments') }} — {{ fmt(unit, true) }}</div></div>
-      <div class="qty row gap-4"><button class="btn lg icon" @click="quantity=Math.max(1,quantity-1)">−</button><span class="qv num">{{ quantity }}</span><button class="btn lg icon" @click="quantity++">+</button></div>
+      <div class="qty row gap-4"><button class="btn lg icon" @click="quantity=Math.max(1,quantity-1)">−</button><span class="qv num" :class="{ trop: tropDemande }">{{ quantity }}</span><button class="btn lg icon" :disabled="borne && quantity >= maxChoisi" :title="borne ? 'Stock : ' + maxChoisi + ' au maximum' : ''" @click="plus">+</button></div>
     </template>
     <!-- Les versions passent avant les options : elles decident du prix, pas d'un ajout. -->
     <div v-if="axe && !activeComponent" class="versions">
@@ -182,6 +209,17 @@ function confirm() {
           <span v-else class="delta num">{{ fmt(v.price) }}</span>
         </button>
       </div>
+      <!-- Le stock de la version choisie, dit ici : le caissier voit ce qui le limite
+           avant de monter la quantité, et non après avoir tout composé. -->
+      <p v-if="borne" class="restant" :class="{ trop: tropDemande }">
+        <template v-if="tropDemande">
+          Stock insuffisant : il reste {{ versionChoisie.reste }} « {{ versionChoisie.name }} »,
+          soit {{ maxChoisi }} au maximum{{ versionChoisie.pas > 1 ? ' (' + versionChoisie.pas + ' par article)' : '' }}.
+        </template>
+        <template v-else>
+          Il reste {{ versionChoisie.reste }} « {{ versionChoisie.name }} » — {{ maxChoisi }} au maximum{{ versionChoisie.pas > 1 ? ' (' + versionChoisie.pas + ' par article)' : '' }}.
+        </template>
+      </p>
     </div>
 
     <div v-if="activeComponent" class="sub">
@@ -220,7 +258,7 @@ function confirm() {
     <template #foot>
       <div class="grow"><span class="muted">Prix unitaire</span> <b class="num" style="font-size:20px">{{ fmt(unit, true) }}</b></div>
       <button class="btn lg" @click="emit('close')">Annuler</button>
-      <button class="btn success xl" :disabled="!!activeComponent" @click="confirm">AJOUTER {{ quantity > 1 ? quantity + ' × ' : '' }}{{ fmt(mul(unit, quantity), true) }}</button>
+      <button class="btn success xl" :disabled="!!activeComponent || tropDemande || (versionChoisie && versionChoisie.epuisee)" @click="confirm">AJOUTER {{ quantity > 1 ? quantity + ' × ' : '' }}{{ fmt(mul(unit, quantity), true) }}</button>
     </template>
   </Modal>
 </template>
@@ -254,6 +292,9 @@ function confirm() {
 .versions .opt.sansprix { opacity: .45; cursor: not-allowed; }
 /* Une version epuisee reste VISIBLE : elle disparaitrait qu'on la chercherait. */
 .versions .opt.epuisee { opacity: .5; cursor: not-allowed; border-color: var(--danger-line); background: var(--danger-soft); }
+.restant { margin: 9px 0 0; font-size: 13.5px; color: var(--ink-3); }
+.restant.trop { color: var(--danger); font-weight: 650; }
+.qv.trop { color: var(--danger); }
 .versions .opt.epuisee .epuise { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--danger); }
 .delta { font-size: 13px; color: var(--accent-2); font-weight: 700; }
 .sub { border: 2px dashed var(--border); border-radius: 12px; padding: 12px; }
