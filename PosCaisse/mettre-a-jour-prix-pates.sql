@@ -42,10 +42,12 @@
 \set v_chia    'Pate Chia'
 
 -- Les pates doubles. Facultatives : celles qui n'existent pas sont ignorees.
-\set v_d_normale 'Double Normale'
-\set v_d_chapati 'Double Chapati'
-\set v_d_cereale 'Double Cereale'
-\set v_d_chia    'Double Chia'
+-- Chez NUMBER ONE elles se nomment << Double Pate ... >>, et il n'y a pas de
+-- double pour Chapati : la ligne reste, elle sera simplement ignoree.
+\set v_d_normale 'Double Pate Normale'
+\set v_d_chapati 'Double Pate Chapati'
+\set v_d_cereale 'Double Pate Cereale'
+\set v_d_chia    'Double Pate Chia'
 
 -- Ce que chaque pate ajoute au prix de la liste.
 \set sup_chapati 0.000
