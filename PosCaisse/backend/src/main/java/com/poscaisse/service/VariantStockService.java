@@ -69,6 +69,25 @@ public class VariantStockService {
         return new StockStateDto(pos.getId(), pos.getName(), lignes, mouvements);
     }
 
+    /**
+     * Les compteurs, pour le back-office : ce qu'il reste, point de vente par point de vente.
+     *
+     * L'ecran des variantes n'a pas de caisse ouverte derriere lui - le gerant y regarde
+     * un reglage, pas une session. On ne peut donc pas lui servir etat(posId), qui part
+     * de la caisse du caissier : on lit tous les compteurs, et l'ecran nomme le point de
+     * vente en face de chaque quantite.
+     */
+    @Transactional(readOnly = true)
+    public List<StockCounterDto> compteurs() {
+        return stockRepo.findAll().stream()
+                .filter(s -> s.getVariantValue() != null && s.getPointOfSale() != null)
+                .sorted(Comparator.comparing((VariantStock s) -> s.getPointOfSale().getId())
+                        .thenComparing(s -> s.getVariantValue().getId()))
+                .map(s -> new StockCounterDto(s.getVariantValue().getId(), s.getPointOfSale().getId(),
+                        s.getPointOfSale().getName(), Money.r(s.getQuantity()), s.getUpdatedAt()))
+                .toList();
+    }
+
     /** Les valeurs qui portent un compteur, dans l'ordre ou l'ecran les montre. */
     private List<VariantValue> suivies() {
         return valueRepo.findAll().stream()

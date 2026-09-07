@@ -25,5 +25,14 @@ public class StockDtos {
     public record StockStateDto(Long pointOfSaleId, String pointOfSaleName,
                                 List<StockLineDto> lines, List<StockMovementDto> movements) {}
 
+    /**
+     * Un compteur tel que le back-office le montre : la quantite du jour, et ou elle est.
+     *
+     * Le point de vente est nomme parce qu'il y en aura deux : le meme reglage de
+     * variante sert les deux restaurants, mais la pate, elle, est dans un seul frigo.
+     */
+    public record StockCounterDto(Long variantValueId, Long pointOfSaleId, String pointOfSaleName,
+                                  BigDecimal quantity, OffsetDateTime updatedAt) {}
+
     public record StockMoveRequest(@NotNull Long variantValueId, @NotNull BigDecimal quantity, String comment) {}
 }

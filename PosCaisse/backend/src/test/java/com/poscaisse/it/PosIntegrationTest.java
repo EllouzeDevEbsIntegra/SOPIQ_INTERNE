@@ -389,6 +389,15 @@ class PosIntegrationTest {
         for (JsonNode l : etat.get("lines")) if (l.get("variantValueId").asLong() == normale)
             assertThat(l.get("borrowers").toString()).contains("Double Normale x2");
 
+        // Le back-office lit le meme compteur sans caisse ouverte : c'est la que le gerant
+        // regle le suivi, et un reglage sans chiffre en face ne se verifie pas.
+        JsonNode compteurs = json(mvc.perform(get("/api/variants/stock").header("Authorization", "Bearer " + admin)).andExpect(status().isOk()).andReturn());
+        JsonNode compteurNormale = null;
+        for (JsonNode c : compteurs) if (c.get("variantValueId").asLong() == normale) compteurNormale = c;
+        assertThat(compteurNormale).as("le compteur vu du back-office").isNotNull();
+        assertThat(compteurNormale.get("quantity").decimalValue()).isEqualByComparingTo("3.000");
+        assertThat(compteurNormale.get("pointOfSaleName").asText()).isNotBlank();
+
         // ---- une double retire deux
         long cash = cashId;
         JsonNode vente = json(postJson("/api/pos/checkout", cashierToken, venteDe(caisse, produit, doubleNormale, 1, cash, 5), 200));

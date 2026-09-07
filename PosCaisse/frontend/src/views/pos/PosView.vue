@@ -360,7 +360,7 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
     <HeldOrdersDialog v-if="dialog?.kind === 'held'" :stock="stock" @close="dialog = null; refreshHeld()" @resume="resume" />
     <CashMovementDialog v-if="dialog?.kind === 'cash'" @close="dialog = null" />
     <StockDialog v-if="dialog?.kind === 'stock'" @close="dialog = null; refreshStock()" @changed="refreshStock" />
-    <AssistantDialog v-if="dialog?.kind === 'assistant'" @close="dialog = null"
+    <AssistantDialog v-if="dialog?.kind === 'assistant'" :stock="stockDisponible(null)" @close="dialog = null"
                      @confirm="onAssistant" @compose="p => { dialog = { kind: 'modifier', product: p } }" />
     <Modal v-if="dialog?.kind === 'tickets'" size="xl" title="Historique des tickets" @close="dialog = null">
       <TicketsView embedded />

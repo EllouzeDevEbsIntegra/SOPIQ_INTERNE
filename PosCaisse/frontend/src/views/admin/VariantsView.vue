@@ -9,7 +9,7 @@
  * Les prix, eux, ne se règlent pas ici mais dans chaque fiche article : la même « Large »
  * ne vaut pas le même prix sur une pizza thon et sur une pizza fruits de mer.
  */
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { api } from '../../api'
 import { useUiStore } from '../../stores/ui'
 import { useBusy } from '../../composables/useApi'
@@ -18,9 +18,26 @@ import Icon from '../../components/common/Icon.vue'
 
 const ui = useUiStore(); const { busy, run } = useBusy()
 const rows = ref([]); const edit = ref(null); const dragId = ref(null)
+const compteurs = ref([])
 
-async function load() { try { rows.value = await api.admin.variants() } catch (e) { ui.error(e) } }
+async function load() {
+  try { rows.value = await api.admin.variants() } catch (e) { ui.error(e) }
+  /*
+      Le stock du jour, en lecture seule. Le gerant regle le suivi ici : sans le chiffre
+      en face, il ne peut pas savoir si son reglage a pris - un compteur reste invisible
+      jusqu'a la premiere vente refusee. La SAISIE, elle, reste en caisse : c'est la que
+      la pate arrive, et le journal de caisse doit la voir passer.
+  */
+  try { compteurs.value = await api.admin.variantStock() } catch { compteurs.value = [] }
+}
 onMounted(load)
+
+/** Ce qu'il reste de cette version, point de vente par point de vente. */
+const stockDe = (x) => (x?.id ? compteurs.value.filter(c => c.variantValueId === x.id) : [])
+const nombre = (v) => { const n = Number(v) || 0; return Number.isInteger(n) ? String(n) : n.toLocaleString('fr-FR', { maximumFractionDigits: 3 }) }
+/* Un seul restaurant : le nom du point de vente n'apprend rien. Deux : il devient la
+   seule chose qui distingue les deux chiffres. */
+const plusieursPos = computed(() => new Set(compteurs.value.map(c => c.pointOfSaleId)).size > 1)
 
 const valeurNeuve = () => ({ name: '', shortName: '', active: true, stockManaged: false, stockStep: 1, stockSourceId: null, stockMode: 'non' })
 const avecMode = (x) => ({ ...valeurNeuve(), ...x, stockMode: x.stockManaged ? 'propre' : (x.stockSourceId ? 'lie' : 'non') })
@@ -111,6 +128,9 @@ async function onDrop() {
         <td>
           <span v-for="x in v.values" :key="x.id" class="val" :class="{ off: !x.active }">
             {{ x.name }}<em v-if="x.shortName"> · {{ x.shortName }}</em>
+            <b v-for="c in stockDe(x)" :key="c.pointOfSaleId" class="q"
+               :class="{ vide: Number(c.quantity) <= 0 }"
+               :title="'En stock' + (plusieursPos ? ' — ' + c.pointOfSaleName : '')">stock {{ nombre(c.quantity) }}</b>
           </span>
         </td>
         <td class="exemple">
@@ -169,6 +189,10 @@ async function onDrop() {
               <span class="et">décrémente de</span>
               <input class="input sm num" v-model="x.stockStep" inputmode="decimal" style="width:78px" />
               <span class="tiny muted">par article vendu</span>
+              <span v-for="c in stockDe(x)" :key="c.pointOfSaleId" class="compteur" :class="{ vide: Number(c.quantity) <= 0 }">
+                en stock : {{ nombre(c.quantity) }}<em v-if="plusieursPos"> · {{ c.pointOfSaleName }}</em>
+              </span>
+              <span v-if="x.id && !stockDe(x).length" class="tiny muted">aucune entrée aujourd’hui</span>
             </template>
             <template v-else-if="modeStock(x) === 'lie'">
               <span class="et">sur</span>
@@ -226,6 +250,19 @@ tr.dragging { opacity: .45; cursor: grabbing; background: var(--brand-soft); }
 }
 .val em { font-style: normal; color: var(--ink-3); }
 .val.off { opacity: .5; text-decoration: line-through; }
+/* Le chiffre du stock se lit d'un coup d'oeil dans la liste : c'est ce que le gerant
+   vient verifier, pas le nom qu'il connait deja. */
+.val .q {
+  margin-left: 7px; padding: 0 6px; border-radius: 999px; font-size: 11.5px; font-weight: 700;
+  background: var(--brand-soft); color: var(--brand-2);
+}
+.val .q.vide { background: var(--danger-soft, var(--surface-3)); color: var(--danger); }
+.compteur {
+  padding: 3px 9px; border-radius: 999px; font-size: 12.5px; font-weight: 600;
+  background: var(--brand-soft); color: var(--brand-2);
+}
+.compteur em { font-style: normal; font-weight: 400; opacity: .75; }
+.compteur.vide { background: var(--surface-3); color: var(--ink-3); }
 .exemple code { font-size: 12px; color: var(--ink-3); }
 
 .entetes, .ligne { display: grid; grid-template-columns: 1fr 1fr 64px 44px; gap: 8px; align-items: center; }

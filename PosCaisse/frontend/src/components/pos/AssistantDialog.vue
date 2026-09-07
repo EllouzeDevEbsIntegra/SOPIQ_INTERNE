@@ -22,10 +22,17 @@
 import { computed, reactive, ref } from 'vue'
 import { useCatalogStore } from '../../stores/catalog'
 import { fmt } from '../../utils/money'
+import { besoinsDesLignes, porteurEtPas, valeursParId } from '../../utils/stock'
 import Modal from '../common/Modal.vue'
 import Icon from '../common/Icon.vue'
 
 const emit = defineEmits(['close', 'confirm', 'compose'])
+/*
+    Ce qu'il reste de chaque pate, panier deja deduit. L'assistant compose parfois vingt
+    unites d'affilee : sans ce chiffre, le refus tomberait tout a la fin, sur une
+    commande entiere qu'il faudrait defaire devant le client.
+*/
+const props = defineProps({ stock: { type: Object, default: () => ({}) } })
 const catalog = useCatalogStore()
 
 const sansAccent = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
@@ -73,6 +80,30 @@ const prixUnite = (l) => Number(l.version ? l.version.price : l.product.price)
                        + l.mods.reduce((s, m) => s + Number(m.priceDelta), 0)
 const totalCommande = computed(() => lots.value.reduce((s, l) => s + prixUnite(l) * l.qte, 0))
 
+/* ------------------------------------------------------------------ les pâtes */
+
+/*
+    Ce qu'il reste d'une version, une fois retiré ce que l'assistant a DEJA posé : le
+    stock reçu en entrée ne bouge pas pendant la composition, alors que les lots, eux,
+    s'accumulent. null = version non suivie, il n'y a rien à dire.
+
+    Aucune bascule automatique vers une autre pâte : la version épuisée reste à sa place,
+    grisée. Le caissier voit ce qui manque et choisit lui-même — c'est lui qui parle au
+    client, pas l'écran.
+*/
+const valeurs = computed(() => valeursParId(catalog))
+const prisParLots = computed(() =>
+  besoinsDesLignes(lots.value.map(l => ({ quantity: l.qte, variantValueId: l.version?.id })), catalog))
+
+function restePate(version) {
+  const pp = porteurEtPas(valeurs.value[version?.id])
+  if (!pp) return null
+  const dispo = props.stock?.[pp.porteur]
+  if (dispo === undefined || dispo === null) return null
+  return Math.floor((Number(dispo) - (prisParLots.value[pp.porteur] || 0) + 1e-9) / (pp.pas || 1))
+}
+const epuisee = (version) => { const r = restePate(version); return r !== null && r < 1 }
+
 /*
     Le compte porte sur les sandwichs, comme le client les annonce. Un sandwich, ici,
     c'est un article qui se décline en pâtes : à la carte, cela recouvre exactement les
@@ -118,7 +149,12 @@ function toutEffacer() { filtres.value = new Set(); rubrique.value = null; texte
 function toucherArticle(p) {
   if (aComposer(p)) { emit('compose', p); return }
   const v = versions(p)
-  const lot = { uid: ++seq, product: p, version: v[0] || null, qte: 1, mods: [], notes: [] }
+  /* La version par defaut reste la premiere de l'axe, epuisee ou non : on ne choisit pas
+     une autre pate a la place du caissier. Simplement, on ne pose pas l'unite - la
+     fenetre s'ouvre, la version epuisee est grisee, il prend celle qu'il veut. */
+  const version = v[0] || null
+  if (epuisee(version)) { ouvrir(p, version?.id || 0); return }
+  const lot = { uid: ++seq, product: p, version, qte: 1, mods: [], notes: [] }
   lots.value.push(lot)
   ouvrir(p, lot.version?.id || 0)
 }
@@ -132,6 +168,7 @@ function ouvrir(p, versionId = null) {
 
 /** Une unité de plus sur cette version : elle rejoint le lot nu s'il en existe un. */
 function ajouterUn(p, version) {
+  if (epuisee(version)) return
   const vid = version?.id || 0
   const nu = parVersion(p, vid).find(l => marques(l) === 0)
   if (nu) nu.qte += 1
@@ -369,14 +406,16 @@ function valider() {
         <span class="eyebrow">Combien{{ versionsCourantes.length ? ', et de quelle version' : '' }}</span>
         <div class="repartition">
           <div v-for="v in (versionsCourantes.length ? versionsCourantes : [null])" :key="v?.id || 0"
-               class="part" :class="{ pose: parVersion(courant, v?.id || 0).length }">
+               class="part" :class="{ pose: parVersion(courant, v?.id || 0).length, epuisee: epuisee(v) }">
             <span class="nom">{{ v ? v.name : courant.name }}</span>
             <span class="tarif num">{{ fmt(v ? v.price : courant.price) }}</span>
             <div class="qte">
               <button :disabled="!parVersion(courant, v?.id || 0).length" @click="retirerUn(courant, v)">−</button>
               <span class="num">{{ parVersion(courant, v?.id || 0).reduce((s, l) => s + l.qte, 0) }}</span>
-              <button @click="ajouterUn(courant, v)">+</button>
+              <button :disabled="epuisee(v)" @click="ajouterUn(courant, v)">+</button>
             </div>
+            <span v-if="epuisee(v)" class="rupture">épuisée</span>
+            <span v-else-if="restePate(v) !== null && restePate(v) <= 5" class="reste">encore {{ restePate(v) }}</span>
           </div>
         </div>
         <p class="bilan small muted">
@@ -550,6 +589,13 @@ function valider() {
 .part.pose { border-color: var(--brand); background: var(--surface); }
 .part .nom { font-size: 14.5px; font-weight: 650; }
 .part .tarif { font-size: 12.5px; color: var(--ink-3); }
+/* Une pate epuisee ne disparait pas : elle reste a sa place, lisible et barree. Retiree,
+   le caissier la chercherait sans comprendre pourquoi elle n'y est plus. */
+.part.epuisee { opacity: .62; }
+.part.epuisee .nom { text-decoration: line-through; }
+.part .rupture, .part .reste { font-size: 11.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.part .rupture { color: var(--danger); }
+.part .reste { color: var(--warn); }
 .qte { display: flex; align-items: center; border: 1px solid var(--line-2); border-radius: var(--r-sm); overflow: hidden; }
 .qte button { width: 44px; height: 44px; font-size: 20px; background: var(--surface); }
 .qte button:hover { background: var(--surface-3); }

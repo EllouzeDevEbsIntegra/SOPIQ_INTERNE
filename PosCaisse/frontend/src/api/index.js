@@ -77,6 +77,7 @@ export const api = {
     deleteKitchenNote: (id) => del(`/kitchen-notes/${id}`), reorderKitchenNotes: (ids) => p('/kitchen-notes/reorder', { ids }),
     variants: () => g('/variants'), saveVariant: (id, b) => id ? put(`/variants/${id}`, b) : p('/variants', b),
     deleteVariant: (id) => del(`/variants/${id}`), reorderVariants: (ids) => p('/variants/reorder', { ids }),
+    variantStock: () => g('/variants/stock'),
     ingredients: () => g('/ingredients'), saveIngredient: (id, b) => id ? put(`/ingredients/${id}`, b) : p('/ingredients', b),
     deleteIngredient: (id) => del(`/ingredients/${id}`), reorderIngredients: (ids) => p('/ingredients/reorder', { ids }),
     audit: (params) => g('/audit', params)

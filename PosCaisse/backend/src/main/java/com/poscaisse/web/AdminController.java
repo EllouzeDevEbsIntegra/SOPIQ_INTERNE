@@ -2,11 +2,13 @@ package com.poscaisse.web;
 
 import com.poscaisse.dto.AdminDtos.*;
 import com.poscaisse.dto.OrderDtos.OrderDto;
+import com.poscaisse.dto.StockDtos.StockCounterDto;
 import com.poscaisse.printing.PrintService;
 import com.poscaisse.service.AdminService;
 import com.poscaisse.service.OrderService;
 import com.poscaisse.service.SettingsService;
 import com.poscaisse.service.TicketNumberingAdminService;
+import com.poscaisse.service.VariantStockService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,6 +26,7 @@ public class AdminController {
     private final PrintService print;
     private final OrderService orders;
     private final TicketNumberingAdminService numbering;
+    private final VariantStockService stock;
 
     // users & roles
     @PreAuthorize("hasAuthority('USERS_MANAGE')") @GetMapping("/users") public List<UserDto> users() { return admin.users(); }
@@ -95,6 +98,13 @@ public class AdminController {
     @PostMapping("/variants") public VariantDto createVariant(@Valid @RequestBody VariantRequest r) { return admin.saveVariant(null, r); }
     @PutMapping("/variants/{id}") public VariantDto updateVariant(@PathVariable Long id, @Valid @RequestBody VariantRequest r) { return admin.saveVariant(id, r); }
     @DeleteMapping("/variants/{id}") public Map<String, Boolean> deleteVariant(@PathVariable Long id) { admin.deleteVariant(id); return Map.of("ok", true); }
+    /*
+        Ce qu'il reste des pates, vu du back-office : le gerant regle le suivi ici, il doit
+        pouvoir verifier d'ici que le compteur existe et ou il en est. La SAISIE, elle,
+        reste en caisse - c'est la que la pate arrive, et le journal de caisse doit la voir
+        passer.
+    */
+    @GetMapping("/variants/stock") public List<StockCounterDto> variantStock() { return stock.compteurs(); }
     @PostMapping("/variants/reorder") public Map<String, Boolean> reorderVariants(@RequestBody Map<String, List<Long>> body) { admin.reorderVariants(body.get("ids")); return Map.of("ok", true); }
 
     // audit
