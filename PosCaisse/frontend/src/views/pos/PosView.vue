@@ -18,6 +18,7 @@ import PartyDialog from '../../components/pos/PartyDialog.vue'
 import LineNoteDialog from '../../components/pos/LineNoteDialog.vue'
 import HeldOrdersDialog from '../../components/pos/HeldOrdersDialog.vue'
 import CashMovementDialog from '../../components/pos/CashMovementDialog.vue'
+import AssistantDialog from '../../components/pos/AssistantDialog.vue'
 import TicketsView from './TicketsView.vue'
 import Modal from '../../components/common/Modal.vue'
 import Icon from '../../components/common/Icon.vue'
@@ -106,6 +107,20 @@ function onModifierConfirm({ quantity, modifiers, components, note, variantValue
     }
   } else cart.addLine({ product: d.product, quantity, modifiers, components, note, variantValue })
 }
+/*
+    Ce que l'assistant a compose devient du panier ordinaire : une ligne par lot, et
+    addLine regroupe de lui-meme les lots identiques. Rien n'est encaisse ici - le
+    caissier reste maitre du paiement, comme pour n'importe quelle vente.
+*/
+function onAssistant(lots) {
+  dialog.value = null
+  if (!lots.length) return
+  for (const l of lots) cart.addLine(l)
+  const n = lots.reduce((s, l) => s + l.quantity, 0)
+  ui.success(n + (n > 1 ? ' articles ajoutés' : ' article ajouté') + ' à la commande')
+  cartOpen.value = true
+}
+
 async function toggleAvailability(p) {
   const target = !p.available
   if (!await ui.confirm({ title: target ? 'Rendre disponible' : 'Marquer indisponible', message: `${p.name} → ${target ? 'DISPONIBLE' : 'INDISPONIBLE'} ?`, okLabel: 'Confirmer' })) return
@@ -242,6 +257,10 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
           <span>{{ c.name }}</span>
           <b class="tally num">{{ counts[c.id] || 0 }}</b>
         </button>
+        <!-- Une deuxieme porte, jamais un detour oblige : la vente ordinaire ne change pas. -->
+        <button class="cat assistant" @click="dialog = { kind: 'assistant' }">
+          <Icon name="list" :size="18" class="glyph" /><span>Assistant commande</span>
+        </button>
       </aside>
 
       <main class="board">
@@ -303,6 +322,8 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
                  :initial="dialog.party === 'COURIER' ? cart.courier : cart.customer" @close="dialog = null" @ok="setParty" />
     <HeldOrdersDialog v-if="dialog?.kind === 'held'" @close="dialog = null; refreshHeld()" @resume="resume" />
     <CashMovementDialog v-if="dialog?.kind === 'cash'" @close="dialog = null" />
+    <AssistantDialog v-if="dialog?.kind === 'assistant'" @close="dialog = null"
+                     @confirm="onAssistant" @compose="p => { dialog = { kind: 'modifier', product: p } }" />
     <Modal v-if="dialog?.kind === 'tickets'" size="xl" title="Historique des tickets" @close="dialog = null">
       <TicketsView embedded />
     </Modal>
@@ -355,6 +376,10 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
 }
 
 .rail { display: flex; flex-direction: column; gap: 3px; padding: 8px 6px; background: var(--surface); border-right: 1px solid var(--line); }
+/* Il ferme la liste des rubriques, apres un ecart : c'est un autre geste, pas une rubrique de plus. */
+.rail .assistant { margin-top: auto; border: 1px dashed var(--line-2); color: var(--brand-2); }
+.rail .assistant .glyph { color: var(--brand-2); }
+.rail .assistant:hover { border-style: solid; border-color: var(--brand); background: var(--brand-soft); }
 .cat {
   position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
   min-height: 72px; padding: 9px 6px; border-radius: var(--r-sm);
