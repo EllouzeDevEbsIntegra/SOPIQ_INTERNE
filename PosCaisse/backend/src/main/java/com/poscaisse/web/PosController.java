@@ -35,6 +35,8 @@ public class PosController {
     @PostMapping("/session/open") public SessionDto open(@Valid @RequestBody OpenSessionRequest req) { return sessions.open(req); }
     @GetMapping("/session/{id}/summary") public SessionSummary summary(@PathVariable Long id) { return sessions.summary(id); }
     @PostMapping("/session/{id}/close") public SessionDto close(@PathVariable Long id, @Valid @RequestBody CloseSessionRequest req) { return sessions.close(id, req); }
+    /** L'etat de caisse a imprimer : rendu par le serveur, comme un ticket. */
+    @GetMapping("/session/{id}/report") public SessionReport report(@PathVariable Long id) { return sessions.report(id); }
     @GetMapping("/session/{id}/movements") public List<CashMovementDto> movements(@PathVariable Long id) { return sessions.movements(id); }
     @PostMapping("/session/{id}/movements") public CashMovementDto movement(@PathVariable Long id, @Valid @RequestBody CashMovementRequest req) { return sessions.addMovement(id, req); }
 

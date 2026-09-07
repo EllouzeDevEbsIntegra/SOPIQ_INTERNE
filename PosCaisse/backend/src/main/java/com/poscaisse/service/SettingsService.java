@@ -33,9 +33,18 @@ public class SettingsService {
     public static final String QUICK_CASH = "pos.quickCash";
     public static final String CASH_ROUNDING = "pos.cashRounding";
     public static final String PIN_USER_TILES = "auth.showUserTiles";
+    /**
+     * Marge beneficiaire, en pourcentage du chiffre d'affaires.
+     *
+     * C'est une ESTIMATION de gestion, pas une comptabilite : le logiciel ne connait pas
+     * le prix d'achat des ingredients, seulement ce qui a ete vendu. Le restaurateur pose
+     * le taux qu'il connait de son metier, et l'ecran de cloture en tire un montant.
+     * A zero - la valeur livree - la ligne ne s'affiche pas du tout.
+     */
+    public static final String MARGIN_PERCENT = "finance.marginPercent";
 
     private static final Set<String> SENSITIVE = Set.of(TICKET_PATTERN, TICKET_RESET_PERIOD, TICKET_PER_POS,
-            TICKET_PER_REGISTER, TICKET_DISPLAY_PATTERN, TAX_ENABLED, DISCOUNT_HIGH_THRESHOLD);
+            TICKET_PER_REGISTER, TICKET_DISPLAY_PATTERN, TAX_ENABLED, DISCOUNT_HIGH_THRESHOLD, MARGIN_PERCENT);
     /** Les quatre reglages du numero de ticket : ils ne se jugent qu'ensemble. */
     private static final Set<String> NUMEROTATION = Set.of(TICKET_PATTERN, TICKET_RESET_PERIOD,
             TICKET_PER_POS, TICKET_PER_REGISTER, TICKET_DISPLAY_PATTERN);
@@ -65,6 +74,9 @@ public class SettingsService {
         d.put(QUICK_CASH, "5,10,20,50");
         d.put(CASH_ROUNDING, "0");
         d.put(PIN_USER_TILES, "true");
+        // Zero : tant que le restaurateur n'a pas pose SON taux, aucun montant de benefice
+        // ne s'affiche. Un taux invente serait pire que pas de taux du tout.
+        d.put(MARGIN_PERCENT, "0");
         return d;
     }
 

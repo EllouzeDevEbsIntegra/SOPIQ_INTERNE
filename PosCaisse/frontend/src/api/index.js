@@ -29,6 +29,7 @@ export const api = {
     catalog: () => g('/pos/catalog'), registers: (posId) => g('/pos/registers', { posId }), session: () => g('/pos/session'),
     openSession: (registerId, openingFloat) => p('/pos/session/open', { registerId, openingFloat }),
     summary: (id) => g(`/pos/session/${id}/summary`), close: (id, body) => p(`/pos/session/${id}/close`, body),
+    report: (id) => g(`/pos/session/${id}/report`),
     movements: (id) => g(`/pos/session/${id}/movements`), addMovement: (id, body) => p(`/pos/session/${id}/movements`, body),
     quote: (cart) => p('/pos/quote', cart), checkout: (body) => p('/pos/checkout', body), hold: (cart) => p('/pos/hold', cart),
     held: (posId) => g('/pos/held', { posId }), abandon: (id) => del(`/pos/held/${id}`),

@@ -110,6 +110,56 @@ class PosIntegrationTest {
     }
 
     /**
+     * La marge bénéficiaire et l'état de caisse.
+     *
+     * Le bénéfice se calcule sur le CHIFFRE D'AFFAIRES, pas sur le tiroir : une vente par
+     * carte y compte même si l'argent n'est pas là, et une sortie de caisse ne l'entame
+     * pas. La session de ce scénario le prouve d'elle-même — elle a encaissé par carte et
+     * sorti 20 dinars, si bien que le CA et les espèces théoriques ne se ressemblent pas.
+     *
+     * Et tant qu'aucun taux n'est posé, rien ne s'affiche : un « bénéfice 0,000 » se
+     * lirait comme une journée sans marge.
+     */
+    @Test @Order(6) void margeBeneficiaireEtEtatDeCaisse() throws Exception {
+        String url = "/api/pos/session/" + sessionId;
+        JsonNode sans = json(mvc.perform(get(url + "/summary").header("Authorization", "Bearer " + cashierToken)).andExpect(status().isOk()).andReturn());
+        assertThat(sans.get("marginPercent").decimalValue()).as("aucun taux livré").isEqualByComparingTo("0");
+        assertThat(sans.get("estimatedProfit").decimalValue()).isEqualByComparingTo("0.000");
+        String muet = json(mvc.perform(get(url + "/report").header("Authorization", "Bearer " + cashierToken)).andExpect(status().isOk()).andReturn()).get("content").asText();
+        assertThat(muet).as("sans taux, l'état ne parle pas de bénéfice").doesNotContain("BÉNÉFICE");
+
+        // Le taux se pose au back-office, avec les droits qui vont avec.
+        String admin = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn()).get("token").asText();
+        putJson("/api/settings", admin, java.util.Map.of("finance.marginPercent", "25"), 200);
+
+        JsonNode avec = json(mvc.perform(get(url + "/summary").header("Authorization", "Bearer " + cashierToken)).andExpect(status().isOk()).andReturn());
+        java.math.BigDecimal ca = avec.get("revenue").decimalValue();
+        java.math.BigDecimal especes = avec.get("expectedCash").decimalValue();
+        assertThat(avec.get("marginPercent").decimalValue()).isEqualByComparingTo("25");
+        assertThat(avec.get("estimatedProfit").decimalValue())
+                .as("25 % du chiffre d'affaires")
+                .isEqualByComparingTo(ca.multiply(new java.math.BigDecimal("0.25")).setScale(3, java.math.RoundingMode.HALF_UP));
+        assertThat(ca).as("le CA n'est pas le contenu du tiroir").isNotEqualByComparingTo(especes);
+        assertThat(avec.get("estimatedProfit").decimalValue())
+                .as("le bénéfice ne se calcule pas sur les espèces")
+                .isNotEqualByComparingTo(especes.multiply(new java.math.BigDecimal("0.25")).setScale(3, java.math.RoundingMode.HALF_UP));
+
+        JsonNode etat = json(mvc.perform(get(url + "/report").header("Authorization", "Bearer " + cashierToken)).andExpect(status().isOk()).andReturn());
+        String papier = etat.get("content").asText();
+        assertThat(etat.get("title").asText()).isEqualTo("État de caisse");
+        assertThat(papier).contains("ÉTAT DE CAISSE").contains("CHIFFRE D'AFFAIRES").contains("BÉNÉFICE ESTIMÉ")
+                .contains("Marge appliquée").contains("25 %")
+                // la session est clôturée : l'état porte le compte réel et l'écart
+                .contains("Espèces comptées").contains("ÉCART");
+        assertThat(papier).as("le montant du bénéfice est sur le papier")
+                .contains(com.poscaisse.printing.ReceiptRenderer.money(avec.get("estimatedProfit").decimalValue(), 3));
+
+        // On repose le réglage : les tests suivants ne doivent rien hériter de celui-ci.
+        putJson("/api/settings", admin, java.util.Map.of("finance.marginPercent", "0"), 200);
+    }
+
+    /**
      * La numérotation des tickets, de bout en bout : le format, la portée du compteur et
      * le compteur lui-même.
      *
@@ -119,7 +169,7 @@ class PosIntegrationTest {
      * l'enregistrement — pas devant le client — et qu'on ne peut pas ramener le compteur
      * sur un numéro déjà imprimé.
      */
-    @Test @Order(6) void ticketNumberingScopeFormatAndCounter() throws Exception {
+    @Test @Order(7) void ticketNumberingScopeFormatAndCounter() throws Exception {
         String admin = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn())
                 .get("token").asText();
@@ -241,7 +291,7 @@ class PosIntegrationTest {
      * zéro des ventes rien n'est supprimé (et que l'utilisateur est averti), et qu'avec elle il
      * ne reste que le catalogue actif. Dernier test : il vide volontairement la base.
      */
-    @Test @Order(7) void purgeRemovesInactiveCatalogOnlyWithSalesReset() throws Exception {
+    @Test @Order(8) void purgeRemovesInactiveCatalogOnlyWithSalesReset() throws Exception {
         String adminToken = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn())
                 .get("token").asText();

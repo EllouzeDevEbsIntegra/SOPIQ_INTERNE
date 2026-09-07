@@ -25,6 +25,10 @@ public class RegisterSessionService {
     private final CurrentUser currentUser;
     private final AuditService audit;
     private final JournalService journal;
+    private final SettingsService settings;
+    private final CompanyRepo companyRepo;
+    private final com.poscaisse.printing.ReceiptRenderer renderer;
+    private final com.poscaisse.printing.PrintService printService;
 
     @Transactional(readOnly = true)
     public List<RegisterStatusDto> registers(Long posId) {
@@ -112,8 +116,37 @@ public class RegisterSessionService {
             discounts = discounts.add(o.getDiscountAmount()).add(o.getLineDiscountTotal());
         }
         BigDecimal expected = Money.r(s.getOpeningFloat().add(cash).subtract(cashRefunds).add(in).subtract(out));
+        /*
+            Le benefice estime : un pourcentage pose au back-office, applique au CHIFFRE
+            D'AFFAIRES, pas aux especes.
+
+            Le CA compte donc toute vente encaissee ou non - carte, cheque, credit -, il
+            ignore ce qui a ete annule et il est deja net des remboursements (voir la
+            boucle ci-dessus). Et il ne bouge pas d'un millime quand la caisse fait une
+            sortie : sortir de l'argent du tiroir n'annule aucune vente.
+        */
+        BigDecimal margin = settings.getDecimal(SettingsService.MARGIN_PERCENT, BigDecimal.ZERO);
         return new SessionSummary(s.getId(), s.getOpeningFloat(), Money.r(cash), Money.r(card), Money.r(other), Money.r(cashRefunds), Money.r(otherRefunds),
-                Money.r(in), Money.r(out), expected, tickets, cancels, Money.r(revenue), Money.r(discounts), byMethod);
+                Money.r(in), Money.r(out), expected, tickets, cancels, Money.r(revenue), Money.r(discounts), byMethod,
+                margin, Money.pct(Money.r(revenue), margin));
+    }
+
+    /**
+     * L'etat de caisse, tel qu'il sortira de l'imprimante a tickets.
+     *
+     * Il est rendu ICI, a partir du meme recapitulatif que l'ecran, et non recalcule cote
+     * navigateur : le papier que le gerant garde et l'ecran que le caissier a sous les
+     * yeux doivent porter les memes chiffres, y compris le jour ou le calcul changera.
+     *
+     * Aucun PrintJob n'est cree : ces lignes-la appartiennent a une vente, et un etat de
+     * caisse n'en est pas une. Le texte part directement a l'impression du navigateur.
+     */
+    @Transactional(readOnly = true)
+    public SessionReport report(Long sessionId) {
+        RegisterSession s = sessionRepo.findById(sessionId).orElseThrow(() -> BusinessException.notFound("Session"));
+        Company company = companyRepo.findAll().stream().findFirst().orElse(null);
+        return new SessionReport("État de caisse",
+                renderer.sessionReport(s, computeSummary(s), company, printService.activeTemplate()));
     }
 
     @Transactional

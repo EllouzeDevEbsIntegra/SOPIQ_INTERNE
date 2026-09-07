@@ -1,6 +1,7 @@
 package com.poscaisse.printing;
 
 import com.poscaisse.domain.*;
+import com.poscaisse.dto.RegisterDtos;
 import com.poscaisse.service.Money;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -314,6 +316,88 @@ public class ReceiptRenderer {
     }
 
     // ---------- preparation ticket ----------
+    // ---------- etat de caisse ----------
+    /**
+     * L'etat d'une caisse : le meme recapitulatif que l'ecran de cloture, sur du papier
+     * a tickets.
+     *
+     * Il reprend l'ordre de l'ecran, ligne pour ligne - especes d'abord, recettes
+     * ensuite - parce que c'est cet ordre-la que le caissier vient de lire. Un etat qui
+     * range les memes chiffres autrement oblige a les rechercher un par un pour verifier
+     * qu'il dit bien la meme chose.
+     *
+     * Il s'imprime avant ou apres la cloture : avant, il sert a compter ; apres, il porte
+     * en plus le compte reel et l'ecart, et c'est la piece que le gerant garde.
+     */
+    public String sessionReport(RegisterSession s, RegisterDtos.SessionSummary sum, Company company, ReceiptTemplate t) {
+        Map<String, Object> cfg = config(t);
+        int w = columns(t == null ? 80 : t.getPaperWidth());
+        int dec = company == null || company.getDecimals() == null ? 3 : company.getDecimals();
+        String cur = company == null ? "DT" : company.getCurrencySymbol();
+        String sepCh = String.valueOf(cfg.getOrDefault("separator", "-"));
+        boolean cloturee = s.getStatus() == Enums.SessionStatus.CLOSED;
+        Sheet p = new Sheet(w);
+
+        var edite = OffsetDateTime.now().atZoneSameInstant(TZ);
+        p.head(() -> {
+            if (company != null && on(cfg, "showCompanyName"))
+                p.lr("", company.getTradeName() != null && !company.getTradeName().isBlank() ? company.getTradeName() : company.getName());
+            p.lr("", edite.format(DATE) + " - " + edite.format(TIME));
+        });
+        p.sep(sepCh);
+        p.bold("ÉTAT DE CAISSE");
+        p.lr("Caisse", s.getRegister().getName());
+        p.lr("Caissier", s.getOpenedBy().getFullName());
+        p.lr("Ouverte", s.getOpenedAt().atZoneSameInstant(TZ).format(DATE) + " " + s.getOpenedAt().atZoneSameInstant(TZ).format(TIME));
+        if (cloturee && s.getClosedAt() != null)
+            p.lr("Clôturée", s.getClosedAt().atZoneSameInstant(TZ).format(DATE) + " " + s.getClosedAt().atZoneSameInstant(TZ).format(TIME));
+        else
+            p.lr("État édité le", edite.format(DATE) + " " + edite.format(TIME));
+        p.sep(sepCh);
+
+        p.lr("Fond initial", money(sum.openingFloat(), dec));
+        p.lr("+ Ventes espèces", money(sum.cashSales(), dec));
+        p.lr("- Remboursements espèces", money(sum.cashRefunds(), dec));
+        p.lr("+ Entrées de caisse", money(sum.cashIn(), dec));
+        p.lr("- Sorties de caisse", money(sum.cashOut(), dec));
+        p.lr("ESPÈCES THÉORIQUES", money(sum.expectedCash(), dec) + " " + cur);
+        if (cloturee && s.getCountedCash() != null) {
+            p.lr("Espèces comptées", money(s.getCountedCash(), dec) + " " + cur);
+            BigDecimal ecart = Money.nz(s.getCashDifference());
+            p.lr("ÉCART", (ecart.signum() > 0 ? "+" : "") + money(ecart, dec) + " " + cur);
+        }
+        p.sep(sepCh);
+
+        p.lr("Carte bancaire", money(sum.cardSales(), dec));
+        p.lr("Autres paiements", money(sum.otherSales(), dec));
+        // Le detail par mode de paiement : c'est lui qui dit ce qui reste a encaisser -
+        // un cheque ou un credit compte dans le chiffre d'affaires sans etre dans le tiroir.
+        sum.byMethod().forEach((nom, montant) -> p.lr("  . " + nom, money(montant, dec)));
+        p.lr("Tickets / annulations", sum.ticketsCount() + " / " + sum.cancellationsCount());
+        p.lr("Remises accordées", money(sum.discounts(), dec));
+        p.lr("CHIFFRE D'AFFAIRES", money(sum.revenue(), dec) + " " + cur);
+        /*
+            Le benefice n'apparait que si un taux a ete pose au back-office. A zero, la
+            ligne ne s'imprime pas : un << benefice 0,000 >> se lirait comme une journee
+            sans marge, ce qui n'est pas ce que dit un reglage vide.
+        */
+        if (Money.isPositive(sum.marginPercent())) {
+            p.sep(sepCh);
+            p.lr("Marge appliquée", pourcentage(sum.marginPercent()) + " %");
+            p.lr("BÉNÉFICE ESTIMÉ", money(sum.estimatedProfit(), dec) + " " + cur);
+            p.line("Estimation : marge x chiffre d'affaires.");
+        }
+        if (notBlank(s.getClosingNote())) { p.sep(sepCh); p.line("Note : " + s.getClosingNote()); }
+        p.sep(sepCh);
+        p.center("Document interne");
+        return p.toString();
+    }
+
+    /** << 25 >> et non << 25,000 >> : un taux se lit comme on l'a saisi. */
+    static String pourcentage(BigDecimal v) {
+        return v.stripTrailingZeros().toPlainString().replace('.', ',');
+    }
+
     public String prepTicket(SaleOrder o, List<OrderLine> lines, PrintDestination dest, ReceiptTemplate t, Company company, boolean duplicate) {
         Map<String, Object> cfg = config(t);
         int w = columns(t == null ? 80 : t.getPaperWidth());

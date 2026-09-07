@@ -8,9 +8,30 @@ import { fmt, parseAmount, sub } from '../../utils/money'
 import { fmtDateTime } from '../../utils/dates'
 import NumPad from '../../components/common/NumPad.vue'
 import Icon from '../../components/common/Icon.vue'
-const router = useRouter(); const auth = useAuthStore(); const ui = useUiStore()
+import Modal from '../../components/common/Modal.vue'
+import ReceiptPaper from '../../components/pos/ReceiptPaper.vue'
+import { useCatalogStore } from '../../stores/catalog'
+import { printJobs } from '../../composables/usePrinter'
+const router = useRouter(); const auth = useAuthStore(); const ui = useUiStore(); const catalog = useCatalogStore()
 const summary = ref(null); const counted = ref(''); const note = ref(''); const busy = ref(false); const result = ref(null)
-onMounted(async () => { try { summary.value = await api.pos.summary(auth.session.id) } catch (e) { ui.error(e.humanMessage) } })
+// L'etat de caisse : rendu par le serveur, montre avant d'etre imprime. La session garde
+// son identifiant apres la cloture, le temps d'imprimer l'etat definitif.
+const sessionId = ref(null); const etat = ref(null); const template = ref(null)
+onMounted(async () => {
+  sessionId.value = auth.session?.id || null
+  try { summary.value = await api.pos.summary(auth.session.id) } catch (e) { ui.error(e.humanMessage) }
+  api.admin.activeTemplate().then(t => { template.value = { ...t, logoData: catalog.company?.logoData } }).catch(() => {})
+})
+/** Un taux se lit comme il a ete saisi : 25, et non 25,000. */
+const pct = (v) => String(Number(v)).replace('.', ',')
+async function voirEtat() {
+  if (!sessionId.value) return
+  try { etat.value = await api.pos.report(sessionId.value) } catch (e) { ui.error(e.humanMessage) }
+}
+async function imprimerEtat() {
+  if (!etat.value) return
+  await printJobs([{ title: etat.value.title, content: etat.value.content, copies: 1 }], template.value)
+}
 const diff = () => sub(parseAmount(counted.value), summary.value?.expectedCash || 0)
 async function close() {
   if (busy.value || !summary.value) return
@@ -18,7 +39,7 @@ async function close() {
   const d = diff()
   if (!await ui.confirm({ title: 'Clôturer la caisse', message: `Espèces théoriques : ${fmt(summary.value.expectedCash, true)}\nEspèces comptées : ${fmt(c, true)}\nÉcart : ${d >= 0 ? '+' : ''}${fmt(d, true)}\n\nConfirmer la clôture ?`, okLabel: 'Clôturer' })) return
   busy.value = true
-  try { result.value = await api.pos.close(auth.session.id, { countedCash: c, note: note.value || null }); auth.setSession(null); ui.success('Caisse clôturée') }
+  try { result.value = await api.pos.close(auth.session.id, { countedCash: c, note: note.value || null }); sessionId.value = result.value.id; etat.value = null; auth.setSession(null); ui.success('Caisse clôturée') }
   catch (e) { ui.error(e.humanMessage) } finally { busy.value = false }
 }
 function finish() { auth.logout(); router.replace('/login') }
@@ -26,7 +47,7 @@ function finish() { auth.logout(); router.replace('/login') }
 <template>
   <div class="close-page">
     <div class="close-card">
-      <header class="head"><div><span class="eyebrow">Fin de service</span><h1>Clôture de caisse</h1><div class="muted small">{{ auth.session?.registerName || result?.registerName }} · {{ auth.user?.fullName }}</div></div><router-link v-if="!result" class="btn" to="/pos"><Icon name="arrowLeft" :size="17" />Retour au POS</router-link></header>
+      <header class="head"><div><span class="eyebrow">Fin de service</span><h1>Clôture de caisse</h1><div class="muted small">{{ auth.session?.registerName || result?.registerName }} · {{ auth.user?.fullName }}</div></div><div class="row gap-8"><button class="btn" :disabled="!sessionId" @click="voirEtat"><Icon name="printer" :size="17" />État de caisse</button><router-link v-if="!result" class="btn" to="/pos"><Icon name="arrowLeft" :size="17" />Retour au POS</router-link></div></header>
       <div v-if="result" class="result">
         <h2 class="ok"><Icon name="check" :size="20" :stroke="2.6" />Session clôturée</h2>
         <div class="grid-kpi mt-16">
@@ -36,7 +57,7 @@ function finish() { auth.logout(); router.replace('/login') }
           <div class="kpi"><span class="label">Tickets</span><span class="value num">{{ result.ticketsCount }}</span><span class="sub">CA {{ fmt(result.revenue, true) }}</span></div>
         </div>
         <div class="muted small mt-16">Ouverte {{ fmtDateTime(result.openedAt) }} · clôturée {{ fmtDateTime(result.closedAt) }}</div>
-        <div class="row mt-16 gap-8"><button class="btn xl primary grow" @click="finish">Terminer et se déconnecter</button><router-link class="btn xl" to="/open">Rouvrir une caisse</router-link></div>
+        <div class="row mt-16 gap-8"><button class="btn xl primary grow" @click="finish">Terminer et se déconnecter</button><button class="btn xl" @click="voirEtat"><Icon name="printer" :size="18" />Imprimer l'état</button><router-link class="btn xl" to="/open">Rouvrir une caisse</router-link></div>
       </div>
       <div v-else-if="summary" class="grid">
         <div class="col gap-8">
@@ -57,6 +78,13 @@ function finish() { auth.logout(); router.replace('/login') }
             <div class="l"><span>Remises accordées</span><b class="num">{{ fmt(summary.discounts) }}</b></div>
             <div class="l total"><span>CHIFFRE D'AFFAIRES</span><b class="num">{{ fmt(summary.revenue, true) }}</b></div>
           </div>
+          <!-- Le benefice n'apparait que si un taux a ete pose au back-office : un
+               << 0,000 DT >> se lirait comme une journee sans marge, ce qui n'est pas ce
+               que dit un reglage vide. -->
+          <div v-if="Number(summary.marginPercent) > 0" class="lines benef mt-8">
+            <div class="l total"><span>BÉNÉFICE ESTIMÉ</span><b class="num">{{ fmt(summary.estimatedProfit, true) }}</b></div>
+            <div class="l"><span class="muted small">{{ pct(summary.marginPercent) }} % du chiffre d'affaires</span></div>
+          </div>
         </div>
         <div class="col gap-8">
           <div class="card-title">Espèces réellement comptées</div>
@@ -68,6 +96,14 @@ function finish() { auth.logout(); router.replace('/login') }
       </div>
       <div v-else class="spinner"></div>
     </div>
+    <Modal v-if="etat" size="md" :title="etat.title" @close="etat = null">
+      <div class="apercu scroll"><ReceiptPaper :content="etat.content" :paper-width="template?.paperWidth || 80" :font-size="template?.fontSize || 12"
+                                               :logo="template?.showLogo ? template?.logoData : null" /></div>
+      <template #foot>
+        <button class="btn lg" @click="etat = null">Fermer</button>
+        <button class="btn lg primary" @click="imprimerEtat"><Icon name="printer" :size="17" />Imprimer</button>
+      </template>
+    </Modal>
   </div>
 </template>
 <style scoped>
@@ -85,5 +121,7 @@ h1 { font-size: 25px; margin-top: 2px; }
 .ecart:not(.ok):not(.bad) b { font-size: 15px; font-weight: 600; color: var(--ink-3); }
 .ecart.ok { background: var(--pay-soft); border-color: var(--pay-line); color: var(--pay-2); }
 .ecart.bad { background: var(--warn-soft); border-color: var(--warn-line); color: var(--warn); }
+.benef .total b { color: var(--pay-2); }
+.apercu { background: #e2e8f0; padding: 16px; border-radius: 12px; max-height: 60vh; }
 @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
 </style>

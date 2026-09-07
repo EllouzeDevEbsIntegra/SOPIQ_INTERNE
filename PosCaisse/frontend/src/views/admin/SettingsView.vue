@@ -23,6 +23,10 @@ async function save() {
         <div class="field"><label>Mode par défaut</label><select class="input" v-model="s['pos.defaultServiceMode']"><option value="DINE_IN">Sur place</option><option value="TAKEAWAY">À emporter</option><option value="DELIVERY">Livraison</option></select></div>
         <div class="field"><label>Seuil de remise nécessitant un manager (%)</label><input class="input" v-model="s['discount.highThresholdPercent']" inputmode="decimal" /></div>
         <div class="field"><label>Boutons espèces rapides (séparés par des virgules)</label><input class="input" v-model="s['pos.quickCash']" placeholder="5,10,20,50" /></div>
+        <!-- Une estimation de gestion, pas une comptabilite : la caisse connait ce qui a
+             ete vendu, pas ce que les ingredients ont coute. A 0, la ligne ne s'affiche
+             nulle part - mieux vaut rien qu'un taux invente. -->
+        <div class="field"><label>Marge bénéficiaire (%)</label><input class="input" v-model="s['finance.marginPercent']" inputmode="decimal" placeholder="0" /><div class="tiny muted">Applique au chiffre d'affaires de la session pour afficher un bénéfice estimé sur l'écran de clôture et sur l'état de caisse. 0 = ne rien afficher.</div></div>
         <div class="field"><label>TVA</label><select class="input" v-model="s['tax.enabled']"><option value="false">Désactivée (prix TTC simples)</option><option value="true">Activée (TVA calculée dans le prix TTC)</option></select></div>
       </div>
     </div>

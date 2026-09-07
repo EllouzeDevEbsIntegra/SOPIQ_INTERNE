@@ -24,7 +24,13 @@ public final class RegisterDtos {
     public record SessionSummary(Long sessionId, BigDecimal openingFloat, BigDecimal cashSales, BigDecimal cardSales, BigDecimal otherSales,
                                  BigDecimal cashRefunds, BigDecimal otherRefunds, BigDecimal cashIn, BigDecimal cashOut, BigDecimal expectedCash,
                                  int ticketsCount, int cancellationsCount, BigDecimal revenue, BigDecimal discounts,
-                                 Map<String, BigDecimal> byMethod) {}
+                                 Map<String, BigDecimal> byMethod,
+                                 // Le taux en vigueur et le montant qu'il donne. Le calcul est fait ici, une
+                                 // fois : l'ecran et le papier montrent alors forcement le meme chiffre.
+                                 BigDecimal marginPercent, BigDecimal estimatedProfit) {}
+
+    /** L'etat de caisse, rendu comme un ticket : un titre et le texte a imprimer. */
+    public record SessionReport(String title, String content) {}
 
     public record CashMovementDto(Long id, Long sessionId, String type, String reason, BigDecimal amount, String comment, String userName, OffsetDateTime createdAt) {}
 
