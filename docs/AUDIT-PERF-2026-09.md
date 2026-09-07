@@ -545,4 +545,54 @@ page est ouverte, l'ancienne valeur reste affichée jusqu'à réouverture.
 **À vérifier en recette** — comparer avant/après, sur une société, le contenu de la table
 `KPI Cache` du jour (les 22 champs) et le stock affiché sur les pages Devis.
 
+#### Résultat en production — 2026-09-07
+
+**Durée du job `Cod50026 KPI Cache Job` : de 5–11 minutes à 29 secondes.**
+
+Relevé du journal de la file d'attente, société `SOPIQ PROD` :
+
+| Passage | Durée | Code |
+|---|---|---|
+| 04/09, 7 passages | 5 min 31 s → 11 min 07 s | ancien |
+| 05/09, 10 passages | 5 min 14 s → 8 min 05 s | ancien |
+| 07/09 08:00 / 09:06 / 10:14 / 11:23 | 6 min 39 s → 10 min 07 s | ancien |
+| **07/09 12:34** | **29 s 300 ms** | **nouveau** |
+
+Comparaison de la **même ligne** (07/09) recalculée avant et après déploiement :
+**18 colonnes sur 22 strictement identiques**. Les 4 autres — `Total BL Non Réglés RC`,
+`Total Retour BL RC`, `Ventes du Jour`, `Retours du Jour` — progressent toutes dans le sens
+de l'activité de la journée.
+
+`Ventes du Jour` (43 951 → 49 978) et `Retours du Jour` (6 012 → 6 070) étaient les deux
+seules conversions qu'aucun test n'avait pu valider, faute de données non nulles sur DEV.
+Elles sont désormais validées.
+
+Vérifications complémentaires sur DEV : colonne « Emplacement par défaut » de la liste
+articles renseignée, stock magasin de vente correct sur les pages Devis.
+
+#### 🔴 Bug confirmé en production : le cache renvoie zéro
+
+La ligne du **06/09 (dimanche) est intégralement à zéro** — y compris
+`Total Factures Non Réglées`, alors qu'il y avait 239 factures impayées le vendredi **et**
+le lundi. Le journal de la file d'attente ne montre **aucun passage le 06/09**.
+
+L'enregistrement a été créé à 14:54 par `GetOrCreateTodayCache` quand quelqu'un a ouvert le
+tableau de bord. Cette personne a vu **zéro partout**.
+
+Le piège : les triggers de la table `KPI Cache` renseignent l'horodatage à l'insertion —
+
+```al
+trigger OnInsert()
+begin
+    "Last Calculated" := CurrentDateTime;
+    "Calculated By"   := UserId;
+end;
+```
+
+— donc un enregistrement vide porte une date de calcul **d'apparence fraîche**. Rien
+n'indique à l'utilisateur que le calcul n'a pas eu lieu. **À traiter en priorité** : se
+rabattre sur le dernier cache disponible plutôt que d'en créer un vide, et afficher la date
+de fraîcheur. ⚠️ Ce correctif **change le comportement** (0 devient « valeur de la veille ») :
+ce n'est pas une optimisation neutre mais une correction de bug.
+
 <!-- Compléter au fil de l'eau. -->
