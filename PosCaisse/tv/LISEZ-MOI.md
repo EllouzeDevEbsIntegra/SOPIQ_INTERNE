@@ -27,8 +27,8 @@ python3 outils/generer-tv.py listes     les listes séparées
 python3 outils/comparer.py              comparaison.html, les deux d'un bouton
 ```
 
-Contrairement à ce qu'on croirait, la version en listes ne rapetisse rien : **41,1 px de
-hauteur de ligne contre 39,5**. Les 38 articles d'un écran se rangent en deux colonnes de
+Contrairement à ce qu'on croirait, la version en listes ne rapetisse rien : elle tient à
+**une hauteur de ligne au moins égale** à celle des tableaux croisés. Les 38 articles d'un écran se rangent en deux colonnes de
 19, soit la même hauteur que les 19 lignes d'une matrice — qui paie en plus une rangée
 d'en-tête de second niveau. Le choix se joue donc sur la lecture, pas sur la taille.
 
@@ -69,6 +69,13 @@ Puis recopier les trois fichiers sur les postes des téléviseurs.
 
 ## Ce qui a été décidé, et pourquoi
 
+**La règle des doubles pâtes est en pied de tableau, en sourdine.** Elle occupait un
+bandeau rouge pleine largeur en tête : la première chose que le client lisait était donc
+un supplément, avant même d'avoir cherché son sandwich. Un rouge vif et des capitales
+promettent une offre ; ce n'en est pas une, c'est une précision de tarif. Elle est
+descendue sous les prix, en petit, sur un simple filet — elle répond à la question au
+moment où elle se pose. Les 18 px gagnés sont revenus aux lignes du menu.
+
 **Les trois prix sur la ligne** — normale, céréale, chia. Un client qui doit ajouter
 +1,000 de tête devant un tableau hésite, et un client qui hésite ne commande pas. Les
 colonnes ne coûtent rien à la lisibilité : c'est la **hauteur** de la ligne qui commande
@@ -104,6 +111,5 @@ Le script répartit chaque écran en deux colonnes de hauteur égale, puis desce
 juste ce qu'il faut pour que la plus chargée des trois dalles tienne — jamais plus bas.
 C'est donc l'écran le plus rempli qui décide pour tous : les trois sont côte à côte sur
 le même mur, et un titre de 30 px à gauche contre 28 à droite ne se remarque pas écran
-par écran, mais se voit dès qu'on prend du recul. Aujourd'hui, sur une base de
-1920 × 1080 : ligne 39,5 px, titre de rubrique 28,5, nom d'article 23,9, prix 25,4,
-intitulé de pâte 17,7 — identiques sur les trois écrans.
+par écran, mais se voit dès qu'on prend du recul. La valeur du jour est annoncée par le script à chaque passage, et elle est la même sur les
+trois écrans.

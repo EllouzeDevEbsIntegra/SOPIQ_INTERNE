@@ -60,7 +60,8 @@ POLICES = os.path.join(ICI, 'outils', 'polices')
 # donc les montrer cote a cote sans avoir a regenerer entre deux.
 #
 # Contrairement a ce qu'on croirait, la version en listes ne rapetisse RIEN : mesure,
-# 41,1 px de ligne contre 39,5 en matrice. Les 38 articles d'un ecran se rangent en
+# 42,0 px de ligne contre 40,3 en matrice (les chiffres du jour - le script les annonce
+# a chaque execution, c'est la sortie qui fait foi, pas ce commentaire). Les 38 articles d'un ecran se rangent en
 # deux colonnes de 19, soit la meme hauteur que les 19 lignes d'une matrice - qui paie
 # en plus une rangee d'en-tete de second niveau. Le choix ne se joue donc pas sur la
 # taille du texte, mais sur la lecture :
@@ -80,15 +81,76 @@ VERSIONS = {
         ('3-droite', 'Droite', ['Spécial', 'Lablebi', 'Boissons', 'Extras']),
     ]),
 }
+
+# ------------------------------------------------------------------- palettes
+#
+# La composition ne change pas d'une palette a l'autre : ce sont les MEMES tableaux,
+# a la meme geometrie, repeints. C'est la seule facon de comparer deux couleurs sans
+# comparer autre chose en meme temps - et c'est pour cela que la feuille de style est
+# coupee en deux : un bloc de couleurs, puis une geometrie qui n'en connait aucune.
+#
+#   nuit   fond noir, prix en or - ce qui tourne aujourd'hui sur les dalles ;
+#   clair  fond creme, prix a l'encre, accent rouge brique - les couleurs relevees
+#          sur la proposition du client.
+#
+# Un tableau clair n'est pas un tableau sombre inverse : sur creme, c'est l'ENCRE qui
+# porte le mieux les chiffres, et le rouge qui devient l'accent (titres, telephone,
+# premiere colonne de prix - celle du prix de base, la plus lue). Sur noir, l'or tenait
+# les deux roles a la fois.
+PALETTES = {
+    'nuit': {
+        'fond': '#000000', 'encre': '#F6EFE3', 'sourd': '#8B8072',
+        'accent': '#FECC30', 'prix': '#FECC30', 'prixfort': '#FECC30',
+        'rouge': '#F73123', 'service': '#5D554B',
+        'filet': '#2A241C', 'cle': '#A79A88', 'montant': '#C9B98F',
+        'trait': 'rgba(254, 204, 48, .55)', 'traitfaible': 'rgba(254, 204, 48, .07)',
+        'pointille': 'rgba(246, 239, 227, .30)',
+        'opacite': '0.15', 'melange': 'normal', 'logoclair': False,
+        'murfond': '#0b0b0c', 'murencre': '#cfc7ba', 'murcadre': '#22201d',
+        'murtitre': '#FECC30', 'mursourd': '#8B8072', 'murfort': '#F6EFE3',
+    },
+    'clair': {
+        'fond': '#F3F2E9', 'encre': '#16181A', 'sourd': '#6F6A5E',
+        'accent': '#C0392B', 'prix': '#16181A', 'prixfort': '#C0392B',
+        'rouge': '#C0392B', 'service': '#A9A392',
+        'filet': '#D7D3C2', 'cle': '#8A8375', 'montant': '#C0392B',
+        'trait': 'rgba(22, 24, 26, .38)', 'traitfaible': 'rgba(22, 24, 26, .06)',
+        'pointille': 'rgba(22, 24, 26, .20)',
+        'opacite': '0.11', 'melange': 'multiply', 'logoclair': True,
+        'murfond': '#E7E5D8', 'murencre': '#4A4639', 'murcadre': '#CFCBB9',
+        'murtitre': '#C0392B', 'mursourd': '#7B7566', 'murfort': '#16181A',
+    },
+}
+
 VERSION = (sys.argv[1] if len(sys.argv) > 1 else 'croise').lower()
 if VERSION not in VERSIONS:
     raise SystemExit('Version inconnue : %s. Attendu : %s' % (VERSION, ' ou '.join(VERSIONS)))
 DOSSIER, ECRANS = VERSIONS[VERSION]
+
+# Ce qui suit la version se reconnait a sa forme : un nombre est une hauteur de ligne
+# imposee, un mot est une palette. L'ordre n'a pas d'importance - il n'y a rien a
+# retenir.
+#
+#     python3 outils/generer-tv.py listes clair
+#     python3 outils/generer-tv.py listes clair 40.3
+#
+# Hauteur imposee : pour rendre deux versions a taille egale, sinon l'oeil juge la
+# taille du texte au lieu de juger la mise en page.
+PALETTE, FORCEE = 'nuit', None
+for arg in sys.argv[2:]:
+    try:
+        FORCEE = float(arg)
+    except ValueError:
+        PALETTE = arg.lower()
+        if PALETTE not in PALETTES:
+            raise SystemExit('Palette inconnue : %s. Attendu : %s'
+                             % (PALETTE, ' ou '.join(PALETTES)))
+COULEURS = PALETTES[PALETTE]
+# Chaque couple disposition x palette a son dossier. Celui qui tourne aujourd'hui garde
+# sa place et ses liens : c'est la palette nuit, a la racine et dans variante-listes/.
+if PALETTE != 'nuit':
+    DOSSIER = (DOSSIER + '-' + PALETTE) if DOSSIER else ('variante-' + PALETTE)
 SORTIE = os.path.join(ICI, DOSSIER) if DOSSIER else ICI
-# Hauteur de ligne imposee, pour comparer les deux versions a taille egale : sinon
-# l'oeil juge la taille du texte au lieu de juger la mise en page.
-#     python3 outils/generer-tv.py listes 39.5
-FORCEE = float(sys.argv[2]) if len(sys.argv) > 2 else None
 
 
 def libelle(rubriques):
@@ -99,12 +161,13 @@ def libelle(rubriques):
 # unite puis mise a l'echelle par le navigateur : la composition est donc la meme sur
 # un televiseur 4K que sur un vieux 1366 x 768.
 LARGE, HAUT = 1920, 1080
-MARGE, ENTETE, BANDEAU, ECART = 40, 80, 52, 14
+MARGE, ENTETE, BANDEAU, ECART = 40, 80, 34, 14
+SOUS_ENTETE = 4          # l'air qui suit le filet de l'en-tete
 # Un televiseur rogne les bords - jusqu'a 2,5 % de la dalle sur les reglages d'usine.
 # On garde donc du noir sous la derniere ligne : 54 px, soit le double de ce que la
 # surbalayage mange, pour qu'un prix ne disparaisse jamais par le bas.
 RESERVE = 14
-DISPO = HAUT - 2 * MARGE - ENTETE - BANDEAU - ECART - RESERVE
+DISPO = HAUT - 2 * MARGE - ENTETE - SOUS_ENTETE - BANDEAU - ECART - RESERVE
 LIGNE_MAX, TITRE = 46, 1.42                           # hauteur de ligne, cout d'un titre
 # Matrice : largeur d'une colonne de prix, et ecart entre deux familles, en hauteurs de
 # ligne. L'ecart vaut presque une colonne entiere - c'est lui, plus que le filet, qui
@@ -121,11 +184,31 @@ def b64(chemin, mime):
 
 
 def logo_data():
-    """Le logo, ramene a la taille ou il s'affiche. Il est deja sur fond noir : pose sur
-    le tableau, il n'a pas de bord - c'est le meme noir des deux cotes."""
+    """
+    Le logo, ramene a la taille ou il s'affiche.
+
+    Il est livre sur fond noir : sur une dalle noire il n'a donc pas de bord. Sur un
+    fond creme, ce meme noir devient un carre pose au milieu de l'en-tete. On repeint
+    alors son fond, par diffusion depuis les quatre coins : seul l'exterieur change de
+    couleur, les noirs de l'illustration - le cercle du 1, les traits - restent noirs.
+    Un simple remplacement de toutes les couleurs sombres les aurait effaces.
+    """
     from PIL import Image
     im = Image.open(LOGO).convert('RGB')
     im.thumbnail((240, 240), Image.LANCZOS)
+    if COULEURS['logoclair']:
+        cible = tuple(int(COULEURS['fond'][i:i + 2], 16) for i in (1, 3, 5))
+        px, (w, h) = im.load(), im.size
+        vus, pile = set(), [(0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1)]
+        while pile:
+            x, y = pile.pop()
+            if (x, y) in vus or not (0 <= x < w and 0 <= y < h):
+                continue
+            vus.add((x, y))
+            if max(px[x, y]) >= 60:
+                continue
+            px[x, y] = cible
+            pile += [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
     tampon = io.BytesIO()
     im.save(tampon, 'PNG', optimize=True)
     return 'data:image/png;base64,' + base64.b64encode(tampon.getvalue()).decode()
@@ -250,10 +333,24 @@ def couper(items):
     return colonnes, meilleur
 
 
+# Le bloc de couleurs, pose a part : la geometrie qui suit n'en connait aucune, et
+# c'est ce qui permet de montrer les quatre propositions dans une seule page avec une
+# seule feuille de style. Le marqueur sert a les recouper.
+PALETTE_CSS = """
+:root, .tableau.%(palette)s {
+  --fond: %(fond)s; --encre: %(encre)s; --sourd: %(sourd)s;
+  --accent: %(accent)s; --prix: %(prix)s; --prixfort: %(prixfort)s;
+  --rouge: %(rouge)s; --service: %(service)s;
+  --filet: %(filet)s; --cle: %(cle)s; --montant: %(montant)s;
+  --trait: %(trait)s; --traitfaible: %(traitfaible)s; --pointille: %(pointille)s;
+  --opacite: %(opacite)s; --melange: %(melange)s;
+}
+/* fin palette */
+"""
+
 CSS = """
-:root { --or: #FECC30; --rouge: #F73123; --creme: #F6EFE3; --sourd: #8B8072; --nuit: #000000; }
 * { box-sizing: border-box; }
-html, body { margin: 0; height: 100%%; background: var(--nuit); }
+html, body { margin: 0; height: 100%%; background: var(--fond); }
 body { display: flex; align-items: center; justify-content: center; overflow: hidden; }
 
 /*
@@ -267,30 +364,40 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
   padding: calc(%(marge)d * var(--u));
   display: flex; flex-direction: column;
   font-family: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
-  color: var(--creme); background: var(--nuit);
+  color: var(--encre); background: var(--fond);
   position: relative; overflow: hidden;
 }
 
 /*
     L'image de fond. Elle habite le bas de la dalle - la ou les colonnes s'arretent et
-    ou le noir restait vide - et s'efface en montant : au niveau des prix il n'en reste
-    presque rien, et au niveau du bandeau rouge, rien du tout. A 15 %%, elle rechauffe
-    le tableau sans jamais disputer un chiffre.
+    ou le fond restait vide - et s'efface en montant : au niveau des prix il n'en reste
+    presque rien. Sur fond clair elle passe en multiplication : posee en transparence,
+    une photo sombre grisait le creme au lieu de le rechauffer.
 */
 .fond {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
   background-size: cover; background-position: center bottom;
-  opacity: %(opacite)s;
+  opacity: var(--opacite); mix-blend-mode: var(--melange);
   -webkit-mask-image: linear-gradient(to top, #000 0%%, #000 34%%, rgba(0,0,0,.30) 66%%, transparent 88%%);
   mask-image: linear-gradient(to top, #000 0%%, #000 34%%, rgba(0,0,0,.30) 66%%, transparent 88%%);
 }
 .entete, .bandeau, .colonnes { position: relative; z-index: 1; }
 
-.entete { height: calc(%(entete)d * var(--u)); display: flex; align-items: center; gap: calc(20 * var(--u)); }
-.entete .logo { height: calc(%(entete)d * var(--u)); width: auto; }
+/*
+    Un filet sous l'en-tete. L'enseigne, le service et le telephone ne sont pas la
+    carte : sans trait, le regard qui descend les traverse et arrive sur le premier
+    titre sans savoir qu'il a change de registre. Le trait le dit sans rien ecrire.
+*/
+.entete {
+  height: calc(%(entete)d * var(--u)); display: flex; align-items: center;
+  gap: calc(20 * var(--u));
+  border-bottom: calc(2 * var(--u)) solid var(--filet);
+  padding-bottom: calc(10 * var(--u)); margin-bottom: calc(4 * var(--u));
+}
+.entete .logo { height: calc(%(logo)d * var(--u)); width: auto; }
 .entete .nom {
   font-family: Anton, 'Arial Narrow', sans-serif; line-height: .84;
-  font-size: calc(52 * var(--u)); letter-spacing: .01em; color: var(--creme);
+  font-size: calc(52 * var(--u)); letter-spacing: .01em; color: var(--encre);
 }
 .entete .nom u { text-decoration: none; color: var(--rouge); }
 .entete .lieu {
@@ -299,31 +406,43 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
 }
 .entete .service {
   margin: 0 auto; font-size: calc(23 * var(--u)); letter-spacing: .3em;
-  text-transform: uppercase; color: #5D554B;
+  text-transform: uppercase; color: var(--service);
 }
 .entete .tel { text-align: right; line-height: 1; }
-.entete .tel b { font-family: Anton, sans-serif; font-size: calc(46 * var(--u)); color: var(--or); letter-spacing: .02em; }
+.entete .tel b { font-family: Anton, sans-serif; font-size: calc(46 * var(--u)); color: var(--accent); letter-spacing: .02em; }
 .entete .tel i {
   display: block; font-style: normal; font-size: calc(19 * var(--u));
   letter-spacing: .2em; text-transform: uppercase; color: var(--sourd);
   margin-bottom: calc(5 * var(--u));
 }
 
-/* Le bandeau des pates : la seule chose que le client DOIT lire avant les prix. */
+/*
+    La regle des doubles pates, en PIED de tableau et en sourdine.
+
+    Elle etait en tete, sur un bandeau rouge pleine largeur : la premiere chose que le
+    client lisait etait donc un supplement, avant meme d'avoir cherche son sandwich.
+    Un rouge vif et des capitales promettent une offre ; ce n'en est pas une, c'est une
+    precision de tarif. La promesse etait fausse, et elle volait la place du menu.
+
+    Elle descend donc sous les prix, en petit, sur un simple filet : elle repond a la
+    question au moment ou elle se pose - une fois le prix trouve. Le seul accent qui
+    reste est sur les montants, pour qu'on puisse les lire sans les chercher. Le
+    bandeau perd 18 px de hauteur, qui reviennent aux lignes du menu.
+*/
 .bandeau {
   height: calc(%(bandeau)d * var(--u)); margin-top: calc(%(ecart)d * var(--u));
-  background: var(--rouge); display: flex; align-items: center;
-  padding: 0 calc(26 * var(--u)); gap: calc(30 * var(--u));
-  font-size: calc(26 * var(--u)); color: #FFF0EC;
+  border-top: calc(2 * var(--u)) solid var(--filet);
+  display: flex; align-items: center; gap: calc(26 * var(--u));
+  font-size: calc(21 * var(--u)); color: var(--sourd);
 }
 .bandeau .cle {
-  font-family: Anton, sans-serif; font-size: calc(30 * var(--u));
-  letter-spacing: .04em; color: #FFFFFF;
+  font-size: calc(21 * var(--u)); font-weight: 600;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--cle);
 }
 .bandeau .p { white-space: nowrap; }
-.bandeau .p b { color: var(--or); font-weight: 600; }
+.bandeau .p b { color: var(--montant); font-weight: 600; }
 .bandeau .sep { flex: 1; }
-.bandeau .note { font-size: calc(23 * var(--u)); color: #FFD9D2; white-space: nowrap; }
+.bandeau .note { font-size: calc(20 * var(--u)); white-space: nowrap; }
 
 .colonnes { flex: 1; display: flex; gap: calc(46 * var(--u)); margin-top: calc(%(ecart)d * var(--u)); }
 .colonne { flex: 1; min-width: 0; }
@@ -335,11 +454,11 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
 }
 
 .rubrique {
-  font-family: Anton, 'Arial Narrow', sans-serif; color: var(--or);
+  font-family: Anton, 'Arial Narrow', sans-serif; color: var(--accent);
   letter-spacing: .03em; text-transform: uppercase;
   height: calc(%(titre)s * var(--u)); align-items: flex-end;
   font-size: calc(%(ftitre)s * var(--u));
-  border-bottom: calc(3 * var(--u)) solid rgba(254, 204, 48, .55);
+  border-bottom: calc(3 * var(--u)) solid var(--trait);
   margin-bottom: calc(%(apres)s * var(--u));
 }
 /* Les intitules de colonnes se posent au-dessus des prix qu'ils nomment, pas ailleurs :
@@ -357,13 +476,17 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
 }
 .ligne .n .pointille {
   flex: 1; height: calc(1 * var(--u)); align-self: center; margin-top: calc(%(fpoint)s * var(--u));
-  background-image: radial-gradient(circle, rgba(246, 239, 227, .30) calc(1 * var(--u)), transparent calc(1 * var(--u)));
+  background-image: radial-gradient(circle, var(--pointille) calc(1 * var(--u)), transparent calc(1 * var(--u)));
   background-size: calc(9 * var(--u)) calc(2 * var(--u)); background-repeat: repeat-x;
 }
 .ligne .p {
-  font-weight: 600; font-size: calc(%(fprix)s * var(--u)); color: var(--or);
+  font-weight: 600; font-size: calc(%(fprix)s * var(--u)); color: var(--prix);
   font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right;
 }
+/* Le prix de base - pate normale - est celui que la plupart des clients paient : c'est
+   lui qui porte l'accent, dans chaque famille. Les deux autres colonnes se lisent en
+   partant de lui. */
+.ligne .p:nth-child(2), .matrice .ligne .p:nth-child(5), .ligne .p.seul { color: var(--prixfort); }
 /* Un article qui ne se decline pas garde un seul prix, aligne sur la derniere colonne :
    trois cases vides feraient croire a des prix manquants. */
 .ligne .p.seul { grid-column: 2 / -1; }
@@ -387,7 +510,7 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
 .matrice .separateur {
   position: absolute; top: calc((%(titre)s - 3) * var(--u)); bottom: calc(4 * var(--u));
   right: calc(%(msep)s * var(--u)); width: calc(3 * var(--u));
-  background: linear-gradient(to bottom, rgba(254, 204, 48, .55), rgba(254, 204, 48, .07));
+  background: linear-gradient(to bottom, var(--trait), var(--traitfaible));
 }
 .matrice .rubrique, .matrice .soustitre, .matrice .ligne {
   display: grid;
@@ -402,7 +525,7 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
 
 .matrice .rubrique .groupe {
   font-family: Anton, 'Arial Narrow', sans-serif; font-size: calc(%(fgroupe)s * var(--u));
-  color: var(--or); letter-spacing: .03em; text-align: center;
+  color: var(--accent); letter-spacing: .03em; text-align: center;
 }
 .matrice .rubrique .groupe:nth-child(2) { grid-column: 2 / 5; }
 .matrice .rubrique .groupe:nth-child(3) { grid-column: 6 / 9; }
@@ -415,7 +538,7 @@ body { display: flex; align-items: center; justify-content: center; overflow: hi
 
 """
 
-MODELE = """<div class="tableau">%(fond)s
+MODELE = """<div class="tableau %(palette)s">%(fond)s
   <div class="entete">
     <img class="logo" src="%(logo)s" alt="">
     <div>
@@ -425,6 +548,7 @@ MODELE = """<div class="tableau">%(fond)s
     <div class="service">Sur place &middot; &Agrave; emporter &middot; Livraison</div>
     <div class="tel"><i>Commandes</i><b>%(tel)s</b></div>
   </div>
+  %(interieur)s
   <div class="bandeau">
     <span class="cle">DOUBLE P&Acirc;TE</span>
     <span class="p">Normale <b>+1,000</b></span>
@@ -433,7 +557,6 @@ MODELE = """<div class="tableau">%(fond)s
     <span class="sep"></span>
     <span class="note">Prix en dinars tunisiens</span>
   </div>
-  %(interieur)s
 </div>"""
 
 
@@ -496,15 +619,16 @@ def tableau(rubriques, logo, fond, l):
         familles, lignes = charge
     else:
         items, (g, d) = charge
-    css = CSS % {
-        'marge': MARGE, 'entete': ENTETE, 'bandeau': BANDEAU, 'ecart': ECART,
+    css = (PALETTE_CSS % dict(COULEURS, palette=PALETTE)) + CSS % {
+        'marge': MARGE, 'entete': ENTETE, 'logo': ENTETE - 12,
+        'bandeau': BANDEAU, 'ecart': ECART,
         'ligne': round(l, 2), 'titre': round(l * TITRE - l * .30, 2),
         'apres': round(l * .30, 2), 'ftitre': round(l * .74, 2),
         'fnom': round(l * .62, 2), 'fprix': round(l * .66, 2),
         # Les intitules de pate se lisent de la salle, eux aussi : ils disent quelle
         # colonne on regarde, et une ligne de six chiffres sans eux ne veut rien dire.
         'fpoint': round(l * .06, 2), 'fcol': round(l * .46, 2),
-        'colonne': round(l * 2.55, 2), 'opacite': OPACITE,
+        'colonne': round(l * 2.55, 2),
         # La matrice n'a que 19 lignes la ou une liste en aurait 38. La place gagnee
         # passe dans la LARGEUR des colonnes et dans l'ecart entre les deux familles,
         # pas dans la taille du texte : celle-la est la meme sur les trois ecrans.
@@ -524,7 +648,7 @@ def tableau(rubriques, logo, fond, l):
                      % (rendu_colonne(g, l), rendu_colonne(d, l)))
         articles = len([x for x in items if x[0] == 'ligne'])
     corps = MODELE % {'logo': logo, 'lieu': R['ville'], 'tel': R['telephone'],
-                      'fond': couche, 'interieur': interieur}
+                      'fond': couche, 'interieur': interieur, 'palette': PALETTE}
     return css, corps, l, articles
 
 
@@ -568,26 +692,26 @@ for code, place, rubriques in ECRANS:
     open(os.path.join(SORTIE, 'apercu-ecran-%s.html' % code), 'w', encoding='utf-8').write(
         '<title>Tableau %s Number One</title>' % place.lower()
         + polices(False) + '<style>' + css
-        + 'body{background:#000;height:100vh}</style>' + corps)
+        + 'body{background:%s;height:100vh}</style>' % COULEURS['fond'] + corps)
     sorties.append((place, rubriques, l, n, os.path.getsize(f), css, corps, poids_fond))
 
 # ---------------------------------------------------------------- apercu du mur
 mur = ('<title>Menu mural Number One</title>' + polices(False) + '<style>'
-       + sorties[0][5] + """
-body { margin: 0; background: #0b0b0c; color: #cfc7ba;
+       + sorties[0][5] + ("""
+body { margin: 0; background: %(murfond)s; color: %(murencre)s;
        font-family: 'Barlow Semi Condensed', system-ui, sans-serif; }
 .mur { padding: 22px; }
 .mur h1 { font-family: Anton, sans-serif; font-size: 22px; letter-spacing: .16em;
-          text-transform: uppercase; color: #FECC30; margin: 0 0 4px; }
-.mur .dit { font-size: 15px; color: #8B8072; margin: 0 0 18px; max-width: 88ch; }
+          text-transform: uppercase; color: %(murtitre)s; margin: 0 0 4px; }
+.mur .dit { font-size: 15px; color: %(mursourd)s; margin: 0 0 18px; max-width: 88ch; }
 .rangee { display: flex; gap: 14px; align-items: flex-start; }
 .poste { flex: none; }
-.poste .cadre { border: 3px solid #22201d; border-radius: 6px; background: #000; padding: 3px; width: fit-content; }
+.poste .cadre { border: 3px solid %(murcadre)s; border-radius: 6px; background: %(fond)s; padding: 3px; width: fit-content; }
 .poste .tableau { --u: calc((100vw - 108px) / 5760); }
 .poste .etiquette { font-size: 13px; letter-spacing: .18em; text-transform: uppercase;
-                    color: #8B8072; margin: 8px 0 0; }
-.poste .etiquette b { color: #F6EFE3; font-weight: 600; }
-</style><div class="mur"><h1>Le mur, vu de la salle</h1>
+                    color: %(mursourd)s; margin: 8px 0 0; }
+.poste .etiquette b { color: %(murfort)s; font-weight: 600; }
+</style>""" % COULEURS) + """<div class="mur"><h1>Le mur, vu de la salle</h1>
 <p class="dit">Les trois dalles a l'echelle, dans l'ordre ou elles sont accrochees.
 Chaque tableau est un fichier a part, affiche en plein ecran sur son televiseur.</p>
 <div class="rangee">""")

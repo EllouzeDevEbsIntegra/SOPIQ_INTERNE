@@ -9,9 +9,10 @@ bascule, et il voit la difference au meme endroit de l'ecran. C'est la seule man
 de juger une mise en page : cote a cote, tout se ressemble.
 
 LES DEUX VERSIONS SONT RENDUES A LA MEME HAUTEUR DE LIGNE. Laissee libre, la version
-en listes monte a 41,1 px contre 39,5 en matrice - l'oeil jugerait alors la taille du
-texte au lieu de juger la mise en page. On impose donc la plus basse des deux aux deux
-cotes, et la page le dit.
+en listes monte plus haut que la version en matrice - l'oeil jugerait alors la taille
+du texte au lieu de juger la mise en page. On impose donc la plus basse des deux aux
+deux cotes, et la page le dit, avec les deux hauteurs mesurees le jour meme : aucun
+chiffre n'est ecrit en dur ici, sinon le premier reglage de mise en page les dementirait.
 
 C'est aussi ce qui permet UNE SEULE feuille de style pour les six tableaux : la
 geometrie ne depend que de la hauteur de ligne, et les deux mises en page vivent deja
@@ -23,7 +24,6 @@ import json, os, re, subprocess, sys
 ICI = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GEN = os.path.join(ICI, 'outils', 'generer-tv.py')
 ECRANS = [('1-gauche', 'Gauche'), ('2-centre', 'Centre'), ('3-droite', 'Droite')]
-LIGNE = '39.5'
 
 
 def engendrer(version, dossier, ligne=None):
@@ -33,7 +33,27 @@ def engendrer(version, dossier, ligne=None):
     if ligne: args.append(ligne)
     r = subprocess.run(args, capture_output=True, text=True, cwd=ICI)
     if r.returncode: raise SystemExit(r.stderr or r.stdout)
-    return os.path.join(ICI, dossier) if dossier else ICI
+    return os.path.join(ICI, dossier) if dossier else ICI, r.stdout
+
+
+def hauteur(sortie):
+    """La hauteur de ligne que le generateur vient d'annoncer."""
+    m = re.search(r'ligne de\s+([\d.]+) px', sortie)
+    if not m: raise SystemExit('Hauteur de ligne introuvable dans la sortie du generateur.')
+    return m.group(1)
+
+
+# Les deux hauteurs naturelles sont relues, jamais recopiees : un chiffre en dur ici se
+# serait desaccorde a la premiere retouche de mise en page, et les deux feuilles de
+# style auraient cesse de coincider. La plus basse est imposee aux deux cotes.
+NATUREL = {'croise': hauteur(engendrer('croise', '')[1]),
+           'listes': hauteur(engendrer('listes', 'variante-listes')[1])}
+LIGNE = min(NATUREL.values(), key=float)
+
+
+def fr(px):
+    """40.3 -> 40,3 : la page s'adresse a un restaurateur tunisien, pas a un script."""
+    return px.rstrip('0').rstrip('.').replace('.', ',') if '.' in px else px
 
 
 def decouper(chemin):
@@ -50,7 +70,7 @@ def decouper(chemin):
 pages = {}
 feuilles = set()
 for version, dossier in (('croise', ''), ('listes', 'variante-listes')):
-    ou = engendrer(version, dossier, LIGNE)
+    ou = engendrer(version, dossier, LIGNE)[0]
     for code, place in ECRANS:
         css, corps = decouper(os.path.join(ou, 'apercu-ecran-%s.html' % code))
         feuilles.add(css)
@@ -113,9 +133,9 @@ h1 { font-family: Anton, sans-serif; font-size: clamp(24px, 3.4vw, 34px); letter
   <p class="dit" id="dit"></p>
   <div class="ecrans">%(ecrans)s</div>
 
-  <p class="pied">Les deux versions sont rendues à la <b>même hauteur de ligne</b> (39,5 px sur une base
+  <p class="pied">Les deux versions sont rendues à la <b>même hauteur de ligne</b> (%(ligne)s px sur une base
      1920 × 1080), pour comparer la mise en page et non la taille du texte. Laissée libre, la version en
-     listes monterait à 41,1 px — un peu plus grande, donc, que ce qui est montré ici.</p>
+     listes monterait à %(naturel_listes)s px — un peu plus grande, donc, que ce qui est montré ici.</p>
 </div>
 
 <script>
@@ -148,7 +168,8 @@ for code, place in ECRANS:
 
 sortie = os.path.join(ICI, 'comparaison.html')
 open(sortie, 'w', encoding='utf-8').write(
-    PAGE % {'polices': POLICES, 'feuille': feuille, 'ecrans': ''.join(blocs)})
+    PAGE % {'polices': POLICES, 'feuille': feuille, 'ecrans': ''.join(blocs),
+            'ligne': fr(LIGNE), 'naturel_listes': fr(NATUREL['listes'])})
 
 # Chaque version retrouve sa hauteur de ligne propre - c'est elle qui ira sur les dalles.
 engendrer('croise', '')

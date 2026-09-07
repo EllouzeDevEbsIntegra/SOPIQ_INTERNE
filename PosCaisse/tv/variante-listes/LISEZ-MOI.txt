@@ -14,9 +14,11 @@ L'écran de droite est identique dans les deux versions.
 Un seul des deux dossiers part sur les téléviseurs — celui que le restaurateur a
 choisi. Les deux se comparent d'un bouton dans tv/comparaison.html.
 
-Mesuré : la version en listes tient à 41,1 px de hauteur de ligne, contre 39,5 en
+Mesuré : la version en listes tient à 42,0 px de hauteur de ligne, contre 40,3 en
 tableaux croisés. Elle n'est donc pas plus petite — les 38 articles d'un écran se
 rangent en deux colonnes de 19, soit la même hauteur que les 19 lignes d'une matrice.
+(Ces deux chiffres sont ceux du jour : le générateur les annonce à chaque exécution,
+et comparaison.html les reprend de lui-même.)
 
 Pour refaire les fichiers après un changement de prix :
 
