@@ -50,7 +50,7 @@ public class ClosureService {
             disc = disc.add(sum.discounts()); refunds = refunds.add(sum.cashRefunds()).add(sum.otherRefunds()); in = in.add(sum.cashIn()); out = out.add(sum.cashOut());
             tickets += sum.ticketsCount(); cancels += sum.cancellationsCount();
             if (s.getCashDifference() != null) diff = diff.add(s.getCashDifference());
-            sum.byMethod().forEach((k, v) -> byMethod.merge(k, v, BigDecimal::add));
+            sum.byMethod().forEach(m -> byMethod.merge(m.name(), m.amount(), BigDecimal::add));
             for (SaleOrder o : orderRepo.findBySessionIdOrderByPaidAtDesc(s.getId())) {
                 if (o.getStatus() == Enums.OrderStatus.CANCELLED) { cancelsTotal = cancelsTotal.add(o.getTotal()); continue; }
                 if (o.getStatus() == Enums.OrderStatus.HELD) continue;

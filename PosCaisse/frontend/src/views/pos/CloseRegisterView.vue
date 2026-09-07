@@ -1,10 +1,10 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { api } from '../../api'
 import { useAuthStore } from '../../stores/auth'
 import { useUiStore } from '../../stores/ui'
-import { fmt, parseAmount, sub } from '../../utils/money'
+import { add, fmt, parseAmount, sub } from '../../utils/money'
 import { fmtDateTime } from '../../utils/dates'
 import NumPad from '../../components/common/NumPad.vue'
 import Icon from '../../components/common/Icon.vue'
@@ -22,6 +22,11 @@ onMounted(async () => {
   try { summary.value = await api.pos.summary(auth.session.id) } catch (e) { ui.error(e.humanMessage) }
   api.admin.activeTemplate().then(t => { template.value = { ...t, logoData: catalog.company?.logoData } }).catch(() => {})
 })
+/* Les moyens de paiement hors especes, et leur total : c'est ce qui a ete encaisse
+   ailleurs que dans le tiroir. */
+const autresMoyens = computed(() => (summary.value?.byMethod || []).filter(m => m.kind !== 'CASH'))
+const horsEspeces = computed(() => add(summary.value?.cardSales || 0, summary.value?.otherSales || 0))
+
 /** Un taux se lit comme il a ete saisi : 25, et non 25,000. */
 const pct = (v) => String(Number(v)).replace('.', ',')
 async function voirEtat() {
@@ -71,7 +76,7 @@ function finish() { auth.logout(); router.replace('/login') }
           <div class="kpi"><span class="label">Tickets</span><span class="value num">{{ result.ticketsCount }}</span><span class="sub">CA {{ fmt(result.revenue, true) }}</span></div>
         </div>
         <div class="muted small mt-16">Ouverte {{ fmtDateTime(result.openedAt) }} · clôturée {{ fmtDateTime(result.closedAt) }}</div>
-        <div class="row mt-16 gap-8"><button class="btn xl primary grow" @click="finish">Terminer et se déconnecter</button><button class="btn xl" @click="voirEtat"><Icon name="printer" :size="18" />Imprimer l'état</button><router-link class="btn xl" to="/open">Rouvrir une caisse</router-link></div>
+        <div class="row mt-16 gap-8"><button class="btn xl primary grow" @click="finish">Terminer et se déconnecter</button><router-link class="btn xl" to="/open">Rouvrir une caisse</router-link></div>
       </div>
       <div v-else-if="summary" class="grid">
         <div class="col gap-8">
@@ -85,9 +90,10 @@ function finish() { auth.logout(); router.replace('/login') }
             <div class="l total"><span>ESPÈCES THÉORIQUES</span><b class="num">{{ fmt(summary.expectedCash, true) }}</b></div>
           </div>
           <div class="lines mt-8">
-            <div class="l"><span>Carte bancaire</span><b class="num">{{ fmt(summary.cardSales) }}</b></div>
-            <div class="l"><span>Autres paiements</span><b class="num">{{ fmt(summary.otherSales) }}</b></div>
-            <div class="l" v-for="(v,k) in summary.byMethod" :key="k"><span class="muted small">· {{ k }}</span><span class="num small">{{ fmt(v) }}</span></div>
+            <!-- Tout ce qui n'est pas des espèces, sous un seul titre : les espèces sont
+                 déjà comptées au-dessus, avec le fond de caisse et les mouvements. -->
+            <div class="l"><span>AUTRES PAIEMENTS</span><b class="num">{{ fmt(horsEspeces) }}</b></div>
+            <div class="l" v-for="m in autresMoyens" :key="m.name"><span class="muted small">· {{ m.name }}</span><span class="num small">{{ fmt(m.amount) }}</span></div>
             <div class="l"><span>Tickets / annulations</span><b class="num">{{ summary.ticketsCount }} / {{ summary.cancellationsCount }}</b></div>
             <div class="l"><span>Remises accordées</span><b class="num">{{ fmt(summary.discounts) }}</b></div>
             <div class="l total"><span>CHIFFRE D'AFFAIRES</span><b class="num">{{ fmt(summary.revenue, true) }}</b></div>

@@ -158,6 +158,18 @@ class PosIntegrationTest {
         assertThat(papier).as("le montant du bénéfice est sur le papier")
                 .contains(com.poscaisse.printing.ReceiptRenderer.money(avec.get("estimatedProfit").decimalValue(), 3));
 
+        /*
+            Les especes ne se lisent qu'UNE fois, en haut, avec le fond de caisse.
+            La version precedente les reprenait dans le detail des moyens de paiement,
+            sous un total qui, lui, les excluait : trois lectures du meme chiffre et un
+            total qui ne correspondait a aucune des trois.
+        */
+        String blocPaiements = papier.substring(papier.indexOf("AUTRES PAIEMENTS"), papier.indexOf("Tickets /"));
+        assertThat(blocPaiements).as("le detail des autres paiements ne reprend pas les especes")
+                .doesNotContain("Espèces");
+        assertThat(papier.split("Espèces", -1).length - 1)
+                .as("« Espèces » n'apparaît que dans le bloc du tiroir").isLessThanOrEqualTo(2);
+
         // On repose le réglage : les tests suivants ne doivent rien hériter de celui-ci.
         putJson("/api/settings", admin, java.util.Map.of("finance.marginPercent", "0"), 200);
     }

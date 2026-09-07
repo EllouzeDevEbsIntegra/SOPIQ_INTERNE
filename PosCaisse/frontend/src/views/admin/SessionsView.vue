@@ -36,7 +36,7 @@ async function openSession(s) { sel.value = s; summary.value = null; try { [summ
         <template v-if="sel.status==='CLOSED'"><div class="row between"><span>Compté</span><b class="num">{{ fmt(sel.countedCash) }}</b></div><div class="row between bold"><span>Écart</span><b class="num">{{ fmt(sel.cashDifference) }}</b></div><div class="small muted" v-if="sel.closingNote">Note : {{ sel.closingNote }}</div></template>
       </div>
       <div class="card tight"><div class="card-title">Ventes</div>
-        <div class="row between" v-for="(v,k) in summary.byMethod" :key="k"><span>{{ k }}</span><b class="num">{{ fmt(v) }}</b></div>
+        <div class="row between" v-for="m in summary.byMethod" :key="m.name"><span>{{ m.name }}</span><b class="num">{{ fmt(m.amount) }}</b></div>
         <div class="row between"><span>Tickets</span><b>{{ summary.ticketsCount }}</b></div><div class="row between"><span>Annulations</span><b>{{ summary.cancellationsCount }}</b></div><div class="row between"><span>Remises</span><b class="num">{{ fmt(summary.discounts) }}</b></div>
         <div class="row between bold" style="font-size:18px;margin-top:6px"><span>CA</span><b class="num">{{ fmt(summary.revenue) }}</b></div>
       </div>

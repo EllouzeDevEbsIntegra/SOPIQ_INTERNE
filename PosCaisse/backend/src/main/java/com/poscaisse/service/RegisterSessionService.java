@@ -98,11 +98,15 @@ public class RegisterSessionService {
 
     public SessionSummary computeSummary(RegisterSession s) {
         BigDecimal cash = BigDecimal.ZERO, card = BigDecimal.ZERO, other = BigDecimal.ZERO;
+        // Nom -> [nature, montant] : la nature suit le total, pour que l'ecran et le
+        // papier puissent mettre les especes a part sans deviner d'apres le libelle.
         Map<String, BigDecimal> byMethod = new LinkedHashMap<>();
+        Map<String, String> natures = new LinkedHashMap<>();
         for (Payment p : paymentRepo.findBySessionId(s.getId())) {
             if (p.getOrder().getStatus() == Enums.OrderStatus.HELD) continue;
             BigDecimal net = p.getAmount(); // amount is already the applied part (change excluded)
             byMethod.merge(p.getPaymentMethod().getName(), net, BigDecimal::add);
+            natures.putIfAbsent(p.getPaymentMethod().getName(), p.getPaymentMethod().getKind().name());
             switch (p.getPaymentMethod().getKind()) {
                 case CASH -> cash = cash.add(net);
                 case CARD -> card = card.add(net);
@@ -140,7 +144,8 @@ public class RegisterSessionService {
         */
         BigDecimal margin = settings.getDecimal(SettingsService.MARGIN_PERCENT, BigDecimal.ZERO);
         return new SessionSummary(s.getId(), s.getOpeningFloat(), Money.r(cash), Money.r(card), Money.r(other), Money.r(cashRefunds), Money.r(otherRefunds),
-                Money.r(in), Money.r(out), expected, tickets, cancels, Money.r(revenue), Money.r(discounts), byMethod,
+                Money.r(in), Money.r(out), expected, tickets, cancels, Money.r(revenue), Money.r(discounts),
+                byMethod.entrySet().stream().map(e -> new MethodTotal(e.getKey(), natures.get(e.getKey()), Money.r(e.getValue()))).toList(),
                 margin, Money.pct(Money.r(revenue), margin));
     }
 

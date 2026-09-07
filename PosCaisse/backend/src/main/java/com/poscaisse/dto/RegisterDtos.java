@@ -24,10 +24,20 @@ public final class RegisterDtos {
     public record SessionSummary(Long sessionId, BigDecimal openingFloat, BigDecimal cashSales, BigDecimal cardSales, BigDecimal otherSales,
                                  BigDecimal cashRefunds, BigDecimal otherRefunds, BigDecimal cashIn, BigDecimal cashOut, BigDecimal expectedCash,
                                  int ticketsCount, int cancellationsCount, BigDecimal revenue, BigDecimal discounts,
-                                 Map<String, BigDecimal> byMethod,
+                                 List<MethodTotal> byMethod,
                                  // Le taux en vigueur et le montant qu'il donne. Le calcul est fait ici, une
                                  // fois : l'ecran et le papier montrent alors forcement le meme chiffre.
                                  BigDecimal marginPercent, BigDecimal estimatedProfit) {}
+
+    /**
+     * Ce qu'un moyen de paiement a encaisse, avec sa NATURE.
+     *
+     * La nature n'est pas un detail d'affichage : le recapitulatif compte les especes a
+     * part, tout en haut, avec le fond de caisse et les mouvements. Les reprendre plus
+     * bas dans la liste des moyens de paiement les ferait lire deux fois - et un total
+     * << autres paiements >> qui contiendrait les especes ne voudrait rien dire.
+     */
+    public record MethodTotal(String name, String kind, BigDecimal amount) {}
 
     /** L'etat de caisse, rendu comme un ticket : un titre et le texte a imprimer. */
     public record SessionReport(String title, String content) {}

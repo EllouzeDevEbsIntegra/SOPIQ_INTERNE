@@ -368,11 +368,22 @@ public class ReceiptRenderer {
         }
         p.sep(sepCh);
 
-        p.lr("Carte bancaire", money(sum.cardSales(), dec));
-        p.lr("Autres paiements", money(sum.otherSales(), dec));
-        // Le detail par mode de paiement : c'est lui qui dit ce qui reste a encaisser -
-        // un cheque ou un credit compte dans le chiffre d'affaires sans etre dans le tiroir.
-        sum.byMethod().forEach((nom, montant) -> p.lr("  . " + nom, money(montant, dec)));
+        /*
+            Tout ce qui n'est PAS des especes, sous un seul titre.
+
+            La version precedente listait << Carte bancaire >> en tete, puis un total
+            << Autres paiements >> qui l'excluait, puis le detail ou la carte revenait -
+            et les especes avec, alors qu'elles sont deja comptees plus haut, avec le
+            fond de caisse. Trois lectures du meme chiffre, et un total qui ne
+            correspondait a aucune des trois.
+
+            Un titre, son total, son detail. Les especes restent ou elles doivent etre :
+            en haut, dans le tiroir.
+        */
+        BigDecimal horsEspeces = Money.r(Money.nz(sum.cardSales()).add(Money.nz(sum.otherSales())));
+        p.lr("AUTRES PAIEMENTS", money(horsEspeces, dec) + " " + cur);
+        for (RegisterDtos.MethodTotal m : sum.byMethod())
+            if (!"CASH".equals(m.kind())) p.lr("  . " + m.name(), money(m.amount(), dec));
         p.lr("Tickets / annulations", sum.ticketsCount() + " / " + sum.cancellationsCount());
         p.lr("Remises accordées", money(sum.discounts(), dec));
         p.lr("CHIFFRE D'AFFAIRES", money(sum.revenue(), dec) + " " + cur);
