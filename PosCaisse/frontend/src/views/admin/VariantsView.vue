@@ -22,9 +22,27 @@ const rows = ref([]); const edit = ref(null); const dragId = ref(null)
 async function load() { try { rows.value = await api.admin.variants() } catch (e) { ui.error(e) } }
 onMounted(load)
 
-function create() { edit.value = { name: '', namePosition: 'SUFFIX', active: true, values: [{ name: '', shortName: '', active: true }] } }
-function open(v) { edit.value = { ...v, values: v.values.map(x => ({ ...x })) } }
-function addValue() { edit.value.values.push({ name: '', shortName: '', active: true }) }
+const valeurNeuve = () => ({ name: '', shortName: '', active: true, stockManaged: false, stockStep: 1, stockSourceId: null })
+function create() { edit.value = { name: '', namePosition: 'SUFFIX', active: true, values: [valeurNeuve()] } }
+function open(v) { edit.value = { ...v, values: v.values.map(x => ({ ...valeurNeuve(), ...x })) } }
+function addValue() { edit.value.values.push(valeurNeuve()) }
+
+/*
+    Le suivi de stock d'une version, en trois etats qui s'excluent.
+
+    « Compteur propre » et « tire sur une autre » ne peuvent pas coexister : ce serait
+    retirer deux fois la meme pate. Un seul reglage a trois positions le dit mieux que
+    deux cases a cocher qu'il faudrait apprendre a ne pas cocher ensemble.
+*/
+const modeStock = (x) => x.stockManaged ? 'propre' : (x.stockSourceId ? 'lie' : 'non')
+function setModeStock(x, mode) {
+  x.stockManaged = mode === 'propre'
+  if (mode !== 'lie') x.stockSourceId = null
+  if (mode === 'non') x.stockStep = 1
+  if (mode === 'lie' && !x.stockStep) x.stockStep = 2
+}
+/** Les versions sur lesquelles on peut brancher : celles qui portent un compteur. */
+const sources = (x) => (edit.value?.values || []).filter(v => v.id && v.stockManaged && v !== x)
 
 async function save() {
   const v = edit.value
@@ -110,15 +128,46 @@ async function onDrop() {
         <!-- Le nom court n'est pas un detail : le ticket fait 42 colonnes, et « Large »
              y coute cinq caracteres de plus que « L » sur chaque ligne. -->
         <div class="entetes"><span>Nom</span><span>Sur le ticket</span><span>Active</span><span></span></div>
-        <div v-for="(x, i) in edit.values" :key="i" class="ligne">
-          <input class="input" v-model="x.name" maxlength="60" placeholder="ex. Large" />
-          <input class="input" v-model="x.shortName" maxlength="20" :placeholder="x.name || 'idem'" />
-          <label class="check"><input type="checkbox" v-model="x.active" /></label>
-          <button class="btn sm danger" :disabled="edit.values.length < 2" @click="edit.values.splice(i, 1)">✕</button>
+        <div v-for="(x, i) in edit.values" :key="i" class="bloc">
+          <div class="ligne">
+            <input class="input" v-model="x.name" maxlength="60" placeholder="ex. Large" />
+            <input class="input" v-model="x.shortName" maxlength="20" :placeholder="x.name || 'idem'" />
+            <label class="check"><input type="checkbox" v-model="x.active" /></label>
+            <button class="btn sm danger" :disabled="edit.values.length < 2" @click="edit.values.splice(i, 1)">✕</button>
+          </div>
+          <!-- Le stock se pose sur la version, pas sur l'article : ce qui s'épuise, c'est
+               la pâte, et la même pâte sert quarante sandwichs. -->
+          <div class="stock">
+            <span class="et">Stock</span>
+            <select class="input sm" :value="modeStock(x)" @change="setModeStock(x, $event.target.value)">
+              <option value="non">Non suivi</option>
+              <option value="propre">Compteur propre</option>
+              <option value="lie">Tire sur une autre version</option>
+            </select>
+            <template v-if="modeStock(x) === 'propre'">
+              <span class="et">décrémente de</span>
+              <input class="input sm num" v-model="x.stockStep" inputmode="decimal" style="width:78px" />
+              <span class="tiny muted">par article vendu</span>
+            </template>
+            <template v-else-if="modeStock(x) === 'lie'">
+              <select class="input sm" v-model="x.stockSourceId">
+                <option :value="null">— choisir la version —</option>
+                <option v-for="s in sources(x)" :key="s.id" :value="s.id">{{ s.name }}</option>
+              </select>
+              <span class="et">×</span>
+              <input class="input sm num" v-model="x.stockStep" inputmode="decimal" style="width:78px" />
+            </template>
+          </div>
         </div>
         <p class="tiny muted mt-8">
           Une version retirée ou désactivée est refusée si un article l'a pour valeur par défaut :
           il deviendrait invendable sans que personne ne l'apprenne.
+        </p>
+        <p class="tiny muted mt-8">
+          <b>Le stock.</b> « Normale », « Céréale » et « Chia » portent chacune leur compteur ; « Double Normale »
+          n'en porte pas et tire sur « Normale » × 2 — c'est la même pâte au frigo, comptée deux fois.
+          Les quantités se saisissent en caisse (bouton <b>Stock</b>), le compteur repart à zéro
+          à la clôture journalière, et une vente est refusée quand il ne reste plus assez.
         </p>
       </div>
     </div>
@@ -154,6 +203,12 @@ tr.dragging { opacity: .45; cursor: grabbing; background: var(--brand-soft); }
 .exemple code { font-size: 12px; color: var(--ink-3); }
 
 .entetes, .ligne { display: grid; grid-template-columns: 1fr 1fr 64px 44px; gap: 8px; align-items: center; }
+/* Une version et son réglage de stock forment un bloc : le filet dit où l'une finit. */
+.bloc { border-bottom: 1px solid var(--line); padding-bottom: 8px; margin-bottom: 8px; }
+.bloc:last-of-type { border-bottom: 0; }
+.stock { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 6px 0 2px 2px; }
+.stock .et { font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+.stock .input.sm { height: 34px; padding: 4px 8px; font-size: 14px; }
 .entetes { margin-bottom: 5px; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
 .ligne + .ligne { margin-top: 7px; }
 .ligne .check { justify-content: center; }

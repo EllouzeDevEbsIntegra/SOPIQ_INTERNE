@@ -15,6 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -350,9 +354,12 @@ public class AdminService {
                 val.setShortName(vr.shortName() == null || vr.shortName().isBlank() ? null : vr.shortName().trim());
                 val.setSortOrder(vr.sortOrder() == null ? rang : vr.sortOrder());
                 if (vr.active() != null) val.setActive(vr.active());
+                val.setStockManaged(Boolean.TRUE.equals(vr.stockManaged()));
+                val.setStockStep(vr.stockStep() == null || vr.stockStep().signum() <= 0 ? BigDecimal.ONE : vr.stockStep());
                 rang++;
                 gardees.add(val);
             }
+            liensDeStock(r.values(), gardees);
         }
         for (VariantValue ancienne : List.copyOf(v.getValues())) {
             if (ancienne.getId() != null && gardees.stream().noneMatch(g -> ancienne.getId().equals(g.getId()))) {
@@ -366,6 +373,41 @@ public class AdminService {
         v.getValues().clear();
         v.getValues().addAll(gardees);
         return Mappers.variant(variantRepo.save(v));
+    }
+
+    /**
+     * Qui tire sur qui, une fois toutes les valeurs du bloc connues.
+     *
+     * Le lien se pose APRES la boucle parce qu'il vise une autre valeur du meme envoi :
+     * on peut cocher le suivi sur << Normale >> et brancher << Double Normale >> dessus
+     * dans le meme enregistrement, et c'est l'etat qui SERA en vigueur qu'il faut juger,
+     * pas celui d'avant.
+     *
+     * Un seul saut est permis. Une source qui tirerait elle-meme sur une troisieme valeur
+     * ferait une chaine, et une chaine cassee fait disparaitre la decrementation en
+     * silence : la vente passe, le compteur ne bouge pas, et on ne s'en apercoit qu'au
+     * moment de manquer de pate.
+     */
+    private void liensDeStock(List<VariantValueRequest> demandes, List<VariantValue> gardees) {
+        Map<Long, VariantValue> parId = new HashMap<>();
+        for (VariantValue g : gardees) if (g.getId() != null) parId.put(g.getId(), g);
+        int i = 0;
+        for (VariantValueRequest vr : demandes) {
+            VariantValue val = gardees.get(i++);
+            if (vr.stockSourceId() == null) { val.setStockSource(null); continue; }
+            if (val.isStockManaged())
+                throw new BusinessException("« " + val.getName() + " » ne peut pas avoir son propre stock ET tirer sur une autre pâte : "
+                        + "ce serait retirer deux fois la même chose.");
+            if (val.getId() != null && vr.stockSourceId().equals(val.getId()))
+                throw new BusinessException("« " + val.getName() + " » ne peut pas tirer sur elle-même.");
+            VariantValue source = parId.get(vr.stockSourceId());
+            if (source == null)
+                throw new BusinessException("La pâte de référence de « " + val.getName() + " » doit être une valeur du même axe, déjà enregistrée.");
+            if (!source.isStockManaged())
+                throw new BusinessException("« " + source.getName() + " » n'est pas suivie en stock : cochez son suivi avant d'y brancher « "
+                        + val.getName() + " ».");
+            val.setStockSource(source);
+        }
     }
 
     private void refuserSiDefaut(VariantValue val, String verbe) {

@@ -44,6 +44,7 @@ public class OrderService {
     private final RegisterSessionService sessions;
     private final JournalService journal;
     private final PrintService printService;
+    private final VariantStockService stock;
     private final SettingsService settings;
     private final AuditService audit;
 
@@ -78,6 +79,15 @@ public class OrderService {
             });
         }
         SaleOrder saved = orderRepo.saveAndFlush(o);
+        /*
+            Le stock est retire ICI, dans la meme transaction que la vente.
+
+            Manquer de pate refuse donc la vente en entier : ni ticket, ni numero, ni
+            ligne de journal. Compter d'abord et encaisser ensuite aurait laisse passer
+            deux caisses sur la derniere pate ; c'est le verrou pose sur le compteur, a
+            l'interieur de cette transaction, qui l'empeche.
+        */
+        stock.consommer(saved);
         journal.record(session, me, Enums.JournalEvent.SALE, saved.getTotal(), saved.getTicketNumber(),
                 "Vente " + saved.getTicketNumber() + " (" + saved.getLines().stream().filter(l -> l.getParentLine() == null).count() + " lignes)");
         for (Payment p : saved.getPayments())
@@ -388,6 +398,10 @@ public class OrderService {
         o.setStatus(Enums.OrderStatus.CANCELLED);
         o.setCancelReason(req.reason().trim()); o.setCancelledBy(me); o.setCancelledAt(OffsetDateTime.now()); o.setUpdatedAt(OffsetDateTime.now());
         SaleOrder saved = orderRepo.saveAndFlush(o);
+        // Une annulation est presque toujours une erreur de saisie : le sandwich n'a pas
+        // ete fait, la pate est encore la. Elle revient donc au stock - contrairement a un
+        // remboursement, qui arrive apres coup, pate cuite et perdue.
+        stock.restituer(saved);
         journal.record(session, me, Enums.JournalEvent.CANCELLATION, saved.getTotal(), saved.getTicketNumber(), "Annulation ticket : " + req.reason());
         audit.log("TICKET_CANCEL", "Order", saved.getId(), saved.getTicketNumber() + " motif=" + req.reason() + " montant=" + saved.getTotal());
         return toDto(saved);

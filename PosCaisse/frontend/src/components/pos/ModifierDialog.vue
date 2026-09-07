@@ -6,7 +6,7 @@ import { fmt, add, mul } from '../../utils/money'
 import { useCatalogStore } from '../../stores/catalog'
 import { useUiStore } from '../../stores/ui'
 
-const props = defineProps({ product: Object, initial: Object })
+const props = defineProps({ product: Object, initial: Object, stock: { type: Object, default: () => ({}) } })
 const emit = defineEmits(['close', 'confirm'])
 const catalog = useCatalogStore(); const ui = useUiStore()
 const isMenu = computed(() => props.product.productType === 'MENU')
@@ -23,14 +23,34 @@ const isMenu = computed(() => props.product.productType === 'MENU')
 */
 const axe = computed(() => catalog.variants.find(v => v.id === props.product.variantId) || null)
 const prixVariante = computed(() => Object.fromEntries((props.product.variantPrices || []).map(p => [p.variantValueId, Number(p.price)])))
+// Declaree avant les versions : leur calcul s'evalue des le choix de la version par
+// defaut, quelques lignes plus bas, et lit deja la quantite.
+const quantity = ref(props.initial?.quantity || 1)
+
+/*
+    Ce qu'une version consomme, et ce qu'il en reste.
+
+    Une version peut ne pas porter son propre compteur et tirer sur une autre : << Double
+    Normale >> consomme deux pates normales. C'est donc le compteur de la SOURCE qu'il
+    faut regarder, et le pas qu'il faut comparer - sinon << Double Normale >> resterait
+    proposee alors qu'il ne reste qu'une pate.
+
+    Le grisage n'est qu'une politesse : c'est le serveur qui refuse la vente, verrou pose
+    sur le compteur. Ici on evite au caissier de composer devant le client une commande
+    qui sera refusee ensuite.
+*/
 const versions = computed(() => (axe.value?.values || []).filter(v => v.active)
-  .map(v => ({ ...v, price: prixVariante.value[v.id] || 0 })))
+  .map(v => {
+    const porteur = v.stockManaged ? v.id : (v.stockSourceId || null)
+    const pas = Number(v.stockStep || 1) * Number(quantity.value || 1)
+    const reste = porteur ? Number(props.stock?.[porteur] ?? Infinity) : Infinity
+    return { ...v, price: prixVariante.value[v.id] || 0, porteur, reste, epuisee: porteur != null && reste < pas }
+  }))
 const version = ref(props.initial?.variantValueId
   || props.product.defaultVariantValueId
   || versions.value.find(v => v.price > 0)?.id
   || null)
 const versionChoisie = computed(() => versions.value.find(v => v.id === version.value) || null)
-const quantity = ref(props.initial?.quantity || 1)
 const note = ref(props.initial?.note || '')
 /* Selection : groupId -> { modifierId: quantite }. Un compteur et non un simple
    ensemble, car dans un groupe sans maximum la meme option peut etre ajoutee
@@ -153,11 +173,13 @@ function confirm() {
       <div class="gname">{{ axe.name }} <span class="badge">version</span></div>
       <div class="opts">
         <button v-for="v in versions" :key="v.id" class="opt version"
-                :class="{ on: version === v.id, sansprix: !v.price }" :disabled="!v.price"
-                :title="v.price ? '' : 'Aucun prix : à renseigner dans la fiche article'"
+                :class="{ on: version === v.id, sansprix: !v.price, epuisee: v.epuisee }" :disabled="!v.price || v.epuisee"
+                :title="!v.price ? 'Aucun prix : à renseigner dans la fiche article'
+                        : v.epuisee ? 'Stock épuisé — il reste ' + v.reste : ''"
                 @click="version = v.id">
           <span>{{ v.name }}</span>
-          <span class="delta num">{{ fmt(v.price) }}</span>
+          <span v-if="v.epuisee" class="delta epuise">épuisé</span>
+          <span v-else class="delta num">{{ fmt(v.price) }}</span>
         </button>
       </div>
     </div>
@@ -230,6 +252,9 @@ function confirm() {
 .versions .opt.version.on { border-color: var(--brand); background: var(--brand-soft); }
 /* Grisee et non masquee : le gerant voit qu'il lui reste a la tarifer. */
 .versions .opt.sansprix { opacity: .45; cursor: not-allowed; }
+/* Une version epuisee reste VISIBLE : elle disparaitrait qu'on la chercherait. */
+.versions .opt.epuisee { opacity: .5; cursor: not-allowed; border-color: var(--danger-line); background: var(--danger-soft); }
+.versions .opt.epuisee .epuise { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--danger); }
 .delta { font-size: 13px; color: var(--accent-2); font-weight: 700; }
 .sub { border: 2px dashed var(--border); border-radius: 12px; padding: 12px; }
 

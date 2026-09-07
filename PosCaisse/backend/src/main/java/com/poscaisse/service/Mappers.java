@@ -192,7 +192,9 @@ public final class Mappers {
     }
 
     public static VariantValueDto variantValue(VariantValue v) {
-        return new VariantValueDto(v.getId(), v.getName(), v.getShortName(), v.getSortOrder(), v.isActive());
+        VariantValue src = v.getStockSource();
+        return new VariantValueDto(v.getId(), v.getName(), v.getShortName(), v.getSortOrder(), v.isActive(),
+                v.isStockManaged(), v.getStockStep(), src == null ? null : src.getId(), src == null ? null : src.getName());
     }
 
     public static VariantDto variant(Variant v) {

@@ -29,6 +29,7 @@ public class ClosureService {
     private final CurrentUser currentUser;
     private final AuditService audit;
     private final JournalService journal;
+    private final VariantStockService stock;
     private final ObjectMapper om;
 
     @Transactional(readOnly = true)
@@ -87,7 +88,12 @@ public class ClosureService {
         c.setRefundsTotal(p.refundsTotal()); c.setCashIn(p.cashIn()); c.setCashOut(p.cashOut()); c.setCashDifference(p.cashDifference()); c.setNote(req.note());
         try { c.setDetailsJson(om.writeValueAsString(Map.of("byRegister", p.byRegister(), "byCashier", p.byCashier(), "byMethod", p.byMethod(), "sessions", p.sessions().stream().map(SessionDto::id).toList()))); } catch (Exception ignored) {}
         c = closureRepo.save(c);
-        journal.recordForPos(pos, c.getClosedBy(), Enums.JournalEvent.DAILY_CLOSE, c.getRevenue(), "J" + c.getId(), "Clôture journalière " + req.businessDate() + " — CA " + c.getRevenue());
+        // Les pates repartent a zero : elles ne se gardent pas d'un jour a l'autre, et un
+        // report ferait croire au matin a un stock qui n'existe plus. Ce qui restait est
+        // ecrit dans le mouvement, pour qu'on sache le lendemain ce qui a ete jete.
+        int pates = stock.remiseAZero(pos, c.getClosedBy());
+        journal.recordForPos(pos, c.getClosedBy(), Enums.JournalEvent.DAILY_CLOSE, c.getRevenue(), "J" + c.getId(), "Clôture journalière " + req.businessDate() + " — CA " + c.getRevenue()
+                + (pates > 0 ? " — stock des pâtes remis à zéro (" + pates + ")" : ""));
         audit.log("DAILY_CLOSE", "DailyClosure", c.getId(), req.businessDate() + " CA=" + c.getRevenue() + " tickets=" + c.getTicketsCount());
         return dto(c);
     }

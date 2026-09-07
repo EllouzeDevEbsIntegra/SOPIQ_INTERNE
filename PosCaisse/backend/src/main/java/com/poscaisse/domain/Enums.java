@@ -15,5 +15,10 @@ public final class Enums {
     public enum MovementType { IN, OUT }
     public enum DestinationKind { CUSTOMER, PREP }
     public enum PrintJobStatus { PENDING, PRINTED, FAILED }
-    public enum JournalEvent { SESSION_OPEN, SALE, PAYMENT, CANCELLATION, REFUND, CASH_IN, CASH_OUT, SESSION_CLOSE, DAILY_CLOSE }
+    public enum JournalEvent { SESSION_OPEN, SALE, PAYMENT, CANCELLATION, REFUND, CASH_IN, CASH_OUT, SESSION_CLOSE, DAILY_CLOSE,
+                               /** Pates recues et pates perdues : le journal porte les deux, avec le nom du caissier. */
+                               STOCK_IN, STOCK_OUT }
+
+    /** Ce qui fait bouger un compteur de pate. */
+    public enum StockMovement { ENTREE, VENTE, CASSE, ANNULATION, REMISE_A_ZERO }
 }

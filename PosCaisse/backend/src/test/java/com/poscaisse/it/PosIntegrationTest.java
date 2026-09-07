@@ -1,6 +1,7 @@
 package com.poscaisse.it;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
@@ -11,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -291,7 +294,138 @@ class PosIntegrationTest {
      * zéro des ventes rien n'est supprimé (et que l'utilisateur est averti), et qu'avec elle il
      * ne reste que le catalogue actif. Dernier test : il vide volontairement la base.
      */
-    @Test @Order(8) void purgeRemovesInactiveCatalogOnlyWithSalesReset() throws Exception {
+    /**
+     * Le stock des pâtes, de bout en bout.
+     *
+     * Ce qui s'épuise dans un fast-food à mlewi n'est pas un article mais une PÂTE : la
+     * même pâte normale sert quarante sandwichs. Le compteur se pose donc sur la valeur de
+     * variante, et « Double Normale » n'a pas de compteur — elle consomme deux pâtes
+     * normales, la même pâte au frigo comptée deux fois.
+     *
+     * Le test tient les promesses qui, prises séparément, se contredisent facilement :
+     * une double retire deux, une pénurie refuse la vente EN ENTIER (ni ticket, ni
+     * numéro), une annulation rend la pâte, et une casse ne peut pas creuser un trou.
+     */
+    @Test @Order(8) void stockDesPatesParVariante() throws Exception {
+        String admin = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn()).get("token").asText();
+
+        // ---- le paramétrage : trois compteurs, trois emprunteuses
+        JsonNode axes = json(mvc.perform(get("/api/variants").header("Authorization", "Bearer " + admin)).andExpect(status().isOk()).andReturn());
+        JsonNode pate = null; for (JsonNode a : axes) if (a.get("name").asText().equals("Pâte")) pate = a;
+        assertThat(pate).as("l'axe Pâte du jeu de démonstration").isNotNull();
+        long axeId = pate.get("id").asLong();
+        List<Map<String, Object>> valeurs = new java.util.ArrayList<>();
+        Map<String, Long> ids = new java.util.LinkedHashMap<>();
+        for (JsonNode v : pate.get("values")) {
+            ids.put(v.get("name").asText(), v.get("id").asLong());
+            valeurs.add(new java.util.LinkedHashMap<>(Map.of("id", v.get("id").asLong(), "name", v.get("name").asText(),
+                    "active", true, "stockManaged", true, "stockStep", 1)));
+        }
+        for (Map.Entry<String, Long> e : new java.util.LinkedHashMap<>(ids).entrySet()) {
+            Map<String, Object> d = new java.util.LinkedHashMap<>();
+            d.put("name", "Double " + e.getKey()); d.put("active", true);
+            d.put("stockManaged", false); d.put("stockStep", 2); d.put("stockSourceId", e.getValue());
+            valeurs.add(d);
+        }
+        Map<String, Object> corps = new java.util.LinkedHashMap<>(Map.of("name", "Pâte", "namePosition", "SUFFIX", "active", true, "values", valeurs));
+        JsonNode enregistre = json(putJson("/api/variants/" + axeId, admin, corps, 200));
+        long normale = ids.get("Normale"), doubleNormale = 0;
+        for (JsonNode v : enregistre.get("values")) if (v.get("name").asText().equals("Double Normale")) {
+            doubleNormale = v.get("id").asLong();
+            assertThat(v.get("stockManaged").asBoolean()).isFalse();
+            assertThat(v.get("stockSourceId").asLong()).isEqualTo(normale);
+            assertThat(v.get("stockStep").decimalValue()).isEqualByComparingTo("2");
+        }
+        assertThat(doubleNormale).isPositive();
+
+        // Un réglage qui retirerait deux fois la même pâte est refusé à l'enregistrement.
+        List<Map<String, Object>> fautif = new java.util.ArrayList<>(valeurs);
+        Map<String, Object> deuxFois = new java.util.LinkedHashMap<>(fautif.get(fautif.size() - 1));
+        deuxFois.put("stockManaged", true);
+        fautif.set(fautif.size() - 1, deuxFois);
+        Map<String, Object> corpsFautif = new java.util.LinkedHashMap<>(corps);
+        corpsFautif.put("values", fautif);
+        putJson("/api/variants/" + axeId, admin, corpsFautif, 400);
+
+        // ---- un article décliné sur les six pâtes
+        JsonNode cat = json(mvc.perform(get("/api/pos/catalog").header("Authorization", "Bearer " + cashierToken)).andExpect(status().isOk()).andReturn());
+        long produit = cat.get("products").get(0).get("id").asLong();
+        JsonNode fiche = json(mvc.perform(get("/api/products/" + produit).header("Authorization", "Bearer " + admin)).andExpect(status().isOk()).andReturn());
+        Map<String, Object> maj = om.convertValue(fiche, new TypeReference<>() {});
+        maj.put("variantId", axeId); maj.put("askVariant", true); maj.put("defaultVariantValueId", normale);
+        List<Map<String, Object>> prix = new java.util.ArrayList<>();
+        for (JsonNode v : enregistre.get("values")) prix.add(Map.of("variantValueId", v.get("id").asLong(), "price", 5));
+        maj.put("variantPrices", prix);
+        putJson("/api/products/" + produit, admin, maj, 200);
+
+        // ---- une caisse ouverte, et trois pâtes normales en stock
+        // Le caissier a peut-etre encore sa caisse d'un test precedent. Une session sans
+        // corps revient en noeud ABSENT et non en noeud nul : les deux valent << aucune >>.
+        JsonNode courante = json(mvc.perform(get("/api/pos/session").header("Authorization", "Bearer " + cashierToken)).andExpect(status().isOk()).andReturn());
+        if (courante == null || !courante.has("registerId")) {
+            JsonNode regs = json(mvc.perform(get("/api/pos/registers").header("Authorization", "Bearer " + cashierToken)).andExpect(status().isOk()).andReturn());
+            JsonNode libre = null; for (JsonNode r : regs) if (r.get("openSession").isNull()) libre = r;
+            assertThat(libre).as("une caisse libre").isNotNull();
+            courante = json(postJson("/api/pos/session/open", cashierToken, Map.of("registerId", libre.get("id").asLong(), "openingFloat", 0), 200));
+        }
+        long caisse = courante.get("registerId").asLong();
+        JsonNode etat = json(postJson("/api/pos/stock/entry", cashierToken, Map.of("variantValueId", normale, "quantity", 3), 200));
+        assertThat(reste(etat, normale)).isEqualByComparingTo("3.000");
+        // Ce qui tire sur la pâte est dit tel quel : sinon le compteur descend de deux
+        // d'un coup sans que personne ne comprenne pourquoi.
+        for (JsonNode l : etat.get("lines")) if (l.get("variantValueId").asLong() == normale)
+            assertThat(l.get("borrowers").toString()).contains("Double Normale x2");
+
+        // ---- une double retire deux
+        long cash = cashId;
+        JsonNode vente = json(postJson("/api/pos/checkout", cashierToken, venteDe(caisse, produit, doubleNormale, 1, cash, 5), 200));
+        assertThat(reste(json(mvc.perform(get("/api/pos/stock").header("Authorization", "Bearer " + cashierToken)).andReturn()), normale))
+                .as("« Double Normale » consomme deux pâtes").isEqualByComparingTo("1.000");
+
+        // ---- la pénurie refuse la vente EN ENTIER
+        long avant = orderCount(admin);
+        postJson("/api/pos/checkout", cashierToken, venteDe(caisse, produit, normale, 2, cash, 10), 400);
+        assertThat(orderCount(admin)).as("ni ticket ni numéro : la vente entière est refusée").isEqualTo(avant);
+        assertThat(reste(json(mvc.perform(get("/api/pos/stock").header("Authorization", "Bearer " + cashierToken)).andReturn()), normale))
+                .isEqualByComparingTo("1.000");
+
+        // ---- l'annulation rend la pâte, le remboursement non (voir OrderService)
+        postJson("/api/orders/" + vente.get("id").asLong() + "/cancel", managerToken, Map.of("reason", "Erreur de saisie"), 200);
+        assertThat(reste(json(mvc.perform(get("/api/pos/stock").header("Authorization", "Bearer " + cashierToken)).andReturn()), normale))
+                .as("le sandwich n'a pas été fait : la pâte revient").isEqualByComparingTo("3.000");
+
+        // ---- la casse ne peut pas creuser un trou
+        JsonNode apresCasse = json(postJson("/api/pos/stock/waste", cashierToken, Map.of("variantValueId", normale, "quantity", 3, "comment", "pâtes déchirées"), 200));
+        assertThat(reste(apresCasse, normale)).isEqualByComparingTo("0.000");
+        postJson("/api/pos/stock/waste", cashierToken, Map.of("variantValueId", normale, "quantity", 1), 400);
+        // Le mouvement porte le motif : un stock qui descend sans vente est exactement ce
+        // qu'on cherchera à comprendre le soir.
+        assertThat(apresCasse.get("movements").toString()).contains("pâtes déchirées").contains("CASSE");
+
+        // La caisse ouverte pour ce scenario est refermee : la purge du test suivant la
+        // refuserait, et une caisse laissee ouverte par un test en fait echouer un autre
+        // pour une raison qui n'a rien a voir avec ce qu'il verifie.
+        postJson("/api/pos/session/" + courante.get("id").asLong() + "/close", cashierToken, Map.of("countedCash", 0), 200);
+    }
+
+    private Map<String, Object> venteDe(long registerId, long produit, long valeur, int qte, long moyen, int montant) {
+        return Map.of("clientRef", UUID.randomUUID().toString(), "registerId", registerId, "serviceMode", "TAKEAWAY",
+                "lines", List.of(Map.of("productId", produit, "quantity", qte, "variantValueId", valeur)),
+                "payments", List.of(Map.of("paymentMethodId", moyen, "amount", montant)));
+    }
+
+    private java.math.BigDecimal reste(JsonNode etat, long valeurId) {
+        for (JsonNode l : etat.get("lines")) if (l.get("variantValueId").asLong() == valeurId) return l.get("quantity").decimalValue();
+        throw new AssertionError("valeur absente de l'état du stock : " + valeurId);
+    }
+
+    private long orderCount(String token) throws Exception {
+        return json(mvc.perform(get("/api/orders").param("size", "1").header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk()).andReturn()).get("total").asLong();
+    }
+
+    @Test @Order(9) void purgeRemovesInactiveCatalogOnlyWithSalesReset() throws Exception {
         String adminToken = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn())
                 .get("token").asText();

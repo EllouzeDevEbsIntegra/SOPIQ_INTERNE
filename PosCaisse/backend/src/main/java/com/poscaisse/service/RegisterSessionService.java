@@ -42,6 +42,19 @@ public class RegisterSessionService {
         return sessionRepo.findFirstByOpenedByIdAndStatusOrderByOpenedAtDesc(currentUser.id(), Enums.SessionStatus.OPEN).map(Mappers::session).orElse(null);
     }
 
+    /**
+     * Le point de vente ou travaille le caissier : celui de sa caisse ouverte.
+     *
+     * Le stock des pates s'y rattache. Faire choisir le point de vente a l'ecran serait
+     * offrir de tenir le stock d'un autre restaurant.
+     */
+    @Transactional(readOnly = true)
+    public Long currentPointOfSale() {
+        return sessionRepo.findFirstByOpenedByIdAndStatusOrderByOpenedAtDesc(currentUser.id(), Enums.SessionStatus.OPEN)
+                .map(s -> s.getRegister().getPointOfSale().getId())
+                .orElseThrow(() -> new BusinessException("Aucune caisse ouverte : ouvrez votre caisse pour tenir le stock."));
+    }
+
     @Transactional(readOnly = true)
     public SessionDto get(Long id) { return Mappers.session(sessionRepo.findById(id).orElseThrow(() -> BusinessException.notFound("Session"))); }
 

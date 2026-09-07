@@ -18,6 +18,7 @@ import PartyDialog from '../../components/pos/PartyDialog.vue'
 import LineNoteDialog from '../../components/pos/LineNoteDialog.vue'
 import HeldOrdersDialog from '../../components/pos/HeldOrdersDialog.vue'
 import CashMovementDialog from '../../components/pos/CashMovementDialog.vue'
+import StockDialog from '../../components/pos/StockDialog.vue'
 import AssistantDialog from '../../components/pos/AssistantDialog.vue'
 import TicketsView from './TicketsView.vue'
 import Modal from '../../components/common/Modal.vue'
@@ -42,11 +43,29 @@ onMounted(async () => {
   if (cart.restoreDraft(catalog.productsById)) ui.info('Commande en cours restaurée')
   api.admin.activeTemplate().then(t => { template.value = { ...t, logoData: catalog.company?.logoData } }).catch(() => {})
   refreshHeld()
+  refreshStock()
   clockTimer = setInterval(() => { clock.value = fmtTime(new Date()) }, 15000)
   window.addEventListener('keydown', onKey)
 })
 onUnmounted(() => { clearInterval(clockTimer); window.removeEventListener('keydown', onKey) })
 async function refreshHeld() { try { heldCount.value = (await api.pos.held(auth.session?.pointOfSaleId)).length } catch { /* ignore */ } }
+
+/*
+    Ce qu'il reste de chaque pate, pour griser dans l'ecran de composition ce qui est
+    epuise. Ce n'est PAS ce qui garantit le stock - c'est le serveur qui refuse la vente,
+    verrou pose sur le compteur. Ici on evite seulement au caissier de composer une
+    commande qui sera refusee ensuite, devant le client.
+
+    Le catalogue ne le porte pas : il est charge une fois et mis en cache, alors que le
+    stock change a chaque vente, y compris celles de l'autre caisse.
+*/
+const stock = ref({})
+async function refreshStock() {
+  try {
+    const e = await api.pos.stock()
+    stock.value = Object.fromEntries((e.lines || []).map(l => [l.variantValueId, Number(l.quantity)]))
+  } catch { /* une caisse fermee ou aucune pate suivie : l'ecran vit sans */ }
+}
 
 const tileSize = computed(() => catalog.setting('pos.tileSize', 'M'))
 const showImages = computed(() => catalog.setting('pos.showImages', 'true') === 'true')
@@ -180,6 +199,9 @@ async function pay(payments, imprimer = true) {
     cart.clear()
     dialog.value = null
     refreshHeld()
+    // La vente vient de manger de la pate : l'ecran de composition doit le savoir avant
+    // la commande suivante, sinon il proposera une pate qui n'existe plus.
+    refreshStock()
     /*
         Le ticket part directement. L'ecran de fin de vente qui l'a precede ne montrait
         rien que le caissier ne vienne de lire sur l'ecran d'encaissement, et coutait une
@@ -234,6 +256,7 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
       </label>
 
       <nav class="tb-actions">
+        <button class="tb-btn" @click="dialog = { kind: 'stock' }"><Icon name="box" :size="18" /><span>Stock</span></button>
         <button class="tb-btn" @click="dialog = { kind: 'held' }">
           <Icon name="pause" :size="18" /><span>Attente</span>
           <em v-if="heldCount" class="count num">{{ heldCount }}</em>
@@ -304,7 +327,7 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
       </div>
     </div>
 
-    <ModifierDialog v-if="dialog?.kind === 'modifier'" :product="dialog.product" :initial="dialog.initial" @close="dialog = null" @confirm="onModifierConfirm" />
+    <ModifierDialog v-if="dialog?.kind === 'modifier'" :product="dialog.product" :initial="dialog.initial" :stock="stock" @close="dialog = null" @confirm="onModifierConfirm" />
     <PaymentDialog v-if="dialog?.kind === 'pay'" :total="cart.total" :busy="paying" @close="dialog = null" @confirm="pay"
                    @customer="partyOverlay = 'CUSTOMER'" @courier="partyOverlay = 'COURIER'" />
     <PartyDialog v-if="partyOverlay" :party="partyOverlay" :initial="partyOverlay === 'COURIER' ? cart.courier : cart.customer"
@@ -322,6 +345,7 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
                  :initial="dialog.party === 'COURIER' ? cart.courier : cart.customer" @close="dialog = null" @ok="setParty" />
     <HeldOrdersDialog v-if="dialog?.kind === 'held'" @close="dialog = null; refreshHeld()" @resume="resume" />
     <CashMovementDialog v-if="dialog?.kind === 'cash'" @close="dialog = null" />
+    <StockDialog v-if="dialog?.kind === 'stock'" @close="dialog = null; refreshStock()" @changed="refreshStock" />
     <AssistantDialog v-if="dialog?.kind === 'assistant'" @close="dialog = null"
                      @confirm="onAssistant" @compose="p => { dialog = { kind: 'modifier', product: p } }" />
     <Modal v-if="dialog?.kind === 'tickets'" size="xl" title="Historique des tickets" @close="dialog = null">

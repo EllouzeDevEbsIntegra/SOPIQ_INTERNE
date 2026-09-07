@@ -64,8 +64,17 @@ public final class AdminDtos {
     public record KitchenNoteDto(Long id, String label, int sortOrder, boolean active) {}
     public record IngredientDto(Long id, String name, String shortName, int sortOrder, boolean active) {}
 
-    public record VariantValueDto(Long id, String name, String shortName, int sortOrder, boolean active) {}
-    public record VariantValueRequest(Long id, @NotBlank String name, String shortName, Integer sortOrder, Boolean active) {}
+    /**
+     * Une valeur d'axe, avec son suivi de stock.
+     *
+     * stockManaged : elle porte un compteur. stockSourceId : elle n'en porte pas et tire
+     * sur une autre - << Double Normale >> consomme deux pates normales. Les deux ne vont
+     * jamais ensemble : ce serait retirer deux fois la meme pate.
+     */
+    public record VariantValueDto(Long id, String name, String shortName, int sortOrder, boolean active,
+                                  boolean stockManaged, BigDecimal stockStep, Long stockSourceId, String stockSourceName) {}
+    public record VariantValueRequest(Long id, @NotBlank String name, String shortName, Integer sortOrder, Boolean active,
+                                      Boolean stockManaged, BigDecimal stockStep, Long stockSourceId) {}
     public record VariantDto(Long id, String name, String namePosition, int sortOrder, boolean active,
                              List<VariantValueDto> values) {}
     public record VariantRequest(@NotBlank String name, String namePosition, Integer sortOrder, Boolean active,

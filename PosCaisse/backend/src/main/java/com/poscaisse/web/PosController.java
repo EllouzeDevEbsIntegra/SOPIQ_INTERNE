@@ -4,10 +4,12 @@ import com.poscaisse.dto.CatalogDtos.CatalogResponse;
 import com.poscaisse.dto.CatalogDtos.ProductDto;
 import com.poscaisse.dto.OrderDtos.*;
 import com.poscaisse.dto.RegisterDtos.*;
+import com.poscaisse.dto.StockDtos.*;
 import com.poscaisse.printing.PrintService;
 import com.poscaisse.service.CatalogService;
 import com.poscaisse.service.OrderService;
 import com.poscaisse.service.RegisterSessionService;
+import com.poscaisse.service.VariantStockService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +25,7 @@ public class PosController {
     private final OrderService orders;
     private final RegisterSessionService sessions;
     private final PrintService print;
+    private final VariantStockService stock;
 
     @GetMapping("/catalog") public CatalogResponse catalog() { return catalog.posCatalog(); }
 
@@ -39,6 +42,15 @@ public class PosController {
     @GetMapping("/session/{id}/report") public SessionReport report(@PathVariable Long id) { return sessions.report(id); }
     @GetMapping("/session/{id}/movements") public List<CashMovementDto> movements(@PathVariable Long id) { return sessions.movements(id); }
     @PostMapping("/session/{id}/movements") public CashMovementDto movement(@PathVariable Long id, @Valid @RequestBody CashMovementRequest req) { return sessions.addMovement(id, req); }
+
+    /*
+        Le stock des pates. Le point de vente n'est pas demande : c'est celui de la caisse
+        ouverte par le caissier. Le lui faire choisir serait lui offrir de tenir le stock
+        d'un autre restaurant.
+    */
+    @GetMapping("/stock") public StockStateDto stock() { return stock.etat(sessions.currentPointOfSale()); }
+    @PostMapping("/stock/entry") public StockStateDto stockEntry(@Valid @RequestBody StockMoveRequest req) { return stock.entrer(sessions.currentPointOfSale(), req); }
+    @PostMapping("/stock/waste") public StockStateDto stockWaste(@Valid @RequestBody StockMoveRequest req) { return stock.casser(sessions.currentPointOfSale(), req); }
 
     @PostMapping("/quote") public PriceQuote quote(@Valid @RequestBody CartRequest req) { return orders.quote(req); }
     @PostMapping("/checkout") public OrderDto checkout(@Valid @RequestBody CheckoutRequest req) { return orders.checkout(req); }
