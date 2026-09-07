@@ -37,6 +37,9 @@ import base64, io, json, os, re, sys, unicodedata
 ICI = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CARTE = os.path.join(ICI, '..', 'site', 'carte.json')
 LOGO = os.path.join(ICI, '..', 'site', 'img', 'logo-number-one.png')
+# Le meme logo sur fond clair, s'il existe : c'est celui-la que prennent les palettes
+# claires. Absent, le logo sur fond noir est detoure automatiquement (voir plus bas).
+LOGO_CLAIR = os.path.join(ICI, '..', 'site', 'img', 'logo-number-one-clair.png')
 FONDS = os.path.join(ICI, 'fond')          # ecran-1-gauche.jpg, ecran-2-centre.jpg, ...
 OPACITE = 0.15                              # ce qui reste de l'image sous le texte
 POLICES = os.path.join(ICI, 'outils', 'polices')
@@ -191,28 +194,60 @@ def logo_data():
     """
     Le logo, ramene a la taille ou il s'affiche.
 
-    Il est livre sur fond noir : sur une dalle noire il n'a donc pas de bord. Sur un
-    fond creme, ce meme noir devient un carre pose au milieu de l'en-tete. On repeint
-    alors son fond, par diffusion depuis les quatre coins : seul l'exterieur change de
-    couleur, les noirs de l'illustration - le cercle du 1, les traits - restent noirs.
-    Un simple remplacement de toutes les couleurs sombres les aurait effaces.
+    Sur une dalle noire, le fichier livre - deja sur fond noir - n'a pas de bord : c'est
+    le meme noir des deux cotes. Sur un fond creme, ce meme noir devient un carre pose au
+    milieu de l'en-tete.
+
+    Deux facons de l'eviter, dans cet ordre :
+
+      1. site/img/logo-number-one-clair.png, s'il existe : le logo dessine pour fond
+         clair, fourni par le restaurateur. C'est toujours lui qui gagne.
+      2. sinon, le fond du fichier noir est repeint par DIFFUSION depuis les quatre
+         coins - seul l'exterieur change de couleur, les noirs de l'illustration (le
+         cercle du 1, les traits du dessin) restent noirs. Un simple remplacement de
+         toutes les couleurs sombres les aurait effaces.
+
+    Dans les deux cas le fond est ramene a la couleur EXACTE du tableau : un logo clair
+    dont le creme differe de deux tons laisserait voir son carre.
     """
     from PIL import Image
-    im = Image.open(LOGO).convert('RGB')
+    clair = COULEURS['logoclair']
+    chemin = LOGO_CLAIR if (clair and os.path.exists(LOGO_CLAIR)) else LOGO
+    im = Image.open(chemin).convert('RGB')
     im.thumbnail((240, 240), Image.LANCZOS)
-    if COULEURS['logoclair']:
+    if clair:
         cible = tuple(int(COULEURS['fond'][i:i + 2], 16) for i in (1, 3, 5))
         px, (w, h) = im.load(), im.size
-        vus, pile = set(), [(0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1)]
+        coins = [(0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1)]
+        # La couleur du fond est celle des coins, quelle qu'elle soit : noir sur le
+        # fichier livre, creme sur un logo deja clair. On la suit de proche en proche.
+        depart = tuple(sum(px[c][i] for c in coins) // 4 for i in range(3))
+        proche = lambda p: sum(abs(p[i] - depart[i]) for i in range(3)) < 90
+        vus, pile = set(), list(coins)
         while pile:
             x, y = pile.pop()
             if (x, y) in vus or not (0 <= x < w and 0 <= y < h):
                 continue
             vus.add((x, y))
-            if max(px[x, y]) >= 60:
+            if not proche(px[x, y]):
                 continue
             px[x, y] = cible
             pile += [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+        # Le mot NUMBER est dore : sur du noir il brille, sur du creme il s'eteint - deux
+        # tons chauds l'un sur l'autre, sans contraste, juste au-dessus d'une carte qui
+        # se lit a quatre metres. Il passe donc a l'encre, comme le logo clair du
+        # restaurateur. SEULE LA BANDE DU HAUT est touchee : l'or revient plus bas dans
+        # la pate du mlewi et dans les flammes, ou il est a sa place. La bande s'arrete
+        # avant le O de ONE (mesure : l'or du mot ne descend pas sous 20 % de l'image).
+        encre = tuple(int(COULEURS['encre'][i:i + 2], 16) for i in (1, 3, 5))
+        for y in range(int(h * 0.20)):
+            for x in range(w):
+                p = px[x, y]
+                # Ce qui n'est pas le fond devient de l'encre, en gardant son fondu :
+                # le dore, mais aussi le liseré noir des lettres, qui l'entoure deja.
+                a = min(1.0, sum(abs(p[i] - cible[i]) for i in range(3)) / 70.0)
+                if a:
+                    px[x, y] = tuple(int(cible[i] + (encre[i] - cible[i]) * a) for i in range(3))
     tampon = io.BytesIO()
     im.save(tampon, 'PNG', optimize=True)
     return 'data:image/png;base64,' + base64.b64encode(tampon.getvalue()).decode()

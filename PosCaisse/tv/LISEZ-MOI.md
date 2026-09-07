@@ -27,6 +27,51 @@ python3 outils/generer-tv.py listes     les listes séparées
 python3 outils/comparer.py              comparaison.html, les deux d'un bouton
 ```
 
+## Deux palettes
+
+Les mêmes tableaux, à la même géométrie, repeints. C'est la seule façon de comparer
+deux couleurs sans comparer autre chose en même temps.
+
+| Palette | Où | Ce que ça donne |
+|---|---|---|
+| **Nuit** | `tv/`, `tv/variante-listes/` | Fond noir, prix en or. Le tableau s'efface, les chiffres avancent. |
+| **Crème** | `tv/variante-clair/`, `tv/variante-listes-clair/` | Fond crème, prix à l'encre, rouge brique sur les titres, l'enseigne et le téléphone. Plus proche d'une carte imprimée. |
+
+```
+python3 outils/generer-tv.py croise clair    les tableaux croisés, en crème
+python3 outils/generer-tv.py listes clair    les listes séparées, en crème
+python3 outils/propositions.py               propositions.html, les QUATRE d'un menu
+```
+
+`propositions.html` est la page à montrer au client : un menu en haut, deux boutons par
+ligne (disposition, couleurs), et les trois écrans se repeignent dessous. Les quatre
+versions y sont rendues à la même hauteur de ligne — la plus basse des quatre — pour
+qu'il juge la mise en page et non le corps du texte ; les fichiers qui partent sur les
+dalles, eux, sont refaits à leur taille naturelle.
+
+**Un tableau clair n'est pas un tableau sombre inversé.** Sur crème, c'est l'encre qui
+porte le mieux les chiffres et le rouge qui devient l'accent ; sur noir, l'or tenait les
+deux rôles à la fois. Le rouge s'arrête aux titres, à l'enseigne et au téléphone : une
+colonne de prix entière en rouge faisait, sur dix-neuf lignes, une barre que l'œil
+suivait avant de lire le nom du sandwich.
+
+### Le logo sur fond crème
+
+Le fichier livré est dessiné pour du noir : fond noir, et le mot NUMBER en doré. Posé
+tel quel sur du crème, il montre un carré noir, et son doré s'éteint sur un fond chaud.
+Le générateur l'adapte donc tout seul — fond repeint par diffusion depuis les quatre
+coins (les noirs du dessin restent noirs), et le mot NUMBER passé à l'encre, la bande du
+haut seulement : plus bas, l'or est celui de la pâte et des flammes, à sa place.
+
+Si vous avez le logo déjà dessiné pour fond clair, déposez-le ici :
+
+```
+PosCaisse/site/img/logo-number-one-clair.png
+```
+
+C'est lui qui sera pris, sans rien demander. Son fond est quand même ramené au crème
+exact du tableau : deux tons d'écart laisseraient voir son carré.
+
 Contrairement à ce qu'on croirait, la version en listes ne rapetisse rien : elle tient à
 **une hauteur de ligne au moins égale** à celle des tableaux croisés. Les 38 articles d'un écran se rangent en deux colonnes de
 19, soit la même hauteur que les 19 lignes d'une matrice — qui paie en plus une rangée
