@@ -261,7 +261,16 @@ export const useCartStore = defineStore('cart', () => {
       if (!product) continue
       const modifiers = (ol.modifiers || []).map(m => ({ id: m.modifierId, name: m.name, priceDelta: Number(m.priceDelta), quantity: m.quantity || 1 }))
       const components = (ol.components || []).map(c => ({ productId: c.productId, product: productsById[c.productId], quantity: Number(c.quantity), priceDelta: Number(c.unitPrice), modifiers: (c.modifiers || []).map(m => ({ id: m.modifierId, name: m.name, priceDelta: Number(m.priceDelta) })) }))
-      const l = { key: ++keySeq, productId: ol.productId, product, quantity: Number(ol.quantity), unitPrice: Number(ol.unitPrice), modifiers, components, note: ol.note || '', discountPercent: Number(ol.discountPercent) || 0, discountAmount: Number(ol.discountAmount) || 0 }
+      /*
+          La VERSION voyage avec la ligne : sans elle, une commande mise en attente en
+          << Chia >> revenait en << Normale >> - la valeur par defaut que le serveur
+          reprend faute de mieux a l'encaissement. Le prix, lui, etait juste (il est
+          copie sur la ligne), si bien que rien ne se voyait a l'ecran : c'est en
+          cuisine que la mauvaise pate sortait, et c'est le mauvais compteur de stock
+          qui descendait.
+      */
+      const l = { key: ++keySeq, productId: ol.productId, product, quantity: Number(ol.quantity), unitPrice: Number(ol.unitPrice), modifiers, components, note: ol.note || '', discountPercent: Number(ol.discountPercent) || 0, discountAmount: Number(ol.discountAmount) || 0,
+                  variantValueId: ol.variantValueId || null, variantValueName: ol.variantValueName || null }
       lines.value.push(l)
     }
   }
