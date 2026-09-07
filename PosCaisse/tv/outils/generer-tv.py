@@ -110,8 +110,12 @@ PALETTES = {
         'murtitre': '#FECC30', 'mursourd': '#8B8072', 'murfort': '#F6EFE3',
     },
     'clair': {
+        # Le rouge tient les titres, l'enseigne et le telephone. Il ne descend PAS dans
+        # les prix : une colonne entiere de rouge - celle de la pate normale - criait
+        # sur le creme, la ou sur fond noir l'or tenait les deux roles. Les trois prix
+        # sont donc a la meme encre, et c'est le titre qui porte la couleur.
         'fond': '#F3F2E9', 'encre': '#16181A', 'sourd': '#6F6A5E',
-        'accent': '#C0392B', 'prix': '#16181A', 'prixfort': '#C0392B',
+        'accent': '#C0392B', 'prix': '#16181A', 'prixfort': '#16181A',
         'rouge': '#C0392B', 'service': '#A9A392',
         'filet': '#D7D3C2', 'cle': '#8A8375', 'montant': '#C0392B',
         'trait': 'rgba(22, 24, 26, .38)', 'traitfaible': 'rgba(22, 24, 26, .06)',
