@@ -53,7 +53,8 @@ const AFFICHAGES = [
   { p: '', dit: 'Le numéro complet, tel qu’il est enregistré' },
   { p: '{SEQ:4}', dit: 'Le compteur seul' },
   { p: '{REG}-{SEQ:3}', dit: 'Caisse et compteur' },
-  { p: 'N° {SEQ:3}', dit: 'Précédé de « N° »' }
+  { p: 'N° {SEQ:3}', dit: 'Précédé de « N° »' },
+  { p: 'Ticket {SEQ:4}', dit: 'Précédé de « Ticket »' }
 ]
 
 const MODELES = [
@@ -237,9 +238,11 @@ async function poserCompteur() {
                placeholder="vide = le numéro complet" />
       </div>
       <div class="tiny muted mt-8">
-        Mêmes jetons que le format. {SEQ} est obligatoire dès que le champ n’est pas vide, sinon
-        tous les tickets afficheraient la même chose. Les tickets déjà imprimés gardent le numéro
-        qu’ils portent : une réimpression rend le ticket que le client a gardé.
+        Mêmes jetons que le format, et le texte que vous tapez autour est imprimé tel quel :
+        <code>N° {SEQ:3}</code> donne <code>N° 001</code>. Le ticket n’ajoute plus rien de lui-même —
+        si vous voulez un libellé devant le numéro, écrivez-le ici. {SEQ} est obligatoire dès que le
+        champ n’est pas vide, sinon tous les tickets afficheraient la même chose. Les tickets déjà
+        imprimés gardent le numéro qu’ils portent : une réimpression rend le ticket que le client a gardé.
       </div>
     </div>
 

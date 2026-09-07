@@ -218,7 +218,7 @@ public class ReceiptRenderer {
 
         // ---- identification du ticket ----
         if (duplicate && on(cfg, "showDuplicateLabel")) s.big("*** DUPLICATA ***");
-        if (on(cfg, "showTicketNumber")) s.bold("N° " + numero(o, "-"));
+        if (on(cfg, "showTicketNumber")) s.bold(numero(o, "-"));
         String cashier = on(cfg, "showCashier") ? o.getCashier().getFullName() : null;
         String service = on(cfg, "showServiceMode") ? mode(o.getServiceMode()) : null;
         // Caissier et service tiennent sur une ligne quand la largeur le permet : une ligne
@@ -323,7 +323,7 @@ public class ReceiptRenderer {
         s.big(dest.getName());
         if (duplicate) s.big("*** DUPLICATA ***");
         s.sep("=");
-        s.bold("N° " + numero(o, o.getHeldRef()));
+        s.bold(numero(o, o.getHeldRef()));
         var when = (o.getPaidAt() == null ? o.getCreatedAt() : o.getPaidAt()).atZoneSameInstant(TZ);
         if (on(cfg, "prepShowTime")) s.lr(when.format(DATE), when.format(TIME));
         s.lr("Service", mode(o.getServiceMode()));
@@ -356,6 +356,11 @@ public class ReceiptRenderer {
      * Le numero tel qu'il doit se lire sur le papier : l'affichage retenu au moment de la
      * vente, sinon la reference. On relit ce qui a ete pose sur la commande, jamais le
      * reglage du jour - une reimpression doit ressortir le ticket que le client a garde.
+     *
+     * RIEN N'EST AJOUTE DEVANT. Le ticket imprimait autrefois un << N° >> en dur ; depuis
+     * que l'exploitant choisit ce qui s'affiche, ce prefixe faisait doublon des qu'il en
+     * mettait un lui-meme (<< N° N° 0001 >>). Ce qui est ecrit ici est exactement ce qui
+     * a ete demande, mot pour mot - le libelle appartient au format d'affichage.
      */
     private static String numero(SaleOrder o, String defaut) {
         if (o.getTicketDisplay() != null && !o.getTicketDisplay().isBlank()) return o.getTicketDisplay();

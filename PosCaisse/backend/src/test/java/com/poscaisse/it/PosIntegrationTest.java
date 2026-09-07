@@ -210,7 +210,13 @@ class PosIntegrationTest {
         JsonNode jobs = json(mvc.perform(get("/api/orders/" + venteCourte.get("id").asLong() + "/print-jobs")
                 .header("Authorization", "Bearer " + admin)).andExpect(status().isOk()).andReturn());
         String papier = jobs.get(0).get("content").asText();
-        assertThat(papier).contains("N° " + affiche).doesNotContain(reference);
+        // Le papier porte EXACTEMENT le numero demande, sans << N° >> ajoute d'office :
+        // ce prefixe faisait doublon des que l'exploitant en mettait un dans son format.
+        // La ligne est centree, d'ou le trim ; le marqueur de tete est celui du gras.
+        String ligneNumero = papier.lines().filter(l -> !l.isEmpty() && l.charAt(0) == '\u0001')
+                .map(l -> l.substring(1).trim()).findFirst().orElse("");
+        assertThat(ligneNumero).isEqualTo(affiche);
+        assertThat(papier).doesNotContain(reference).doesNotContain("N°");
 
         // Et on retrouve la vente en tapant ce qui est écrit sur le papier.
         JsonNode trouve = json(mvc.perform(get("/api/orders").param("ticket", affiche)

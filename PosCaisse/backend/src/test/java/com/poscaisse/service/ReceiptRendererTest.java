@@ -59,7 +59,7 @@ class ReceiptRendererTest {
         String txt = renderer.customerReceipt(o, o.getCompany(), new ReceiptTemplate(), false, false);
         List<String> emphasised = txt.lines().filter(l -> !l.isEmpty() && l.charAt(0) == ReceiptRenderer.BOLD)
                 .map(l -> l.substring(1).trim()).toList();
-        assertThat(emphasised).containsExactly("N° PV01-2026-000001");
+        assertThat(emphasised).containsExactly("PV01-2026-000001");
     }
 
     /**
