@@ -230,16 +230,21 @@ const RANGS = '①②③④⑤⑥⑦⑧⑨⑩'
 
 const relecture = ref(false)
 
-/** La commande dans les mots du client, à relire à voix haute avant de valider. */
-const phrase = computed(() => {
-  const blocs = []
+/** Les lots regroupés par article et version : c'est ainsi que le client les a dits. */
+const blocs = computed(() => {
+  const out = []
   for (const l of lots.value) {
     const cle = l.product.id + '|' + (l.version?.id || 0)
-    let b = blocs.find(x => x.cle === cle)
-    if (!b) { b = { cle, product: l.product, version: l.version, unites: [] }; blocs.push(b) }
+    let b = out.find(x => x.cle === cle)
+    if (!b) { b = { cle, product: l.product, version: l.version, unites: [] }; out.push(b) }
     b.unites.push(l)
   }
-  const dits = blocs.map(b => {
+  return out
+})
+
+/** La commande dans les mots du client, à relire à voix haute avant de valider. */
+const phrase = computed(() => {
+  const dits = blocs.value.map(b => {
     const n = b.unites.reduce((s, l) => s + l.qte, 0)
     let s = n + ' ' + b.product.name + (b.version ? ' en ' + b.version.name.toLowerCase() : '')
     const det = b.unites.filter(l => marques(l)).map(l => (b.unites.length > 1 ? l.qte + ' ' : '') + resume(l).toLowerCase())
@@ -349,9 +354,10 @@ function valider() {
 
     <template #foot>
       <span class="pied-total">Total <b class="num">{{ fmt(totalCommande, true) }}</b></span>
-      <button class="btn lg" :disabled="!lots.length" @click="relecture = true">Relire au client</button>
-      <button class="btn lg primary" :disabled="!lots.length || !compteJuste" @click="valider">
-        Ajouter à la commande
+      <!-- On ne verse jamais au panier sans montrer le recapitulatif : c'est la, en le
+           relisant au client, que l'erreur se rattrape - avant la cuisine. -->
+      <button class="btn lg primary" :disabled="!lots.length || !compteJuste" @click="relecture = true">
+        Vérifier et ajouter
       </button>
     </template>
   </Modal>
@@ -443,11 +449,41 @@ function valider() {
   </Modal>
 
   <!-- ------------------------------------------------------------ relecture -->
-  <Modal v-if="relecture" size="md" title="À relire au client" @close="relecture = false">
+  <Modal v-if="relecture" size="md" title="Récapitulatif de la commande" @close="relecture = false">
+    <table class="recap">
+      <thead><tr><th>Qté</th><th>Article</th><th>Version</th><th>Suppléments &amp; remarques</th><th class="r">Prix</th></tr></thead>
+      <tbody>
+        <template v-for="b in blocs" :key="b.cle">
+          <tr v-for="(l, k) in b.unites" :key="l.uid">
+            <td class="num">{{ l.qte }}</td>
+            <td>
+              <!-- Le nom une fois par article ; les unites qui en divergent portent leur rang. -->
+              <b v-if="k === 0">{{ b.product.name }}</b>
+              <span v-if="b.unites.length > 1" class="rang num">{{ RANGS[k] || (k + 1) }}</span>
+              <span v-if="k > 0 && b.unites.length === 1" class="muted small">↳</span>
+            </td>
+            <td class="muted small">{{ b.version?.name || '—' }}</td>
+            <td>
+              <span v-for="m in l.mods" :key="m.id" class="marque supp">+ {{ m.name }}</span>
+              <span v-for="nt in l.notes" :key="nt" class="marque note">{{ nt }}</span>
+              <span v-if="!marques(l)" class="muted small">—</span>
+            </td>
+            <td class="num r">{{ fmt(prixUnite(l) * l.qte) }}</td>
+          </tr>
+        </template>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4">{{ compteSandwichs }} sandwich{{ compteSandwichs > 1 ? 's' : '' }}<span
+              v-if="annonce != null"> sur {{ annonce }} annoncé{{ annonce > 1 ? 's' : '' }}</span></td>
+          <td class="num r"><b>{{ fmt(totalCommande, true) }}</b></td>
+        </tr>
+      </tfoot>
+    </table>
     <p class="phrase">« Je vous répète : {{ phrase }} »</p>
     <template #foot>
       <button class="btn lg" @click="relecture = false">Corriger</button>
-      <button class="btn lg primary" @click="relecture = false; valider()">C’est exact</button>
+      <button class="btn lg primary" @click="relecture = false; valider()">C’est exact — ajouter à la commande</button>
     </template>
   </Modal>
 </template>
@@ -537,7 +573,17 @@ function valider() {
 .question { border: 1px solid var(--brand); border-radius: var(--r-sm); background: var(--brand-soft); padding: 12px 13px; display: grid; gap: 10px; }
 .question p { margin: 0; font-size: 14.5px; }
 .question .choix { display: flex; gap: 8px; flex-wrap: wrap; }
-.phrase { margin: 0; font-size: 16px; line-height: 1.7; }
+.recap { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+.recap th { text-align: left; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+            color: var(--ink-3); padding: 0 8px 7px; border-bottom: 1px solid var(--line); }
+.recap td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px; }
+.recap tbody tr:last-child td { border-bottom: 0; }
+.recap .r { text-align: right; }
+.recap .rang { color: var(--brand-2); margin-left: 6px; font-size: 13px; }
+.recap tfoot td { border-top: 2px solid var(--ink); border-bottom: 0; padding-top: 10px; font-size: 14px; color: var(--ink-3); }
+.recap tfoot b { font-size: 19px; color: var(--ink); }
+.phrase { margin: 0; padding: 13px 15px; background: var(--surface-2); border-radius: var(--r-sm);
+          font-size: 15.5px; line-height: 1.65; }
 
 @media (max-width: 900px) {
   .assistant { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) auto; }
