@@ -22,9 +22,10 @@ const rows = ref([]); const edit = ref(null); const dragId = ref(null)
 async function load() { try { rows.value = await api.admin.variants() } catch (e) { ui.error(e) } }
 onMounted(load)
 
-const valeurNeuve = () => ({ name: '', shortName: '', active: true, stockManaged: false, stockStep: 1, stockSourceId: null })
+const valeurNeuve = () => ({ name: '', shortName: '', active: true, stockManaged: false, stockStep: 1, stockSourceId: null, stockMode: 'non' })
+const avecMode = (x) => ({ ...valeurNeuve(), ...x, stockMode: x.stockManaged ? 'propre' : (x.stockSourceId ? 'lie' : 'non') })
 function create() { edit.value = { name: '', namePosition: 'SUFFIX', active: true, values: [valeurNeuve()] } }
-function open(v) { edit.value = { ...v, values: v.values.map(x => ({ ...valeurNeuve(), ...x })) } }
+function open(v) { edit.value = { ...v, values: v.values.map(avecMode) } }
 function addValue() { edit.value.values.push(valeurNeuve()) }
 
 /*
@@ -33,21 +34,41 @@ function addValue() { edit.value.values.push(valeurNeuve()) }
     « Compteur propre » et « tire sur une autre » ne peuvent pas coexister : ce serait
     retirer deux fois la meme pate. Un seul reglage a trois positions le dit mieux que
     deux cases a cocher qu'il faudrait apprendre a ne pas cocher ensemble.
+
+    L'etat est PORTE, pas deduit. Deduit de stockSourceId, « tire sur une autre » ne
+    tenait pas une seconde : on choisissait la position, la source etait encore vide,
+    donc le reglage retombait sur « non suivi » avant meme d'avoir pu designer la
+    version - et le choix de la version n'apparaissait jamais.
 */
-const modeStock = (x) => x.stockManaged ? 'propre' : (x.stockSourceId ? 'lie' : 'non')
+const modeStock = (x) => x.stockMode || (x.stockManaged ? 'propre' : (x.stockSourceId ? 'lie' : 'non'))
 function setModeStock(x, mode) {
+  x.stockMode = mode
   x.stockManaged = mode === 'propre'
   if (mode !== 'lie') x.stockSourceId = null
   if (mode === 'non') x.stockStep = 1
-  if (mode === 'lie' && !x.stockStep) x.stockStep = 2
+  if (mode === 'lie' && !(Number(x.stockStep) > 1)) x.stockStep = 2
 }
-/** Les versions sur lesquelles on peut brancher : celles qui portent un compteur. */
-const sources = (x) => (edit.value?.values || []).filter(v => v.id && v.stockManaged && v !== x)
+/*
+    Toutes les autres versions de l'axe sont proposees, et non les seules qui portent
+    deja un compteur : sinon l'ordre des gestes devenait un piege - brancher « Double
+    Normale » avant d'avoir coche « Normale » ne proposait rien du tout, sans dire
+    pourquoi. Designer une version lui donne donc son compteur.
+*/
+const sources = (x) => (edit.value?.values || []).filter(v => v !== x && v.name?.trim())
+function setSource(x, id) {
+  x.stockSourceId = id ? Number(id) : null
+  const s = (edit.value?.values || []).find(v => v.id === x.stockSourceId)
+  if (s && !s.stockManaged) setModeStock(s, 'propre')
+}
+const nomSource = (x) => (edit.value?.values || []).find(v => v.id === x.stockSourceId)?.name || ''
 
 async function save() {
   const v = edit.value
   if (!v.values.some(x => x.name?.trim())) return ui.error('Une variante sans valeur ne sert à rien : ajoutez au moins « Petite » ou « Normale ».')
-  const b = { ...v, values: v.values.filter(x => x.name?.trim()).map((x, i) => ({ ...x, sortOrder: i })) }
+  const orphelin = v.values.find(x => x.name?.trim() && modeStock(x) === 'lie' && !x.stockSourceId)
+  if (orphelin) return ui.error(`« ${orphelin.name} » tire sur une autre version : choisissez laquelle, et de combien.`)
+  // stockMode n'existe que pour l'ecran : le serveur, lui, lit stockManaged et stockSourceId.
+  const b = { ...v, values: v.values.filter(x => x.name?.trim()).map((x, i) => { const { stockMode, ...reste } = x; return { ...reste, sortOrder: i } }) }
   const r = await run(() => api.admin.saveVariant(v.id, b), { success: 'Variante enregistrée' })
   if (r) { edit.value = null; load() }
 }
@@ -150,12 +171,17 @@ async function onDrop() {
               <span class="tiny muted">par article vendu</span>
             </template>
             <template v-else-if="modeStock(x) === 'lie'">
-              <select class="input sm" v-model="x.stockSourceId">
-                <option :value="null">— choisir la version —</option>
-                <option v-for="s in sources(x)" :key="s.id" :value="s.id">{{ s.name }}</option>
+              <span class="et">sur</span>
+              <select class="input sm" :value="x.stockSourceId || ''" @change="setSource(x, $event.target.value)">
+                <option value="">— choisir la version —</option>
+                <option v-for="s in sources(x)" :key="s.id || s.name" :value="s.id || ''" :disabled="!s.id">
+                  {{ s.name || '(sans nom)' }}{{ s.id ? '' : ' — à enregistrer d\'abord' }}
+                </option>
               </select>
               <span class="et">×</span>
               <input class="input sm num" v-model="x.stockStep" inputmode="decimal" style="width:78px" />
+              <span v-if="x.stockSourceId" class="tiny muted">une vente retire {{ x.stockStep }} sur « {{ nomSource(x) }} »</span>
+              <span v-else class="tiny warn">choisissez la version sur laquelle celle-ci tire</span>
             </template>
           </div>
         </div>
@@ -209,6 +235,10 @@ tr.dragging { opacity: .45; cursor: grabbing; background: var(--brand-soft); }
 .stock { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 6px 0 2px 2px; }
 .stock .et { font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
 .stock .input.sm { height: 34px; padding: 4px 8px; font-size: 14px; }
+/* Les listes gardent leur largeur : etirees sur toute la ligne, le reglage se lisait
+   en quatre etages alors qu'il tient en une phrase. */
+.stock select.input.sm { flex: 0 1 auto; width: auto; min-width: 168px; max-width: 230px; }
+.stock .warn { color: var(--warn); }
 .entetes { margin-bottom: 5px; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
 .ligne + .ligne { margin-top: 7px; }
 .ligne .check { justify-content: center; }

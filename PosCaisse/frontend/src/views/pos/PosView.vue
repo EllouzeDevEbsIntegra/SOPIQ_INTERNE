@@ -7,6 +7,7 @@ import { useCatalogStore } from '../../stores/catalog'
 import { useCartStore } from '../../stores/cart'
 import { useUiStore } from '../../stores/ui'
 import { fmt, round } from '../../utils/money'
+import { besoinsDesLignes } from '../../utils/stock'
 import { fmtTime } from '../../utils/dates'
 import ProductTile from '../../components/pos/ProductTile.vue'
 import CartPanel from '../../components/pos/CartPanel.vue'
@@ -60,10 +61,27 @@ async function refreshHeld() { try { heldCount.value = (await api.pos.held(auth.
     stock change a chaque vente, y compris celles de l'autre caisse.
 */
 const stock = ref({})
+/*
+    Ce qui reste VRAIMENT disponible pendant qu'on compose : le stock moins ce que le
+    panier retient deja. Sans cette soustraction, la fenetre proposerait une pate que la
+    ligne d'a cote a deja prise, et le refus tomberait a la validation.
+
+    La ligne en cours de modification est retiree du calcul : elle rendrait sa propre
+    pate au moment d'etre remplacee.
+*/
+function stockDisponible(ligneEnCours) {
+  const autres = cart.lines.filter(l => !ligneEnCours || l.key !== ligneEnCours.key)
+  const pris = besoinsDesLignes(autres, catalog)
+  const dispo = {}
+  for (const [id, reste] of Object.entries(stock.value)) dispo[id] = Number(reste) - (pris[id] || 0)
+  return dispo
+}
 async function refreshStock() {
   try {
     const e = await api.pos.stock()
     stock.value = Object.fromEntries((e.lines || []).map(l => [l.variantValueId, Number(l.quantity)]))
+    // Le panier refuse lui-meme ce qu'il ne peut pas servir : il lui faut donc l'etat.
+    cart.setStock(stock.value)
   } catch { /* une caisse fermee ou aucune pate suivie : l'ecran vit sans */ }
 }
 
@@ -118,13 +136,8 @@ function onModifierConfirm({ quantity, modifiers, components, note, variantValue
   const d = dialog.value; dialog.value = null
   /* Modifier une ligne existante change aussi sa version - et donc son prix : c'est tout
      l'interet de pouvoir y revenir quand le client dit « finalement, en large ». */
-  if (d.line) {
-    const l = cart.find(d.line.key)
-    if (l) {
-      l.quantity = quantity; l.modifiers = modifiers; l.components = components; l.note = note
-      if (variantValue) { l.variantValueId = variantValue.id; l.variantValueName = variantValue.name; l.unitPrice = Number(variantValue.price) }
-    }
-  } else cart.addLine({ product: d.product, quantity, modifiers, components, note, variantValue })
+  if (d.line) cart.updateLine(d.line.key, { quantity, modifiers, components, note, variantValue })
+  else cart.addLine({ product: d.product, quantity, modifiers, components, note, variantValue })
 }
 /*
     Ce que l'assistant a compose devient du panier ordinaire : une ligne par lot, et
@@ -327,7 +340,8 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
       </div>
     </div>
 
-    <ModifierDialog v-if="dialog?.kind === 'modifier'" :product="dialog.product" :initial="dialog.initial" :stock="stock" @close="dialog = null" @confirm="onModifierConfirm" />
+    <ModifierDialog v-if="dialog?.kind === 'modifier'" :product="dialog.product" :initial="dialog.initial"
+                    :stock="stockDisponible(dialog.line)" @close="dialog = null" @confirm="onModifierConfirm" />
     <PaymentDialog v-if="dialog?.kind === 'pay'" :total="cart.total" :busy="paying" @close="dialog = null" @confirm="pay"
                    @customer="partyOverlay = 'CUSTOMER'" @courier="partyOverlay = 'COURIER'" />
     <PartyDialog v-if="partyOverlay" :party="partyOverlay" :initial="partyOverlay === 'COURIER' ? cart.courier : cart.customer"

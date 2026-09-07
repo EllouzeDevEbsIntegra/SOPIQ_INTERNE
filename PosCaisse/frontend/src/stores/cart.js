@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import { add, mul, pct, round, sub } from '../utils/money'
+import { besoinsDesLignes, manque } from '../utils/stock'
+import { useCatalogStore } from './catalog'
+import { useUiStore } from './ui'
 
 /**
  * Current order lives entirely in the browser (instant taps); the backend re-prices and validates at checkout.
@@ -76,6 +79,33 @@ export const useCartStore = defineStore('cart', () => {
     return a.productId === b.productId && (a.variantValueId || null) === (b.variantValueId || null)
       && ids(a) === ids(b) && comps(a) === comps(b) && (a.note || '') === (b.note || '') && a.unitPrice === b.unitPrice && !a.discountPercent && !a.discountAmount
   }
+  /*
+      LE STOCK DES PATES, VERIFIE ICI ET NULLE PART AILLEURS.
+
+      La regle est simple a dire - ne pas mettre au panier une pate qu'on n'a plus - et
+      facile a oublier : on ajoute un article d'un appui, on le compose dans une fenetre,
+      on change sa quantite depuis le panier, l'assistant en pose quatre d'un coup. Un
+      controle pose sur chacune de ces portes en aurait manque une, et le caissier
+      l'aurait decouvert devant le client, au moment d'encaisser.
+
+      Le panier est le passage oblige : tout ce qui se vend y entre. Le refus est donc
+      prononce ici, et il PARLE - un ajout qui echoue en silence se lit comme un ecran
+      qui ne repond plus.
+
+      Ce n'est pas la garantie : c'est le serveur qui refuse la vente, verrou pose sur le
+      compteur, pour deux caisses qui vendraient la meme derniere pate au meme instant.
+      Ici, on evite au caissier de composer une commande qui sera refusee ensuite.
+  */
+  const stock = ref({})
+  function setStock(m) { stock.value = m || {} }
+
+  /** Ce que le panier retirerait si ces lignes-la etaient les siennes. */
+  function refusDeStock(lignesSimulees) {
+    if (!Object.keys(stock.value).length) return null
+    return manque(stock.value, besoinsDesLignes(lignesSimulees, useCatalogStore()), useCatalogStore())
+  }
+  function refuser(message) { useUiStore().error(message); return null }
+
   function addLine({ product, quantity = 1, modifiers = [], components = [], note = '', variantValue = null }) {
     /* Le prix vient de la variante quand il y en a une : c'est un prix complet, pas un
        supplement ajoute a celui de l'article. */
@@ -83,6 +113,13 @@ export const useCartStore = defineStore('cart', () => {
     const candidate = { productId: product.id, product, quantity, unitPrice: prix, modifiers, components, note, discountPercent: 0, discountAmount: 0,
                         variantValueId: variantValue?.id || null, variantValueName: variantValue?.name || null }
     const existing = lines.value.find(l => sameConfig(l, candidate))
+    // On simule le panier tel qu'il SERAIT : la ligne fusionnee compte pour son total,
+    // sans quoi ajouter une pate une par une passerait toujours.
+    const simule = existing
+      ? lines.value.map(l => l === existing ? { ...l, quantity: add(l.quantity, quantity) } : l)
+      : [...lines.value, candidate]
+    const refus = refusDeStock(simule)
+    if (refus) return refuser(refus)
     if (existing) { existing.quantity = add(existing.quantity, quantity); selectedKey.value = existing.key; return existing }
     candidate.key = ++keySeq
     lines.value.push(candidate)
@@ -90,9 +127,34 @@ export const useCartStore = defineStore('cart', () => {
     return candidate
   }
   function find(key) { return lines.value.find(l => l.key === key) }
-  function setQuantity(key, q) { const l = find(key); if (!l) return; if (q <= 0) remove(key); else l.quantity = q }
+  function setQuantity(key, q) {
+    const l = find(key); if (!l) return
+    if (q <= 0) return remove(key)
+    // Augmenter depuis le panier consomme autant qu'ajouter : meme regle, meme refus.
+    const refus = q > Number(l.quantity) ? refusDeStock(lines.value.map(x => x === l ? { ...x, quantity: q } : x)) : null
+    if (refus) return refuser(refus)
+    l.quantity = q
+  }
   function increment(key, d = 1) { const l = find(key); if (l) setQuantity(key, add(l.quantity, d)) }
   function remove(key) { lines.value = lines.value.filter(l => l.key !== key); if (selectedKey.value === key) selectedKey.value = lines.value.length ? lines.value[lines.value.length - 1].key : null }
+  /**
+   * Une ligne recomposee depuis la fenetre d'options : quantite, version, supplements.
+   *
+   * C'est le quatrieme chemin par lequel une pate peut partir, et il passe par le meme
+   * controle que les trois autres. Refuse, il ne touche a rien : la ligne reste ce
+   * qu'elle etait, plutot qu'a moitie modifiee.
+   */
+  function updateLine(key, { quantity, modifiers, components, note: n, variantValue }) {
+    const l = find(key); if (!l) return null
+    const apres = { ...l, quantity, modifiers, components, note: n,
+                    variantValueId: variantValue ? variantValue.id : l.variantValueId }
+    const refus = refusDeStock(lines.value.map(x => x === l ? apres : x))
+    if (refus) return refuser(refus)
+    l.quantity = quantity; l.modifiers = modifiers; l.components = components; l.note = n
+    if (variantValue) { l.variantValueId = variantValue.id; l.variantValueName = variantValue.name; l.unitPrice = round(Number(variantValue.price)) }
+    return l
+  }
+
   function setLineDiscount(key, percent, amount) { const l = find(key); if (l) { l.discountPercent = percent || 0; l.discountAmount = amount || 0 } }
   function setLinePrice(key, price) { const l = find(key); if (l) l.unitPrice = round(price) }
   function setLineNote(key, n) { const l = find(key); if (l) l.note = n }
@@ -223,5 +285,5 @@ export const useCartStore = defineStore('cart', () => {
   return { lines, serviceMode, defaultServiceMode, customer, courier, canPickCustomer, canPickCourier, needsCourier,
     note, discountPercent, discountAmount, heldOrderId, heldRef, clientRef, selectedKey, restoreDraft,
     subtotal, lineDiscountTotal, orderDiscount, total, itemCount, isEmpty, lineUnit, lineGross, lineDiscount, lineTotal,
-    addLine, find, setQuantity, increment, remove, setLineDiscount, setLinePrice, setLineNote, applyLineNotes, setLineModifiers, setOrderDiscount, clear, toRequest, loadFromOrder }
+    addLine, find, setQuantity, increment, remove, updateLine, setStock, stock, setLineDiscount, setLinePrice, setLineNote, applyLineNotes, setLineModifiers, setOrderDiscount, clear, toRequest, loadFromOrder }
 })

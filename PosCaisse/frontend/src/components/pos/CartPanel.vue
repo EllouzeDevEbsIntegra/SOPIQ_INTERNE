@@ -73,7 +73,10 @@ const hasDiscount = computed(() => cart.lineDiscountTotal > 0 || cart.orderDisco
             <button class="val num" @click="emit('quantity', l)">{{ fmtQty(l.quantity) }}</button>
             <button @click="cart.increment(l.key, 1)" aria-label="Augmenter"><Icon name="plus" :size="18" :stroke="2.2" /></button>
           </div>
-          <button class="act" v-if="l.product.modifierGroups?.length || l.product.productType === 'MENU'" @click="emit('edit', l)"><Icon name="sliders" :size="16" />Options</button>
+          <!-- La variante ouvre la meme fenetre que les options : sans cela, une ligne qui n'a
+             qu'une version (la pate) ne pouvait plus etre reprise depuis le panier, et le
+             client qui change d'avis obligeait a retirer la ligne pour la refaire. -->
+        <button class="act" v-if="l.product.modifierGroups?.length || l.product.productType === 'MENU' || l.product.variantId" @click="emit('edit', l)"><Icon name="sliders" :size="16" />Options</button>
           <button class="act" v-if="auth.can('DISCOUNT_APPLY')" @click="emit('discount', l)"><Icon name="percent" :size="16" />Remise</button>
           <button class="act" v-if="auth.can('PRICE_EDIT')" @click="emit('price', l)"><Icon name="tag" :size="16" />Prix</button>
           <button class="act" @click="emit('note', l)"><Icon name="note" :size="16" />Note</button>
