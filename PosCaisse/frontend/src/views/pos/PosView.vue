@@ -357,7 +357,7 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
     <TextDialog v-if="dialog?.kind === 'orderNote'" title="Note de commande" :initial="cart.note" placeholder="Remarque pour la préparation ou la livraison" @close="dialog = null" @ok="v => { cart.note = v; dialog = null }" />
     <PartyDialog v-if="dialog?.kind === 'party'" :party="dialog.party"
                  :initial="dialog.party === 'COURIER' ? cart.courier : cart.customer" @close="dialog = null" @ok="setParty" />
-    <HeldOrdersDialog v-if="dialog?.kind === 'held'" @close="dialog = null; refreshHeld()" @resume="resume" />
+    <HeldOrdersDialog v-if="dialog?.kind === 'held'" :stock="stock" @close="dialog = null; refreshHeld()" @resume="resume" />
     <CashMovementDialog v-if="dialog?.kind === 'cash'" @close="dialog = null" />
     <StockDialog v-if="dialog?.kind === 'stock'" @close="dialog = null; refreshStock()" @changed="refreshStock" />
     <AssistantDialog v-if="dialog?.kind === 'assistant'" @close="dialog = null"
