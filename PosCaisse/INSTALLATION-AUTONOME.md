@@ -71,7 +71,44 @@ L'installation crée un serveur PostgreSQL privé dans le dossier, avec un mot d
 au hasard, à l'écoute de `127.0.0.1` seulement. Aucun service Windows n'est enregistré,
 aucune clé de registre n'est écrite.
 
-## 2 bis. Transférer VOS données sur le poste
+## 2 bis. Partir de votre base d'essai, nettoyée
+
+Le cas courant n'est pas de partir d'une base neuve : c'est de partir de **votre base
+d'essai**, celle où la carte, les variantes, les ingrédients et les réglages ont été mis
+au point — mais qui traîne des semaines de tickets de test.
+
+Dans cet ordre, et pas un autre :
+
+1. **Déployez le nouveau code sur la base d'essai** (`RESTART_POS.bat`). Les migrations
+   s'appliquent seules ; la base garde tout.
+2. **Testez** ce que vous avez à tester, avec de vraies ventes si besoin.
+3. **`NETTOYER_VENTES.bat`** — arrêtez d'abord la caisse (`STOP_POS.bat`). Le script prend
+   une sauvegarde de sécurité, puis efface :
+
+   | Effacé | Conservé |
+   |---|---|
+   | tickets, lignes, paiements, remboursements | entreprise, points de vente, caisses |
+   | mouvements de caisse, journal, clôtures, sessions | catégories, articles, menus, options |
+   | règlements de compte — donc les **soldes clients** | ingrédients, variantes et leurs prix |
+   | compteurs de tickets (le prochain sera le **n° 1**) | remarques cuisine, moyens de paiement |
+   | stock des pâtes et son historique | imprimantes, modèles de ticket, utilisateurs |
+   | journal d'audit | clients, livreurs, et **tous les réglages** |
+
+   Il affiche ce qu'il a effacé et ce qu'il a gardé, ligne par ligne. Tout tient dans une
+   transaction : en cas d'erreur, la base reste telle qu'elle était.
+4. **Vérifiez de vos yeux** : `START_POS.bat`, puis la carte, les variantes (le suivi de
+   stock est bien là), les réglages, l'écran de clôture.
+5. **`EXPORTER_DONNEES.bat`** — c'est le fichier à emporter (voir ci-dessous).
+
+**Attention à l'ordre.** Si vous refaites des ventes de vérification après le nettoyage
+(étape 4), relancez `NETTOYER_VENTES.bat` avant d'exporter : sinon vos tickets de contrôle
+partent chez le client. L'export sans les ventes les laisserait de côté de toute façon,
+mais la base que vous gardez, elle, ne serait pas propre.
+
+La sauvegarde de sécurité est écrite dans `PosCaisse\sauvegardes\`, au format archive.
+Pour revenir en arrière : `pg_restore -d poscaisse --clean --if-exists <fichier>`.
+
+## 2 ter. Transférer VOS données sur le poste
 
 Le paquet s'installe avec un jeu de **démonstration** — enseigne fictive, articles
 d'exemple. Ce n'est pas votre carte. Pour mettre le poste en service avec ce que vous avez
@@ -83,7 +120,7 @@ Il pose une question, et c'est la seule qui compte :
 
 | Réponse | Ce qui part | Quand |
 |---|---|---|
-| **N** (défaut) | carte, entreprise, utilisateurs, réglages, clients, livreurs, remarques | **mise en service** : le client démarre avec un journal vierge et des tickets numérotés à partir de 1 |
+| **N** (défaut) | carte, entreprise, utilisateurs, réglages, clients, livreurs, remarques — sans les ventes, sans l'audit, et sans les compteurs de stock (le **paramétrage** des variantes, lui, part bien) | **mise en service** : le client démarre avec un journal vierge et des tickets numérotés à partir de 1 |
 | **O** | tout, vos tickets de test compris | reproduire un problème sur un autre poste |
 
 Le fichier est écrit dans `PosCaisse\exports\`.

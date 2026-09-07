@@ -81,7 +81,7 @@ async function refreshStock() {
     const e = await api.pos.stock()
     stock.value = Object.fromEntries((e.lines || []).map(l => [l.variantValueId, Number(l.quantity)]))
     // Le panier refuse lui-meme ce qu'il ne peut pas servir : il lui faut donc l'etat.
-    cart.setStock(stock.value)
+    cart.setStock(stock.value, catalog)
   } catch { /* une caisse fermee ou aucune pate suivie : l'ecran vit sans */ }
 }
 

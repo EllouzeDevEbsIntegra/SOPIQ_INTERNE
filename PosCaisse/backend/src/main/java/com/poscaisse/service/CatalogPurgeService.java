@@ -51,6 +51,12 @@ public class CatalogPurgeService {
     private static final List<String> SALES_TABLES = List.of(
             "print_job", "refund", "payment", "order_line_modifier", "order_line",
             "sale_order", "cash_movement", "register_journal", "daily_closure",
+            // Le stock des pates est un mouvement comme un autre : une remise a zero des
+            // ventes qui laisserait les compteurs en place ferait croire, au premier
+            // demarrage chez le client, a des pates qui n'ont jamais existe. Le
+            // PARAMETRAGE des variantes, lui, ne bouge pas - ce sont les compteurs qui
+            // repartent de zero, pas les regles.
+            "variant_stock_movement", "variant_stock",
             // Les reglements de compte pointent la session de caisse : ils doivent partir
             // avant elle, sinon la remise a zero bute sur la cle etrangere.
             "account_payment", "register_session", "document_sequence");

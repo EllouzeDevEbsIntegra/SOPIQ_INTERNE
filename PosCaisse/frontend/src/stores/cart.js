@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import { add, mul, pct, round, sub } from '../utils/money'
 import { besoinsDesLignes, manque } from '../utils/stock'
-import { useCatalogStore } from './catalog'
 import { useUiStore } from './ui'
 
 /**
@@ -97,12 +96,22 @@ export const useCartStore = defineStore('cart', () => {
       Ici, on evite au caissier de composer une commande qui sera refusee ensuite.
   */
   const stock = ref({})
-  function setStock(m) { stock.value = m || {} }
+  /*
+      Le catalogue est DONNE au panier, pas importe par lui.
+
+      Compter des pates demande de savoir ce qu'une version consomme et sur quel
+      compteur elle tire - donc les variantes, donc le catalogue. Le panier pourrait
+      aller le chercher lui-meme ; il trainerait alors derriere lui l'appel reseau et
+      l'ensemble du catalogue jusque dans le moindre test de panier. La caisse, qui a
+      les deux sous la main, les rapproche a chaque rafraichissement du stock.
+  */
+  const catalogue = ref(null)
+  function setStock(m, cat) { stock.value = m || {}; if (cat) catalogue.value = cat }
 
   /** Ce que le panier retirerait si ces lignes-la etaient les siennes. */
   function refusDeStock(lignesSimulees) {
-    if (!Object.keys(stock.value).length) return null
-    return manque(stock.value, besoinsDesLignes(lignesSimulees, useCatalogStore()), useCatalogStore())
+    if (!catalogue.value || !Object.keys(stock.value).length) return null
+    return manque(stock.value, besoinsDesLignes(lignesSimulees, catalogue.value), catalogue.value)
   }
   function refuser(message) { useUiStore().error(message); return null }
 

@@ -35,7 +35,11 @@ function Stop-Net($m) { Write-Host ''; Write-Host "ARRET : $m" -ForegroundColor 
 $tablesDeVentes = @(
   'print_job', 'refund', 'payment', 'order_line_modifier', 'order_line', 'sale_order',
   'cash_movement', 'register_journal', 'daily_closure', 'account_payment',
-  'register_session', 'document_sequence', 'audit_log'
+  'register_session', 'document_sequence', 'audit_log',
+  # Le stock des pates est un mouvement, pas un reglage : le PARAMETRAGE des variantes
+  # part avec l'export (compteur propre, pas de decrementation, valeur liee), mais les
+  # compteurs restent ici. Sans cela le client demarrerait avec les pates d'un essai.
+  'variant_stock', 'variant_stock_movement'
 )
 
 <#
