@@ -36,6 +36,14 @@ $c = @{ PG_PORT = '5433'; DB = 'poscaisse'; USER = 'poscaisse'; PASS = '' }
 foreach ($l in Get-Content $config) { if ($l -match '^\s*([A-Z_]+)\s*=\s*(.*?)\s*$') { $c[$Matches[1]] = $Matches[2] } }
 $env:PGPASSWORD = $c.PASS
 $env:PGCLIENTENCODING = 'UTF8'
+# La console Windows lit du cp850 par defaut : les accents renvoyes par psql en UTF-8
+# y ressortent en << Escalope Grill|(r) >>. Les donnees n'ont rien - c'est l'affichage.
+# On bascule donc la sortie de la console en UTF-8 pour la duree du script.
+try { [Console]::OutputEncoding = [System.Text.Encoding]::UTF8 } catch { }
+# Et on evite le pager : un tableau de cinquante articles s'arreterait sur << -- Suite -- >>
+# en attendant une touche, au milieu d'un script qu'on croit bloque.
+$env:PAGER = ''
+$env:PSQL_PAGER = ''
 
 # Le fichier : celui passe en parametre, sinon on montre ce qu'il y a sous la main.
 if (-not $Fichier) {
@@ -73,7 +81,7 @@ Info "$filet"
 
 Write-Host ''
 Write-Host '  [2/2] Application...'
-& $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d $c.DB -v ON_ERROR_STOP=1 -f $Fichier
+& $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d $c.DB -v ON_ERROR_STOP=1 -P pager=off -f $Fichier
 if ($LASTEXITCODE -ne 0) {
     Write-Host ''
     Souci "Le script s'est arrete. Ce qui etait dans une transaction n'a pas ete applique."
