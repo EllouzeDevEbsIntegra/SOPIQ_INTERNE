@@ -68,7 +68,9 @@ public class OrderService {
         applyPayments(o, req.payments(), session);
         o.setStatus(Enums.OrderStatus.PAID);
         o.setPaidAt(OffsetDateTime.now());
-        o.setTicketNumber(ticketNumbers.next(reg.getPointOfSale(), reg.getCode()));
+        TicketNumberService.Numero numero = ticketNumbers.next(reg.getPointOfSale(), reg.getCode());
+        o.setTicketNumber(numero.reference());
+        o.setTicketDisplay(numero.affichage());
         if (req.heldOrderId() != null) {
             orderRepo.findById(req.heldOrderId()).filter(h -> h.getStatus() == Enums.OrderStatus.HELD).ifPresent(h -> {
                 o.setHeldRef(h.getHeldRef());
@@ -426,7 +428,12 @@ public class OrderService {
     public OrderDto get(Long id) { return toDto(orderRepo.findById(id).orElseThrow(() -> BusinessException.notFound("Ticket"))); }
 
     @Transactional(readOnly = true)
-    public OrderDto byTicket(String ticket) { return toDto(orderRepo.findByTicketNumber(ticket).orElseThrow(() -> BusinessException.notFound("Ticket"))); }
+    /** Par la reference, ou a defaut par ce qui est imprime sur le papier - c'est ce que l'on a sous les yeux. */
+    public OrderDto byTicket(String ticket) {
+        return toDto(orderRepo.findByTicketNumber(ticket)
+                .or(() -> orderRepo.findFirstByTicketDisplayOrderByIdDesc(ticket))
+                .orElseThrow(() -> BusinessException.notFound("Ticket")));
+    }
 
     @Transactional
     public List<PrintJobDto> reprint(Long id) {
@@ -451,7 +458,13 @@ public class OrderService {
             if (cashierId != null) p.add(cb.equal(root.get("cashier").get("id"), cashierId));
             if (posId != null) p.add(cb.equal(root.get("pointOfSale").get("id"), posId));
             if (sessionId != null) p.add(cb.equal(root.get("session").get("id"), sessionId));
-            if (ticket != null && !ticket.isBlank()) p.add(cb.like(cb.lower(root.get("ticketNumber")), "%" + ticket.toLowerCase().trim() + "%"));
+            // La recherche porte sur les DEUX faces du numero : le caissier lit sur le papier
+            // ce qui y est imprime - l'affichage court - et ne connait pas la reference entiere.
+            if (ticket != null && !ticket.isBlank()) {
+                String motif = "%" + ticket.toLowerCase().trim() + "%";
+                p.add(cb.or(cb.like(cb.lower(root.get("ticketNumber")), motif),
+                            cb.like(cb.lower(root.get("ticketDisplay")), motif)));
+            }
             if (minAmount != null) p.add(cb.greaterThanOrEqualTo(root.get("total"), minAmount));
             if (maxAmount != null) p.add(cb.lessThanOrEqualTo(root.get("total"), maxAmount));
             if (methodCode != null && !methodCode.isBlank()) {

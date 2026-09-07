@@ -63,7 +63,8 @@ public class TicketNumberingAdminService {
                 r.pattern() == null ? a.pattern() : r.pattern(),
                 r.resetPeriod() == null ? a.remise().name() : r.resetPeriod(),
                 r.perPos() == null ? a.parPos() : r.perPos(),
-                r.perRegister() == null ? a.parCaisse() : r.perRegister()), false);
+                r.perRegister() == null ? a.parCaisse() : r.perRegister(),
+                r.displayPattern() == null ? a.affichage() : r.displayPattern()), false);
     }
 
     @Transactional
@@ -73,6 +74,7 @@ public class TicketNumberingAdminService {
         if (r.resetPeriod() != null) v.put(SettingsService.TICKET_RESET_PERIOD, r.resetPeriod().trim().toUpperCase());
         if (r.perPos() != null) v.put(SettingsService.TICKET_PER_POS, String.valueOf(r.perPos()));
         if (r.perRegister() != null) v.put(SettingsService.TICKET_PER_REGISTER, String.valueOf(r.perRegister()));
+        if (r.displayPattern() != null) v.put(SettingsService.TICKET_DISPLAY_PATTERN, r.displayPattern().trim());
         settings.update(v);          // refuse tout reglage qui fabriquerait des doublons
         return etat();
     }
@@ -122,7 +124,7 @@ public class TicketNumberingAdminService {
         Portee tete = portees.get(0);
 
         long suivant = prochain(r, tete);
-        String exemple = soucis.isEmpty()
+        TicketNumberService.Numero exemple = soucis.isEmpty()
                 ? TicketNumberService.exemple(r, tete.posCode(), tete.regCode(), suivant) : null;
 
         List<TicketCounterDto> compteurs = new ArrayList<>();
@@ -132,7 +134,7 @@ public class TicketNumberingAdminService {
                 encours.add(p.cle());
                 compteurs.add(new TicketCounterDto(p.cle(), TicketNumberService.libelle(p.cle()),
                         prochain(r, p), true,
-                        TicketNumberService.exemple(r, p.posCode(), p.regCode(), prochain(r, p))));
+                        TicketNumberService.exemple(r, p.posCode(), p.regCode(), prochain(r, p)).reference()));
             }
             // Les periodes passees, pour memoire : elles disent d'ou vient la numerotation.
             for (DocumentSequence s : sequenceRepo.findByScopeKeyStartingWithOrderByScopeKeyDesc(TicketNumberService.PREFIXE))
@@ -140,8 +142,9 @@ public class TicketNumberingAdminService {
                     compteurs.add(new TicketCounterDto(s.getScopeKey(), TicketNumberService.libelle(s.getScopeKey()),
                             s.getNextValue(), false, null));
         }
-        return new TicketNumberingDto(r.pattern(), r.remise().name(), r.parPos(), r.parCaisse(),
-                exemple, tete.cle(), TicketNumberService.libelle(tete.cle()), suivant, soucis, compteurs);
+        return new TicketNumberingDto(r.pattern(), r.remise().name(), r.parPos(), r.parCaisse(), r.affichage(),
+                exemple == null ? null : exemple.reference(), exemple == null ? null : exemple.affichage(),
+                tete.cle(), TicketNumberService.libelle(tete.cle()), suivant, soucis, compteurs);
     }
 
     /**

@@ -21,6 +21,7 @@ public class SettingsService {
     public static final String TICKET_RESET_PERIOD = "ticket.resetPeriod";
     public static final String TICKET_PER_POS = "ticket.perPos";
     public static final String TICKET_PER_REGISTER = "ticket.perRegister";
+    public static final String TICKET_DISPLAY_PATTERN = "ticket.displayPattern";
     public static final String SERVICE_MODES = "pos.serviceModes";
     public static final String DEFAULT_SERVICE_MODE = "pos.defaultServiceMode";
     public static final String TAX_ENABLED = "tax.enabled";
@@ -34,10 +35,10 @@ public class SettingsService {
     public static final String PIN_USER_TILES = "auth.showUserTiles";
 
     private static final Set<String> SENSITIVE = Set.of(TICKET_PATTERN, TICKET_RESET_PERIOD, TICKET_PER_POS,
-            TICKET_PER_REGISTER, TAX_ENABLED, DISCOUNT_HIGH_THRESHOLD);
+            TICKET_PER_REGISTER, TICKET_DISPLAY_PATTERN, TAX_ENABLED, DISCOUNT_HIGH_THRESHOLD);
     /** Les quatre reglages du numero de ticket : ils ne se jugent qu'ensemble. */
     private static final Set<String> NUMEROTATION = Set.of(TICKET_PATTERN, TICKET_RESET_PERIOD,
-            TICKET_PER_POS, TICKET_PER_REGISTER);
+            TICKET_PER_POS, TICKET_PER_REGISTER, TICKET_DISPLAY_PATTERN);
 
     private final SettingRepo repo;
     private final AuditService audit;
@@ -50,6 +51,9 @@ public class SettingsService {
         d.put(TICKET_RESET_PERIOD, "YEARLY");
         d.put(TICKET_PER_POS, "true");
         d.put(TICKET_PER_REGISTER, "false");
+        // Vide : le ticket montre sa reference entiere, comme avant. C'est en la
+        // remplissant qu'on raccourcit ce que lisent le caissier et le client.
+        d.put(TICKET_DISPLAY_PATTERN, "");
         d.put(SERVICE_MODES, "DINE_IN,TAKEAWAY,DELIVERY");
         d.put(DEFAULT_SERVICE_MODE, "TAKEAWAY");
         d.put(TAX_ENABLED, "false");
@@ -110,7 +114,8 @@ public class SettingsService {
         List<String> soucis = TicketNumberService.problemes(TicketNumberService.Reglage.of(
                 apres.get(TICKET_PATTERN), apres.get(TICKET_RESET_PERIOD),
                 "true".equalsIgnoreCase(apres.get(TICKET_PER_POS)),
-                "true".equalsIgnoreCase(apres.get(TICKET_PER_REGISTER))));
+                "true".equalsIgnoreCase(apres.get(TICKET_PER_REGISTER)),
+                apres.get(TICKET_DISPLAY_PATTERN)));
         if (!soucis.isEmpty()) throw new BusinessException(String.join(" ", soucis));
     }
 }

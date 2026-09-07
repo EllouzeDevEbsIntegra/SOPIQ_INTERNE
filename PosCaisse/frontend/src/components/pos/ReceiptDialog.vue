@@ -27,7 +27,7 @@ if (props.autoPrint && props.jobs?.length) setTimeout(() => print(true), 150)
           <b>{{ j.title }}</b><span class="tiny muted">{{ j.copies }} copie(s){{ j.duplicate ? ' · duplicata' : '' }}</span>
         </button>
         <div v-if="order" class="order-info">
-          <div class="tiny muted">TICKET</div><b>{{ order.ticketNumber }}</b>
+          <div class="tiny muted">TICKET</div><b>{{ order.ticketDisplay || order.ticketNumber }}</b>
           <div class="tiny muted mt-8">TOTAL</div><b class="num">{{ fmt(order.total, true) }}</b>
           <template v-if="Number(order.changeAmount) > 0"><div class="tiny muted mt-8">À RENDRE</div><b class="num" style="color:var(--success);font-size:22px">{{ fmt(order.changeAmount, true) }}</b></template>
         </div>

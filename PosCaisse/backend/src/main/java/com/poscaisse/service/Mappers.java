@@ -150,8 +150,18 @@ public final class Mappers {
                 j.getDestinationCode(), j.getTitle(), j.getCopies(), j.getContent(), j.getStatus().name(), j.isDuplicate(), j.getCreatedAt());
     }
 
+    /**
+     * Ce qui se lit a l'ecran et sur le papier : l'affichage retenu au moment de la vente,
+     * sinon la reference. Les tickets d'avant ce reglage n'en portent pas et gardent donc
+     * leur numero entier - c'est ce qui est imprime dessus.
+     */
+    private static String affichage(SaleOrder o) {
+        return o.getTicketDisplay() == null || o.getTicketDisplay().isBlank()
+                ? o.getTicketNumber() : o.getTicketDisplay();
+    }
+
     public static OrderDto order(SaleOrder o, List<Refund> refunds, List<PrintJob> jobs) {
-        return new OrderDto(o.getId(), o.getClientRef(), o.getTicketNumber(), o.getHeldRef(), o.getStatus().name(), o.getServiceMode().name(),
+        return new OrderDto(o.getId(), o.getClientRef(), o.getTicketNumber(), affichage(o), o.getHeldRef(), o.getStatus().name(), o.getServiceMode().name(),
                 o.getPointOfSale().getId(), o.getPointOfSale().getName(), o.getRegister().getId(), o.getRegister().getCode(),
                 o.getSession() == null ? null : o.getSession().getId(), o.getCashier().getId(), o.getCashier().getFullName(),
                 o.getCustomer() == null ? null : o.getCustomer().getId(), o.getCustomerName(), o.getCustomerPhone(),
@@ -167,7 +177,7 @@ public final class Mappers {
     public static OrderSummaryDto orderSummary(SaleOrder o) {
         String pay = o.getPayments().stream().map(p -> p.getPaymentMethod().getName()).distinct().collect(Collectors.joining(" + "));
         int items = o.getLines().stream().filter(l -> l.getParentLine() == null).mapToInt(l -> l.getQuantity().intValue()).sum();
-        return new OrderSummaryDto(o.getId(), o.getTicketNumber(), o.getHeldRef(), o.getStatus().name(), o.getServiceMode().name(),
+        return new OrderSummaryDto(o.getId(), o.getTicketNumber(), affichage(o), o.getHeldRef(), o.getStatus().name(), o.getServiceMode().name(),
                 o.getRegister().getCode(), o.getCashier().getFullName(), o.getCustomerName(),
                 o.getCourier() == null ? null : o.getCourier().getName(), o.getTotal(), o.getRefundedTotal(), pay,
                 o.getCreatedAt(), o.getPaidAt(), items);

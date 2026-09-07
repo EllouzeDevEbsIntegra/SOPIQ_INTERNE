@@ -218,7 +218,7 @@ public class ReceiptRenderer {
 
         // ---- identification du ticket ----
         if (duplicate && on(cfg, "showDuplicateLabel")) s.big("*** DUPLICATA ***");
-        if (on(cfg, "showTicketNumber")) s.bold("N° " + (o.getTicketNumber() == null ? "-" : o.getTicketNumber()));
+        if (on(cfg, "showTicketNumber")) s.bold("N° " + numero(o, "-"));
         String cashier = on(cfg, "showCashier") ? o.getCashier().getFullName() : null;
         String service = on(cfg, "showServiceMode") ? mode(o.getServiceMode()) : null;
         // Caissier et service tiennent sur une ligne quand la largeur le permet : une ligne
@@ -323,7 +323,7 @@ public class ReceiptRenderer {
         s.big(dest.getName());
         if (duplicate) s.big("*** DUPLICATA ***");
         s.sep("=");
-        s.bold("N° " + (o.getTicketNumber() == null ? o.getHeldRef() : o.getTicketNumber()));
+        s.bold("N° " + numero(o, o.getHeldRef()));
         var when = (o.getPaidAt() == null ? o.getCreatedAt() : o.getPaidAt()).atZoneSameInstant(TZ);
         if (on(cfg, "prepShowTime")) s.lr(when.format(DATE), when.format(TIME));
         s.lr("Service", mode(o.getServiceMode()));
@@ -351,6 +351,16 @@ public class ReceiptRenderer {
     private static boolean notBlank(String v) { return v != null && !v.isBlank(); }
 
     private static boolean on(Map<String, Object> cfg, String k) { Object v = cfg.get(k); return v == null || Boolean.TRUE.equals(v) || "true".equals(String.valueOf(v)); }
+
+    /**
+     * Le numero tel qu'il doit se lire sur le papier : l'affichage retenu au moment de la
+     * vente, sinon la reference. On relit ce qui a ete pose sur la commande, jamais le
+     * reglage du jour - une reimpression doit ressortir le ticket que le client a garde.
+     */
+    private static String numero(SaleOrder o, String defaut) {
+        if (o.getTicketDisplay() != null && !o.getTicketDisplay().isBlank()) return o.getTicketDisplay();
+        return o.getTicketNumber() == null ? defaut : o.getTicketNumber();
+    }
 
     /** Comme {@link #on} mais par defaut a NON : pour ce qui charge le ticket sans etre reclame. */
     private static boolean on2(Map<String, Object> cfg, String k) { Object v = cfg.get(k); return Boolean.TRUE.equals(v) || "true".equals(String.valueOf(v)); }

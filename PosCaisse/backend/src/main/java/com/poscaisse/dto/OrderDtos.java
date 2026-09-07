@@ -36,7 +36,7 @@ public final class OrderDtos {
     public record PaymentDto(Long id, Long paymentMethodId, String methodCode, String methodName, BigDecimal amount, BigDecimal tendered, BigDecimal changeGiven, String reference, OffsetDateTime createdAt) {}
     public record RefundDto(Long id, Long orderId, String ticketNumber, BigDecimal amount, String reason, String methodName, String userName, OffsetDateTime createdAt, String kind) {}
 
-    public record OrderDto(Long id, String clientRef, String ticketNumber, String heldRef, String status, String serviceMode,
+    public record OrderDto(Long id, String clientRef, String ticketNumber, String ticketDisplay, String heldRef, String status, String serviceMode,
                            Long pointOfSaleId, String pointOfSaleName, Long registerId, String registerCode, Long sessionId,
                            Long cashierId, String cashierName, Long customerId, String customerName, String customerPhone,
                            Long courierId, String courierName, String note,
@@ -45,7 +45,7 @@ public final class OrderDtos {
                            String cancelReason, OffsetDateTime createdAt, OffsetDateTime paidAt, OffsetDateTime cancelledAt,
                            List<OrderLineDto> lines, List<PaymentDto> payments, List<RefundDto> refunds, List<PrintJobDto> printJobs) {}
 
-    public record OrderSummaryDto(Long id, String ticketNumber, String heldRef, String status, String serviceMode, String registerCode,
+    public record OrderSummaryDto(Long id, String ticketNumber, String ticketDisplay, String heldRef, String status, String serviceMode, String registerCode,
                                   String cashierName, String customerName, String courierName, BigDecimal total, BigDecimal refundedTotal,
                                   String paymentSummary, OffsetDateTime createdAt, OffsetDateTime paidAt, int itemCount) {}
 

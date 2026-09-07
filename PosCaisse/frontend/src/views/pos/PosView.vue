@@ -184,7 +184,7 @@ async function pay(payments, imprimer = true) {
       }
     }
     const rendu = Number(order.changeAmount) > 0 ? ` — rendu ${fmt(order.changeAmount, true)}` : ''
-    ui.success(`Ticket ${order.ticketNumber} encaissé${rendu}${imprimer ? '' : ' · sans ticket'}`)
+    ui.success(`Ticket ${order.ticketDisplay || order.ticketNumber} encaissé${rendu}${imprimer ? '' : ' · sans ticket'}`)
   } catch (e) {
     ui.error(e.humanMessage)
     if (e.response?.status === 409 && /session/i.test(e.humanMessage || '')) { auth.setSession(null); router.replace('/open') }

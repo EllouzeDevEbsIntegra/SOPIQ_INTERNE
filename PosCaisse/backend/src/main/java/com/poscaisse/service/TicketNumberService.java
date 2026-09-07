@@ -58,23 +58,43 @@ public class TicketNumberService {
     /** Sur quoi le compteur repart a 1. */
     public enum Remise { NONE, DAILY, MONTHLY, YEARLY }
 
-    /** Les quatre reglages qui font un numero, lus ensemble : ils ne se jugent pas separement. */
-    public record Reglage(String pattern, Remise remise, boolean parPos, boolean parCaisse) {
-        public static Reglage of(String pattern, String remise, boolean parPos, boolean parCaisse) {
+    /**
+     * Les reglages qui font un numero, lus ensemble : ils ne se jugent pas separement.
+     *
+     * << pattern >> est la REFERENCE, celle qui est enregistree et qui doit rester unique.
+     * << affichage >> est ce que le caissier et le client lisent : vide, c'est la reference
+     * elle-meme ; sinon un format plus court, tire du meme compteur. Le detail complet
+     * reste en base pour la comptabilite, sans encombrer le ticket.
+     */
+    public record Reglage(String pattern, Remise remise, boolean parPos, boolean parCaisse, String affichage) {
+        public static Reglage of(String pattern, String remise, boolean parPos, boolean parCaisse, String affichage) {
             Remise r;
             try { r = Remise.valueOf(remise == null ? "NONE" : remise.trim().toUpperCase()); }
             catch (IllegalArgumentException e) { r = Remise.NONE; }
-            return new Reglage(pattern == null || !pattern.contains("{SEQ") ? "{SEQ:6}" : pattern, r, parPos, parCaisse);
+            return new Reglage(pattern == null || !pattern.contains("{SEQ") ? "{SEQ:6}" : pattern, r, parPos, parCaisse,
+                    affichage == null ? "" : affichage.trim());
         }
     }
 
+    /** Ce qu'une vente emporte : sa reference unique, et ce qui s'ecrit sous les yeux. */
+    public record Numero(String reference, String affichage) {}
+
     @Transactional(propagation = Propagation.MANDATORY)
-    public String next(PointOfSale pos, String registerCode) {
+    public Numero next(PointOfSale pos, String registerCode) {
         Reglage r = reglage();
         String posCode = pos == null ? "" : pos.getCode();
         Forme forme = forme(r.pattern(), posCode, registerCode);
-        return format(r.pattern(), posCode, registerCode,
-                ignore -> valeurSuivante(cle(r, posCode, registerCode), forme));
+        long[] tire = new long[1];
+        String reference = format(r.pattern(), posCode, registerCode,
+                ignore -> (tire[0] = valeurSuivante(cle(r, posCode, registerCode), forme)));
+        // Le compteur n'est tire QU'UNE FOIS : l'affichage rejoue le meme numero sous une
+        // autre forme, il ne demande pas le suivant - sinon un ticket sur deux serait saute.
+        return new Numero(reference, affichage(r, posCode, registerCode, tire[0], reference));
+    }
+
+    /** Ce qui s'ecrit sur le ticket et a l'ecran pour un compteur donne. */
+    public static String affichage(Reglage r, String posCode, String registerCode, long valeur, String reference) {
+        return r.affichage().isBlank() ? reference : format(r.affichage(), posCode, registerCode, k -> valeur);
     }
 
     /** Le reglage courant, tel qu'il est enregistre. */
@@ -82,7 +102,8 @@ public class TicketNumberService {
         return Reglage.of(settings.get(SettingsService.TICKET_PATTERN),
                 settings.get(SettingsService.TICKET_RESET_PERIOD),
                 settings.getBoolean(SettingsService.TICKET_PER_POS),
-                settings.getBoolean(SettingsService.TICKET_PER_REGISTER));
+                settings.getBoolean(SettingsService.TICKET_PER_REGISTER),
+                settings.get(SettingsService.TICKET_DISPLAY_PATTERN));
     }
 
     /**
@@ -195,8 +216,9 @@ public class TicketNumberService {
     }
 
     /** Le numero qui sortirait, pour montrer le reglage avant de l'enregistrer. */
-    public static String exemple(Reglage r, String posCode, String registerCode, long valeur) {
-        return format(r.pattern(), posCode, registerCode, k -> valeur);
+    public static Numero exemple(Reglage r, String posCode, String registerCode, long valeur) {
+        String reference = format(r.pattern(), posCode, registerCode, k -> valeur);
+        return new Numero(reference, affichage(r, posCode, registerCode, valeur, reference));
     }
 
     /**
@@ -219,6 +241,10 @@ public class TicketNumberService {
             l.add("Une remise à zéro mensuelle exige {MM} et {YYYY} (ou {YY}) dans le format, sinon deux mois porteraient les mêmes numéros.");
         if (r.remise() == Remise.DAILY && (!annee || !p.contains("{MM}") || !p.contains("{DD}")))
             l.add("Une remise à zéro journalière exige {DD}, {MM} et {YYYY} (ou {YY}) dans le format, sinon deux jours porteraient les mêmes numéros.");
+        // L'affichage n'a pas a etre unique - c'est la reference qui l'est - mais sans
+        // compteur il serait identique sur tous les tickets, et ne designerait plus rien.
+        if (!r.affichage().isBlank() && !r.affichage().contains("{SEQ"))
+            l.add("L’affichage doit contenir {SEQ} : sans compteur, tous les tickets afficheraient la même chose.");
         return l;
     }
 }

@@ -15,6 +15,9 @@ import java.util.Optional;
 public interface OrderRepo extends JpaRepository<SaleOrder, Long>, JpaSpecificationExecutor<SaleOrder> {
     Optional<SaleOrder> findByClientRef(String clientRef);
     Optional<SaleOrder> findByTicketNumber(String ticketNumber);
+    /* L'affichage n'est pas unique - avec une remise a zero journaliere, << 0001 >> revient
+       chaque matin. On rend donc le plus recent, celui qu'on cherche presque toujours. */
+    Optional<SaleOrder> findFirstByTicketDisplayOrderByIdDesc(String ticketDisplay);
     List<SaleOrder> findByStatusAndRegisterPointOfSaleIdOrderByCreatedAtAsc(Enums.OrderStatus status, Long posId);
     List<SaleOrder> findByStatusOrderByCreatedAtAsc(Enums.OrderStatus status);
     List<SaleOrder> findBySessionIdOrderByPaidAtDesc(Long sessionId);

@@ -23,7 +23,7 @@ const ui = useUiStore(); const { busy, run } = useBusy()
 
 const etat = ref(null)          // ce que le serveur repond pour le reglage propose
 const enregistre = ref(null)    // ce qui est reellement en vigueur
-const form = reactive({ pattern: '', resetPeriod: 'YEARLY', perPos: true, perRegister: false })
+const form = reactive({ pattern: '', resetPeriod: 'YEARLY', perPos: true, perRegister: false, displayPattern: '' })
 const champ = ref(null)
 const compteur = ref(null)
 
@@ -44,6 +44,18 @@ const JETONS = [
   { j: '{SEQ:6}', dit: 'compteur, ici sur 6 chiffres' }
 ]
 
+/*
+    L'affichage : ce que le caissier et le client lisent. La reference peut porter la
+    date, le point de vente et la caisse - c'est la comptabilite qui en a besoin ; sur le
+    papier, un numero court se retient et s'annonce au comptoir.
+*/
+const AFFICHAGES = [
+  { p: '', dit: 'Le numéro complet, tel qu’il est enregistré' },
+  { p: '{SEQ:4}', dit: 'Le compteur seul' },
+  { p: '{REG}-{SEQ:3}', dit: 'Caisse et compteur' },
+  { p: 'N° {SEQ:3}', dit: 'Précédé de « N° »' }
+]
+
 const MODELES = [
   { p: '{POS}-{YYYY}-{SEQ:6}', dit: 'Point de vente, année, compteur' },
   { p: '{SEQ:6}', dit: 'Le compteur seul' },
@@ -59,12 +71,14 @@ const soucis = computed(() => etat.value?.problems || [])
 const compteurs = computed(() => enregistre.value?.counters || [])
 const modifie = computed(() => !!enregistre.value && (
   form.pattern !== enregistre.value.pattern || form.resetPeriod !== enregistre.value.resetPeriod ||
-  form.perPos !== enregistre.value.perPos || form.perRegister !== enregistre.value.perRegister))
+  form.perPos !== enregistre.value.perPos || form.perRegister !== enregistre.value.perRegister ||
+  form.displayPattern !== (enregistre.value.displayPattern || '')))
 
 function poser(d) {
   enregistre.value = d; etat.value = d
   form.pattern = d.pattern; form.resetPeriod = d.resetPeriod
   form.perPos = d.perPos; form.perRegister = d.perRegister
+  form.displayPattern = d.displayPattern || ''
 }
 
 onMounted(async () => {
@@ -133,8 +147,11 @@ async function poserCompteur() {
     <div class="card apercu" :class="{ faux: soucis.length }">
       <div>
         <div class="card-title">Prochain ticket</div>
-        <div v-if="etat.sample" class="exemple num">{{ etat.sample }}</div>
+        <div v-if="etat.sample" class="exemple num">{{ etat.displaySample }}</div>
         <div v-else class="exemple faux-txt">réglage impossible</div>
+        <div v-if="etat.sample && etat.displaySample !== etat.sample" class="small muted reference">
+          imprimé sur le ticket · en base : <b class="mono">{{ etat.sample }}</b>
+        </div>
         <div class="small muted">
           Compteur <b>{{ etat.scopeLabel }}</b> · prochain numéro <b class="num">{{ etat.nextValue }}</b>
           <span v-if="modifie" class="badge warning" style="margin-left:8px">non enregistré</span>
@@ -200,7 +217,33 @@ async function poserCompteur() {
       </div>
     </div>
 
-    <!-- 3. Les compteurs eux-memes -->
+    <!-- 3. Ce que le client lit -->
+    <div class="card">
+      <div class="card-title">Affiché à la caisse et sur le ticket</div>
+      <p class="small muted">
+        La référence ci-dessus reste enregistrée entière, pour la comptabilité et les recherches.
+        Ce réglage-ci ne décide que de ce qui s’écrit sur le papier et à l’écran de vente — un
+        client n’a pas à lire l’année, la date et le numéro de caisse pour retrouver sa commande.
+      </p>
+      <div class="modeles" style="margin-bottom:10px">
+        <button v-for="a in AFFICHAGES" :key="a.p" class="modele" :class="{ on: form.displayPattern === a.p }"
+                @click="form.displayPattern = a.p">
+          <b class="mono">{{ a.p || '(le numéro complet)' }}</b><i>{{ a.dit }}</i>
+        </button>
+      </div>
+      <div class="field">
+        <label>Ou un affichage à vous</label>
+        <input class="input mono" v-model="form.displayPattern" spellcheck="false"
+               placeholder="vide = le numéro complet" />
+      </div>
+      <div class="tiny muted mt-8">
+        Mêmes jetons que le format. {SEQ} est obligatoire dès que le champ n’est pas vide, sinon
+        tous les tickets afficheraient la même chose. Les tickets déjà imprimés gardent le numéro
+        qu’ils portent : une réimpression rend le ticket que le client a gardé.
+      </div>
+    </div>
+
+    <!-- 4. Les compteurs eux-memes -->
     <div class="card">
       <div class="card-title">Compteurs</div>
       <p class="small muted">
@@ -244,6 +287,7 @@ async function poserCompteur() {
 <style scoped>
 .numerotation { display: flex; flex-direction: column; gap: 16px; }
 .apercu { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.reference { margin-bottom: 2px; }
 .exemple {
   font-family: var(--font-mono); font-size: 34px; font-weight: 700;
   letter-spacing: -.02em; line-height: 1.15; margin-bottom: 4px;

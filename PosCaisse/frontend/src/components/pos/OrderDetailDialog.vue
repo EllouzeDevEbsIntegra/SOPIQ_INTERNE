@@ -27,7 +27,7 @@ const canRefund = computed(() => order.value && ['PAID', 'PARTIALLY_REFUNDED'].i
 async function reprint() { const j = await run(() => api.orders.reprint(order.value.id)); if (j) jobs.value = j }
 async function cancel(reason) {
   dialog.value = null
-  if (!await ui.confirm({ title: 'Annuler le ticket', message: `Annuler définitivement le ticket ${order.value.ticketNumber} ?\nUn remboursement de ${fmt(remaining.value, true)} sera enregistré.`, okLabel: 'Annuler le ticket', danger: true })) return
+  if (!await ui.confirm({ title: 'Annuler le ticket', message: `Annuler définitivement le ticket ${order.value.ticketDisplay || order.value.ticketNumber} ?\nUn remboursement de ${fmt(remaining.value, true)} sera enregistré.`, okLabel: 'Annuler le ticket', danger: true })) return
   const o = await run(() => api.orders.cancel(order.value.id, reason, null), { success: 'Ticket annulé' })
   if (o) { order.value = o; emit('changed') }
 }
@@ -46,7 +46,7 @@ const statusClass = (s) => ({ PAID: 'success', CANCELLED: 'danger', REFUNDED: 'd
 <template>
   <Modal size="md" @close="emit('close')">
     <template #head>
-      <div class="grow" v-if="order"><h2>Ticket {{ order.ticketNumber }}</h2><div class="muted small">{{ fmtDateTime(order.paidAt || order.createdAt) }} · {{ order.registerCode }} · {{ order.cashierName }} · {{ serviceModeLabel(order.serviceMode) }}</div></div>
+      <div class="grow" v-if="order"><h2>Ticket {{ order.ticketDisplay || order.ticketNumber }}</h2><div class="muted small">{{ fmtDateTime(order.paidAt || order.createdAt) }} · {{ order.registerCode }} · {{ order.cashierName }} · {{ serviceModeLabel(order.serviceMode) }}</div></div>
       <span v-if="order" class="badge" :class="statusClass(order.status)">{{ statusLabel(order.status) }}</span>
     </template>
     <div v-if="!order" class="spinner"></div>

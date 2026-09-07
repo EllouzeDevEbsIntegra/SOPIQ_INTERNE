@@ -56,7 +56,7 @@ const statusClass = (s) => ({ PAID: 'success', CANCELLED: 'danger', REFUNDED: 'd
           <thead><tr><th>Ticket</th><th>Date</th><th>Caisse</th><th>Caissier</th><th>Mode</th><th>Client</th><th>Paiement</th><th class="right">Total</th><th>Statut</th></tr></thead>
           <tbody>
             <tr v-for="o in data.content" :key="o.id" class="clickable" @click="selected=o.id">
-              <td><b>{{ o.ticketNumber }}</b><span v-if="o.heldRef" class="tiny muted"> ({{ o.heldRef }})</span></td><td>{{ fmtDateTime(o.paidAt || o.createdAt) }}</td><td>{{ o.registerCode }}</td><td>{{ o.cashierName }}</td>
+              <td><b>{{ o.ticketDisplay || o.ticketNumber }}</b><span v-if="o.heldRef" class="tiny muted"> ({{ o.heldRef }})</span></td><td>{{ fmtDateTime(o.paidAt || o.createdAt) }}</td><td>{{ o.registerCode }}</td><td>{{ o.cashierName }}</td>
               <td>{{ serviceModeLabel(o.serviceMode) }}</td><td>{{ o.customerName || '' }}</td><td>{{ o.paymentSummary }}</td>
               <td class="right num bold">{{ fmt(o.total) }}<div v-if="Number(o.refundedTotal)" class="tiny" style="color:var(--danger)">−{{ fmt(o.refundedTotal) }}</div></td>
               <td><span class="badge" :class="statusClass(o.status)">{{ statusLabel(o.status) }}</span></td>

@@ -190,10 +190,43 @@ class PosIntegrationTest {
                         java.util.Map.of("scopeKey", "TICKET:AUTRE|1999-01-01", "nextValue", 3))))
                 .andExpect(status().isBadRequest());
 
+        // Ce que le CLIENT lit peut être court, alors que la référence reste entière en base.
+        JsonNode court = json(putJson("/api/ticket-numbering", admin, java.util.Map.of(
+                "pattern", "{POS}-{YYYY}{MM}{DD}-{SEQ:4}", "resetPeriod", "DAILY",
+                "perPos", true, "perRegister", false, "displayPattern", "{SEQ:3}"), 200));
+        assertThat(court.get("sample").asText()).contains(aujourdhui.replace("-", ""));
+        assertThat(court.get("displaySample").asText()).doesNotContain(an).hasSize(3);
+
+        JsonNode venteCourte = json(postJson("/api/pos/checkout", cashierToken, java.util.Map.of(
+                "clientRef", UUID.randomUUID().toString(), "registerId", registerId,
+                "lines", java.util.List.of(java.util.Map.of("productId", cocaId, "quantity", 1)),
+                "payments", java.util.List.of(java.util.Map.of("paymentMethodId", cashId, "amount", 5, "tendered", 5))), 200));
+        String reference = venteCourte.get("ticketNumber").asText();
+        String affiche = venteCourte.get("ticketDisplay").asText();
+        assertThat(reference).contains(an).endsWith("0501");   // la référence garde tout
+        assertThat(affiche).isEqualTo("501");                  // le papier ne garde que le compteur
+
+        // Le ticket imprimé porte l'affichage, pas la référence.
+        JsonNode jobs = json(mvc.perform(get("/api/orders/" + venteCourte.get("id").asLong() + "/print-jobs")
+                .header("Authorization", "Bearer " + admin)).andExpect(status().isOk()).andReturn());
+        String papier = jobs.get(0).get("content").asText();
+        assertThat(papier).contains("N° " + affiche).doesNotContain(reference);
+
+        // Et on retrouve la vente en tapant ce qui est écrit sur le papier.
+        JsonNode trouve = json(mvc.perform(get("/api/orders").param("ticket", affiche)
+                .header("Authorization", "Bearer " + admin)).andExpect(status().isOk()).andReturn());
+        assertThat(trouve.get("content").get(0).get("ticketNumber").asText()).isEqualTo(reference);
+
+        // Un affichage sans compteur serait le même sur tous les tickets : refusé.
+        mvc.perform(put("/api/ticket-numbering").header("Authorization", "Bearer " + admin)
+                .contentType(MediaType.APPLICATION_JSON).content("{\"displayPattern\":\"TICKET\"}"))
+                .andExpect(status().isBadRequest());
+
         postJson("/api/pos/session/" + sessionDuJour + "/close", cashierToken,
-                java.util.Map.of("countedCash", 10), 200);
+                java.util.Map.of("countedCash", 15), 200);
         putJson("/api/ticket-numbering", admin, java.util.Map.of(
-                "pattern", "{POS}-{YYYY}-{SEQ:6}", "resetPeriod", "YEARLY", "perPos", true, "perRegister", false), 200);
+                "pattern", "{POS}-{YYYY}-{SEQ:6}", "resetPeriod", "YEARLY",
+                "perPos", true, "perRegister", false, "displayPattern", ""), 200);
     }
 
     /**

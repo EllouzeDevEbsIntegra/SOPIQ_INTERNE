@@ -20,7 +20,11 @@ class TicketNumberFormatTest {
     private long next(String key) { long v = counters.getOrDefault(key, 1L); counters.put(key, v + 1); return v; }
 
     private static Reglage reglage(String pattern, Remise remise, boolean parPos, boolean parCaisse) {
-        return Reglage.of(pattern, remise.name(), parPos, parCaisse);
+        return Reglage.of(pattern, remise.name(), parPos, parCaisse, "");
+    }
+
+    private static Reglage avecAffichage(String pattern, String affichage) {
+        return Reglage.of(pattern, "YEARLY", true, false, affichage);
     }
 
     // ------------------------------------------------------------------ le texte imprime
@@ -120,8 +124,44 @@ class TicketNumberFormatTest {
     @Test void unFormatSansCompteurEstRefuse() {
         // Reglage.of retablit {SEQ:6} plutot que de laisser passer un format muet,
         // mais la regle reste dite : c'est elle qui protege une saisie a la main.
-        assertThat(TicketNumberService.problemes(new Reglage("TICKET-{YYYY}", Remise.NONE, false, false)))
+        assertThat(TicketNumberService.problemes(new Reglage("TICKET-{YYYY}", Remise.NONE, false, false, "")))
                 .singleElement().asString().contains("{SEQ}");
-        assertThat(Reglage.of("TICKET-{YYYY}", "NONE", false, false).pattern()).isEqualTo("{SEQ:6}");
+        assertThat(Reglage.of("TICKET-{YYYY}", "NONE", false, false, "").pattern()).isEqualTo("{SEQ:6}");
+    }
+
+    // ------------------------------------------------------------------ ce qui se lit sur le papier
+
+    /**
+     * La reference peut etre longue - elle sert la comptabilite. Ce que le client lit ne
+     * doit pas l'etre : les deux sortent du MEME compteur, sous deux formes.
+     */
+    @Test void laReferenceEstLongueEtLAffichageCourt() {
+        Reglage r = avecAffichage("#-{YYYY}{MM}{DD}-{POS}-{REG}-{SEQ:6}", "{SEQ:4}");
+        var n = TicketNumberService.exemple(r, "PV01", "C01", 42);
+        assertThat(n.reference()).isEqualTo("#-" + String.format("%04d%02d%02d", AN, AUJOURD_HUI.getMonthValue(), AUJOURD_HUI.getDayOfMonth()) + "-PV01-C01-000042");
+        assertThat(n.affichage()).isEqualTo("0042");
+    }
+
+    @Test void sansReglageDAffichageLeTicketMontreSaReference() {
+        var n = TicketNumberService.exemple(avecAffichage("{POS}-{YYYY}-{SEQ:6}", ""), "PV01", "C01", 7);
+        assertThat(n.affichage()).isEqualTo(n.reference()).isEqualTo("PV01-" + AN + "-000007");
+    }
+
+    @Test void lAffichagePeutPorterDAutresJetonsQueLeCompteur() {
+        var n = TicketNumberService.exemple(avecAffichage("{POS}-{YYYY}-{SEQ:6}", "{REG}-{SEQ:3}"), "PV01", "C02", 8);
+        assertThat(n.affichage()).isEqualTo("C02-008");
+        assertThat(n.reference()).isEqualTo("PV01-" + AN + "-000008");
+    }
+
+    /** Un compteur plus large que l'affichage ne se tronque pas : un numero faux serait pire que long. */
+    @Test void unCompteurPlusGrandQueLaLargeurNEstPasTronque() {
+        assertThat(TicketNumberService.exemple(avecAffichage("{POS}-{YYYY}-{SEQ:6}", "{SEQ:3}"), "PV01", "C01", 12345).affichage())
+                .isEqualTo("12345");
+    }
+
+    @Test void unAffichageSansCompteurEstRefuse() {
+        assertThat(TicketNumberService.problemes(avecAffichage("{POS}-{YYYY}-{SEQ:6}", "N° du jour")))
+                .singleElement().asString().contains("{SEQ}");
+        assertThat(TicketNumberService.problemes(avecAffichage("{POS}-{YYYY}-{SEQ:6}", "{SEQ:4}"))).isEmpty();
     }
 }

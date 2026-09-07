@@ -13,6 +13,13 @@ public class SaleOrder {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
     private String clientRef;
     private String ticketNumber;
+    /*
+        Ce qui a ete IMPRIME sur le papier, quand l'exploitant a demande un affichage plus
+        court que la reference. Conserve plutot que recalcule : une reimpression six mois
+        plus tard doit ressortir le meme numero que le ticket que le client a garde, meme
+        si le format d'affichage a change entre-temps.
+    */
+    private String ticketDisplay;
     private String heldRef;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "company_id") private Company company;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "point_of_sale_id") private PointOfSale pointOfSale;

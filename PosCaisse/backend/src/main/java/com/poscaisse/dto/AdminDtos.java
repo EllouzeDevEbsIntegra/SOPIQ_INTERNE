@@ -37,9 +37,11 @@ public final class AdminDtos {
      */
     public record TicketCounterDto(String scopeKey, String label, long nextValue, boolean current, String sample) {}
     public record TicketNumberingDto(String pattern, String resetPeriod, boolean perPos, boolean perRegister,
-                                     String sample, String scopeKey, String scopeLabel, long nextValue,
+                                     String displayPattern, String sample, String displaySample,
+                                     String scopeKey, String scopeLabel, long nextValue,
                                      List<String> problems, List<TicketCounterDto> counters) {}
-    public record TicketNumberingRequest(String pattern, String resetPeriod, Boolean perPos, Boolean perRegister) {}
+    public record TicketNumberingRequest(String pattern, String resetPeriod, Boolean perPos, Boolean perRegister,
+                                         String displayPattern) {}
     public record TicketCounterRequest(@NotBlank String scopeKey, @NotNull Long nextValue) {}
 
     public record PrintDestinationDto(Long id, String code, String name, String kind, int copies, boolean showPrices, int sortOrder, boolean active) {}
