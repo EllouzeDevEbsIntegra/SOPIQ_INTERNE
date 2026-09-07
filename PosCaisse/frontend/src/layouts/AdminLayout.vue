@@ -34,6 +34,7 @@ const nav = [
     { to: '/admin/company', label: 'Entreprise & caisses', icon: 'store', perm: 'SETTINGS_MANAGE' },
     { to: '/admin/payments', label: 'Moyens de paiement', icon: 'card', perm: 'SETTINGS_MANAGE' },
     { to: '/admin/printing', label: 'Tickets & impression', icon: 'printer', perm: 'SETTINGS_MANAGE' },
+    { to: '/admin/ticket-numbering', label: 'Numérotation des tickets', icon: 'list', perm: 'SETTINGS_MANAGE' },
     { to: '/admin/settings', label: 'Paramètres POS', icon: 'settings', perm: 'SETTINGS_MANAGE' },
     { to: '/admin/audit', label: "Journal d'audit", icon: 'eye', perm: 'AUDIT_VIEW' } ] }
 ]

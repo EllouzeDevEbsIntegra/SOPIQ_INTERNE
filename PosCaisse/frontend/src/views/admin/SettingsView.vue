@@ -28,7 +28,9 @@ async function save() {
     </div>
     <div class="card"><div class="card-title">Numérotation & impression</div>
       <div class="form-grid">
-        <div class="field span-2"><label>Format des numéros de ticket</label><input class="input" v-model="s['ticket.pattern']" /><div class="tiny muted">Variables : {POS} code point de vente, {REG} code caisse, {YYYY} {YY} {MM} {DD}, {SEQ:6} compteur (6 chiffres). Le compteur redémarre quand le préfixe change (ex. nouvelle année). Exemples : <code>{SEQ:6}</code> → 000001 · <code>{POS}-{YYYY}-{SEQ:6}</code> → PV01-2026-000001</div></div>
+        <!-- La numerotation a son propre ecran : le format seul ne disait pas quand le
+             compteur repart a 1, et c'est cette question-la qu'on se pose. -->
+        <div class="field span-2"><label>Numérotation des tickets</label><router-link class="btn" to="/admin/ticket-numbering">Format et remise à zéro du compteur</router-link><div class="tiny muted">Format imprimé, remise à zéro (journalière, mensuelle, annuelle ou continue), compteur par point de vente ou par caisse, et le prochain numéro.</div></div>
         <div class="field"><label>Écran de connexion</label><select class="input" v-model="s['auth.showUserTiles']"><option value="true">Afficher les tuiles caissiers</option><option value="false">PIN seul</option></select></div>
       </div>
     </div>

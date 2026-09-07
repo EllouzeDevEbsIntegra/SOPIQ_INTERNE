@@ -6,6 +6,7 @@ import com.poscaisse.printing.PrintService;
 import com.poscaisse.service.AdminService;
 import com.poscaisse.service.OrderService;
 import com.poscaisse.service.SettingsService;
+import com.poscaisse.service.TicketNumberingAdminService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,6 +23,7 @@ public class AdminController {
     private final SettingsService settings;
     private final PrintService print;
     private final OrderService orders;
+    private final TicketNumberingAdminService numbering;
 
     // users & roles
     @PreAuthorize("hasAuthority('USERS_MANAGE')") @GetMapping("/users") public List<UserDto> users() { return admin.users(); }
@@ -57,6 +59,12 @@ public class AdminController {
     // settings
     @GetMapping("/settings") public Map<String, String> settings() { return settings.all(); }
     @PreAuthorize("hasAuthority('SETTINGS_MANAGE')") @PutMapping("/settings") public Map<String, String> saveSettings(@RequestBody Map<String, String> values) { return settings.update(values); }
+
+    // numerotation des tickets : le format, la portee du compteur, et les compteurs eux-memes
+    @PreAuthorize("hasAuthority('SETTINGS_MANAGE')") @GetMapping("/ticket-numbering") public TicketNumberingDto ticketNumbering() { return numbering.etat(); }
+    @PreAuthorize("hasAuthority('SETTINGS_MANAGE')") @PostMapping("/ticket-numbering/preview") public TicketNumberingDto previewNumbering(@RequestBody TicketNumberingRequest r) { return numbering.simuler(r); }
+    @PreAuthorize("hasAuthority('SETTINGS_MANAGE')") @PutMapping("/ticket-numbering") public TicketNumberingDto saveNumbering(@RequestBody TicketNumberingRequest r) { return numbering.enregistrer(r); }
+    @PreAuthorize("hasAuthority('SETTINGS_MANAGE')") @PutMapping("/ticket-numbering/counter") public TicketNumberingDto setCounter(@Valid @RequestBody TicketCounterRequest r) { return numbering.poserCompteur(r.scopeKey(), r.nextValue()); }
 
     // customers
     @GetMapping("/customers") public List<CustomerDto> customers(@RequestParam(required = false) String q) { return admin.customers(q); }

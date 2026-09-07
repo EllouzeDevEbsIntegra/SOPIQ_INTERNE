@@ -29,7 +29,7 @@ Les permissions (22) sont modifiables par rôle et vérifiées côté serveur.
 - Prix TTC ; TVA optionnelle (`tax.enabled`) calculée dans le prix.
 - Remise ligne ou commande en % (ou montant via API). Remise > seuil (`discount.highThresholdPercent`) ⇒ permission `DISCOUNT_HIGH`. Remise max par utilisateur possible.
 - Paiement : somme des montants = total ; un excédent n'est accepté qu'en espèces (rendu). Paiement insuffisant refusé.
-- Numérotation : `{POS}-{YYYY}-{SEQ:6}` par défaut ; unique en multi-caisses.
+- Numérotation : format imprimé `{POS}-{YYYY}-{SEQ:6}` par défaut, et remise à zéro du compteur réglée à part (continue, journalière, mensuelle, annuelle ; par point de vente et/ou par caisse). Unique en multi-caisses : un réglage dont la portée ne se lit pas sur le ticket est refusé à l'enregistrement.
 - Annulation post-paiement : statut CANCELLED + remboursement du restant + motif + audit ; jamais de suppression.
 - Remboursement partiel : montant ≤ restant ; statut PARTIALLY_REFUNDED puis REFUNDED.
 - Clôture de caisse impossible s'il reste des commandes en attente sur la session ; clôture journalière impossible s'il reste une caisse ouverte ; une seule clôture par jour et point de vente.

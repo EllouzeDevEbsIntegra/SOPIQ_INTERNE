@@ -35,6 +35,9 @@ class PosIntegrationTest {
     private MvcResult postJson(String url, String token, Object body, int status) throws Exception {
         return mvc.perform(post(url).header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsString(body))).andExpect(status().is(status)).andReturn();
     }
+    private MvcResult putJson(String url, String token, Object body, int status) throws Exception {
+        return mvc.perform(put(url).header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsString(body))).andExpect(status().is(status)).andReturn();
+    }
 
     @Test @Order(1) void loginAndOpenRegister() throws Exception {
         JsonNode a = json(mvc.perform(post("/api/auth/pin").contentType(MediaType.APPLICATION_JSON).content("{\"pin\":\"1234\"}")).andExpect(status().isOk()).andReturn());
@@ -107,12 +110,99 @@ class PosIntegrationTest {
     }
 
     /**
+     * La numérotation des tickets, de bout en bout : le format, la portée du compteur et
+     * le compteur lui-même.
+     *
+     * Ce test tient les deux promesses que l'ancien mécanisme ne pouvait pas tenir en même
+     * temps : imprimer l'année SANS repartir à 1 le 1er janvier, et repartir à 1 chaque
+     * jour. Il vérifie aussi qu'un réglage fabriquant des doublons est refusé à
+     * l'enregistrement — pas devant le client — et qu'on ne peut pas ramener le compteur
+     * sur un numéro déjà imprimé.
+     */
+    @Test @Order(6) void ticketNumberingScopeFormatAndCounter() throws Exception {
+        String admin = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn())
+                .get("token").asText();
+        String an = String.valueOf(java.time.Year.now(java.time.ZoneId.of("Africa/Tunis")).getValue());
+
+        // Ce que la caisse porte aujourd'hui : le réglage livré, dit explicitement.
+        JsonNode etat = json(mvc.perform(get("/api/ticket-numbering").header("Authorization", "Bearer " + admin))
+                .andExpect(status().isOk()).andReturn());
+        assertThat(etat.get("resetPeriod").asText()).isEqualTo("YEARLY");
+        assertThat(etat.get("perPos").asBoolean()).isTrue();
+        assertThat(etat.get("problems")).isEmpty();
+        assertThat(etat.get("sample").asText()).contains(an);
+
+        // Une remise à zéro qui ne se lit pas sur le ticket : refusée, et elle dit pourquoi.
+        JsonNode mauvais = json(postJson("/api/ticket-numbering/preview", admin,
+                java.util.Map.of("pattern", "{SEQ:6}", "resetPeriod", "DAILY", "perPos", false), 200));
+        assertThat(mauvais.get("problems")).isNotEmpty();
+        assertThat(mauvais.get("sample").isNull()).as("pas d'exemple pour un réglage qui ne tient pas").isTrue();
+        mvc.perform(put("/api/ticket-numbering").header("Authorization", "Bearer " + admin)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"pattern\":\"{SEQ:6}\",\"resetPeriod\":\"DAILY\",\"perPos\":false}"))
+                .andExpect(status().isBadRequest());
+
+        // L'année imprimée SANS remise à zéro : impossible avant, la portée était devinée du format.
+        JsonNode continu = json(putJson("/api/ticket-numbering", admin,
+                java.util.Map.of("pattern", "{POS}-{YYYY}-{SEQ:6}", "resetPeriod", "NONE", "perPos", true, "perRegister", false), 200));
+        assertThat(continu.get("sample").asText()).contains(an);
+        assertThat(continu.get("scopeKey").asText()).as("le compteur ne se découpe plus par année").doesNotContain(an);
+
+        // Et l'inverse : repartir à 1 chaque jour, la date étant bien imprimée.
+        JsonNode jour = json(putJson("/api/ticket-numbering", admin,
+                java.util.Map.of("pattern", "{POS}-{YYYY}{MM}{DD}-{SEQ:4}", "resetPeriod", "DAILY", "perPos", true, "perRegister", false), 200));
+        String aujourdhui = java.time.LocalDate.now(java.time.ZoneId.of("Africa/Tunis")).toString();
+        assertThat(jour.get("scopeKey").asText()).endsWith(aujourdhui);
+        assertThat(jour.get("problems")).isEmpty();
+
+        // Le numéro annoncé est celui qui sort vraiment de la caisse.
+        long sessionDuJour = json(postJson("/api/pos/session/open", cashierToken,
+                java.util.Map.of("registerId", registerId, "openingFloat", 0), 200)).get("id").asLong();
+        String attendu = jour.get("sample").asText();
+        JsonNode vente = json(postJson("/api/pos/checkout", cashierToken, java.util.Map.of(
+                "clientRef", UUID.randomUUID().toString(), "registerId", registerId,
+                "lines", java.util.List.of(java.util.Map.of("productId", cocaId, "quantity", 1)),
+                "payments", java.util.List.of(java.util.Map.of("paymentMethodId", cashId, "amount", 5, "tendered", 5))), 200));
+        assertThat(vente.get("ticketNumber").asText()).isEqualTo(attendu);
+
+        // Reprendre la main sur le compteur : en dessous de ce qui est déjà imprimé, c'est non.
+        String cle = json(mvc.perform(get("/api/ticket-numbering").header("Authorization", "Bearer " + admin))
+                .andExpect(status().isOk()).andReturn()).get("scopeKey").asText();
+        mvc.perform(put("/api/ticket-numbering/counter").header("Authorization", "Bearer " + admin)
+                .contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsString(
+                        java.util.Map.of("scopeKey", cle, "nextValue", 1))))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(org.hamcrest.Matchers.containsString("déjà été imprimé")));
+
+        JsonNode pose = json(putJson("/api/ticket-numbering/counter", admin,
+                java.util.Map.of("scopeKey", cle, "nextValue", 500), 200));
+        assertThat(pose.get("nextValue").asLong()).isEqualTo(500);
+        JsonNode vente500 = json(postJson("/api/pos/checkout", cashierToken, java.util.Map.of(
+                "clientRef", UUID.randomUUID().toString(), "registerId", registerId,
+                "lines", java.util.List.of(java.util.Map.of("productId", cocaId, "quantity", 1)),
+                "payments", java.util.List.of(java.util.Map.of("paymentMethodId", cashId, "amount", 5, "tendered", 5))), 200));
+        assertThat(vente500.get("ticketNumber").asText()).endsWith("0500");
+
+        // Un compteur d'une autre portée ne s'écrit pas : le corriger ne changerait rien.
+        mvc.perform(put("/api/ticket-numbering/counter").header("Authorization", "Bearer " + admin)
+                .contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsString(
+                        java.util.Map.of("scopeKey", "TICKET:AUTRE|1999-01-01", "nextValue", 3))))
+                .andExpect(status().isBadRequest());
+
+        postJson("/api/pos/session/" + sessionDuJour + "/close", cashierToken,
+                java.util.Map.of("countedCash", 10), 200);
+        putJson("/api/ticket-numbering", admin, java.util.Map.of(
+                "pattern", "{POS}-{YYYY}-{SEQ:6}", "resetPeriod", "YEARLY", "perPos", true, "perRegister", false), 200);
+    }
+
+    /**
      * Reproduit le scénario réel : import d'une carte en mode « remplacer », qui ne peut que
      * désactiver les produits déjà vendus, puis nettoyage définitif. Vérifie que sans remise à
      * zéro des ventes rien n'est supprimé (et que l'utilisateur est averti), et qu'avec elle il
      * ne reste que le catalogue actif. Dernier test : il vide volontairement la base.
      */
-    @Test @Order(6) void purgeRemovesInactiveCatalogOnlyWithSalesReset() throws Exception {
+    @Test @Order(7) void purgeRemovesInactiveCatalogOnlyWithSalesReset() throws Exception {
         String adminToken = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn())
                 .get("token").asText();

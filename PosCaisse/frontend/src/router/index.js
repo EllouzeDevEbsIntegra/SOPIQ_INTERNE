@@ -32,6 +32,7 @@ const routes = [
       { path: 'company', name: 'admin-company', component: () => import('../views/admin/CompanyView.vue'), meta: { title: 'Entreprise, points de vente & caisses', perm: 'SETTINGS_MANAGE' } },
       { path: 'payments', name: 'admin-payments', component: () => import('../views/admin/PaymentMethodsView.vue'), meta: { title: 'Moyens de paiement', perm: 'SETTINGS_MANAGE' } },
       { path: 'printing', name: 'admin-printing', component: () => import('../views/admin/PrintingView.vue'), meta: { title: 'Tickets & impression', perm: 'SETTINGS_MANAGE' } },
+      { path: 'ticket-numbering', name: 'admin-ticket-numbering', component: () => import('../views/admin/TicketNumberingView.vue'), meta: { title: 'Numérotation des tickets', perm: 'SETTINGS_MANAGE' } },
       { path: 'settings', name: 'admin-settings', component: () => import('../views/admin/SettingsView.vue'), meta: { title: 'Paramètres POS', perm: 'SETTINGS_MANAGE' } },
       { path: 'accounts', name: 'admin-accounts', component: () => import('../views/admin/AccountsView.vue'), meta: { title: 'Comptes clients & livreurs', perm: 'CUSTOMER_CREDIT' } },
       { path: 'audit', name: 'admin-audit', component: () => import('../views/admin/AuditView.vue'), meta: { title: "Journal d'audit", perm: 'AUDIT_VIEW' } }

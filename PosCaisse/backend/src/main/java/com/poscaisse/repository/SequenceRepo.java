@@ -16,4 +16,8 @@ public interface SequenceRepo extends JpaRepository<DocumentSequence, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select s from DocumentSequence s where s.scopeKey = :key")
     Optional<DocumentSequence> lockByKey(@Param("key") String key);
+
+    Optional<DocumentSequence> findByScopeKey(String scopeKey);
+
+    List<DocumentSequence> findByScopeKeyStartingWithOrderByScopeKeyDesc(String prefixe);
 }

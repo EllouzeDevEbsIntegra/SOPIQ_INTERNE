@@ -29,6 +29,19 @@ public final class AdminDtos {
     public record RegisterDto(Long id, String code, String name, Long pointOfSaleId, String pointOfSaleName, boolean active) {}
     public record RegisterRequest(@NotBlank String code, @NotBlank String name, @NotNull Long pointOfSaleId, Boolean active) {}
 
+    /**
+     * La numerotation des tickets, telle que l'ecran la montre : le format, la portee du
+     * compteur, et surtout un EXEMPLE - c'est le numero qu'on relit, pas le gabarit.
+     * << problems >> vide veut dire que le reglage tient ; sinon il dit pourquoi, en
+     * clair, et l'exemple est absent parce qu'il n'y en aurait pas.
+     */
+    public record TicketCounterDto(String scopeKey, String label, long nextValue, boolean current, String sample) {}
+    public record TicketNumberingDto(String pattern, String resetPeriod, boolean perPos, boolean perRegister,
+                                     String sample, String scopeKey, String scopeLabel, long nextValue,
+                                     List<String> problems, List<TicketCounterDto> counters) {}
+    public record TicketNumberingRequest(String pattern, String resetPeriod, Boolean perPos, Boolean perRegister) {}
+    public record TicketCounterRequest(@NotBlank String scopeKey, @NotNull Long nextValue) {}
+
     public record PrintDestinationDto(Long id, String code, String name, String kind, int copies, boolean showPrices, int sortOrder, boolean active) {}
     public record PrintDestinationRequest(@NotBlank String code, @NotBlank String name, String kind, Integer copies, Boolean showPrices, Integer sortOrder, Boolean active) {}
 
