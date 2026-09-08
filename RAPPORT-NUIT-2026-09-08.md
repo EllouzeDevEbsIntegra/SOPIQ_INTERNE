@@ -87,31 +87,93 @@ complet et la sécurité) et 8 sur la plateforme (du prospect à l'impayé).
 
 ---
 
+# La suite — matin du 08/09
+
+## 7. Un poste neuf s'installe seul dans son métier
+
+Vendre un abonnement créait une base vide. Il fallait ensuite ouvrir un terminal chez le
+client, lancer un script contre la caisse avec le mot de passe administrateur, et cocher
+une à une les cases du métier. Trois cents clients, c'est trois cents fois ça.
+
+Le poste se configure maintenant **lui-même**, à partir de la commande que le back-office
+rend à la vente. Il pose son schéma, écrit les réglages de son métier, et charge la carte
+de sa verticale depuis son propre JAR.
+
+```
+LANG=C.UTF-8 POSCAISSE_DB_NAME=pos_cli0004_cafe POSCAISSE_DB_USER=… POSCAISSE_DB_PASSWORD=… \
+POSCAISSE_PROFIL=CAFE POSCAISSE_ENSEIGNE='CAFÉ DES DÉLICES' POSCAISSE_DEMO_DATA=true \
+java -jar poscaisse.jar
+```
+
+Le bouton du back-office demande d'abord **« la carte de démonstration »** ou **« repartir
+de zéro »**. À zéro : la maison, une caisse, le compte administrateur, les réglages du
+métier — et un catalogue vide, sans adresse inventée sur les tickets.
+
+Les six métiers tiennent dans une table de déclarations. Ouvrir le septième : un fichier
+de carte et une ligne. **`Plateforme/PROFILS-METIER.md`** explique comment.
+
+## 8. Vendre au poids — la pâtisserie fait enfin son métier
+
+Un article à 58 dinars le kilo ne se vendait qu'au kilo entier. Toucher sa tuile ouvre
+maintenant une pesée : on tape des **grammes**, ou un **montant en dinars** (« pour cinq
+dinars de baklawa »), et la caisse fait la division. Le ticket dit `0,300 kg x Baklawa
+amande` puis `à 58,000 le kg`.
+
+## 9. Trois défauts de sécurité et de justesse, trouvés en s'en servant
+
+- **Le compte d'un client ouvrait la base d'un autre.** Il n'y lisait aucune vente, mais il
+  entrait, et le catalogue partagé lui donnait le nom de toutes les bases — donc de tous
+  nos clients. PostgreSQL accorde `CONNECT` à `PUBLIC` sur toute base neuve. Corrigé, et
+  relancer le provisionnement **répare** une base ancienne : les quatre déjà créées ont été
+  refermées sans interrompre la caisse qui tournait sur l'une d'elles. *(`SECURITE.md` § 6)*
+- **L'enseigne accentuée arrivait abîmée.** Une machine démarrée sans langue lit son
+  environnement en ASCII : « SUPÉRETTE » y perdait son É, et ce nom se serait imprimé sur
+  chaque ticket. La commande porte `LANG=C.UTF-8`, et la caisse refuse d'enregistrer un nom
+  abîmé plutôt que de le graver.
+- **La deuxième facture de l'année s'appelait `FAC-2026-0000`**, et la troisième aussi.
+
+## 10. Deux suites de tests qui ne passaient qu'une fois
+
+Le scénario de vente laissait une caisse ouverte et un catalogue purgé ; rejoué, il
+recevait 409 puis 404 sur ses propres articles. Le scénario de la plateforme comptait les
+clients créés au navigateur : le chiffre d'affaires attendu à 49 dinars en trouvait 207.
+Chacun refait maintenant **sa** base.
+
+**106 au vert** : 97 sur la caisse, 9 sur la plateforme — deux exécutions de suite.
+
+---
+
 ## Pour voir tourner, au réveil
 
 ```bash
-# la caisse, profil Café
-createdb mistral && cd Plateforme/backend
-POSCAISSE_DB_NAME=mistral mvn spring-boot:run          # puis charger mistral-coffee.json
+# le back-office éditeur — c'est par là qu'on commence
+cd Plateforme/plateforme && createdb plateforme && mvn spring-boot:run
+#   http://localhost:8090 — admin / plateforme123
+#   Clients → Nouveau client → Souscrire un module → Préparer la base du client
+#   Il rend une commande de lancement : la coller dans un terminal, et la caisse est prête.
 
-# la caisse, profil Shop (code-barres + stock)
-createdb elbaraka
-POSCAISSE_DB_NAME=elbaraka mvn spring-boot:run         # puis superette-el-baraka.json
-
-# le back-office éditeur
-createdb plateforme && cd Plateforme/plateforme
-mvn spring-boot:run                                    # http://localhost:8090 — admin / plateforme123
+# ou directement une caisse, sans passer par le back-office
+cd Plateforme/backend && createdb demo_cafe
+LANG=C.UTF-8 POSCAISSE_DB_NAME=demo_cafe POSCAISSE_PROFIL=CAFE mvn spring-boot:run
+#   PROFIL : RESTO | CAFE | SHOP | VETEMENT | PATISSERIE | PARFUMERIE
+#   POSCAISSE_DEMO_DATA=false pour partir d'un catalogue vide
 ```
 
-## Ce que je n'ai pas fait, et pourquoi
+## Ce qui reste, et pourquoi
 
-- **Le provisionnement automatique** d'un client (créer sa base, la migrer, y charger sa
-  carte, rendre les accès). Le modèle prévoit déjà où l'écrire ; c'est la prochaine étape
-  et elle demande d'être faite proprement, pas à 5 h du matin.
-- **L'aiguillage multi-clients** dans la caisse : c'est le chantier suivant, avec le test
-  qui interdit qu'une requête parte sans contexte.
-- **Taille × couleur** pour le prêt-à-porter (un seul axe de variante aujourd'hui), la
-  **vente au poids** pour la pâtisserie, les **pointures**. Les trois sont notés dans
-  `Plateforme/catalogs/LISEZ-MOI-CARTES.md`.
-- **L'interface du back-office éditeur** est un premier écran, pas le produit fini : il
-  faudra la refaire avec le même jeu de composants que la caisse.
+- **L'aiguillage multi-clients** dans la caisse. Aujourd'hui le provisionnement lance **un
+  processus par client** — ce qui est exactement juste pour une installation chez le
+  commerçant, et ce que l'architecture écarte pour l'offre hébergée (300 clients = 300
+  processus). Le chantier : le jeton porte le client, un filtre le pose, la source de
+  données aiguille — **avec le test qui interdit qu'une requête parte sans contexte**.
+  C'est le prochain, et c'est celui qu'il ne faut pas bâcler.
+- **Taille × couleur** pour le prêt-à-porter (un seul axe aujourd'hui) et les **pointures**.
+  Un deuxième axe règle les deux d'un coup.
+- **Les menus composés dans le format d'import** : c'est la seule raison pour laquelle la
+  carte du profil Resto est écrite dans le code au lieu d'être un fichier comme les cinq
+  autres.
+- **L'interface du back-office éditeur** : un premier écran, pas le produit fini.
+- **Les relances par courriel** avant suspension.
+- **Une carte Resto neutre** : `number-one-2026.json` est la carte réelle d'un client, avec
+  ses prix. Elle est volontairement **exclue du JAR** ; le profil Resto livre la
+  démonstration générique « FAST FOOD DÉMO ».
