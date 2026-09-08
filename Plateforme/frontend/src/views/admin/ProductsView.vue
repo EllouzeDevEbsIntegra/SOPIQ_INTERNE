@@ -5,6 +5,7 @@ import { useUiStore } from '../../stores/ui'
 import { useCatalogStore } from '../../stores/catalog'
 import { useBusy } from '../../composables/useApi'
 import { fmt } from '../../utils/money'
+import { lirePhoto } from '../../utils/image'
 import Modal from '../../components/common/Modal.vue'
 import Icon from '../../components/common/Icon.vue'
 const ui = useUiStore(); const catalog = useCatalogStore(); const { busy, run } = useBusy()
@@ -67,10 +68,35 @@ function prixVersion(id) {
   return (edit.value.variantPrices || []).find(p => p.variantValueId === id)?.price ?? ''
 }
 function setPrixVersion(id, v) {
+  const ligne = ligneVersion(id)
+  ligne.price = Number(String(v).replace(',', '.')) || 0
+}
+
+/** La ligne de cette version dans la grille, créée à la volée si elle manque. */
+function ligneVersion(id) {
   const liste = edit.value.variantPrices || (edit.value.variantPrices = [])
-  const ligne = liste.find(p => p.variantValueId === id)
-  const n = Number(String(v).replace(',', '.')) || 0
-  if (ligne) ligne.price = n; else liste.push({ variantValueId: id, price: n })
+  let ligne = liste.find(p => p.variantValueId === id)
+  if (!ligne) { ligne = { variantValueId: id, price: 0, imageUrl: '' }; liste.push(ligne) }
+  return ligne
+}
+
+function photoVersion(id) {
+  return (edit.value.variantPrices || []).find(p => p.variantValueId === id)?.imageUrl || ''
+}
+
+/**
+ * La photo d'une version — facultative, et c'est toute la règle.
+ *
+ * Vide, la caisse montrera celle de l'article ; vide aussi, elle ne montrera rien. Le
+ * gérant n'a donc jamais à en poser une : il en pose quand deux versions ne se
+ * reconnaissent pas à leur nom, un T-shirt noir et un blanc.
+ */
+async function onPhotoVersion(id, e) {
+  const f = e.target.files[0]
+  e.target.value = ''
+  if (!f) return
+  try { ligneVersion(id).imageUrl = await lirePhoto(f) }
+  catch (err) { ui.error(err.message) }
 }
 /* Changer d'axe rend la grille de prix precedente absurde : on repart a zero plutot que
    de garder des prix qui se rattachaient a des versions disparues. */
@@ -178,7 +204,7 @@ const marge = computed(() => {
 })
 
 function create() { const catId = Number(catFilter.value) || cats.value[0]?.id; edit.value = { code: nextCode(catId), reference: '', name: '', shortName: '', description: '', categoryId: catId, productType: 'SIMPLE', price: 0, taxRate: 0, imageUrl: '', color: '', sortOrder: rows.value.length + 1, active: true, available: true, favorite: false, favoriteOrder: 0, priceToCheck: false, printDestinationIds: [], modifierGroupIds: [], menuComponents: [], ingredientIds: [], variantId: null, defaultVariantValueId: null, askVariant: false, variantPrices: [], barcode: '', purchasePrice: 0, stockManaged: false, stockMin: 0, unite: 'PIECE' }; tab.value = 'general' }
-function open(p) { edit.value = { unite: 'PIECE', ...p, ingredientIds: [...(p.ingredientIds || [])], variantPrices: (p.variantPrices || []).map(x => ({ ...x })), modifierGroupIds: p.modifierGroups.map(g => g.id), menuComponents: p.menuComponents.map(c => ({ name: c.name, quantity: c.quantity, sortOrder: c.sortOrder, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) })) })) }; tab.value = 'general' }
+function open(p) { edit.value = { unite: 'PIECE', ...p, ingredientIds: [...(p.ingredientIds || [])], variantPrices: (p.variantPrices || []).map(x => ({ imageUrl: '', ...x })), modifierGroupIds: p.modifierGroups.map(g => g.id), menuComponents: p.menuComponents.map(c => ({ name: c.name, quantity: c.quantity, sortOrder: c.sortOrder, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) })) })) }; tab.value = 'general' }
 async function save() {
   const b = { ...edit.value, price: Number(String(edit.value.price).replace(',', '.')), taxRate: Number(edit.value.taxRate) || 0,
     barcode: (edit.value.barcode || '').trim() || null,
@@ -353,19 +379,35 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
         </div>
 
         <div v-if="axeChoisi" class="grille">
-          <div class="entetes"><span>Version</span><span>Prix</span><span>Par défaut</span></div>
-          <label v-for="v in versionsAxe" :key="v.id" class="ligne" :class="{ def: edit.defaultVariantValueId === v.id }">
+          <div class="entetes"><span>Version</span><span>Prix</span><span>Photo</span><span>Par défaut</span></div>
+          <div v-for="v in versionsAxe" :key="v.id" class="ligne" :class="{ def: edit.defaultVariantValueId === v.id }">
             <span class="nom">{{ v.name }}<em v-if="v.shortName"> · ticket : {{ v.shortName }}</em></span>
             <input class="input" inputmode="decimal" :value="prixVersion(v.id)" placeholder="0,000"
                    @input="setPrixVersion(v.id, $event.target.value)" />
+            <!-- Facultative : vide, la caisse reprend la photo de l'article. -->
+            <span class="photo">
+              <label class="pastille" :class="{ vide: !photoVersion(v.id) }"
+                     :title="photoVersion(v.id) ? 'Remplacer la photo de cette version' : 'Photo propre à cette version (facultative)'">
+                <img v-if="photoVersion(v.id)" :src="photoVersion(v.id)" alt="" />
+                <Icon v-else name="image" :size="16" />
+                <input type="file" accept="image/*" hidden @change="e => onPhotoVersion(v.id, e)" />
+              </label>
+              <button v-if="photoVersion(v.id)" type="button" class="retirer" title="Retirer la photo de cette version"
+                      @click="ligneVersion(v.id).imageUrl = ''">×</button>
+            </span>
             <span class="radio">
               <input type="radio" name="versionDefaut" :checked="edit.defaultVariantValueId === v.id"
                      @change="edit.defaultVariantValueId = v.id" />
             </span>
-          </label>
+          </div>
           <p class="tiny muted mt-8">
             La version par défaut est obligatoire et doit avoir un prix : c'est elle que vend un appui court.
             Une version laissée à 0 apparaît grisée en caisse — elle n'est pas vendable tant qu'elle n'est pas tarifée.
+          </p>
+          <p class="tiny muted">
+            <b>La photo est facultative.</b> Sans elle, la caisse montre celle de l'article ; sans celle de
+            l'article non plus, elle ne montre rien. Utile quand deux versions ne se reconnaissent pas à leur
+            nom — un T-shirt noir et un blanc.
           </p>
         </div>
       </div>
@@ -487,10 +529,10 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
 .variante .demander b { font-size: 13.5px; font-weight: 650; }
 .variante .demander em { font-style: normal; font-size: 11.5px; color: var(--ink-3); }
 
-.grille { margin-top: 14px; max-width: 520px; }
-.grille .entetes, .grille .ligne { display: grid; grid-template-columns: 1fr 130px 84px; gap: 10px; align-items: center; }
+.grille { margin-top: 14px; max-width: 600px; }
+.grille .entetes, .grille .ligne { display: grid; grid-template-columns: 1fr 118px 72px 76px; gap: 10px; align-items: center; }
 .grille .entetes { margin-bottom: 6px; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
-.grille .ligne { min-height: 48px; padding: 0 11px; border: 1px solid var(--line); border-radius: var(--r); cursor: pointer; }
+.grille .ligne { min-height: 48px; padding: 0 11px; border: 1px solid var(--line); border-radius: var(--r); }
 .grille .ligne + .ligne { margin-top: 6px; }
 /* La ligne par defaut se distingue : c'est elle que vend un appui court. */
 .grille .ligne.def { border-color: var(--brand-line); background: var(--brand-soft); }
@@ -499,6 +541,22 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
 .grille .ligne .input { min-height: 36px; text-align: right; }
 .grille .radio { display: flex; justify-content: center; }
 .grille .radio input { width: 20px; height: 20px; accent-color: var(--brand); }
+
+/* --- la photo de la version : une pastille, pas un formulaire --- */
+.grille .photo { display: flex; align-items: center; gap: 4px; justify-content: center; }
+.grille .pastille {
+  width: 38px; height: 38px; flex: 0 0 38px; display: grid; place-items: center;
+  border: 1px solid var(--line); border-radius: var(--r); overflow: hidden;
+  cursor: pointer; background: var(--surface-2); color: var(--ink-3);
+}
+.grille .pastille img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.grille .pastille.vide { border-style: dashed; }
+.grille .pastille:hover { border-color: var(--brand); color: var(--brand); }
+.grille .retirer {
+  border: 0; background: none; color: var(--ink-3); font-size: 17px; line-height: 1;
+  cursor: pointer; padding: 2px 3px; border-radius: 4px;
+}
+.grille .retirer:hover { color: var(--danger, #b3261e); }
 
 /* --- apparence et etat --- */
 .apparence {

@@ -50,7 +50,7 @@ public final class Mappers {
                 p.getDefaultVariantValue() == null ? null : p.getDefaultVariantValue().getId(),
                 p.isAskVariant(),
                 p.getVariantPrices().stream()
-                        .map(vp -> new VariantPriceDto(vp.getValue().getId(), vp.getPrice()))
+                        .map(vp -> new VariantPriceDto(vp.getValue().getId(), vp.getPrice(), vp.getImageUrl()))
                         .sorted(Comparator.comparingLong(VariantPriceDto::variantValueId)).toList(),
                 p.getBarcode(), p.getPurchasePrice(), p.isStockManaged(), p.getStockMin(),
                 p.getUnite().name());

@@ -273,6 +273,19 @@ public class CatalogImportService {
                 vient d'etre pose. C'est le meme controle qu'a l'ecran : un article a
                 variante doit rester vendable d'un seul appui.
             */
+            /*
+                LES PHOTOS DE VERSION SURVIVENT AU RE-IMPORT.
+
+                La grille des versions est reconstruite a chaque import - c'est le fichier
+                qui fait foi sur les prix. Mais un fichier de carte ne porte PAS de photos :
+                celles qui sont en base ont ete posees a la main par le gerant, une par une,
+                depuis la fiche article. Les perdre en remettant la carte a jour serait lui
+                faire refaire ce travail sans meme l'avertir.
+            */
+            Map<Long, String> photosPosees = new HashMap<>();
+            for (ProductVariantPrice vp : entity.getVariantPrices())
+                if (vp.getImageUrl() != null && vp.getValue() != null) photosPosees.put(vp.getValue().getId(), vp.getImageUrl());
+
             entity.getVariantPrices().clear();
             entity.setVariant(null);
             entity.setDefaultVariantValue(null);
@@ -289,6 +302,7 @@ public class CatalogImportService {
                         if (val == null) { warnings.add("Valeur inconnue de « " + axe.getName() + " » pour « " + p.name() + " » : " + vp.value()); continue; }
                         ProductVariantPrice ligne = new ProductVariantPrice();
                         ligne.setProduct(entity); ligne.setValue(val); ligne.setPrice(Money.r(vp.price()));
+                        ligne.setImageUrl(photosPosees.get(val.getId()));   // rendue a sa version
                         entity.getVariantPrices().add(ligne);
                     }
                     VariantValue defaut = p.defaultVariantValue() == null ? null : valeurs.get(key(p.defaultVariantValue()));

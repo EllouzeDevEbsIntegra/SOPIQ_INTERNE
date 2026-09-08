@@ -34,8 +34,13 @@ public final class CatalogDtos {
                              /* PIECE, KG ou LITRE : la caisse demande un poids pour les deux dernieres. */
                              String unite) {}
 
-    /** Prix de l'article pour une valeur. Un prix nul signifie « pas encore tarifee ». */
-    public record VariantPriceDto(Long variantValueId, BigDecimal price) {}
+    /**
+     * Ce que vaut, et a quoi ressemble, une version de l'article.
+     *
+     * Un prix nul signifie << pas encore tarifee >>. Une photo nulle signifie << celle de
+     * l'article >> - c'est un complement facultatif, jamais une obligation.
+     */
+    public record VariantPriceDto(Long variantValueId, BigDecimal price, String imageUrl) {}
 
     public record ProductRequest(@NotBlank String code, String reference, @NotBlank String name, String shortName, String description,
                                  @NotNull Long categoryId, String productType, @NotNull BigDecimal price, BigDecimal taxRate,

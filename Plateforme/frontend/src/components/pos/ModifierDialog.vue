@@ -23,6 +23,16 @@ const isMenu = computed(() => props.product.productType === 'MENU')
 */
 const axe = computed(() => catalog.variants.find(v => v.id === props.product.variantId) || null)
 const prixVariante = computed(() => Object.fromEntries((props.product.variantPrices || []).map(p => [p.variantValueId, Number(p.price)])))
+/*
+    La photo de chaque version, quand elle en a une.
+
+    C'est ici qu'elle sert le plus : le caissier choisit entre deux versions qui ne se
+    reconnaissent pas a leur nom - un T-shirt noir et un blanc, une pate cereale et une
+    pate normale. Sans photo de version, on retombe sur celle de l'article ; sans elle
+    non plus, le bouton reste ce qu'il etait, un nom et un prix.
+*/
+const photoVariante = computed(() => Object.fromEntries(
+  (props.product.variantPrices || []).filter(p => p.imageUrl).map(p => [p.variantValueId, p.imageUrl])))
 // Declaree avant les versions : leur calcul s'evalue des le choix de la version par
 // defaut, quelques lignes plus bas, et lit deja la quantite.
 const quantity = ref(props.initial?.quantity || 1)
@@ -41,6 +51,7 @@ const quantity = ref(props.initial?.quantity || 1)
 */
 const versions = computed(() => (axe.value?.values || []).filter(v => v.active)
   .map(v => {
+    const photo = photoVariante.value[v.id] || props.product.imageUrl || null
     const porteur = v.stockManaged ? v.id : (v.stockSourceId || null)
     const pas = Number(v.stockStep || 1)
     const reste = porteur ? Number(props.stock?.[porteur] ?? Infinity) : Infinity
@@ -55,7 +66,7 @@ const versions = computed(() => (axe.value?.values || []).filter(v => v.active)
         son maximum, et rien ne change de soi-meme.
     */
     const max = porteur == null ? Infinity : Math.floor((reste + 1e-9) / pas)
-    return { ...v, price: prixVariante.value[v.id] || 0, porteur, reste, pas, max, epuisee: max < 1 }
+    return { ...v, price: prixVariante.value[v.id] || 0, photo, porteur, reste, pas, max, epuisee: max < 1 }
   }))
 const version = ref(props.initial?.variantValueId
   || props.product.defaultVariantValueId
@@ -204,6 +215,7 @@ function confirm() {
                 :title="!v.price ? 'Aucun prix : à renseigner dans la fiche article'
                         : v.epuisee ? 'Stock épuisé — il reste ' + v.reste : ''"
                 @click="version = v.id">
+          <img v-if="v.photo" class="vue" :src="v.photo" alt="" draggable="false" />
           <span>{{ v.name }}</span>
           <span v-if="v.epuisee" class="delta epuise">épuisé</span>
           <span v-else class="delta num">{{ fmt(v.price) }}</span>
@@ -288,6 +300,18 @@ function confirm() {
 /* Une version se distingue d'une option : elle decide du prix, elle n'ajoute rien. */
 .versions .opt.version { border-color: var(--line-2); }
 .versions .opt.version.on { border-color: var(--brand); background: var(--brand-soft); }
+/*
+    La photo de la version, quand elle en a une.
+
+    En bandeau au-dessus du nom, et non en vignette a cote : les trois versions se lisent
+    alors d'un coup d'oeil, comme trois cartes, ce qui est justement l'interet d'avoir mis
+    une photo. Une version sans photo garde son bouton d'avant - la rangee reste lisible
+    meme si le gerant n'en a photographie qu'une.
+*/
+.versions .opt .vue {
+  width: 100%; height: 62px; object-fit: cover; display: block;
+  border-radius: 8px; margin-bottom: 4px; background: var(--surface-3);
+}
 /* Grisee et non masquee : le gerant voit qu'il lui reste a la tarifer. */
 .versions .opt.sansprix { opacity: .45; cursor: not-allowed; }
 /* Une version epuisee reste VISIBLE : elle disparaitrait qu'on la chercherait. */

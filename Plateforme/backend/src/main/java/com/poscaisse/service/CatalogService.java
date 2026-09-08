@@ -196,16 +196,23 @@ public class CatalogService {
             p.setVariant(axe);
             p.setAskVariant(Boolean.TRUE.equals(r.askVariant()));
             Map<Long, BigDecimal> prix = new LinkedHashMap<>();
+            Map<Long, String> photos = new LinkedHashMap<>();
             if (r.variantPrices() != null) for (VariantPriceDto vp : r.variantPrices()) {
                 if (vp.variantValueId() == null) continue;
                 BigDecimal m = Money.nz(vp.price());
                 if (m.signum() < 0) throw new BusinessException("Un prix de version ne peut pas etre negatif.");
                 prix.put(vp.variantValueId(), Money.r(m));
+                // Une chaine vide vaut << pas de photo >> : le formulaire vide le champ
+                // plutot que de le supprimer, et une chaine vide stockee ferait afficher
+                // une image cassee au lieu de laisser la photo de l'article prendre le relais.
+                if (vp.imageUrl() != null && !vp.imageUrl().isBlank())
+                    photos.put(vp.variantValueId(), vp.imageUrl());
             }
             for (VariantValue val : axe.getValues()) {
                 BigDecimal m = prix.getOrDefault(val.getId(), BigDecimal.ZERO);
                 ProductVariantPrice pvp = new ProductVariantPrice();
                 pvp.setProduct(p); pvp.setValue(val); pvp.setPrice(m);
+                pvp.setImageUrl(photos.get(val.getId()));
                 p.getVariantPrices().add(pvp);
             }
             if (r.defaultVariantValueId() == null)

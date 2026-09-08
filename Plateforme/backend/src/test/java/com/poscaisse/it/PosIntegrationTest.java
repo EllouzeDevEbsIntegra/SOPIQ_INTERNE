@@ -777,4 +777,107 @@ class PosIntegrationTest {
         postJson("/api/pos/session/" + courante.get("id").asLong() + "/close", caissier,
                 java.util.Map.of("countedCash", 0), 200);
     }
+
+    /**
+     * UNE PHOTO PAR VERSION, ET LA REGLE DE REPLI.
+     *
+     * Ce que ce scenario protege, c'est une promesse d'affichage : la caisse montre la
+     * photo de la VERSION si elle en a une, sinon celle de l'ARTICLE, sinon rien. Trois
+     * cas, et c'est le troisieme qu'on casse sans s'en apercevoir - une chaine vide
+     * enregistree a la place d'une absence, et la caisse affiche une image cassee au lieu
+     * de retomber sur la photo de l'article.
+     *
+     * Il protege aussi le travail du gerant : un re-import de carte reconstruit la grille
+     * des versions, et un fichier de carte ne porte pas de photos. Sans precaution, mettre
+     * les prix a jour effacerait toutes les photos posees a la main.
+     */
+    @Test @Order(13) void photoParVersion() throws Exception {
+        String admin = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn())
+                .get("token").asText();
+        String caissier = json(mvc.perform(post("/api/auth/pin").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"pin\":\"1234\"}")).andExpect(status().isOk()).andReturn()).get("token").asText();
+
+        long categorie = json(mvc.perform(get("/api/categories").header("Authorization", "Bearer " + admin))
+                .andExpect(status().isOk()).andReturn()).get(0).get("id").asLong();
+
+        // Un axe a trois valeurs, cree pour ce scenario.
+        java.util.Map<String, Object> axeReq = java.util.Map.of("name", "Couleur", "namePosition", "SUFFIX",
+                "values", List.of(java.util.Map.of("name", "Noir"), java.util.Map.of("name", "Blanc"),
+                                  java.util.Map.of("name", "Bleu")));
+        JsonNode axe = json(postJson("/api/variants", admin, axeReq, 200));
+        long axeId = axe.get("id").asLong();
+        long noir = 0, blanc = 0, bleu = 0;
+        for (JsonNode v : axe.get("values")) {
+            if ("Noir".equals(v.get("name").asText())) noir = v.get("id").asLong();
+            if ("Blanc".equals(v.get("name").asText())) blanc = v.get("id").asLong();
+            if ("Bleu".equals(v.get("name").asText())) bleu = v.get("id").asLong();
+        }
+
+        String photoNoir = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+        String photoArticle = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+
+        java.util.Map<String, Object> tshirt = new java.util.LinkedHashMap<>();
+        tshirt.put("code", "VE-TSH"); tshirt.put("name", "T-shirt coton"); tshirt.put("categoryId", categorie);
+        tshirt.put("price", 0); tshirt.put("imageUrl", photoArticle);
+        tshirt.put("variantId", axeId); tshirt.put("defaultVariantValueId", noir);
+        tshirt.put("variantPrices", List.of(
+                // Le noir a SA photo ; le blanc n'en a pas ; le bleu en recoit une vide,
+                // ce que le formulaire envoie quand on vient d'en retirer une.
+                java.util.Map.of("variantValueId", noir, "price", 39.9, "imageUrl", photoNoir),
+                java.util.Map.of("variantValueId", blanc, "price", 39.9),
+                java.util.Map.of("variantValueId", bleu, "price", 44.9, "imageUrl", "")));
+        long id = json(postJson("/api/products", admin, tshirt, 200)).get("id").asLong();
+
+        JsonNode fiche = lireFiche(caissier, id);
+        assertThat(photoDe(fiche, noir)).as("le noir garde la sienne").isEqualTo(photoNoir);
+        assertThat(photoDe(fiche, blanc)).as("le blanc n'en a pas : l'article prendra le relais").isNull();
+        assertThat(photoDe(fiche, bleu)).as("une chaîne vide vaut « pas de photo »").isNull();
+        assertThat(fiche.get("imageUrl").asText()).isEqualTo(photoArticle);
+
+        /*
+            LE RE-IMPORT. On remet la carte a jour - le bleu passe a 49,900 - et le
+            fichier, comme tous les fichiers de carte, ne porte aucune photo.
+        */
+        java.util.Map<String, Object> carte = java.util.Map.of(
+                "label", "Prêt-à-porter — mise à jour des prix",
+                "categories", List.of(java.util.Map.of("name", "Burgers")),
+                "variants", List.of(java.util.Map.of("name", "Couleur",
+                        "values", List.of(java.util.Map.of("name", "Noir"), java.util.Map.of("name", "Blanc"),
+                                          java.util.Map.of("name", "Bleu")))),
+                "products", List.of(new java.util.LinkedHashMap<>(java.util.Map.of(
+                        "code", "VE-TSH", "name", "T-shirt coton", "category", "Burgers",
+                        "price", 0, "variant", "Couleur", "defaultVariantValue", "Noir",
+                        "variantPrices", List.of(
+                                java.util.Map.of("value", "Noir", "price", 39.9),
+                                java.util.Map.of("value", "Blanc", "price", 39.9),
+                                java.util.Map.of("value", "Bleu", "price", 49.9))))));
+        postJson("/api/catalog/import?replace=false", admin, carte, 200);
+
+        JsonNode apres = lireFiche(caissier, id);
+        assertThat(prixDe(apres, bleu)).as("le fichier fait foi sur les prix").isEqualByComparingTo("49.900");
+        assertThat(photoDe(apres, noir)).as("la photo posée à la main survit à la mise à jour").isEqualTo(photoNoir);
+        assertThat(apres.get("imageUrl").asText()).isEqualTo(photoArticle);
+    }
+
+    /** La fiche telle que la caisse la voit — c'est elle qui décide ce qui s'affiche. */
+    private JsonNode lireFiche(String jeton, long productId) throws Exception {
+        JsonNode catalogue = json(mvc.perform(get("/api/pos/catalog").header("Authorization", "Bearer " + jeton))
+                .andExpect(status().isOk()).andReturn());
+        for (JsonNode p : catalogue.get("products")) if (p.get("id").asLong() == productId) return p;
+        throw new AssertionError("article absent du catalogue de la caisse : " + productId);
+    }
+
+    private String photoDe(JsonNode fiche, long variantValueId) {
+        for (JsonNode vp : fiche.get("variantPrices"))
+            if (vp.get("variantValueId").asLong() == variantValueId)
+                return vp.hasNonNull("imageUrl") ? vp.get("imageUrl").asText() : null;
+        throw new AssertionError("version absente de la fiche : " + variantValueId);
+    }
+
+    private java.math.BigDecimal prixDe(JsonNode fiche, long variantValueId) {
+        for (JsonNode vp : fiche.get("variantPrices"))
+            if (vp.get("variantValueId").asLong() == variantValueId) return vp.get("price").decimalValue();
+        throw new AssertionError("version absente de la fiche : " + variantValueId);
+    }
 }

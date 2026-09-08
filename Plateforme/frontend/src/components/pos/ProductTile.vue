@@ -12,6 +12,23 @@ const props = defineProps({
 const emit = defineEmits(['tap', 'hold'])
 const catalog = useCatalogStore()
 
+/**
+ * La photo montrée sur la tuile : celle de la VERSION vendue par défaut, sinon celle de
+ * l'article, sinon rien.
+ *
+ * Un appui court vend la version par défaut — la tuile doit donc montrer ce qu'elle vend.
+ * Un T-shirt dont la version par défaut est le noir montre le noir ; sans photo de
+ * version, il montre la photo générale de l'article ; sans elle non plus, l'initiale,
+ * comme avant.
+ */
+const photo = computed(() => {
+  const p = props.product
+  const parDefaut = p.defaultVariantValueId
+    ? (p.variantPrices || []).find(v => v.variantValueId === p.defaultVariantValueId)
+    : null
+  return parDefaut?.imageUrl || p.imageUrl || null
+})
+
 /* La teinte de catégorie est calculée en JS : rendu identique sur tous les moteurs,
    sans dépendre de color-mix(). */
 function rgb(hex) {
@@ -77,7 +94,7 @@ function cancel() { if (timer) { clearTimeout(timer); timer = null } }
     class="tile" :class="[size, { off: !product.available }]" :style="tint"
     @pointerdown.prevent="down" @pointerup.prevent="up" @pointerleave="cancel" @pointercancel="cancel" @contextmenu.prevent>
     <span class="pic">
-      <img v-if="showImages && product.imageUrl" :src="product.imageUrl" alt="" draggable="false" />
+      <img v-if="showImages && photo" :src="photo" alt="" draggable="false" />
       <span v-else class="letter">{{ initial }}</span>
     </span>
     <span class="body">

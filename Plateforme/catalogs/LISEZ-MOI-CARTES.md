@@ -53,7 +53,10 @@ Trois manques repérés en les construisant, notés pour ne pas être oubliés :
 1. **Taille × couleur.** Un article ne porte qu'un axe de variante. Le prêt-à-porter en
    demande deux, avec un stock par croisement — un T-shirt noir en L n'est pas un T-shirt
    blanc en L. En attendant, la couleur est dans le nom et la taille est l'axe : cela
-   marche, mais le stock ne distingue pas les couleurs.
+   marche, mais le stock ne distingue pas les couleurs. *Une photo par version est
+   désormais possible (fiche article, colonne **Photo**), ce qui règle au moins la
+   reconnaissance à l'écran ; elle ne voyage pas dans le fichier de carte, elle se pose à
+   la main et survit aux ré-imports.*
 2. ~~**Vente au poids.**~~ **Réglé.** Chaque article porte son unité de vente — pièce,
    kilo, litre. Toucher un article au kilo ouvre une pesée : on tape des **grammes**, ou un
    **montant en dinars** (« pour 5 dinars de baklawa »), et la caisse fait la division. Le
