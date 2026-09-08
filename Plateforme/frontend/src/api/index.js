@@ -31,6 +31,11 @@ export const api = {
     summary: (id) => g(`/pos/session/${id}/summary`), close: (id, body) => p(`/pos/session/${id}/close`, body),
     report: (id) => g(`/pos/session/${id}/report`),
     stock: () => g('/pos/stock'), stockEntry: (b) => p('/pos/stock/entry', b), stockWaste: (b) => p('/pos/stock/waste', b),
+    // Le stock des articles : celui de la boutique, a cote de celui des pates.
+    articleStock: () => g('/pos/article-stock'),
+    articleStockEntry: (b) => p('/pos/article-stock/entry', b),
+    articleStockWaste: (b) => p('/pos/article-stock/waste', b),
+    articleStockCount: (b) => p('/pos/article-stock/count', b),
     movements: (id) => g(`/pos/session/${id}/movements`), addMovement: (id, body) => p(`/pos/session/${id}/movements`, body),
     quote: (cart) => p('/pos/quote', cart), checkout: (body) => p('/pos/checkout', body), hold: (cart) => p('/pos/hold', cart),
     held: (posId) => g('/pos/held', { posId }), abandon: (id) => del(`/pos/held/${id}`),

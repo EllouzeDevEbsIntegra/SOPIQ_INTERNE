@@ -20,6 +20,7 @@ import LineNoteDialog from '../../components/pos/LineNoteDialog.vue'
 import HeldOrdersDialog from '../../components/pos/HeldOrdersDialog.vue'
 import CashMovementDialog from '../../components/pos/CashMovementDialog.vue'
 import StockDialog from '../../components/pos/StockDialog.vue'
+import ArticleStockDialog from '../../components/pos/ArticleStockDialog.vue'
 import AssistantDialog from '../../components/pos/AssistantDialog.vue'
 import TicketsView from './TicketsView.vue'
 import Modal from '../../components/common/Modal.vue'
@@ -254,6 +255,16 @@ function logout() { if (!cart.isEmpty) return ui.error('Videz ou mettez en atten
     barre de recherche (Entree y vaut scan), et l'ecran lui-meme quand rien n'a le focus.
 */
 const codeBarresActif = computed(() => catalog.setting('catalog.barcode.enabled', 'false') === 'true')
+/*
+    Quel stock le bouton ouvre-t-il ?
+
+    Celui de la BOUTIQUE des que le metier compte des articles ; celui des PATES sinon.
+    Un restaurant ne verra jamais l'ecran de la boutique, et reciproquement - c'est le
+    meme bouton, ce n'est pas le meme metier.
+*/
+const stockArticlesActif = computed(() =>
+  (catalog.setting('stock.mode', 'partiel') || 'partiel') !== 'aucun'
+  && catalog.products.some(p => p.stockManaged))
 const tampon = { texte: '', quand: 0 }
 
 /**
@@ -337,7 +348,7 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
       </label>
 
       <nav class="tb-actions">
-        <button class="tb-btn" @click="dialog = { kind: 'stock' }"><Icon name="box" :size="18" /><span>Stock</span></button>
+        <button class="tb-btn" @click="dialog = { kind: stockArticlesActif ? 'stock-articles' : 'stock' }"><Icon name="box" :size="18" /><span>Stock</span></button>
         <button class="tb-btn" @click="dialog = { kind: 'held' }">
           <Icon name="pause" :size="18" /><span>Attente</span>
           <em v-if="heldCount" class="count num">{{ heldCount }}</em>
@@ -428,6 +439,7 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
     <HeldOrdersDialog v-if="dialog?.kind === 'held'" :stock="stock" @close="dialog = null; refreshHeld()" @resume="resume" />
     <CashMovementDialog v-if="dialog?.kind === 'cash'" @close="dialog = null" />
     <StockDialog v-if="dialog?.kind === 'stock'" @close="dialog = null; refreshStock()" @changed="refreshStock" />
+    <ArticleStockDialog v-if="dialog?.kind === 'stock-articles'" @close="dialog = null" @changed="() => {}" />
     <AssistantDialog v-if="dialog?.kind === 'assistant'" :stock="stockDisponible(null)" @close="dialog = null"
                      @confirm="onAssistant" @compose="p => { dialog = { kind: 'modifier', product: p } }" />
     <Modal v-if="dialog?.kind === 'tickets'" size="xl" title="Historique des tickets" @close="dialog = null">

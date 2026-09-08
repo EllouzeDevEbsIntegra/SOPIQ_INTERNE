@@ -38,6 +38,52 @@ async function save() {
         <div class="field"><label>Écran de connexion</label><select class="input" v-model="s['auth.showUserTiles']"><option value="true">Afficher les tuiles caissiers</option><option value="false">PIN seul</option></select></div>
       </div>
     </div>
+    <!--
+        LE METIER.
+
+        Ces quatre reglages font la difference entre une caisse de restaurant et une
+        caisse de boutique. Ils ne sont reserves a aucun metier : un cafe qui veut
+        scanner ses bouteilles coche la premiere case et cela marche.
+    -->
+    <div class="card" style="grid-column:1/-1"><div class="card-title">Métier — code-barres et stock</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Code-barres</label>
+          <select class="input" v-model="s['catalog.barcode.enabled']">
+            <option value="false">Non utilisé</option>
+            <option value="true">Activé — scan en caisse, champ sur la fiche article</option>
+          </select>
+          <div class="tiny muted">Le lecteur est un clavier : rien à installer. Il tape le code puis Entrée, et la caisse le reconnaît à sa vitesse de frappe.</div>
+        </div>
+        <div class="field">
+          <label>Que compte-t-on ?</label>
+          <select class="input" v-model="s['stock.mode']">
+            <option value="aucun">Rien — aucun stock n'est suivi</option>
+            <option value="partiel">Certains articles — chaque fiche décide</option>
+            <option value="total">Tous les articles</option>
+          </select>
+          <div class="tiny muted">« Certains » est le cas courant : la boutique suit ses recharges et pas ses sacs plastique.</div>
+        </div>
+        <div class="field">
+          <label>Quand il n'y en a plus</label>
+          <select class="input" v-model="s['stock.rupture']">
+            <option value="refuser">Refuser la vente</option>
+            <option value="avertir">Avertir, mais laisser vendre</option>
+            <option value="passer">Ne rien dire</option>
+          </select>
+          <div class="tiny muted">Un fast-food refuse : il ne peut pas servir ce qu'il n'a pas. Une boutique préfère parfois vendre et régulariser le soir.</div>
+        </div>
+        <div class="field">
+          <label>Comment le stock entre</label>
+          <select class="input" v-model="s['stock.entree']">
+            <option value="libre">Saisie libre</option>
+            <option value="achat">Par un achat — fournisseur et prix d'achat</option>
+          </select>
+          <div class="tiny muted">L'achat garde le prix payé sur chaque entrée : c'est lui qui donne la marge réelle, pas le dernier prix connu de la fiche.</div>
+        </div>
+      </div>
+    </div>
+
     <div style="grid-column:1/-1"><button class="btn primary lg" :disabled="busy" @click="save">Enregistrer les paramètres</button></div>
   </div>
 </template>

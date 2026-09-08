@@ -159,10 +159,32 @@ async function onDrop() {
 }
 const simpleProducts = computed(() => rows.value.filter(p => p.productType === 'SIMPLE'))
 function nextCode(catId) { const c = cats.value.find(x => x.id === catId); const pre = (c?.name || 'PRD').slice(0, 3).toUpperCase().replace(/[^A-Z]/g, 'X'); let n = 1; while (rows.value.some(p => p.code === `${pre}-${String(n).padStart(3, '0')}`)) n++; return `${pre}-${String(n).padStart(3, '0')}` }
-function create() { const catId = Number(catFilter.value) || cats.value[0]?.id; edit.value = { code: nextCode(catId), reference: '', name: '', shortName: '', description: '', categoryId: catId, productType: 'SIMPLE', price: 0, taxRate: 0, imageUrl: '', color: '', sortOrder: rows.value.length + 1, active: true, available: true, favorite: false, favoriteOrder: 0, priceToCheck: false, printDestinationIds: [], modifierGroupIds: [], menuComponents: [], ingredientIds: [], variantId: null, defaultVariantValueId: null, askVariant: false, variantPrices: [] }; tab.value = 'general' }
+/*
+    Ce que le metier affiche.
+
+    Le code-barres et le stock ne sont pas des options de developpeur : ce sont deux
+    reglages du client. Une pizzeria ne verra jamais ces champs, une superette ne verra
+    que ceux-la. Lire le reglage ici evite d'avoir deux fiches article a maintenir.
+*/
+const codeBarresActif = computed(() => catalog.setting('catalog.barcode.enabled', 'false') === 'true')
+const stockActif = computed(() => (catalog.setting('stock.mode', 'partiel') || 'partiel') !== 'aucun')
+
+/** La marge, dite en pourcentage du prix de vente — c'est ainsi que le commerce la lit. */
+const marge = computed(() => {
+  const v = Number(String(edit.value?.price ?? '').replace(',', '.'))
+  const a = Number(String(edit.value?.purchasePrice ?? '').replace(',', '.'))
+  if (!(v > 0) || !(a > 0)) return null
+  return Math.round(((v - a) / v) * 1000) / 10
+})
+
+function create() { const catId = Number(catFilter.value) || cats.value[0]?.id; edit.value = { code: nextCode(catId), reference: '', name: '', shortName: '', description: '', categoryId: catId, productType: 'SIMPLE', price: 0, taxRate: 0, imageUrl: '', color: '', sortOrder: rows.value.length + 1, active: true, available: true, favorite: false, favoriteOrder: 0, priceToCheck: false, printDestinationIds: [], modifierGroupIds: [], menuComponents: [], ingredientIds: [], variantId: null, defaultVariantValueId: null, askVariant: false, variantPrices: [], barcode: '', purchasePrice: 0, stockManaged: false, stockMin: 0 }; tab.value = 'general' }
 function open(p) { edit.value = { ...p, ingredientIds: [...(p.ingredientIds || [])], variantPrices: (p.variantPrices || []).map(x => ({ ...x })), modifierGroupIds: p.modifierGroups.map(g => g.id), menuComponents: p.menuComponents.map(c => ({ name: c.name, quantity: c.quantity, sortOrder: c.sortOrder, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) })) })) }; tab.value = 'general' }
 async function save() {
-  const b = { ...edit.value, price: Number(String(edit.value.price).replace(',', '.')), taxRate: Number(edit.value.taxRate) || 0, menuComponents: edit.value.productType === 'MENU' ? edit.value.menuComponents.map((c, i) => ({ ...c, sortOrder: i, quantity: Number(c.quantity) || 1, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) || 0 })) })) : [] }
+  const b = { ...edit.value, price: Number(String(edit.value.price).replace(',', '.')), taxRate: Number(edit.value.taxRate) || 0,
+    barcode: (edit.value.barcode || '').trim() || null,
+    purchasePrice: Number(String(edit.value.purchasePrice ?? 0).replace(',', '.')) || 0,
+    stockManaged: !!edit.value.stockManaged,
+    stockMin: Number(String(edit.value.stockMin ?? 0).replace(',', '.')) || 0, menuComponents: edit.value.productType === 'MENU' ? edit.value.menuComponents.map((c, i) => ({ ...c, sortOrder: i, quantity: Number(c.quantity) || 1, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) || 0 })) })) : [] }
   const r = await run(() => api.catalog.saveProduct(edit.value.id, b), { success: 'Produit enregistré' }); if (r) { edit.value = null; load(); catalog.load(true).catch(() => {}) }
 }
 async function toggleAvail(p) { const r = await run(() => api.catalog.availability(p.id, !p.available)); if (r) { load(); catalog.load(true).catch(() => {}) } }
@@ -250,6 +272,43 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
       </div>
       <div class="field"><label>TVA % (si activée)</label><input class="input" v-model="edit.taxRate" inputmode="decimal" /></div>
       <div class="field span-2"><label>Description</label><input class="input" v-model="edit.description" /></div>
+
+      <!--
+          LA BOUTIQUE : le code-barres et le stock.
+
+          Ce bloc n'apparait que si le metier travaille au scan ou compte son stock — un
+          restaurant n'a que faire d'un champ code-barres sur son sandwich. Les deux
+          reglages qui commandent cet affichage sont dans Parametres.
+      -->
+      <div v-if="codeBarresActif || stockActif" class="boutique span-2">
+        <div class="field" v-if="codeBarresActif">
+          <label>Code-barres</label>
+          <div class="row gap-6">
+            <input class="input grow num" v-model="edit.barcode" maxlength="64" inputmode="numeric"
+                   placeholder="scannez l'article, ou saisissez le code" @keyup.enter.prevent />
+            <button v-if="edit.barcode" class="btn icon" type="button" title="Effacer le code"
+                    @click="edit.barcode = ''"><Icon name="close" :size="16" /></button>
+          </div>
+          <span class="tiny muted">Le champ écoute le lecteur : posez le curseur ici et scannez.</span>
+        </div>
+        <div class="field" v-if="stockActif">
+          <label>Prix d'achat</label>
+          <input class="input num" v-model="edit.purchasePrice" inputmode="decimal" />
+          <span class="tiny muted" v-if="marge !== null">Marge : <b>{{ marge }} %</b></span>
+        </div>
+        <template v-if="stockActif">
+          <div class="field">
+            <label>Suivi de stock</label>
+            <label class="check"><input type="checkbox" v-model="edit.stockManaged" /> Compter cet article</label>
+            <span class="tiny muted">Décoché, il se vend sans jamais bloquer.</span>
+          </div>
+          <div class="field">
+            <label>Seuil d'alerte</label>
+            <input class="input num" v-model="edit.stockMin" inputmode="decimal" :disabled="!edit.stockManaged" />
+            <span class="tiny muted">En dessous, l'article remonte dans la liste à recommander.</span>
+          </div>
+        </template>
+      </div>
       <!--
           Variante : les versions du meme plat, chacune a son prix.
 
@@ -378,6 +437,16 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
 </template>
 
 <style scoped>
+/* Le bloc du metier : encadre, pour qu'on voie d'un coup d'oeil qu'il ne concerne pas
+   tout le monde - et qu'on ne le cherche pas dans une pizzeria ou il n'apparait pas. */
+.boutique {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; align-items: start;
+  padding: 12px 14px; border: 1px dashed var(--line-2); border-radius: var(--r-sm);
+  background: var(--surface-2);
+}
+.boutique .field { min-width: 0; }
+@media (max-width: 900px) { .boutique { grid-template-columns: repeat(2, 1fr); } }
+
 .pastille {
   display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 999px;
   font-size: 11px; font-weight: 700; background: var(--warn); color: #fff;
