@@ -79,6 +79,40 @@ logiciel.
   passe volé se casse quatre fois moins vite ; les empreintes existantes restent valides,
   chacune porte son propre coût.
 
+## 6. Le compte d'un client pouvait ouvrir la base d'un autre — **corrigé**
+
+Trouvé en essayant, pas en relisant : après avoir provisionné deux clients, on se connecte
+à PostgreSQL avec les identifiants du premier et on demande la base du second.
+
+```
+$ psql -U pos_cli0004_cafe -d pos_cli0002_resto -c "select 1"
+ 1
+```
+
+**Ce qu'il pouvait voir.** Pas les ventes de l'autre : les tables appartiennent à l'autre
+rôle, et une lecture était refusée (`permission denied for table`). Mais il entrait, et le
+catalogue partagé lui donnait **le nom de toutes les bases** — donc la liste de tous nos
+clients, avec leur métier dans le nom.
+
+**Pourquoi.** PostgreSQL accorde `CONNECT` à `PUBLIC` sur toute base neuve. Créer la base
+avec un propriétaire ne la ferme pas ; cela ne fait qu'y ajouter un propriétaire.
+
+**Corrigé** — le provisionnement retire ce droit et ne le rend qu'au propriétaire :
+
+```sql
+REVOKE CONNECT ON DATABASE <base> FROM PUBLIC;
+GRANT  CONNECT ON DATABASE <base> TO <utilisateur du client>;
+```
+
+Relancer le provisionnement sur une base déjà créée la **répare** au lieu de ne rien faire :
+les quatre bases nées avant le correctif ont été refermées de cette façon, sans interrompre
+la caisse qui tournait sur l'une d'elles. Le scénario d'intégration vérifie désormais les
+deux moitiés — `PUBLIC` ne peut pas se connecter, le propriétaire le peut toujours.
+
+*Ce défaut contredisait ce que le code affirmait de lui-même : « le compte du client A ne
+peut même pas ouvrir la base du client B ». La phrase était la bonne ; c'est le code qui ne
+la tenait pas.*
+
 ---
 
 ## Ce qui reste à faire avant d'ouvrir sur internet
@@ -95,8 +129,10 @@ les conditions d'un service hébergé.
 4. **Durée de vie des jetons** : 12 h aujourd'hui, ce qui convient à une caisse ouverte du
    matin au soir. Pour le back-office éditeur, il faudra plus court, avec renouvellement.
 5. **Deuxième facteur pour le back-office éditeur** — celui qui voit tous les clients.
-6. **Cloisonnement des bases** : une base par client (décidé), donc un utilisateur PostgreSQL
-   par base, et jamais un compte unique qui les voit toutes.
+6. ~~**Cloisonnement des bases**~~ : **fait** — une base par client, un utilisateur
+   PostgreSQL par base, et `CONNECT` retiré à `PUBLIC` (§ 6). Reste à faire : que la caisse
+   elle-même aiguille vers la bonne base selon le client du jeton, avec un test qui
+   interdit une requête sans contexte.
 7. **Journal d'accès conservé** : qui a lu quoi, pas seulement qui a écrit.
 8. **Sauvegardes chiffrées et testées** : une sauvegarde qu'on n'a jamais restaurée n'est
    pas une sauvegarde.

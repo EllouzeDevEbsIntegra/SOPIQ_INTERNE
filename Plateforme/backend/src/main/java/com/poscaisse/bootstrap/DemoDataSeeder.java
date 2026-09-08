@@ -17,8 +17,20 @@ import java.math.BigDecimal;
 import java.util.*;
 
 /**
- * Seeds a rich, realistic demo dataset on first start (empty database only).
- * Demo accounts: admin / admin123 (PIN 9999), manager / manager123 (PIN 2222), ahmed PIN 1234, sami PIN 5678, mariem PIN 4321.
+ * Ce qu'une base neuve contient au premier demarrage.
+ *
+ * Deux couches, et elles ne se confondent pas. Le SOCLE - roles, moyens de paiement,
+ * destinations d'impression, compte administrateur - est pose sur toute installation, y
+ * compris chez un client qui part de zero : sans lui personne ne peut se connecter. La
+ * DEMONSTRATION - une maison, des caissiers, une carte - n'est posee que si on la demande,
+ * et jamais sur une base ou une societe existe deja.
+ *
+ * Ce que la demonstration vaut depend du METIER : voir {@link ProfilMetier}. Sans profil
+ * declare, c'est la carte fast-food historique, celle qui est ecrite plus bas dans ce
+ * fichier.
+ *
+ * Comptes de demonstration : admin / admin123 (PIN 9999), manager / manager123 (PIN 2222),
+ * ahmed PIN 1234, sami PIN 5678, mariem PIN 4321.
  */
 @Component @RequiredArgsConstructor @Slf4j
 public class DemoDataSeeder implements ApplicationRunner {
@@ -28,6 +40,7 @@ public class DemoDataSeeder implements ApplicationRunner {
     private final CategoryRepo categoryRepo; private final ProductRepo productRepo; private final ModifierGroupRepo groupRepo;
     private final PaymentMethodRepo paymentRepo; private final ReceiptTemplateRepo templateRepo; private final CustomerRepo customerRepo;
     private final PasswordEncoder encoder; private final ObjectMapper om;
+    private final AmorcageMetier metier;
 
     @Override
     @Transactional
@@ -37,7 +50,43 @@ public class DemoDataSeeder implements ApplicationRunner {
         // seedCore ne tourne plus, et un moyen de paiement ajoute par une version
         // ulterieure ne serait jamais cree.
         seedPaymentMethods();
-        if (props.isDemoData() && companyRepo.count() == 0) seedDemo();
+
+        /*
+            LE PROFIL METIER DECIDE DU RESTE.
+
+            Sans profil declare - toutes les installations d'avant, dont la caisse en
+            service chez le client - rien ne change : la demonstration fast-food, comme
+            depuis le premier jour.
+
+            Avec un profil, le poste s'installe lui-meme dans son metier : son enseigne,
+            les reglages de son commerce, et la carte de sa verticale s'il en veut une.
+            C'est ce qui rend l'ouverture d'un client possible sans qu'un technicien
+            ouvre un terminal.
+        */
+        ProfilMetier profil = metier.profilConfigure();
+        if (profil == null) {
+            if (props.isDemoData() && companyRepo.count() == 0) {
+                seedMaison("FAST FOOD DEMO SARL", "FAST FOOD DEMO", true);
+                seedCarteFastFood();
+            }
+            return;
+        }
+        // Une societe enregistree, c'est un commerce qui tourne : on ne lui repose ni ses
+        // reglages ni sa carte parce qu'une variable d'environnement a change ce matin.
+        if (companyRepo.count() > 0) return;
+
+        boolean demonstration = metier.avecDemonstration();
+        String enseigne = metier.enseigne(profil);
+        seedMaison(enseigne, enseigne, demonstration);
+        metier.poserLesReglages(profil);
+        if (!demonstration) {
+            log.info("Profil {} ({}) : poste neuf pour « {} », sans carte de démonstration.",
+                    profil.name(), profil.libelle(), enseigne);
+            return;
+        }
+        if (profil.carte() != null) metier.chargerLaCarte(profil); else seedCarteFastFood();
+        log.info("Profil {} ({}) installé pour « {} » : {} articles.",
+                profil.name(), profil.libelle(), enseigne, productRepo.count());
     }
 
     private void seedCore() {
@@ -69,23 +118,52 @@ public class DemoDataSeeder implements ApplicationRunner {
         log.info("PosCaisse: core data initialised (roles, payment methods, print destinations, admin user).");
     }
 
-    private void seedDemo() {
+    /**
+     * La maison : la societe, son point de vente, ses caisses, son equipe.
+     *
+     * Elle est posee pour TOUS les metiers - un cafe comme une superette ont une enseigne
+     * et une caisse. Ce que la demonstration ajoute, c'est une adresse plausible, une
+     * deuxieme caisse et quatre comptes pour montrer les roles.
+     *
+     * Sans demonstration, l'adresse, le telephone et le matricule fiscal restent VIDES.
+     * Une adresse de Tunis imprimee sur les tickets d'un commerce de Sfax est pire qu'une
+     * ligne blanche : le client la voit le soir meme, sur un ticket deja donne.
+     */
+    private PointOfSale seedMaison(String raisonSociale, String enseigne, boolean demonstration) {
         Company c = new Company();
-        c.setName("FAST FOOD DEMO SARL"); c.setTradeName("FAST FOOD DEMO"); c.setAddress("12 Avenue Habib Bourguiba, Tunis 1000"); c.setPhone("+216 71 000 000");
-        c.setTaxId("1234567/A/M/000"); c.setCurrency("TND"); c.setCurrencySymbol("DT"); c.setDecimals(3);
+        c.setName(raisonSociale); c.setTradeName(enseigne);
+        c.setCurrency("TND"); c.setCurrencySymbol("DT"); c.setDecimals(3);
+        if (demonstration) {
+            c.setAddress("12 Avenue Habib Bourguiba, Tunis 1000"); c.setPhone("+216 71 000 000");
+            c.setTaxId("1234567/A/M/000");
+        }
         c = companyRepo.save(c);
-        PointOfSale pos = new PointOfSale(); pos.setCompany(c); pos.setCode("PV01"); pos.setName("CENTRE-VILLE"); pos.setAddress(c.getAddress()); pos.setPhone(c.getPhone());
+        PointOfSale pos = new PointOfSale(); pos.setCompany(c); pos.setCode("PV01");
+        pos.setName(demonstration ? "CENTRE-VILLE" : enseigne);
+        pos.setAddress(c.getAddress()); pos.setPhone(c.getPhone());
         pos = posRepo.save(pos);
         Register r1 = new Register(); r1.setPointOfSale(pos); r1.setCode("C01"); r1.setName("CAISSE 01"); registerRepo.save(r1);
-        Register r2 = new Register(); r2.setPointOfSale(pos); r2.setCode("C02"); r2.setName("CAISSE 02"); registerRepo.save(r2);
+        if (!demonstration) return pos;
 
+        Register r2 = new Register(); r2.setPointOfSale(pos); r2.setCode("C02"); r2.setName("CAISSE 02"); registerRepo.save(r2);
         Role manager = roleRepo.findByCode("MANAGER").orElseThrow(), cashier = roleRepo.findByCode("CASHIER").orElseThrow();
         user("manager", "Manager Démo", manager, "manager123", "2222", "#0ea5e9");
         User ahmed = user("ahmed", "Ahmed", cashier, null, "1234", "#f97316");
         User sami = user("sami", "Sami", cashier, null, "5678", "#22c55e");
         User mariem = user("mariem", "Mariem", cashier, null, "4321", "#ec4899");
         for (User u : List.of(ahmed, sami, mariem)) { u.setPointOfSale(pos); u.setMaxDiscountPercent(new BigDecimal("10")); userRepo.save(u); }
+        return pos;
+    }
 
+    /**
+     * La carte du restaurant de demonstration.
+     *
+     * Elle est ecrite ici et non dans un fichier de carte, contrairement aux cinq autres
+     * metiers, pour une seule raison : elle contient des MENUS composes, que le format
+     * d'import ne sait pas encore porter. Un fast-food de demonstration sans menus ne
+     * montrerait pas ce que la caisse fait de mieux.
+     */
+    private void seedCarteFastFood() {
         PrintDestination cuisine = destRepo.findByCode("CUISINE").orElseThrow(), pizza = destRepo.findByCode("PIZZA").orElseThrow(), boissons = destRepo.findByCode("BOISSONS").orElseThrow();
 
         Category burgers = cat("Burgers", "#f97316", "🍔", 1, cuisine), sandwichs = cat("Sandwichs", "#eab308", "🥪", 2, cuisine), pizzas = cat("Pizzas", "#ef4444", "🍕", 3, pizza),

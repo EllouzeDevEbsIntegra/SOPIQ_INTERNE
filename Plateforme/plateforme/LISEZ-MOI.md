@@ -87,11 +87,18 @@ facture à l'autre, la suspension qui laisse la caisse en lecture seule, le prov
 qui crée vraiment la base et ne rend jamais deux fois le mot de passe, et le compte support
 qui ne peut rien créer.
 
+## Le provisionnement
+
+« Préparer la base du client » crée la base, un utilisateur PostgreSQL qui n'a de droits
+que sur elle, et rend les accès **une seule fois** — le mot de passe n'est stocké nulle
+part. La boîte demande d'abord si le client part de la carte de démonstration de son métier
+ou d'un catalogue vide, puis rend la commande de lancement : la caisse y lit son métier et
+son enseigne, pose son schéma, ses réglages et sa carte toute seule au premier démarrage.
+
+Le détail des six métiers et la façon d'en ouvrir un septième : `../PROFILS-METIER.md`.
+
 ## Ce qui n'est pas encore là
 
-- **Le chargement automatique de la carte** : le provisionnement crée la base, l'utilisateur
-  qui n'a de droits que sur elle, et rend les accès une seule fois. La caisse y pose son
-  schéma au démarrage ; la carte de démonstration du métier s'importe encore à la main.
 - **L'écran définitif** : l'interface actuelle est d'un seul fichier, sans le système de
   design de la caisse. Elle montre tout ce que l'API sait faire, elle n'est pas jolie.
 - **Les relances par courriel** avant suspension.

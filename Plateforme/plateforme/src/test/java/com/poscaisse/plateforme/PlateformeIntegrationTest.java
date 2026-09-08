@@ -247,12 +247,26 @@ class PlateformeIntegrationTest {
      * provisionnement relance par megarde sur un client en service ne casse rien.
      */
     @Test @Order(6) void provisionnerLaBaseDUnClient() throws Exception {
-        JsonNode r = json(poster("/api/abonnements/" + abonnementId + "/provisionner", Map.of(), 200));
+        JsonNode r = json(poster("/api/abonnements/" + abonnementId + "/provisionner",
+                Map.of("demonstration", true), 200));
         String base = r.get("base").asText();
         assertThat(base).matches("[a-z0-9_]+").contains("cafe");
         assertThat(r.get("motDePasse").asText()).as("rendu une seule fois").isNotBlank();
         assertThat(r.get("carteDeDemonstration").asText()).isEqualTo("mistral-coffee.json");
-        assertThat(r.get("commande").asText()).contains("POSCAISSE_DB_NAME=" + base);
+
+        /*
+            LA COMMANDE DOIT SUFFIRE. Elle remplace la visite d'un technicien : si elle
+            oublie le profil, la caisse s'ouvre en fast-food chez un cafetier ; si elle
+            oublie la langue, l'enseigne accentuee arrive abimee et s'imprime ainsi sur
+            chaque ticket. On verifie donc la ligne entiere, pas seulement la base.
+        */
+        String commande = r.get("commande").asText();
+        assertThat(commande)
+                .contains("POSCAISSE_DB_NAME=" + base)
+                .contains("POSCAISSE_PROFIL=CAFE")
+                .contains("POSCAISSE_DEMO_DATA=true")
+                .contains("LANG=C.UTF-8")
+                .contains("POSCAISSE_ENSEIGNE=");
 
         // La base existe vraiment - ce n'est pas une ligne dans une table.
         try (java.sql.Connection cx = source.getConnection();
@@ -261,10 +275,38 @@ class PlateformeIntegrationTest {
             assertThat(rs.next()).as("la base est créée").isTrue();
         }
 
+        /*
+            LE CLOISONNEMENT, VERIFIE ET NON SUPPOSE.
+
+            PostgreSQL accorde CONNECT a PUBLIC sur toute base neuve : sans ce retrait, le
+            compte d'un client ouvrait la base d'un autre. Il n'y lisait pas de donnees,
+            mais il y lisait le nom de toutes les bases - donc de tous nos clients.
+        */
+        try (java.sql.Connection cx = source.getConnection();
+             java.sql.Statement st = cx.createStatement();
+             java.sql.ResultSet rs = st.executeQuery(
+                     "select has_database_privilege('public', '" + base + "', 'CONNECT'),"
+                   + "       has_database_privilege('" + base + "', '" + base + "', 'CONNECT')")) {
+            assertThat(rs.next()).isTrue();
+            assertThat(rs.getBoolean(1)).as("plus personne d'autre ne peut ouvrir cette base").isFalse();
+            assertThat(rs.getBoolean(2)).as("son propriétaire, lui, l'ouvre").isTrue();
+        }
+
         // Relance : on ne recree rien, on ne rend pas de nouveau mot de passe.
         JsonNode encore = json(poster("/api/abonnements/" + abonnementId + "/provisionner", Map.of(), 200));
         assertThat(encore.get("message").asText()).contains("existait déjà");
         assertThat(encore.has("motDePasse")).as("aucun mot de passe rendu deux fois").isFalse();
+
+        /*
+            << REPARTIR DE ZERO >>. Le commercial change d'avis : ce client a deja son
+            catalogue et ne veut pas effacer 112 articles de demonstration avant de
+            commencer. Le choix se refait sur une base deja creee - il ne touche pas a la
+            base, il change la commande qu'on remet au client.
+        */
+        JsonNode vide = json(poster("/api/abonnements/" + abonnementId + "/provisionner",
+                Map.of("demonstration", false), 200));
+        assertThat(vide.get("commande").asText()).contains("POSCAISSE_DEMO_DATA=false");
+        assertThat(vide.get("carteDeDemonstration").asText()).contains("vide");
 
         // On range derriere le test : la base et son utilisateur ne survivent pas au scenario.
         try (java.sql.Connection cx = source.getConnection(); java.sql.Statement st = cx.createStatement()) {

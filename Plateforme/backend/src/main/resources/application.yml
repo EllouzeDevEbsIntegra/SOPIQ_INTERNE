@@ -35,7 +35,17 @@ poscaisse:
     secret: ${POSCAISSE_JWT_SECRET:change-me-please-this-is-a-development-secret-key-with-64-bytes-min-length-0123456789}
     expiration-minutes: ${POSCAISSE_JWT_EXPIRATION_MINUTES:720}
   timezone: Africa/Tunis
+  # Poser la carte de demonstration du profil au premier demarrage.
+  # A false : la maison, une caisse, le compte administrateur, et rien d'autre.
   demo-data: ${POSCAISSE_DEMO_DATA:true}
+  metier:
+    # Le metier de ce poste : RESTO, CAFE, SHOP, VETEMENT, PATISSERIE, PARFUMERIE.
+    # Vide - la valeur historique - le poste demarre comme avant, sur la demonstration
+    # fast-food. Lu au premier demarrage seulement : un commerce en service ne change
+    # pas de metier parce qu'une variable a change au redemarrage.
+    profil: ${POSCAISSE_PROFIL:}
+    # L'enseigne du client, celle qui s'imprime sur le ticket. Vide : celle de la demonstration.
+    enseigne: ${POSCAISSE_ENSEIGNE:}
   frontend-dist: ${POSCAISSE_FRONTEND_DIST:../frontend/dist}
   cors-origins: ${POSCAISSE_CORS_ORIGINS:http://localhost:5173,http://127.0.0.1:5173,http://localhost:4173}
 logging:

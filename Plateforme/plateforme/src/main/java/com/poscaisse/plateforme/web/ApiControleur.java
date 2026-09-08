@@ -89,7 +89,13 @@ public class ApiControleur {
      * se change ; garde quelque part, il se vole.
      */
     @PostMapping("/abonnements/{id}/provisionner")
-    public java.util.Map<String, String> provisionner(@PathVariable Long id) { return provisionnement.provisionner(id); }
+    public java.util.Map<String, String> provisionner(@PathVariable Long id,
+                                                      @RequestBody(required = false) DemonstrationRequest r) {
+        return provisionnement.provisionner(id, r == null ? null : r.demonstration());
+    }
+
+    /** Partir de la carte de demonstration du metier, ou d'un catalogue vide. */
+    public record DemonstrationRequest(Boolean demonstration) {}
 
     @PostMapping("/licences/{id}/revoquer")
     public LicenceDto revoquer(@PathVariable Long id, @RequestBody(required = false) MotifRequest r) {

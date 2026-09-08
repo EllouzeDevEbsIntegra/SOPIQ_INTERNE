@@ -381,14 +381,35 @@ function suspendre(id) {
 }
 
 /**
- * Preparer la base, et montrer les acces UNE FOIS.
+ * Preparer la base du client.
+ *
+ * On demande d'abord la seule chose qui ne se devine pas : le client veut-il voir une
+ * carte du jour ou il ouvre, ou saisir la sienne sur un ecran vide ? Les deux se
+ * defendent - un cafe veut montrer quelque chose tout de suite, un commercant qui a
+ * deja son catalogue ne veut pas effacer 112 articles de demonstration avant de
+ * commencer.
+ */
+function provisionner(abonnementId) {
+  boite('Préparer la base du client', `
+    <p style="margin:0;font-size:13px">Une base et un compte qui n'ouvre qu'elle vont être créés.
+      La caisse posera ensuite son schéma et ses réglages métier toute seule au premier démarrage.</p>
+    <label class="f">Catalogue de départ
+      <select class="champ" name="demonstration">
+        <option value="true">La carte de démonstration du métier — le client la modifie ensuite</option>
+        <option value="false">Repartir de zéro — catalogue vide, le client saisit le sien</option>
+      </select></label>`,
+    async v => { await lancerProvisionnement(abonnementId, v.demonstration === 'true'); });
+}
+
+/**
+ * Creer la base, et montrer les acces UNE FOIS.
  *
  * Le mot de passe n'est stocke nulle part : cette boite est le seul endroit ou il
  * apparaitra. On le dit, et on laisse le temps de le copier.
  */
-async function provisionner(abonnementId) {
+async function lancerProvisionnement(abonnementId, demonstration) {
   try {
-    const r = await api('/abonnements/' + abonnementId + '/provisionner', 'POST', {});
+    const r = await api('/abonnements/' + abonnementId + '/provisionner', 'POST', { demonstration });
     const lignes = [
       ['Base', r.base], ['Hôte', r.hote + ':' + r.port], ['Utilisateur', r.utilisateur],
       r.motDePasse ? ['Mot de passe', r.motDePasse] : null,
@@ -398,7 +419,7 @@ async function provisionner(abonnementId) {
       <p style="margin:0;font-size:13px">${echap(r.message)}</p>
       ${r.motDePasse ? '<p style="margin:0;color:var(--rouge);font-size:12.5px"><b>Notez le mot de passe maintenant :</b> il n\'est enregistré nulle part et ne sera plus affiché.</p>' : ''}
       <div class="grille">${lignes}</div>
-      <label class="f">Commande de lancement<textarea class="champ" style="height:74px;padding:8px" readonly>${echap(r.commande)}</textarea></label>`,
+      <label class="f">Commande de lancement<textarea class="champ" style="height:96px;padding:8px" readonly>${echap(r.commande)}</textarea></label>`,
       async () => { aller('client', vueArg()); });
     dire('Base préparée');
   } catch (e) { dire(e.message, true); }

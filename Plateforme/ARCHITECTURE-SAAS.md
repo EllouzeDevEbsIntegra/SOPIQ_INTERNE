@@ -107,9 +107,12 @@ automatiquement.
 
 ## 8. L'ordre dans lequel construire
 
-1. **Le back-office éditeur** : clients, abonnements, licences, factures, utilisateurs.
-   *(Il a de la valeur avant même le multi-clients : il remplace le tableur.)*
-2. **Le provisionnement** : créer la base, la migrer, charger le profil, rendre les accès.
+1. ~~**Le back-office éditeur**~~ : clients, abonnements, licences, factures, utilisateurs.
+   **Fait.** *(Il a de la valeur avant même le multi-clients : il remplace le tableur.)*
+2. ~~**Le provisionnement**~~ : créer la base, la migrer, charger le profil, rendre les
+   accès. **Fait** — la base et son utilisateur sont créés par le back-office, et la caisse
+   pose son schéma, ses réglages métier et sa carte toute seule au premier démarrage. Voir
+   `PROFILS-METIER.md`.
 3. **L'aiguillage multi-clients** dans la caisse, avec le test qui interdit l'absence de
    contexte.
 4. **La suspension** et son écran de lecture seule.

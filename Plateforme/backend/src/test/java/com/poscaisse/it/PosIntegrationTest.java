@@ -32,6 +32,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PosIntegrationTest {
     @Autowired MockMvc mvc;
     @Autowired ObjectMapper om;
+
+    /*
+        SA BASE, REFAITE A CHAQUE FOIS.
+
+        Ce scenario laisse derriere lui une caisse ouverte, des tickets numerotes et un
+        catalogue purge. Rejoue sur la meme base, il recevait 409 en ouvrant sa caisse et
+        404 sur des articles que sa propre purge avait supprimes : il ne passait qu'une
+        fois, sur une base creee a la main pour l'occasion. Il refait maintenant la sienne,
+        et l'amorcage y repose la carte de demonstration dont il se sert.
+    */
+    @org.springframework.test.context.DynamicPropertySource
+    static void baseNeuve(org.springframework.test.context.DynamicPropertyRegistry r) {
+        com.poscaisse.BaseDeTest.neuve(r, "poscaisse_it");
+    }
     static String cashierToken, managerToken; static long registerId, sessionId, cashId, cardId, cheeseId, fromageId, fritesId, cocaId, orderId;
 
     private JsonNode json(MvcResult r) throws Exception { return om.readTree(r.getResponse().getContentAsString()); }

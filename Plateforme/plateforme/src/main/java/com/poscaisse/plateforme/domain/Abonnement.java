@@ -29,6 +29,14 @@ public class Abonnement {
     private LocalDate finLe;
     @Enumerated(EnumType.STRING) private Enums.StatutAbonnement statut = Enums.StatutAbonnement.ACTIF;
 
+    /**
+     * Partir de la carte de demonstration du metier, ou d'un catalogue vide.
+     *
+     * Decide a la vente, garde ici : la commande de lancement se rejoue telle quelle le
+     * jour ou le poste est remplace.
+     */
+    private boolean avecDemonstration = true;
+
     private String baseNom;
     private String urlClient;
     private String version;

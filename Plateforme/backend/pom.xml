@@ -44,6 +44,35 @@
       sur un fichier qui n'a rien a voir avec ce qu'on est en train de construire.
     -->
     <finalName>${poscaisse.finalName}</finalName>
+    <!--
+      LES CARTES DE DEMONSTRATION VOYAGENT DANS LE JAR.
+
+      Un poste installe dans un commerce n'a pas le depot de sources a cote de lui : la
+      carte de son metier doit etre a l'interieur du JAR, sinon le premier demarrage donne
+      une caisse vide et personne ne comprend pourquoi.
+
+      Elles ne sont pas RECOPIEES ici - elles sont prises la ou elles s'ecrivent,
+      ../catalogs. Deux copies d'une carte divergent au premier prix corrige, et c'est
+      toujours celle qu'on ne regarde pas qui part chez le client.
+
+      Les cartes nommees une par une, et non *.json : number-one-2026.json est la carte
+      REELLE d'un client, avec ses prix. Elle n'a rien a faire dans un JAR livre a des
+      prospects.
+    -->
+    <resources>
+      <resource><directory>${project.basedir}/src/main/resources</directory></resource>
+      <resource>
+        <directory>${project.basedir}/../catalogs</directory>
+        <targetPath>cartes</targetPath>
+        <includes>
+          <include>mistral-coffee.json</include>
+          <include>superette-el-baraka.json</include>
+          <include>dar-halwa.json</include>
+          <include>nour-parfums.json</include>
+          <include>style-boutique.json</include>
+        </includes>
+      </resource>
+    </resources>
     <plugins>
       <plugin><groupId>org.springframework.boot</groupId><artifactId>spring-boot-maven-plugin</artifactId></plugin>
     </plugins>
