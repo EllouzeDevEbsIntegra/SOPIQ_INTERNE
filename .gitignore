@@ -25,3 +25,6 @@ Plateforme/*.log
 Plateforme/*.pid
 Plateforme/packaging/dist/
 Plateforme/packaging/telechargements/
+Plateforme/plateforme/target/
+Plateforme/plateforme/frontend/node_modules/
+Plateforme/plateforme/frontend/dist/
