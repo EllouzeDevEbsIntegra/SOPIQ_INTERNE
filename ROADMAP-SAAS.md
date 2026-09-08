@@ -86,6 +86,51 @@ Une seule offre commerciale, plusieurs métiers. Ce qu'il faut construire :
    courtes, et la possibilité de retomber sur une installation locale pour les clients qui
    vendent en continu (le paquet autonome existe déjà, il ne demande qu'à être réutilisé).
 
+## Ce qu'un profil décide — le paramétrage
+
+Un métier ne change pas le logiciel, il change des **réglages**. Voici ceux qui font la
+différence entre les verticales ; tous doivent être modifiables par client, parce que deux
+boutiques du même métier ne travaillent jamais pareil.
+
+### Code-barres
+
+| Réglage | Ce qu'il fait | Shop | Vêtement | Resto | Café | Pâtisserie |
+|---|---|:--:|:--:|:--:|:--:|:--:|
+| `barcode.enabled` | champ code-barres sur la fiche, lecture au scanner en caisse | ✔ | ✔ | — | — | — |
+| `barcode.required` | refuse d'enregistrer un article sans code | option | option | — | — | — |
+| `barcode.autoAdd` | un scan ajoute directement au panier, sans confirmation | ✔ | ✔ | — | — | — |
+| `barcode.unknownAsk` | un code inconnu propose de créer l'article sur-le-champ | ✔ | ✔ | — | — | — |
+
+### Stock
+
+Le stock n'est pas un interrupteur unique : c'est **trois** questions distinctes.
+
+| Réglage | Valeurs | Ce que ça change |
+|---|---|---|
+| `stock.mode` | `aucun` · `partiel` · `total` | `partiel` = chaque article décide (le pain oui, le café non). C'est le cas le plus fréquent, et le défaut. |
+| `stock.porte` | `article` · `valeur de variante` · `déclinaison` | Le Resto compte la **pâte** (valeur de variante), le Shop compte l'**article**, le Vêtement compte la **taille × couleur**. |
+| `stock.rupture` | `refuser` · `avertir` · `laisser passer` | Un fast-food refuse ; une boutique préfère parfois vendre et régulariser. |
+| `stock.entree` | `achat` · `saisie libre` | Le Shop entre son stock par un **achat** (fournisseur, prix d'achat, quantité) ; le Resto saisit à la main ce qui arrive du frigo. |
+| `stock.remiseAZero` | `jamais` · `à la clôture` | La pâte ne se garde pas d'un jour sur l'autre ; une caisse de biscuits, si. |
+
+### Le reste, métier par métier
+
+- `service.modes` — sur place, à emporter, livraison, **table** (Café et Resto ouvrent des
+  tables et diffèrent l'addition ; un Shop encaisse au comptoir).
+- `print.destinations` — cuisine, bar, **chicha**, aucune. Le Shop n'imprime qu'un ticket
+  client.
+- `variant.axe` — le nom par défaut de l'axe : Pâte, Goût, Taille, Parfum…
+- `pricing` — devise, décimales (3 pour le dinar), prix TTC ou HT, taux de TVA par défaut.
+- `catalog.demo` — la carte de démonstration installée à la souscription.
+- `caisse` — fond de caisse obligatoire, clôture journalière, marge bénéficiaire en %.
+
+### Un écart à traiter avant la verticale Vêtement
+
+Aujourd'hui **un article porte au plus UN axe de variante** (la pâte, le goût). Le
+prêt-à-porter en demande **deux** : taille × couleur, avec un stock par croisement. Ce
+n'est pas un réglage, c'est un chantier — à mener avant de vendre ce profil, et sans
+casser les deux axes uniques déjà en service.
+
 ## Ordre de marche
 
 1. Créer la racine du code vivant, à partir du code figé — **sans toucher à `PosCaisse/`**.
