@@ -54,7 +54,7 @@ public class CatalogService {
         // versions d'un article sans aller-retour, et connaitre leurs prix.
         List<AdminDtos.VariantDto> variants = variantRepo.findByActiveTrueOrderBySortOrderAscIdAsc()
                 .stream().map(Mappers::variant).toList();
-        return new CatalogResponse(cats, products, methods, settings.all(), info, notes, ingredients, variants);
+        return new CatalogResponse(cats, products, methods, settings.pourLaCaisse(), info, notes, ingredients, variants);
     }
 
     // ---------- Categories ----------

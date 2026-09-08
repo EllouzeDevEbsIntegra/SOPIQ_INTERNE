@@ -123,6 +123,31 @@ public class SettingsService {
         return d;
     }
 
+    /**
+     * Les reglages que l'ecran de vente a le droit de connaitre.
+     *
+     * La caisse recevait TOUS les reglages, marge beneficiaire comprise : n'importe quel
+     * caissier pouvait lire le taux du patron dans la reponse du catalogue, sans meme
+     * avoir a chercher. On envoie desormais ce dont l'ecran se sert, et rien d'autre.
+     *
+     * La liste est une PERMISSION, pas une commodite : un reglage nouveau n'arrive en
+     * caisse que si quelqu'un decide qu'il doit y arriver.
+     */
+    private static final Set<String> POUR_LA_CAISSE = Set.of(
+            SERVICE_MODES, DEFAULT_SERVICE_MODE, TAX_ENABLED, DISCOUNT_HIGH_THRESHOLD,
+            TILE_SIZE, SHOW_IMAGES, AUTO_PRINT, RECEIPT_TEMPLATE, QUICK_CASH, CASH_ROUNDING,
+            PIN_USER_TILES, TICKET_DISPLAY_PATTERN,
+            BARCODE_ENABLED, BARCODE_AUTO_ADD, BARCODE_UNKNOWN_ASK,
+            STOCK_MODE, STOCK_RUPTURE, STOCK_ENTREE);
+
+    @Transactional(readOnly = true)
+    public Map<String, String> pourLaCaisse() {
+        Map<String, String> tout = all();
+        Map<String, String> visible = new LinkedHashMap<>();
+        for (String k : POUR_LA_CAISSE) if (tout.containsKey(k)) visible.put(k, tout.get(k));
+        return visible;
+    }
+
     @Transactional(readOnly = true)
     public Map<String, String> all() {
         Map<String, String> m = defaults();

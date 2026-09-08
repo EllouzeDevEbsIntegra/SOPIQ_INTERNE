@@ -93,7 +93,21 @@ public class RegisterSessionService {
     @Transactional(readOnly = true)
     public SessionSummary summary(Long sessionId) {
         RegisterSession s = sessionRepo.findById(sessionId).orElseThrow(() -> BusinessException.notFound("Session"));
+        exigeLaSienne(s);
         return computeSummary(s);
+    }
+
+    /**
+     * On ne lit une caisse que si c'est la sienne - ou si l'on a le droit de les voir toutes.
+     *
+     * Le total d'une session, c'est la recette d'un caissier : ce qu'il a encaisse, ce
+     * qu'il a rendu, l'ecart de son tiroir. Un identifiant se devine en comptant, et rien
+     * n'empechait un caissier de lire la caisse d'un autre - ou celle du patron.
+     */
+    private void exigeLaSienne(RegisterSession s) {
+        if (s.getOpenedBy() != null && s.getOpenedBy().getId().equals(currentUser.id())) return;
+        if (currentUser.has(Permission.REVENUE_VIEW) || currentUser.has(Permission.REPORTS_VIEW)) return;
+        throw BusinessException.forbidden("Cette caisse n'est pas la vôtre.");
     }
 
     public SessionSummary computeSummary(RegisterSession s) {
@@ -142,7 +156,16 @@ public class RegisterSessionService {
             boucle ci-dessus). Et il ne bouge pas d'un millime quand la caisse fait une
             sortie : sortir de l'argent du tiroir n'annule aucune vente.
         */
-        BigDecimal margin = settings.getDecimal(SettingsService.MARGIN_PERCENT, BigDecimal.ZERO);
+        /*
+            Et il ne se montre pas a tout le monde : la marge du patron n'est pas l'affaire
+            du caissier qui ferme sa caisse. Le droit << voir les recettes >> tranche - c'est
+            celui qui distingue deja un manager d'un caissier. Pour le montrer a un
+            caissier, il suffit d'ajouter ce droit a son role : c'est une decision du
+            patron, pas une decision du logiciel.
+        */
+        BigDecimal margin = currentUser.peut(Permission.REVENUE_VIEW)
+                ? settings.getDecimal(SettingsService.MARGIN_PERCENT, BigDecimal.ZERO)
+                : BigDecimal.ZERO;
         return new SessionSummary(s.getId(), s.getOpeningFloat(), Money.r(cash), Money.r(card), Money.r(other), Money.r(cashRefunds), Money.r(otherRefunds),
                 Money.r(in), Money.r(out), expected, tickets, cancels, Money.r(revenue), Money.r(discounts),
                 byMethod.entrySet().stream().map(e -> new MethodTotal(e.getKey(), natures.get(e.getKey()), Money.r(e.getValue()))).toList(),
@@ -162,6 +185,7 @@ public class RegisterSessionService {
     @Transactional(readOnly = true)
     public SessionReport report(Long sessionId) {
         RegisterSession s = sessionRepo.findById(sessionId).orElseThrow(() -> BusinessException.notFound("Session"));
+        exigeLaSienne(s);
         Company company = companyRepo.findAll().stream().findFirst().orElse(null);
         return new SessionReport("État de caisse",
                 renderer.sessionReport(s, computeSummary(s), company, printService.activeTemplate()));
@@ -211,6 +235,7 @@ public class RegisterSessionService {
 
     @Transactional(readOnly = true)
     public List<CashMovementDto> movements(Long sessionId) {
+        exigeLaSienne(sessionRepo.findById(sessionId).orElseThrow(() -> BusinessException.notFound("Session")));
         return movementRepo.findBySessionIdOrderByCreatedAtAsc(sessionId).stream().map(Mappers::movement).toList();
     }
 

@@ -28,8 +28,14 @@ public class SecurityConfig {
     private final ObjectMapper objectMapper;
     @Value("${poscaisse.cors-origins}") private String corsOrigins;
 
+    /*
+        Cout 10, la valeur de reference de BCrypt. A 8, un mot de passe vole se casse
+        quatre fois plus vite ; l'ecart de temps a la connexion est de quelques dizaines
+        de millisecondes, que personne ne voit. Les empreintes deja en base restent
+        valides : chacune porte son propre cout.
+    */
     @Bean
-    public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(8); }
+    public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(10); }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -56,10 +62,22 @@ public class SecurityConfig {
         res.getWriter().write(objectMapper.writeValueAsString(ApiError.of(status, code, msg)));
     }
 
+    /**
+     * Qui a le droit d'appeler l'API depuis un navigateur.
+     *
+     * Le joker est refuse tant que les identifiants voyagent : << n'importe quel site >>
+     * plus << avec les cookies et le jeton >>, c'est autoriser une page piegee a agir au
+     * nom du caissier connecte. Le refus est net et nomme le reglage fautif - un demarrage
+     * qui echoue en disant pourquoi vaut mieux qu'une caisse ouverte a tout le monde.
+     */
     @Bean
     public CorsConfigurationSource corsSource() {
         CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedOriginPatterns(Arrays.stream(corsOrigins.split(",")).map(String::trim).toList());
+        List<String> origines = Arrays.stream(corsOrigins.split(",")).map(String::trim).filter(o -> !o.isEmpty()).toList();
+        if (origines.stream().anyMatch(o -> o.equals("*")))
+            throw new IllegalStateException("POSCAISSE_CORS_ORIGINS = « * » avec des identifiants : "
+                    + "nommez les adresses autorisées (par exemple https://caisse.mondomaine.tn).");
+        cfg.setAllowedOriginPatterns(origines);
         cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         cfg.setAllowedHeaders(List.of("*"));
         cfg.setAllowCredentials(true);

@@ -136,7 +136,16 @@ class PosIntegrationTest {
                 .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn()).get("token").asText();
         putJson("/api/settings", admin, java.util.Map.of("finance.marginPercent", "25"), 200);
 
-        JsonNode avec = json(mvc.perform(get(url + "/summary").header("Authorization", "Bearer " + cashierToken)).andExpect(status().isOk()).andReturn());
+        /*
+            Le taux ne se montre qu'a qui a le droit de voir les recettes : la marge du
+            patron n'est pas l'affaire du caissier qui ferme sa caisse. Le caissier
+            continue de lire SA session - simplement, la ligne de benefice n'y est pas.
+        */
+        JsonNode vuCaissier = json(mvc.perform(get(url + "/summary").header("Authorization", "Bearer " + cashierToken)).andExpect(status().isOk()).andReturn());
+        assertThat(vuCaissier.get("marginPercent").decimalValue())
+                .as("le caissier ne voit pas le taux de marge").isEqualByComparingTo("0");
+
+        JsonNode avec = json(mvc.perform(get(url + "/summary").header("Authorization", "Bearer " + admin)).andExpect(status().isOk()).andReturn());
         java.math.BigDecimal ca = avec.get("revenue").decimalValue();
         java.math.BigDecimal especes = avec.get("expectedCash").decimalValue();
         assertThat(avec.get("marginPercent").decimalValue()).isEqualByComparingTo("25");
@@ -148,8 +157,12 @@ class PosIntegrationTest {
                 .as("le bénéfice ne se calcule pas sur les espèces")
                 .isNotEqualByComparingTo(especes.multiply(new java.math.BigDecimal("0.25")).setScale(3, java.math.RoundingMode.HALF_UP));
 
-        JsonNode etat = json(mvc.perform(get(url + "/report").header("Authorization", "Bearer " + cashierToken)).andExpect(status().isOk()).andReturn());
+        // Le papier du gerant porte le benefice ; celui que le caissier imprime, non.
+        JsonNode etat = json(mvc.perform(get(url + "/report").header("Authorization", "Bearer " + admin)).andExpect(status().isOk()).andReturn());
         String papier = etat.get("content").asText();
+        String papierCaissier = json(mvc.perform(get(url + "/report").header("Authorization", "Bearer " + cashierToken))
+                .andExpect(status().isOk()).andReturn()).get("content").asText();
+        assertThat(papierCaissier).as("l'état du caissier ne porte pas la marge du patron").doesNotContain("BÉNÉFICE");
         assertThat(etat.get("title").asText()).isEqualTo("État de caisse");
         assertThat(papier).contains("ÉTAT DE CAISSE").contains("CHIFFRE D'AFFAIRES").contains("BÉNÉFICE ESTIMÉ")
                 .contains("Marge appliquée").contains("25 %")
@@ -581,6 +594,75 @@ class PosIntegrationTest {
         JsonNode courante = json(mvc.perform(get("/api/pos/session").header("Authorization", "Bearer " + caissier)).andReturn());
         postJson("/api/pos/session/" + courante.get("id").asLong() + "/close", caissier,
                 java.util.Map.of("countedCash", 0), 200);
+    }
+
+    /**
+     * La securite de la porte d'entree, et le cloisonnement des recettes.
+     *
+     * Deux choses qu'aucun test fonctionnel ne verifie jamais : qu'on ne peut pas essayer
+     * les dix mille PIN a la suite, et qu'un caissier ne lit pas la caisse d'un autre.
+     */
+    @Test @Order(11) void securiteAuthentificationEtCloisonnement() throws Exception {
+        /*
+            Une adresse a part pour ce scenario : le ralentisseur compte par adresse, et
+            bloquer 127.0.0.1 ferait echouer les autres tests pour une raison sans rapport
+            - exactement le genre de faux coupable qu'on ne veut pas chercher un matin.
+        */
+        String faussaire = "203.0.113.7";
+        int refus = 0, ralentis = 0;
+        for (int i = 0; i < 8; i++) {
+            MvcResult r = mvc.perform(post("/api/auth/pin").header("X-Forwarded-For", faussaire)
+                    .contentType(MediaType.APPLICATION_JSON).content("{\"pin\":\"0000\"}")).andReturn();
+            if (r.getResponse().getStatus() == 401) refus++;
+            if (r.getResponse().getStatus() == 429) ralentis++;
+        }
+        assertThat(refus).as("les premiers essais sont simplement refusés").isGreaterThanOrEqualTo(3);
+        assertThat(ralentis).as("puis la porte se ferme le temps qu'il faut").isPositive();
+
+        // Le bon PIN depuis une AUTRE adresse passe : on ralentit celui qui cherche, pas la caisse.
+        mvc.perform(post("/api/auth/pin").header("X-Forwarded-For", "198.51.100.9")
+                .contentType(MediaType.APPLICATION_JSON).content("{\"pin\":\"1234\"}"))
+                .andExpect(status().isOk());
+
+        // ---- un caissier ne lit pas la caisse d'un autre
+        String admin = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn())
+                .get("token").asText();
+        String caissier = json(mvc.perform(post("/api/auth/pin").header("X-Forwarded-For", "198.51.100.10")
+                .contentType(MediaType.APPLICATION_JSON).content("{\"pin\":\"1234\"}")).andReturn()).get("token").asText();
+
+        long caisse = ouvrirCaisse(caissier);
+        long maSession = json(mvc.perform(get("/api/pos/session").header("Authorization", "Bearer " + caissier))
+                .andExpect(status().isOk()).andReturn()).get("id").asLong();
+
+        // Un second caissier, cree pour l'occasion, avec le seul droit de vendre.
+        JsonNode roles = json(mvc.perform(get("/api/roles").header("Authorization", "Bearer " + admin))
+                .andExpect(status().isOk()).andReturn());
+        long roleCaissier = -1;
+        for (JsonNode r : roles) {
+            boolean revenu = false;
+            for (JsonNode perm : r.get("permissions")) if ("REVENUE_VIEW".equals(perm.asText()) || "REPORTS_VIEW".equals(perm.asText())) revenu = true;
+            if (!revenu) { roleCaissier = r.get("id").asLong(); break; }
+        }
+        assertThat(roleCaissier).as("un rôle sans droit de voir les recettes").isPositive();
+
+        java.util.Map<String, Object> autre = new java.util.LinkedHashMap<>();
+        autre.put("username", "caissier2"); autre.put("fullName", "Caissier deux");
+        autre.put("pin", "4321"); autre.put("roleId", roleCaissier); autre.put("active", true);
+        postJson("/api/users", admin, autre, 200);
+        String jetonAutre = json(mvc.perform(post("/api/auth/pin").header("X-Forwarded-For", "198.51.100.11")
+                .contentType(MediaType.APPLICATION_JSON).content("{\"pin\":\"4321\"}")).andExpect(status().isOk()).andReturn())
+                .get("token").asText();
+
+        mvc.perform(get("/api/pos/session/" + maSession + "/summary").header("Authorization", "Bearer " + jetonAutre))
+                .andExpect(status().isForbidden());
+        mvc.perform(get("/api/pos/session/" + maSession + "/movements").header("Authorization", "Bearer " + jetonAutre))
+                .andExpect(status().isForbidden());
+        // Le proprietaire, lui, lit la sienne sans rien demander a personne.
+        mvc.perform(get("/api/pos/session/" + maSession + "/summary").header("Authorization", "Bearer " + caissier))
+                .andExpect(status().isOk());
+
+        postJson("/api/pos/session/" + maSession + "/close", caissier, java.util.Map.of("countedCash", 0), 200);
     }
 
     private long ouvrirCaisse(String caissier) throws Exception {
