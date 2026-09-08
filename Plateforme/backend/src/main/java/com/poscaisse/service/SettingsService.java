@@ -43,8 +43,42 @@ public class SettingsService {
      */
     public static final String MARGIN_PERCENT = "finance.marginPercent";
 
+    /*
+        ------------------------------------------------------------------ le metier
+
+        Ces reglages ne sont reserves a aucune verticale : ils portent une valeur de
+        depart posee par le profil - boutique, restaurant, cafe - que le client change
+        ensuite comme il veut. Un cafe qui decide de scanner ses bouteilles coche la
+        case et cela marche ; une boutique qui ne veut pas compter son stock la decoche.
+    */
+
+    /** Le champ code-barres apparait sur la fiche article, et la caisse ecoute le scanner. */
+    public static final String BARCODE_ENABLED = "catalog.barcode.enabled";
+    /** Un scan ajoute directement au panier, sans passer par la fiche. */
+    public static final String BARCODE_AUTO_ADD = "pos.barcode.autoAdd";
+    /** Un code inconnu propose de creer l'article sur-le-champ, au lieu de ne rien dire. */
+    public static final String BARCODE_UNKNOWN_ASK = "pos.barcode.unknownAsk";
+
+    /**
+     * Qui est compte : personne, certains articles, ou tous.
+     *
+     * << partiel >> est le cas courant et la valeur livree : la boutique suit ses
+     * recharges et pas ses sacs plastique. << total >> force le suivi sur tout ce qui
+     * entre au catalogue - a ne poser que si l'inventaire est deja tenu.
+     */
+    public static final String STOCK_MODE = "stock.mode";               // aucun | partiel | total
+    /**
+     * Ce qui arrive quand il n'y en a plus : refuser la vente, avertir sans bloquer, ou
+     * laisser passer. Un fast-food refuse - il ne peut pas servir ce qu'il n'a pas ; une
+     * boutique prefere parfois vendre et regulariser le soir.
+     */
+    public static final String STOCK_RUPTURE = "stock.rupture";         // refuser | avertir | passer
+    /** Le stock entre par un ACHAT (fournisseur, prix d'achat) ou par une saisie libre. */
+    public static final String STOCK_ENTREE = "stock.entree";           // achat | libre
+
     private static final Set<String> SENSITIVE = Set.of(TICKET_PATTERN, TICKET_RESET_PERIOD, TICKET_PER_POS,
-            TICKET_PER_REGISTER, TICKET_DISPLAY_PATTERN, TAX_ENABLED, DISCOUNT_HIGH_THRESHOLD, MARGIN_PERCENT);
+            TICKET_PER_REGISTER, TICKET_DISPLAY_PATTERN, TAX_ENABLED, DISCOUNT_HIGH_THRESHOLD, MARGIN_PERCENT,
+            BARCODE_ENABLED, STOCK_MODE, STOCK_RUPTURE, STOCK_ENTREE);
     /** Les quatre reglages du numero de ticket : ils ne se jugent qu'ensemble. */
     private static final Set<String> NUMEROTATION = Set.of(TICKET_PATTERN, TICKET_RESET_PERIOD,
             TICKET_PER_POS, TICKET_PER_REGISTER, TICKET_DISPLAY_PATTERN);
@@ -77,6 +111,15 @@ public class SettingsService {
         // Zero : tant que le restaurateur n'a pas pose SON taux, aucun montant de benefice
         // ne s'affiche. Un taux invente serait pire que pas de taux du tout.
         d.put(MARGIN_PERCENT, "0");
+        // Le profil livre decide de ces quatre-la ; ce sont les valeurs du metier de la
+        // table - restaurant et cafe - ou rien ne se scanne et ou le stock se pose sur la
+        // pate plutot que sur l'article.
+        d.put(BARCODE_ENABLED, "false");
+        d.put(BARCODE_AUTO_ADD, "true");
+        d.put(BARCODE_UNKNOWN_ASK, "false");
+        d.put(STOCK_MODE, "partiel");
+        d.put(STOCK_RUPTURE, "refuser");
+        d.put(STOCK_ENTREE, "libre");
         return d;
     }
 

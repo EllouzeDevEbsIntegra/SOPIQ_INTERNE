@@ -35,6 +35,30 @@ public class Product {
     private boolean priceToCheck = false;
     private boolean favorite;
     private int favoriteOrder;
+
+    /**
+     * Le code-barres, quand il y en a un.
+     *
+     * Unique parmi ceux qui existent : deux articles sous le meme code, et le scan
+     * devient un tirage au sort. Nul partout ailleurs - un cafe n'en met sur rien.
+     */
+    private String barcode;
+
+    /**
+     * Le dernier prix d'achat connu, pour la marge et pour pre-remplir une entree de
+     * stock. Ce n'est pas lui qui fait foi dans un calcul de marge exact : chaque entree
+     * garde le sien, parce qu'il change d'un approvisionnement a l'autre.
+     */
+    private BigDecimal purchasePrice = BigDecimal.ZERO;
+
+    /**
+     * Cet article est-il compte ? La question se pose article par article : la boutique
+     * suit ses recharges telephoniques et pas ses sacs plastique, le cafe ne suit rien.
+     */
+    private boolean stockManaged = false;
+
+    /** En dessous, l'article remonte dans la liste des reapprovisionnements. */
+    private BigDecimal stockMin = BigDecimal.ZERO;
     private OffsetDateTime createdAt = OffsetDateTime.now();
     private OffsetDateTime updatedAt = OffsetDateTime.now();
 

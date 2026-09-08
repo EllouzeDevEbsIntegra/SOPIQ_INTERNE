@@ -20,5 +20,9 @@ public final class Enums {
                                STOCK_IN, STOCK_OUT }
 
     /** Ce qui fait bouger un compteur de pate. */
-    public enum StockMovement { ENTREE, VENTE, CASSE, ANNULATION, REMISE_A_ZERO }
+    /**
+     * INVENTAIRE : le comptage physique. Il ne dit pas ce qui est parti, il POSE le
+     * chiffre vrai - c'est le seul mouvement dont la quantite se deduit de l'ecart.
+     */
+    public enum StockMovement { ENTREE, VENTE, CASSE, ANNULATION, REMISE_A_ZERO, INVENTAIRE }
 }

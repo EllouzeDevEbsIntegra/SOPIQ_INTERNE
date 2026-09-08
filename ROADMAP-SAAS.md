@@ -41,9 +41,33 @@ recharges téléphoniques (carte et « light »), yaourts, vape, recharges et pu
 leurs codes-barres partout où ils peuvent être établis. Objectif affiché : que la démo
 couvre ~90 % de ce que le client retrouvera dans sa boutique.
 
-## Verticales suivantes, même moule
+## Les six verticales à couvrir
 
-Pâtisserie, prêt-à-porter, parfumerie, et ce que le marché demandera.
+| # | Métier | Base de démonstration | État |
+|---|---|---|---|
+| 1 | **Resto** | NUMBER ONE (client réel) | livré, figé |
+| 2 | **Café** | Mistral Coffee — 112 articles | carte faite |
+| 3 | **Shop** | alimentation générale tunisienne, avec codes-barres | en cours |
+| 4 | **Vêtement** | prêt-à-porter, codes-barres, taille × couleur | à faire |
+| 5 | **Pâtisserie** | pâtisserie tunisienne et française, vente au poids | à faire |
+| 6 | **Parfumerie** | parfums et cosmétiques, codes-barres | à faire |
+
+**La règle commune, posée le 08/09 :** tout doit être paramétrable, de sorte que le
+logiciel couvre le maximum de métiers qui tiennent une caisse ; après quoi ouvrir une
+verticale n'est plus du développement mais **du paramétrage pur dans le back-office**, plus
+une base de démonstration. Et ces bases doivent être proches du marché réel tunisien —
+c'est ce qui fait la différence entre une démonstration qui emporte la décision et une
+démonstration qu'il faut excuser.
+
+### Ce que chaque métier ajoute, en une ligne
+
+- **Shop** : code-barres, stock entré à l'achat, articles au comptoir sans préparation.
+- **Vêtement** : code-barres, et le vrai chantier — **taille × couleur**, deux axes de
+  variante avec un stock par croisement.
+- **Pâtisserie** : la **vente au poids** (prix au kilo, quantité décimale), les commandes
+  à emporter datées, les plateaux composés.
+- **Parfumerie** : code-barres, contenances (30/50/100 ml) comme axe de variante, marques
+  comme rubriques.
 
 ## Objectif final — la plateforme SaaS
 
