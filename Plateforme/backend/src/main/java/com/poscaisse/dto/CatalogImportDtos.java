@@ -32,7 +32,14 @@ public final class CatalogImportDtos {
                                 Integer sortOrder, Boolean favorite, Integer favoriteOrder,
                                 List<String> modifierGroups, List<String> printDestinations,
                                 List<String> ingredients, String variant, String defaultVariantValue,
-                                Boolean askVariant, List<ImportVariantPrice> variantPrices, Boolean priceToCheck) {}
+                                Boolean askVariant, List<ImportVariantPrice> variantPrices, Boolean priceToCheck,
+                                /*
+                                    La boutique. Le code-barres identifie l'article au scan ;
+                                    le prix d'achat et le suivi de stock voyagent avec lui,
+                                    sans quoi une carte importee arriverait muette sur ce qui
+                                    fait justement le metier.
+                                */
+                                String barcode, BigDecimal purchasePrice, Boolean stockManaged, BigDecimal stockMin) {}
 
     public record CatalogImport(String label, List<ImportCategory> categories,
                                 List<ImportModifierGroup> modifierGroups, List<ImportIngredient> ingredients,

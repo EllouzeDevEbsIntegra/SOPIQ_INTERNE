@@ -242,7 +242,74 @@ async function pay(payments, imprimer = true) {
 }
 function goClose() { if (!cart.isEmpty) return ui.error('Videz ou mettez en attente le panier avant la clôture.'); router.push('/close') }
 function logout() { if (!cart.isEmpty) return ui.error('Videz ou mettez en attente le panier avant de vous déconnecter.'); auth.logout(); router.replace('/login') }
+/*
+    LE LECTEUR DE CODE-BARRES EST UN CLAVIER.
+
+    Il n'a pas de pilote et ne s'annonce pas : il tape le code puis Entree, en quelques
+    millisecondes. On le distingue donc d'une frappe humaine par sa VITESSE - moins de
+    60 ms entre deux touches -, ce qui laisse le caissier taper ce qu'il veut au clavier
+    sans jamais declencher un scan par accident.
+
+    Deux portes d'entree, parce que le caissier ne sait jamais ou est le curseur : la
+    barre de recherche (Entree y vaut scan), et l'ecran lui-meme quand rien n'a le focus.
+*/
+const codeBarresActif = computed(() => catalog.setting('catalog.barcode.enabled', 'false') === 'true')
+const tampon = { texte: '', quand: 0 }
+
+/**
+ * Ce que fait un code lu.
+ *
+ * Un article qui demande un choix - une version, une option obligatoire, un menu a
+ * composer - ouvre sa fiche : l'ajouter en aveugle produirait une ligne que le serveur
+ * refuserait a l'encaissement. Tout le reste tombe directement dans le panier, ce qui est
+ * le seul interet du scan.
+ *
+ * Aucun message quand ca marche : la ligne qui apparait dans le panier est la reponse, et
+ * une notification a chaque article rendrait la caisse insupportable a la trentieme.
+ */
+function scanner(code) {
+  const p = catalog.parCodeBarres(code)
+  if (!p) {
+    ui.error(`Code-barres inconnu : ${code}`)
+    return false
+  }
+  if (!p.active || !p.available) { ui.error(`« ${p.name} » n'est pas disponible.`); return false }
+  const aChoisir = (p.askVariant && p.variantId) || (p.modifierGroups || []).some(g => g.required)
+                || (p.menuComponents || []).length > 0
+  if (aChoisir) dialog.value = { kind: 'modifier', product: p }
+  else cart.addLine({ product: p, quantity: 1 })
+  search.value = ''
+  cartOpen.value = true
+  return true
+}
+
+/** Entree dans la barre de recherche : un code exact vaut un scan, sinon on laisse la liste. */
+function rechercheEntree() {
+  const q = search.value.trim()
+  if (!q) return
+  if (codeBarresActif.value && catalog.parCodeBarres(q)) { scanner(q); return }
+  // Un seul resultat : Entree le prend, c'est ce qu'on attend d'une recherche.
+  const r = products.value
+  if (r.length === 1) { tap(r[0]); search.value = "" }
+}
+
 function onKey(e) {
+  /*
+      Le tampon du lecteur passe AVANT tout le reste : le scan doit marcher meme si le
+      caissier a laisse le curseur ailleurs, et sans voler les touches d'une vraie saisie.
+  */
+  if (codeBarresActif.value && !dialog.value && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+    const t = Date.now()
+    if (e.key === 'Enter') {
+      const code = tampon.texte
+      tampon.texte = ''
+      if (code.length >= 6) { e.preventDefault(); scanner(code); return }
+    } else if (e.key.length === 1) {
+      if (t - tampon.quand > 60) tampon.texte = ''
+      tampon.texte += e.key
+      tampon.quand = t
+    }
+  }
   if (dialog.value || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
   if (e.key === 'F2') { e.preventDefault(); checkout() }
   if (e.key === 'F4') { e.preventDefault(); holdOrder() }
@@ -264,7 +331,8 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
 
       <label class="search">
         <Icon name="search" :size="18" />
-        <input id="pos-search" v-model="search" placeholder="Rechercher un produit, un code…  F3" />
+        <input id="pos-search" v-model="search" @keyup.enter="rechercheEntree"
+               :placeholder="codeBarresActif ? 'Scannez, ou cherchez un produit…  F3' : 'Rechercher un produit, un code…  F3'" />
         <button v-if="search" class="clear" @click="search = ''" aria-label="Effacer"><Icon name="close" :size="15" :stroke="2.2" /></button>
       </label>
 

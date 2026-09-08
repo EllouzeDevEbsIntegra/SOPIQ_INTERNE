@@ -9,6 +9,7 @@ import com.poscaisse.printing.PrintService;
 import com.poscaisse.service.CatalogService;
 import com.poscaisse.service.OrderService;
 import com.poscaisse.service.RegisterSessionService;
+import com.poscaisse.service.ProductStockService;
 import com.poscaisse.service.VariantStockService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class PosController {
     private final RegisterSessionService sessions;
     private final PrintService print;
     private final VariantStockService stock;
+    private final ProductStockService stockArticles;
 
     @GetMapping("/catalog") public CatalogResponse catalog() { return catalog.posCatalog(); }
 
@@ -51,6 +53,19 @@ public class PosController {
     @GetMapping("/stock") public StockStateDto stock() { return stock.etat(sessions.currentPointOfSale()); }
     @PostMapping("/stock/entry") public StockStateDto stockEntry(@Valid @RequestBody StockMoveRequest req) { return stock.entrer(sessions.currentPointOfSale(), req); }
     @PostMapping("/stock/waste") public StockStateDto stockWaste(@Valid @RequestBody StockMoveRequest req) { return stock.casser(sessions.currentPointOfSale(), req); }
+
+    /*
+        Le stock des ARTICLES - celui de la boutique. Meme regle que pour les pates : le
+        point de vente est celui de la caisse ouverte, jamais un choix offert au caissier.
+
+        L'inventaire pose le chiffre compte au lieu d'un ecart : devant son rayon, le
+        gerant lit ce qu'il voit, il ne fait pas de soustraction.
+    */
+    @GetMapping("/article-stock") public ProductStockStateDto articleStock() { return stockArticles.etat(sessions.currentPointOfSale()); }
+    @GetMapping("/article-stock/{productId}/history") public List<ProductStockMovementDto> articleStockHistory(@PathVariable Long productId) { return stockArticles.historique(productId); }
+    @PostMapping("/article-stock/entry") public ProductStockStateDto articleStockEntry(@Valid @RequestBody ProductStockMoveRequest req) { return stockArticles.entrer(sessions.currentPointOfSale(), req); }
+    @PostMapping("/article-stock/waste") public ProductStockStateDto articleStockWaste(@Valid @RequestBody ProductStockMoveRequest req) { return stockArticles.casser(sessions.currentPointOfSale(), req); }
+    @PostMapping("/article-stock/count") public ProductStockStateDto articleStockCount(@Valid @RequestBody ProductStockMoveRequest req) { return stockArticles.inventaire(sessions.currentPointOfSale(), req); }
 
     @PostMapping("/quote") public PriceQuote quote(@Valid @RequestBody CartRequest req) { return orders.quote(req); }
     @PostMapping("/checkout") public OrderDto checkout(@Valid @RequestBody CheckoutRequest req) { return orders.checkout(req); }

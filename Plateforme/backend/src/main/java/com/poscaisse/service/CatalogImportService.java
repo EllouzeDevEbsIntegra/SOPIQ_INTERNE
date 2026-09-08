@@ -213,6 +213,25 @@ public class CatalogImportService {
             entity.setFavoriteOrder(p.favoriteOrder() == null ? 0 : p.favoriteOrder());
             entity.setPriceToCheck(Boolean.TRUE.equals(p.priceToCheck()));
             if (entity.isPriceToCheck()) aVerifier++;
+            /*
+                Le code-barres, quand la carte en porte un.
+                Un doublon n'est pas une raison de refuser toute la carte : on garde le
+                premier, on signale le second, et l'import continue - une carte de trois
+                cents lignes ne doit pas s'arreter sur une coquille de saisie.
+            */
+            String cb = p.barcode() == null || p.barcode().isBlank() ? null : p.barcode().trim();
+            if (cb != null) {
+                Product deja = productRepo.findByBarcode(cb).orElse(null);
+                if (deja != null && (isNew || !deja.getId().equals(entity.getId()))) {
+                    warnings.add("Code-barres déjà utilisé par « " + deja.getName() + " » : "
+                            + cb + " — « " + p.name() + " » est importé sans code.");
+                    cb = null;
+                }
+            }
+            entity.setBarcode(cb);
+            if (p.purchasePrice() != null) entity.setPurchasePrice(Money.r(p.purchasePrice()));
+            entity.setStockManaged(Boolean.TRUE.equals(p.stockManaged()));
+            if (p.stockMin() != null) entity.setStockMin(Money.r(p.stockMin()));
             entity.setUpdatedAt(OffsetDateTime.now());
 
             entity.getPrintDestinations().clear();

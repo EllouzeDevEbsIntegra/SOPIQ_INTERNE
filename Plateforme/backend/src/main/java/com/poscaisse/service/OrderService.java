@@ -45,6 +45,7 @@ public class OrderService {
     private final JournalService journal;
     private final PrintService printService;
     private final VariantStockService stock;
+    private final ProductStockService stockArticles;
     private final SettingsService settings;
     private final AuditService audit;
 
@@ -88,6 +89,9 @@ public class OrderService {
             l'interieur de cette transaction, qui l'empeche.
         */
         stock.consommer(saved);
+        // Le meme geste pour la boutique : la pate se compte sur la variante, la
+        // bouteille sur l'article. Une maison peut tenir les deux.
+        stockArticles.consommer(saved);
         journal.record(session, me, Enums.JournalEvent.SALE, saved.getTotal(), saved.getTicketNumber(),
                 "Vente " + saved.getTicketNumber() + " (" + saved.getLines().stream().filter(l -> l.getParentLine() == null).count() + " lignes)");
         for (Payment p : saved.getPayments())
@@ -402,6 +406,7 @@ public class OrderService {
         // ete fait, la pate est encore la. Elle revient donc au stock - contrairement a un
         // remboursement, qui arrive apres coup, pate cuite et perdue.
         stock.restituer(saved);
+        stockArticles.restituer(saved);
         journal.record(session, me, Enums.JournalEvent.CANCELLATION, saved.getTotal(), saved.getTicketNumber(), "Annulation ticket : " + req.reason());
         audit.log("TICKET_CANCEL", "Order", saved.getId(), saved.getTicketNumber() + " motif=" + req.reason() + " montant=" + saved.getTotal());
         return toDto(saved);

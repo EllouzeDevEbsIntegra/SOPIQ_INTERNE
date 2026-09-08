@@ -51,7 +51,8 @@ public final class Mappers {
                 p.isAskVariant(),
                 p.getVariantPrices().stream()
                         .map(vp -> new VariantPriceDto(vp.getValue().getId(), vp.getPrice()))
-                        .sorted(Comparator.comparingLong(VariantPriceDto::variantValueId)).toList());
+                        .sorted(Comparator.comparingLong(VariantPriceDto::variantValueId)).toList(),
+                p.getBarcode(), p.getPurchasePrice(), p.isStockManaged(), p.getStockMin());
     }
 
     public static PaymentMethodDto paymentMethod(PaymentMethod m) {

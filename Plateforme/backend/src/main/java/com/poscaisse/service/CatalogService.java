@@ -135,6 +135,23 @@ public class CatalogService {
         if (r.favorite() != null) p.setFavorite(r.favorite());
         if (r.favoriteOrder() != null) p.setFavoriteOrder(r.favoriteOrder());
         if (r.priceToCheck() != null) p.setPriceToCheck(r.priceToCheck());
+        /*
+            Le code-barres. Vide vaut ABSENT, pas chaine vide : l'unicite ne tolererait
+            qu'un seul article sans code si on enregistrait << >>, et la boutique en a
+            toujours quelques-uns - le pain du matin, l'article vendu au poids.
+            Le doublon est refuse ici, en clair : la contrainte de la base le dirait aussi,
+            mais avec un message que personne ne peut lire.
+        */
+        String cb = r.barcode() == null || r.barcode().isBlank() ? null : r.barcode().trim();
+        if (cb != null) {
+            Product autre = productRepo.findByBarcode(cb).orElse(null);
+            if (autre != null && !autre.getId().equals(p.getId()))
+                throw new BusinessException("Le code-barres « " + cb + " » est déjà celui de « " + autre.getName() + " ».");
+        }
+        p.setBarcode(cb);
+        if (r.purchasePrice() != null) p.setPurchasePrice(Money.r(r.purchasePrice()));
+        if (r.stockManaged() != null) p.setStockManaged(r.stockManaged());
+        if (r.stockMin() != null) p.setStockMin(Money.r(r.stockMin()));
         p.setUpdatedAt(OffsetDateTime.now());
         p.getPrintDestinations().clear();
         if (r.printDestinationIds() != null) r.printDestinationIds().forEach(d -> destinationRepo.findById(d).ifPresent(p.getPrintDestinations()::add));

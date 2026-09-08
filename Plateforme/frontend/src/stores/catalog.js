@@ -38,7 +38,22 @@ export const useCatalogStore = defineStore('catalog', () => {
   function search(q) {
     const s = (q || '').trim().toLowerCase()
     if (!s) return []
-    return products.value.filter(p => p.name.toLowerCase().includes(s) || (p.code || '').toLowerCase().includes(s) || (p.reference || '').toLowerCase().includes(s) || (p.shortName || '').toLowerCase().includes(s)).slice(0, 40)
+    return products.value.filter(p => p.name.toLowerCase().includes(s) || (p.code || '').toLowerCase().includes(s) || (p.reference || '').toLowerCase().includes(s) || (p.shortName || '').toLowerCase().includes(s) || (p.barcode || '').includes(s)).slice(0, 40)
   }
-  return { categories, products, paymentMethods, settings, company, loaded, loading, load, productsById, favorites, byCategory, setting, serviceModes, kitchenNotes, quickCash, cashMethod, updateProduct, search, variants, ingredients }
+
+  /**
+   * L'article que le lecteur vient de scanner — ou rien.
+   *
+   * Le code est compare TEL QUEL : un code-barres n'a ni casse ni accent, et l'accepter
+   * a peu pres reviendrait a vendre un article pour un autre. Le lecteur tape le code
+   * puis Entree, exactement comme un clavier : c'est pour ca que rien n'a besoin d'etre
+   * installe pour qu'il fonctionne.
+   */
+  function parCodeBarres(code) {
+    const c = (code || '').trim()
+    if (!c) return null
+    return products.value.find(p => p.barcode && p.barcode === c) || null
+  }
+
+  return { categories, products, paymentMethods, settings, company, loaded, loading, load, productsById, favorites, byCategory, setting, serviceModes, kitchenNotes, quickCash, cashMethod, updateProduct, search, parCodeBarres, variants, ingredients }
 })

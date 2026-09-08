@@ -28,7 +28,9 @@ public final class CatalogDtos {
                              int favoriteOrder, boolean priceToCheck, List<Long> printDestinationIds, List<ModifierGroupDto> modifierGroups,
                              List<MenuComponentDto> menuComponents, List<Long> ingredientIds,
                              Long variantId, Long defaultVariantValueId, boolean askVariant,
-                             List<VariantPriceDto> variantPrices) {}
+                             List<VariantPriceDto> variantPrices,
+                             /* La boutique : ce qui s'identifie au scan et ce qui se compte. */
+                             String barcode, BigDecimal purchasePrice, boolean stockManaged, BigDecimal stockMin) {}
 
     /** Prix de l'article pour une valeur. Un prix nul signifie « pas encore tarifee ». */
     public record VariantPriceDto(Long variantValueId, BigDecimal price) {}
@@ -39,7 +41,8 @@ public final class CatalogDtos {
                                  Integer favoriteOrder, Boolean priceToCheck, List<Long> printDestinationIds, List<Long> modifierGroupIds,
                                  List<MenuComponentRequest> menuComponents, List<Long> ingredientIds,
                                  Long variantId, Long defaultVariantValueId, Boolean askVariant,
-                                 List<VariantPriceDto> variantPrices) {}
+                                 List<VariantPriceDto> variantPrices,
+                                 String barcode, BigDecimal purchasePrice, Boolean stockManaged, BigDecimal stockMin) {}
 
     public record PaymentMethodDto(Long id, String code, String name, String kind, boolean opensDrawer, int sortOrder, boolean active) {}
     public record PaymentMethodRequest(@NotBlank String code, @NotBlank String name, @NotBlank String kind, Boolean opensDrawer, Integer sortOrder, Boolean active) {}
