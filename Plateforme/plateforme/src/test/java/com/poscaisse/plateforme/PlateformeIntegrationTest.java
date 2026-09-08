@@ -1,0 +1,211 @@
+package com.poscaisse.plateforme;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+/**
+ * Le parcours complet d'un client de la plateforme, du prospect a l'impaye.
+ *
+ * Ce que ce scenario protege, ce n'est pas une methode : c'est la promesse commerciale.
+ * Souscrire donne une licence ; la licence ouvre le nombre de caisses vendu et pas une de
+ * plus ; une facture impayee suspend le service SANS effacer quoi que ce soit ; et la
+ * caisse suspendue le dit en francais a celui qui la regarde.
+ *
+ * Il ne tourne que si PLATEFORME_IT=true et qu'une base PostgreSQL est joignable.
+ */
+@SpringBootTest
+@AutoConfigureMockMvc
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@EnabledIfEnvironmentVariable(named = "PLATEFORME_IT", matches = "true")
+class PlateformeIntegrationTest {
+
+    @Autowired MockMvc mvc;
+    @Autowired ObjectMapper om;
+
+    static String jeton;
+    static long clientId;
+    static long abonnementId;
+    static String cleLicence;
+    static long factureId;
+
+    private JsonNode json(MvcResult r) throws Exception { return om.readTree(r.getResponse().getContentAsString()); }
+
+    /** Poster, avec le jeton courant. Nommee en francais pour ne pas masquer MockMvc.post. */
+    private MvcResult poster(String url, Object corps, int statut) throws Exception {
+        var req = post(url).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsString(corps));
+        if (jeton != null) req = req.header("Authorization", "Bearer " + jeton);
+        return mvc.perform(req).andExpect(status().is(statut)).andReturn();
+    }
+
+    private JsonNode lire(String url) throws Exception {
+        return json(mvc.perform(get(url).header("Authorization", "Bearer " + jeton))
+                .andExpect(status().isOk()).andReturn());
+    }
+
+    @Test @Order(1) void connexionEtPremierCompte() throws Exception {
+        JsonNode r = json(poster("/api/auth/connexion",
+                Map.of("username", "admin", "password", "plateforme123"), 200));
+        jeton = r.get("token").asText();
+        assertThat(jeton).isNotBlank();
+        assertThat(r.get("utilisateur").get("role").asText()).isEqualTo("ADMIN");
+        // La session du back-office est courte : il voit tous les clients.
+        assertThat(r.get("expireDansMinutes").asLong()).isLessThanOrEqualTo(240);
+    }
+
+    @Test @Order(2) void mauvaisMotDePasseRalenti() throws Exception {
+        int refus = 0, ralentis = 0;
+        for (int i = 0; i < 8; i++) {
+            MvcResult r = mvc.perform(post("/api/auth/connexion").header("X-Forwarded-For", "203.0.113.55")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"username\":\"admin\",\"password\":\"faux\"}")).andReturn();
+            if (r.getResponse().getStatus() == 401) refus++;
+            if (r.getResponse().getStatus() == 429) ralentis++;
+        }
+        assertThat(refus).isGreaterThanOrEqualTo(3);
+        assertThat(ralentis).as("la porte se ferme le temps qu'il faut").isPositive();
+    }
+
+    @Test @Order(3) void creerUnClientEtSouscrire() throws Exception {
+        JsonNode c = json(poster("/api/clients", Map.of(
+                "raisonSociale", "SARL Chez Ahmed", "enseigne", "Café Mistral",
+                "contactNom", "Ahmed Ben Salah", "contactTel", "98 000 000", "ville", "Sfax"), 200));
+        clientId = c.get("id").asLong();
+        assertThat(c.get("code").asText()).matches("CLI-\\d{4}");
+        assertThat(c.get("statut").asText()).as("un client neuf est un prospect").isEqualTo("PROSPECT");
+
+        JsonNode a = json(poster("/api/clients/" + clientId + "/abonnements", Map.of(
+                "module", "CAFE", "formule", "MENSUEL", "nbCaisses", 1,
+                "prixMensuel", 49, "debutLe", LocalDate.now().toString()), 200));
+        abonnementId = a.get("id").asLong();
+        assertThat(a.get("licences")).as("souscrire donne une licence").isNotEmpty();
+        cleLicence = a.get("licences").get(0).get("cle").asText();
+        assertThat(cleLicence).matches("[A-Z2-9]{5}(-[A-Z2-9]{5}){3}");
+
+        // Le statut suit les faits : personne n'a a penser a le changer.
+        assertThat(lire("/api/clients/" + clientId).get("statut").asText()).isEqualTo("ACTIF");
+    }
+
+    @Test @Order(4) void laLicenceOuvreLeNombreDeCaissesVendu() throws Exception {
+        JsonNode ok = json(poster("/api/licences/verifier",
+                Map.of("cle", cleLicence, "empreinte", "POSTE-A", "libelle", "Caisse comptoir"), 200));
+        assertThat(ok.get("autorise").asBoolean()).isTrue();
+        assertThat(ok.get("module").asText()).isEqualTo("CAFE");
+
+        // Le meme poste peut se representer autant qu'il veut : il ne consomme qu'une place.
+        assertThat(json(poster("/api/licences/verifier",
+                Map.of("cle", cleLicence, "empreinte", "POSTE-A"), 200)).get("autorise").asBoolean()).isTrue();
+
+        // Une seconde caisse, alors qu'une seule est vendue : refus, avec la phrase qui dit quoi faire.
+        JsonNode trop = json(poster("/api/licences/verifier",
+                Map.of("cle", cleLicence, "empreinte", "POSTE-B"), 200));
+        assertThat(trop.get("autorise").asBoolean()).isFalse();
+        assertThat(trop.get("message").asText()).contains("1 caisse").contains("fournisseur");
+
+        // Une cle inconnue ne dit pas si le client existe : elle dit de verifier la saisie.
+        assertThat(json(poster("/api/licences/verifier", Map.of("cle", "AAAAA-BBBBB-CCCCC-DDDDD"), 200))
+                .get("autorise").asBoolean()).isFalse();
+    }
+
+    @Test @Order(5) void facturerEtEncaisser() throws Exception {
+        JsonNode f = json(poster("/api/abonnements/" + abonnementId + "/factures", Map.of(
+                "periodeDebut", LocalDate.now().withDayOfMonth(1).toString(),
+                "periodeFin", LocalDate.now().withDayOfMonth(1).plusMonths(1).minusDays(1).toString()), 200));
+        factureId = f.get("id").asLong();
+        assertThat(f.get("numero").asText()).matches("FAC-\\d{4}-\\d{4}");
+        assertThat(f.get("montant").decimalValue()).isEqualByComparingTo("49.000");
+        assertThat(f.get("reste").decimalValue()).isEqualByComparingTo("49.000");
+
+        // Un reglement partiel : la facture reste emise, le reste se deduit.
+        JsonNode partiel = json(poster("/api/factures/" + factureId + "/reglements",
+                Map.of("montant", 20, "moyen", "VIREMENT", "reference", "VIR-77"), 200));
+        assertThat(partiel.get("statut").asText()).isEqualTo("EMISE");
+        assertThat(partiel.get("reste").decimalValue()).isEqualByComparingTo("29.000");
+
+        // On n'encaisse pas plus que le reste du : un trop-percu se regle en parlant.
+        MvcResult trop = poster("/api/factures/" + factureId + "/reglements", Map.of("montant", 100), 400);
+        assertThat(trop.getResponse().getContentAsString()).contains("dépasse le reste dû");
+
+        JsonNode solde = json(poster("/api/factures/" + factureId + "/reglements",
+                Map.of("montant", 29, "moyen", "ESPECES"), 200));
+        assertThat(solde.get("statut").asText()).as("soldee, elle passe payee toute seule").isEqualTo("PAYEE");
+        assertThat(solde.get("reste").decimalValue()).isEqualByComparingTo("0.000");
+    }
+
+    @Test @Order(6) void impayeSuspensionEtRetablissement() throws Exception {
+        // Une facture echue depuis longtemps : c'est le cas qu'on veut voir arriver.
+        JsonNode vieille = json(poster("/api/abonnements/" + abonnementId + "/factures", Map.of(
+                "periodeDebut", LocalDate.now().minusMonths(3).withDayOfMonth(1).toString(),
+                "periodeFin", LocalDate.now().minusMonths(3).withDayOfMonth(28).toString(),
+                "emiseLe", LocalDate.now().minusDays(90).toString(),
+                "echeanceLe", LocalDate.now().minusDays(60).toString()), 200));
+        assertThat(vieille.get("enRetard").asBoolean()).isTrue();
+
+        assertThat(lire("/api/factures/en-retard")).isNotEmpty();
+
+        List<String> suspendus = om.convertValue(
+                json(poster("/api/factures/suspendre-les-retards", Map.of(), 200)), List.class);
+        assertThat(suspendus).isNotEmpty();
+        assertThat(lire("/api/clients/" + clientId).get("statut").asText()).isEqualTo("SUSPENDU");
+
+        /*
+            Le point le plus important du fichier : suspendu n'est pas coupe. La caisse
+            passe en LECTURE SEULE et le dit en francais. Les donnees du commercant sont a
+            lui - un impaye de quarante dinars ne les lui prend pas.
+        */
+        JsonNode verif = json(poster("/api/licences/verifier",
+                Map.of("cle", cleLicence, "empreinte", "POSTE-A"), 200));
+        assertThat(verif.get("autorise").asBoolean()).isFalse();
+        assertThat(verif.get("lectureSeule").asBoolean()).isTrue();
+        assertThat(verif.get("message").asText()).contains("lecture seule").contains("intactes");
+
+        // Reglement recu : on retablit, et la caisse rouvre.
+        long id = vieille.get("id").asLong();
+        poster("/api/factures/" + id + "/reglements", Map.of("montant", vieille.get("reste").decimalValue()), 200);
+        poster("/api/clients/" + clientId + "/reactiver", Map.of(), 200);
+        assertThat(json(poster("/api/licences/verifier", Map.of("cle", cleLicence, "empreinte", "POSTE-A"), 200))
+                .get("autorise").asBoolean()).isTrue();
+    }
+
+    @Test @Order(7) void lesDroitsDeChacun() throws Exception {
+        // Un compte support : il regarde, il ne touche pas.
+        poster("/api/utilisateurs", Map.of("username", "support1", "fullName", "Support",
+                "password", "support12345", "role", "SUPPORT"), 200);
+        String jetonAdmin = jeton;
+        jeton = json(poster("/api/auth/connexion",
+                Map.of("username", "support1", "password", "support12345"), 200)).get("token").asText();
+
+        lire("/api/clients");   // lire : autorise
+        MvcResult refus = poster("/api/clients", Map.of("raisonSociale", "Interdit"), 403);
+        assertThat(refus.getResponse().getContentAsString()).contains("SUPPORT").contains("administrateur");
+
+        jeton = jetonAdmin;
+    }
+
+    @Test @Order(8) void leTableauDeBordDitLEssentiel() throws Exception {
+        JsonNode t = lire("/api/tableau-de-bord");
+        assertThat(t.get("clients").asLong()).isPositive();
+        assertThat(t.get("caisses").asLong()).isPositive();
+        assertThat(t.get("recurrentMensuel").decimalValue()).isEqualByComparingTo("49.000");
+        // Le journal garde la trace de tout ce qui vient d'etre fait.
+        assertThat(lire("/api/journal")).isNotEmpty();
+    }
+}
