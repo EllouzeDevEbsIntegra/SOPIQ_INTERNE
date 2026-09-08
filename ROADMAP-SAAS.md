@@ -62,13 +62,39 @@ Une seule offre commerciale, plusieurs métiers. Ce qu'il faut construire :
 - Et pour le client final, l'application telle qu'elle existe déjà : caisse tactile +
   back-office, comme la verticale Resto.
 
-## Questions ouvertes (posées le 08/09, réponses à consigner ici)
+## Les trois décisions d'architecture (prises le 08/09)
 
-1. **Un seul code, ou un code par verticale ?** Trois copies divergent en trois mois ; la
-   plateforme finale suppose au contraire *un* code et un profil métier. À trancher.
-2. **Une base par client, ou une base commune cloisonnée ?**
-3. **Où tourne l'application ?** Postes autonomes sous licence (comme aujourd'hui), ou
-   serveur central et caisses dans le navigateur ?
+1. **Un seul code, le métier est un PROFIL.** Pas de copie par verticale. Un profil
+   apporte ses réglages, sa carte de démonstration et les écrans qu'il active ; le Café
+   et le Shop sont deux profils, pas deux logiciels.
+
+   *Conséquence, puisque la verticale Resto est figée :* `PosCaisse/` reste ce qu'elle est,
+   le produit livré à NUMBER ONE, et **on en tire UNE fois une copie** qui devient le code
+   vivant de la plateforme. À partir de là, un seul code évolue ; `PosCaisse/` ne bouge
+   plus que pour une anomalie de ce client.
+
+2. **Une base par client.** Cloisonnement total : une restauration ne touche qu'un client,
+   et une erreur de requête ne peut pas faire fuir les données d'un autre. Le back-office
+   éditeur crée la base à la souscription et la garnit du profil choisi.
+
+3. **Serveur central, caisses dans le navigateur.** Rien à installer chez le client, mises
+   à jour immédiates.
+
+   *Risque à traiter, pas à ignorer :* une coupure d'internet arrête une caisse en plein
+   service. Pour un fast-food aux heures de pointe, c'est inacceptable tel quel. À prévoir
+   dans la conception : reprise de session sans perte du panier, tolérance aux coupures
+   courtes, et la possibilité de retomber sur une installation locale pour les clients qui
+   vendent en continu (le paquet autonome existe déjà, il ne demande qu'à être réutilisé).
+
+## Ordre de marche
+
+1. Créer la racine du code vivant, à partir du code figé — **sans toucher à `PosCaisse/`**.
+2. Le profil **Café** et sa base de démonstration « Mistral Coffee ».
+3. Le profil **Shop** : code-barres, stock optionnel entré à l'achat, et sa base de
+   démonstration tunisienne.
+4. Le back-office éditeur : clients, abonnements, licences, utilisateurs, facturation
+   (sans paiement en ligne), versions, sécurité et cloisonnement.
+5. Les profils suivants : pâtisserie, prêt-à-porter, parfumerie.
 
 ## Ce qui est vrai des codes-barres tunisiens
 
