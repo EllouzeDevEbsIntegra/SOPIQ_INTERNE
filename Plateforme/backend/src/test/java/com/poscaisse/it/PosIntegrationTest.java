@@ -481,4 +481,135 @@ class PosIntegrationTest {
         assertThat(cat.get("products").size()).isEqualTo(1);
         assertThat(cat.get("products").get(0).get("code").asText()).isEqualTo("T-001");
     }
+
+    /**
+     * La boutique : le code-barres et le stock par article, de bout en bout.
+     *
+     * Ce que ce scenario protege, ce n'est pas une methode : c'est la chaine complete du
+     * metier Shop - un code unique, un compteur qui refuse la vente quand le rayon est
+     * vide, une entree qui garde le prix paye, une annulation qui rend la marchandise,
+     * une casse qui garde son motif, et un inventaire qui POSE le chiffre compte.
+     */
+    @Test @Order(10) void codeBarresEtStockParArticle() throws Exception {
+        String admin = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn())
+                .get("token").asText();
+        String caissier = json(mvc.perform(post("/api/auth/pin").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"pin\":\"1234\"}")).andExpect(status().isOk()).andReturn()).get("token").asText();
+
+        // ---- le metier : on scanne, et chaque fiche decide de son suivi
+        mvc.perform(put("/api/settings").header("Authorization", "Bearer " + admin)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"catalog.barcode.enabled\":\"true\",\"stock.mode\":\"partiel\",\"stock.rupture\":\"refuser\"}"))
+                .andExpect(status().isOk());
+
+        long categorie = json(mvc.perform(get("/api/categories").header("Authorization", "Bearer " + admin))
+                .andExpect(status().isOk()).andReturn()).get(0).get("id").asLong();
+
+        java.util.Map<String, Object> eau = new java.util.LinkedHashMap<>();
+        eau.put("code", "SH-EAU"); eau.put("name", "Eau 1,5 L"); eau.put("categoryId", categorie);
+        eau.put("price", 1.2); eau.put("barcode", "6194001800111");
+        eau.put("purchasePrice", 0.9); eau.put("stockManaged", true); eau.put("stockMin", 6);
+        long idEau = json(postJson("/api/products", admin, eau, 200)).get("id").asLong();
+
+        // Le meme code sur deux articles rendrait le scan aleatoire : c'est refuse, en clair.
+        java.util.Map<String, Object> jumelle = new java.util.LinkedHashMap<>(eau);
+        jumelle.put("code", "SH-EAU2"); jumelle.put("name", "Eau 1,5 L (bis)");
+        MvcResult refus = postJson("/api/products", admin, jumelle, 400);
+        assertThat(refus.getResponse().getContentAsString()).contains("déjà celui de");
+
+        // Un article NON suivi : il doit se vendre sans qu'aucun compteur ne s'y oppose.
+        java.util.Map<String, Object> sac = new java.util.LinkedHashMap<>();
+        sac.put("code", "SH-SAC"); sac.put("name", "Sac plastique"); sac.put("categoryId", categorie);
+        sac.put("price", 0.2); sac.put("stockManaged", false);
+        long idSac = json(postJson("/api/products", admin, sac, 200)).get("id").asLong();
+
+        // ---- le code-barres voyage jusqu'a la caisse : sans cela, rien a scanner
+        JsonNode catalogue = json(mvc.perform(get("/api/pos/catalog").header("Authorization", "Bearer " + caissier))
+                .andExpect(status().isOk()).andReturn());
+        JsonNode fiche = null;
+        for (JsonNode p : catalogue.get("products")) if (p.get("id").asLong() == idEau) fiche = p;
+        assertThat(fiche).isNotNull();
+        assertThat(fiche.get("barcode").asText()).isEqualTo("6194001800111");
+
+        long caisse = ouvrirCaisse(caissier);
+        long cash = cashId;
+
+        // ---- a zero, la vente est refusee, et le message nomme l'article
+        MvcResult vide = postJson("/api/pos/checkout", caissier, venteArticle(caisse, idEau, 1, cash, 1.2), 400);
+        assertThat(vide.getResponse().getContentAsString()).contains("Stock insuffisant").contains("Eau 1,5 L");
+
+        // ---- une entree de 5, prix paye garde
+        JsonNode etat = json(postJson("/api/pos/article-stock/entry", caissier,
+                java.util.Map.of("productId", idEau, "quantity", 5, "unitCost", 0.85, "supplier", "Grossiste"), 200));
+        assertThat(resteArticle(etat, idEau)).isEqualByComparingTo("5.000");
+
+        // ---- vente de 2, puis annulation : la marchandise revient
+        JsonNode vente = json(postJson("/api/pos/checkout", caissier, venteArticle(caisse, idEau, 2, cash, 2.4), 200));
+        assertThat(resteArticle(etatStock(caissier), idEau)).isEqualByComparingTo("3.000");
+        postJson("/api/orders/" + vente.get("id").asLong() + "/cancel", admin,
+                java.util.Map.of("reason", "Erreur de saisie"), 200);
+        assertThat(resteArticle(etatStock(caissier), idEau)).as("l'article n'a pas quitté le rayon").isEqualByComparingTo("5.000");
+
+        // ---- casse : impossible de creuser un trou, et le motif reste
+        postJson("/api/pos/article-stock/waste", caissier,
+                java.util.Map.of("productId", idEau, "quantity", 99), 400);
+        JsonNode apresCasse = json(postJson("/api/pos/article-stock/waste", caissier,
+                java.util.Map.of("productId", idEau, "quantity", 1, "comment", "bouteille percée"), 200));
+        assertThat(resteArticle(apresCasse, idEau)).isEqualByComparingTo("4.000");
+        assertThat(apresCasse.get("movements").toString()).contains("bouteille percée").contains("CASSE");
+
+        // ---- inventaire : on pose 10, l'ecart (+6) se deduit
+        JsonNode apresInv = json(postJson("/api/pos/article-stock/count", caissier,
+                java.util.Map.of("productId", idEau, "quantity", 10, "comment", "comptage"), 200));
+        assertThat(resteArticle(apresInv, idEau)).isEqualByComparingTo("10.000");
+        boolean ecart = false;
+        for (JsonNode m : apresInv.get("movements"))
+            if ("INVENTAIRE".equals(m.get("type").asText()) && m.get("quantity").decimalValue().compareTo(new java.math.BigDecimal("6.000")) == 0) ecart = true;
+        assertThat(ecart).as("l'écart de l'inventaire est calculé, pas saisi").isTrue();
+
+        // ---- le seuil : 10 au-dessus de 6, l'article ne remonte plus
+        for (JsonNode l : apresInv.get("lines"))
+            if (l.get("productId").asLong() == idEau) assertThat(l.get("sousLeSeuil").asBoolean()).isFalse();
+
+        // ---- l'article non suivi se vend sans compteur
+        JsonNode libre = json(postJson("/api/pos/checkout", caissier, venteArticle(caisse, idSac, 3, cash, 0.6), 200));
+        assertThat(libre.get("ticketNumber").asText()).isNotBlank();
+
+        // La caisse ouverte pour ce scenario est refermee : une caisse laissee ouverte
+        // par un test en fait echouer un autre pour une raison sans rapport.
+        JsonNode courante = json(mvc.perform(get("/api/pos/session").header("Authorization", "Bearer " + caissier)).andReturn());
+        postJson("/api/pos/session/" + courante.get("id").asLong() + "/close", caissier,
+                java.util.Map.of("countedCash", 0), 200);
+    }
+
+    private long ouvrirCaisse(String caissier) throws Exception {
+        JsonNode courante = json(mvc.perform(get("/api/pos/session").header("Authorization", "Bearer " + caissier))
+                .andExpect(status().isOk()).andReturn());
+        if (courante != null && courante.has("registerId")) return courante.get("registerId").asLong();
+        JsonNode regs = json(mvc.perform(get("/api/pos/registers").header("Authorization", "Bearer " + caissier))
+                .andExpect(status().isOk()).andReturn());
+        JsonNode libre = null; for (JsonNode r : regs) if (r.get("openSession").isNull()) libre = r;
+        assertThat(libre).as("une caisse libre").isNotNull();
+        return json(postJson("/api/pos/session/open", caissier,
+                java.util.Map.of("registerId", libre.get("id").asLong(), "openingFloat", 0), 200)).get("registerId").asLong();
+    }
+
+    private JsonNode etatStock(String token) throws Exception {
+        return json(mvc.perform(get("/api/pos/article-stock").header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk()).andReturn());
+    }
+
+    /** Le compteur d'un ARTICLE - homonyme de celui des pates, mais l'autre liste. */
+    private java.math.BigDecimal resteArticle(JsonNode etat, long productId) {
+        for (JsonNode l : etat.get("lines")) if (l.get("productId").asLong() == productId) return l.get("quantity").decimalValue();
+        throw new AssertionError("article absent de l'état du stock : " + productId);
+    }
+
+    private java.util.Map<String, Object> venteArticle(long registerId, long productId, int qte, long moyen, double montant) {
+        return java.util.Map.of("clientRef", UUID.randomUUID().toString(), "registerId", registerId,
+                "serviceMode", "TAKEAWAY",
+                "lines", List.of(java.util.Map.of("productId", productId, "quantity", qte)),
+                "payments", List.of(java.util.Map.of("paymentMethodId", moyen, "amount", montant)));
+    }
 }
