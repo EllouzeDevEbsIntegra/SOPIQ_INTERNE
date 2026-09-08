@@ -152,6 +152,8 @@ public class CatalogService {
         if (r.purchasePrice() != null) p.setPurchasePrice(Money.r(r.purchasePrice()));
         if (r.stockManaged() != null) p.setStockManaged(r.stockManaged());
         if (r.stockMin() != null) p.setStockMin(Money.r(r.stockMin()));
+        // Une unite inconnue ne devine pas : elle est refusee, en nommant ce qui existe.
+        if (r.unite() != null && !r.unite().isBlank()) p.setUnite(unite(r.unite()));
         p.setUpdatedAt(OffsetDateTime.now());
         p.getPrintDestinations().clear();
         if (r.printDestinationIds() != null) r.printDestinationIds().forEach(d -> destinationRepo.findById(d).ifPresent(p.getPrintDestinations()::add));
@@ -344,5 +346,20 @@ public class CatalogService {
         if (r.active() != null) m.setActive(r.active());
         audit.log("PAYMENT_METHOD_SAVE", "PaymentMethod", m.getId(), m.getCode());
         return Mappers.paymentMethod(paymentMethodRepo.save(m));
+    }
+
+    /**
+     * L'unite de vente, lue d'un texte.
+     *
+     * Refuser plutot que retomber sur PIECE : un article de patisserie enregistre a la
+     * piece parce que quelqu'un a tape << kilo >> au lieu de << KG >> se vendrait 58
+     * dinars les 300 grammes, et personne ne verrait d'ou vient l'erreur.
+     */
+    private static Enums.Unite unite(String texte) {
+        try {
+            return Enums.Unite.valueOf(texte.trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new BusinessException("Unité de vente « " + texte + " » inconnue. Attendu : PIECE, KG ou LITRE.");
+        }
     }
 }

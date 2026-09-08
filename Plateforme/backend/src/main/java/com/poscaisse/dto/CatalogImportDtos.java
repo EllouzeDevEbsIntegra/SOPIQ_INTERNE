@@ -39,7 +39,13 @@ public final class CatalogImportDtos {
                                     sans quoi une carte importee arriverait muette sur ce qui
                                     fait justement le metier.
                                 */
-                                String barcode, BigDecimal purchasePrice, Boolean stockManaged, BigDecimal stockMin) {}
+                                String barcode, BigDecimal purchasePrice, Boolean stockManaged, BigDecimal stockMin,
+                                /*
+                                    PIECE, KG ou LITRE. Une carte de patisserie annonce ses
+                                    baklawas au kilo : sans cela, l'import les livrerait
+                                    vendables au kilo entier seulement.
+                                */
+                                String unite) {}
 
     public record CatalogImport(String label, List<ImportCategory> categories,
                                 List<ImportModifierGroup> modifierGroups, List<ImportIngredient> ingredients,

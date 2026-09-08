@@ -187,8 +187,34 @@ public class ReceiptRenderer {
         return switch (m) { case DINE_IN -> "SUR PLACE"; case TAKEAWAY -> "À EMPORTER"; case DELIVERY -> "LIVRAISON"; };
     }
 
+    /**
+     * La quantite, avec la virgule francaise.
+     *
+     * Le point ne se voyait pas tant que les quantites etaient entieres. Une vente au
+     * poids l'expose : << 0.300 kg >> sur un ticket ou tous les montants sont ecrits
+     * << 17,400 >> se lit comme une faute, et fait douter du reste.
+     */
     private static String qty(BigDecimal q) {
-        return q.stripTrailingZeros().scale() <= 0 ? q.stripTrailingZeros().toPlainString() : q.toPlainString();
+        BigDecimal n = q.stripTrailingZeros();
+        return (n.scale() <= 0 ? n.toPlainString() : q.toPlainString()).replace('.', ',');
+    }
+
+    /**
+     * La quantite avec son unite : << 2 >> pour des cafes, << 0,300 kg >> pour de la baklawa.
+     *
+     * Un poids sans unite se lit comme un nombre d'articles : << 0,3 x Baklawa >> ne veut
+     * rien dire au comptoir, et le client qui relit son ticket ne retrouve pas son compte.
+     */
+    private static String qty(OrderLine l) {
+        String q = qty(l.getQuantity());
+        Enums.Unite u = l.getUnite() == null ? Enums.Unite.PIECE : l.getUnite();
+        return u.mesuree() ? q + " " + u.symbole() : q;
+    }
+
+    /** << l'unite >>, << le kg >>, << le L >> : ce a quoi se rapporte le prix. */
+    private static String parUnite(OrderLine l) {
+        Enums.Unite u = l.getUnite() == null ? Enums.Unite.PIECE : l.getUnite();
+        return u.mesuree() ? "le " + u.symbole() : "l'unité";
     }
 
     // ---------- customer receipt ----------
@@ -243,7 +269,15 @@ public class ReceiptRenderer {
         int count = 0;
         for (OrderLine l : o.getLines()) {
             if (l.getParentLine() != null) continue;
-            count += l.getQuantity().intValue();
+            /*
+                Une ligne pesee compte pour UNE, et non pour zero.
+
+                << Articles : 0 >> sous une vente de 300 grammes de baklawa fait douter du
+                ticket entier. On ne peut pas non plus additionner des kilos a des cafes :
+                ce compteur dit combien de choses ont ete servies, et 300 grammes de
+                baklawa, c'est une chose.
+            */
+            count += (l.getUnite() != null && l.getUnite().mesuree()) ? 1 : l.getQuantity().intValue();
             String name = shortName(l);
             BigDecimal unit = l.getUnitPrice().add(l.getModifiersTotal());
 
@@ -259,20 +293,35 @@ public class ReceiptRenderer {
                 Il n'y a pas de reglage pour revenir en arriere : un montant faux a la
                 lecture n'est pas une preference d'affichage.
             */
-            s.lr(qty(l.getQuantity()) + " x " + name, money(l.getLineTotal().add(l.getDiscountAmount()), dec));
+            s.lr(qty(l) + " x " + name, money(l.getLineTotal().add(l.getDiscountAmount()), dec));
 
             /*
                 Le prix unitaire, lui, reste utile quand le client conteste « pourquoi 8,000
                 pour deux ». On l'ecrit en toutes lettres, HORS de la colonne des montants :
                 aligne a droite, il redeviendrait une addition apparente.
             */
-            if (on2(cfg, "showUnitPrice") && l.getQuantity().compareTo(BigDecimal.ONE) != 0 && l.getComponents().isEmpty())
-                s.line("   à " + money(unit, dec) + " l'unité");
+            /*
+                SUR UN ARTICLE PESE, LE PRIX AU KILO S'IMPRIME TOUJOURS.
+
+                Il ne depend pas du reglage << afficher le prix unitaire >>, et c'est
+                voulu : sur une vente au poids, c'est la SEULE facon pour le client de
+                verifier son montant. 17,400 pour de la baklawa ne se controle pas sans
+                savoir qu'elle est a 58,000 le kilo. Meme pour un kilo juste - c'est la
+                question que pose le client suivant.
+
+                Pour ce qui se compte, le reglage garde la main, et la ligne ne sert que
+                si la quantite depasse un : << a 4,000 l'unite >> sous << 1 x Cafe
+                4,000 >> n'apprend rien a personne.
+            */
+            boolean pese = l.getUnite() != null && l.getUnite().mesuree();
+            if (l.getComponents().isEmpty()
+                    && (pese || (on2(cfg, "showUnitPrice") && l.getQuantity().compareTo(BigDecimal.ONE) != 0)))
+                s.line("   à " + money(unit, dec) + " " + parUnite(l));
 
             if (on(cfg, "showModifiers")) {
                 for (OrderLineModifier m : l.getModifiers()) s.line("   + " + modLabel(m));
                 for (OrderLine c : l.getComponents()) {
-                    s.line("   • " + qty(c.getQuantity()) + " " + shortName(c));
+                    s.line("   • " + qty(c) + " " + shortName(c));
                     for (OrderLineModifier m : c.getModifiers()) s.line("       + " + modLabel(m));
                 }
             }
@@ -426,12 +475,12 @@ public class ReceiptRenderer {
         if (o.getCourier() != null) s.lr("Livreur", o.getCourier().getName());
         s.sep(sepCh);
         for (OrderLine l : lines) {
-            String q = qty(l.getQuantity());
+            String q = qty(l);
             String name = shortName(l);
             if (dest.isShowPrices()) s.lr(q + " x " + name, money(l.getLineTotal(), dec)); else s.line(q + " x " + name.toUpperCase());
             for (OrderLineModifier m : l.getModifiers()) s.line("    + " + modLabel(m));
             for (OrderLine c : l.getComponents()) {
-                s.line("    • " + qty(c.getQuantity()) + " " + shortName(c));
+                s.line("    • " + qty(c) + " " + shortName(c));
                 for (OrderLineModifier m : c.getModifiers()) s.line("        + " + modLabel(m));
             }
             if (l.getNote() != null && !l.getNote().isBlank()) s.line("    » " + l.getNote().toUpperCase());

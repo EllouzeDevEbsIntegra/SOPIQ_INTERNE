@@ -22,6 +22,7 @@ import CashMovementDialog from '../../components/pos/CashMovementDialog.vue'
 import StockDialog from '../../components/pos/StockDialog.vue'
 import ArticleStockDialog from '../../components/pos/ArticleStockDialog.vue'
 import AssistantDialog from '../../components/pos/AssistantDialog.vue'
+import PoidsDialog from '../../components/pos/PoidsDialog.vue'
 import TicketsView from './TicketsView.vue'
 import Modal from '../../components/common/Modal.vue'
 import Icon from '../../components/common/Icon.vue'
@@ -115,8 +116,35 @@ function tap(p) {
     || (p.modifierGroups || []).some(g => g.required)
     || (p.variantId && p.askVariant)
   if (needsDialog) { dialog.value = { kind: 'modifier', product: p }; return }
+  // Un article qui se pese n'a pas de « un » : ajouter 1 kg de baklawa par defaut
+  // vendrait 58 dinars a qui en voulait pour cinq.
+  if (auPoids(p)) { dialog.value = { kind: 'poids', product: p }; return }
   cart.addLine({ product: p, variantValue: varianteParDefaut(p) })
   flash(p)
+}
+
+/** Vrai si l'article se pese ou se mesure : le prix de la fiche est celui du kilo, ou du litre. */
+function auPoids(p) { return !!p && p.unite && p.unite !== 'PIECE' }
+
+/** Le prix de l'unite entiere - celui de la variante choisie s'il y en a une. */
+function prixUnitaire(p) {
+  const v = varianteParDefaut(p)
+  return Number(v?.price || p.price || 0)
+}
+
+/*
+    Le poids valide : la ligne part avec sa quantite reelle.
+
+    Corriger une ligne existante remplace le poids au lieu de l'ajouter - on repese, on
+    ne cumule pas : c'est ce que fait la balance, et ce que comprend le vendeur.
+*/
+function poserLePoids(quantite) {
+  const d = dialog.value
+  if (!d) return
+  if (d.line) cart.setQuantity(d.line.key, quantite)
+  else { cart.addLine({ product: d.product, quantity: quantite, variantValue: varianteParDefaut(d.product) }); flash(d.product) }
+  dialog.value = null
+  cartOpen.value = true
 }
 /* Valeur vendue par un appui court : celle par defaut, avec son prix. */
 function varianteParDefaut(p) {
@@ -161,7 +189,11 @@ async function toggleAvailability(p) {
 }
 // cart actions
 function editLine(l) { dialog.value = { kind: 'modifier', product: l.product, line: l, initial: l } }
-function quantity(l) { dialog.value = { kind: 'qty', line: l } }
+function quantity(l) {
+  // Une ligne pesee se repese : le pave entier n'a pas de sens pour 0,300 kg.
+  if (auPoids(l.product)) { dialog.value = { kind: 'poids', product: l.product, line: l }; return }
+  dialog.value = { kind: 'qty', line: l }
+}
 function setQty(v) { const d = dialog.value; dialog.value = null; if (d.line) cart.setQuantity(d.line.key, Math.max(0, Math.floor(v))) }
 function discount(l) { dialog.value = { kind: 'discount', line: l } }
 function setDiscount(v) {
@@ -255,6 +287,15 @@ function logout() { if (!cart.isEmpty) return ui.error('Videz ou mettez en atten
     barre de recherche (Entree y vaut scan), et l'ecran lui-meme quand rien n'a le focus.
 */
 const codeBarresActif = computed(() => catalog.setting('catalog.barcode.enabled', 'false') === 'true')
+
+/**
+ * L'assistant de commande n'a de sens que la ou il y a des versions a choisir.
+ *
+ * Il compose des lots « tant de mlewi en pate cereale » : sans axe de declinaison au
+ * catalogue, il s'ouvrait sur une liste vide - un bouton qui ne fait rien apprend au
+ * caissier a se mefier des autres.
+ */
+const assistantUtile = computed(() => catalog.products.some(p => p.variantId))
 /*
     Quel stock le bouton ouvre-t-il ?
 
@@ -288,6 +329,7 @@ function scanner(code) {
   const aChoisir = (p.askVariant && p.variantId) || (p.modifierGroups || []).some(g => g.required)
                 || (p.menuComponents || []).length > 0
   if (aChoisir) dialog.value = { kind: 'modifier', product: p }
+  else if (auPoids(p)) dialog.value = { kind: 'poids', product: p }
   else cart.addLine({ product: p, quantity: 1 })
   search.value = ''
   cartOpen.value = true
@@ -372,8 +414,11 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
           <span>{{ c.name }}</span>
           <b class="tally num">{{ counts[c.id] || 0 }}</b>
         </button>
-        <!-- Une deuxieme porte, jamais un detour oblige : la vente ordinaire ne change pas. -->
-        <button class="cat assistant" @click="dialog = { kind: 'assistant' }">
+        <!-- Une deuxieme porte, jamais un detour oblige : la vente ordinaire ne change pas.
+             Elle ne s'ouvre que s'il y a quelque chose a composer : l'assistant travaille
+             sur les articles a versions (la pate d'un sandwich). Dans une patisserie ou
+             une parfumerie il n'y en a aucun, et le bouton menait a une liste vide. -->
+        <button v-if="assistantUtile" class="cat assistant" @click="dialog = { kind: 'assistant' }">
           <Icon name="list" :size="18" class="glyph" /><span>Assistant commande</span>
         </button>
       </aside>
@@ -440,6 +485,9 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
     <CashMovementDialog v-if="dialog?.kind === 'cash'" @close="dialog = null" />
     <StockDialog v-if="dialog?.kind === 'stock'" @close="dialog = null; refreshStock()" @changed="refreshStock" />
     <ArticleStockDialog v-if="dialog?.kind === 'stock-articles'" @close="dialog = null" @changed="() => {}" />
+    <PoidsDialog v-if="dialog?.kind === 'poids'" :product="dialog.product" :prix="prixUnitaire(dialog.product)"
+                 :initial="dialog.line ? Number(dialog.line.quantity) : 0"
+                 @close="dialog = null" @ok="poserLePoids" />
     <AssistantDialog v-if="dialog?.kind === 'assistant'" :stock="stockDisponible(null)" @close="dialog = null"
                      @confirm="onAssistant" @compose="p => { dialog = { kind: 'modifier', product: p } }" />
     <Modal v-if="dialog?.kind === 'tickets'" size="xl" title="Historique des tickets" @close="dialog = null">

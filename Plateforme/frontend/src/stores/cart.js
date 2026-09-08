@@ -50,7 +50,16 @@ export const useCartStore = defineStore('cart', () => {
   const afterLines = computed(() => sub(subtotal.value, lineDiscountTotal.value))
   const orderDiscount = computed(() => discountAmount.value > 0 ? Math.min(discountAmount.value, afterLines.value) : pct(afterLines.value, discountPercent.value))
   const total = computed(() => round(sub(afterLines.value, orderDiscount.value)))
-  const itemCount = computed(() => lines.value.reduce((s, l) => s + Number(l.quantity), 0))
+  /*
+      Le nombre d'articles du panier.
+
+      Une ligne PESEE compte pour UNE. Additionner des kilos a des cafes donnait
+      « 0,3 art. » sous une vente de 300 grammes de baklawa : un compteur qui affiche
+      moins d'un article alors qu'on vient d'en servir un fait douter du panier entier.
+      Ce chiffre repond a « combien de choses ai-je servies », pas « combien pesent-elles ».
+  */
+  const itemCount = computed(() => lines.value.reduce(
+    (s, l) => s + (l.product?.unite && l.product.unite !== 'PIECE' ? 1 : Number(l.quantity)), 0))
   const isEmpty = computed(() => lines.value.length === 0)
 
   /* Regle de gestion du destinataire :

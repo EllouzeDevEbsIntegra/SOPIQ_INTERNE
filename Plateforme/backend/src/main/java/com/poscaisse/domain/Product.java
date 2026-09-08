@@ -21,6 +21,14 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "category_id") private Category category;
     @Enumerated(EnumType.STRING) private Enums.ProductType productType = Enums.ProductType.SIMPLE;
     private BigDecimal price = BigDecimal.ZERO;
+    /**
+     * L'unite du prix : la piece, le kilo, le litre.
+     *
+     * Sur un article mesure, le prix de la fiche est celui de l'unite ENTIERE - 58 dinars
+     * le kilo - et la vente porte le poids reel. La caisse s'en sert pour demander une
+     * quantite au lieu d'ajouter un article de plus.
+     */
+    @Enumerated(EnumType.STRING) private Enums.Unite unite = Enums.Unite.PIECE;
     private BigDecimal taxRate = BigDecimal.ZERO;
     @Column(columnDefinition = "text") private String imageUrl;
     private String color;

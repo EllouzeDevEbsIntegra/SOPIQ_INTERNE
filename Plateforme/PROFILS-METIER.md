@@ -48,7 +48,7 @@ variable d'environnement a changé au redémarrage.
 | `CAFE` | `mistral-coffee.json` | 112 | non | partiel | avertir | libre | sur place, emporter |
 | `SHOP` | `superette-el-baraka.json` | 187 | **oui** | total | avertir | achat | emporter |
 | `VETEMENT` | `style-boutique.json` | 65 | **oui** | total | avertir | achat | emporter |
-| `PATISSERIE` | `dar-halwa.json` | 71 | non | partiel | avertir | libre | sur place, emporter |
+| `PATISSERIE` | `dar-halwa.json` | 71 *(18 au kilo)* | non | partiel | avertir | libre | sur place, emporter |
 | `PARFUMERIE` | `nour-parfums.json` | 76 | **oui** | total | avertir | achat | emporter |
 
 **Le scan n'est réservé à personne.** C'est un réglage comme un autre : un café qui décide
@@ -65,6 +65,24 @@ que le format d'import ne sait pas encore porter ; elle est donc écrite dans le
 démonstration — et surtout pas la carte d'un client réel : les prix d'un restaurant ne
 partent pas chez ses concurrents. *Le jour où l'import portera les menus, cette ligne
 recevra un fichier comme les autres.*
+
+## Vendre au poids
+
+Chaque article porte son unité : **pièce**, **kilo**, **litre** (*Articles → fiche →
+Vendu*). Sur un article au kilo, le prix saisi est celui du kilo entier, et toucher sa
+tuile n'ajoute pas « 1 » : la caisse ouvre une pesée.
+
+On y tape des **grammes** — ce que dit la balance et ce que dit le client — ou un **montant
+en dinars** (« pour 5 dinars de baklawa »), et la caisse fait la division. Les deux
+chiffres restent affichés, quel que soit celui qu'on a tapé.
+
+Sur le ticket : `0,300 kg x Baklawa amande … 17,400`, puis `à 58,000 le kg`. Ce prix à
+l'unité s'imprime **toujours** sur une vente au poids, sans dépendre du réglage
+« afficher le prix unitaire » : c'est la seule façon pour le client de vérifier 17,400.
+
+*Ce qui n'est pas là :* aucune balance n'est branchée. Le vendeur lit le poids sur
+l'afficheur de sa balance et le tape — c'est ce que font aujourd'hui les caisses des
+pâtisseries de quartier.
 
 ## Ajouter un septième métier
 

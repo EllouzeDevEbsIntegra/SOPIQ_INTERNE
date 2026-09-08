@@ -192,4 +192,53 @@ class ReceiptRendererTest {
         String txt = renderer.prepTicket(o, List.copyOf(o.getLines()), d, new ReceiptTemplate(), o.getCompany(), false);
         assertThat(txt).contains("CUISINE").contains("2 x CHEESEBURGER").contains("Supplément fromage").doesNotContain("17,000");
     }
+
+    /**
+     * LE TICKET D'UNE VENTE AU POIDS.
+     *
+     * Ce que ce test protege : qu'un client qui relit son ticket retrouve son compte. Sans
+     * l'unite, la ligne dit << 0,3 x Baklawa amande 17,400 >> - un nombre d'articles qui
+     * ne veut rien dire, et un montant qu'on ne peut pas verifier. Avec elle, tout se lit :
+     * 0,3 kg, a 58,000 le kg.
+     *
+     * Le prix au kilo s'ecrit MEME quand on a vendu un kilo juste : c'est la question que
+     * pose le client suivant, et la reponse doit etre sur le papier.
+     */
+    private SaleOrder venteAuPoids(String poids) {
+        SaleOrder o = order();
+        o.getLines().clear();
+        Category cat = new Category(); cat.setName("Pâtisserie orientale");
+        Product p = new Product(); p.setName("Baklawa amande"); p.setShortName("Baklawa amande");
+        p.setCategory(cat); p.setUnite(Enums.Unite.KG);
+        OrderLine l = new OrderLine(); l.setOrder(o); l.setProduct(p); l.setProductName("Baklawa amande");
+        l.setQuantity(new BigDecimal(poids)); l.setUnite(Enums.Unite.KG);
+        l.setUnitPrice(new BigDecimal("58.000")); l.setOriginalUnitPrice(l.getUnitPrice());
+        o.getLines().add(l);
+        o.getPayments().clear();
+        new PricingService().computeOrder(o);
+        return o;
+    }
+
+    @Test void leTicketDitLePoidsEtLePrixDuKilo() {
+        SaleOrder o = venteAuPoids("0.300");
+        String txt = renderer.customerReceipt(o, o.getCompany(), new ReceiptTemplate(), false, false);
+        assertThat(txt).contains("0,300 kg x Baklawa amande");
+        assertThat(txt).contains("à 58,000 le kg");
+        assertThat(txt).as("300 g a 58 DT le kilo").contains("17,400");
+        assertThat(txt).as("une ligne pesée compte pour un article, jamais zéro").contains("Articles").doesNotContain("Articles                                 0");
+        for (String line : txt.split("\n")) assertThat(printable(line).length()).as("line: " + line).isLessThanOrEqualTo(42);
+    }
+
+    @Test void lePrixDuKiloEstEcritMemePourUnKiloJuste() {
+        SaleOrder o = venteAuPoids("1");
+        String txt = renderer.customerReceipt(o, o.getCompany(), new ReceiptTemplate(), false, false);
+        assertThat(txt).contains("1 kg x Baklawa amande").contains("à 58,000 le kg");
+    }
+
+    /** Ce qui se compte n'a pas d'unite a trainer : << 2 x Cheeseburger >>, comme avant. */
+    @Test void ceQuiSeCompteResteInchange() {
+        SaleOrder o = order();
+        String txt = renderer.customerReceipt(o, o.getCompany(), new ReceiptTemplate(), false, false);
+        assertThat(txt).contains("2 x Cheeseburger").doesNotContain("2 kg").doesNotContain("l'unité kg");
+    }
 }

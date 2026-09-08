@@ -49,131 +49,145 @@
   "products": [
     {
       "code": "PA-001",
-      "name": "Baklawa amande (kg)",
+      "name": "Baklawa amande",
       "shortName": "Baklawa am",
       "category": "Pâtisserie orientale",
       "price": 58.0,
       "sortOrder": 1,
       "barcode": "2000003000012",
       "favorite": true,
-      "favoriteOrder": 1
+      "favoriteOrder": 1,
+      "unite": "KG"
     },
     {
       "code": "PA-002",
-      "name": "Baklawa pistache (kg)",
+      "name": "Baklawa pistache",
       "shortName": "Baklawa pist",
       "category": "Pâtisserie orientale",
       "price": 120.0,
       "sortOrder": 2,
-      "barcode": "2000003000029"
+      "barcode": "2000003000029",
+      "unite": "KG"
     },
     {
       "code": "PA-003",
-      "name": "Samsa amande (kg)",
+      "name": "Samsa amande",
       "shortName": "Samsa am",
       "category": "Pâtisserie orientale",
       "price": 55.0,
       "sortOrder": 3,
-      "barcode": "2000003000036"
+      "barcode": "2000003000036",
+      "unite": "KG"
     },
     {
       "code": "PA-004",
-      "name": "Samsa pistache (kg)",
+      "name": "Samsa pistache",
       "shortName": "Samsa pist",
       "category": "Pâtisserie orientale",
       "price": 118.0,
       "sortOrder": 4,
-      "barcode": "2000003000043"
+      "barcode": "2000003000043",
+      "unite": "KG"
     },
     {
       "code": "PA-005",
-      "name": "Makroudh dattes (kg)",
+      "name": "Makroudh dattes",
       "shortName": "Makroudh",
       "category": "Pâtisserie orientale",
       "price": 32.0,
       "sortOrder": 5,
-      "barcode": "2000003000050"
+      "barcode": "2000003000050",
+      "unite": "KG"
     },
     {
       "code": "PA-006",
-      "name": "Makroudh asmar (kg)",
+      "name": "Makroudh asmar",
       "shortName": "Makr asmar",
       "category": "Pâtisserie orientale",
       "price": 28.0,
       "sortOrder": 6,
-      "barcode": "2000003000067"
+      "barcode": "2000003000067",
+      "unite": "KG"
     },
     {
       "code": "PA-007",
-      "name": "Kaak warka (kg)",
+      "name": "Kaak warka",
       "shortName": "Kaak warka",
       "category": "Pâtisserie orientale",
       "price": 78.0,
       "sortOrder": 7,
-      "barcode": "2000003000074"
+      "barcode": "2000003000074",
+      "unite": "KG"
     },
     {
       "code": "PA-008",
-      "name": "Kaak youyou (kg)",
+      "name": "Kaak youyou",
       "shortName": "Kaak youyou",
       "category": "Pâtisserie orientale",
       "price": 34.0,
       "sortOrder": 8,
-      "barcode": "2000003000081"
+      "barcode": "2000003000081",
+      "unite": "KG"
     },
     {
       "code": "PA-009",
-      "name": "Ghraïba homs (kg)",
+      "name": "Ghraïba homs",
       "shortName": "Ghraïba homs",
       "category": "Pâtisserie orientale",
       "price": 36.0,
       "sortOrder": 9,
-      "barcode": "2000003000098"
+      "barcode": "2000003000098",
+      "unite": "KG"
     },
     {
       "code": "PA-010",
-      "name": "Ghraïba dattes (kg)",
+      "name": "Ghraïba dattes",
       "shortName": "Ghraïba dat",
       "category": "Pâtisserie orientale",
       "price": 38.0,
       "sortOrder": 10,
-      "barcode": "2000003000104"
+      "barcode": "2000003000104",
+      "unite": "KG"
     },
     {
       "code": "PA-011",
-      "name": "Mlabes pistache (kg)",
+      "name": "Mlabes pistache",
       "shortName": "Mlabes pist",
       "category": "Pâtisserie orientale",
       "price": 140.0,
       "sortOrder": 11,
-      "barcode": "2000003000111"
+      "barcode": "2000003000111",
+      "unite": "KG"
     },
     {
       "code": "PA-012",
-      "name": "Bouza aux noisettes (kg)",
+      "name": "Bouza aux noisettes",
       "shortName": "Bouza",
       "category": "Pâtisserie orientale",
       "price": 45.0,
       "sortOrder": 12,
-      "barcode": "2000003000128"
+      "barcode": "2000003000128",
+      "unite": "KG"
     },
     {
       "code": "PA-013",
-      "name": "Zlabia (kg)",
+      "name": "Zlabia",
       "shortName": "Zlabia",
       "category": "Pâtisserie orientale",
       "price": 22.0,
       "sortOrder": 13,
-      "barcode": "2000003000135"
+      "barcode": "2000003000135",
+      "unite": "KG"
     },
     {
       "code": "PA-014",
-      "name": "Mkharek (kg)",
+      "name": "Mkharek",
       "shortName": "Mkharek",
       "category": "Pâtisserie orientale",
       "price": 24.0,
       "sortOrder": 14,
-      "barcode": "2000003000142"
+      "barcode": "2000003000142",
+      "unite": "KG"
     },
     {
       "code": "PA-015",
@@ -186,30 +200,33 @@
     },
     {
       "code": "PA-016",
-      "name": "Kaak ambar (kg)",
+      "name": "Kaak ambar",
       "shortName": "Kaak ambar",
       "category": "Pâtisserie orientale",
       "price": 68.0,
       "sortOrder": 16,
-      "barcode": "2000003000166"
+      "barcode": "2000003000166",
+      "unite": "KG"
     },
     {
       "code": "PA-017",
-      "name": "Petits fours assortis (kg)",
+      "name": "Petits fours assortis",
       "shortName": "Petits fours",
       "category": "Pâtisserie orientale",
       "price": 62.0,
       "sortOrder": 17,
-      "barcode": "2000003000173"
+      "barcode": "2000003000173",
+      "unite": "KG"
     },
     {
       "code": "PA-018",
-      "name": "Corne de gazelle (kg)",
+      "name": "Corne de gazelle",
       "shortName": "Corne gaz",
       "category": "Pâtisserie orientale",
       "price": 60.0,
       "sortOrder": 18,
-      "barcode": "2000003000180"
+      "barcode": "2000003000180",
+      "unite": "KG"
     },
     {
       "code": "PA-019",
@@ -561,13 +578,14 @@
     },
     {
       "code": "PA-057",
-      "name": "Gâteau d'anniversaire (kg)",
+      "name": "Gâteau d'anniversaire",
       "shortName": "Gâteau anniv",
       "category": "Commandes & fêtes",
       "price": 70.0,
       "sortOrder": 57,
       "barcode": "2000003000579",
-      "description": "Sur commande, 48 h à l'avance"
+      "description": "Sur commande, 48 h à l'avance",
+      "unite": "KG"
     },
     {
       "code": "PA-058",

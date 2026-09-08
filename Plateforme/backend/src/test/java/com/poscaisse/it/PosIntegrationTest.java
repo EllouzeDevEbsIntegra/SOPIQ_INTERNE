@@ -702,10 +702,79 @@ class PosIntegrationTest {
         throw new AssertionError("article absent de l'état du stock : " + productId);
     }
 
-    private java.util.Map<String, Object> venteArticle(long registerId, long productId, int qte, long moyen, double montant) {
+    private java.util.Map<String, Object> venteArticle(long registerId, long productId, Number qte, long moyen, double montant) {
         return java.util.Map.of("clientRef", UUID.randomUUID().toString(), "registerId", registerId,
                 "serviceMode", "TAKEAWAY",
                 "lines", List.of(java.util.Map.of("productId", productId, "quantity", qte)),
                 "payments", List.of(java.util.Map.of("paymentMethodId", moyen, "amount", montant)));
+    }
+
+    /**
+     * VENDRE 300 GRAMMES DE BAKLAWA.
+     *
+     * Ce que ce scenario protege : le metier de la patisserie, tout simplement. Un article
+     * a 58 dinars le kilo ne se vendait qu'au kilo entier - le vendeur calculait de tete
+     * puis corrigeait le prix a la main, sur chaque vente, devant le client.
+     *
+     * Trois choses sont verifiees, et la troisieme est celle qu'on oublie : que le montant
+     * soit juste, que l'unite voyage jusqu'a la caisse (sans elle l'ecran ne sait pas
+     * qu'il doit demander un poids), et qu'elle soit RECOPIEE sur la ligne de vente - un
+     * duplicata reimprime dans six mois doit dire << 0,300 kg >> meme si l'article est
+     * repasse a la piece entre-temps.
+     */
+    @Test @Order(12) void vendreAuPoids() throws Exception {
+        String admin = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn())
+                .get("token").asText();
+        String caissier = json(mvc.perform(post("/api/auth/pin").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"pin\":\"1234\"}")).andExpect(status().isOk()).andReturn()).get("token").asText();
+
+        long categorie = json(mvc.perform(get("/api/categories").header("Authorization", "Bearer " + admin))
+                .andExpect(status().isOk()).andReturn()).get(0).get("id").asLong();
+
+        java.util.Map<String, Object> baklawa = new java.util.LinkedHashMap<>();
+        baklawa.put("code", "PA-BAK"); baklawa.put("name", "Baklawa amande"); baklawa.put("categoryId", categorie);
+        baklawa.put("price", 58); baklawa.put("unite", "KG");
+        long id = json(postJson("/api/products", admin, baklawa, 200)).get("id").asLong();
+
+        // Une unite inventee ne passe pas en silence : elle est refusee, en nommant ce qui existe.
+        java.util.Map<String, Object> faute = new java.util.LinkedHashMap<>(baklawa);
+        faute.put("code", "PA-FAUTE"); faute.put("name", "Erreur"); faute.put("unite", "kilo");
+        MvcResult refus = postJson("/api/products", admin, faute, 400);
+        assertThat(refus.getResponse().getContentAsString()).contains("PIECE, KG ou LITRE");
+
+        // L'unite voyage jusqu'a l'ecran de vente : sans elle, la caisse ajouterait 1 kg.
+        JsonNode catalogue = json(mvc.perform(get("/api/pos/catalog").header("Authorization", "Bearer " + caissier))
+                .andExpect(status().isOk()).andReturn());
+        JsonNode fiche = null;
+        for (JsonNode p : catalogue.get("products")) if (p.get("id").asLong() == id) fiche = p;
+        assertThat(fiche).as("l'article est au catalogue de la caisse").isNotNull();
+        assertThat(fiche.get("unite").asText()).isEqualTo("KG");
+
+        long caisse = ouvrirCaisse(caissier);
+        // 0,300 kg a 58,000 le kilo : 17,400 - et non 58,000 ni 17,4 arrondi a l'unite.
+        JsonNode vente = json(postJson("/api/pos/checkout", caissier,
+                venteArticle(caisse, id, new java.math.BigDecimal("0.300"), cashId, 17.4), 200));
+        assertThat(vente.get("total").decimalValue()).isEqualByComparingTo("17.400");
+
+        JsonNode ligne = vente.get("lines").get(0);
+        assertThat(ligne.get("quantity").decimalValue()).isEqualByComparingTo("0.300");
+        assertThat(ligne.get("lineTotal").decimalValue()).isEqualByComparingTo("17.400");
+
+        /*
+            Le ticket rendu par le serveur - celui qui sort de l'imprimante - dit le poids
+            ET le prix du kilo. C'est la seule facon pour le client de verifier 17,400 : le
+            montant seul ne se controle pas.
+        */
+        JsonNode travaux = json(mvc.perform(get("/api/orders/" + vente.get("id").asLong() + "/print-jobs")
+                .header("Authorization", "Bearer " + caissier)).andExpect(status().isOk()).andReturn());
+        String ticket = null;
+        for (JsonNode t : travaux) if ("CLIENT".equals(t.get("destinationCode").asText())) ticket = t.get("content").asText();
+        assertThat(ticket).as("le ticket client est bien imprimé").isNotNull();
+        assertThat(ticket).contains("0,300 kg").contains("58,000");
+
+        JsonNode courante = json(mvc.perform(get("/api/pos/session").header("Authorization", "Bearer " + caissier)).andReturn());
+        postJson("/api/pos/session/" + courante.get("id").asLong() + "/close", caissier,
+                java.util.Map.of("countedCash", 0), 200);
     }
 }

@@ -13,6 +13,26 @@ const auth = useAuthStore()
 const catalog = useCatalogStore()
 const emit = defineEmits(['edit', 'discount', 'quantity', 'checkout', 'hold', 'clear', 'customer', 'courier', 'price', 'note'])
 
+/** Un article dont le prix est celui du kilo ou du litre, et non de la piece. */
+function auPoids(l) { return l.product?.unite && l.product.unite !== 'PIECE' }
+
+/**
+ * La quantite telle qu'on la lit : << 2 >>, ou << 0,300 kg >>.
+ *
+ * Sans l'unite, un poids se lit comme un nombre d'articles - et << 0,3 >> devant un nom
+ * de gateau ne veut rien dire pour la personne qui relit la commande a voix haute.
+ */
+function quantiteLue(l) {
+  if (!auPoids(l)) return fmtQty(l.quantity)
+  /*
+      Trois decimales, toujours : une balance affiche « 0,300 » et le ticket ecrira
+      « 0,300 kg ». « 0,3 kg » au panier et « 0,300 kg » sur le papier, pour la meme
+      vente, se lit comme deux chiffres differents.
+  */
+  const poids = Number(l.quantity).toLocaleString('fr-FR', { minimumFractionDigits: 3, maximumFractionDigits: 3 })
+  return poids + ' ' + (l.product.unite === 'LITRE' ? 'L' : 'kg')
+}
+
 const canDelete = computed(() => auth.can('LINE_DELETE'))
 const modes = computed(() => catalog.serviceModes)
 const modeIcon = { DINE_IN: 'utensils', TAKEAWAY: 'bag', DELIVERY: 'truck' }
@@ -52,7 +72,7 @@ const hasDiscount = computed(() => cart.lineDiscountTotal > 0 || cart.orderDisco
 
       <article v-for="l in cart.lines" :key="l.key" class="line" :class="{ on: cart.selectedKey === l.key }" @click="cart.selectedKey = l.key">
         <div class="head">
-          <span class="qty num">{{ fmtQty(l.quantity) }}</span>
+          <span class="qty num">{{ quantiteLue(l) }}</span>
           <span class="label">{{ nomAvecVariante(l, catalog.variants) }}</span>
           <span class="amount num">{{ fmt(cart.lineTotal(l)) }}</span>
         </div>
@@ -68,11 +88,16 @@ const hasDiscount = computed(() => cart.lineDiscountTotal > 0 || cart.orderDisco
         </div>
 
         <div class="acts" v-if="cart.selectedKey === l.key" @click.stop>
-          <div class="step">
+          <!--
+              Sur un article pese, + et - retireraient ou ajouteraient UN KILO : sur 300
+              grammes de baklawa, c'est quatre fois la vente. On repese, comme au comptoir.
+          -->
+          <div class="step" v-if="!auPoids(l)">
             <button @click="cart.increment(l.key, -1)" :disabled="l.quantity <= 1 && !canDelete" aria-label="Diminuer"><Icon name="minus" :size="18" :stroke="2.2" /></button>
             <button class="val num" @click="emit('quantity', l)">{{ fmtQty(l.quantity) }}</button>
             <button @click="cart.increment(l.key, 1)" aria-label="Augmenter"><Icon name="plus" :size="18" :stroke="2.2" /></button>
           </div>
+          <button v-else class="act" @click="emit('quantity', l)"><Icon name="sliders" :size="16" />Repeser</button>
           <!-- La variante ouvre la meme fenetre que les options : sans cela, une ligne qui n'a
              qu'une version (la pate) ne pouvait plus etre reprise depuis le panier, et le
              client qui change d'avis obligeait a retirer la ligne pour la refaire. -->

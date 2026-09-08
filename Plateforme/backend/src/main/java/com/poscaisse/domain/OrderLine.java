@@ -17,6 +17,13 @@ public class OrderLine {
     private String productCode;
     private String productName;
     private BigDecimal quantity = BigDecimal.ONE;
+    /**
+     * L'unite vendue, figee comme le nom.
+     *
+     * Un duplicata reimprime dans six mois doit dire << 0,300 kg >> meme si l'article est
+     * repasse a la piece entre-temps.
+     */
+    @Enumerated(EnumType.STRING) private Enums.Unite unite = Enums.Unite.PIECE;
     private BigDecimal originalUnitPrice = BigDecimal.ZERO;
     private BigDecimal unitPrice = BigDecimal.ZERO;
     private BigDecimal modifiersTotal = BigDecimal.ZERO;

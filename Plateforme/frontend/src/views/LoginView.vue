@@ -50,7 +50,9 @@ function go() {
     <aside class="brand">
       <div class="mark"><Icon name="store" :size="26" /></div>
       <h1>PosCaisse</h1>
-      <p class="lede">Caisse tactile pour la restauration rapide</p>
+      <!-- La caisse ne tient plus un seul métier : promettre « la restauration rapide »
+           à une parfumerie ou à une supérette dit au client qu'on s'est trompé de logiciel. -->
+      <p class="lede">Caisse tactile pour le commerce</p>
       <div class="brand-foot">
         <span v-if="company" class="shop">{{ company.tradeName || company.name }}</span>
         <span class="tiny">Sélectionnez votre profil, puis composez votre code.</span>

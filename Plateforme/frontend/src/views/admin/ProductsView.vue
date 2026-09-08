@@ -177,8 +177,8 @@ const marge = computed(() => {
   return Math.round(((v - a) / v) * 1000) / 10
 })
 
-function create() { const catId = Number(catFilter.value) || cats.value[0]?.id; edit.value = { code: nextCode(catId), reference: '', name: '', shortName: '', description: '', categoryId: catId, productType: 'SIMPLE', price: 0, taxRate: 0, imageUrl: '', color: '', sortOrder: rows.value.length + 1, active: true, available: true, favorite: false, favoriteOrder: 0, priceToCheck: false, printDestinationIds: [], modifierGroupIds: [], menuComponents: [], ingredientIds: [], variantId: null, defaultVariantValueId: null, askVariant: false, variantPrices: [], barcode: '', purchasePrice: 0, stockManaged: false, stockMin: 0 }; tab.value = 'general' }
-function open(p) { edit.value = { ...p, ingredientIds: [...(p.ingredientIds || [])], variantPrices: (p.variantPrices || []).map(x => ({ ...x })), modifierGroupIds: p.modifierGroups.map(g => g.id), menuComponents: p.menuComponents.map(c => ({ name: c.name, quantity: c.quantity, sortOrder: c.sortOrder, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) })) })) }; tab.value = 'general' }
+function create() { const catId = Number(catFilter.value) || cats.value[0]?.id; edit.value = { code: nextCode(catId), reference: '', name: '', shortName: '', description: '', categoryId: catId, productType: 'SIMPLE', price: 0, taxRate: 0, imageUrl: '', color: '', sortOrder: rows.value.length + 1, active: true, available: true, favorite: false, favoriteOrder: 0, priceToCheck: false, printDestinationIds: [], modifierGroupIds: [], menuComponents: [], ingredientIds: [], variantId: null, defaultVariantValueId: null, askVariant: false, variantPrices: [], barcode: '', purchasePrice: 0, stockManaged: false, stockMin: 0, unite: 'PIECE' }; tab.value = 'general' }
+function open(p) { edit.value = { unite: 'PIECE', ...p, ingredientIds: [...(p.ingredientIds || [])], variantPrices: (p.variantPrices || []).map(x => ({ ...x })), modifierGroupIds: p.modifierGroups.map(g => g.id), menuComponents: p.menuComponents.map(c => ({ name: c.name, quantity: c.quantity, sortOrder: c.sortOrder, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) })) })) }; tab.value = 'general' }
 async function save() {
   const b = { ...edit.value, price: Number(String(edit.value.price).replace(',', '.')), taxRate: Number(edit.value.taxRate) || 0,
     barcode: (edit.value.barcode || '').trim() || null,
@@ -264,11 +264,30 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
       <div class="field"><label>Code</label><input class="input" v-model="edit.code" /></div>
       <div class="field"><label>Référence</label><input class="input" v-model="edit.reference" /></div>
       <div class="field">
-        <label>Prix TTC</label>
+        <label>Prix TTC {{ edit.unite === 'KG' ? 'du kilo' : edit.unite === 'LITRE' ? 'du litre' : '' }}</label>
         <input class="input lg" v-model="edit.price" inputmode="decimal" />
         <!-- La case s'eteint quand le gerant a confirme le tarif : c'est elle qui vide
              peu a peu la colonne « a verifier » de la liste. -->
         <label class="check mt-6"><input type="checkbox" v-model="edit.priceToCheck" /> Prix à vérifier</label>
+      </div>
+      <!--
+          L'UNITE DE VENTE.
+
+          Elle change ce que fait la caisse quand on touche la tuile : compter un article
+          de plus, ou demander un poids. Le prix ci-dessus suit : celui de la piece, ou
+          celui du kilo entier dont on vendra 300 grammes.
+      -->
+      <div class="field">
+        <label>Vendu</label>
+        <select class="input" v-model="edit.unite">
+          <option value="PIECE">À la pièce — la caisse ajoute 1</option>
+          <option value="KG">Au kilo — la caisse demande un poids</option>
+          <option value="LITRE">Au litre — la caisse demande une quantité</option>
+        </select>
+        <div class="tiny muted" v-if="edit.unite && edit.unite !== 'PIECE'">
+          Le prix saisi est celui {{ edit.unite === 'KG' ? "du kilo entier" : "du litre entier" }}.
+          Le vendeur tape le poids, ou le montant en dinars — la caisse fait la division.
+        </div>
       </div>
       <div class="field"><label>TVA % (si activée)</label><input class="input" v-model="edit.taxRate" inputmode="decimal" /></div>
       <div class="field span-2"><label>Description</label><input class="input" v-model="edit.description" /></div>

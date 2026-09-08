@@ -8,6 +8,33 @@ public final class Enums {
     public enum AccountParty { CUSTOMER, COURIER }
     public enum SessionStatus { OPEN, CLOSED }
     public enum ProductType { SIMPLE, MENU }
+
+    /**
+     * Ce que l'on compte quand on vend cet article.
+     *
+     * PIECE se compte : deux cafes, trois bouteilles. KG et LITRE se mesurent, et le prix
+     * de la fiche est celui de l'unite entiere - 58 dinars le kilo de baklawa, dont on
+     * vend 300 grammes. La caisse demande alors un poids au lieu d'ajouter << 1 >>.
+     */
+    public enum Unite {
+        PIECE("pièce", "", false),
+        KG("kilogramme", "kg", true),
+        LITRE("litre", "L", true);
+
+        private final String libelle;
+        private final String symbole;
+        private final boolean mesuree;
+
+        Unite(String libelle, String symbole, boolean mesuree) {
+            this.libelle = libelle; this.symbole = symbole; this.mesuree = mesuree;
+        }
+
+        public String libelle() { return libelle; }
+        /** << kg >>, << L >>, ou rien pour ce qui se compte. */
+        public String symbole() { return symbole; }
+        /** Vrai si l'article se pese ou se mesure : l'ecran doit demander une quantite. */
+        public boolean mesuree() { return mesuree; }
+    }
     /** Ou la valeur d'une variante se place dans le nom : « 1/2 Sandwich » ou « Pizza Large ». */
     public enum NamePosition { PREFIX, SUFFIX }
     /** CREDIT : porte le ticket au compte du client au lieu d'encaisser. */

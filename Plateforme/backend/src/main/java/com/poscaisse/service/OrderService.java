@@ -179,7 +179,7 @@ public class OrderService {
         OrderLine l = new OrderLine();
         l.setOrder(o); l.setParentLine(parent); l.setProduct(p); l.setCategory(p.getCategory());
         l.setProductCode(p.getCode()); l.setProductName(p.getName()); l.setQuantity(lr.quantity()); l.setSortOrder(sortOrder);
-        l.setTaxRate(p.getTaxRate()); l.setNote(lr.note());
+        l.setUnite(p.getUnite()); l.setTaxRate(p.getTaxRate()); l.setNote(lr.note());
         /*
             Variante : elle fixe le prix de la ligne, et non un supplement.
 
@@ -516,7 +516,8 @@ public class OrderService {
         int i = 0;
         for (Product p : prods.stream().limit(3).toList()) {
             OrderLine l = new OrderLine(); l.setOrder(o); l.setProduct(p); l.setProductName(p.getName()); l.setProductCode(p.getCode());
-            l.setQuantity(BigDecimal.valueOf(i == 0 ? 2 : 1)); l.setUnitPrice(p.getPrice()); l.setOriginalUnitPrice(p.getPrice()); l.setTaxRate(p.getTaxRate()); l.setSortOrder(i++);
+            l.setQuantity(BigDecimal.valueOf(i == 0 ? 2 : 1)); l.setUnitPrice(p.getPrice()); l.setOriginalUnitPrice(p.getPrice());
+            l.setUnite(p.getUnite()); l.setTaxRate(p.getTaxRate()); l.setSortOrder(i++);
             o.getLines().add(l);
         }
         pricing.computeOrder(o);

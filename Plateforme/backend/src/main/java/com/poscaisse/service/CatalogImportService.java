@@ -232,6 +232,14 @@ public class CatalogImportService {
             if (p.purchasePrice() != null) entity.setPurchasePrice(Money.r(p.purchasePrice()));
             entity.setStockManaged(Boolean.TRUE.equals(p.stockManaged()));
             if (p.stockMin() != null) entity.setStockMin(Money.r(p.stockMin()));
+            // Une unite illisible n'arrete pas l'import de 187 articles : l'article reste
+            // a la piece, et l'avertissement dit lequel et pourquoi.
+            if (p.unite() != null && !p.unite().isBlank()) {
+                try { entity.setUnite(Enums.Unite.valueOf(p.unite().trim().toUpperCase())); }
+                catch (IllegalArgumentException e) {
+                    warnings.add("« " + p.name() + " » : unité « " + p.unite() + " » inconnue, article laissé à la pièce.");
+                }
+            }
             entity.setUpdatedAt(OffsetDateTime.now());
 
             entity.getPrintDestinations().clear();

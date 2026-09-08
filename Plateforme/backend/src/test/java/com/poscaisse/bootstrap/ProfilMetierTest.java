@@ -80,6 +80,11 @@ class ProfilMetierTest {
             for (ImportProduct a : carte.products()) {
                 assertThat(a.code()).as("code d'article dans %s", p.carte()).isNotBlank();
                 assertThat(a.price()).as("prix de « %s » dans %s", a.name(), p.carte()).isNotNull();
+                // Une unite mal orthographiee laisserait l'article a la piece sans que
+                // personne le voie : « Baklawa 58,000 » se vendrait alors aux 58 dinars.
+                if (a.unite() != null && !a.unite().isBlank())
+                    assertThat(com.poscaisse.domain.Enums.Unite.valueOf(a.unite()))
+                            .as("unité de « %s » dans %s", a.name(), p.carte()).isNotNull();
             }
         }
     }
@@ -110,5 +115,26 @@ class ProfilMetierTest {
         assertThat(ProfilMetier.parNom("boulangerie")).as("un métier inconnu ne devine pas").isNull();
         assertThat(ProfilMetier.parNom("")).isNull();
         assertThat(ProfilMetier.parNom(null)).isNull();
+    }
+
+    /**
+     * La patisserie vend au poids, et sa carte doit le dire.
+     *
+     * C'est le coeur du metier : de la baklawa a 58 dinars le kilo dont on vend 300
+     * grammes. Une carte regeneree sans les unites livrerait une patisserie qui ne sait
+     * vendre qu'au kilo entier - le vendeur recalculerait de tete a chaque client, et
+     * personne ne verrait d'ou vient la perte.
+     */
+    @Test
+    void laPatisserieVendAuPoids() throws Exception {
+        try (InputStream flux = new ClassPathResource("cartes/" + ProfilMetier.PATISSERIE.carte()).getInputStream()) {
+            CatalogImport carte = OM.readValue(flux, CatalogImport.class);
+            long auKilo = carte.products().stream().filter(a -> "KG".equals(a.unite())).count();
+            assertThat(auKilo).as("articles vendus au kilo dans la carte pâtisserie").isGreaterThanOrEqualTo(15);
+            // Et le nom ne repete pas l'unite : « Baklawa amande (kg) 0,300 kg » sur un
+            // ticket se lit deux fois, et mal.
+            assertThat(carte.products().stream().filter(a -> "KG".equals(a.unite())))
+                    .allSatisfy(a -> assertThat(a.name()).doesNotContain("(kg)"));
+        }
     }
 }
