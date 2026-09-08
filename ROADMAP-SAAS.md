@@ -92,14 +92,22 @@ Un métier ne change pas le logiciel, il change des **réglages**. Voici ceux qu
 différence entre les verticales ; tous doivent être modifiables par client, parce que deux
 boutiques du même métier ne travaillent jamais pareil.
 
+**Aucun réglage n'est réservé à un métier.** Le profil ne fait que poser une valeur de
+départ : un café qui veut lire des codes-barres sur ses bouteilles coche la case et elle
+marche, un magasin de vêtements qui ne veut pas de stock la décoche. Les colonnes
+ci-dessous donnent donc le **défaut du profil**, pas une permission.
+
 ### Code-barres
+
+Le mécanisme est le même pour tous ; ce sont les **bases de démonstration** qui portent
+des codes-barres pour le Shop et le Vêtement, et n'en portent pas pour la table.
 
 | Réglage | Ce qu'il fait | Shop | Vêtement | Resto | Café | Pâtisserie |
 |---|---|:--:|:--:|:--:|:--:|:--:|
-| `barcode.enabled` | champ code-barres sur la fiche, lecture au scanner en caisse | ✔ | ✔ | — | — | — |
-| `barcode.required` | refuse d'enregistrer un article sans code | option | option | — | — | — |
-| `barcode.autoAdd` | un scan ajoute directement au panier, sans confirmation | ✔ | ✔ | — | — | — |
-| `barcode.unknownAsk` | un code inconnu propose de créer l'article sur-le-champ | ✔ | ✔ | — | — | — |
+| `barcode.enabled` | champ code-barres sur la fiche, lecture au scanner en caisse | oui | oui | non | non | non |
+| `barcode.required` | refuse d'enregistrer un article sans code | non | non | non | non | non |
+| `barcode.autoAdd` | un scan ajoute directement au panier, sans confirmation | oui | oui | oui | oui | oui |
+| `barcode.unknownAsk` | un code inconnu propose de créer l'article sur-le-champ | oui | oui | non | non | non |
 
 ### Stock
 
