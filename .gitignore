@@ -12,3 +12,16 @@ PosCaisse/.env
 PosCaisse/logs/
 PosCaisse/*.log
 PosCaisse/*.pid
+
+# Plateforme : le code vivant, memes regles. Les cartes de demonstration sont du
+# JSON versionne - sans cette exception, la regle « *.json » les ferait disparaitre.
+!Plateforme/**/*.json
+Plateforme/backend/target/
+Plateforme/frontend/node_modules/
+Plateforme/frontend/dist/
+Plateforme/.env
+Plateforme/logs/
+Plateforme/*.log
+Plateforme/*.pid
+Plateforme/packaging/dist/
+Plateforme/packaging/telechargements/

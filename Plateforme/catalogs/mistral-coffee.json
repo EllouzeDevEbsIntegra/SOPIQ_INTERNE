@@ -1,0 +1,1924 @@
+{
+  "label": "Mistral Coffee — carte de démonstration (café tunisien)",
+  "categories": [
+    {
+      "name": "Café",
+      "color": "#6F4E37",
+      "sortOrder": 1,
+      "printDestination": "BOISSONS"
+    },
+    {
+      "name": "Thé & Infusions",
+      "color": "#2E7D32",
+      "sortOrder": 2,
+      "printDestination": "BOISSONS"
+    },
+    {
+      "name": "Chocolat & Lait",
+      "color": "#8D6E63",
+      "sortOrder": 3,
+      "printDestination": "BOISSONS"
+    },
+    {
+      "name": "Jus & Frappés",
+      "color": "#F57C00",
+      "sortOrder": 4,
+      "printDestination": "BOISSONS"
+    },
+    {
+      "name": "Boissons fraîches",
+      "color": "#0288D1",
+      "sortOrder": 5,
+      "printDestination": "BOISSONS"
+    },
+    {
+      "name": "Pâtisserie",
+      "color": "#C2185B",
+      "sortOrder": 6,
+      "printDestination": "CUISINE"
+    },
+    {
+      "name": "Crêpes & Gaufres",
+      "color": "#AD1457",
+      "sortOrder": 7,
+      "printDestination": "CUISINE"
+    },
+    {
+      "name": "Salé",
+      "color": "#EF6C00",
+      "sortOrder": 8,
+      "printDestination": "CUISINE"
+    },
+    {
+      "name": "Glaces",
+      "color": "#7B1FA2",
+      "sortOrder": 9,
+      "printDestination": "CUISINE"
+    },
+    {
+      "name": "Chicha",
+      "color": "#37474F",
+      "sortOrder": 10,
+      "printDestination": "PASSE"
+    },
+    {
+      "name": "Jeux de table",
+      "color": "#455A64",
+      "sortOrder": 11
+    }
+  ],
+  "modifierGroups": [
+    {
+      "name": "Sucre",
+      "required": false,
+      "multiple": false,
+      "minSelect": 0,
+      "maxSelect": 1,
+      "modifiers": [
+        {
+          "name": "Sans sucre",
+          "priceDelta": 0.0
+        },
+        {
+          "name": "Peu sucré",
+          "priceDelta": 0.0
+        },
+        {
+          "name": "Très sucré",
+          "priceDelta": 0.0
+        },
+        {
+          "name": "Sucre à part",
+          "priceDelta": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Suppléments café",
+      "required": false,
+      "multiple": true,
+      "minSelect": 0,
+      "maxSelect": 0,
+      "modifiers": [
+        {
+          "name": "Dose d'express en plus",
+          "priceDelta": 1.5
+        },
+        {
+          "name": "Chantilly",
+          "priceDelta": 1.0
+        },
+        {
+          "name": "Sirop (vanille, caramel, noisette)",
+          "priceDelta": 1.0
+        },
+        {
+          "name": "Lait à part",
+          "priceDelta": 0.5
+        },
+        {
+          "name": "Cannelle",
+          "priceDelta": 0.3
+        }
+      ]
+    },
+    {
+      "name": "Service chicha",
+      "required": false,
+      "multiple": true,
+      "minSelect": 0,
+      "maxSelect": 0,
+      "modifiers": [
+        {
+          "name": "Embout jetable",
+          "priceDelta": 1.0
+        },
+        {
+          "name": "Charbon de rechange",
+          "priceDelta": 2.0
+        },
+        {
+          "name": "Glaçons dans le vase",
+          "priceDelta": 1.0
+        },
+        {
+          "name": "Tête en fruit",
+          "priceDelta": 8.0
+        }
+      ]
+    },
+    {
+      "name": "Garniture crêpe",
+      "required": false,
+      "multiple": true,
+      "minSelect": 0,
+      "maxSelect": 0,
+      "modifiers": [
+        {
+          "name": "Nutella",
+          "priceDelta": 3.0
+        },
+        {
+          "name": "Banane",
+          "priceDelta": 2.0
+        },
+        {
+          "name": "Fraise",
+          "priceDelta": 3.0
+        },
+        {
+          "name": "Amandes grillées",
+          "priceDelta": 2.0
+        },
+        {
+          "name": "Chantilly",
+          "priceDelta": 1.0
+        },
+        {
+          "name": "Miel",
+          "priceDelta": 2.0
+        },
+        {
+          "name": "Boule de glace",
+          "priceDelta": 3.0
+        }
+      ]
+    }
+  ],
+  "ingredients": [
+    {
+      "name": "Café",
+      "shortName": "Café"
+    },
+    {
+      "name": "Lait",
+      "shortName": "Lait"
+    },
+    {
+      "name": "Thé",
+      "shortName": "Thé"
+    },
+    {
+      "name": "Menthe",
+      "shortName": "Menthe"
+    },
+    {
+      "name": "Amandes",
+      "shortName": "Amand"
+    },
+    {
+      "name": "Pignons",
+      "shortName": "Pign"
+    },
+    {
+      "name": "Chocolat",
+      "shortName": "Choco"
+    },
+    {
+      "name": "Chantilly",
+      "shortName": "Chant"
+    },
+    {
+      "name": "Fraise",
+      "shortName": "Frais"
+    },
+    {
+      "name": "Banane",
+      "shortName": "Ban"
+    },
+    {
+      "name": "Orange",
+      "shortName": "Orang"
+    },
+    {
+      "name": "Citron",
+      "shortName": "Citr"
+    },
+    {
+      "name": "Mangue",
+      "shortName": "Mang"
+    },
+    {
+      "name": "Avocat",
+      "shortName": "Avoc"
+    },
+    {
+      "name": "Nutella",
+      "shortName": "Nut"
+    },
+    {
+      "name": "Thon",
+      "shortName": "Thon"
+    },
+    {
+      "name": "Fromage",
+      "shortName": "From"
+    },
+    {
+      "name": "Miel",
+      "shortName": "Miel"
+    }
+  ],
+  "variants": [
+    {
+      "name": "Goût",
+      "namePosition": "SUFFIX",
+      "values": [
+        {
+          "name": "Double Pomme",
+          "shortName": "2Pom"
+        },
+        {
+          "name": "Menthe",
+          "shortName": "Men"
+        },
+        {
+          "name": "Pomme-Menthe",
+          "shortName": "PomMen"
+        },
+        {
+          "name": "Raisin-Menthe",
+          "shortName": "RaiMen"
+        },
+        {
+          "name": "Citron-Menthe",
+          "shortName": "CitMen"
+        },
+        {
+          "name": "Pastèque",
+          "shortName": "Past"
+        },
+        {
+          "name": "Melon",
+          "shortName": "Mel"
+        },
+        {
+          "name": "Fraise",
+          "shortName": "Frai"
+        },
+        {
+          "name": "Mangue Glacée",
+          "shortName": "MangG"
+        },
+        {
+          "name": "Chewing-gum",
+          "shortName": "Chew"
+        },
+        {
+          "name": "Love 66",
+          "shortName": "L66"
+        },
+        {
+          "name": "Mi Amor",
+          "shortName": "MiA"
+        },
+        {
+          "name": "Blue Mist",
+          "shortName": "BlueM"
+        },
+        {
+          "name": "Sans tabac (fruits)",
+          "shortName": "S/Tab"
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "code": "CAF-01",
+      "name": "Express",
+      "shortName": "Express",
+      "category": "Café",
+      "price": 1.7,
+      "sortOrder": 1,
+      "ingredients": [
+        "Café"
+      ],
+      "modifierGroups": [
+        "Sucre",
+        "Suppléments café"
+      ],
+      "favorite": true,
+      "favoriteOrder": 1
+    },
+    {
+      "code": "CAF-02",
+      "name": "Express serré",
+      "shortName": "Exp serré",
+      "category": "Café",
+      "price": 1.7,
+      "sortOrder": 2,
+      "ingredients": [
+        "Café"
+      ],
+      "modifierGroups": [
+        "Sucre",
+        "Suppléments café"
+      ]
+    },
+    {
+      "code": "CAF-03",
+      "name": "Express allongé",
+      "shortName": "Exp allongé",
+      "category": "Café",
+      "price": 1.7,
+      "sortOrder": 3,
+      "ingredients": [
+        "Café"
+      ],
+      "modifierGroups": [
+        "Sucre",
+        "Suppléments café"
+      ]
+    },
+    {
+      "code": "CAF-04",
+      "name": "Double express",
+      "shortName": "2x Express",
+      "category": "Café",
+      "price": 2.9,
+      "sortOrder": 4,
+      "ingredients": [
+        "Café"
+      ],
+      "modifierGroups": [
+        "Sucre",
+        "Suppléments café"
+      ]
+    },
+    {
+      "code": "CAF-05",
+      "name": "Capucin",
+      "shortName": "Capucin",
+      "category": "Café",
+      "price": 1.9,
+      "sortOrder": 5,
+      "ingredients": [
+        "Café",
+        "Lait"
+      ],
+      "modifierGroups": [
+        "Sucre",
+        "Suppléments café"
+      ],
+      "favorite": true,
+      "favoriteOrder": 2
+    },
+    {
+      "code": "CAF-06",
+      "name": "Direct",
+      "shortName": "Direct",
+      "category": "Café",
+      "price": 2.3,
+      "sortOrder": 6,
+      "ingredients": [
+        "Café",
+        "Lait"
+      ],
+      "modifierGroups": [
+        "Sucre",
+        "Suppléments café"
+      ],
+      "favorite": true,
+      "favoriteOrder": 3
+    },
+    {
+      "code": "CAF-07",
+      "name": "Café au lait",
+      "shortName": "Café lait",
+      "category": "Café",
+      "price": 2.3,
+      "sortOrder": 7,
+      "ingredients": [
+        "Café",
+        "Lait"
+      ],
+      "modifierGroups": [
+        "Sucre",
+        "Suppléments café"
+      ]
+    },
+    {
+      "code": "CAF-08",
+      "name": "Américain",
+      "shortName": "Américain",
+      "category": "Café",
+      "price": 2.2,
+      "sortOrder": 8,
+      "ingredients": [
+        "Café"
+      ],
+      "modifierGroups": [
+        "Sucre",
+        "Suppléments café"
+      ]
+    },
+    {
+      "code": "CAF-09",
+      "name": "Cappuccino",
+      "shortName": "Cappucc",
+      "category": "Café",
+      "price": 4.2,
+      "sortOrder": 9,
+      "ingredients": [
+        "Café",
+        "Lait",
+        "Chantilly"
+      ],
+      "modifierGroups": [
+        "Sucre",
+        "Suppléments café"
+      ],
+      "favorite": true,
+      "favoriteOrder": 4
+    },
+    {
+      "code": "CAF-10",
+      "name": "Latte macchiato",
+      "shortName": "Latte",
+      "category": "Café",
+      "price": 4.5,
+      "sortOrder": 10,
+      "ingredients": [
+        "Café",
+        "Lait"
+      ],
+      "modifierGroups": [
+        "Sucre",
+        "Suppléments café"
+      ]
+    },
+    {
+      "code": "CAF-11",
+      "name": "Noisette",
+      "shortName": "Noisette",
+      "category": "Café",
+      "price": 1.9,
+      "sortOrder": 11,
+      "ingredients": [
+        "Café",
+        "Lait"
+      ],
+      "modifierGroups": [
+        "Sucre",
+        "Suppléments café"
+      ]
+    },
+    {
+      "code": "CAF-12",
+      "name": "Café turc (arbi)",
+      "shortName": "Café arbi",
+      "category": "Café",
+      "price": 2.0,
+      "sortOrder": 12,
+      "ingredients": [
+        "Café"
+      ],
+      "modifierGroups": [
+        "Sucre"
+      ]
+    },
+    {
+      "code": "CAF-13",
+      "name": "Déca",
+      "shortName": "Déca",
+      "category": "Café",
+      "price": 1.9,
+      "sortOrder": 13,
+      "ingredients": [
+        "Café"
+      ],
+      "modifierGroups": [
+        "Sucre",
+        "Suppléments café"
+      ]
+    },
+    {
+      "code": "CAF-14",
+      "name": "Café frappé",
+      "shortName": "Frappé",
+      "category": "Café",
+      "price": 5.5,
+      "sortOrder": 14,
+      "ingredients": [
+        "Café",
+        "Lait"
+      ],
+      "modifierGroups": [
+        "Suppléments café"
+      ]
+    },
+    {
+      "code": "CAF-15",
+      "name": "Café glacé",
+      "shortName": "Glacé",
+      "category": "Café",
+      "price": 5.5,
+      "sortOrder": 15,
+      "ingredients": [
+        "Café",
+        "Lait"
+      ],
+      "modifierGroups": [
+        "Suppléments café"
+      ]
+    },
+    {
+      "code": "CAF-16",
+      "name": "Irish coffee sans alcool",
+      "shortName": "Irish",
+      "category": "Café",
+      "price": 6.5,
+      "sortOrder": 16,
+      "ingredients": [
+        "Café",
+        "Chantilly"
+      ],
+      "modifierGroups": [
+        "Suppléments café"
+      ]
+    },
+    {
+      "code": "CAF-17",
+      "name": "Express à emporter",
+      "shortName": "Exp emport",
+      "category": "Café",
+      "price": 1.8,
+      "sortOrder": 17,
+      "ingredients": [
+        "Café"
+      ],
+      "modifierGroups": [
+        "Sucre",
+        "Suppléments café"
+      ]
+    },
+    {
+      "code": "THE-01",
+      "name": "Thé rouge",
+      "shortName": "Thé rouge",
+      "category": "Thé & Infusions",
+      "price": 1.5,
+      "sortOrder": 18,
+      "ingredients": [
+        "Thé"
+      ],
+      "modifierGroups": [
+        "Sucre"
+      ],
+      "favorite": true,
+      "favoriteOrder": 5
+    },
+    {
+      "code": "THE-02",
+      "name": "Thé à la menthe",
+      "shortName": "Thé menthe",
+      "category": "Thé & Infusions",
+      "price": 1.8,
+      "sortOrder": 19,
+      "ingredients": [
+        "Thé",
+        "Menthe"
+      ],
+      "modifierGroups": [
+        "Sucre"
+      ],
+      "favorite": true,
+      "favoriteOrder": 6
+    },
+    {
+      "code": "THE-03",
+      "name": "Thé aux amandes",
+      "shortName": "Thé amandes",
+      "category": "Thé & Infusions",
+      "price": 3.5,
+      "sortOrder": 20,
+      "ingredients": [
+        "Thé",
+        "Amandes"
+      ],
+      "modifierGroups": [
+        "Sucre"
+      ],
+      "favorite": true,
+      "favoriteOrder": 7
+    },
+    {
+      "code": "THE-04",
+      "name": "Thé aux pignons",
+      "shortName": "Thé pignons",
+      "category": "Thé & Infusions",
+      "price": 4.5,
+      "sortOrder": 21,
+      "ingredients": [
+        "Thé",
+        "Pignons"
+      ],
+      "modifierGroups": [
+        "Sucre"
+      ]
+    },
+    {
+      "code": "THE-05",
+      "name": "Thé vert",
+      "shortName": "Thé vert",
+      "category": "Thé & Infusions",
+      "price": 1.8,
+      "sortOrder": 22,
+      "ingredients": [
+        "Thé"
+      ],
+      "modifierGroups": [
+        "Sucre"
+      ]
+    },
+    {
+      "code": "THE-06",
+      "name": "Thé vert à la menthe",
+      "shortName": "Thé vert men",
+      "category": "Thé & Infusions",
+      "price": 2.0,
+      "sortOrder": 23,
+      "ingredients": [
+        "Thé",
+        "Menthe"
+      ],
+      "modifierGroups": [
+        "Sucre"
+      ]
+    },
+    {
+      "code": "THE-07",
+      "name": "Thé au lait",
+      "shortName": "Thé lait",
+      "category": "Thé & Infusions",
+      "price": 2.5,
+      "sortOrder": 24,
+      "ingredients": [
+        "Thé",
+        "Lait"
+      ],
+      "modifierGroups": [
+        "Sucre"
+      ]
+    },
+    {
+      "code": "THE-08",
+      "name": "Thé au citron",
+      "shortName": "Thé citron",
+      "category": "Thé & Infusions",
+      "price": 2.0,
+      "sortOrder": 25,
+      "ingredients": [
+        "Thé",
+        "Citron"
+      ],
+      "modifierGroups": [
+        "Sucre"
+      ]
+    },
+    {
+      "code": "THE-09",
+      "name": "Verveine",
+      "shortName": "Verveine",
+      "category": "Thé & Infusions",
+      "price": 1.8,
+      "sortOrder": 26,
+      "modifierGroups": [
+        "Sucre"
+      ]
+    },
+    {
+      "code": "THE-10",
+      "name": "Camomille",
+      "shortName": "Camomille",
+      "category": "Thé & Infusions",
+      "price": 1.8,
+      "sortOrder": 27,
+      "modifierGroups": [
+        "Sucre"
+      ]
+    },
+    {
+      "code": "THE-11",
+      "name": "Tisane menthe fraîche",
+      "shortName": "Tisane men",
+      "category": "Thé & Infusions",
+      "price": 2.0,
+      "sortOrder": 28,
+      "ingredients": [
+        "Menthe"
+      ],
+      "modifierGroups": [
+        "Sucre"
+      ]
+    },
+    {
+      "code": "THE-12",
+      "name": "Infusion citron-gingembre-miel",
+      "shortName": "Citr-ging",
+      "category": "Thé & Infusions",
+      "price": 3.5,
+      "sortOrder": 29,
+      "ingredients": [
+        "Citron",
+        "Miel"
+      ],
+      "modifierGroups": [
+        "Sucre"
+      ]
+    },
+    {
+      "code": "THE-13",
+      "name": "Théière (4 verres)",
+      "shortName": "Théière",
+      "category": "Thé & Infusions",
+      "price": 6.0,
+      "sortOrder": 30,
+      "ingredients": [
+        "Thé",
+        "Menthe"
+      ],
+      "modifierGroups": [
+        "Sucre"
+      ]
+    },
+    {
+      "code": "CHO-01",
+      "name": "Chocolat chaud",
+      "shortName": "Choc chaud",
+      "category": "Chocolat & Lait",
+      "price": 4.0,
+      "sortOrder": 31,
+      "ingredients": [
+        "Chocolat",
+        "Lait"
+      ],
+      "modifierGroups": [
+        "Suppléments café"
+      ]
+    },
+    {
+      "code": "CHO-02",
+      "name": "Chocolat viennois",
+      "shortName": "Choc vienn",
+      "category": "Chocolat & Lait",
+      "price": 5.0,
+      "sortOrder": 32,
+      "ingredients": [
+        "Chocolat",
+        "Lait",
+        "Chantilly"
+      ],
+      "modifierGroups": [
+        "Suppléments café"
+      ]
+    },
+    {
+      "code": "CHO-03",
+      "name": "Lait chaud",
+      "shortName": "Lait chaud",
+      "category": "Chocolat & Lait",
+      "price": 1.8,
+      "sortOrder": 33,
+      "ingredients": [
+        "Lait"
+      ],
+      "modifierGroups": [
+        "Sucre"
+      ]
+    },
+    {
+      "code": "CHO-04",
+      "name": "Lait à la cannelle",
+      "shortName": "Lait cannelle",
+      "category": "Chocolat & Lait",
+      "price": 2.5,
+      "sortOrder": 34,
+      "ingredients": [
+        "Lait"
+      ],
+      "modifierGroups": [
+        "Sucre"
+      ]
+    },
+    {
+      "code": "CHO-05",
+      "name": "Sahleb",
+      "shortName": "Sahleb",
+      "category": "Chocolat & Lait",
+      "price": 5.0,
+      "sortOrder": 35,
+      "ingredients": [
+        "Lait",
+        "Amandes"
+      ]
+    },
+    {
+      "code": "CHO-06",
+      "name": "Nesquik",
+      "shortName": "Nesquik",
+      "category": "Chocolat & Lait",
+      "price": 3.5,
+      "sortOrder": 36,
+      "ingredients": [
+        "Chocolat",
+        "Lait"
+      ]
+    },
+    {
+      "code": "JUS-01",
+      "name": "Jus d'orange pressée",
+      "shortName": "Jus orange",
+      "category": "Jus & Frappés",
+      "price": 6.0,
+      "sortOrder": 37,
+      "ingredients": [
+        "Orange"
+      ],
+      "favorite": true,
+      "favoriteOrder": 8
+    },
+    {
+      "code": "JUS-02",
+      "name": "Citronnade fraîche",
+      "shortName": "Citronnade",
+      "category": "Jus & Frappés",
+      "price": 5.5,
+      "sortOrder": 38,
+      "ingredients": [
+        "Citron",
+        "Menthe"
+      ],
+      "favorite": true,
+      "favoriteOrder": 9
+    },
+    {
+      "code": "JUS-03",
+      "name": "Jus de fraise",
+      "shortName": "Jus fraise",
+      "category": "Jus & Frappés",
+      "price": 7.0,
+      "sortOrder": 39,
+      "ingredients": [
+        "Fraise"
+      ]
+    },
+    {
+      "code": "JUS-04",
+      "name": "Jus de banane au lait",
+      "shortName": "Ban lait",
+      "category": "Jus & Frappés",
+      "price": 7.0,
+      "sortOrder": 40,
+      "ingredients": [
+        "Banane",
+        "Lait"
+      ]
+    },
+    {
+      "code": "JUS-05",
+      "name": "Jus d'avocat",
+      "shortName": "Avocat",
+      "category": "Jus & Frappés",
+      "price": 8.5,
+      "sortOrder": 41,
+      "ingredients": [
+        "Avocat",
+        "Lait"
+      ]
+    },
+    {
+      "code": "JUS-06",
+      "name": "Jus de mangue",
+      "shortName": "Mangue",
+      "category": "Jus & Frappés",
+      "price": 8.0,
+      "sortOrder": 42,
+      "ingredients": [
+        "Mangue"
+      ]
+    },
+    {
+      "code": "JUS-07",
+      "name": "Cocktail de fruits",
+      "shortName": "Cocktail",
+      "category": "Jus & Frappés",
+      "price": 9.0,
+      "sortOrder": 43,
+      "ingredients": [
+        "Banane",
+        "Fraise",
+        "Orange"
+      ],
+      "favorite": true,
+      "favoriteOrder": 10
+    },
+    {
+      "code": "JUS-08",
+      "name": "Milkshake vanille",
+      "shortName": "MS vanille",
+      "category": "Jus & Frappés",
+      "price": 8.0,
+      "sortOrder": 44,
+      "ingredients": [
+        "Lait"
+      ]
+    },
+    {
+      "code": "JUS-09",
+      "name": "Milkshake chocolat",
+      "shortName": "MS chocolat",
+      "category": "Jus & Frappés",
+      "price": 8.0,
+      "sortOrder": 45,
+      "ingredients": [
+        "Lait",
+        "Chocolat"
+      ]
+    },
+    {
+      "code": "JUS-10",
+      "name": "Milkshake fraise",
+      "shortName": "MS fraise",
+      "category": "Jus & Frappés",
+      "price": 8.0,
+      "sortOrder": 46,
+      "ingredients": [
+        "Lait",
+        "Fraise"
+      ]
+    },
+    {
+      "code": "JUS-11",
+      "name": "Milkshake Oreo",
+      "shortName": "MS Oreo",
+      "category": "Jus & Frappés",
+      "price": 8.5,
+      "sortOrder": 47,
+      "ingredients": [
+        "Lait",
+        "Chocolat"
+      ]
+    },
+    {
+      "code": "JUS-12",
+      "name": "Smoothie fruits rouges",
+      "shortName": "Smoothie",
+      "category": "Jus & Frappés",
+      "price": 8.5,
+      "sortOrder": 48,
+      "ingredients": [
+        "Fraise"
+      ]
+    },
+    {
+      "code": "JUS-13",
+      "name": "Limonade menthe-citron",
+      "shortName": "Limonade",
+      "category": "Jus & Frappés",
+      "price": 6.0,
+      "sortOrder": 49,
+      "ingredients": [
+        "Citron",
+        "Menthe"
+      ]
+    },
+    {
+      "code": "FRA-01",
+      "name": "Eau minérale 50 cl",
+      "shortName": "Eau 50cl",
+      "category": "Boissons fraîches",
+      "price": 1.5,
+      "sortOrder": 50,
+      "favorite": true,
+      "favoriteOrder": 11
+    },
+    {
+      "code": "FRA-02",
+      "name": "Eau minérale 1,5 L",
+      "shortName": "Eau 1,5L",
+      "category": "Boissons fraîches",
+      "price": 2.5,
+      "sortOrder": 51
+    },
+    {
+      "code": "FRA-03",
+      "name": "Eau gazeuse Garci 1 L",
+      "shortName": "Garci 1L",
+      "category": "Boissons fraîches",
+      "price": 3.5,
+      "sortOrder": 52
+    },
+    {
+      "code": "FRA-04",
+      "name": "Boga Cidre",
+      "shortName": "Boga cidre",
+      "category": "Boissons fraîches",
+      "price": 3.5,
+      "sortOrder": 53,
+      "favorite": true,
+      "favoriteOrder": 12
+    },
+    {
+      "code": "FRA-05",
+      "name": "Boga Limon",
+      "shortName": "Boga limon",
+      "category": "Boissons fraîches",
+      "price": 3.5,
+      "sortOrder": 54
+    },
+    {
+      "code": "FRA-06",
+      "name": "Coca-Cola",
+      "shortName": "Coca",
+      "category": "Boissons fraîches",
+      "price": 3.5,
+      "sortOrder": 55,
+      "favorite": true,
+      "favoriteOrder": 13
+    },
+    {
+      "code": "FRA-07",
+      "name": "Coca-Cola Zéro",
+      "shortName": "Coca zéro",
+      "category": "Boissons fraîches",
+      "price": 3.5,
+      "sortOrder": 56
+    },
+    {
+      "code": "FRA-08",
+      "name": "Fanta Orange",
+      "shortName": "Fanta",
+      "category": "Boissons fraîches",
+      "price": 3.5,
+      "sortOrder": 57
+    },
+    {
+      "code": "FRA-09",
+      "name": "Sprite",
+      "shortName": "Sprite",
+      "category": "Boissons fraîches",
+      "price": 3.5,
+      "sortOrder": 58
+    },
+    {
+      "code": "FRA-10",
+      "name": "Schweppes Citron",
+      "shortName": "Schw citron",
+      "category": "Boissons fraîches",
+      "price": 4.0,
+      "sortOrder": 59
+    },
+    {
+      "code": "FRA-11",
+      "name": "Schweppes Tonic",
+      "shortName": "Schw tonic",
+      "category": "Boissons fraîches",
+      "price": 4.0,
+      "sortOrder": 60
+    },
+    {
+      "code": "FRA-12",
+      "name": "Ice Tea Pêche",
+      "shortName": "Ice tea",
+      "category": "Boissons fraîches",
+      "price": 4.0,
+      "sortOrder": 61
+    },
+    {
+      "code": "FRA-13",
+      "name": "Jus Délice Orange 20 cl",
+      "shortName": "Délice orange",
+      "category": "Boissons fraîches",
+      "price": 2.5,
+      "sortOrder": 62,
+      "ingredients": [
+        "Orange"
+      ]
+    },
+    {
+      "code": "FRA-14",
+      "name": "Jus Délice Cocktail 20 cl",
+      "shortName": "Délice cockt",
+      "category": "Boissons fraîches",
+      "price": 2.5,
+      "sortOrder": 63
+    },
+    {
+      "code": "FRA-15",
+      "name": "Red Bull",
+      "shortName": "Red Bull",
+      "category": "Boissons fraîches",
+      "price": 11.0,
+      "sortOrder": 64
+    },
+    {
+      "code": "FRA-16",
+      "name": "Bière sans alcool",
+      "shortName": "Bière s/alc",
+      "category": "Boissons fraîches",
+      "price": 6.0,
+      "sortOrder": 65
+    },
+    {
+      "code": "PAT-01",
+      "name": "Croissant",
+      "shortName": "Croissant",
+      "category": "Pâtisserie",
+      "price": 2.0,
+      "sortOrder": 66,
+      "favorite": true,
+      "favoriteOrder": 14
+    },
+    {
+      "code": "PAT-02",
+      "name": "Pain au chocolat",
+      "shortName": "Pain choc",
+      "category": "Pâtisserie",
+      "price": 2.5,
+      "sortOrder": 67,
+      "ingredients": [
+        "Chocolat"
+      ]
+    },
+    {
+      "code": "PAT-03",
+      "name": "Croissant fourré (amande)",
+      "shortName": "Crois amande",
+      "category": "Pâtisserie",
+      "price": 3.5,
+      "sortOrder": 68,
+      "ingredients": [
+        "Amandes"
+      ]
+    },
+    {
+      "code": "PAT-04",
+      "name": "Mille-feuille",
+      "shortName": "Millefeuille",
+      "category": "Pâtisserie",
+      "price": 5.0,
+      "sortOrder": 69
+    },
+    {
+      "code": "PAT-05",
+      "name": "Baklawa (pièce)",
+      "shortName": "Baklawa",
+      "category": "Pâtisserie",
+      "price": 2.5,
+      "sortOrder": 70,
+      "ingredients": [
+        "Amandes",
+        "Miel"
+      ]
+    },
+    {
+      "code": "PAT-06",
+      "name": "Makroudh (pièce)",
+      "shortName": "Makroudh",
+      "category": "Pâtisserie",
+      "price": 2.0,
+      "sortOrder": 71,
+      "ingredients": [
+        "Miel"
+      ]
+    },
+    {
+      "code": "PAT-07",
+      "name": "Samsa (pièce)",
+      "shortName": "Samsa",
+      "category": "Pâtisserie",
+      "price": 2.5,
+      "sortOrder": 72,
+      "ingredients": [
+        "Amandes",
+        "Miel"
+      ]
+    },
+    {
+      "code": "PAT-08",
+      "name": "Zlabia (part)",
+      "shortName": "Zlabia",
+      "category": "Pâtisserie",
+      "price": 3.0,
+      "sortOrder": 73,
+      "ingredients": [
+        "Miel"
+      ]
+    },
+    {
+      "code": "PAT-09",
+      "name": "Cake maison (part)",
+      "shortName": "Cake",
+      "category": "Pâtisserie",
+      "price": 4.0,
+      "sortOrder": 74
+    },
+    {
+      "code": "PAT-10",
+      "name": "Muffin chocolat",
+      "shortName": "Muffin",
+      "category": "Pâtisserie",
+      "price": 5.0,
+      "sortOrder": 75,
+      "ingredients": [
+        "Chocolat"
+      ]
+    },
+    {
+      "code": "PAT-11",
+      "name": "Tiramisu",
+      "shortName": "Tiramisu",
+      "category": "Pâtisserie",
+      "price": 8.0,
+      "sortOrder": 76,
+      "ingredients": [
+        "Café",
+        "Chocolat"
+      ]
+    },
+    {
+      "code": "PAT-12",
+      "name": "Cheesecake",
+      "shortName": "Cheesecake",
+      "category": "Pâtisserie",
+      "price": 9.5,
+      "sortOrder": 77,
+      "ingredients": [
+        "Fraise"
+      ]
+    },
+    {
+      "code": "PAT-13",
+      "name": "Éclair au chocolat",
+      "shortName": "Éclair",
+      "category": "Pâtisserie",
+      "price": 5.0,
+      "sortOrder": 78,
+      "ingredients": [
+        "Chocolat"
+      ]
+    },
+    {
+      "code": "PAT-14",
+      "name": "Corne de gazelle",
+      "shortName": "Corne gaz",
+      "category": "Pâtisserie",
+      "price": 2.0,
+      "sortOrder": 79,
+      "ingredients": [
+        "Amandes"
+      ]
+    },
+    {
+      "code": "CRE-01",
+      "name": "Crêpe sucre",
+      "shortName": "Crêpe sucre",
+      "category": "Crêpes & Gaufres",
+      "price": 5.0,
+      "sortOrder": 80,
+      "modifierGroups": [
+        "Garniture crêpe"
+      ],
+      "favorite": true,
+      "favoriteOrder": 15
+    },
+    {
+      "code": "CRE-02",
+      "name": "Crêpe Nutella",
+      "shortName": "Crêpe Nutella",
+      "category": "Crêpes & Gaufres",
+      "price": 7.5,
+      "sortOrder": 81,
+      "ingredients": [
+        "Nutella"
+      ],
+      "modifierGroups": [
+        "Garniture crêpe"
+      ],
+      "favorite": true,
+      "favoriteOrder": 16
+    },
+    {
+      "code": "CRE-03",
+      "name": "Crêpe Nutella-banane",
+      "shortName": "Crêpe Nut ban",
+      "category": "Crêpes & Gaufres",
+      "price": 9.0,
+      "sortOrder": 82,
+      "ingredients": [
+        "Nutella",
+        "Banane"
+      ],
+      "modifierGroups": [
+        "Garniture crêpe"
+      ]
+    },
+    {
+      "code": "CRE-04",
+      "name": "Crêpe miel-amandes",
+      "shortName": "Crêpe miel",
+      "category": "Crêpes & Gaufres",
+      "price": 8.5,
+      "sortOrder": 83,
+      "ingredients": [
+        "Miel",
+        "Amandes"
+      ],
+      "modifierGroups": [
+        "Garniture crêpe"
+      ]
+    },
+    {
+      "code": "CRE-05",
+      "name": "Gaufre sucre",
+      "shortName": "Gaufre sucre",
+      "category": "Crêpes & Gaufres",
+      "price": 6.0,
+      "sortOrder": 84,
+      "modifierGroups": [
+        "Garniture crêpe"
+      ]
+    },
+    {
+      "code": "CRE-06",
+      "name": "Gaufre Nutella",
+      "shortName": "Gaufre Nut",
+      "category": "Crêpes & Gaufres",
+      "price": 8.5,
+      "sortOrder": 85,
+      "ingredients": [
+        "Nutella"
+      ],
+      "modifierGroups": [
+        "Garniture crêpe"
+      ]
+    },
+    {
+      "code": "CRE-07",
+      "name": "Pancakes (3 pièces)",
+      "shortName": "Pancakes",
+      "category": "Crêpes & Gaufres",
+      "price": 10.0,
+      "sortOrder": 86,
+      "ingredients": [
+        "Miel"
+      ],
+      "modifierGroups": [
+        "Garniture crêpe"
+      ]
+    },
+    {
+      "code": "CRE-08",
+      "name": "Crêpe salée thon-fromage",
+      "shortName": "Crêpe thon",
+      "category": "Crêpes & Gaufres",
+      "price": 11.0,
+      "sortOrder": 87,
+      "ingredients": [
+        "Thon",
+        "Fromage"
+      ]
+    },
+    {
+      "code": "SAL-01",
+      "name": "Panini thon",
+      "shortName": "Panini thon",
+      "category": "Salé",
+      "price": 8.5,
+      "sortOrder": 88,
+      "ingredients": [
+        "Thon",
+        "Fromage"
+      ]
+    },
+    {
+      "code": "SAL-02",
+      "name": "Panini fromage",
+      "shortName": "Panini from",
+      "category": "Salé",
+      "price": 7.5,
+      "sortOrder": 89,
+      "ingredients": [
+        "Fromage"
+      ]
+    },
+    {
+      "code": "SAL-03",
+      "name": "Panini poulet",
+      "shortName": "Panini poulet",
+      "category": "Salé",
+      "price": 10.0,
+      "sortOrder": 90,
+      "ingredients": [
+        "Fromage"
+      ]
+    },
+    {
+      "code": "SAL-04",
+      "name": "Croque-monsieur",
+      "shortName": "Croque",
+      "category": "Salé",
+      "price": 8.5,
+      "sortOrder": 91,
+      "ingredients": [
+        "Fromage"
+      ]
+    },
+    {
+      "code": "SAL-05",
+      "name": "Chapati thon",
+      "shortName": "Chapati thon",
+      "category": "Salé",
+      "price": 9.0,
+      "sortOrder": 92,
+      "ingredients": [
+        "Thon",
+        "Fromage"
+      ]
+    },
+    {
+      "code": "SAL-06",
+      "name": "Omelette",
+      "shortName": "Omelette",
+      "category": "Salé",
+      "price": 6.5,
+      "sortOrder": 93
+    },
+    {
+      "code": "SAL-07",
+      "name": "Salade César",
+      "shortName": "Salade César",
+      "category": "Salé",
+      "price": 15.0,
+      "sortOrder": 94,
+      "ingredients": [
+        "Fromage"
+      ]
+    },
+    {
+      "code": "SAL-08",
+      "name": "Assiette de fruits secs",
+      "shortName": "Fruits secs",
+      "category": "Salé",
+      "price": 5.0,
+      "sortOrder": 95,
+      "ingredients": [
+        "Amandes"
+      ]
+    },
+    {
+      "code": "SAL-09",
+      "name": "Chips",
+      "shortName": "Chips",
+      "category": "Salé",
+      "price": 2.5,
+      "sortOrder": 96
+    },
+    {
+      "code": "GLA-01",
+      "name": "Boule de glace",
+      "shortName": "Boule",
+      "category": "Glaces",
+      "price": 2.5,
+      "sortOrder": 97
+    },
+    {
+      "code": "GLA-02",
+      "name": "Coupe 3 boules",
+      "shortName": "Coupe 3",
+      "category": "Glaces",
+      "price": 7.5,
+      "sortOrder": 98,
+      "ingredients": [
+        "Chantilly"
+      ]
+    },
+    {
+      "code": "GLA-03",
+      "name": "Coupe fraise-chantilly",
+      "shortName": "Coupe fraise",
+      "category": "Glaces",
+      "price": 10.0,
+      "sortOrder": 99,
+      "ingredients": [
+        "Fraise",
+        "Chantilly"
+      ]
+    },
+    {
+      "code": "GLA-04",
+      "name": "Banana split",
+      "shortName": "Banana split",
+      "category": "Glaces",
+      "price": 12.5,
+      "sortOrder": 100,
+      "ingredients": [
+        "Banane",
+        "Chocolat",
+        "Chantilly"
+      ]
+    },
+    {
+      "code": "GLA-05",
+      "name": "Café liégeois",
+      "shortName": "Liégeois",
+      "category": "Glaces",
+      "price": 10.0,
+      "sortOrder": 101,
+      "ingredients": [
+        "Café",
+        "Chantilly"
+      ]
+    },
+    {
+      "code": "JEU-01",
+      "name": "Rami",
+      "shortName": "Rami",
+      "category": "Jeux de table",
+      "price": 2.0,
+      "sortOrder": 102
+    },
+    {
+      "code": "JEU-02",
+      "name": "Belote",
+      "shortName": "Belote",
+      "category": "Jeux de table",
+      "price": 2.0,
+      "sortOrder": 103
+    },
+    {
+      "code": "JEU-03",
+      "name": "Chkobba",
+      "shortName": "Chkobba",
+      "category": "Jeux de table",
+      "price": 2.0,
+      "sortOrder": 104
+    },
+    {
+      "code": "JEU-04",
+      "name": "Dominos",
+      "shortName": "Dominos",
+      "category": "Jeux de table",
+      "price": 2.0,
+      "sortOrder": 105
+    },
+    {
+      "code": "JEU-05",
+      "name": "Dames",
+      "shortName": "Dames",
+      "category": "Jeux de table",
+      "price": 2.0,
+      "sortOrder": 106
+    },
+    {
+      "code": "JEU-06",
+      "name": "Échecs",
+      "shortName": "Échecs",
+      "category": "Jeux de table",
+      "price": 3.0,
+      "sortOrder": 107
+    },
+    {
+      "code": "JEU-07",
+      "name": "Cartes (jeu neuf)",
+      "shortName": "Cartes neuf",
+      "category": "Jeux de table",
+      "price": 5.0,
+      "sortOrder": 108
+    },
+    {
+      "code": "CHI-01",
+      "name": "Chicha",
+      "shortName": "Chicha",
+      "category": "Chicha",
+      "price": 12.0,
+      "sortOrder": 109,
+      "modifierGroups": [
+        "Service chicha"
+      ],
+      "variant": "Goût",
+      "defaultVariantValue": "Double Pomme",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "Double Pomme",
+          "price": 12.0
+        },
+        {
+          "value": "Menthe",
+          "price": 12.0
+        },
+        {
+          "value": "Pomme-Menthe",
+          "price": 12.0
+        },
+        {
+          "value": "Raisin-Menthe",
+          "price": 12.0
+        },
+        {
+          "value": "Citron-Menthe",
+          "price": 12.0
+        },
+        {
+          "value": "Pastèque",
+          "price": 12.0
+        },
+        {
+          "value": "Melon",
+          "price": 12.0
+        },
+        {
+          "value": "Fraise",
+          "price": 12.0
+        },
+        {
+          "value": "Mangue Glacée",
+          "price": 12.0
+        },
+        {
+          "value": "Chewing-gum",
+          "price": 12.0
+        },
+        {
+          "value": "Love 66",
+          "price": 12.0
+        },
+        {
+          "value": "Mi Amor",
+          "price": 12.0
+        },
+        {
+          "value": "Blue Mist",
+          "price": 12.0
+        },
+        {
+          "value": "Sans tabac (fruits)",
+          "price": 12.0
+        }
+      ],
+      "favorite": true,
+      "favoriteOrder": 17
+    },
+    {
+      "code": "CHI-02",
+      "name": "Chicha premium (Adalya)",
+      "shortName": "Chicha prem",
+      "category": "Chicha",
+      "price": 18.0,
+      "sortOrder": 110,
+      "modifierGroups": [
+        "Service chicha"
+      ],
+      "variant": "Goût",
+      "defaultVariantValue": "Double Pomme",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "Double Pomme",
+          "price": 18.0
+        },
+        {
+          "value": "Menthe",
+          "price": 18.0
+        },
+        {
+          "value": "Pomme-Menthe",
+          "price": 18.0
+        },
+        {
+          "value": "Raisin-Menthe",
+          "price": 18.0
+        },
+        {
+          "value": "Citron-Menthe",
+          "price": 18.0
+        },
+        {
+          "value": "Pastèque",
+          "price": 18.0
+        },
+        {
+          "value": "Melon",
+          "price": 18.0
+        },
+        {
+          "value": "Fraise",
+          "price": 18.0
+        },
+        {
+          "value": "Mangue Glacée",
+          "price": 18.0
+        },
+        {
+          "value": "Chewing-gum",
+          "price": 18.0
+        },
+        {
+          "value": "Love 66",
+          "price": 18.0
+        },
+        {
+          "value": "Mi Amor",
+          "price": 18.0
+        },
+        {
+          "value": "Blue Mist",
+          "price": 18.0
+        },
+        {
+          "value": "Sans tabac (fruits)",
+          "price": 18.0
+        }
+      ],
+      "favorite": true,
+      "favoriteOrder": 18
+    },
+    {
+      "code": "CHI-03",
+      "name": "Chicha tête de fruit",
+      "shortName": "Chicha fruit",
+      "category": "Chicha",
+      "price": 25.0,
+      "sortOrder": 111,
+      "modifierGroups": [
+        "Service chicha"
+      ],
+      "variant": "Goût",
+      "defaultVariantValue": "Double Pomme",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "Double Pomme",
+          "price": 25.0
+        },
+        {
+          "value": "Menthe",
+          "price": 25.0
+        },
+        {
+          "value": "Pomme-Menthe",
+          "price": 25.0
+        },
+        {
+          "value": "Raisin-Menthe",
+          "price": 25.0
+        },
+        {
+          "value": "Citron-Menthe",
+          "price": 25.0
+        },
+        {
+          "value": "Pastèque",
+          "price": 25.0
+        },
+        {
+          "value": "Melon",
+          "price": 25.0
+        },
+        {
+          "value": "Fraise",
+          "price": 25.0
+        },
+        {
+          "value": "Mangue Glacée",
+          "price": 25.0
+        },
+        {
+          "value": "Chewing-gum",
+          "price": 25.0
+        },
+        {
+          "value": "Love 66",
+          "price": 25.0
+        },
+        {
+          "value": "Mi Amor",
+          "price": 25.0
+        },
+        {
+          "value": "Blue Mist",
+          "price": 25.0
+        },
+        {
+          "value": "Sans tabac (fruits)",
+          "price": 25.0
+        }
+      ]
+    },
+    {
+      "code": "CHI-04",
+      "name": "Rechange de tête",
+      "shortName": "Rechange",
+      "category": "Chicha",
+      "price": 6.0,
+      "sortOrder": 112,
+      "modifierGroups": [
+        "Service chicha"
+      ],
+      "variant": "Goût",
+      "defaultVariantValue": "Double Pomme",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "Double Pomme",
+          "price": 6.0
+        },
+        {
+          "value": "Menthe",
+          "price": 6.0
+        },
+        {
+          "value": "Pomme-Menthe",
+          "price": 6.0
+        },
+        {
+          "value": "Raisin-Menthe",
+          "price": 6.0
+        },
+        {
+          "value": "Citron-Menthe",
+          "price": 6.0
+        },
+        {
+          "value": "Pastèque",
+          "price": 6.0
+        },
+        {
+          "value": "Melon",
+          "price": 6.0
+        },
+        {
+          "value": "Fraise",
+          "price": 6.0
+        },
+        {
+          "value": "Mangue Glacée",
+          "price": 6.0
+        },
+        {
+          "value": "Chewing-gum",
+          "price": 6.0
+        },
+        {
+          "value": "Love 66",
+          "price": 6.0
+        },
+        {
+          "value": "Mi Amor",
+          "price": 6.0
+        },
+        {
+          "value": "Blue Mist",
+          "price": 6.0
+        },
+        {
+          "value": "Sans tabac (fruits)",
+          "price": 6.0
+        }
+      ]
+    }
+  ]
+}

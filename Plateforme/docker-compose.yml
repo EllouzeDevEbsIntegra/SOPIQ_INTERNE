@@ -1,0 +1,22 @@
+# PostgreSQL pour PosCaisse (optionnel : utilisez-le si Docker est disponible, sinon un PostgreSQL local)
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: poscaisse-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSCAISSE_DB_NAME:-poscaisse}
+      POSTGRES_USER: ${POSCAISSE_DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSCAISSE_DB_PASSWORD:-postgres}
+      TZ: Africa/Tunis
+    ports:
+      - "${POSCAISSE_DB_PORT:-5432}:5432"
+    volumes:
+      - poscaisse-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSCAISSE_DB_USER:-postgres} -d ${POSCAISSE_DB_NAME:-poscaisse}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+volumes:
+  poscaisse-pgdata:

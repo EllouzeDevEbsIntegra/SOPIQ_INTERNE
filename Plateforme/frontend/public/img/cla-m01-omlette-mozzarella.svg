@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 126" width="360" height="126" role="img" aria-label="Omlette Mozzarella">
+  <!--
+    CLA-M01 : Omlette Mozzarella (carte NUMBER ONE, page Classic).
+    Format 360x126 (~2,86:1) : le rapport exact de la vignette du POS
+    (.thumb occupe toute la largeur sur 54 px en taille M, 72 px en taille L,
+    object-fit: cover) — a ce rapport, le recadrage ne coupe rien.
+    Palette : neutres chauds du systeme. Le vermillon de la marque reste
+    reserve a l'interface, jamais pose sur l'aliment.
+  -->
+  <defs><clipPath id="frame"><rect width="360" height="126" rx="6"/></clipPath></defs>
+
+  <g clip-path="url(#frame)">
+    <!-- fond neutre chaud + disque de mise au point, sans ombre diffuse -->
+    <rect width="360" height="126" fill="#F6EFE3"/>
+    <circle cx="180" cy="62" r="62" fill="#F0E2CE" opacity=".8"/>
+    <ellipse cx="180" cy="107" rx="110" ry="8" fill="#DFCFB6" opacity=".7"/>
+
+    <!-- pain du bas -->
+    <rect x="72" y="86" width="216" height="22" rx="11" fill="#C88A46"/>
+    <rect x="72" y="86" width="216" height="8" rx="4" fill="#D69A55"/>
+
+    <!-- mozzarella fondue, en retrait sous l'omelette -->
+    <path d="M68 64 L292 64 L292 84
+             C274 96 258 84 242 89
+             C222 95 206 84 190 89
+             C170 95 154 84 138 89
+             C118 95 102 84 86 89
+             C79 91 73 88 68 82 Z" fill="#FFF8EA"/>
+
+    <!-- omelette -->
+    <path d="M72 61 L288 61 L288 79
+             C270 90 254 78 238 83
+             C218 89 202 78 186 83
+             C166 89 150 78 134 83
+             C116 88 100 79 88 76
+             C82 74 76 69 72 64 Z" fill="#F2C053"/>
+    <path d="M72 61 L288 61 L288 68 L72 68 Z" fill="#F7D179"/>
+
+    <!-- pain du haut -->
+    <path d="M74 68 C74 36 108 22 180 22 C252 22 286 36 286 68 Z" fill="#DCA35E"/>
+    <path d="M74 67 L286 67" stroke="#C08543" stroke-width="2.5" opacity=".45"/>
+    <path d="M96 60 C100 42 124 33 158 32" fill="none" stroke="#EDC391"
+          stroke-width="8" stroke-linecap="round" opacity=".9"/>
+    <!-- entailles de croute, suivant la courbe du pain -->
+    <g stroke="#C58B48" stroke-width="3" stroke-linecap="round" opacity=".5" fill="none">
+      <path d="M142 31 l13 9"/><path d="M182 29 l13 9"/><path d="M222 32 l12 9"/>
+    </g>
+
+    <!-- eclats de mozzarella et persil, poses au-dessus pour rester lisibles -->
+    <circle cx="154" cy="89" r="4.5" fill="#FFFDF6"/>
+    <circle cx="232" cy="87" r="3.5" fill="#FFFDF6"/>
+    <ellipse cx="124" cy="74" rx="4" ry="2.8" fill="#4F7D3C"/>
+    <ellipse cx="188" cy="71" rx="4.5" ry="3" fill="#4F7D3C"/>
+    <ellipse cx="248" cy="75" rx="3.6" ry="2.5" fill="#4F7D3C"/>
+  </g>
+</svg>

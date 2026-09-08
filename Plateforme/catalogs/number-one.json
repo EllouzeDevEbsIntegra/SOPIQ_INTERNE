@@ -1,0 +1,1301 @@
+{
+  "label": "NUMBER ONE — carte complète",
+  "categories": [
+    {
+      "name": "Classic",
+      "color": "#C8441C",
+      "sortOrder": 1,
+      "printDestination": "CUISINE"
+    },
+    {
+      "name": "Classic Spécial",
+      "color": "#8E2F12",
+      "sortOrder": 2,
+      "printDestination": "CUISINE"
+    },
+    {
+      "name": "Healthy",
+      "color": "#2F7D51",
+      "sortOrder": 3,
+      "printDestination": "CUISINE"
+    },
+    {
+      "name": "Healthy Spécial",
+      "color": "#1E5B3A",
+      "sortOrder": 4,
+      "printDestination": "CUISINE"
+    },
+    {
+      "name": "Lablebi",
+      "color": "#B5651D",
+      "sortOrder": 5,
+      "printDestination": "CUISINE"
+    },
+    {
+      "name": "Extras",
+      "color": "#7A6A55",
+      "sortOrder": 6,
+      "printDestination": "CUISINE"
+    }
+  ],
+  "modifierGroups": [
+    {
+      "name": "Pain — Classic (Simple / Double / 3arbi)",
+      "required": true,
+      "multiple": false,
+      "minSelect": 1,
+      "maxSelect": 1,
+      "modifiers": [
+        {
+          "name": "Simple",
+          "priceDelta": 0
+        },
+        {
+          "name": "Double",
+          "priceDelta": 1.0
+        },
+        {
+          "name": "3arbi",
+          "priceDelta": 1.0
+        }
+      ]
+    },
+    {
+      "name": "Format — Simple / Double (+1,000)",
+      "required": true,
+      "multiple": false,
+      "minSelect": 1,
+      "maxSelect": 1,
+      "modifiers": [
+        {
+          "name": "Simple",
+          "priceDelta": 0
+        },
+        {
+          "name": "Double",
+          "priceDelta": 1.0
+        }
+      ]
+    },
+    {
+      "name": "Format — Simple / Double (+0,500)",
+      "required": true,
+      "multiple": false,
+      "minSelect": 1,
+      "maxSelect": 1,
+      "modifiers": [
+        {
+          "name": "Simple",
+          "priceDelta": 0
+        },
+        {
+          "name": "Double",
+          "priceDelta": 0.5
+        }
+      ]
+    },
+    {
+      "name": "Pain — Healthy (Céréale / Chia +0,500 / 3arbi)",
+      "required": true,
+      "multiple": false,
+      "minSelect": 1,
+      "maxSelect": 1,
+      "modifiers": [
+        {
+          "name": "Céréale",
+          "priceDelta": 0
+        },
+        {
+          "name": "Chia",
+          "priceDelta": 0.5
+        },
+        {
+          "name": "3arbi",
+          "priceDelta": 0
+        }
+      ]
+    },
+    {
+      "name": "Pain — Healthy (Céréale / Chia +0,300 / 3arbi)",
+      "required": true,
+      "multiple": false,
+      "minSelect": 1,
+      "maxSelect": 1,
+      "modifiers": [
+        {
+          "name": "Céréale",
+          "priceDelta": 0
+        },
+        {
+          "name": "Chia",
+          "priceDelta": 0.3
+        },
+        {
+          "name": "3arbi",
+          "priceDelta": 0
+        }
+      ]
+    },
+    {
+      "name": "Pain — Healthy (Céréale / Chia +0,500)",
+      "required": true,
+      "multiple": false,
+      "minSelect": 1,
+      "maxSelect": 1,
+      "modifiers": [
+        {
+          "name": "Céréale",
+          "priceDelta": 0
+        },
+        {
+          "name": "Chia",
+          "priceDelta": 0.5
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "code": "CLA-M01",
+      "name": "Omlette Mozzarella",
+      "shortName": "Omlette Mozza",
+      "description": null,
+      "category": "Classic",
+      "price": 4.5,
+      "sortOrder": 1,
+      "modifierGroups": [
+        "Pain — Classic (Simple / Double / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ],
+      "favorite": true,
+      "favoriteOrder": 1
+    },
+    {
+      "code": "CLA-M02",
+      "name": "Omlette Mozzarella Kwika",
+      "shortName": "Omlette Mozza Kwika",
+      "description": null,
+      "category": "Classic",
+      "price": 5.5,
+      "sortOrder": 2,
+      "modifierGroups": [
+        "Pain — Classic (Simple / Double / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CLA-M03",
+      "name": "Omlette Mozzarella Salami",
+      "shortName": "Omlette Mozza Salami",
+      "description": null,
+      "category": "Classic",
+      "price": 6.0,
+      "sortOrder": 3,
+      "modifierGroups": [
+        "Pain — Classic (Simple / Double / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CLA-M04",
+      "name": "Omlette Mozzarella Thon",
+      "shortName": "Omlette Mozza Thon",
+      "description": null,
+      "category": "Classic",
+      "price": 6.5,
+      "sortOrder": 4,
+      "modifierGroups": [
+        "Pain — Classic (Simple / Double / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ],
+      "favorite": true,
+      "favoriteOrder": 2
+    },
+    {
+      "code": "CLA-M05",
+      "name": "Omlette Mozzarella Jombon",
+      "shortName": "Omlette Mozza Jombon",
+      "description": null,
+      "category": "Classic",
+      "price": 6.5,
+      "sortOrder": 5,
+      "modifierGroups": [
+        "Pain — Classic (Simple / Double / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CLA-M06",
+      "name": "Omlette Mozzarella Chawarma",
+      "shortName": "Omlette Mozza Chawarma",
+      "description": null,
+      "category": "Classic",
+      "price": 8.7,
+      "sortOrder": 6,
+      "modifierGroups": [
+        "Pain — Classic (Simple / Double / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ],
+      "favorite": true,
+      "favoriteOrder": 3
+    },
+    {
+      "code": "CLA-M07",
+      "name": "Omlette Mozzarella Kabeb",
+      "shortName": "Omlette Mozza Kabeb",
+      "description": null,
+      "category": "Classic",
+      "price": 8.7,
+      "sortOrder": 7,
+      "modifierGroups": [
+        "Pain — Classic (Simple / Double / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CLA-M08",
+      "name": "Omlette Mozzarella Escalope Grillé",
+      "shortName": "Omlette Mozza Esc. Grillé",
+      "description": null,
+      "category": "Classic",
+      "price": 8.7,
+      "sortOrder": 8,
+      "modifierGroups": [
+        "Pain — Classic (Simple / Double / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CLA-M09",
+      "name": "Omlette Mozzarella Escalope Panée",
+      "shortName": "Omlette Mozza Esc. Panée",
+      "description": null,
+      "category": "Classic",
+      "price": 9.7,
+      "sortOrder": 9,
+      "modifierGroups": [
+        "Pain — Classic (Simple / Double / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CLA-M10",
+      "name": "Omlette Mozzarella Cordon Bleu",
+      "shortName": "Omlette Mozza Cordon Bleu",
+      "description": null,
+      "category": "Classic",
+      "price": 9.7,
+      "sortOrder": 10,
+      "modifierGroups": [
+        "Pain — Classic (Simple / Double / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CLA-S01",
+      "name": "Omlette",
+      "shortName": "Omlette",
+      "description": null,
+      "category": "Classic",
+      "price": 3.0,
+      "sortOrder": 11,
+      "modifierGroups": [
+        "Format — Simple / Double (+1,000)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CLA-S02",
+      "name": "Kwika",
+      "shortName": "Kwika",
+      "description": null,
+      "category": "Classic",
+      "price": 3.0,
+      "sortOrder": 12,
+      "modifierGroups": [
+        "Format — Simple / Double (+1,000)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CLA-S03",
+      "name": "Salami",
+      "shortName": "Salami",
+      "description": null,
+      "category": "Classic",
+      "price": 3.5,
+      "sortOrder": 13,
+      "modifierGroups": [
+        "Format — Simple / Double (+0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CLA-S04",
+      "name": "Jombon",
+      "shortName": "Jombon",
+      "description": null,
+      "category": "Classic",
+      "price": 4.5,
+      "sortOrder": 14,
+      "modifierGroups": [
+        "Format — Simple / Double (+1,000)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CLA-S05",
+      "name": "Thon",
+      "shortName": "Thon",
+      "description": null,
+      "category": "Classic",
+      "price": 4.5,
+      "sortOrder": 15,
+      "modifierGroups": [
+        "Format — Simple / Double (+1,000)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CLA-S06",
+      "name": "Kabeb",
+      "shortName": "Kabeb",
+      "description": null,
+      "category": "Classic",
+      "price": 6.0,
+      "sortOrder": 16,
+      "modifierGroups": [
+        "Format — Simple / Double (+1,000)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CLA-S07",
+      "name": "Chawarma",
+      "shortName": "Chawarma",
+      "description": null,
+      "category": "Classic",
+      "price": 6.0,
+      "sortOrder": 17,
+      "modifierGroups": [
+        "Format — Simple / Double (+1,000)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ],
+      "favorite": true,
+      "favoriteOrder": 4
+    },
+    {
+      "code": "CLA-S08",
+      "name": "Escalope Grillé",
+      "shortName": "Escalope Grillé",
+      "description": null,
+      "category": "Classic",
+      "price": 6.0,
+      "sortOrder": 18,
+      "modifierGroups": [
+        "Format — Simple / Double (+1,000)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CLA-S09",
+      "name": "Escalope Panée",
+      "shortName": "Escalope Panée",
+      "description": null,
+      "category": "Classic",
+      "price": 7.0,
+      "sortOrder": 19,
+      "modifierGroups": [
+        "Format — Simple / Double (+1,000)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CLA-S10",
+      "name": "Cordon Bleu",
+      "shortName": "Cordon Bleu",
+      "description": null,
+      "category": "Classic",
+      "price": 7.0,
+      "sortOrder": 20,
+      "modifierGroups": [
+        "Format — Simple / Double (+1,000)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CSP-01",
+      "name": "Special",
+      "shortName": "Special",
+      "description": "Omlette + Thon + Salami + Mozzarella",
+      "category": "Classic Spécial",
+      "price": 8.0,
+      "sortOrder": 1,
+      "modifierGroups": [
+        "Format — Simple / Double (+1,000)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CSP-02",
+      "name": "Number One",
+      "shortName": "Number One",
+      "description": "Oeuf + Chawarma + Légume + Mozzarella 3arbi + Fromage slice",
+      "category": "Classic Spécial",
+      "price": 9.0,
+      "sortOrder": 2,
+      "modifierGroups": [
+        "Format — Simple / Double (+1,000)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ],
+      "favorite": true,
+      "favoriteOrder": 5
+    },
+    {
+      "code": "CSP-03",
+      "name": "Number One Plus",
+      "shortName": "Number One Plus",
+      "description": "Oeuf + Escalope + Légume + Mozzarella 3arbi + Fromage slice + Pistache + Gruyère",
+      "category": "Classic Spécial",
+      "price": 13.0,
+      "sortOrder": 3,
+      "modifierGroups": [
+        "Format — Simple / Double (+1,000)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CSP-04",
+      "name": "Spicy",
+      "shortName": "Spicy",
+      "description": "Oeuf + Sauce béchamel + Escalope + Légume + Mozzarella 3arbi + Gruyère + Paprika",
+      "category": "Classic Spécial",
+      "price": 13.0,
+      "sortOrder": 4,
+      "modifierGroups": [
+        "Format — Simple / Double (+1,000)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CSP-05",
+      "name": "Cheese",
+      "shortName": "Cheese",
+      "description": "Omlette + Mozzarella 3arbi + Fromage slice + Fromage triangle + Thon + Jombon",
+      "category": "Classic Spécial",
+      "price": 9.0,
+      "sortOrder": 5,
+      "modifierGroups": [
+        "Format — Simple / Double (+1,000)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ],
+      "favorite": true,
+      "favoriteOrder": 6
+    },
+    {
+      "code": "CSP-06",
+      "name": "Hot Cheese",
+      "shortName": "Hot Cheese",
+      "description": "Oeuf + Mozzarella 3arbi + Fromage slice + Chawarma",
+      "category": "Classic Spécial",
+      "price": 9.5,
+      "sortOrder": 6,
+      "modifierGroups": [
+        "Format — Simple / Double (+1,000)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "CSP-07",
+      "name": "Full Cheese",
+      "shortName": "Full Cheese",
+      "description": "Omlette + Thon + Mozzarella 3arbi + Gruyère + Fromage slice + Fromage triangle + Jombon",
+      "category": "Classic Spécial",
+      "price": 11.0,
+      "sortOrder": 7,
+      "modifierGroups": [
+        "Format — Simple / Double (+1,000)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-M01",
+      "name": "Omlette Mozzarella",
+      "shortName": "Omlette Mozza",
+      "description": null,
+      "category": "Healthy",
+      "price": 5.5,
+      "sortOrder": 1,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500 / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ],
+      "favorite": true,
+      "favoriteOrder": 9
+    },
+    {
+      "code": "HEA-M02",
+      "name": "Omlette Mozzarella Kwika",
+      "shortName": "Omlette Mozza Kwika",
+      "description": null,
+      "category": "Healthy",
+      "price": 6.5,
+      "sortOrder": 2,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500 / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-M03",
+      "name": "Omlette Mozzarella Salami",
+      "shortName": "Omlette Mozza Salami",
+      "description": null,
+      "category": "Healthy",
+      "price": 7.0,
+      "sortOrder": 3,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500 / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-M04",
+      "name": "Omlette Mozzarella Thon",
+      "shortName": "Omlette Mozza Thon",
+      "description": null,
+      "category": "Healthy",
+      "price": 7.5,
+      "sortOrder": 4,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500 / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-M05",
+      "name": "Omlette Mozzarella Jombon",
+      "shortName": "Omlette Mozza Jombon",
+      "description": null,
+      "category": "Healthy",
+      "price": 7.5,
+      "sortOrder": 5,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500 / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-M06",
+      "name": "Omlette Mozzarella Chawarma",
+      "shortName": "Omlette Mozza Chawarma",
+      "description": null,
+      "category": "Healthy",
+      "price": 9.7,
+      "sortOrder": 6,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,300 / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-M07",
+      "name": "Omlette Mozzarella Kabeb",
+      "shortName": "Omlette Mozza Kabeb",
+      "description": null,
+      "category": "Healthy",
+      "price": 9.7,
+      "sortOrder": 7,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,300 / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-M08",
+      "name": "Omlette Mozzarella Escalope Grillé",
+      "shortName": "Omlette Mozza Esc. Grillé",
+      "description": null,
+      "category": "Healthy",
+      "price": 9.7,
+      "sortOrder": 8,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,300 / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-M09",
+      "name": "Omlette Mozzarella Escalope Panée",
+      "shortName": "Omlette Mozza Esc. Panée",
+      "description": null,
+      "category": "Healthy",
+      "price": 10.7,
+      "sortOrder": 9,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,300 / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-M10",
+      "name": "Omlette Mozzarella Cordon Bleu",
+      "shortName": "Omlette Mozza Cordon Bleu",
+      "description": null,
+      "category": "Healthy",
+      "price": 10.7,
+      "sortOrder": 10,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,300 / 3arbi)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-S01",
+      "name": "Omlette",
+      "shortName": "Omlette",
+      "description": null,
+      "category": "Healthy",
+      "price": 4.0,
+      "sortOrder": 11,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-S02",
+      "name": "Kwika",
+      "shortName": "Kwika",
+      "description": null,
+      "category": "Healthy",
+      "price": 4.0,
+      "sortOrder": 12,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-S03",
+      "name": "Salami",
+      "shortName": "Salami",
+      "description": null,
+      "category": "Healthy",
+      "price": 4.5,
+      "sortOrder": 13,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-S04",
+      "name": "Jombon",
+      "shortName": "Jombon",
+      "description": null,
+      "category": "Healthy",
+      "price": 5.5,
+      "sortOrder": 14,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-S05",
+      "name": "Thon",
+      "shortName": "Thon",
+      "description": null,
+      "category": "Healthy",
+      "price": 5.5,
+      "sortOrder": 15,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-S06",
+      "name": "Kabeb",
+      "shortName": "Kabeb",
+      "description": null,
+      "category": "Healthy",
+      "price": 7.0,
+      "sortOrder": 16,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-S07",
+      "name": "Chawarma",
+      "shortName": "Chawarma",
+      "description": null,
+      "category": "Healthy",
+      "price": 7.0,
+      "sortOrder": 17,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-S08",
+      "name": "Escalope Grillé",
+      "shortName": "Escalope Grillé",
+      "description": null,
+      "category": "Healthy",
+      "price": 7.0,
+      "sortOrder": 18,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-S09",
+      "name": "Escalope Panée",
+      "shortName": "Escalope Panée",
+      "description": null,
+      "category": "Healthy",
+      "price": 8.0,
+      "sortOrder": 19,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HEA-S10",
+      "name": "Cordon Bleu",
+      "shortName": "Cordon Bleu",
+      "description": null,
+      "category": "Healthy",
+      "price": 8.0,
+      "sortOrder": 20,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HSP-01",
+      "name": "Special",
+      "shortName": "Special",
+      "description": "Omlette + Thon + Salami + Mozzarella",
+      "category": "Healthy Spécial",
+      "price": 9.0,
+      "sortOrder": 1,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HSP-02",
+      "name": "Number One",
+      "shortName": "Number One",
+      "description": "Oeuf + Chawarma + Légume + Mozzarella 3arbi + Fromage slice",
+      "category": "Healthy Spécial",
+      "price": 10.0,
+      "sortOrder": 2,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HSP-03",
+      "name": "Number One Plus",
+      "shortName": "Number One Plus",
+      "description": "Oeuf + Escalope + Légume + Mozzarella 3arbi + Fromage slice + Pistache + Gruyère",
+      "category": "Healthy Spécial",
+      "price": 14.0,
+      "sortOrder": 3,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HSP-04",
+      "name": "Spicy",
+      "shortName": "Spicy",
+      "description": "Oeuf + Sauce béchamel + Escalope + Légume + Mozzarella 3arbi + Gruyère + Paprika",
+      "category": "Healthy Spécial",
+      "price": 14.0,
+      "sortOrder": 4,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HSP-05",
+      "name": "Cheese",
+      "shortName": "Cheese",
+      "description": "Omlette + Mozzarella 3arbi + Fromage slice + Fromage triangle + Thon + Jombon",
+      "category": "Healthy Spécial",
+      "price": 10.0,
+      "sortOrder": 5,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HSP-06",
+      "name": "Hot Cheese",
+      "shortName": "Hot Cheese",
+      "description": "Oeuf + Mozzarella 3arbi + Fromage slice + Chawarma",
+      "category": "Healthy Spécial",
+      "price": 10.5,
+      "sortOrder": 6,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "HSP-07",
+      "name": "Full Cheese",
+      "shortName": "Full Cheese",
+      "description": "Omlette + Thon + Mozzarella 3arbi + Gruyère + Fromage slice + Fromage triangle + Jombon",
+      "category": "Healthy Spécial",
+      "price": 12.0,
+      "sortOrder": 7,
+      "modifierGroups": [
+        "Pain — Healthy (Céréale / Chia +0,500)"
+      ],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "LAB-01",
+      "name": "Lablebi Normale",
+      "shortName": "Lablebi Normale",
+      "description": null,
+      "category": "Lablebi",
+      "price": 4.5,
+      "sortOrder": 1,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ],
+      "favorite": true,
+      "favoriteOrder": 7
+    },
+    {
+      "code": "LAB-02",
+      "name": "Lablebi Oeuf",
+      "shortName": "Lablebi Oeuf",
+      "description": null,
+      "category": "Lablebi",
+      "price": 5.0,
+      "sortOrder": 2,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ],
+      "favorite": true,
+      "favoriteOrder": 8
+    },
+    {
+      "code": "LAB-03",
+      "name": "Lablebi Thon",
+      "shortName": "Lablebi Thon",
+      "description": null,
+      "category": "Lablebi",
+      "price": 7.5,
+      "sortOrder": 3,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "LAB-04",
+      "name": "Lablebi Double Tête",
+      "shortName": "Lablebi Double Tête",
+      "description": null,
+      "category": "Lablebi",
+      "price": 6.0,
+      "sortOrder": 4,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "LAB-05",
+      "name": "Lablebi Oeuf Thon",
+      "shortName": "Lablebi Oeuf Thon",
+      "description": null,
+      "category": "Lablebi",
+      "price": 8.0,
+      "sortOrder": 5,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "LAB-06",
+      "name": "Lablebi Double Tête Thon",
+      "shortName": "Lablebi Double Tête Thon",
+      "description": null,
+      "category": "Lablebi",
+      "price": 9.0,
+      "sortOrder": 6,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-01",
+      "name": "Omelette",
+      "shortName": "Omelette",
+      "description": null,
+      "category": "Extras",
+      "price": 0.7,
+      "sortOrder": 1,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-02",
+      "name": "Fromage Triangle",
+      "shortName": "Fromage Triangle",
+      "description": null,
+      "category": "Extras",
+      "price": 0.7,
+      "sortOrder": 2,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-03",
+      "name": "Mozzarella",
+      "shortName": "Mozzarella",
+      "description": null,
+      "category": "Extras",
+      "price": 2.0,
+      "sortOrder": 3,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-04",
+      "name": "Mozzarella 3arbi",
+      "shortName": "Mozzarella 3arbi",
+      "description": null,
+      "category": "Extras",
+      "price": 3.0,
+      "sortOrder": 4,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-05",
+      "name": "Gruyère",
+      "shortName": "Gruyère",
+      "description": null,
+      "category": "Extras",
+      "price": 3.0,
+      "sortOrder": 5,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-06",
+      "name": "Thon",
+      "shortName": "Thon",
+      "description": null,
+      "category": "Extras",
+      "price": 2.5,
+      "sortOrder": 6,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-07",
+      "name": "Jombon",
+      "shortName": "Jombon",
+      "description": null,
+      "category": "Extras",
+      "price": 2.5,
+      "sortOrder": 7,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-08",
+      "name": "Salami",
+      "shortName": "Salami",
+      "description": null,
+      "category": "Extras",
+      "price": 1.5,
+      "sortOrder": 8,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-09",
+      "name": "Kwika",
+      "shortName": "Kwika",
+      "description": null,
+      "category": "Extras",
+      "price": 1.0,
+      "sortOrder": 9,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-10",
+      "name": "Chawarma",
+      "shortName": "Chawarma",
+      "description": null,
+      "category": "Extras",
+      "price": 4.0,
+      "sortOrder": 10,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-11",
+      "name": "Kabeb",
+      "shortName": "Kabeb",
+      "description": null,
+      "category": "Extras",
+      "price": 4.0,
+      "sortOrder": 11,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-12",
+      "name": "Escalope Grillé",
+      "shortName": "Escalope Grillé",
+      "description": null,
+      "category": "Extras",
+      "price": 4.0,
+      "sortOrder": 12,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-13",
+      "name": "Escalope Panné",
+      "shortName": "Escalope Panné",
+      "description": null,
+      "category": "Extras",
+      "price": 4.5,
+      "sortOrder": 13,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-14",
+      "name": "Cordon Bleu",
+      "shortName": "Cordon Bleu",
+      "description": null,
+      "category": "Extras",
+      "price": 4.5,
+      "sortOrder": 14,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-15",
+      "name": "Frite",
+      "shortName": "Frite",
+      "description": null,
+      "category": "Extras",
+      "price": 3.0,
+      "sortOrder": 15,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ],
+      "favorite": true,
+      "favoriteOrder": 10
+    },
+    {
+      "code": "EXT-16",
+      "name": "Patte Normale",
+      "shortName": "Patte Normale",
+      "description": null,
+      "category": "Extras",
+      "price": 1.0,
+      "sortOrder": 16,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-17",
+      "name": "Patte Céréale",
+      "shortName": "Patte Céréale",
+      "description": null,
+      "category": "Extras",
+      "price": 2.0,
+      "sortOrder": 17,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    },
+    {
+      "code": "EXT-18",
+      "name": "Patte Chia",
+      "shortName": "Patte Chia",
+      "description": null,
+      "category": "Extras",
+      "price": 2.5,
+      "sortOrder": 18,
+      "modifierGroups": [],
+      "printDestinations": [
+        "CUISINE"
+      ]
+    }
+  ]
+}

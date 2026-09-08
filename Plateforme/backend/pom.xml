@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.5.16</version>
+    <relativePath/>
+  </parent>
+  <groupId>com.poscaisse</groupId>
+  <artifactId>poscaisse-backend</artifactId>
+  <version>1.0.0</version>
+  <name>PosCaisse Backend</name>
+  <description>Caisse tactile pour fast-food / petite restauration</description>
+  <properties>
+    <poscaisse.finalName>poscaisse-backend</poscaisse.finalName>
+    <java.version>21</java.version>
+    <jjwt.version>0.12.6</jjwt.version>
+  </properties>
+  <dependencies>
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-data-jpa</artifactId></dependency>
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-security</artifactId></dependency>
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-validation</artifactId></dependency>
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-actuator</artifactId></dependency>
+    <dependency><groupId>org.flywaydb</groupId><artifactId>flyway-core</artifactId></dependency>
+    <dependency><groupId>org.flywaydb</groupId><artifactId>flyway-database-postgresql</artifactId></dependency>
+    <dependency><groupId>org.postgresql</groupId><artifactId>postgresql</artifactId><scope>runtime</scope></dependency>
+    <dependency><groupId>io.jsonwebtoken</groupId><artifactId>jjwt-api</artifactId><version>${jjwt.version}</version></dependency>
+    <dependency><groupId>io.jsonwebtoken</groupId><artifactId>jjwt-impl</artifactId><version>${jjwt.version}</version><scope>runtime</scope></dependency>
+    <dependency><groupId>io.jsonwebtoken</groupId><artifactId>jjwt-jackson</artifactId><version>${jjwt.version}</version><scope>runtime</scope></dependency>
+    <!-- Relevés de compte en PDF. Apache 2.0, sans dépendance transitive lourde. -->
+    <dependency><groupId>org.apache.pdfbox</groupId><artifactId>pdfbox</artifactId><version>3.0.6</version></dependency>
+    <dependency><groupId>org.projectlombok</groupId><artifactId>lombok</artifactId><optional>true</optional></dependency>
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-test</artifactId><scope>test</scope></dependency>
+    <dependency><groupId>org.springframework.security</groupId><artifactId>spring-security-test</artifactId><scope>test</scope></dependency>
+  </dependencies>
+  <build>
+    <!--
+      Nom du JAR produit. Il est parametrable pour que la fabrication du paquet autonome
+      puisse en demander un neuf a chaque passage : sous Windows, un JAR ouvert par une
+      caisse en service ne peut etre ni supprime ni renomme, et la compilation echouerait
+      sur un fichier qui n'a rien a voir avec ce qu'on est en train de construire.
+    -->
+    <finalName>${poscaisse.finalName}</finalName>
+    <plugins>
+      <plugin><groupId>org.springframework.boot</groupId><artifactId>spring-boot-maven-plugin</artifactId></plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <!--
+      Profil « bundle » : embarque l'interface compilee dans le JAR.
+
+      En developpement, le backend sert ../frontend/dist depuis le disque, ce qui evite de
+      recompiler le Java a chaque retouche d'ecran. Pour une installation autonome — un PC
+      sans internet, ou l'on depose un dossier et rien d'autre — le JAR doit se suffire a
+      lui-meme : « mvn -Pbundle package » recopie donc dist/ dans le JAR avant de le sceller.
+    -->
+    <profile>
+      <id>bundle</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>frontend-dans-le-jar</id>
+                <phase>prepare-package</phase>
+                <goals><goal>copy-resources</goal></goals>
+                <configuration>
+                  <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+                  <resources>
+                    <resource><directory>${project.basedir}/../frontend/dist</directory><filtering>false</filtering></resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

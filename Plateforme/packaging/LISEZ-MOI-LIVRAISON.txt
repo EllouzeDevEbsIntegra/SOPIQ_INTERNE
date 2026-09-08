@@ -1,0 +1,90 @@
+LIVRAISON POSCAISSE - ce qu'on remet, et comment on l'installe
+==============================================================
+
+Ce dossier contient une VERSION DU CODE et une BASE DE DONNEES preparee : la carte,
+les prix, les variantes, les reglages et les comptes, sans aucune vente. La
+numerotation des tickets repart a 1 : le premier ticket encaisse chez le client
+portera le numero 1.
+
+
+CE QUE CONTIENT LE DOSSIER
+--------------------------
+  PosCaisse-<version>.zip ....... l'installation complete (application, Java,
+                                  PostgreSQL). Pour un poste NEUF.
+  poscaisse.jar ................. le programme seul. Pour un poste DEJA installe.
+  base-propre-A-LIVRER-*.dump ... la base preparee, a restaurer sur le poste.
+  outils-sql\ ................... scripts de maintenance, voir plus bas.
+  LISEZ-MOI-LIVRAISON.txt ....... ce fichier.
+
+La base et le programme vont ENSEMBLE : une base preparee par une version recente
+peut porter des tables qu'un programme plus ancien ne connait pas. Livrez toujours
+les deux.
+
+
+CAS A - LE POSTE DU CLIENT EST NEUF
+-----------------------------------
+1. Copiez PosCaisse-<version>.zip sur le PC et decompressez-le, par exemple en
+   C:\PosCaisse.
+2. Lancez INSTALLER.bat. Il installe le moteur, cree la base de demonstration et
+   pose les raccourcis. Repondez aux questions.
+3. Lancez DEMARRER.bat, verifiez que la caisse s'ouvre.
+4. Remplacez la demonstration par la vraie base : RESTAURER.bat, puis le chemin
+   du fichier base-propre-A-LIVRER-*.dump. Il s'occupe de tout - il arrete la
+   caisse, verifie le fichier, le depose d'abord dans une base a part et vous
+   montre ce qu'il contient (enseigne, articles, categories, tickets) avant de
+   remplacer quoi que ce soit. La base en service n'est touchee qu'apres votre
+   confirmation.
+5. DEMARRER.bat, puis Ctrl+F5 dans le navigateur.
+
+
+CAS B - LE POSTE DU CLIENT TOURNE DEJA
+--------------------------------------
+1. SAUVEGARDER.bat  -> gardez le fichier hors du poste. C'est le retour arriere.
+2. ARRETER.bat
+3. Remplacez poscaisse.jar du poste par celui de ce dossier.
+4. DEMARRER.bat
+5. Si la BASE doit elle aussi etre remplacee (mise en service, pas simple mise a
+   jour du programme) : RESTAURER.bat, puis le chemin du .dump. Il montre ce que
+   contient le fichier avant de remplacer.
+   ATTENTION : la restauration REMPLACE les donnees du poste, ventes comprises.
+   Sur un poste deja en exploitation, on ne restaure PAS - on met a jour le
+   programme seulement.
+6. Ctrl+F5 dans le navigateur.
+
+
+A VERIFIER APRES L'INSTALLATION
+-------------------------------
+  - La carte et les prix (ouvrir deux ou trois articles declines en pates).
+  - Back-office > Utilisateurs : le caissier existe et son PIN est connu.
+  - Back-office > Entreprise : enseigne, adresse, telephone, matricule fiscal.
+  - Tickets & impression : l'imprimante repond, le ticket sort entier.
+  - Une vente d'essai : elle doit porter le numero 1. Si vous la laissez, dites-le
+    au client ; sinon annulez-la depuis l'historique des tickets.
+
+
+LES DEUX CONSIGNES QUOTIDIENNES
+-------------------------------
+  1. STOCK DES PATES. Chaque pate suivie a son compteur, remis a zero par la
+     cloture journaliere. A l'ouverture, le caissier saisit ce qui est arrive
+     (bouton Stock). Une pate a zero rend les articles qui l'utilisent invendables
+     - c'est le but, mais il faut le savoir.
+  2. SAUVEGARDE. SAUVEGARDER.bat en fin de journee, et le fichier sur une cle USB.
+     Sur le disque du poste, il ne survivrait pas a une panne.
+
+
+LES SCRIPTS DE MAINTENANCE (outils-sql\)
+----------------------------------------
+Ils s'appliquent avec APPLIQUER_SQL.bat, qui prend une sauvegarde avant d'ecrire.
+
+  voir-versions-pates.sql ....... ne modifie rien : affiche les versions de pate,
+                                  leur orthographe exacte et ce qui est tarife.
+  mettre-a-jour-prix-pates.sql .. applique une grille de prix a une liste
+                                  d'articles, sur toutes les pates simples et
+                                  doubles. La liste et les supplements se reglent
+                                  en haut du fichier.
+  copier-prix-version.sql ....... donne a une version le prix d'une autre, sans
+                                  ecraser ce qui est deja saisi. Pour une version
+                                  qu'on vient d'ajouter.
+  nettoyer-ventes.sql ........... efface ventes, tickets, journal, sessions et
+                                  soldes clients ; garde tout le parametrage.
+                                  A NE JAMAIS lancer sur un poste en exploitation.

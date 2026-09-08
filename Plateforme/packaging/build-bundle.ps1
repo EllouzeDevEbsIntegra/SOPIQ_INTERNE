@@ -1,0 +1,325 @@
+﻿<#
+    Fabrique le paquet autonome de PosCaisse, a executer sur une machine QUI A INTERNET.
+
+    Le resultat est un dossier - et son ZIP - a copier tel quel sur le PC du client, qui
+    lui n'a besoin de rien : ni Java, ni PostgreSQL, ni Node, ni droits administrateur.
+
+    Les archives tierces (moteur Java, PostgreSQL) sont conservees dans << telechargements >>
+    et reutilisees d'une fabrication a l'autre. Si un telechargement echoue - lien deplace,
+    reseau filtre - le script dit exactement quel fichier deposer la, a la main.
+#>
+param(
+  [string]$Version = (Get-Date -Format 'yyyy.MM.dd'),
+  [ValidateSet('14', '15', '16', '17')]
+  [string]$VersionPostgres = '16',
+  [switch]$ForcerPostgres,
+  [switch]$SansTests
+)
+
+$ErrorActionPreference = 'Stop'
+$ici     = Split-Path -Parent $MyInvocation.MyCommand.Path
+$projet  = Split-Path -Parent $ici
+$tele    = Join-Path $ici 'telechargements'
+$sortie  = Join-Path $ici "dist\PosCaisse-$Version"
+New-Item -ItemType Directory -Force -Path $tele | Out-Null
+
+function Etape($m) { Write-Host ''; Write-Host "== $m" -ForegroundColor Cyan }
+function Info($m)  { Write-Host "  $m" }
+function Souci($m) { Write-Host "  $m" -ForegroundColor Yellow }
+function Stop-Net($m) { Write-Host ''; Write-Host "ARRET : $m" -ForegroundColor Red; exit 1 }
+
+<#
+    Ferme les caisses encore en service. Ce n'est plus indispensable depuis que le JAR de
+    la fabrication porte un nom neuf, qu'aucun programme ne peut retenir, mais cela evite
+    de laisser tourner une ancienne version pendant qu'on en prepare une nouvelle.
+
+    START_POS lance la caisse par << java -jar >> dans une fenetre REDUITE : on l'oublie
+    facilement, et c'est elle qui tenait le fichier.
+#>
+function Arreter-Caisses {
+  $procs = @(Get-CimInstance Win32_Process -Filter "Name = 'java.exe'" -ErrorAction SilentlyContinue |
+             Where-Object { $_.CommandLine -like '*poscaisse*' })
+  if (-not $procs) { return }
+  foreach ($p in $procs) {
+    Souci "Une caisse tourne encore (PID $($p.ProcessId)) : arret avant compilation."
+    Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue
+  }
+  Start-Sleep -Seconds 3
+}
+
+<#
+    Version de PostgreSQL embarquee dans le paquet.
+
+    Elle compte au-dela du seul moteur : une sauvegarde produite par pg_dump ne se relit
+    que par un pg_restore de version egale ou superieure. Si le poste de developpement
+    exporte en PostgreSQL 17, un paquet en 16 refusera le fichier avec
+    << version non supportee (1.16) dans le fichier d'en-tete >>.
+
+    EXPORTER_DONNEES.bat affiche la version du serveur de developpement : fabriquez le
+    paquet avec la meme, ou une plus recente.
+
+        .\build-bundle.ps1 -VersionPostgres 17
+
+    Attention : changer de version majeure rend illisible un dossier << donnees >> deja
+    cree chez le client. Il faut alors sauvegarder, renommer le dossier et relancer
+    INSTALLER.bat, puis restaurer.
+#>
+<#
+    Plusieurs versions mineures par version majeure, de la plus sure a la plus recente.
+
+    EnterpriseDB retire de son serveur les mineures anciennes sans prevenir : un numero
+    ecrit en dur finit toujours par renvoyer une page d'erreur. Le script essaie donc
+    chaque candidate jusqu'a ce qu'une reponde. Seule la version MAJEURE compte pour
+    relire une sauvegarde ; la mineure ne change rien a l'affaire.
+
+    La 16.8-1 est en tete de sa liste parce qu'elle a reellement servi a fabriquer un
+    paquet en service.
+#>
+$versionsPostgres = @{
+  '14' = @('14.17-1', '14.18-1', '14.19-1')
+  '15' = @('15.12-1', '15.13-1', '15.14-1')
+  '16' = @('16.8-1', '16.9-1', '16.10-1')
+  '17' = @('17.6-1', '17.5-1', '17.4-1', '17.2-1')
+}
+$pgCandidats = $versionsPostgres[$VersionPostgres]
+$pgArchive = "postgresql-$VersionPostgres-windows-x64-binaries.zip"
+
+# Versions figees : le poste client tourne exactement sur ce qui a ete teste ici.
+$sources = @(
+  @{ Nom = 'jre';   Fichier = 'jre-21-windows-x64.zip'
+     Urls = @('https://api.adoptium.net/v3/binary/latest/21/ga/windows/x64/jre/hotspot/normal/eclipse')
+     Aide = 'https://adoptium.net/temurin/releases/?os=windows&arch=x64&package=jre&version=21 (archive .zip)' },
+  @{ Nom = 'pgsql'; Fichier = $pgArchive
+     Urls = @($pgCandidats | ForEach-Object { "https://get.enterprisedb.com/postgresql/postgresql-$_-windows-x64-binaries.zip" })
+     Aide = "https://www.enterprisedb.com/download-postgresql-binaries (PostgreSQL $VersionPostgres, Windows x86-64)" },
+  # PostgreSQL fourni en binaires exige cette bibliotheque Microsoft. Elle est presente
+  # sur la plupart des Windows recents, mais pas sur tous : l'embarquer evite un
+  # deplacement chez le client pour un fichier de 25 Mo qu'il ne peut pas telecharger.
+  @{ Nom = 'vcredist'; Fichier = 'vc_redist.x64.exe'; Facultatif = $true
+     Urls = @('https://aka.ms/vs/17/release/vc_redist.x64.exe')
+     Aide = 'https://aka.ms/vs/17/release/vc_redist.x64.exe' }
+)
+
+<#
+    La version de PostgreSQL est le seul choix de ce script qui puisse rendre un paquet
+    INUTILISABLE avec les donnees qu'on veut y mettre.
+
+    Une sauvegarde porte dans son en-tete la version majeure qui l'a ecrite, et un
+    pg_restore plus ancien REFUSE de la lire - net, sans conversion possible. Fabriquer
+    un paquet en 16 alors que la base preparee vient d'un 17, c'est donc s'en apercevoir
+    chez le client, la cle USB a la main, une fois la sauvegarde deja copiee.
+
+    On regarde donc ce qui existe reellement ici : le pg_dump du poste, et les archives
+    PostgreSQL deja telechargees pour de precedents paquets - ce sont elles qui tournent
+    sur les postes deja installes. Si l'une des deux est plus recente que la version
+    demandee, on s'arrete AVANT de fabriquer quoi que ce soit.
+#>
+function Majeure-De([string] $texte) {
+  if ($texte -match '\(PostgreSQL\)\s+(\d+)') { return [int]$Matches[1] }
+  return 0
+}
+
+function Postgres-Du-Poste {
+  $cmd = Get-Command pg_dump.exe -ErrorAction SilentlyContinue
+  $exe = if ($cmd) { $cmd.Source } else { $null }
+  if (-not $exe) {
+    foreach ($v in 18, 17, 16, 15, 14, 13, 12) {
+      $p = "C:\Program Files\PostgreSQL\$v\bin\pg_dump.exe"
+      if (Test-Path $p) { $exe = $p; break }
+    }
+  }
+  if (-not $exe) { return 0 }
+  # La sortie d'erreur d'un programme externe ne doit pas faire sauter le script.
+  $garde = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
+  try { return (Majeure-De ((& $exe --version 2>&1 | Out-String))) } finally { $ErrorActionPreference = $garde }
+}
+
+function Postgres-Deja-Telecharge {
+  $max = 0
+  $archives = @(Get-ChildItem -Path $tele -Filter 'postgresql-*-windows-x64-binaries.zip' -ErrorAction SilentlyContinue)
+  foreach ($a in $archives) {
+    if ($a.Name -match 'postgresql-(\d+)-') { $max = [math]::Max($max, [int]$Matches[1]) }
+  }
+  return $max
+}
+
+$pgDemande = [int]$VersionPostgres
+$pgPoste   = Postgres-Du-Poste
+$pgDeja    = Postgres-Deja-Telecharge
+$pgAttendu = [math]::Max($pgPoste, $pgDeja)
+
+if ($pgAttendu -gt $pgDemande -and -not $ForcerPostgres) {
+  Write-Host ''
+  Write-Host "  Ce paquet embarquerait PostgreSQL $pgDemande, alors qu'il existe ici du PostgreSQL $pgAttendu." -ForegroundColor Red
+  if ($pgPoste -gt $pgDemande) { Souci "  Le pg_dump de ce poste est en version $pgPoste." }
+  if ($pgDeja  -gt $pgDemande) { Souci "  Un paquet a deja ete fabrique avec les binaires PostgreSQL $pgDeja (dossier telechargements)." }
+  Write-Host ''
+  Souci "  Une sauvegarde ecrite par un PostgreSQL $pgAttendu est ILLISIBLE par un $pgDemande :"
+  Souci '  le poste client refuserait la base preparee, au moment de la restauration.'
+  Write-Host ''
+  Write-Host "  Relancez avec :  .\build-bundle.ps1 -VersionPostgres $pgAttendu" -ForegroundColor Cyan
+  Write-Host '  (ou -ForcerPostgres si vous savez que les sauvegardes viendront d''une version plus ancienne)' -ForegroundColor DarkGray
+  Stop-Net 'Version de PostgreSQL plus ancienne que ce qui tourne ici.'
+}
+
+Etape 'Recuperation des composants tiers'
+Info "PostgreSQL embarque : version majeure $VersionPostgres"
+if ($pgAttendu -and $pgAttendu -eq $pgDemande) { Info "Elle correspond a ce qui tourne sur ce poste." }
+foreach ($s in $sources) {
+  $dest = Join-Path $tele $s.Fichier
+  if (Test-Path $dest) { Info "$($s.Fichier) : deja present"; continue }
+  $pris = $false
+  foreach ($url in $s.Urls) {
+    Info "$($s.Fichier) : telechargement depuis $url"
+    try {
+      Invoke-WebRequest -Uri $url -OutFile $dest -UseBasicParsing
+      $pris = $true
+      break
+    } catch {
+      Remove-Item $dest -Force -ErrorAction SilentlyContinue
+      Souci "  indisponible : $($_.Exception.Message)"
+    }
+  }
+  if (-not $pris) {
+    Write-Host ''
+    Write-Host "  Telechargement impossible : $($s.Fichier)" -ForegroundColor Yellow
+    Write-Host "  Recuperez le fichier ici : $($s.Aide)" -ForegroundColor Yellow
+    Write-Host "  puis deposez-le sous ce nom exact dans : $tele" -ForegroundColor Yellow
+    if ($s.Nom -eq 'pgsql') {
+      Write-Host '  N''importe quelle version mineure fait l''affaire, du moment que la version' -ForegroundColor Yellow
+      Write-Host "  MAJEURE est $VersionPostgres : c'est elle seule qui decide de la lecture des" -ForegroundColor Yellow
+      Write-Host '  sauvegardes. Renommez l''archive sous le nom exact ci-dessus.' -ForegroundColor Yellow
+    }
+    if ($s.Facultatif) {
+      Write-Host '  (facultatif : le paquet se fabrique sans, mais le poste client devra' -ForegroundColor Yellow
+      Write-Host '   deja disposer de la bibliotheque Microsoft VC++)' -ForegroundColor Yellow
+    } else {
+      Stop-Net 'Composant tiers manquant.'
+    }
+  }
+}
+
+Etape 'Compilation de l''interface'
+Push-Location (Join-Path $projet 'frontend')
+try {
+  cmd /c 'npm ci --no-audit --no-fund'; if ($LASTEXITCODE -ne 0) { Stop-Net 'npm ci a echoue.' }
+  if (-not $SansTests) { cmd /c 'npm test'; if ($LASTEXITCODE -ne 0) { Stop-Net 'Les tests du panier echouent.' } }
+  cmd /c 'npm run build'; if ($LASTEXITCODE -ne 0) { Stop-Net 'La compilation de l''interface a echoue.' }
+} finally { Pop-Location }
+
+Etape 'Compilation de l''application (interface incluse dans le JAR)'
+Arreter-Caisses
+$backend = Join-Path $projet 'backend'
+# Le JAR de cette fabrication porte un nom qui n'a jamais servi. C'est ce qui rend la
+# compilation insensible a une caisse restee ouverte : Windows interdit de supprimer ou de
+# renommer un fichier ouvert, mais rien n'empeche d'en ecrire un autre a cote.
+$nomJar = 'poscaisse-bundle-' + (Get-Date -Format 'yyyyMMdd-HHmmss')
+Push-Location $backend
+try {
+  # Pas de << clean >> : il buterait sur ce meme fichier ouvert. On vide seulement
+  # l'interface deja copiee lors d'une fabrication precedente, pour ne pas laisser
+  # d'anciens ecrans dans le nouveau JAR.
+  $statique = Join-Path $backend 'target\classes\static'
+  if (Test-Path $statique) { Remove-Item $statique -Recurse -Force -ErrorAction SilentlyContinue }
+
+  $opts = if ($SansTests) { '-DskipTests' } else { '' }
+  cmd /c "mvn -q -B -Pbundle package $opts `"-Dposcaisse.finalName=$nomJar`""
+  if ($LASTEXITCODE -ne 0) {
+    Souci ''
+    Souci 'Si le message parle d''un fichier utilise par un autre processus, ouvrez le'
+    Souci 'Moniteur de ressources (touche Windows, tapez << resmon >>), onglet Processeur,'
+    Souci 'section << Handles associes >>, et cherchez le nom du fichier : Windows nomme'
+    Souci 'alors le programme qui le retient.'
+    Stop-Net 'La compilation du backend a echoue.'
+  }
+} finally { Pop-Location }
+$jarProduit = Join-Path $backend "target\$nomJar.jar"
+if (-not (Test-Path $jarProduit)) { Stop-Net "Le JAR attendu n'a pas ete produit : $jarProduit" }
+
+Etape 'Assemblage du paquet'
+if (Test-Path $sortie) { Remove-Item $sortie -Recurse -Force }
+New-Item -ItemType Directory -Force -Path $sortie | Out-Null
+
+Copy-Item $jarProduit (Join-Path $sortie 'poscaisse.jar')
+# Le JAR horodate a joue son role : le garder encombrerait target de 60 Mo par fabrication.
+Remove-Item $jarProduit, "$jarProduit.original" -Force -ErrorAction SilentlyContinue
+
+<#
+    On retire aussi l'interface copiee dans target\classes par le profil << bundle >>.
+
+    Elle n'avait de sens que le temps de la sceller dans le JAR livre. Laissee la, elle
+    empoisonne le poste de developpement : le backend cherche l'interface dans
+    << classpath:/static/ >> AVANT << ../frontend/dist >>, et << mvn package >> - qui ne
+    fait pas de << clean >>, pour ne pas buter sur un JAR tenu ouvert par une caisse -
+    l'embarque telle quelle dans le JAR de developpement.
+
+    On recompile alors sans rien voir changer, et rien ne l'explique. Le poste servait
+    l'interface du jour de la derniere fabrication de paquet.
+#>
+$statiqueFige = Join-Path $backend 'target\classes\static'
+if (Test-Path $statiqueFige) {
+  Remove-Item $statiqueFige -Recurse -Force -ErrorAction SilentlyContinue
+  Info 'Interface retiree de target\classes : le poste de developpement retrouve la sienne.'
+}
+Copy-Item (Join-Path $ici 'bundle\*') $sortie -Recurse -Force
+if (Test-Path (Join-Path $projet 'catalogs')) { Copy-Item (Join-Path $projet 'catalogs') $sortie -Recurse -Force }
+# Le jumeau Linux n'a rien a faire dans un paquet Windows.
+Remove-Item (Join-Path $sortie 'outils\poscaisse.sh') -Force -ErrorAction SilentlyContinue
+
+function Extraire($zip, $vers, $strip) {
+  $tmp = Join-Path $env:TEMP ('pos-' + [guid]::NewGuid().ToString('N'))
+  Expand-Archive -Path $zip -DestinationPath $tmp -Force
+  # Ces archives contiennent un dossier racine (<< jdk-21... >>, << pgsql >>) dont on se passe.
+  $src = if ($strip) { (Get-ChildItem $tmp -Directory | Select-Object -First 1).FullName } else { $tmp }
+  Move-Item $src $vers -Force
+  Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
+}
+Info 'Moteur Java...'
+Extraire (Join-Path $tele 'jre-21-windows-x64.zip') (Join-Path $sortie 'jre') $true
+Info "PostgreSQL $VersionPostgres..."
+Extraire (Join-Path $tele $pgArchive) (Join-Path $sortie 'pgsql') $true
+$vc = Join-Path $tele 'vc_redist.x64.exe'
+if (Test-Path $vc) {
+  Copy-Item $vc (Join-Path $sortie 'outils\vc_redist.x64.exe') -Force
+  Info 'Bibliotheque Microsoft VC++ incluse.'
+} else {
+  Write-Host '  Bibliotheque Microsoft VC++ absente du paquet : le poste client devra deja' -ForegroundColor Yellow
+  Write-Host '  en disposer, sinon PostgreSQL ne demarrera pas.' -ForegroundColor Yellow
+}
+
+foreach ($f in @('jre\bin\java.exe', 'pgsql\bin\initdb.exe', 'pgsql\bin\pg_ctl.exe', 'poscaisse.jar',
+                 'INSTALLER.bat', 'DEMARRER-AUTO.vbs', 'RACCOURCIS.bat', 'outils\poscaisse.ico',
+                 'CHARGER_CARTE.bat', 'catalogs\charger-carte.ps1')) {
+  if (-not (Test-Path (Join-Path $sortie $f))) { Stop-Net "Le paquet est incomplet : $f manque." }
+}
+# Version reelle des binaires assembles, pas celle qu'on croit avoir telechargee : si
+# l'archive a ete deposee a la main, c'est la seule qui dise la verite.
+$pgReel = (& (Join-Path $sortie 'pgsql\bin\pg_restore.exe') --version 2>&1 | Out-String).Trim()
+# ASCII et non UTF8 : Set-Content -Encoding UTF8 pose une marque d'ordre des octets en
+# tete de fichier, que la console Windows affiche comme trois caracteres parasites. Le
+# contenu est de l'ASCII pur : la marque n'apporte rien et se voit des le premier << type >>.
+Set-Content -Path (Join-Path $sortie 'VERSION.txt') -Encoding ASCII -Value @(
+  "PosCaisse $Version - paquet autonome Windows x64",
+  "PostgreSQL embarque : $pgReel",
+  "Une sauvegarde a restaurer ici doit venir d'un PostgreSQL $VersionPostgres ou plus ancien."
+)
+if ($pgReel -notmatch "\b$VersionPostgres\.") {
+  Souci "Les binaires assembles annoncent << $pgReel >>, et non la version $VersionPostgres demandee."
+  Souci "Verifiez l'archive $pgArchive dans $tele."
+}
+
+Etape 'Compression'
+$zip = "$sortie.zip"
+if (Test-Path $zip) { Remove-Item $zip -Force }
+Compress-Archive -Path $sortie -DestinationPath $zip
+$taille = [math]::Round((Get-Item $zip).Length / 1MB, 1)
+
+Etape 'Paquet pret'
+Info "Dossier : $sortie"
+Info "Archive : $zip ($taille Mo)"
+Info 'Copiez cette archive sur le PC du client, decompressez-la, puis lancez INSTALLER.bat.'
+Info ''
+Info "Ce paquet tourne en PostgreSQL $VersionPostgres : il relit les sauvegardes produites par un"
+Info "PostgreSQL $VersionPostgres ou plus ancien. EXPORTER_DONNEES.bat affiche la version du serveur"
+Info 'de developpement ; si elle est plus recente, refabriquez avec -VersionPostgres <version>.'
