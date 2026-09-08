@@ -211,7 +211,9 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
                  :class="{ drag: canReorder, dragging: dragId === p.id }" :draggable="canReorder"
                  @dragstart="onDragStart(p)" @dragover="onDragOver($event, i)" @drop.prevent="onDrop" @dragend="onDrop">
       <td class="ord"><span v-if="canReorder" class="grip" aria-hidden="true"></span><b class="num">{{ i + 1 }}</b></td>
-      <td class="small">{{ p.code }}</td><td><b>{{ p.name }}</b><div class="tiny muted" v-if="p.shortName && p.shortName!==p.name">ticket : {{ p.shortName }}</div></td><td><span class="color-dot" :style="{ background: cats.find(c=>c.id===p.categoryId)?.color }"></span>{{ p.categoryName }}</td><td class="right num bold">{{ fmt(p.price) }}<span v-if="p.priceToCheck" class="flag" title="Prix a verifier : il ne vient pas de la carte">a verifier</span></td>
+      <td class="small">{{ p.code }}</td><td><b>{{ p.name }}</b><div class="tiny muted" v-if="p.shortName && p.shortName!==p.name">ticket : {{ p.shortName }}</div></td><td><span class="color-dot" :style="{ background: cats.find(c=>c.id===p.categoryId)?.color }"></span>{{ p.categoryName }}</td><!-- L'unite suit le prix : « 58,000 » seul, dans une liste ou tout le reste est
+             au detail, se lit comme le prix d'une part de baklawa. -->
+        <td class="right num bold">{{ fmt(p.price) }}<span v-if="p.unite && p.unite !== 'PIECE'" class="tiny muted"> /{{ p.unite === 'LITRE' ? 'L' : 'kg' }}</span><span v-if="p.priceToCheck" class="flag" title="Prix a verifier : il ne vient pas de la carte">a verifier</span></td>
       <!-- Colonne des variantes : d'un coup d'oeil, qui est decline et qui ne l'est pas.
            Sans elle, il faudrait ouvrir 97 fiches pour trouver celle qu'on a oubliee. -->
       <td class="small">

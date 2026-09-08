@@ -35,6 +35,7 @@ class AmorcageZeroTest {
     @Autowired UserRepo comptes;
     @Autowired RoleRepo roles;
     @Autowired PaymentMethodRepo paiements;
+    @Autowired IngredientRepo ingredients;
     @Autowired SettingsService reglages;
 
     @org.springframework.test.context.DynamicPropertySource
@@ -48,6 +49,15 @@ class AmorcageZeroTest {
         assertThat(caisses.count()).as("une caisse").isEqualTo(1);
         assertThat(roles.count()).as("les rôles").isPositive();
         assertThat(paiements.count()).as("les moyens de paiement").isPositive();
+
+        /*
+            AUCUN INGREDIENT DE FAST-FOOD.
+
+            Une migration en semait dix dans toute base - Omelette, Thon, Salami, Harissa -
+            et une supérette se les voyait proposer sur chaque fiche article. Ils
+            appartiennent au métier qui s'en sert, pas au schéma.
+        */
+        assertThat(ingredients.count()).as("aucun ingrédient imposé à une supérette").isZero();
     }
 
     @Test void lesReglagesDeLaBoutiqueSontPoses() {

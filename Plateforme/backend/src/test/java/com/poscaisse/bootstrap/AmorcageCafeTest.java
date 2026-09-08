@@ -33,6 +33,7 @@ class AmorcageCafeTest {
     @Autowired CompanyRepo societes;
     @Autowired RegisterRepo caisses;
     @Autowired UserRepo comptes;
+    @Autowired IngredientRepo ingredients;
     @Autowired SettingsService reglages;
 
     @org.springframework.test.context.DynamicPropertySource
@@ -58,6 +59,11 @@ class AmorcageCafeTest {
         // La demonstration montre les roles : deux caisses, un manager, trois caissiers.
         assertThat(caisses.count()).isEqualTo(2);
         assertThat(comptes.count()).isEqualTo(5);
+
+        // Les ingredients sont ceux du café - café, lait, thé, menthe, amandes - et non
+        // les dix du fast-food qu'une migration posait partout.
+        assertThat(ingredients.count()).as("les ingrédients de la carte café").isEqualTo(18);
+        assertThat(ingredients.findAll()).extracting("name").doesNotContain("Salami", "Harissa");
     }
 
     /** La caisse ne recoit que ce qui la regarde - et le metier en fait partie. */

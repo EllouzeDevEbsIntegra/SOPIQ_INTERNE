@@ -38,7 +38,7 @@ public class DemoDataSeeder implements ApplicationRunner {
     private final CompanyRepo companyRepo; private final PointOfSaleRepo posRepo; private final RegisterRepo registerRepo;
     private final RoleRepo roleRepo; private final UserRepo userRepo; private final PrintDestinationRepo destRepo;
     private final CategoryRepo categoryRepo; private final ProductRepo productRepo; private final ModifierGroupRepo groupRepo;
-    private final PaymentMethodRepo paymentRepo; private final ReceiptTemplateRepo templateRepo; private final CustomerRepo customerRepo;
+    private final IngredientRepo ingredientRepo; private final PaymentMethodRepo paymentRepo; private final ReceiptTemplateRepo templateRepo; private final CustomerRepo customerRepo;
     private final PasswordEncoder encoder; private final ObjectMapper om;
     private final AmorcageMetier metier;
 
@@ -164,6 +164,20 @@ public class DemoDataSeeder implements ApplicationRunner {
      * montrerait pas ce que la caisse fait de mieux.
      */
     private void seedCarteFastFood() {
+        /*
+            Les ingredients du fast-food : ils composent le nom des articles - << Omelette
+            Thon Salami >> - et filtrent l'ecran de vente. Ils etaient poses par une
+            migration, donc dans TOUTE base, y compris celle d'une patisserie a qui on
+            proposait du salami. Ils reviennent ici, avec la carte a laquelle ils
+            appartiennent.
+        */
+        if (ingredientRepo.count() == 0) {
+            String[] noms = { "Omelette", "Thon", "Mozzarella", "Salami", "Kwika",
+                              "Escalope", "Viande hachée", "Fromage", "Harissa", "Salade" };
+            int ordre = 1;
+            for (String n : noms) { Ingredient i = new Ingredient(); i.setName(n); i.setSortOrder(ordre++); ingredientRepo.save(i); }
+        }
+
         PrintDestination cuisine = destRepo.findByCode("CUISINE").orElseThrow(), pizza = destRepo.findByCode("PIZZA").orElseThrow(), boissons = destRepo.findByCode("BOISSONS").orElseThrow();
 
         Category burgers = cat("Burgers", "#f97316", "🍔", 1, cuisine), sandwichs = cat("Sandwichs", "#eab308", "🥪", 2, cuisine), pizzas = cat("Pizzas", "#ef4444", "🍕", 3, pizza),
