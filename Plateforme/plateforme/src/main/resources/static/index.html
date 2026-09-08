@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Plateforme — back-office</title>
+<style>
+/*
+    Un seul fichier, sans dependance et sans etape de compilation : l'API est le
+    livrable, cet ecran est la pour qu'on la VOIE. Il reprend les couleurs de la
+    caisse pour ne pas donner l'impression de deux produits differents, et il sera
+    refait avec le meme jeu de composants quand la plateforme sera vendue.
+*/
+:root {
+  --fond: #F6F4F1; --surface: #FFFFFF; --surface-2: #FAF8F5; --surface-3: #F0EDE8;
+  --ligne: #E5E0D8; --ligne-2: #D6CFC4;
+  --encre: #1C1A17; --encre-2: #4A453E; --encre-3: #7C7469; --encre-4: #A79E92;
+  --accent: #C8441C; --accent-doux: #FBEDE8;
+  --vert: #1E7A46; --vert-doux: #E7F3EC; --rouge: #B3261E; --rouge-doux: #FBEAE8;
+  --or: #A5760A; --or-doux: #FBF2DF;
+  --r: 10px; --r-s: 7px;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--fond); color: var(--encre);
+       font: 14px/1.5 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+.num { font-variant-numeric: tabular-nums; }
+button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+input, select { font: inherit; }
+.champ { width: 100%; height: 38px; padding: 0 11px; border: 1px solid var(--ligne-2);
+         border-radius: var(--r-s); background: var(--surface); outline: none; }
+.champ:focus { border-color: var(--accent); }
+label.f { display: grid; gap: 4px; font-size: 12px; color: var(--encre-3); }
+.btn { height: 38px; padding: 0 15px; border: 1px solid var(--ligne-2); border-radius: var(--r-s);
+       background: var(--surface); font-size: 13.5px; font-weight: 600; }
+.btn:hover { background: var(--surface-3); }
+.btn.p { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.p:hover { filter: brightness(1.07); }
+.btn.d { color: var(--rouge); border-color: #E8C9C6; }
+.btn.sm { height: 31px; padding: 0 11px; font-size: 12.5px; }
+.pastille { display: inline-flex; align-items: center; padding: 2px 9px; border-radius: 999px;
+            font-size: 11.5px; font-weight: 700; letter-spacing: .02em; }
+.PROSPECT { background: var(--surface-3); color: var(--encre-3); }
+.ACTIF, .PAYEE { background: var(--vert-doux); color: var(--vert); }
+.SUSPENDU, .EMISE { background: var(--or-doux); color: var(--or); }
+.RESILIE, .ANNULEE, .retard { background: var(--rouge-doux); color: var(--rouge); }
+
+/* ---------------------------------------------------------------- connexion */
+#connexion { display: grid; place-items: center; min-height: 100vh; }
+#connexion form { width: 330px; display: grid; gap: 13px; padding: 26px;
+                  background: var(--surface); border: 1px solid var(--ligne); border-radius: var(--r); }
+#connexion h1 { margin: 0; font-size: 19px; }
+#connexion p { margin: 0; font-size: 12.5px; color: var(--encre-3); }
+
+/* ---------------------------------------------------------------- cadre */
+#app { display: none; grid-template-columns: 214px 1fr; min-height: 100vh; }
+aside { background: #201D1A; color: #D8D2C9; padding: 16px 12px; }
+aside h1 { margin: 0 0 3px; font-size: 15px; color: #fff; letter-spacing: .01em; }
+aside .sous { font-size: 11px; color: #8A8076; text-transform: uppercase; letter-spacing: .09em; margin-bottom: 20px; }
+aside nav { display: grid; gap: 2px; }
+aside nav button { text-align: left; padding: 9px 11px; border-radius: var(--r-s); font-size: 13.5px; color: #C9C2B8; }
+aside nav button:hover { background: #2B2723; color: #fff; }
+aside nav button.on { background: var(--accent); color: #fff; font-weight: 650; }
+aside .bas { position: sticky; top: 100vh; font-size: 12px; color: #8A8076; }
+main { padding: 22px 26px 40px; overflow: auto; }
+h2.titre { margin: 0 0 3px; font-size: 21px; }
+.sous-titre { margin: 0 0 20px; color: var(--encre-3); font-size: 13px; }
+
+.cartes { display: grid; grid-template-columns: repeat(auto-fit, minmax(178px, 1fr)); gap: 12px; margin-bottom: 22px; }
+.carte { background: var(--surface); border: 1px solid var(--ligne); border-radius: var(--r); padding: 14px 16px; }
+.carte .v { font-size: 26px; font-weight: 780; letter-spacing: -.02em; }
+.carte .l { font-size: 12px; color: var(--encre-3); }
+.carte.alerte { border-color: #E8C9C6; background: var(--rouge-doux); }
+.carte.alerte .v { color: var(--rouge); }
+
+table { width: 100%; border-collapse: collapse; background: var(--surface);
+        border: 1px solid var(--ligne); border-radius: var(--r); overflow: hidden; }
+th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .07em;
+     color: var(--encre-3); padding: 10px 12px; background: var(--surface-2); border-bottom: 1px solid var(--ligne); }
+td { padding: 10px 12px; border-bottom: 1px solid var(--ligne); font-size: 13.5px; }
+tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: var(--surface-2); }
+td.r, th.r { text-align: right; }
+.vide { padding: 26px; text-align: center; color: var(--encre-3); }
+
+.bloc { background: var(--surface); border: 1px solid var(--ligne); border-radius: var(--r);
+        padding: 16px 18px; margin-bottom: 16px; }
+.bloc h3 { margin: 0 0 12px; font-size: 15px; }
+.grille { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.ligne-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.cle { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px;
+       background: var(--surface-3); padding: 2px 8px; border-radius: var(--r-s); }
+.retour { color: var(--encre-3); font-size: 13px; margin-bottom: 10px; display: inline-block; }
+#msg { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 50;
+       padding: 11px 18px; border-radius: var(--r-s); color: #fff; background: var(--encre);
+       font-size: 13.5px; display: none; max-width: 80vw; }
+#msg.err { background: var(--rouge); }
+dialog { border: 1px solid var(--ligne-2); border-radius: var(--r); padding: 0; width: min(460px, 92vw); }
+dialog::backdrop { background: rgba(28,26,23,.4); }
+dialog form { display: grid; gap: 12px; padding: 20px; }
+dialog h3 { margin: 0; font-size: 16px; }
+</style>
+</head>
+<body>
+
+<div id="connexion">
+  <form onsubmit="connexion(event)">
+    <div>
+      <h1>Plateforme</h1>
+      <p>Back-office éditeur</p>
+    </div>
+    <label class="f">Identifiant<input class="champ" id="u" value="admin" autofocus /></label>
+    <label class="f">Mot de passe<input class="champ" id="p" type="password" value="plateforme123" /></label>
+    <button class="btn p" type="submit">Se connecter</button>
+  </form>
+</div>
+
+<div id="app">
+  <aside>
+    <h1>Plateforme</h1>
+    <div class="sous">Back-office</div>
+    <nav>
+      <button onclick="aller('bord')" id="n-bord" class="on">Tableau de bord</button>
+      <button onclick="aller('clients')" id="n-clients">Clients</button>
+      <button onclick="aller('retards')" id="n-retards">Impayés</button>
+      <button onclick="aller('journal')" id="n-journal">Journal</button>
+    </nav>
+    <div class="bas"><span id="qui"></span><br /><button class="btn sm" style="margin-top:8px" onclick="deconnexion()">Quitter</button></div>
+  </aside>
+  <main id="ecran"></main>
+</div>
+
+<div id="msg"></div>
+
+<script>
+let jeton = null, moi = null, vue = 'bord';
+
+const fmt = (n) => (Number(n) || 0).toLocaleString('fr-FR', { minimumFractionDigits: 3, maximumFractionDigits: 3 }) + ' DT';
+const jour = (d) => d ? new Date(d).toLocaleDateString('fr-FR') : '—';
+const echap = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function dire(texte, erreur) {
+  const m = document.getElementById('msg');
+  m.textContent = texte; m.className = erreur ? 'err' : ''; m.style.display = 'block';
+  clearTimeout(m._t); m._t = setTimeout(() => m.style.display = 'none', 4000);
+}
+
+async function api(url, methode, corps) {
+  const r = await fetch('/api' + url, {
+    method: methode || 'GET',
+    headers: { 'Content-Type': 'application/json', ...(jeton ? { Authorization: 'Bearer ' + jeton } : {}) },
+    body: corps === undefined ? undefined : JSON.stringify(corps)
+  });
+  const texte = await r.text();
+  const data = texte ? JSON.parse(texte) : null;
+  // Le message du serveur est ecrit pour etre lu : on le montre tel quel.
+  if (!r.ok) throw new Error(data && data.message ? data.message : 'Erreur ' + r.status);
+  return data;
+}
+
+async function connexion(e) {
+  e.preventDefault();
+  try {
+    const r = await api('/auth/connexion', 'POST',
+      { username: document.getElementById('u').value, password: document.getElementById('p').value });
+    jeton = r.token; moi = r.utilisateur;
+    sessionStorage.setItem('jeton', jeton);
+    document.getElementById('connexion').style.display = 'none';
+    document.getElementById('app').style.display = 'grid';
+    document.getElementById('qui').textContent = moi.fullName + ' · ' + moi.role;
+    aller('bord');
+  } catch (err) { dire(err.message, true); }
+}
+
+function deconnexion() { sessionStorage.removeItem('jeton'); location.reload(); }
+
+function aller(quelle, arg) {
+  vue = quelle;
+  for (const b of document.querySelectorAll('aside nav button')) b.classList.remove('on');
+  const onglet = document.getElementById('n-' + quelle);
+  if (onglet) onglet.classList.add('on');
+  ({ bord: voirBord, clients: voirClients, retards: voirRetards, journal: voirJournal, client: voirClient }[quelle])(arg);
+}
+
+// ---------------------------------------------------------------- tableau de bord
+async function voirBord() {
+  const t = await api('/tableau-de-bord');
+  document.getElementById('ecran').innerHTML = `
+    <h2 class="titre">Tableau de bord</h2>
+    <p class="sous-titre">Ce qui commande la journée.</p>
+    <div class="cartes">
+      <div class="carte"><div class="v num">${t.clients}</div><div class="l">clients, dont ${t.clientsActifs} actifs</div></div>
+      <div class="carte"><div class="v num">${t.abonnements}</div><div class="l">abonnements · ${t.caisses} caisse(s)</div></div>
+      <div class="carte"><div class="v num">${fmt(t.recurrentMensuel)}</div><div class="l">par mois, récurrent</div></div>
+      <div class="carte ${t.facturesEnRetard ? 'alerte' : ''}"><div class="v num">${t.facturesEnRetard}</div><div class="l">impayé(s) · ${fmt(t.montantEnRetard)}</div></div>
+      <div class="carte ${t.clientsSuspendus ? 'alerte' : ''}"><div class="v num">${t.clientsSuspendus}</div><div class="l">client(s) suspendu(s)</div></div>
+    </div>
+    ${t.retards.length ? `<div class="bloc"><h3>À relancer</h3>${tableFactures(t.retards, true)}</div>` : ''}
+    <div class="bloc"><h3>Derniers abonnements</h3>
+      <table><thead><tr><th>Client</th><th>Module</th><th class="r">Caisses</th><th class="r">Prix/mois</th><th>Depuis</th><th>Statut</th></tr></thead><tbody>
+      ${t.derniersAbonnements.map(a => `<tr onclick="aller('client', ${a.clientId})" style="cursor:pointer">
+        <td><b>${echap(a.clientNom)}</b> <span style="color:var(--encre-3)">${a.clientCode}</span></td>
+        <td>${a.module}</td><td class="r num">${a.nbCaisses}</td><td class="r num">${fmt(a.prixMensuel)}</td>
+        <td>${jour(a.debutLe)}</td><td><span class="pastille ${a.statut}">${a.statut}</span></td></tr>`).join('') || '<tr><td colspan="6" class="vide">Aucun abonnement.</td></tr>'}
+      </tbody></table>
+    </div>`;
+}
+
+// ---------------------------------------------------------------- clients
+async function voirClients() {
+  const cs = await api('/clients');
+  document.getElementById('ecran').innerHTML = `
+    <h2 class="titre">Clients</h2>
+    <p class="sous-titre">${cs.length} fiche(s).</p>
+    <div class="ligne-actions" style="margin:0 0 14px"><button class="btn p" onclick="nouveauClient()">+ Nouveau client</button></div>
+    <table><thead><tr><th>Code</th><th>Raison sociale</th><th>Ville</th><th>Contact</th><th>Statut</th><th class="r">Dû</th></tr></thead><tbody>
+    ${cs.map(c => `<tr onclick="aller('client', ${c.id})" style="cursor:pointer">
+      <td class="num">${c.code}</td>
+      <td><b>${echap(c.raisonSociale)}</b>${c.enseigne ? ' <span style="color:var(--encre-3)">· ' + echap(c.enseigne) + '</span>' : ''}</td>
+      <td>${echap(c.ville || '—')}</td>
+      <td>${echap(c.contactNom || '')} ${echap(c.contactTel || '')}</td>
+      <td><span class="pastille ${c.statut}">${c.statut}</span></td>
+      <td class="r num">${Number(c.soldeDu) > 0 ? '<b style="color:var(--rouge)">' + fmt(c.soldeDu) + '</b>' : '—'}</td>
+    </tr>`).join('') || '<tr><td colspan="6" class="vide">Aucun client. Créez le premier.</td></tr>'}
+    </tbody></table>`;
+}
+
+async function voirClient(id) {
+  const c = await api('/clients/' + id);
+  const factures = await api('/clients/' + id + '/factures');
+  const abos = await Promise.all(c.abonnements.map(a => api('/abonnements/' + a.id)));
+  document.getElementById('ecran').innerHTML = `
+    <a class="retour" href="#" onclick="aller('clients');return false">← Tous les clients</a>
+    <h2 class="titre">${echap(c.raisonSociale)} <span class="pastille ${c.statut}">${c.statut}</span></h2>
+    <p class="sous-titre">${c.code}${c.enseigne ? ' · ' + echap(c.enseigne) : ''}${c.ville ? ' · ' + echap(c.ville) : ''}</p>
+
+    <div class="bloc">
+      <h3>Contact</h3>
+      <div class="grille">
+        <div><div class="l" style="color:var(--encre-3);font-size:12px">Responsable</div>${echap(c.contactNom || '—')}</div>
+        <div><div class="l" style="color:var(--encre-3);font-size:12px">Téléphone</div>${echap(c.contactTel || '—')}</div>
+        <div><div class="l" style="color:var(--encre-3);font-size:12px">Courriel</div>${echap(c.contactEmail || '—')}</div>
+        <div><div class="l" style="color:var(--encre-3);font-size:12px">Matricule fiscal</div>${echap(c.matriculeFiscal || '—')}</div>
+      </div>
+      <div class="ligne-actions">
+        ${c.statut === 'SUSPENDU'
+          ? `<button class="btn" onclick="agir('/clients/${id}/reactiver', {}, 'Client rétabli')">Rétablir le service</button>`
+          : `<button class="btn d" onclick="suspendre(${id})">Suspendre</button>`}
+      </div>
+    </div>
+
+    <div class="bloc">
+      <h3>Abonnements</h3>
+      ${abos.map(a => `
+        <div style="border:1px solid var(--ligne);border-radius:var(--r-s);padding:12px;margin-bottom:10px">
+          <div style="display:flex;gap:10px;align-items:baseline;flex-wrap:wrap">
+            <b>${a.module}</b><span class="pastille ${a.statut}">${a.statut}</span>
+            <span class="num">${a.nbCaisses} caisse(s) · ${fmt(a.prixMensuel)}/mois</span>
+            <span style="color:var(--encre-3)">depuis le ${jour(a.debutLe)}</span>
+          </div>
+          ${a.licences.map(l => `<div style="margin-top:9px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <span class="cle">${l.cle}</span>
+            <span class="num" style="color:var(--encre-3)">${l.postesUtilises}/${l.postesMax} poste(s)</span>
+            ${l.revoquee ? '<span class="pastille RESILIE">RÉVOQUÉE</span>' : ''}
+            ${l.derniereVerif ? '<span style="color:var(--encre-3);font-size:12px">vue le ' + jour(l.derniereVerif) + '</span>' : '<span style="color:var(--encre-3);font-size:12px">jamais utilisée</span>'}
+            ${l.revoquee ? '' : `<button class="btn sm d" onclick="agir('/licences/${l.id}/revoquer', {motif:'Révoquée depuis le back-office'}, 'Licence révoquée')">Révoquer</button>`}
+          </div>`).join('')}
+          <div class="ligne-actions"><button class="btn sm" onclick="agir('/abonnements/${a.id}/factures', {}, 'Facture émise')">Émettre une facture</button></div>
+        </div>`).join('') || '<p class="vide">Aucun abonnement. Souscrivez pour créer la licence.</p>'}
+      <div class="ligne-actions"><button class="btn p" onclick="souscrire(${id})">+ Souscrire un module</button></div>
+    </div>
+
+    <div class="bloc"><h3>Factures</h3>${tableFactures(factures, false)}</div>`;
+}
+
+function tableFactures(fs, avecClient) {
+  if (!fs.length) return '<p class="vide">Aucune facture.</p>';
+  return `<table><thead><tr>${avecClient ? '<th>Client</th>' : ''}<th>Numéro</th><th>Période</th><th class="r">Montant</th><th class="r">Reste</th><th>Échéance</th><th>Statut</th><th></th></tr></thead><tbody>
+    ${fs.map(f => `<tr>
+      ${avecClient ? `<td><a href="#" onclick="aller('client', ${f.clientId});return false">${echap(f.clientNom)}</a></td>` : ''}
+      <td class="num">${f.numero}</td>
+      <td>${jour(f.periodeDebut)} → ${jour(f.periodeFin)}</td>
+      <td class="r num">${fmt(f.montant)}</td>
+      <td class="r num">${Number(f.reste) > 0 ? fmt(f.reste) : '—'}</td>
+      <td>${jour(f.echeanceLe)}</td>
+      <td><span class="pastille ${f.enRetard ? 'retard' : f.statut}">${f.enRetard ? 'EN RETARD' : f.statut}</span></td>
+      <td class="r">${f.statut === 'EMISE' ? `<button class="btn sm" onclick="encaisser(${f.id}, ${f.reste})">Encaisser</button>` : ''}</td>
+    </tr>`).join('')}</tbody></table>`;
+}
+
+// ---------------------------------------------------------------- impayés & journal
+async function voirRetards() {
+  const fs = await api('/factures/en-retard');
+  document.getElementById('ecran').innerHTML = `
+    <h2 class="titre">Impayés</h2>
+    <p class="sous-titre">Les factures échues et non réglées. La suspension reste une décision, pas un automatisme.</p>
+    ${tableFactures(fs, true)}
+    ${fs.length ? `<div class="ligne-actions"><button class="btn d" onclick="suspendreRetards()">Suspendre les retards de plus de 15 jours</button></div>` : ''}`;
+}
+
+async function voirJournal() {
+  const js = await api('/journal');
+  document.getElementById('ecran').innerHTML = `
+    <h2 class="titre">Journal</h2>
+    <p class="sous-titre">Qui a fait quoi. Jamais effacé.</p>
+    <table><thead><tr><th>Quand</th><th>Qui</th><th>Action</th><th>Détail</th></tr></thead><tbody>
+    ${js.map(j => `<tr><td class="num">${new Date(j.createdAt).toLocaleString('fr-FR')}</td>
+      <td>${echap(j.username || '—')}</td><td>${j.action}</td><td>${echap(j.details || '')}</td></tr>`).join('')
+      || '<tr><td colspan="4" class="vide">Rien encore.</td></tr>'}
+    </tbody></table>`;
+}
+
+// ---------------------------------------------------------------- actions
+async function agir(url, corps, message) {
+  try { await api(url, 'POST', corps || {}); dire(message); aller(vue, vueArg()); }
+  catch (e) { dire(e.message, true); }
+}
+function vueArg() { const m = location.hash.match(/client-(\d+)/); return m ? Number(m[1]) : undefined; }
+
+function boite(titre, champs, surValider) {
+  const d = document.createElement('dialog');
+  d.innerHTML = `<form method="dialog"><h3>${titre}</h3>${champs}
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn" value="non">Annuler</button><button class="btn p" value="oui">Valider</button></div></form>`;
+  document.body.appendChild(d);
+  d.addEventListener('close', async () => {
+    if (d.returnValue === 'oui') {
+      const v = {}; for (const el of d.querySelectorAll('[name]')) v[el.name] = el.value;
+      try { await surValider(v); } catch (e) { dire(e.message, true); }
+    }
+    d.remove();
+  });
+  d.showModal();
+}
+
+function nouveauClient() {
+  boite('Nouveau client', `
+    <label class="f">Raison sociale<input class="champ" name="raisonSociale" required /></label>
+    <label class="f">Enseigne<input class="champ" name="enseigne" /></label>
+    <label class="f">Responsable<input class="champ" name="contactNom" /></label>
+    <label class="f">Téléphone<input class="champ" name="contactTel" /></label>
+    <label class="f">Ville<input class="champ" name="ville" /></label>`,
+    async v => { const c = await api('/clients', 'POST', v); dire('Client ' + c.code + ' créé'); aller('client', c.id); });
+}
+
+function souscrire(id) {
+  boite('Souscrire un module', `
+    <label class="f">Module<select class="champ" name="module">
+      <option value="RESTO">Restaurant</option><option value="CAFE">Café</option><option value="SHOP">Boutique</option>
+      <option value="VETEMENT">Prêt-à-porter</option><option value="PATISSERIE">Pâtisserie</option><option value="PARFUMERIE">Parfumerie</option>
+    </select></label>
+    <label class="f">Nombre de caisses<input class="champ num" name="nbCaisses" type="number" min="1" value="1" /></label>
+    <label class="f">Prix mensuel (DT)<input class="champ num" name="prixMensuel" type="number" min="0" step="0.001" value="49" /></label>`,
+    async v => { await api('/clients/' + id + '/abonnements', 'POST',
+      { module: v.module, nbCaisses: Number(v.nbCaisses), prixMensuel: Number(v.prixMensuel) });
+      dire('Abonnement créé, licence générée'); aller('client', id); });
+}
+
+function encaisser(factureId, reste) {
+  boite('Saisir un règlement', `
+    <label class="f">Montant (DT)<input class="champ num" name="montant" type="number" step="0.001" value="${reste}" /></label>
+    <label class="f">Moyen<select class="champ" name="moyen">
+      <option value="VIREMENT">Virement</option><option value="CHEQUE">Chèque</option>
+      <option value="ESPECES">Espèces</option><option value="AUTRE">Autre</option></select></label>
+    <label class="f">Référence<input class="champ" name="reference" /></label>`,
+    async v => { await api('/factures/' + factureId + '/reglements', 'POST',
+      { montant: Number(v.montant), moyen: v.moyen, reference: v.reference });
+      dire('Règlement saisi'); aller(vue, vueArg()); });
+}
+
+function suspendre(id) {
+  boite('Suspendre ce client', `
+    <p style="margin:0;color:var(--encre-3);font-size:13px">La caisse passe en <b>lecture seule</b>.
+    Aucune donnée n'est effacée — le client peut continuer à consulter son historique.</p>
+    <label class="f">Motif<input class="champ" name="motif" placeholder="impayé, fin d'essai…" /></label>`,
+    async v => { await api('/clients/' + id + '/suspendre', 'POST', { motif: v.motif }); dire('Client suspendu'); aller('client', id); });
+}
+
+async function suspendreRetards() {
+  try {
+    const faits = await api('/factures/suspendre-les-retards', 'POST', {});
+    dire(faits.length ? faits.length + ' client(s) suspendu(s)' : 'Aucun retard au-delà du délai');
+    aller('retards');
+  } catch (e) { dire(e.message, true); }
+}
+
+// La vue « client » garde son identifiant dans l'adresse : recharger ne perd pas la fiche.
+const allerOriginal = aller;
+aller = function (quelle, arg) {
+  location.hash = quelle === 'client' ? 'client-' + arg : quelle;
+  allerOriginal(quelle, arg);
+};
+
+window.addEventListener('load', () => {
+  const garde = sessionStorage.getItem('jeton');
+  if (!garde) return;
+  jeton = garde;
+  api('/auth/moi').then(u => {
+    moi = u;
+    document.getElementById('connexion').style.display = 'none';
+    document.getElementById('app').style.display = 'grid';
+    document.getElementById('qui').textContent = u.fullName + ' · ' + u.role;
+    const h = location.hash.slice(1);
+    if (h.startsWith('client-')) aller('client', Number(h.split('-')[1])); else aller(h || 'bord');
+  }).catch(() => sessionStorage.removeItem('jeton'));
+});
+</script>
+</body>
+</html>
