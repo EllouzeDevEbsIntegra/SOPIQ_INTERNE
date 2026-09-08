@@ -1,0 +1,1304 @@
+{
+  "label": "Nour Parfums — carte de démonstration (parfumerie)",
+  "categories": [
+    {
+      "name": "Parfums femme",
+      "color": "#AD1457",
+      "sortOrder": 1
+    },
+    {
+      "name": "Parfums homme",
+      "color": "#283593",
+      "sortOrder": 2
+    },
+    {
+      "name": "Eaux de toilette",
+      "color": "#00838F",
+      "sortOrder": 3
+    },
+    {
+      "name": "Coffrets",
+      "color": "#6A1B9A",
+      "sortOrder": 4
+    },
+    {
+      "name": "Déodorants",
+      "color": "#0277BD",
+      "sortOrder": 5
+    },
+    {
+      "name": "Soins visage",
+      "color": "#EF6C00",
+      "sortOrder": 6
+    },
+    {
+      "name": "Soins corps",
+      "color": "#2E7D32",
+      "sortOrder": 7
+    },
+    {
+      "name": "Cheveux",
+      "color": "#5D4037",
+      "sortOrder": 8
+    },
+    {
+      "name": "Maquillage",
+      "color": "#C2185B",
+      "sortOrder": 9
+    },
+    {
+      "name": "Parfums d'ambiance & encens",
+      "color": "#795548",
+      "sortOrder": 10
+    },
+    {
+      "name": "Accessoires",
+      "color": "#616161",
+      "sortOrder": 11
+    }
+  ],
+  "modifierGroups": [],
+  "ingredients": [],
+  "variants": [
+    {
+      "name": "Contenance",
+      "namePosition": "SUFFIX",
+      "values": [
+        {
+          "name": "30 ml",
+          "shortName": "30"
+        },
+        {
+          "name": "50 ml",
+          "shortName": "50"
+        },
+        {
+          "name": "100 ml",
+          "shortName": "100"
+        },
+        {
+          "name": "200 ml",
+          "shortName": "200"
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "code": "PF-001",
+      "name": "Parfum Fleur d'Oranger",
+      "shortName": "Fleur orang",
+      "category": "Parfums femme",
+      "price": 180,
+      "sortOrder": 1,
+      "barcode": "2000004000011",
+      "purchasePrice": 108.0,
+      "stockManaged": true,
+      "stockMin": 2,
+      "favorite": true,
+      "favoriteOrder": 1,
+      "variant": "Contenance",
+      "defaultVariantValue": "50 ml",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "30 ml",
+          "price": 126.0
+        },
+        {
+          "value": "50 ml",
+          "price": 180
+        },
+        {
+          "value": "100 ml",
+          "price": 260
+        },
+        {
+          "value": "200 ml",
+          "price": 442.0
+        }
+      ]
+    },
+    {
+      "code": "PF-002",
+      "name": "Parfum Jasmin de Nabeul",
+      "shortName": "Jasmin",
+      "category": "Parfums femme",
+      "price": 165,
+      "sortOrder": 2,
+      "barcode": "2000004000028",
+      "purchasePrice": 99.0,
+      "stockManaged": true,
+      "stockMin": 2,
+      "variant": "Contenance",
+      "defaultVariantValue": "50 ml",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "30 ml",
+          "price": 115.5
+        },
+        {
+          "value": "50 ml",
+          "price": 165
+        },
+        {
+          "value": "100 ml",
+          "price": 240
+        },
+        {
+          "value": "200 ml",
+          "price": 408.0
+        }
+      ]
+    },
+    {
+      "code": "PF-003",
+      "name": "Parfum Rose de Tunis",
+      "shortName": "Rose Tunis",
+      "category": "Parfums femme",
+      "price": 175,
+      "sortOrder": 3,
+      "barcode": "2000004000035",
+      "purchasePrice": 105.0,
+      "stockManaged": true,
+      "stockMin": 2,
+      "variant": "Contenance",
+      "defaultVariantValue": "50 ml",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "30 ml",
+          "price": 122.5
+        },
+        {
+          "value": "50 ml",
+          "price": 175
+        },
+        {
+          "value": "100 ml",
+          "price": 250
+        },
+        {
+          "value": "200 ml",
+          "price": 425.0
+        }
+      ]
+    },
+    {
+      "code": "PF-004",
+      "name": "Parfum Ambre Nuit",
+      "shortName": "Ambre nuit",
+      "category": "Parfums femme",
+      "price": 220,
+      "sortOrder": 4,
+      "barcode": "2000004000042",
+      "purchasePrice": 132.0,
+      "stockManaged": true,
+      "stockMin": 2,
+      "variant": "Contenance",
+      "defaultVariantValue": "50 ml",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "30 ml",
+          "price": 154.0
+        },
+        {
+          "value": "50 ml",
+          "price": 220
+        },
+        {
+          "value": "100 ml",
+          "price": 320
+        },
+        {
+          "value": "200 ml",
+          "price": 544.0
+        }
+      ]
+    },
+    {
+      "code": "PF-005",
+      "name": "Parfum Vanille Précieuse",
+      "shortName": "Vanille",
+      "category": "Parfums femme",
+      "price": 190,
+      "sortOrder": 5,
+      "barcode": "2000004000059",
+      "purchasePrice": 114.0,
+      "stockManaged": true,
+      "stockMin": 2,
+      "variant": "Contenance",
+      "defaultVariantValue": "50 ml",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "30 ml",
+          "price": 133.0
+        },
+        {
+          "value": "50 ml",
+          "price": 190
+        },
+        {
+          "value": "100 ml",
+          "price": 270
+        },
+        {
+          "value": "200 ml",
+          "price": 459.0
+        }
+      ]
+    },
+    {
+      "code": "PF-006",
+      "name": "Parfum Oud Royal",
+      "shortName": "Oud royal",
+      "category": "Parfums femme",
+      "price": 280,
+      "sortOrder": 6,
+      "barcode": "2000004000066",
+      "purchasePrice": 168.0,
+      "stockManaged": true,
+      "stockMin": 2,
+      "variant": "Contenance",
+      "defaultVariantValue": "50 ml",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "30 ml",
+          "price": 196.0
+        },
+        {
+          "value": "50 ml",
+          "price": 280
+        },
+        {
+          "value": "100 ml",
+          "price": 420
+        },
+        {
+          "value": "200 ml",
+          "price": 714.0
+        }
+      ]
+    },
+    {
+      "code": "PF-007",
+      "name": "Parfum Musk Blanc",
+      "shortName": "Musk blanc",
+      "category": "Parfums femme",
+      "price": 150,
+      "sortOrder": 7,
+      "barcode": "2000004000073",
+      "purchasePrice": 90.0,
+      "stockManaged": true,
+      "stockMin": 2,
+      "variant": "Contenance",
+      "defaultVariantValue": "50 ml",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "30 ml",
+          "price": 105.0
+        },
+        {
+          "value": "50 ml",
+          "price": 150
+        },
+        {
+          "value": "100 ml",
+          "price": 210
+        },
+        {
+          "value": "200 ml",
+          "price": 357.0
+        }
+      ]
+    },
+    {
+      "code": "PF-008",
+      "name": "Parfum Fleur de Figuier",
+      "shortName": "Figuier",
+      "category": "Parfums femme",
+      "price": 170,
+      "sortOrder": 8,
+      "barcode": "2000004000080",
+      "purchasePrice": 102.0,
+      "stockManaged": true,
+      "stockMin": 2,
+      "variant": "Contenance",
+      "defaultVariantValue": "50 ml",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "30 ml",
+          "price": 119.0
+        },
+        {
+          "value": "50 ml",
+          "price": 170
+        },
+        {
+          "value": "100 ml",
+          "price": 245
+        },
+        {
+          "value": "200 ml",
+          "price": 416.5
+        }
+      ]
+    },
+    {
+      "code": "PF-009",
+      "name": "Parfum Bois de Cèdre",
+      "shortName": "Bois cèdre",
+      "category": "Parfums homme",
+      "price": 175,
+      "sortOrder": 9,
+      "barcode": "2000004000097",
+      "purchasePrice": 105.0,
+      "stockManaged": true,
+      "stockMin": 2,
+      "favorite": true,
+      "favoriteOrder": 2,
+      "variant": "Contenance",
+      "defaultVariantValue": "50 ml",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "30 ml",
+          "price": 122.5
+        },
+        {
+          "value": "50 ml",
+          "price": 175
+        },
+        {
+          "value": "100 ml",
+          "price": 250
+        },
+        {
+          "value": "200 ml",
+          "price": 425.0
+        }
+      ]
+    },
+    {
+      "code": "PF-010",
+      "name": "Parfum Cuir Noir",
+      "shortName": "Cuir noir",
+      "category": "Parfums homme",
+      "price": 210,
+      "sortOrder": 10,
+      "barcode": "2000004000103",
+      "purchasePrice": 126.0,
+      "stockManaged": true,
+      "stockMin": 2,
+      "variant": "Contenance",
+      "defaultVariantValue": "50 ml",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "30 ml",
+          "price": 147.0
+        },
+        {
+          "value": "50 ml",
+          "price": 210
+        },
+        {
+          "value": "100 ml",
+          "price": 300
+        },
+        {
+          "value": "200 ml",
+          "price": 510.0
+        }
+      ]
+    },
+    {
+      "code": "PF-011",
+      "name": "Parfum Santal Intense",
+      "shortName": "Santal",
+      "category": "Parfums homme",
+      "price": 195,
+      "sortOrder": 11,
+      "barcode": "2000004000110",
+      "purchasePrice": 117.0,
+      "stockManaged": true,
+      "stockMin": 2,
+      "variant": "Contenance",
+      "defaultVariantValue": "50 ml",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "30 ml",
+          "price": 136.5
+        },
+        {
+          "value": "50 ml",
+          "price": 195
+        },
+        {
+          "value": "100 ml",
+          "price": 280
+        },
+        {
+          "value": "200 ml",
+          "price": 476.0
+        }
+      ]
+    },
+    {
+      "code": "PF-012",
+      "name": "Parfum Oud Homme",
+      "shortName": "Oud homme",
+      "category": "Parfums homme",
+      "price": 290,
+      "sortOrder": 12,
+      "barcode": "2000004000127",
+      "purchasePrice": 174.0,
+      "stockManaged": true,
+      "stockMin": 2,
+      "variant": "Contenance",
+      "defaultVariantValue": "50 ml",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "30 ml",
+          "price": 203.0
+        },
+        {
+          "value": "50 ml",
+          "price": 290
+        },
+        {
+          "value": "100 ml",
+          "price": 430
+        },
+        {
+          "value": "200 ml",
+          "price": 731.0
+        }
+      ]
+    },
+    {
+      "code": "PF-013",
+      "name": "Parfum Marine Fraîche",
+      "shortName": "Marine",
+      "category": "Parfums homme",
+      "price": 160,
+      "sortOrder": 13,
+      "barcode": "2000004000134",
+      "purchasePrice": 96.0,
+      "stockManaged": true,
+      "stockMin": 2,
+      "variant": "Contenance",
+      "defaultVariantValue": "50 ml",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "30 ml",
+          "price": 112.0
+        },
+        {
+          "value": "50 ml",
+          "price": 160
+        },
+        {
+          "value": "100 ml",
+          "price": 230
+        },
+        {
+          "value": "200 ml",
+          "price": 391.0
+        }
+      ]
+    },
+    {
+      "code": "PF-014",
+      "name": "Parfum Épices d'Orient",
+      "shortName": "Épices",
+      "category": "Parfums homme",
+      "price": 185,
+      "sortOrder": 14,
+      "barcode": "2000004000141",
+      "purchasePrice": 111.0,
+      "stockManaged": true,
+      "stockMin": 2,
+      "variant": "Contenance",
+      "defaultVariantValue": "50 ml",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "30 ml",
+          "price": 129.5
+        },
+        {
+          "value": "50 ml",
+          "price": 185
+        },
+        {
+          "value": "100 ml",
+          "price": 265
+        },
+        {
+          "value": "200 ml",
+          "price": 450.5
+        }
+      ]
+    },
+    {
+      "code": "PF-015",
+      "name": "Eau de toilette Agrumes 100 ml",
+      "shortName": "EDT agrumes",
+      "category": "Eaux de toilette",
+      "price": 95,
+      "sortOrder": 15,
+      "barcode": "2000004000158",
+      "purchasePrice": 57.0,
+      "stockManaged": true,
+      "stockMin": 3
+    },
+    {
+      "code": "PF-016",
+      "name": "Eau de toilette Lavande 100 ml",
+      "shortName": "EDT lavande",
+      "category": "Eaux de toilette",
+      "price": 90,
+      "sortOrder": 16,
+      "barcode": "2000004000165",
+      "purchasePrice": 54.0,
+      "stockManaged": true,
+      "stockMin": 3
+    },
+    {
+      "code": "PF-017",
+      "name": "Eau de toilette Menthe 100 ml",
+      "shortName": "EDT menthe",
+      "category": "Eaux de toilette",
+      "price": 85,
+      "sortOrder": 17,
+      "barcode": "2000004000172",
+      "purchasePrice": 51.0,
+      "stockManaged": true,
+      "stockMin": 3
+    },
+    {
+      "code": "PF-018",
+      "name": "Eau de toilette Fleurie 100 ml",
+      "shortName": "EDT fleurie",
+      "category": "Eaux de toilette",
+      "price": 95,
+      "sortOrder": 18,
+      "barcode": "2000004000189",
+      "purchasePrice": 57.0,
+      "stockManaged": true,
+      "stockMin": 3
+    },
+    {
+      "code": "PF-019",
+      "name": "Eau de Cologne 200 ml",
+      "shortName": "Cologne 200",
+      "category": "Eaux de toilette",
+      "price": 45,
+      "sortOrder": 19,
+      "barcode": "2000004000196",
+      "purchasePrice": 27.0,
+      "stockManaged": true,
+      "stockMin": 3
+    },
+    {
+      "code": "PF-020",
+      "name": "Eau de rose 250 ml",
+      "shortName": "Eau rose",
+      "category": "Eaux de toilette",
+      "price": 18,
+      "sortOrder": 20,
+      "barcode": "2000004000202",
+      "purchasePrice": 10.8,
+      "stockManaged": true,
+      "stockMin": 3
+    },
+    {
+      "code": "PF-021",
+      "name": "Eau de fleur d'oranger 250 ml",
+      "shortName": "Eau fl oran",
+      "category": "Eaux de toilette",
+      "price": 20,
+      "sortOrder": 21,
+      "barcode": "2000004000219",
+      "purchasePrice": 12.0,
+      "stockManaged": true,
+      "stockMin": 3
+    },
+    {
+      "code": "PF-022",
+      "name": "Coffret parfum + déodorant femme",
+      "shortName": "Coffret F",
+      "category": "Coffrets",
+      "price": 240,
+      "sortOrder": 22,
+      "barcode": "2000004000226",
+      "purchasePrice": 156.0,
+      "stockManaged": true,
+      "stockMin": 2
+    },
+    {
+      "code": "PF-023",
+      "name": "Coffret parfum + déodorant homme",
+      "shortName": "Coffret H",
+      "category": "Coffrets",
+      "price": 250,
+      "sortOrder": 23,
+      "barcode": "2000004000233",
+      "purchasePrice": 162.5,
+      "stockManaged": true,
+      "stockMin": 2
+    },
+    {
+      "code": "PF-024",
+      "name": "Coffret découverte 4 miniatures",
+      "shortName": "Coffret mini",
+      "category": "Coffrets",
+      "price": 120,
+      "sortOrder": 24,
+      "barcode": "2000004000240",
+      "purchasePrice": 78.0,
+      "stockManaged": true,
+      "stockMin": 2,
+      "favorite": true,
+      "favoriteOrder": 3
+    },
+    {
+      "code": "PF-025",
+      "name": "Coffret soin visage",
+      "shortName": "Coffret soin",
+      "category": "Coffrets",
+      "price": 150,
+      "sortOrder": 25,
+      "barcode": "2000004000257",
+      "purchasePrice": 97.5,
+      "stockManaged": true,
+      "stockMin": 2
+    },
+    {
+      "code": "PF-026",
+      "name": "Coffret cadeau fête des mères",
+      "shortName": "Coffret fête",
+      "category": "Coffrets",
+      "price": 180,
+      "sortOrder": 26,
+      "barcode": "2000004000264",
+      "purchasePrice": 117.0,
+      "stockManaged": true,
+      "stockMin": 2
+    },
+    {
+      "code": "PF-027",
+      "name": "Déodorant spray femme 150 ml",
+      "shortName": "Déo F spray",
+      "category": "Déodorants",
+      "price": 16,
+      "sortOrder": 27,
+      "barcode": "2000004000271",
+      "purchasePrice": 9.92,
+      "stockManaged": true,
+      "stockMin": 6,
+      "favorite": true,
+      "favoriteOrder": 4
+    },
+    {
+      "code": "PF-028",
+      "name": "Déodorant spray homme 150 ml",
+      "shortName": "Déo H spray",
+      "category": "Déodorants",
+      "price": 16,
+      "sortOrder": 28,
+      "barcode": "2000004000288",
+      "purchasePrice": 9.92,
+      "stockManaged": true,
+      "stockMin": 6
+    },
+    {
+      "code": "PF-029",
+      "name": "Déodorant bille femme 50 ml",
+      "shortName": "Déo F bille",
+      "category": "Déodorants",
+      "price": 12,
+      "sortOrder": 29,
+      "barcode": "2000004000295",
+      "purchasePrice": 7.44,
+      "stockManaged": true,
+      "stockMin": 6
+    },
+    {
+      "code": "PF-030",
+      "name": "Déodorant bille homme 50 ml",
+      "shortName": "Déo H bille",
+      "category": "Déodorants",
+      "price": 12,
+      "sortOrder": 30,
+      "barcode": "2000004000301",
+      "purchasePrice": 7.44,
+      "stockManaged": true,
+      "stockMin": 6
+    },
+    {
+      "code": "PF-031",
+      "name": "Déodorant sans alcool 150 ml",
+      "shortName": "Déo s/alcool",
+      "category": "Déodorants",
+      "price": 18,
+      "sortOrder": 31,
+      "barcode": "2000004000318",
+      "purchasePrice": 11.16,
+      "stockManaged": true,
+      "stockMin": 6
+    },
+    {
+      "code": "PF-032",
+      "name": "Crème hydratante visage 50 ml",
+      "shortName": "Crème visage",
+      "category": "Soins visage",
+      "price": 45,
+      "sortOrder": 32,
+      "barcode": "2000004000325",
+      "purchasePrice": 27.0,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-033",
+      "name": "Crème anti-âge 50 ml",
+      "shortName": "Anti-âge",
+      "category": "Soins visage",
+      "price": 85,
+      "sortOrder": 33,
+      "barcode": "2000004000332",
+      "purchasePrice": 51.0,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-034",
+      "name": "Sérum vitamine C 30 ml",
+      "shortName": "Sérum vit C",
+      "category": "Soins visage",
+      "price": 65,
+      "sortOrder": 34,
+      "barcode": "2000004000349",
+      "purchasePrice": 39.0,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-035",
+      "name": "Gel nettoyant visage 200 ml",
+      "shortName": "Gel nett",
+      "category": "Soins visage",
+      "price": 28,
+      "sortOrder": 35,
+      "barcode": "2000004000356",
+      "purchasePrice": 16.8,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-036",
+      "name": "Eau micellaire 400 ml",
+      "shortName": "Micellaire",
+      "category": "Soins visage",
+      "price": 24,
+      "sortOrder": 36,
+      "barcode": "2000004000363",
+      "purchasePrice": 14.4,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-037",
+      "name": "Masque visage argile",
+      "shortName": "Masque argile",
+      "category": "Soins visage",
+      "price": 15,
+      "sortOrder": 37,
+      "barcode": "2000004000370",
+      "purchasePrice": 9.0,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-038",
+      "name": "Crème solaire SPF 50",
+      "shortName": "Solaire 50",
+      "category": "Soins visage",
+      "price": 42,
+      "sortOrder": 38,
+      "barcode": "2000004000387",
+      "purchasePrice": 25.2,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-039",
+      "name": "Baume à lèvres",
+      "shortName": "Baume lèvres",
+      "category": "Soins visage",
+      "price": 8,
+      "sortOrder": 39,
+      "barcode": "2000004000394",
+      "purchasePrice": 4.8,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-040",
+      "name": "Lait corporel 400 ml",
+      "shortName": "Lait corps",
+      "category": "Soins corps",
+      "price": 26,
+      "sortOrder": 40,
+      "barcode": "2000004000400",
+      "purchasePrice": 15.6,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-041",
+      "name": "Gel douche 500 ml",
+      "shortName": "Gel douche",
+      "category": "Soins corps",
+      "price": 18,
+      "sortOrder": 41,
+      "barcode": "2000004000417",
+      "purchasePrice": 10.8,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-042",
+      "name": "Savon d'Alep 200 g",
+      "shortName": "Savon Alep",
+      "category": "Soins corps",
+      "price": 12,
+      "sortOrder": 42,
+      "barcode": "2000004000424",
+      "purchasePrice": 7.2,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-043",
+      "name": "Huile d'argan 100 ml",
+      "shortName": "Argan 100",
+      "category": "Soins corps",
+      "price": 38,
+      "sortOrder": 43,
+      "barcode": "2000004000431",
+      "purchasePrice": 22.8,
+      "stockManaged": true,
+      "stockMin": 4,
+      "favorite": true,
+      "favoriteOrder": 5
+    },
+    {
+      "code": "PF-044",
+      "name": "Huile de figue de barbarie 30 ml",
+      "shortName": "H figue barb",
+      "category": "Soins corps",
+      "price": 65,
+      "sortOrder": 44,
+      "barcode": "2000004000448",
+      "purchasePrice": 39.0,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-045",
+      "name": "Gommage corps 200 ml",
+      "shortName": "Gommage",
+      "category": "Soins corps",
+      "price": 32,
+      "sortOrder": 45,
+      "barcode": "2000004000455",
+      "purchasePrice": 19.2,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-046",
+      "name": "Crème mains 75 ml",
+      "shortName": "Crème mains",
+      "category": "Soins corps",
+      "price": 14,
+      "sortOrder": 46,
+      "barcode": "2000004000462",
+      "purchasePrice": 8.4,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-047",
+      "name": "Ghassoul 500 g",
+      "shortName": "Ghassoul",
+      "category": "Soins corps",
+      "price": 16,
+      "sortOrder": 47,
+      "barcode": "2000004000479",
+      "purchasePrice": 9.6,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-048",
+      "name": "Shampoing cheveux secs 400 ml",
+      "shortName": "Shamp secs",
+      "category": "Cheveux",
+      "price": 22,
+      "sortOrder": 48,
+      "barcode": "2000004000486",
+      "purchasePrice": 13.2,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-049",
+      "name": "Shampoing antipelliculaire 400 ml",
+      "shortName": "Shamp anti",
+      "category": "Cheveux",
+      "price": 24,
+      "sortOrder": 49,
+      "barcode": "2000004000493",
+      "purchasePrice": 14.4,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-050",
+      "name": "Après-shampoing 300 ml",
+      "shortName": "Après-sh",
+      "category": "Cheveux",
+      "price": 20,
+      "sortOrder": 50,
+      "barcode": "2000004000509",
+      "purchasePrice": 12.0,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-051",
+      "name": "Masque capillaire 300 ml",
+      "shortName": "Masque cap",
+      "category": "Cheveux",
+      "price": 28,
+      "sortOrder": 51,
+      "barcode": "2000004000516",
+      "purchasePrice": 16.8,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-052",
+      "name": "Huile capillaire 100 ml",
+      "shortName": "Huile cap",
+      "category": "Cheveux",
+      "price": 18,
+      "sortOrder": 52,
+      "barcode": "2000004000523",
+      "purchasePrice": 10.8,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-053",
+      "name": "Laque fixation forte",
+      "shortName": "Laque",
+      "category": "Cheveux",
+      "price": 16,
+      "sortOrder": 53,
+      "barcode": "2000004000530",
+      "purchasePrice": 9.6,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-054",
+      "name": "Coloration cheveux",
+      "shortName": "Coloration",
+      "category": "Cheveux",
+      "price": 25,
+      "sortOrder": 54,
+      "barcode": "2000004000547",
+      "purchasePrice": 15.0,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-055",
+      "name": "Rouge à lèvres",
+      "shortName": "Rouge lèvres",
+      "category": "Maquillage",
+      "price": 28,
+      "sortOrder": 55,
+      "barcode": "2000004000554",
+      "purchasePrice": 15.4,
+      "stockManaged": true,
+      "stockMin": 5
+    },
+    {
+      "code": "PF-056",
+      "name": "Gloss",
+      "shortName": "Gloss",
+      "category": "Maquillage",
+      "price": 22,
+      "sortOrder": 56,
+      "barcode": "2000004000561",
+      "purchasePrice": 12.1,
+      "stockManaged": true,
+      "stockMin": 5
+    },
+    {
+      "code": "PF-057",
+      "name": "Mascara",
+      "shortName": "Mascara",
+      "category": "Maquillage",
+      "price": 32,
+      "sortOrder": 57,
+      "barcode": "2000004000578",
+      "purchasePrice": 17.6,
+      "stockManaged": true,
+      "stockMin": 5
+    },
+    {
+      "code": "PF-058",
+      "name": "Eye-liner",
+      "shortName": "Eye-liner",
+      "category": "Maquillage",
+      "price": 18,
+      "sortOrder": 58,
+      "barcode": "2000004000585",
+      "purchasePrice": 9.9,
+      "stockManaged": true,
+      "stockMin": 5
+    },
+    {
+      "code": "PF-059",
+      "name": "Fond de teint",
+      "shortName": "Fond teint",
+      "category": "Maquillage",
+      "price": 45,
+      "sortOrder": 59,
+      "barcode": "2000004000592",
+      "purchasePrice": 24.75,
+      "stockManaged": true,
+      "stockMin": 5
+    },
+    {
+      "code": "PF-060",
+      "name": "Poudre compacte",
+      "shortName": "Poudre",
+      "category": "Maquillage",
+      "price": 38,
+      "sortOrder": 60,
+      "barcode": "2000004000608",
+      "purchasePrice": 20.9,
+      "stockManaged": true,
+      "stockMin": 5
+    },
+    {
+      "code": "PF-061",
+      "name": "Fard à paupières palette",
+      "shortName": "Palette",
+      "category": "Maquillage",
+      "price": 55,
+      "sortOrder": 61,
+      "barcode": "2000004000615",
+      "purchasePrice": 30.25,
+      "stockManaged": true,
+      "stockMin": 5
+    },
+    {
+      "code": "PF-062",
+      "name": "Vernis à ongles",
+      "shortName": "Vernis",
+      "category": "Maquillage",
+      "price": 12,
+      "sortOrder": 62,
+      "barcode": "2000004000622",
+      "purchasePrice": 6.6,
+      "stockManaged": true,
+      "stockMin": 5
+    },
+    {
+      "code": "PF-063",
+      "name": "Dissolvant 100 ml",
+      "shortName": "Dissolvant",
+      "category": "Maquillage",
+      "price": 8,
+      "sortOrder": 63,
+      "barcode": "2000004000639",
+      "purchasePrice": 4.4,
+      "stockManaged": true,
+      "stockMin": 5
+    },
+    {
+      "code": "PF-064",
+      "name": "Crayon à sourcils",
+      "shortName": "Crayon sourc",
+      "category": "Maquillage",
+      "price": 15,
+      "sortOrder": 64,
+      "barcode": "2000004000646",
+      "purchasePrice": 8.25,
+      "stockManaged": true,
+      "stockMin": 5
+    },
+    {
+      "code": "PF-065",
+      "name": "Encens bakhour 50 g",
+      "shortName": "Bakhour",
+      "category": "Parfums d'ambiance & encens",
+      "price": 25,
+      "sortOrder": 65,
+      "barcode": "2000004000653",
+      "purchasePrice": 15.0,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-066",
+      "name": "Charbon pour encens",
+      "shortName": "Charbon enc",
+      "category": "Parfums d'ambiance & encens",
+      "price": 5,
+      "sortOrder": 66,
+      "barcode": "2000004000660",
+      "purchasePrice": 3.0,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-067",
+      "name": "Brûle-parfum",
+      "shortName": "Brûle-parfum",
+      "category": "Parfums d'ambiance & encens",
+      "price": 35,
+      "sortOrder": 67,
+      "barcode": "2000004000677",
+      "purchasePrice": 21.0,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-068",
+      "name": "Diffuseur de parfum maison",
+      "shortName": "Diffuseur",
+      "category": "Parfums d'ambiance & encens",
+      "price": 65,
+      "sortOrder": 68,
+      "barcode": "2000004000684",
+      "purchasePrice": 39.0,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-069",
+      "name": "Bougie parfumée",
+      "shortName": "Bougie parf",
+      "category": "Parfums d'ambiance & encens",
+      "price": 28,
+      "sortOrder": 69,
+      "barcode": "2000004000691",
+      "purchasePrice": 16.8,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-070",
+      "name": "Spray d'ambiance 300 ml",
+      "shortName": "Spray amb",
+      "category": "Parfums d'ambiance & encens",
+      "price": 22,
+      "sortOrder": 70,
+      "barcode": "2000004000707",
+      "purchasePrice": 13.2,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-071",
+      "name": "Musc en pierre",
+      "shortName": "Musc pierre",
+      "category": "Parfums d'ambiance & encens",
+      "price": 18,
+      "sortOrder": 71,
+      "barcode": "2000004000714",
+      "purchasePrice": 10.8,
+      "stockManaged": true,
+      "stockMin": 4
+    },
+    {
+      "code": "PF-072",
+      "name": "Vaporisateur de sac",
+      "shortName": "Vapo sac",
+      "category": "Accessoires",
+      "price": 15,
+      "sortOrder": 72,
+      "barcode": "2000004000721",
+      "purchasePrice": 8.25,
+      "stockManaged": true,
+      "stockMin": 3
+    },
+    {
+      "code": "PF-073",
+      "name": "Trousse de toilette",
+      "shortName": "Trousse",
+      "category": "Accessoires",
+      "price": 35,
+      "sortOrder": 73,
+      "barcode": "2000004000738",
+      "purchasePrice": 19.25,
+      "stockManaged": true,
+      "stockMin": 3
+    },
+    {
+      "code": "PF-074",
+      "name": "Miroir de poche",
+      "shortName": "Miroir",
+      "category": "Accessoires",
+      "price": 12,
+      "sortOrder": 74,
+      "barcode": "2000004000745",
+      "purchasePrice": 6.6,
+      "stockManaged": true,
+      "stockMin": 3
+    },
+    {
+      "code": "PF-075",
+      "name": "Pinceaux maquillage (set)",
+      "shortName": "Pinceaux",
+      "category": "Accessoires",
+      "price": 45,
+      "sortOrder": 75,
+      "barcode": "2000004000752",
+      "purchasePrice": 24.75,
+      "stockManaged": true,
+      "stockMin": 3
+    },
+    {
+      "code": "PF-076",
+      "name": "Éponge à maquillage",
+      "shortName": "Éponge maq",
+      "category": "Accessoires",
+      "price": 8,
+      "sortOrder": 76,
+      "barcode": "2000004000769",
+      "purchasePrice": 4.4,
+      "stockManaged": true,
+      "stockMin": 3
+    }
+  ]
+}

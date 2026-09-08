@@ -1,0 +1,2273 @@
+{
+  "label": "Style Boutique — carte de démonstration (prêt-à-porter)",
+  "categories": [
+    {
+      "name": "Femme — hauts",
+      "color": "#AD1457",
+      "sortOrder": 1
+    },
+    {
+      "name": "Femme — bas",
+      "color": "#880E4F",
+      "sortOrder": 2
+    },
+    {
+      "name": "Femme — robes",
+      "color": "#C2185B",
+      "sortOrder": 3
+    },
+    {
+      "name": "Homme — hauts",
+      "color": "#283593",
+      "sortOrder": 4
+    },
+    {
+      "name": "Homme — bas",
+      "color": "#1A237E",
+      "sortOrder": 5
+    },
+    {
+      "name": "Enfant",
+      "color": "#00838F",
+      "sortOrder": 6
+    },
+    {
+      "name": "Vestes & manteaux",
+      "color": "#4E342E",
+      "sortOrder": 7
+    },
+    {
+      "name": "Chaussures",
+      "color": "#5D4037",
+      "sortOrder": 8
+    },
+    {
+      "name": "Accessoires",
+      "color": "#616161",
+      "sortOrder": 9
+    },
+    {
+      "name": "Sous-vêtements & bas",
+      "color": "#7B1FA2",
+      "sortOrder": 10
+    }
+  ],
+  "modifierGroups": [],
+  "ingredients": [],
+  "variants": [
+    {
+      "name": "Taille",
+      "namePosition": "SUFFIX",
+      "values": [
+        {
+          "name": "XS",
+          "shortName": "XS"
+        },
+        {
+          "name": "S",
+          "shortName": "S"
+        },
+        {
+          "name": "M",
+          "shortName": "M"
+        },
+        {
+          "name": "L",
+          "shortName": "L"
+        },
+        {
+          "name": "XL",
+          "shortName": "XL"
+        },
+        {
+          "name": "XXL",
+          "shortName": "XXL"
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "code": "VT-001",
+      "name": "T-shirt col rond femme blanc",
+      "shortName": "TS col rond bla",
+      "category": "Femme — hauts",
+      "price": 29.9,
+      "sortOrder": 1,
+      "barcode": "2000005000010",
+      "purchasePrice": 14.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "favorite": true,
+      "favoriteOrder": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 29.9
+        },
+        {
+          "value": "S",
+          "price": 29.9
+        },
+        {
+          "value": "M",
+          "price": 29.9
+        },
+        {
+          "value": "L",
+          "price": 29.9
+        },
+        {
+          "value": "XL",
+          "price": 29.9
+        },
+        {
+          "value": "XXL",
+          "price": 29.9
+        }
+      ]
+    },
+    {
+      "code": "VT-002",
+      "name": "T-shirt col rond femme noir",
+      "shortName": "TS col rond noi",
+      "category": "Femme — hauts",
+      "price": 29.9,
+      "sortOrder": 2,
+      "barcode": "2000005000027",
+      "purchasePrice": 14.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 29.9
+        },
+        {
+          "value": "S",
+          "price": 29.9
+        },
+        {
+          "value": "M",
+          "price": 29.9
+        },
+        {
+          "value": "L",
+          "price": 29.9
+        },
+        {
+          "value": "XL",
+          "price": 29.9
+        },
+        {
+          "value": "XXL",
+          "price": 29.9
+        }
+      ]
+    },
+    {
+      "code": "VT-003",
+      "name": "T-shirt col rond femme bleu",
+      "shortName": "TS col rond ble",
+      "category": "Femme — hauts",
+      "price": 29.9,
+      "sortOrder": 3,
+      "barcode": "2000005000034",
+      "purchasePrice": 14.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 29.9
+        },
+        {
+          "value": "S",
+          "price": 29.9
+        },
+        {
+          "value": "M",
+          "price": 29.9
+        },
+        {
+          "value": "L",
+          "price": 29.9
+        },
+        {
+          "value": "XL",
+          "price": 29.9
+        },
+        {
+          "value": "XXL",
+          "price": 29.9
+        }
+      ]
+    },
+    {
+      "code": "VT-004",
+      "name": "Chemisier femme blanc",
+      "shortName": "Chemisier bla",
+      "category": "Femme — hauts",
+      "price": 69.9,
+      "sortOrder": 4,
+      "barcode": "2000005000041",
+      "purchasePrice": 34.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 69.9
+        },
+        {
+          "value": "S",
+          "price": 69.9
+        },
+        {
+          "value": "M",
+          "price": 69.9
+        },
+        {
+          "value": "L",
+          "price": 69.9
+        },
+        {
+          "value": "XL",
+          "price": 69.9
+        },
+        {
+          "value": "XXL",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "code": "VT-005",
+      "name": "Chemisier femme noir",
+      "shortName": "Chemisier noi",
+      "category": "Femme — hauts",
+      "price": 69.9,
+      "sortOrder": 5,
+      "barcode": "2000005000058",
+      "purchasePrice": 34.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 69.9
+        },
+        {
+          "value": "S",
+          "price": 69.9
+        },
+        {
+          "value": "M",
+          "price": 69.9
+        },
+        {
+          "value": "L",
+          "price": 69.9
+        },
+        {
+          "value": "XL",
+          "price": 69.9
+        },
+        {
+          "value": "XXL",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "code": "VT-006",
+      "name": "Pull col V femme gris",
+      "shortName": "Pull V gris",
+      "category": "Femme — hauts",
+      "price": 79.9,
+      "sortOrder": 6,
+      "barcode": "2000005000065",
+      "purchasePrice": 39.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 79.9
+        },
+        {
+          "value": "S",
+          "price": 79.9
+        },
+        {
+          "value": "M",
+          "price": 79.9
+        },
+        {
+          "value": "L",
+          "price": 79.9
+        },
+        {
+          "value": "XL",
+          "price": 79.9
+        },
+        {
+          "value": "XXL",
+          "price": 79.9
+        }
+      ]
+    },
+    {
+      "code": "VT-007",
+      "name": "Sweat à capuche femme rose",
+      "shortName": "Sweat rose",
+      "category": "Femme — hauts",
+      "price": 89.9,
+      "sortOrder": 7,
+      "barcode": "2000005000072",
+      "purchasePrice": 44.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 89.9
+        },
+        {
+          "value": "S",
+          "price": 89.9
+        },
+        {
+          "value": "M",
+          "price": 89.9
+        },
+        {
+          "value": "L",
+          "price": 89.9
+        },
+        {
+          "value": "XL",
+          "price": 89.9
+        },
+        {
+          "value": "XXL",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "code": "VT-008",
+      "name": "Top en dentelle femme noir",
+      "shortName": "Top dentelle",
+      "category": "Femme — hauts",
+      "price": 49.9,
+      "sortOrder": 8,
+      "barcode": "2000005000089",
+      "purchasePrice": 24.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 49.9
+        },
+        {
+          "value": "S",
+          "price": 49.9
+        },
+        {
+          "value": "M",
+          "price": 49.9
+        },
+        {
+          "value": "L",
+          "price": 49.9
+        },
+        {
+          "value": "XL",
+          "price": 49.9
+        },
+        {
+          "value": "XXL",
+          "price": 49.9
+        }
+      ]
+    },
+    {
+      "code": "VT-009",
+      "name": "Blouse fleurie femme",
+      "shortName": "Blouse fleur",
+      "category": "Femme — hauts",
+      "price": 59.9,
+      "sortOrder": 9,
+      "barcode": "2000005000096",
+      "purchasePrice": 29.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 59.9
+        },
+        {
+          "value": "S",
+          "price": 59.9
+        },
+        {
+          "value": "M",
+          "price": 59.9
+        },
+        {
+          "value": "L",
+          "price": 59.9
+        },
+        {
+          "value": "XL",
+          "price": 59.9
+        },
+        {
+          "value": "XXL",
+          "price": 59.9
+        }
+      ]
+    },
+    {
+      "code": "VT-010",
+      "name": "Jean slim femme bleu",
+      "shortName": "Jean slim bl",
+      "category": "Femme — bas",
+      "price": 89.9,
+      "sortOrder": 10,
+      "barcode": "2000005000102",
+      "purchasePrice": 45.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "favorite": true,
+      "favoriteOrder": 2,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 89.9
+        },
+        {
+          "value": "S",
+          "price": 89.9
+        },
+        {
+          "value": "M",
+          "price": 89.9
+        },
+        {
+          "value": "L",
+          "price": 89.9
+        },
+        {
+          "value": "XL",
+          "price": 89.9
+        },
+        {
+          "value": "XXL",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "code": "VT-011",
+      "name": "Jean mom femme brut",
+      "shortName": "Jean mom",
+      "category": "Femme — bas",
+      "price": 99.9,
+      "sortOrder": 11,
+      "barcode": "2000005000119",
+      "purchasePrice": 50.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 99.9
+        },
+        {
+          "value": "S",
+          "price": 99.9
+        },
+        {
+          "value": "M",
+          "price": 99.9
+        },
+        {
+          "value": "L",
+          "price": 99.9
+        },
+        {
+          "value": "XL",
+          "price": 99.9
+        },
+        {
+          "value": "XXL",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "code": "VT-012",
+      "name": "Pantalon classique femme noir",
+      "shortName": "Pant clas F",
+      "category": "Femme — bas",
+      "price": 79.9,
+      "sortOrder": 12,
+      "barcode": "2000005000126",
+      "purchasePrice": 39.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 79.9
+        },
+        {
+          "value": "S",
+          "price": 79.9
+        },
+        {
+          "value": "M",
+          "price": 79.9
+        },
+        {
+          "value": "L",
+          "price": 79.9
+        },
+        {
+          "value": "XL",
+          "price": 79.9
+        },
+        {
+          "value": "XXL",
+          "price": 79.9
+        }
+      ]
+    },
+    {
+      "code": "VT-013",
+      "name": "Legging femme noir",
+      "shortName": "Legging",
+      "category": "Femme — bas",
+      "price": 34.9,
+      "sortOrder": 13,
+      "barcode": "2000005000133",
+      "purchasePrice": 16.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 34.9
+        },
+        {
+          "value": "S",
+          "price": 34.9
+        },
+        {
+          "value": "M",
+          "price": 34.9
+        },
+        {
+          "value": "L",
+          "price": 34.9
+        },
+        {
+          "value": "XL",
+          "price": 34.9
+        },
+        {
+          "value": "XXL",
+          "price": 34.9
+        }
+      ]
+    },
+    {
+      "code": "VT-014",
+      "name": "Jupe midi femme",
+      "shortName": "Jupe midi",
+      "category": "Femme — bas",
+      "price": 69.9,
+      "sortOrder": 14,
+      "barcode": "2000005000140",
+      "purchasePrice": 34.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 69.9
+        },
+        {
+          "value": "S",
+          "price": 69.9
+        },
+        {
+          "value": "M",
+          "price": 69.9
+        },
+        {
+          "value": "L",
+          "price": 69.9
+        },
+        {
+          "value": "XL",
+          "price": 69.9
+        },
+        {
+          "value": "XXL",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "code": "VT-015",
+      "name": "Short en jean femme",
+      "shortName": "Short jean F",
+      "category": "Femme — bas",
+      "price": 54.9,
+      "sortOrder": 15,
+      "barcode": "2000005000157",
+      "purchasePrice": 26.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 54.9
+        },
+        {
+          "value": "S",
+          "price": 54.9
+        },
+        {
+          "value": "M",
+          "price": 54.9
+        },
+        {
+          "value": "L",
+          "price": 54.9
+        },
+        {
+          "value": "XL",
+          "price": 54.9
+        },
+        {
+          "value": "XXL",
+          "price": 54.9
+        }
+      ]
+    },
+    {
+      "code": "VT-016",
+      "name": "Robe d'été fleurie",
+      "shortName": "Robe été",
+      "category": "Femme — robes",
+      "price": 99.9,
+      "sortOrder": 16,
+      "barcode": "2000005000164",
+      "purchasePrice": 48.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "favorite": true,
+      "favoriteOrder": 3,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 99.9
+        },
+        {
+          "value": "S",
+          "price": 99.9
+        },
+        {
+          "value": "M",
+          "price": 99.9
+        },
+        {
+          "value": "L",
+          "price": 99.9
+        },
+        {
+          "value": "XL",
+          "price": 99.9
+        },
+        {
+          "value": "XXL",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "code": "VT-017",
+      "name": "Robe de soirée noire",
+      "shortName": "Robe soirée",
+      "category": "Femme — robes",
+      "price": 189.9,
+      "sortOrder": 17,
+      "barcode": "2000005000171",
+      "purchasePrice": 95.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 189.9
+        },
+        {
+          "value": "S",
+          "price": 189.9
+        },
+        {
+          "value": "M",
+          "price": 189.9
+        },
+        {
+          "value": "L",
+          "price": 189.9
+        },
+        {
+          "value": "XL",
+          "price": 189.9
+        },
+        {
+          "value": "XXL",
+          "price": 189.9
+        }
+      ]
+    },
+    {
+      "code": "VT-018",
+      "name": "Robe chemise beige",
+      "shortName": "Robe chemise",
+      "category": "Femme — robes",
+      "price": 119.9,
+      "sortOrder": 18,
+      "barcode": "2000005000188",
+      "purchasePrice": 58.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 119.9
+        },
+        {
+          "value": "S",
+          "price": 119.9
+        },
+        {
+          "value": "M",
+          "price": 119.9
+        },
+        {
+          "value": "L",
+          "price": 119.9
+        },
+        {
+          "value": "XL",
+          "price": 119.9
+        },
+        {
+          "value": "XXL",
+          "price": 119.9
+        }
+      ]
+    },
+    {
+      "code": "VT-019",
+      "name": "Robe pull hiver",
+      "shortName": "Robe pull",
+      "category": "Femme — robes",
+      "price": 109.9,
+      "sortOrder": 19,
+      "barcode": "2000005000195",
+      "purchasePrice": 54.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 109.9
+        },
+        {
+          "value": "S",
+          "price": 109.9
+        },
+        {
+          "value": "M",
+          "price": 109.9
+        },
+        {
+          "value": "L",
+          "price": 109.9
+        },
+        {
+          "value": "XL",
+          "price": 109.9
+        },
+        {
+          "value": "XXL",
+          "price": 109.9
+        }
+      ]
+    },
+    {
+      "code": "VT-020",
+      "name": "Caftan brodé",
+      "shortName": "Caftan",
+      "category": "Femme — robes",
+      "price": 249.9,
+      "sortOrder": 20,
+      "barcode": "2000005000201",
+      "purchasePrice": 130.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 249.9
+        },
+        {
+          "value": "S",
+          "price": 249.9
+        },
+        {
+          "value": "M",
+          "price": 249.9
+        },
+        {
+          "value": "L",
+          "price": 249.9
+        },
+        {
+          "value": "XL",
+          "price": 249.9
+        },
+        {
+          "value": "XXL",
+          "price": 249.9
+        }
+      ]
+    },
+    {
+      "code": "VT-021",
+      "name": "T-shirt homme blanc",
+      "shortName": "TS H bla",
+      "category": "Homme — hauts",
+      "price": 29.9,
+      "sortOrder": 21,
+      "barcode": "2000005000218",
+      "purchasePrice": 14.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 29.9
+        },
+        {
+          "value": "S",
+          "price": 29.9
+        },
+        {
+          "value": "M",
+          "price": 29.9
+        },
+        {
+          "value": "L",
+          "price": 29.9
+        },
+        {
+          "value": "XL",
+          "price": 29.9
+        },
+        {
+          "value": "XXL",
+          "price": 29.9
+        }
+      ]
+    },
+    {
+      "code": "VT-022",
+      "name": "T-shirt homme noir",
+      "shortName": "TS H noi",
+      "category": "Homme — hauts",
+      "price": 29.9,
+      "sortOrder": 22,
+      "barcode": "2000005000225",
+      "purchasePrice": 14.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "favorite": true,
+      "favoriteOrder": 4,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 29.9
+        },
+        {
+          "value": "S",
+          "price": 29.9
+        },
+        {
+          "value": "M",
+          "price": 29.9
+        },
+        {
+          "value": "L",
+          "price": 29.9
+        },
+        {
+          "value": "XL",
+          "price": 29.9
+        },
+        {
+          "value": "XXL",
+          "price": 29.9
+        }
+      ]
+    },
+    {
+      "code": "VT-023",
+      "name": "T-shirt homme bleu marine",
+      "shortName": "TS H ble",
+      "category": "Homme — hauts",
+      "price": 29.9,
+      "sortOrder": 23,
+      "barcode": "2000005000232",
+      "purchasePrice": 14.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 29.9
+        },
+        {
+          "value": "S",
+          "price": 29.9
+        },
+        {
+          "value": "M",
+          "price": 29.9
+        },
+        {
+          "value": "L",
+          "price": 29.9
+        },
+        {
+          "value": "XL",
+          "price": 29.9
+        },
+        {
+          "value": "XXL",
+          "price": 29.9
+        }
+      ]
+    },
+    {
+      "code": "VT-024",
+      "name": "Polo homme bleu",
+      "shortName": "Polo H bleu",
+      "category": "Homme — hauts",
+      "price": 59.9,
+      "sortOrder": 24,
+      "barcode": "2000005000249",
+      "purchasePrice": 29.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 59.9
+        },
+        {
+          "value": "S",
+          "price": 59.9
+        },
+        {
+          "value": "M",
+          "price": 59.9
+        },
+        {
+          "value": "L",
+          "price": 59.9
+        },
+        {
+          "value": "XL",
+          "price": 59.9
+        },
+        {
+          "value": "XXL",
+          "price": 59.9
+        }
+      ]
+    },
+    {
+      "code": "VT-025",
+      "name": "Chemise homme blanche",
+      "shortName": "Chemise H bl",
+      "category": "Homme — hauts",
+      "price": 79.9,
+      "sortOrder": 25,
+      "barcode": "2000005000256",
+      "purchasePrice": 39.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 79.9
+        },
+        {
+          "value": "S",
+          "price": 79.9
+        },
+        {
+          "value": "M",
+          "price": 79.9
+        },
+        {
+          "value": "L",
+          "price": 79.9
+        },
+        {
+          "value": "XL",
+          "price": 79.9
+        },
+        {
+          "value": "XXL",
+          "price": 79.9
+        }
+      ]
+    },
+    {
+      "code": "VT-026",
+      "name": "Chemise à carreaux homme",
+      "shortName": "Chemise carr",
+      "category": "Homme — hauts",
+      "price": 84.9,
+      "sortOrder": 26,
+      "barcode": "2000005000263",
+      "purchasePrice": 42.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 84.9
+        },
+        {
+          "value": "S",
+          "price": 84.9
+        },
+        {
+          "value": "M",
+          "price": 84.9
+        },
+        {
+          "value": "L",
+          "price": 84.9
+        },
+        {
+          "value": "XL",
+          "price": 84.9
+        },
+        {
+          "value": "XXL",
+          "price": 84.9
+        }
+      ]
+    },
+    {
+      "code": "VT-027",
+      "name": "Pull col rond homme gris",
+      "shortName": "Pull H gris",
+      "category": "Homme — hauts",
+      "price": 89.9,
+      "sortOrder": 27,
+      "barcode": "2000005000270",
+      "purchasePrice": 44.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 89.9
+        },
+        {
+          "value": "S",
+          "price": 89.9
+        },
+        {
+          "value": "M",
+          "price": 89.9
+        },
+        {
+          "value": "L",
+          "price": 89.9
+        },
+        {
+          "value": "XL",
+          "price": 89.9
+        },
+        {
+          "value": "XXL",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "code": "VT-028",
+      "name": "Sweat à capuche homme noir",
+      "shortName": "Sweat H noir",
+      "category": "Homme — hauts",
+      "price": 99.9,
+      "sortOrder": 28,
+      "barcode": "2000005000287",
+      "purchasePrice": 49.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 99.9
+        },
+        {
+          "value": "S",
+          "price": 99.9
+        },
+        {
+          "value": "M",
+          "price": 99.9
+        },
+        {
+          "value": "L",
+          "price": 99.9
+        },
+        {
+          "value": "XL",
+          "price": 99.9
+        },
+        {
+          "value": "XXL",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "code": "VT-029",
+      "name": "Jean droit homme bleu",
+      "shortName": "Jean droit H",
+      "category": "Homme — bas",
+      "price": 99.9,
+      "sortOrder": 29,
+      "barcode": "2000005000294",
+      "purchasePrice": 50.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "favorite": true,
+      "favoriteOrder": 5,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 99.9
+        },
+        {
+          "value": "S",
+          "price": 99.9
+        },
+        {
+          "value": "M",
+          "price": 99.9
+        },
+        {
+          "value": "L",
+          "price": 99.9
+        },
+        {
+          "value": "XL",
+          "price": 99.9
+        },
+        {
+          "value": "XXL",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "code": "VT-030",
+      "name": "Jean slim homme noir",
+      "shortName": "Jean slim H",
+      "category": "Homme — bas",
+      "price": 99.9,
+      "sortOrder": 30,
+      "barcode": "2000005000300",
+      "purchasePrice": 50.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 99.9
+        },
+        {
+          "value": "S",
+          "price": 99.9
+        },
+        {
+          "value": "M",
+          "price": 99.9
+        },
+        {
+          "value": "L",
+          "price": 99.9
+        },
+        {
+          "value": "XL",
+          "price": 99.9
+        },
+        {
+          "value": "XXL",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "code": "VT-031",
+      "name": "Chino homme beige",
+      "shortName": "Chino beige",
+      "category": "Homme — bas",
+      "price": 89.9,
+      "sortOrder": 31,
+      "barcode": "2000005000317",
+      "purchasePrice": 44.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 89.9
+        },
+        {
+          "value": "S",
+          "price": 89.9
+        },
+        {
+          "value": "M",
+          "price": 89.9
+        },
+        {
+          "value": "L",
+          "price": 89.9
+        },
+        {
+          "value": "XL",
+          "price": 89.9
+        },
+        {
+          "value": "XXL",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "code": "VT-032",
+      "name": "Pantalon de costume homme",
+      "shortName": "Pant costume",
+      "category": "Homme — bas",
+      "price": 129.9,
+      "sortOrder": 32,
+      "barcode": "2000005000324",
+      "purchasePrice": 65.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 129.9
+        },
+        {
+          "value": "S",
+          "price": 129.9
+        },
+        {
+          "value": "M",
+          "price": 129.9
+        },
+        {
+          "value": "L",
+          "price": 129.9
+        },
+        {
+          "value": "XL",
+          "price": 129.9
+        },
+        {
+          "value": "XXL",
+          "price": 129.9
+        }
+      ]
+    },
+    {
+      "code": "VT-033",
+      "name": "Short homme kaki",
+      "shortName": "Short H kaki",
+      "category": "Homme — bas",
+      "price": 49.9,
+      "sortOrder": 33,
+      "barcode": "2000005000331",
+      "purchasePrice": 24.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 49.9
+        },
+        {
+          "value": "S",
+          "price": 49.9
+        },
+        {
+          "value": "M",
+          "price": 49.9
+        },
+        {
+          "value": "L",
+          "price": 49.9
+        },
+        {
+          "value": "XL",
+          "price": 49.9
+        },
+        {
+          "value": "XXL",
+          "price": 49.9
+        }
+      ]
+    },
+    {
+      "code": "VT-034",
+      "name": "Jogging homme gris",
+      "shortName": "Jogging H",
+      "category": "Homme — bas",
+      "price": 69.9,
+      "sortOrder": 34,
+      "barcode": "2000005000348",
+      "purchasePrice": 34.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 69.9
+        },
+        {
+          "value": "S",
+          "price": 69.9
+        },
+        {
+          "value": "M",
+          "price": 69.9
+        },
+        {
+          "value": "L",
+          "price": 69.9
+        },
+        {
+          "value": "XL",
+          "price": 69.9
+        },
+        {
+          "value": "XXL",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "code": "VT-035",
+      "name": "T-shirt enfant imprimé",
+      "shortName": "TS enfant",
+      "category": "Enfant",
+      "price": 24.9,
+      "sortOrder": 35,
+      "barcode": "2000005000355",
+      "purchasePrice": 11.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 24.9
+        },
+        {
+          "value": "S",
+          "price": 24.9
+        },
+        {
+          "value": "M",
+          "price": 24.9
+        },
+        {
+          "value": "L",
+          "price": 24.9
+        },
+        {
+          "value": "XL",
+          "price": 24.9
+        },
+        {
+          "value": "XXL",
+          "price": 24.9
+        }
+      ]
+    },
+    {
+      "code": "VT-036",
+      "name": "Sweat enfant",
+      "shortName": "Sweat enfant",
+      "category": "Enfant",
+      "price": 49.9,
+      "sortOrder": 36,
+      "barcode": "2000005000362",
+      "purchasePrice": 24.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 49.9
+        },
+        {
+          "value": "S",
+          "price": 49.9
+        },
+        {
+          "value": "M",
+          "price": 49.9
+        },
+        {
+          "value": "L",
+          "price": 49.9
+        },
+        {
+          "value": "XL",
+          "price": 49.9
+        },
+        {
+          "value": "XXL",
+          "price": 49.9
+        }
+      ]
+    },
+    {
+      "code": "VT-037",
+      "name": "Jean enfant",
+      "shortName": "Jean enfant",
+      "category": "Enfant",
+      "price": 59.9,
+      "sortOrder": 37,
+      "barcode": "2000005000379",
+      "purchasePrice": 29.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 59.9
+        },
+        {
+          "value": "S",
+          "price": 59.9
+        },
+        {
+          "value": "M",
+          "price": 59.9
+        },
+        {
+          "value": "L",
+          "price": 59.9
+        },
+        {
+          "value": "XL",
+          "price": 59.9
+        },
+        {
+          "value": "XXL",
+          "price": 59.9
+        }
+      ]
+    },
+    {
+      "code": "VT-038",
+      "name": "Robe fillette",
+      "shortName": "Robe fillette",
+      "category": "Enfant",
+      "price": 54.9,
+      "sortOrder": 38,
+      "barcode": "2000005000386",
+      "purchasePrice": 26.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 54.9
+        },
+        {
+          "value": "S",
+          "price": 54.9
+        },
+        {
+          "value": "M",
+          "price": 54.9
+        },
+        {
+          "value": "L",
+          "price": 54.9
+        },
+        {
+          "value": "XL",
+          "price": 54.9
+        },
+        {
+          "value": "XXL",
+          "price": 54.9
+        }
+      ]
+    },
+    {
+      "code": "VT-039",
+      "name": "Ensemble bébé",
+      "shortName": "Ens bébé",
+      "category": "Enfant",
+      "price": 44.9,
+      "sortOrder": 39,
+      "barcode": "2000005000393",
+      "purchasePrice": 21.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 44.9
+        },
+        {
+          "value": "S",
+          "price": 44.9
+        },
+        {
+          "value": "M",
+          "price": 44.9
+        },
+        {
+          "value": "L",
+          "price": 44.9
+        },
+        {
+          "value": "XL",
+          "price": 44.9
+        },
+        {
+          "value": "XXL",
+          "price": 44.9
+        }
+      ]
+    },
+    {
+      "code": "VT-040",
+      "name": "Pyjama enfant",
+      "shortName": "Pyjama enf",
+      "category": "Enfant",
+      "price": 39.9,
+      "sortOrder": 40,
+      "barcode": "2000005000409",
+      "purchasePrice": 19.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 39.9
+        },
+        {
+          "value": "S",
+          "price": 39.9
+        },
+        {
+          "value": "M",
+          "price": 39.9
+        },
+        {
+          "value": "L",
+          "price": 39.9
+        },
+        {
+          "value": "XL",
+          "price": 39.9
+        },
+        {
+          "value": "XXL",
+          "price": 39.9
+        }
+      ]
+    },
+    {
+      "code": "VT-041",
+      "name": "Veste en jean femme",
+      "shortName": "Veste jean F",
+      "category": "Vestes & manteaux",
+      "price": 129.9,
+      "sortOrder": 41,
+      "barcode": "2000005000416",
+      "purchasePrice": 65.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 129.9
+        },
+        {
+          "value": "S",
+          "price": 129.9
+        },
+        {
+          "value": "M",
+          "price": 129.9
+        },
+        {
+          "value": "L",
+          "price": 129.9
+        },
+        {
+          "value": "XL",
+          "price": 129.9
+        },
+        {
+          "value": "XXL",
+          "price": 129.9
+        }
+      ]
+    },
+    {
+      "code": "VT-042",
+      "name": "Blouson homme",
+      "shortName": "Blouson H",
+      "category": "Vestes & manteaux",
+      "price": 189.9,
+      "sortOrder": 42,
+      "barcode": "2000005000423",
+      "purchasePrice": 95.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 189.9
+        },
+        {
+          "value": "S",
+          "price": 189.9
+        },
+        {
+          "value": "M",
+          "price": 189.9
+        },
+        {
+          "value": "L",
+          "price": 189.9
+        },
+        {
+          "value": "XL",
+          "price": 189.9
+        },
+        {
+          "value": "XXL",
+          "price": 189.9
+        }
+      ]
+    },
+    {
+      "code": "VT-043",
+      "name": "Manteau long femme",
+      "shortName": "Manteau F",
+      "category": "Vestes & manteaux",
+      "price": 249.9,
+      "sortOrder": 43,
+      "barcode": "2000005000430",
+      "purchasePrice": 125.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 249.9
+        },
+        {
+          "value": "S",
+          "price": 249.9
+        },
+        {
+          "value": "M",
+          "price": 249.9
+        },
+        {
+          "value": "L",
+          "price": 249.9
+        },
+        {
+          "value": "XL",
+          "price": 249.9
+        },
+        {
+          "value": "XXL",
+          "price": 249.9
+        }
+      ]
+    },
+    {
+      "code": "VT-044",
+      "name": "Doudoune homme",
+      "shortName": "Doudoune H",
+      "category": "Vestes & manteaux",
+      "price": 199.9,
+      "sortOrder": 44,
+      "barcode": "2000005000447",
+      "purchasePrice": 100.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 199.9
+        },
+        {
+          "value": "S",
+          "price": 199.9
+        },
+        {
+          "value": "M",
+          "price": 199.9
+        },
+        {
+          "value": "L",
+          "price": 199.9
+        },
+        {
+          "value": "XL",
+          "price": 199.9
+        },
+        {
+          "value": "XXL",
+          "price": 199.9
+        }
+      ]
+    },
+    {
+      "code": "VT-045",
+      "name": "Blazer femme",
+      "shortName": "Blazer F",
+      "category": "Vestes & manteaux",
+      "price": 159.9,
+      "sortOrder": 45,
+      "barcode": "2000005000454",
+      "purchasePrice": 80.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 159.9
+        },
+        {
+          "value": "S",
+          "price": 159.9
+        },
+        {
+          "value": "M",
+          "price": 159.9
+        },
+        {
+          "value": "L",
+          "price": 159.9
+        },
+        {
+          "value": "XL",
+          "price": 159.9
+        },
+        {
+          "value": "XXL",
+          "price": 159.9
+        }
+      ]
+    },
+    {
+      "code": "VT-046",
+      "name": "Baskets blanches femme",
+      "shortName": "Baskets F",
+      "category": "Chaussures",
+      "price": 149.9,
+      "sortOrder": 46,
+      "barcode": "2000005000461",
+      "purchasePrice": 75.0,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-047",
+      "name": "Baskets homme",
+      "shortName": "Baskets H",
+      "category": "Chaussures",
+      "price": 159.9,
+      "sortOrder": 47,
+      "barcode": "2000005000478",
+      "purchasePrice": 80.0,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-048",
+      "name": "Sandales femme",
+      "shortName": "Sandales F",
+      "category": "Chaussures",
+      "price": 89.9,
+      "sortOrder": 48,
+      "barcode": "2000005000485",
+      "purchasePrice": 44.0,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-049",
+      "name": "Mocassins homme",
+      "shortName": "Mocassins",
+      "category": "Chaussures",
+      "price": 179.9,
+      "sortOrder": 49,
+      "barcode": "2000005000492",
+      "purchasePrice": 90.0,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-050",
+      "name": "Ballerines femme",
+      "shortName": "Ballerines",
+      "category": "Chaussures",
+      "price": 79.9,
+      "sortOrder": 50,
+      "barcode": "2000005000508",
+      "purchasePrice": 39.0,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-051",
+      "name": "Bottines femme",
+      "shortName": "Bottines",
+      "category": "Chaussures",
+      "price": 189.9,
+      "sortOrder": 51,
+      "barcode": "2000005000515",
+      "purchasePrice": 95.0,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-052",
+      "name": "Ceinture cuir homme",
+      "shortName": "Ceinture H",
+      "category": "Accessoires",
+      "price": 49.9,
+      "sortOrder": 52,
+      "barcode": "2000005000522",
+      "purchasePrice": 24.0,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-053",
+      "name": "Sac à main femme",
+      "shortName": "Sac main",
+      "category": "Accessoires",
+      "price": 129.9,
+      "sortOrder": 53,
+      "barcode": "2000005000539",
+      "purchasePrice": 65.0,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-054",
+      "name": "Portefeuille homme",
+      "shortName": "Portefeuille",
+      "category": "Accessoires",
+      "price": 59.9,
+      "sortOrder": 54,
+      "barcode": "2000005000546",
+      "purchasePrice": 29.0,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-055",
+      "name": "Écharpe",
+      "shortName": "Écharpe",
+      "category": "Accessoires",
+      "price": 34.9,
+      "sortOrder": 55,
+      "barcode": "2000005000553",
+      "purchasePrice": 16.0,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-056",
+      "name": "Bonnet",
+      "shortName": "Bonnet",
+      "category": "Accessoires",
+      "price": 24.9,
+      "sortOrder": 56,
+      "barcode": "2000005000560",
+      "purchasePrice": 11.0,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-057",
+      "name": "Casquette",
+      "shortName": "Casquette",
+      "category": "Accessoires",
+      "price": 34.9,
+      "sortOrder": 57,
+      "barcode": "2000005000577",
+      "purchasePrice": 16.0,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-058",
+      "name": "Lunettes de soleil",
+      "shortName": "Lunettes",
+      "category": "Accessoires",
+      "price": 79.9,
+      "sortOrder": 58,
+      "barcode": "2000005000584",
+      "purchasePrice": 39.0,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-059",
+      "name": "Montre",
+      "shortName": "Montre",
+      "category": "Accessoires",
+      "price": 149.9,
+      "sortOrder": 59,
+      "barcode": "2000005000591",
+      "purchasePrice": 75.0,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-060",
+      "name": "Chaussettes homme (lot de 3)",
+      "shortName": "Chauss H x3",
+      "category": "Sous-vêtements & bas",
+      "price": 19.9,
+      "sortOrder": 60,
+      "barcode": "2000005000607",
+      "purchasePrice": 9.0,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-061",
+      "name": "Chaussettes femme (lot de 3)",
+      "shortName": "Chauss F x3",
+      "category": "Sous-vêtements & bas",
+      "price": 19.9,
+      "sortOrder": 61,
+      "barcode": "2000005000614",
+      "purchasePrice": 9.0,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-062",
+      "name": "Collant femme",
+      "shortName": "Collant",
+      "category": "Sous-vêtements & bas",
+      "price": 14.9,
+      "sortOrder": 62,
+      "barcode": "2000005000621",
+      "purchasePrice": 6.5,
+      "stockManaged": true,
+      "stockMin": 1
+    },
+    {
+      "code": "VT-063",
+      "name": "Boxer homme (lot de 2)",
+      "shortName": "Boxer x2",
+      "category": "Sous-vêtements & bas",
+      "price": 29.9,
+      "sortOrder": 63,
+      "barcode": "2000005000638",
+      "purchasePrice": 14.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 29.9
+        },
+        {
+          "value": "S",
+          "price": 29.9
+        },
+        {
+          "value": "M",
+          "price": 29.9
+        },
+        {
+          "value": "L",
+          "price": 29.9
+        },
+        {
+          "value": "XL",
+          "price": 29.9
+        },
+        {
+          "value": "XXL",
+          "price": 29.9
+        }
+      ]
+    },
+    {
+      "code": "VT-064",
+      "name": "Soutien-gorge",
+      "shortName": "SG",
+      "category": "Sous-vêtements & bas",
+      "price": 49.9,
+      "sortOrder": 64,
+      "barcode": "2000005000645",
+      "purchasePrice": 24.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 49.9
+        },
+        {
+          "value": "S",
+          "price": 49.9
+        },
+        {
+          "value": "M",
+          "price": 49.9
+        },
+        {
+          "value": "L",
+          "price": 49.9
+        },
+        {
+          "value": "XL",
+          "price": 49.9
+        },
+        {
+          "value": "XXL",
+          "price": 49.9
+        }
+      ]
+    },
+    {
+      "code": "VT-065",
+      "name": "Pyjama femme",
+      "shortName": "Pyjama F",
+      "category": "Sous-vêtements & bas",
+      "price": 69.9,
+      "sortOrder": 65,
+      "barcode": "2000005000652",
+      "purchasePrice": 34.0,
+      "stockManaged": true,
+      "stockMin": 1,
+      "variant": "Taille",
+      "defaultVariantValue": "M",
+      "askVariant": true,
+      "variantPrices": [
+        {
+          "value": "XS",
+          "price": 69.9
+        },
+        {
+          "value": "S",
+          "price": 69.9
+        },
+        {
+          "value": "M",
+          "price": 69.9
+        },
+        {
+          "value": "L",
+          "price": 69.9
+        },
+        {
+          "value": "XL",
+          "price": 69.9
+        },
+        {
+          "value": "XXL",
+          "price": 69.9
+        }
+      ]
+    }
+  ]
+}

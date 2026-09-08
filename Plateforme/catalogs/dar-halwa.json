@@ -1,0 +1,709 @@
+{
+  "label": "Dar Halwa — carte de démonstration (pâtisserie tunisienne)",
+  "categories": [
+    {
+      "name": "Pâtisserie orientale",
+      "color": "#B8860B",
+      "sortOrder": 1,
+      "printDestination": "CUISINE"
+    },
+    {
+      "name": "Gâteaux & entremets",
+      "color": "#C2185B",
+      "sortOrder": 2,
+      "printDestination": "CUISINE"
+    },
+    {
+      "name": "Viennoiserie",
+      "color": "#D2691E",
+      "sortOrder": 3,
+      "printDestination": "CUISINE"
+    },
+    {
+      "name": "Pain & boulangerie",
+      "color": "#8D6E63",
+      "sortOrder": 4,
+      "printDestination": "CUISINE"
+    },
+    {
+      "name": "Salés",
+      "color": "#EF6C00",
+      "sortOrder": 5,
+      "printDestination": "CUISINE"
+    },
+    {
+      "name": "Commandes & fêtes",
+      "color": "#6A1B9A",
+      "sortOrder": 6,
+      "printDestination": "CUISINE"
+    },
+    {
+      "name": "Boissons",
+      "color": "#0288D1",
+      "sortOrder": 7
+    }
+  ],
+  "modifierGroups": [],
+  "ingredients": [],
+  "variants": [],
+  "products": [
+    {
+      "code": "PA-001",
+      "name": "Baklawa amande (kg)",
+      "shortName": "Baklawa am",
+      "category": "Pâtisserie orientale",
+      "price": 58.0,
+      "sortOrder": 1,
+      "barcode": "2000003000012",
+      "favorite": true,
+      "favoriteOrder": 1
+    },
+    {
+      "code": "PA-002",
+      "name": "Baklawa pistache (kg)",
+      "shortName": "Baklawa pist",
+      "category": "Pâtisserie orientale",
+      "price": 120.0,
+      "sortOrder": 2,
+      "barcode": "2000003000029"
+    },
+    {
+      "code": "PA-003",
+      "name": "Samsa amande (kg)",
+      "shortName": "Samsa am",
+      "category": "Pâtisserie orientale",
+      "price": 55.0,
+      "sortOrder": 3,
+      "barcode": "2000003000036"
+    },
+    {
+      "code": "PA-004",
+      "name": "Samsa pistache (kg)",
+      "shortName": "Samsa pist",
+      "category": "Pâtisserie orientale",
+      "price": 118.0,
+      "sortOrder": 4,
+      "barcode": "2000003000043"
+    },
+    {
+      "code": "PA-005",
+      "name": "Makroudh dattes (kg)",
+      "shortName": "Makroudh",
+      "category": "Pâtisserie orientale",
+      "price": 32.0,
+      "sortOrder": 5,
+      "barcode": "2000003000050"
+    },
+    {
+      "code": "PA-006",
+      "name": "Makroudh asmar (kg)",
+      "shortName": "Makr asmar",
+      "category": "Pâtisserie orientale",
+      "price": 28.0,
+      "sortOrder": 6,
+      "barcode": "2000003000067"
+    },
+    {
+      "code": "PA-007",
+      "name": "Kaak warka (kg)",
+      "shortName": "Kaak warka",
+      "category": "Pâtisserie orientale",
+      "price": 78.0,
+      "sortOrder": 7,
+      "barcode": "2000003000074"
+    },
+    {
+      "code": "PA-008",
+      "name": "Kaak youyou (kg)",
+      "shortName": "Kaak youyou",
+      "category": "Pâtisserie orientale",
+      "price": 34.0,
+      "sortOrder": 8,
+      "barcode": "2000003000081"
+    },
+    {
+      "code": "PA-009",
+      "name": "Ghraïba homs (kg)",
+      "shortName": "Ghraïba homs",
+      "category": "Pâtisserie orientale",
+      "price": 36.0,
+      "sortOrder": 9,
+      "barcode": "2000003000098"
+    },
+    {
+      "code": "PA-010",
+      "name": "Ghraïba dattes (kg)",
+      "shortName": "Ghraïba dat",
+      "category": "Pâtisserie orientale",
+      "price": 38.0,
+      "sortOrder": 10,
+      "barcode": "2000003000104"
+    },
+    {
+      "code": "PA-011",
+      "name": "Mlabes pistache (kg)",
+      "shortName": "Mlabes pist",
+      "category": "Pâtisserie orientale",
+      "price": 140.0,
+      "sortOrder": 11,
+      "barcode": "2000003000111"
+    },
+    {
+      "code": "PA-012",
+      "name": "Bouza aux noisettes (kg)",
+      "shortName": "Bouza",
+      "category": "Pâtisserie orientale",
+      "price": 45.0,
+      "sortOrder": 12,
+      "barcode": "2000003000128"
+    },
+    {
+      "code": "PA-013",
+      "name": "Zlabia (kg)",
+      "shortName": "Zlabia",
+      "category": "Pâtisserie orientale",
+      "price": 22.0,
+      "sortOrder": 13,
+      "barcode": "2000003000135"
+    },
+    {
+      "code": "PA-014",
+      "name": "Mkharek (kg)",
+      "shortName": "Mkharek",
+      "category": "Pâtisserie orientale",
+      "price": 24.0,
+      "sortOrder": 14,
+      "barcode": "2000003000142"
+    },
+    {
+      "code": "PA-015",
+      "name": "Assidat zgougou (part)",
+      "shortName": "Assida",
+      "category": "Pâtisserie orientale",
+      "price": 6.5,
+      "sortOrder": 15,
+      "barcode": "2000003000159"
+    },
+    {
+      "code": "PA-016",
+      "name": "Kaak ambar (kg)",
+      "shortName": "Kaak ambar",
+      "category": "Pâtisserie orientale",
+      "price": 68.0,
+      "sortOrder": 16,
+      "barcode": "2000003000166"
+    },
+    {
+      "code": "PA-017",
+      "name": "Petits fours assortis (kg)",
+      "shortName": "Petits fours",
+      "category": "Pâtisserie orientale",
+      "price": 62.0,
+      "sortOrder": 17,
+      "barcode": "2000003000173"
+    },
+    {
+      "code": "PA-018",
+      "name": "Corne de gazelle (kg)",
+      "shortName": "Corne gaz",
+      "category": "Pâtisserie orientale",
+      "price": 60.0,
+      "sortOrder": 18,
+      "barcode": "2000003000180"
+    },
+    {
+      "code": "PA-019",
+      "name": "Éclair au chocolat",
+      "shortName": "Éclair choc",
+      "category": "Gâteaux & entremets",
+      "price": 3.5,
+      "sortOrder": 19,
+      "barcode": "2000003000197"
+    },
+    {
+      "code": "PA-020",
+      "name": "Éclair au café",
+      "shortName": "Éclair café",
+      "category": "Gâteaux & entremets",
+      "price": 3.5,
+      "sortOrder": 20,
+      "barcode": "2000003000203"
+    },
+    {
+      "code": "PA-021",
+      "name": "Mille-feuille",
+      "shortName": "Millefeuille",
+      "category": "Gâteaux & entremets",
+      "price": 4.0,
+      "sortOrder": 21,
+      "barcode": "2000003000210",
+      "favorite": true,
+      "favoriteOrder": 2
+    },
+    {
+      "code": "PA-022",
+      "name": "Tartelette aux fraises",
+      "shortName": "Tart fraise",
+      "category": "Gâteaux & entremets",
+      "price": 4.5,
+      "sortOrder": 22,
+      "barcode": "2000003000227"
+    },
+    {
+      "code": "PA-023",
+      "name": "Tartelette au citron",
+      "shortName": "Tart citron",
+      "category": "Gâteaux & entremets",
+      "price": 4.0,
+      "sortOrder": 23,
+      "barcode": "2000003000234"
+    },
+    {
+      "code": "PA-024",
+      "name": "Religieuse",
+      "shortName": "Religieuse",
+      "category": "Gâteaux & entremets",
+      "price": 4.5,
+      "sortOrder": 24,
+      "barcode": "2000003000241"
+    },
+    {
+      "code": "PA-025",
+      "name": "Paris-Brest",
+      "shortName": "Paris-Brest",
+      "category": "Gâteaux & entremets",
+      "price": 5.0,
+      "sortOrder": 25,
+      "barcode": "2000003000258"
+    },
+    {
+      "code": "PA-026",
+      "name": "Opéra (part)",
+      "shortName": "Opéra",
+      "category": "Gâteaux & entremets",
+      "price": 5.5,
+      "sortOrder": 26,
+      "barcode": "2000003000265"
+    },
+    {
+      "code": "PA-027",
+      "name": "Forêt-noire (part)",
+      "shortName": "Forêt-noire",
+      "category": "Gâteaux & entremets",
+      "price": 5.0,
+      "sortOrder": 27,
+      "barcode": "2000003000272"
+    },
+    {
+      "code": "PA-028",
+      "name": "Tiramisu (part)",
+      "shortName": "Tiramisu",
+      "category": "Gâteaux & entremets",
+      "price": 5.5,
+      "sortOrder": 28,
+      "barcode": "2000003000289"
+    },
+    {
+      "code": "PA-029",
+      "name": "Cheesecake (part)",
+      "shortName": "Cheesecake",
+      "category": "Gâteaux & entremets",
+      "price": 6.0,
+      "sortOrder": 29,
+      "barcode": "2000003000296"
+    },
+    {
+      "code": "PA-030",
+      "name": "Fondant au chocolat",
+      "shortName": "Fondant",
+      "category": "Gâteaux & entremets",
+      "price": 5.0,
+      "sortOrder": 30,
+      "barcode": "2000003000302"
+    },
+    {
+      "code": "PA-031",
+      "name": "Charlotte aux fruits (part)",
+      "shortName": "Charlotte",
+      "category": "Gâteaux & entremets",
+      "price": 5.5,
+      "sortOrder": 31,
+      "barcode": "2000003000319"
+    },
+    {
+      "code": "PA-032",
+      "name": "Cupcake",
+      "shortName": "Cupcake",
+      "category": "Gâteaux & entremets",
+      "price": 3.5,
+      "sortOrder": 32,
+      "barcode": "2000003000326"
+    },
+    {
+      "code": "PA-033",
+      "name": "Macaron (pièce)",
+      "shortName": "Macaron",
+      "category": "Gâteaux & entremets",
+      "price": 2.0,
+      "sortOrder": 33,
+      "barcode": "2000003000333"
+    },
+    {
+      "code": "PA-034",
+      "name": "Verrine dessert",
+      "shortName": "Verrine",
+      "category": "Gâteaux & entremets",
+      "price": 4.5,
+      "sortOrder": 34,
+      "barcode": "2000003000340"
+    },
+    {
+      "code": "PA-035",
+      "name": "Croissant au beurre",
+      "shortName": "Croissant",
+      "category": "Viennoiserie",
+      "price": 1.2,
+      "sortOrder": 35,
+      "barcode": "2000003000357",
+      "favorite": true,
+      "favoriteOrder": 3
+    },
+    {
+      "code": "PA-036",
+      "name": "Pain au chocolat",
+      "shortName": "Pain choc",
+      "category": "Viennoiserie",
+      "price": 1.5,
+      "sortOrder": 36,
+      "barcode": "2000003000364"
+    },
+    {
+      "code": "PA-037",
+      "name": "Croissant aux amandes",
+      "shortName": "Crois amande",
+      "category": "Viennoiserie",
+      "price": 2.5,
+      "sortOrder": 37,
+      "barcode": "2000003000371"
+    },
+    {
+      "code": "PA-038",
+      "name": "Pain aux raisins",
+      "shortName": "Pain raisin",
+      "category": "Viennoiserie",
+      "price": 1.8,
+      "sortOrder": 38,
+      "barcode": "2000003000388"
+    },
+    {
+      "code": "PA-039",
+      "name": "Chausson aux pommes",
+      "shortName": "Chausson",
+      "category": "Viennoiserie",
+      "price": 2.2,
+      "sortOrder": 39,
+      "barcode": "2000003000395"
+    },
+    {
+      "code": "PA-040",
+      "name": "Brioche",
+      "shortName": "Brioche",
+      "category": "Viennoiserie",
+      "price": 2.0,
+      "sortOrder": 40,
+      "barcode": "2000003000401"
+    },
+    {
+      "code": "PA-041",
+      "name": "Donut glacé",
+      "shortName": "Donut",
+      "category": "Viennoiserie",
+      "price": 2.5,
+      "sortOrder": 41,
+      "barcode": "2000003000418"
+    },
+    {
+      "code": "PA-042",
+      "name": "Beignet sucre",
+      "shortName": "Beignet",
+      "category": "Viennoiserie",
+      "price": 1.5,
+      "sortOrder": 42,
+      "barcode": "2000003000425"
+    },
+    {
+      "code": "PA-043",
+      "name": "Baguette",
+      "shortName": "Baguette",
+      "category": "Pain & boulangerie",
+      "price": 0.3,
+      "sortOrder": 43,
+      "barcode": "2000003000432",
+      "favorite": true,
+      "favoriteOrder": 4
+    },
+    {
+      "code": "PA-044",
+      "name": "Pain complet",
+      "shortName": "Pain complet",
+      "category": "Pain & boulangerie",
+      "price": 1.2,
+      "sortOrder": 44,
+      "barcode": "2000003000449"
+    },
+    {
+      "code": "PA-045",
+      "name": "Pain de mie",
+      "shortName": "Pain mie",
+      "category": "Pain & boulangerie",
+      "price": 3.5,
+      "sortOrder": 45,
+      "barcode": "2000003000456"
+    },
+    {
+      "code": "PA-046",
+      "name": "Pain aux céréales",
+      "shortName": "Pain céréal",
+      "category": "Pain & boulangerie",
+      "price": 2.5,
+      "sortOrder": 46,
+      "barcode": "2000003000463"
+    },
+    {
+      "code": "PA-047",
+      "name": "Khobz tabouna",
+      "shortName": "Tabouna",
+      "category": "Pain & boulangerie",
+      "price": 1.5,
+      "sortOrder": 47,
+      "barcode": "2000003000470"
+    },
+    {
+      "code": "PA-048",
+      "name": "Mlewi (pièce)",
+      "shortName": "Mlewi",
+      "category": "Pain & boulangerie",
+      "price": 1.0,
+      "sortOrder": 48,
+      "barcode": "2000003000487"
+    },
+    {
+      "code": "PA-049",
+      "name": "Brik à l'œuf",
+      "shortName": "Brik œuf",
+      "category": "Salés",
+      "price": 2.5,
+      "sortOrder": 49,
+      "barcode": "2000003000494"
+    },
+    {
+      "code": "PA-050",
+      "name": "Fricassé",
+      "shortName": "Fricassé",
+      "category": "Salés",
+      "price": 2.5,
+      "sortOrder": 50,
+      "barcode": "2000003000500"
+    },
+    {
+      "code": "PA-051",
+      "name": "Pizza part",
+      "shortName": "Pizza part",
+      "category": "Salés",
+      "price": 3.5,
+      "sortOrder": 51,
+      "barcode": "2000003000517"
+    },
+    {
+      "code": "PA-052",
+      "name": "Quiche lorraine (part)",
+      "shortName": "Quiche",
+      "category": "Salés",
+      "price": 4.0,
+      "sortOrder": 52,
+      "barcode": "2000003000524"
+    },
+    {
+      "code": "PA-053",
+      "name": "Feuilleté au thon",
+      "shortName": "Feuil thon",
+      "category": "Salés",
+      "price": 3.0,
+      "sortOrder": 53,
+      "barcode": "2000003000531"
+    },
+    {
+      "code": "PA-054",
+      "name": "Sandwich club",
+      "shortName": "Club",
+      "category": "Salés",
+      "price": 7.5,
+      "sortOrder": 54,
+      "barcode": "2000003000548"
+    },
+    {
+      "code": "PA-055",
+      "name": "Mini-pizza",
+      "shortName": "Mini-pizza",
+      "category": "Salés",
+      "price": 2.0,
+      "sortOrder": 55,
+      "barcode": "2000003000555"
+    },
+    {
+      "code": "PA-056",
+      "name": "Chausson au fromage",
+      "shortName": "Chauss from",
+      "category": "Salés",
+      "price": 2.5,
+      "sortOrder": 56,
+      "barcode": "2000003000562"
+    },
+    {
+      "code": "PA-057",
+      "name": "Gâteau d'anniversaire (kg)",
+      "shortName": "Gâteau anniv",
+      "category": "Commandes & fêtes",
+      "price": 70.0,
+      "sortOrder": 57,
+      "barcode": "2000003000579",
+      "description": "Sur commande, 48 h à l'avance"
+    },
+    {
+      "code": "PA-058",
+      "name": "Pièce montée (par pièce)",
+      "shortName": "Pièce montée",
+      "category": "Commandes & fêtes",
+      "price": 2.5,
+      "sortOrder": 58,
+      "barcode": "2000003000586",
+      "description": "Sur commande"
+    },
+    {
+      "code": "PA-059",
+      "name": "Plateau oriental 1 kg",
+      "shortName": "Plateau 1kg",
+      "category": "Commandes & fêtes",
+      "price": 85.0,
+      "sortOrder": 59,
+      "barcode": "2000003000593",
+      "description": "Assortiment maison"
+    },
+    {
+      "code": "PA-060",
+      "name": "Plateau oriental 2 kg",
+      "shortName": "Plateau 2kg",
+      "category": "Commandes & fêtes",
+      "price": 165.0,
+      "sortOrder": 60,
+      "barcode": "2000003000609"
+    },
+    {
+      "code": "PA-061",
+      "name": "Plateau salé 40 pièces",
+      "shortName": "Plateau salé",
+      "category": "Commandes & fêtes",
+      "price": 90.0,
+      "sortOrder": 61,
+      "barcode": "2000003000616",
+      "description": "Sur commande"
+    },
+    {
+      "code": "PA-062",
+      "name": "Gâteau de mariage (acompte)",
+      "shortName": "Acompte mariage",
+      "category": "Commandes & fêtes",
+      "price": 200.0,
+      "sortOrder": 62,
+      "barcode": "2000003000623",
+      "description": "Acompte à la commande"
+    },
+    {
+      "code": "PA-063",
+      "name": "Bougies et décor",
+      "shortName": "Décor",
+      "category": "Commandes & fêtes",
+      "price": 5.0,
+      "sortOrder": 63,
+      "barcode": "2000003000630"
+    },
+    {
+      "code": "PA-064",
+      "name": "Express",
+      "shortName": "Express",
+      "category": "Boissons",
+      "price": 1.7,
+      "sortOrder": 64,
+      "barcode": "2000003000647"
+    },
+    {
+      "code": "PA-065",
+      "name": "Capucin",
+      "shortName": "Capucin",
+      "category": "Boissons",
+      "price": 1.9,
+      "sortOrder": 65,
+      "barcode": "2000003000654"
+    },
+    {
+      "code": "PA-066",
+      "name": "Direct",
+      "shortName": "Direct",
+      "category": "Boissons",
+      "price": 2.3,
+      "sortOrder": 66,
+      "barcode": "2000003000661"
+    },
+    {
+      "code": "PA-067",
+      "name": "Thé à la menthe",
+      "shortName": "Thé menthe",
+      "category": "Boissons",
+      "price": 1.8,
+      "sortOrder": 67,
+      "barcode": "2000003000678"
+    },
+    {
+      "code": "PA-068",
+      "name": "Eau 0,5 L",
+      "shortName": "Eau 0,5L",
+      "category": "Boissons",
+      "price": 1.0,
+      "sortOrder": 68,
+      "barcode": "2000003000685",
+      "stockManaged": true,
+      "stockMin": 24
+    },
+    {
+      "code": "PA-069",
+      "name": "Jus d'orange pressé",
+      "shortName": "Jus orange",
+      "category": "Boissons",
+      "price": 5.0,
+      "sortOrder": 69,
+      "barcode": "2000003000692"
+    },
+    {
+      "code": "PA-070",
+      "name": "Boga Cidre 33 cl",
+      "shortName": "Boga 33",
+      "category": "Boissons",
+      "price": 2.0,
+      "sortOrder": 70,
+      "barcode": "2000003000708",
+      "stockManaged": true,
+      "stockMin": 24
+    },
+    {
+      "code": "PA-071",
+      "name": "Coca-Cola 33 cl",
+      "shortName": "Coca 33",
+      "category": "Boissons",
+      "price": 2.0,
+      "sortOrder": 71,
+      "barcode": "2000003000715",
+      "stockManaged": true,
+      "stockMin": 24
+    }
+  ]
+}
