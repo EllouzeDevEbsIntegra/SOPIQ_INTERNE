@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -40,6 +42,43 @@ class PlateformeIntegrationTest {
 
     @Autowired MockMvc mvc;
     @Autowired ObjectMapper om;
+    @Autowired javax.sql.DataSource source;
+
+    /*
+        LE SCENARIO TRAVAILLE SUR SA BASE, PAS SUR CELLE DE LA DEMONSTRATION.
+
+        Il cree des clients, emet des factures, encaisse. Lance sur la base « plateforme »,
+        il ajoutait ses clients a ceux qu'on y regarde, et l'inverse etait vrai : le
+        chiffre du tableau de bord montait avec chaque demonstration faite au navigateur,
+        et l'assertion qui l'attendait a 49 dinars finissait par tomber sur 207. Le test
+        n'etait pas faux ; il lisait le desordre de quelqu'un d'autre.
+
+        Donc : une base a lui, refaite a neuf a chaque execution. Flyway y pose le schema,
+        l'amorcage y cree le premier compte, et ce que le scenario compte est ce que le
+        scenario a fait.
+    */
+    private static final String HOTE = System.getenv().getOrDefault("PLATEFORME_DB_HOST", "localhost");
+    private static final String PORT = System.getenv().getOrDefault("PLATEFORME_DB_PORT", "5432");
+    private static final String COMPTE = System.getenv().getOrDefault("PLATEFORME_DB_USER", "postgres");
+    private static final String SECRET = System.getenv().getOrDefault("PLATEFORME_DB_PASSWORD", "postgres");
+    private static final String BASE_DU_TEST = "plateforme_test";
+
+    @DynamicPropertySource
+    static void baseNeuve(DynamicPropertyRegistry r) {
+        String administration = "jdbc:postgresql://" + HOTE + ":" + PORT + "/postgres";
+        try (java.sql.Connection cx = java.sql.DriverManager.getConnection(administration, COMPTE, SECRET);
+             java.sql.Statement st = cx.createStatement()) {
+            // FORCE : une execution precedente interrompue laisse parfois une connexion
+            // ouverte, et la suppression attendrait indefiniment.
+            st.executeUpdate("DROP DATABASE IF EXISTS " + BASE_DU_TEST + " WITH (FORCE)");
+            st.executeUpdate("CREATE DATABASE " + BASE_DU_TEST);
+        } catch (java.sql.SQLException e) {
+            throw new IllegalStateException("Base de test impossible a preparer : " + e.getMessage(), e);
+        }
+        r.add("spring.datasource.url", () -> "jdbc:postgresql://" + HOTE + ":" + PORT + "/" + BASE_DU_TEST);
+        r.add("spring.datasource.username", () -> COMPTE);
+        r.add("spring.datasource.password", () -> SECRET);
+    }
 
     static String jeton;
     static long clientId;
@@ -48,6 +87,11 @@ class PlateformeIntegrationTest {
     static long factureId;
 
     private JsonNode json(MvcResult r) throws Exception { return om.readTree(r.getResponse().getContentAsString()); }
+
+    private int numeroDe(JsonNode facture) {
+        String n = facture.get("numero").asText();
+        return Integer.parseInt(n.substring(n.lastIndexOf('-') + 1));
+    }
 
     /** Poster, avec le jeton courant. Nommee en francais pour ne pas masquer MockMvc.post. */
     private MvcResult poster(String url, Object corps, int statut) throws Exception {
@@ -131,6 +175,17 @@ class PlateformeIntegrationTest {
                 "periodeFin", LocalDate.now().withDayOfMonth(1).plusMonths(1).minusDays(1).toString()), 200));
         factureId = f.get("id").asLong();
         assertThat(f.get("numero").asText()).matches("FAC-\\d{4}-\\d{4}");
+        /*
+            Le numero suivant, et non le meme : le compteur se lisait a partir du mauvais
+            caractere et ramenait << -0001 >>, converti en -1. La deuxieme facture de
+            l'annee s'appelait alors 0000, et la troisieme aussi.
+        */
+        JsonNode f2 = json(poster("/api/abonnements/" + abonnementId + "/factures", Map.of(
+                "periodeDebut", LocalDate.now().plusMonths(1).withDayOfMonth(1).toString(),
+                "periodeFin", LocalDate.now().plusMonths(1).withDayOfMonth(28).toString()), 200));
+        assertThat(f2.get("numero").asText()).isNotEqualTo(f.get("numero").asText());
+        assertThat(numeroDe(f2)).as("la suite, pas un retour a zero").isEqualTo(numeroDe(f) + 1);
+        poster("/api/factures/" + f2.get("id").asLong() + "/annuler", Map.of("motif", "test"), 200);
         assertThat(f.get("montant").decimalValue()).isEqualByComparingTo("49.000");
         assertThat(f.get("reste").decimalValue()).isEqualByComparingTo("49.000");
 
@@ -150,7 +205,7 @@ class PlateformeIntegrationTest {
         assertThat(solde.get("reste").decimalValue()).isEqualByComparingTo("0.000");
     }
 
-    @Test @Order(6) void impayeSuspensionEtRetablissement() throws Exception {
+    @Test @Order(9) void impayeSuspensionEtRetablissement() throws Exception {
         // Une facture echue depuis longtemps : c'est le cas qu'on veut voir arriver.
         JsonNode vieille = json(poster("/api/abonnements/" + abonnementId + "/factures", Map.of(
                 "periodeDebut", LocalDate.now().minusMonths(3).withDayOfMonth(1).toString(),
@@ -183,6 +238,39 @@ class PlateformeIntegrationTest {
         poster("/api/clients/" + clientId + "/reactiver", Map.of(), 200);
         assertThat(json(poster("/api/licences/verifier", Map.of("cle", cleLicence, "empreinte", "POSTE-A"), 200))
                 .get("autorise").asBoolean()).isTrue();
+    }
+
+    /**
+     * Preparer la base d'un client, depuis le back-office.
+     *
+     * Ce que ce test protege : qu'on ne rende jamais un mot de passe deux fois, et qu'un
+     * provisionnement relance par megarde sur un client en service ne casse rien.
+     */
+    @Test @Order(6) void provisionnerLaBaseDUnClient() throws Exception {
+        JsonNode r = json(poster("/api/abonnements/" + abonnementId + "/provisionner", Map.of(), 200));
+        String base = r.get("base").asText();
+        assertThat(base).matches("[a-z0-9_]+").contains("cafe");
+        assertThat(r.get("motDePasse").asText()).as("rendu une seule fois").isNotBlank();
+        assertThat(r.get("carteDeDemonstration").asText()).isEqualTo("mistral-coffee.json");
+        assertThat(r.get("commande").asText()).contains("POSCAISSE_DB_NAME=" + base);
+
+        // La base existe vraiment - ce n'est pas une ligne dans une table.
+        try (java.sql.Connection cx = source.getConnection();
+             java.sql.Statement st = cx.createStatement();
+             java.sql.ResultSet rs = st.executeQuery("select 1 from pg_database where datname = '" + base + "'")) {
+            assertThat(rs.next()).as("la base est créée").isTrue();
+        }
+
+        // Relance : on ne recree rien, on ne rend pas de nouveau mot de passe.
+        JsonNode encore = json(poster("/api/abonnements/" + abonnementId + "/provisionner", Map.of(), 200));
+        assertThat(encore.get("message").asText()).contains("existait déjà");
+        assertThat(encore.has("motDePasse")).as("aucun mot de passe rendu deux fois").isFalse();
+
+        // On range derriere le test : la base et son utilisateur ne survivent pas au scenario.
+        try (java.sql.Connection cx = source.getConnection(); java.sql.Statement st = cx.createStatement()) {
+            st.executeUpdate("DROP DATABASE IF EXISTS " + base);
+            st.executeUpdate("DROP USER IF EXISTS " + base);
+        }
     }
 
     @Test @Order(7) void lesDroitsDeChacun() throws Exception {

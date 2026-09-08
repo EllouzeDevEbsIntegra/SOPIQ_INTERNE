@@ -38,6 +38,7 @@ public class ApiControleur {
     private final LicenceService licences;
     private final FacturationService facturation;
     private final TableauDeBordService tableau;
+    private final ProvisionnementService provisionnement;
     private final JournalService journal;
     private final AbonnementRepo abonnements;
     private final FactureRepo factures;
@@ -80,6 +81,15 @@ public class ApiControleur {
         Abonnement a = abonnements.findById(id).orElseThrow(() -> ErreurMetier.introuvable("Abonnement"));
         return Mappeurs.abonnement(a, licences.deLAbonnement(id));
     }
+
+    /**
+     * Preparer la base d'un client.
+     *
+     * Le mot de passe n'est rendu QU'ICI, une fois : il n'est stocke nulle part. Perdu, il
+     * se change ; garde quelque part, il se vole.
+     */
+    @PostMapping("/abonnements/{id}/provisionner")
+    public java.util.Map<String, String> provisionner(@PathVariable Long id) { return provisionnement.provisionner(id); }
 
     @PostMapping("/licences/{id}/revoquer")
     public LicenceDto revoquer(@PathVariable Long id, @RequestBody(required = false) MotifRequest r) {

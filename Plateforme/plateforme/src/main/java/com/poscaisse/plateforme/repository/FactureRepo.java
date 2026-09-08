@@ -17,6 +17,13 @@ public interface FactureRepo extends JpaRepository<Facture, Long> {
     Optional<Facture> findByNumero(String numero);
     List<Facture> findByClientIdOrderByEmiseLeDesc(Long clientId);
     List<Facture> findByStatutAndEcheanceLeBefore(Enums.StatutFacture statut, LocalDate date);
-    @Query("select coalesce(max(cast(substring(f.numero, 9) as int)), 0) from Facture f where f.numero like concat('FAC-', :annee, '-%')")
+    /**
+     * Le plus grand numero de l'annee, pour donner le suivant.
+     *
+     * Le compteur commence au 10e caractere : << FAC-2026-0007 >> - quatre pour << FAC- >>,
+     * quatre pour l'annee, un pour le tiret. Le prendre au 9e ramenait << -0007 >>, que la
+     * base convertit en -7 : la facture suivante s'appelait 0000, et la deuxieme aussi.
+     */
+    @Query("select coalesce(max(cast(substring(f.numero, 10) as int)), 0) from Facture f where f.numero like concat('FAC-', :annee, '-%')")
     int dernierNumero(@Param("annee") String annee);
 }

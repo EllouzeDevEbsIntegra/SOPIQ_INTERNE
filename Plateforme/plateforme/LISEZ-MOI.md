@@ -72,19 +72,26 @@ personne.
 ## Tests
 
 ```bash
-createdb plateforme_it
-PLATEFORME_IT=true PLATEFORME_DB_NAME=plateforme_it mvn test
+PLATEFORME_IT=true mvn test
 ```
 
-Huit scénarios qui suivent un client du prospect à l'impayé : la souscription qui crée la
+Rien à créer à la main : le scénario refait sa base `plateforme_test` à chaque exécution.
+Il travaillait auparavant sur la base de démonstration, et comptait donc les clients que
+l'on venait d'y créer au navigateur : le chiffre d'affaires récurrent attendu à 49 dinars
+en trouvait 207. Une base à lui, et ce qu'il compte est ce qu'il a fait.
+
+Neuf scénarios qui suivent un client du prospect à l'impayé : la souscription qui crée la
 licence, la deuxième caisse refusée quand une seule est vendue, le règlement qui dépasse le
-reste dû, la facture soldée qui passe payée toute seule, la suspension qui laisse la caisse
-en lecture seule, et le compte support qui ne peut rien créer.
+reste dû, la facture soldée qui passe payée toute seule, la numérotation qui se suit d'une
+facture à l'autre, la suspension qui laisse la caisse en lecture seule, le provisionnement
+qui crée vraiment la base et ne rend jamais deux fois le mot de passe, et le compte support
+qui ne peut rien créer.
 
 ## Ce qui n'est pas encore là
 
-- **Le provisionnement** : créer la base du client, la migrer, y charger la carte de
-  démonstration du métier et rendre les accès. C'est l'étape suivante — le modèle prévoit
-  déjà où l'écrire (`abonnement.base_nom`, `url_client`, `provisionne_le`).
-- **L'interface** : l'API est complète, l'écran reste à faire.
+- **Le chargement automatique de la carte** : le provisionnement crée la base, l'utilisateur
+  qui n'a de droits que sur elle, et rend les accès une seule fois. La caisse y pose son
+  schéma au démarrage ; la carte de démonstration du métier s'importe encore à la main.
+- **L'écran définitif** : l'interface actuelle est d'un seul fichier, sans le système de
+  design de la caisse. Elle montre tout ce que l'API sait faire, elle n'est pas jolie.
 - **Les relances par courriel** avant suspension.

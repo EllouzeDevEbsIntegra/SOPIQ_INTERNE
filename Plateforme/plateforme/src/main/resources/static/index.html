@@ -264,7 +264,12 @@ async function voirClient(id) {
             ${l.derniereVerif ? '<span style="color:var(--encre-3);font-size:12px">vue le ' + jour(l.derniereVerif) + '</span>' : '<span style="color:var(--encre-3);font-size:12px">jamais utilisée</span>'}
             ${l.revoquee ? '' : `<button class="btn sm d" onclick="agir('/licences/${l.id}/revoquer', {motif:'Révoquée depuis le back-office'}, 'Licence révoquée')">Révoquer</button>`}
           </div>`).join('')}
-          <div class="ligne-actions"><button class="btn sm" onclick="agir('/abonnements/${a.id}/factures', {}, 'Facture émise')">Émettre une facture</button></div>
+          <div class="ligne-actions">
+            <button class="btn sm" onclick="agir('/abonnements/${a.id}/factures', {}, 'Facture émise')">Émettre une facture</button>
+            ${a.baseNom
+              ? `<span class="cle" title="Base provisionnée le ${jour(a.provisionneLe)}">${a.baseNom}</span>`
+              : `<button class="btn sm" onclick="provisionner(${a.id})">Préparer la base du client</button>`}
+          </div>
         </div>`).join('') || '<p class="vide">Aucun abonnement. Souscrivez pour créer la licence.</p>'}
       <div class="ligne-actions"><button class="btn p" onclick="souscrire(${id})">+ Souscrire un module</button></div>
     </div>
@@ -373,6 +378,30 @@ function suspendre(id) {
     Aucune donnée n'est effacée — le client peut continuer à consulter son historique.</p>
     <label class="f">Motif<input class="champ" name="motif" placeholder="impayé, fin d'essai…" /></label>`,
     async v => { await api('/clients/' + id + '/suspendre', 'POST', { motif: v.motif }); dire('Client suspendu'); aller('client', id); });
+}
+
+/**
+ * Preparer la base, et montrer les acces UNE FOIS.
+ *
+ * Le mot de passe n'est stocke nulle part : cette boite est le seul endroit ou il
+ * apparaitra. On le dit, et on laisse le temps de le copier.
+ */
+async function provisionner(abonnementId) {
+  try {
+    const r = await api('/abonnements/' + abonnementId + '/provisionner', 'POST', {});
+    const lignes = [
+      ['Base', r.base], ['Hôte', r.hote + ':' + r.port], ['Utilisateur', r.utilisateur],
+      r.motDePasse ? ['Mot de passe', r.motDePasse] : null,
+      ['Carte installée', r.carteDeDemonstration]
+    ].filter(Boolean).map(([l, v]) => `<div><span style="color:var(--encre-3);font-size:12px">${l}</span><br /><span class="cle">${echap(v)}</span></div>`).join('');
+    boite('Base préparée', `
+      <p style="margin:0;font-size:13px">${echap(r.message)}</p>
+      ${r.motDePasse ? '<p style="margin:0;color:var(--rouge);font-size:12.5px"><b>Notez le mot de passe maintenant :</b> il n\'est enregistré nulle part et ne sera plus affiché.</p>' : ''}
+      <div class="grille">${lignes}</div>
+      <label class="f">Commande de lancement<textarea class="champ" style="height:74px;padding:8px" readonly>${echap(r.commande)}</textarea></label>`,
+      async () => { aller('client', vueArg()); });
+    dire('Base préparée');
+  } catch (e) { dire(e.message, true); }
 }
 
 async function suspendreRetards() {
