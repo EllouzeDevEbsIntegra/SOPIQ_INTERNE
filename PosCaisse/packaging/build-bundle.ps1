@@ -12,6 +12,7 @@ param(
   [string]$Version = (Get-Date -Format 'yyyy.MM.dd'),
   [ValidateSet('14', '15', '16', '17')]
   [string]$VersionPostgres = '16',
+  [switch]$ForcerPostgres,
   [switch]$SansTests
 )
 
@@ -99,8 +100,72 @@ $sources = @(
      Aide = 'https://aka.ms/vs/17/release/vc_redist.x64.exe' }
 )
 
+<#
+    La version de PostgreSQL est le seul choix de ce script qui puisse rendre un paquet
+    INUTILISABLE avec les donnees qu'on veut y mettre.
+
+    Une sauvegarde porte dans son en-tete la version majeure qui l'a ecrite, et un
+    pg_restore plus ancien REFUSE de la lire - net, sans conversion possible. Fabriquer
+    un paquet en 16 alors que la base preparee vient d'un 17, c'est donc s'en apercevoir
+    chez le client, la cle USB a la main, une fois la sauvegarde deja copiee.
+
+    On regarde donc ce qui existe reellement ici : le pg_dump du poste, et les archives
+    PostgreSQL deja telechargees pour de precedents paquets - ce sont elles qui tournent
+    sur les postes deja installes. Si l'une des deux est plus recente que la version
+    demandee, on s'arrete AVANT de fabriquer quoi que ce soit.
+#>
+function Majeure-De([string] $texte) {
+  if ($texte -match '\(PostgreSQL\)\s+(\d+)') { return [int]$Matches[1] }
+  return 0
+}
+
+function Postgres-Du-Poste {
+  $cmd = Get-Command pg_dump.exe -ErrorAction SilentlyContinue
+  $exe = if ($cmd) { $cmd.Source } else { $null }
+  if (-not $exe) {
+    foreach ($v in 18, 17, 16, 15, 14, 13, 12) {
+      $p = "C:\Program Files\PostgreSQL\$v\bin\pg_dump.exe"
+      if (Test-Path $p) { $exe = $p; break }
+    }
+  }
+  if (-not $exe) { return 0 }
+  # La sortie d'erreur d'un programme externe ne doit pas faire sauter le script.
+  $garde = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
+  try { return (Majeure-De ((& $exe --version 2>&1 | Out-String))) } finally { $ErrorActionPreference = $garde }
+}
+
+function Postgres-Deja-Telecharge {
+  $max = 0
+  $archives = @(Get-ChildItem -Path $tele -Filter 'postgresql-*-windows-x64-binaries.zip' -ErrorAction SilentlyContinue)
+  foreach ($a in $archives) {
+    if ($a.Name -match 'postgresql-(\d+)-') { $max = [math]::Max($max, [int]$Matches[1]) }
+  }
+  return $max
+}
+
+$pgDemande = [int]$VersionPostgres
+$pgPoste   = Postgres-Du-Poste
+$pgDeja    = Postgres-Deja-Telecharge
+$pgAttendu = [math]::Max($pgPoste, $pgDeja)
+
+if ($pgAttendu -gt $pgDemande -and -not $ForcerPostgres) {
+  Write-Host ''
+  Write-Host "  Ce paquet embarquerait PostgreSQL $pgDemande, alors qu'il existe ici du PostgreSQL $pgAttendu." -ForegroundColor Red
+  if ($pgPoste -gt $pgDemande) { Souci "  Le pg_dump de ce poste est en version $pgPoste." }
+  if ($pgDeja  -gt $pgDemande) { Souci "  Un paquet a deja ete fabrique avec les binaires PostgreSQL $pgDeja (dossier telechargements)." }
+  Write-Host ''
+  Souci "  Une sauvegarde ecrite par un PostgreSQL $pgAttendu est ILLISIBLE par un $pgDemande :"
+  Souci '  le poste client refuserait la base preparee, au moment de la restauration.'
+  Write-Host ''
+  Write-Host "  Relancez avec :  .\build-bundle.ps1 -VersionPostgres $pgAttendu" -ForegroundColor Cyan
+  Write-Host '  (ou -ForcerPostgres si vous savez que les sauvegardes viendront d''une version plus ancienne)' -ForegroundColor DarkGray
+  Stop-Net 'Version de PostgreSQL plus ancienne que ce qui tourne ici.'
+}
+
 Etape 'Recuperation des composants tiers'
 Info "PostgreSQL embarque : version majeure $VersionPostgres"
+if ($pgAttendu -and $pgAttendu -eq $pgDemande) { Info "Elle correspond a ce qui tourne sur ce poste." }
 foreach ($s in $sources) {
   $dest = Join-Path $tele $s.Fichier
   if (Test-Path $dest) { Info "$($s.Fichier) : deja present"; continue }

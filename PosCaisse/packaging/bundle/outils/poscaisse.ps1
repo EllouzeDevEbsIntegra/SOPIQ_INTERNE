@@ -206,6 +206,25 @@ function Navigateur($c) {
   Start-Process -FilePath $exe -ArgumentList $drapeaux | Out-Null
 }
 
+<#
+    Executer un programme externe SANS que sa sortie d'erreur ne fasse tout sauter.
+
+    Avec $ErrorActionPreference = 'Stop', la moindre ligne ecrite par un programme sur
+    sa sortie d'erreur - << 2>&1 >> la ramene dans le flux - devient une erreur
+    TERMINANTE : le script s'arrete la, et le message que nous avions prepare pour
+    expliquer le probleme n'est jamais affiche. C'est exactement ce qui est arrive avec
+    une sauvegarde ecrite par un PostgreSQL plus recent : l'utilisateur voyait la pile
+    d'appels de PowerShell au lieu de la phrase qui disait quoi faire.
+
+    On rend donc la main au script : la sortie revient telle quelle, ligne par ligne, et
+    c'est LUI qui decide ce qu'elle vaut - en la lisant, ou en regardant $LASTEXITCODE.
+#>
+function Sans-Arret([scriptblock] $commande) {
+  $garde = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
+  try { & $commande 2>&1 } finally { $ErrorActionPreference = $garde }
+}
+
 # ---------------------------------------------------------------- diagnostics
 <# Lance << initdb --version >>, qui ne touche a rien, et rapporte tout ce qu'on peut
    savoir : reussite, code de retour, message eventuel. #>
@@ -213,7 +232,7 @@ function Tester-Initdb {
   $sortie = ''
   $code = -1
   try {
-    $sortie = (& $initdb --version 2>&1 | Out-String).Trim()
+    $sortie = (Sans-Arret { & $initdb --version } | Out-String).Trim()
     $code = $LASTEXITCODE
   } catch {
     $sortie = "$_"
@@ -432,7 +451,7 @@ function Faire-Install {
     # autre machine du reseau ne peut s'y connecter, meme si le PC est en Wi-Fi.
     # Toute la sortie est conservee : filtrer les lignes << interessantes >> revenait a
     # annoncer un echec sans jamais en donner la raison.
-    & $initdb -D $donnees -U $c.USER --pwfile=$pwFile -A scram-sha-256 -E UTF8 --locale=C 2>&1 |
+    Sans-Arret { & $initdb -D $donnees -U $c.USER --pwfile=$pwFile -A scram-sha-256 -E UTF8 --locale=C } |
       Tee-Object -FilePath $logInit | Out-Null
     if (-not (Test-Path (Join-Path $donnees 'PG_VERSION'))) {
       if (Test-Path $logInit) {
@@ -507,7 +526,7 @@ function Faire-Restore {
   Pg-Demarre $c
   $env:PGPASSWORD = $c.PASS
 
-  $lecture = & $restore -l $Fichier 2>&1
+  $lecture = Sans-Arret { & $restore -l $Fichier }
   if ($LASTEXITCODE -ne 0) {
     <#
         Un cas revient assez souvent pour meriter son propre message : le fichier vient
@@ -517,7 +536,7 @@ function Faire-Restore {
     #>
     $texte = ($lecture | Out-String)
     if ($texte -match 'unsupported version|version non support') {
-      $mienne = (& $restore --version 2>&1 | Out-String)
+      $mienne = (Sans-Arret { & $restore --version } | Out-String)
       Write-Host ''
       Souci 'Cette sauvegarde vient d''un PostgreSQL plus RECENT que celui de ce poste.'
       Souci ("  Ce poste lit du : " + ("$mienne".Trim()))
@@ -543,7 +562,7 @@ function Faire-Restore {
   Vider-Base $c $tampon
   & $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d postgres -v ON_ERROR_STOP=1 -c "CREATE DATABASE $tampon;" | Out-Null
   if ($LASTEXITCODE -ne 0) { Stop-Net "Base de travail impossible a creer." }
-  & $restore -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d $tampon --no-owner --no-privileges $Fichier 2>&1 |
+  Sans-Arret { & $restore -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d $tampon --no-owner --no-privileges $Fichier } |
     ForEach-Object { if ($_ -match 'error|ERREUR') { Write-Host "  $_" } }
 
   $bilan = & $psql -h 127.0.0.1 -p $c.PG_PORT -U $c.USER -d $tampon -tAc `
