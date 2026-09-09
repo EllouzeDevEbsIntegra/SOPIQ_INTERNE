@@ -34,6 +34,7 @@ class AmorcageCafeTest {
     @Autowired RegisterRepo caisses;
     @Autowired UserRepo comptes;
     @Autowired IngredientRepo ingredients;
+    @Autowired KitchenNoteRepo remarques;
     @Autowired SettingsService reglages;
 
     @org.springframework.test.context.DynamicPropertySource
@@ -64,6 +65,9 @@ class AmorcageCafeTest {
         // les dix du fast-food qu'une migration posait partout.
         assertThat(ingredients.count()).as("les ingrédients de la carte café").isEqualTo(18);
         assertThat(ingredients.findAll()).extracting("name").doesNotContain("Salami", "Harissa");
+
+        // Et aucune remarque : « Sauce à part » ne veut rien dire dans un salon de thé.
+        assertThat(remarques.count()).as("aucune remarque imposée à un café").isZero();
     }
 
     /** La caisse ne recoit que ce qui la regarde - et le metier en fait partie. */

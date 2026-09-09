@@ -36,6 +36,7 @@ class AmorcageZeroTest {
     @Autowired RoleRepo roles;
     @Autowired PaymentMethodRepo paiements;
     @Autowired IngredientRepo ingredients;
+    @Autowired KitchenNoteRepo remarques;
     @Autowired SettingsService reglages;
 
     @org.springframework.test.context.DynamicPropertySource
@@ -57,7 +58,17 @@ class AmorcageZeroTest {
             et une supérette se les voyait proposer sur chaque fiche article. Ils
             appartiennent au métier qui s'en sert, pas au schéma.
         */
-        assertThat(ingredients.count()).as("aucun ingrédient imposé à une supérette").isZero();
+        assertThat(ingredients.count()).as("aucun mot-clé imposé à une supérette").isZero();
+
+        /*
+            AUCUNE REMARQUE DE FAST-FOOD NON PLUS.
+
+            Même histoire, même correction : huit phrases de restauration rapide — « Sans
+            oignon », « Sauce à part » — étaient posées par une migration dans toute base.
+            Une supérette démarre l'écran vide et y écrit les siennes ; le caissier, lui,
+            n'a jamais eu besoin de cette liste pour écrire un texte libre sur une ligne.
+        */
+        assertThat(remarques.count()).as("aucune remarque imposée à une supérette").isZero();
     }
 
     @Test void lesReglagesDeLaBoutiqueSontPoses() {

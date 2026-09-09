@@ -38,7 +38,7 @@ public class DemoDataSeeder implements ApplicationRunner {
     private final CompanyRepo companyRepo; private final PointOfSaleRepo posRepo; private final RegisterRepo registerRepo;
     private final RoleRepo roleRepo; private final UserRepo userRepo; private final PrintDestinationRepo destRepo;
     private final CategoryRepo categoryRepo; private final ProductRepo productRepo; private final ModifierGroupRepo groupRepo;
-    private final IngredientRepo ingredientRepo; private final PaymentMethodRepo paymentRepo; private final ReceiptTemplateRepo templateRepo; private final CustomerRepo customerRepo;
+    private final IngredientRepo ingredientRepo; private final KitchenNoteRepo kitchenNoteRepo; private final PaymentMethodRepo paymentRepo; private final ReceiptTemplateRepo templateRepo; private final CustomerRepo customerRepo;
     private final PasswordEncoder encoder; private final ObjectMapper om;
     private final AmorcageMetier metier;
 
@@ -176,6 +176,24 @@ public class DemoDataSeeder implements ApplicationRunner {
                               "Escalope", "Viande hachée", "Fromage", "Harissa", "Salade" };
             int ordre = 1;
             for (String n : noms) { Ingredient i = new Ingredient(); i.setName(n); i.setSortOrder(ordre++); ingredientRepo.save(i); }
+        }
+
+        /*
+            Les remarques du fast-food, pour la meme raison exactement : << Sans oignon >>,
+            << Bien cuit >>, << Sauce a part >> etaient posees par une migration, donc dans
+            TOUTE base - et une parfumerie se voyait proposer de servir la sauce a part.
+            Elles reviennent ici, avec la carte a laquelle elles appartiennent.
+
+            Les cinq autres metiers demarrent donc SANS remarque, et c'est voulu : mieux
+            vaut un ecran vide, ou le commercant ecrit les siennes en trois touches, qu'une
+            liste qui parle du commerce de quelqu'un d'autre. Le caissier, lui, n'a jamais
+            eu besoin de cette liste pour ecrire un texte libre sur une ligne.
+        */
+        if (kitchenNoteRepo.count() == 0) {
+            String[] remarques = { "Sans oignon", "Sans sauce", "Sans salade", "Sans piquant",
+                                   "Bien cuit", "Peu cuit", "Sauce à part", "Emballer séparément" };
+            int rang = 1;
+            for (String r : remarques) { KitchenNote n = new KitchenNote(); n.setLabel(r); n.setSortOrder(rang++); kitchenNoteRepo.save(n); }
         }
 
         PrintDestination cuisine = destRepo.findByCode("CUISINE").orElseThrow(), pizza = destRepo.findByCode("PIZZA").orElseThrow(), boissons = destRepo.findByCode("BOISSONS").orElseThrow();

@@ -34,6 +34,18 @@ Le choix se fait dans la boîte « Préparer la base du client » du back-office
 gardé sur l'abonnement : la commande se rejoue telle quelle le jour où le poste est
 remplacé.
 
+### Mots-clés et remarques : au métier, pas au schéma
+
+Deux listes étaient posées par des migrations, donc dans **toute** base, à l'époque où la
+caisse ne tenait qu'un commerce : dix mots-clés de fast-food (« Omelette », « Salami ») et
+huit remarques de restauration rapide (« Sans oignon », « Sauce à part »). Une pâtisserie
+se voyait proposer du salami, un parfumeur de servir la sauce à part.
+
+Les migrations V16 et V18 les retirent — **seulement si personne ne s'en sert**, car sur la
+base d'un fast-food en service ce sont les touches du quotidien. Le profil RESTO les repose
+lui-même avec sa carte ; les cinq autres métiers démarrent l'écran vide, et le commerçant y
+écrit les siennes. Un écran vide vaut mieux qu'une liste qui parle du commerce d'un autre.
+
 ### Cela ne s'exécute qu'une fois
 
 Uniquement sur une base où **aucune société n'est enregistrée**. Un commerce en service ne
