@@ -1,7 +1,8 @@
 # Logos Integra (POS, ERP, CRM, BI)
 
-Système de marque : **Integra** est la constante (noir), le **suffixe produit** est la
-variable (teal). Tous les fichiers SVG sont vectoriels purs (texte converti en tracés),
+Système de marque : **Integra** est la constante (noir) et l'icône reste toujours teal ;
+le **suffixe produit** porte une couleur propre à chaque verticale, qui identifie le
+produit au premier coup d'œil. Tous les fichiers SVG sont vectoriels purs (texte converti en tracés),
 aucune police à installer.
 
 ## Fichiers
@@ -23,14 +24,26 @@ sauf la version inverse qui embarque son fond).
 | Rôle | Fond clair | Fond sombre |
 |---|---|---|
 | Wordmark « Integra » | `#0B0B0B` | `#FFFFFF` |
-| Suffixe produit | `#1F5F6E` | `#6CC3D3` |
 | Icône (dégradé haut → bas) | `#2E7A8B` → `#1E5B69` | `#3E97A9` → `#2A7585` |
 | Fond sombre | – | `#0F1B1F` |
 
+### Couleur par verticale (suffixe)
+
+| Produit | Fond clair | Fond sombre | Signification |
+|---|---|---|---|
+| **POS** | `#D9701A` orange | `#F5A054` | commerce, caisse, énergie |
+| **ERP** | `#1F4E8C` bleu | `#6FA3F0` | gestion, finance, fiabilité |
+| **CRM** | `#6B3FA0` violet | `#B48CE6` | relation client |
+| **BI** | `#1F8A5B` vert | `#5CC48F` | données, croissance |
+
+Réservées pour de futures gammes (ne pas réutiliser les couleurs ci-dessus) :
+rouge brique `#B8352E` (WMS / logistique), or `#B8860B` (RH / paie), rose `#C2417A` (e-commerce).
+
 ## Règles
 
-- Le suffixe est toujours en teal, quelle que soit la gamme (une seule couleur pour
-  toute la famille de produits).
+- Une couleur = un produit ; le teal est réservé à l'icône et ne sert jamais de suffixe.
+- La couleur d'un produit est reprise comme couleur d'accent dans son application
+  (boutons principaux, onglet actif) pour renforcer l'identification.
 - Suffixe : Inter SemiBold, capitales, 2/3 de la taille de « Integra », même ligne de
   base, espace fixe de 48 unités après le « a ».
 - Ne pas appliquer le dégradé au texte ; ne pas modifier les proportions icône/texte.
@@ -42,7 +55,7 @@ sauf la version inverse qui embarque son fond).
 
 Les fichiers sont produits par `generate_logos.py` (Python 3, `pip install fonttools uharfbuzz`) (fontTools + uharfbuzz) à partir des
 polices Inter 500/600/700 ; adapter le suffixe dans la liste `["POS", "ERP", "CRM", "BI"]`
-pour ajouter une gamme.
+(dictionnaire `PRODUCTS`, couleur claire + couleur sombre) pour ajouter une gamme.
 
 ```bash
 # Inter-500.ttf, Inter-600.ttf, Inter-700.ttf dans ./fonts (ou INTER_FONT_DIR)

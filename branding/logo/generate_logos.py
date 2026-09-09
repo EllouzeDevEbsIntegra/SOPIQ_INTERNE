@@ -37,15 +37,20 @@ def text_path(text, weight, size, x, y, tracking=0.0):
 
 # ---- palette -----------------------------------------------------------
 TEAL_DARK, TEAL_LIGHT = "#1E5B69", "#2E7A8B"   # icon gradient
-TEAL_TEXT = "#1F5F6E"                           # suffix on light bg
-TEAL_TEXT_INV = "#6CC3D3"                       # suffix on dark bg
+# One colour per product line (light-bg value, dark-bg value)
+PRODUCTS = {
+    "POS": ("#D9701A", "#F5A054"),   # orange  - commerce, caisse
+    "ERP": ("#1F4E8C", "#6FA3F0"),   # blue    - gestion, finance
+    "CRM": ("#6B3FA0", "#B48CE6"),   # violet  - relation client
+    "BI":  ("#1F8A5B", "#5CC48F"),   # green   - données, croissance
+}
 INK = "#0B0B0B"
 DARK_BG = "#0F1B1F"
 
 SCHEMES = {
-    "color":   dict(bg=None,    ink=INK,     suffix=TEAL_TEXT,     icon=("grad", TEAL_LIGHT, TEAL_DARK), line="#9A9A9A", tag="#111111"),
+    "color":   dict(bg=None,    ink=INK,     suffix=0, icon=("grad", TEAL_LIGHT, TEAL_DARK), line="#9A9A9A", tag="#111111"),
     "mono":    dict(bg=None,    ink=INK,     suffix=INK,           icon=("flat", INK, INK),              line="#555555", tag=INK),
-    "inverse": dict(bg=DARK_BG, ink="#FFFFFF", suffix=TEAL_TEXT_INV, icon=("grad", "#3E97A9", "#2A7585"), line="#7A8A8E", tag="#FFFFFF"),
+    "inverse": dict(bg=DARK_BG, ink="#FFFFFF", suffix=1, icon=("grad", "#3E97A9", "#2A7585"), line="#7A8A8E", tag="#FFFFFF"),
 }
 
 def icon_svg(s, x0=0, y0=0):
@@ -68,6 +73,7 @@ def build(suffix, scheme, tagline=True):
     d_word, w_word = text_path("Integra", 700, 222, x, base_y, tracking=-0.025)
     x2 = x + w_word + 48
     d_suf, w_suf = text_path(suffix, 600, 148, x2, base_y, tracking=0.035)
+    suffix_fill = s["suffix"] if isinstance(s["suffix"], str) else PRODUCTS[suffix][s["suffix"]]
     right_edge = x2 + w_suf
     width = right_edge + PAD
     height = PAD + ICON_H + PAD
@@ -94,7 +100,7 @@ def build(suffix, scheme, tagline=True):
     bg = f'<rect width="{width:.0f}" height="{height:.0f}" fill="{s["bg"]}"/>' if s["bg"] else ""
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width:.0f} {height:.0f}" width="{width:.0f}" height="{height:.0f}">'
            f'<title>Integra {suffix}</title><defs>{defs}</defs>{bg}{icon}'
-           f'<path d="{d_word}" fill="{s["ink"]}"/><path d="{d_suf}" fill="{s["suffix"]}"/>{tag}</svg>')
+           f'<path d="{d_word}" fill="{s["ink"]}"/><path d="{d_suf}" fill="{suffix_fill}"/>{tag}</svg>')
     return svg
 
 def build_icon(scheme):
@@ -105,7 +111,7 @@ def build_icon(scheme):
     return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}"><title>Integra icon</title><defs>{defs}</defs>{bg}{icon}</svg>'
 
 files = []
-for suf in ["POS", "ERP", "CRM", "BI"]:
+for suf in PRODUCTS:
     for scheme in SCHEMES:
         name = f"integra-{suf.lower()}-{scheme}"
         open(f"{OUT}/{name}.svg", "w").write(build(suf, scheme, tagline=True))
