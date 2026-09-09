@@ -66,26 +66,33 @@ tient dans un changement de nom de dossier, et le retour arriere est immediat.
    seul retour arriere, et il doit etre pris par l'ancien moteur : lui seul sait
    lire ses donnees.
 2. ARRETER.bat dans l'ancien dossier.
-3. RENOMMEZ l'ancien dossier - C:\PosCaisse devient C:\PosCaisse-AVANT-<date>.
-   Ne le supprimez pas aujourd'hui : il ne coute qu'un peu de disque et il est le
-   filet.
-4. Decompressez le nouveau zip a la place, en C:\PosCaisse.
+3. RENOMMEZ l'ancien dossier - C:\PosCaisse devient C:\PosCaisseV1. Ne le
+   supprimez pas aujourd'hui : il ne coute qu'un peu de disque et il est le filet.
+4. Decompressez le nouveau zip A LA MEME ADRESSE, en C:\PosCaisse.
+
+   REPRENDRE LA MEME ADRESSE N'EST PAS UN DETAIL DE RANGEMENT. Les raccourcis
+   posent un chemin en dur - C:\PosCaisse\DEMARRER-AUTO.vbs - y compris celui du
+   dossier Demarrage de Windows. Le neuf occupant l'adresse de l'ancien, ils
+   visent tous la nouvelle installation sans qu'on ait rien a refaire. Installer
+   ailleurs obligerait au contraire a les reprendre un par un (etape 8).
 5. INSTALLER.bat, puis DEMARRER.bat : la caisse doit s'ouvrir sur la
    demonstration.
 6. RESTAURER.bat, et le chemin du .dump livre.
 7. DEMARRER.bat, puis Ctrl+F5 dans le navigateur.
 
-8. VERIFIEZ LE RACCOURCI DE DEMARRAGE DE WINDOWS. Les raccourcis du Bureau et du
-   menu Demarrer portent toujours le meme nom et sont donc REECRITS par la
-   nouvelle installation. Celui du dossier Demarrage, lui, n'est pose que si vous
-   repondez oui a la question : si l'ancienne installation en avait un et pas la
-   nouvelle, il survit et pointe encore vers l'ancien dossier. Au prochain
-   redemarrage du PC, le client ouvrirait l'ANCIENNE caisse sur les ANCIENNES
-   donnees, sans que rien ne le signale. Ouvrez le dossier Demarrage
-   (Windows+R, << shell:startup >>) et verifiez que << Caisse PosCaisse >> vise
-   bien le nouveau dossier - ou relancez RACCOURCIS.bat.
+8. LE RACCOURCI DE DEMARRAGE DE WINDOWS, A VERIFIER UNE FOIS. En reprenant la
+   meme adresse (etape 4) il vise deja la nouvelle installation, et il n'y a rien
+   a faire. Le verifier coute dix secondes et evite le seul incident qui ne se
+   signale pas : au prochain redemarrage du PC, une caisse qui rouvre l'ANCIENNE
+   installation sur les ANCIENNES donnees, en silence.
 
-9. Quand le client tourne depuis quelques jours, supprimez l'ancien dossier.
+   Windows+R, << shell:startup >>. Le raccourci << Caisse PosCaisse >> doit viser
+   C:\PosCaisse et non C:\PosCaisseV1. S'il est absent alors que le client veut
+   que la caisse s'ouvre seule au demarrage, ou s'il vise l'ancien dossier parce
+   que la nouvelle installation a ete posee ailleurs : RACCOURCIS.bat les
+   reecrit tous les trois.
+
+9. Quand le client tourne depuis quelques jours, supprimez C:\PosCaisseV1.
 
 CE QUE CE CAS EFFACE : les ventes faites sur l'ancienne installation. Elles
 restent dans la sauvegarde de l'etape 1 et dans le dossier renomme, mais elles ne
