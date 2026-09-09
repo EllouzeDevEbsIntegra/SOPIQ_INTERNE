@@ -54,10 +54,34 @@ public class BasesPostgres {
         });
     }
 
+    /**
+     * Creer la base et la donner a son proprietaire.
+     *
+     * LE DETOUR PAR GRANT / REVOKE N'EST PAS UNE COQUETTERIE. Depuis PostgreSQL 16, un role
+     * CREATEROLE qui cree un role n'obtient plus le droit de l'ENDOSSER - et
+     * << CREATE DATABASE ... OWNER autre_role >> l'exige : << must be able to SET ROLE >>.
+     * On s'accorde donc l'appartenance le temps de creer la base, puis on se la retire.
+     *
+     * Le retrait compte autant que l'octroi : sans lui, le compte qui provisionne pourrait
+     * endosser le role de n'importe quel client et lire ses ventes. Apres coup il ne garde
+     * que le droit d'ADMINISTRER le role - le supprimer, le modifier - que PostgreSQL lui
+     * donne d'office et dont il a besoin. Verifie : << permission denied to set role >>.
+     *
+     * Ce defaut ne se voyait pas en developpement, ou les tests tournent en
+     * superutilisateur. Il est apparu au premier deploiement, sur une installation en
+     * moindre privilege - celle qui a raison.
+     */
     public void creerBase(String base, String proprietaire) {
         avec(st -> {
-            st.executeUpdate("CREATE DATABASE " + nom(base) + " OWNER " + nom(proprietaire));
-            cloisonner(st, base, proprietaire);
+            st.executeUpdate("GRANT " + nom(proprietaire) + " TO CURRENT_USER");
+            try {
+                st.executeUpdate("CREATE DATABASE " + nom(base) + " OWNER " + nom(proprietaire));
+                cloisonner(st, base, proprietaire);
+            } finally {
+                // Dans un finally : une creation qui echoue ne doit pas laisser derriere
+                // elle une appartenance que personne ne pensera a retirer.
+                st.executeUpdate("REVOKE " + nom(proprietaire) + " FROM CURRENT_USER");
+            }
             return null;
         });
     }
@@ -97,8 +121,14 @@ public class BasesPostgres {
                     + PREFIXE_DEMO + "…) peuvent être remises à zéro.");
         avec(st -> {
             st.executeUpdate("DROP DATABASE IF EXISTS " + b + " WITH (FORCE)");
-            st.executeUpdate("CREATE DATABASE " + b + " OWNER " + nom(proprietaire));
-            cloisonner(st, b, proprietaire);
+            // Meme necessite qu'a la creation : voir creerBase.
+            st.executeUpdate("GRANT " + nom(proprietaire) + " TO CURRENT_USER");
+            try {
+                st.executeUpdate("CREATE DATABASE " + b + " OWNER " + nom(proprietaire));
+                cloisonner(st, b, proprietaire);
+            } finally {
+                st.executeUpdate("REVOKE " + nom(proprietaire) + " FROM CURRENT_USER");
+            }
             return null;
         });
         log.info("Base de démonstration « {} » remise à son état initial.", b);

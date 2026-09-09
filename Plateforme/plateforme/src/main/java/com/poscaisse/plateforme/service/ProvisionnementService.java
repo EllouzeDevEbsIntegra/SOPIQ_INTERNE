@@ -10,11 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sql.DataSource;
 import java.security.SecureRandom;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.LinkedHashMap;
@@ -46,7 +42,13 @@ public class ProvisionnementService {
     private final AbonnementRepo abonnements;
     private final JournalService journal;
     private final UtilisateurCourant courant;
-    private final DataSource source;
+    /*
+        Les gestes PostgreSQL vivent dans UN seul endroit. Ils etaient ecrits deux fois -
+        ici et pour les demonstrations - avec deux commentaires identiques ; ils ont
+        commence a diverger au premier correctif, celui du << must be able to SET ROLE >>
+        que seul un serveur en moindre privilege revelait.
+    */
+    private final BasesPostgres bases;
 
     @Value("${plateforme.provisionnement.hote:localhost}") private String hote;
     @Value("${plateforme.provisionnement.port:5432}") private String port;
@@ -73,32 +75,26 @@ public class ProvisionnementService {
         String utilisateur = base;
         String motDePasse = motDePasse();
 
-        try (Connection cx = source.getConnection(); Statement st = cx.createStatement()) {
-            if (existe(st, base)) {
-                /*
-                    Deja la. On ne recree pas, on ne remet pas de mot de passe : un
-                    provisionnement relance par megarde sur un client en service ne doit
-                    rien casser. Celui qui veut vraiment un nouveau mot de passe le
-                    demande explicitement, ailleurs.
-                */
-                // On ne recree rien, mais on REFERME : une base creee par une version
-                // anterieure laissait la connexion ouverte a tout le monde (voir
-                // cloisonner). Relancer le provisionnement la repare.
-                cloisonner(st, base);
-                journal.ecrire("PROVISION_DEJA", "Abonnement", abonnementId, base);
-                return rendre(a, base, utilisateur, null,
-                        "La base existait déjà : rien n'a été modifié, l'accès a été revérifié.");
-            }
-            // Le nom de la base et de l'utilisateur ne viennent pas de la saisie libre :
-            // ils sont fabriques a partir du code client, qui n'a que des lettres et des
-            // chiffres. Aucune chaine de l'exterieur n'entre dans ces instructions.
-            st.executeUpdate("CREATE USER " + base + " WITH PASSWORD '" + motDePasse.replace("'", "''") + "'");
-            st.executeUpdate("CREATE DATABASE " + base + " OWNER " + base);
-            cloisonner(st, base);
-            log.info("Base « {} » créée pour {}", base, c.getCode());
-        } catch (java.sql.SQLException e) {
-            throw new ErreurMetier("Création de la base impossible : " + e.getMessage());
+        if (bases.existe(base)) {
+            /*
+                Deja la. On ne recree pas, on ne remet pas de mot de passe : un
+                provisionnement relance par megarde sur un client en service ne doit rien
+                casser. Celui qui veut vraiment un nouveau mot de passe le demande
+                explicitement, ailleurs.
+
+                On REFERME quand meme : une base creee par une version anterieure laissait
+                la connexion ouverte a tout le monde. Relancer le provisionnement la repare.
+            */
+            bases.cloisonner(base, utilisateur);
+            journal.ecrire("PROVISION_DEJA", "Abonnement", abonnementId, base);
+            return rendre(a, base, utilisateur, null,
+                    "La base existait déjà : rien n'a été modifié, l'accès a été revérifié.");
         }
+        // Le nom de la base et de l'utilisateur ne viennent pas de la saisie libre : ils
+        // sont fabriques a partir du code client, qui n'a que des lettres et des chiffres.
+        bases.creerRole(utilisateur, motDePasse);
+        bases.creerBase(base, utilisateur);
+        log.info("Base « {} » créée pour {}", base, c.getCode());
 
         a.setBaseNom(base);
         a.setProvisionneLe(OffsetDateTime.now());
@@ -173,28 +169,6 @@ public class ProvisionnementService {
         };
     }
 
-    /**
-     * Fermer la base a tout le monde sauf a son proprietaire.
-     *
-     * CE QUI ETAIT OUVERT, ET COMMENT ON S'EN EST APERCU. PostgreSQL accorde CONNECT a
-     * PUBLIC sur toute base neuve : le compte du client A pouvait donc ouvrir la base du
-     * client B. Il n'y lisait aucune donnee - les tables appartiennent a l'autre role, et
-     * une lecture etait refusee - mais il entrait, et lisait le catalogue partage : le nom
-     * de toutes les bases, donc de tous nos clients.
-     *
-     * Ce n'etait pas ce que le commentaire de cette classe promettait, et la promesse
-     * etait la bonne : le cloisonnement doit tenir meme si une migration future accordait
-     * un droit de trop. On retire donc le CONNECT de PUBLIC, et on ne le rend qu'au
-     * proprietaire.
-     *
-     * Le schema << public >> n'a pas besoin du meme traitement : depuis PostgreSQL 15 il
-     * n'est plus ouvert en creation a PUBLIC, et de toute facon plus personne d'autre ne
-     * peut se connecter pour l'atteindre.
-     */
-    private void cloisonner(Statement st, String base) throws java.sql.SQLException {
-        st.executeUpdate("REVOKE CONNECT ON DATABASE " + base + " FROM PUBLIC");
-        st.executeUpdate("GRANT CONNECT ON DATABASE " + base + " TO " + base);
-    }
 
     /**
      * pos_cli0001_cafe : le code client, le module, et rien d'autre.
@@ -210,11 +184,6 @@ public class ProvisionnementService {
         return n.length() > 60 ? n.substring(0, 60) : n;
     }
 
-    private boolean existe(Statement st, String base) throws java.sql.SQLException {
-        try (ResultSet r = st.executeQuery("SELECT 1 FROM pg_database WHERE datname = '" + base + "'")) {
-            return r.next();
-        }
-    }
 
     private static String motDePasse() {
         byte[] b = new byte[18];
