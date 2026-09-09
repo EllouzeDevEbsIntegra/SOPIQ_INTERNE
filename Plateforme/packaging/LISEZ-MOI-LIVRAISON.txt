@@ -52,6 +52,46 @@ CAS B - LE POSTE DU CLIENT TOURNE DEJA
 6. Ctrl+F5 dans le navigateur.
 
 
+CAS C - LE POSTE TOURNE DEJA, MAIS ON REMPLACE TOUT PAR UNE INSTALLATION NEUVE
+-----------------------------------------------------------------------------
+C'est le cas quand la version en place a ete posee pour essai, ou quand le paquet
+neuf embarque un PostgreSQL de version MAJEURE differente : un moteur 17 n'ouvre
+pas un dossier << donnees >> ecrit par un 16, et l'installateur le refuse plutot
+que d'abimer quoi que ce soit.
+
+Rien n'est inscrit dans Windows - ni service, ni programme installe - donc tout
+tient dans un changement de nom de dossier, et le retour arriere est immediat.
+
+1. SAUVEGARDER.bat dans l'ANCIEN dossier, et le fichier sur une cle USB. C'est le
+   seul retour arriere, et il doit etre pris par l'ancien moteur : lui seul sait
+   lire ses donnees.
+2. ARRETER.bat dans l'ancien dossier.
+3. RENOMMEZ l'ancien dossier - C:\PosCaisse devient C:\PosCaisse-AVANT-<date>.
+   Ne le supprimez pas aujourd'hui : il ne coute qu'un peu de disque et il est le
+   filet.
+4. Decompressez le nouveau zip a la place, en C:\PosCaisse.
+5. INSTALLER.bat, puis DEMARRER.bat : la caisse doit s'ouvrir sur la
+   demonstration.
+6. RESTAURER.bat, et le chemin du .dump livre.
+7. DEMARRER.bat, puis Ctrl+F5 dans le navigateur.
+
+8. VERIFIEZ LE RACCOURCI DE DEMARRAGE DE WINDOWS. Les raccourcis du Bureau et du
+   menu Demarrer portent toujours le meme nom et sont donc REECRITS par la
+   nouvelle installation. Celui du dossier Demarrage, lui, n'est pose que si vous
+   repondez oui a la question : si l'ancienne installation en avait un et pas la
+   nouvelle, il survit et pointe encore vers l'ancien dossier. Au prochain
+   redemarrage du PC, le client ouvrirait l'ANCIENNE caisse sur les ANCIENNES
+   donnees, sans que rien ne le signale. Ouvrez le dossier Demarrage
+   (Windows+R, << shell:startup >>) et verifiez que << Caisse PosCaisse >> vise
+   bien le nouveau dossier - ou relancez RACCOURCIS.bat.
+
+9. Quand le client tourne depuis quelques jours, supprimez l'ancien dossier.
+
+CE QUE CE CAS EFFACE : les ventes faites sur l'ancienne installation. Elles
+restent dans la sauvegarde de l'etape 1 et dans le dossier renomme, mais elles ne
+sont PAS reprises dans la base livree - celle-ci part a zero, ticket numero 1.
+A ne faire, donc, que sur un poste qui n'a pas encore encaisse pour de vrai.
+
 A VERIFIER APRES L'INSTALLATION
 -------------------------------
   - La carte et les prix (ouvrir deux ou trois articles declines en pates).
