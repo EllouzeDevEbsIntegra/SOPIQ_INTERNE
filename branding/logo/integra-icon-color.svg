@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 285 397" width="285" height="397"><title>Integra icon</title><defs><linearGradient id="ig" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E7A8B"/><stop offset="1" stop-color="#1E5B69"/></linearGradient></defs><path fill="url(#ig)" d="M50,40 L113,42.5 Q123,43.5 123,53 L123,278 Q123,289 112,293 C90,301 70,309 56,314 Q40,319 40,304 L40,50 Q40,40 50,40 Z"/><path fill="url(#ig)" d="M156,138 Q156,128 167,124 C190,113 212,100 233,86 Q245,79 245,92 L245,347 Q245,357 235,357 L166,357 Q156,357 156,347 Z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="166 194 526 769" width="263" height="385" role="img" aria-label="Integra"><title>Integra</title><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E7D91"/><stop offset="1" stop-color="#164752"/></linearGradient></defs><g transform="translate(0,1374) scale(0.1,-0.1)" fill="url(#g)"><path d="M2155 11390 c-32 -13 -75 -63 -85 -100 -6 -21 -10 -1071 -10 -2849
+-1 -2737 0 -2816 18 -2841 24 -32 77 -51 122 -44 79 13 843 258 1013 325 435
+173 660 409 707 744 8 58 10 697 8 2280 l-3 2200 -28 57 c-39 79 -103 133
+-186 158 -55 16 -140 23 -516 40 -247 11 -529 25 -625 30 -212 12 -388 12
+-415 0z"/><path d="M6045 10409 c-562 -196 -784 -275 -881 -316 -227 -95 -409 -270 -491
+-473 -55 -138 -53 -3 -53 -2531 l0 -2335 26 -52 c14 -29 42 -65 62 -82 64 -53
+99 -58 462 -70 184 -6 528 -19 765 -31 236 -11 443 -17 460 -13 44 9 88 39
+108 73 17 30 18 154 17 2961 0 2082 -4 2937 -11 2954 -12 25 -48 47 -77 45 -9
+0 -183 -59 -387 -130z"/></g></svg>

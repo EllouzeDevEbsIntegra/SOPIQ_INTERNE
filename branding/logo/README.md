@@ -1,8 +1,13 @@
 # Logos Integra (POS, ERP, CRM, BI)
 
-Système de marque : **Integra** est la constante (noir) et l'icône reste toujours teal ;
-le **suffixe produit** porte une couleur propre à chaque verticale, qui identifie le
-produit au premier coup d'œil. Tous les fichiers SVG sont vectoriels purs (texte converti en tracés),
+Tous les fichiers sont dérivés du **master officiel** `source/integra-complet.svg`
+(icône, wordmark « Integra », ligne « Powered by EBS » : tracés repris mot pour mot).
+Seul le groupe du suffixe change : « ERP » garde les tracés du master ; POS, CRM et BI
+sont composés en Inter SemiBold aux mêmes métriques (hauteur de capitale 176, ligne de
+base 670, départ x 2552, interlettrage calibré sur la largeur exacte de « ERP »).
+
+Système de marque : **Integra** est la constante (bleu nuit) et l'icône reste toujours
+teal ; le **suffixe produit** porte une couleur propre à chaque verticale. Tous les fichiers SVG sont vectoriels purs (texte converti en tracés),
 aucune police à installer.
 
 ## Fichiers
@@ -12,7 +17,8 @@ aucune police à installer.
 | `integra-<produit>-color.svg/.png` | Version principale, fond clair, avec « Powered by EBS » |
 | `integra-<produit>-color-compact.svg/.png` | Sans la ligne « Powered by EBS » (en-têtes, barres d'appli) |
 | `integra-<produit>-mono.svg/.png` | Monochrome noir (impression, fax, tampon) |
-| `integra-<produit>-inverse.svg/.png` | Fond sombre (`#0F1B1F`), texte blanc, suffixe teal clair |
+| `integra-<produit>-inverse.svg/.png` | Fond sombre (`#0F1622`), texte blanc, suffixe en variante claire |
+| `source/integra-complet.svg` | Master officiel (Integra ERP), ne pas modifier |
 | `integra-icon-<schéma>.svg/.png` | Icône seule (favicon, app mobile, avatar) |
 | `preview-sheet.png` | Planche de contrôle de toutes les déclinaisons |
 
@@ -23,9 +29,10 @@ sauf la version inverse qui embarque son fond).
 
 | Rôle | Fond clair | Fond sombre |
 |---|---|---|
-| Wordmark « Integra » | `#0B0B0B` | `#FFFFFF` |
-| Icône (dégradé haut → bas) | `#2E7A8B` → `#1E5B69` | `#3E97A9` → `#2A7585` |
-| Fond sombre | – | `#0F1B1F` |
+| Wordmark « Integra » | `#17233A` | `#FFFFFF` |
+| « Powered by EBS » | `#64748B` | `#A7B1C2` |
+| Icône (dégradé haut → bas) | `#2E7D91` → `#164752` | `#3A93A8` → `#1E5D6B` |
+| Fond sombre | – | `#0F1622` |
 
 ### Couleur par verticale (suffixe)
 
@@ -44,8 +51,9 @@ rouge brique `#B8352E` (WMS / logistique), or `#B8860B` (RH / paie), rose `#C241
 - Une couleur = un produit ; le teal est réservé à l'icône et ne sert jamais de suffixe.
 - La couleur d'un produit est reprise comme couleur d'accent dans son application
   (boutons principaux, onglet actif) pour renforcer l'identification.
-- Suffixe : Inter SemiBold, capitales, 2/3 de la taille de « Integra », même ligne de
-  base, espace fixe de 48 unités après le « a ».
+- Suffixe : capitales, hauteur de capitale 176 (viewBox 1374), positionné exactement
+  comme « ERP » dans le master ; la largeur du logo varie avec la longueur du suffixe et
+  la marge droite reste celle du master.
 - Ne pas appliquer le dégradé au texte ; ne pas modifier les proportions icône/texte.
 - Zone de protection : la hauteur du « I » d'« Integra » sur les quatre côtés.
 - Taille minimale : 140 px de large pour la version compacte, 220 px avec la ligne
@@ -53,11 +61,12 @@ rouge brique `#B8352E` (WMS / logistique), or `#B8860B` (RH / paie), rose `#C241
 
 ## Regénérer
 
-Les fichiers sont produits par `generate_logos.py` (Python 3, `pip install fonttools uharfbuzz`) (fontTools + uharfbuzz) à partir des
-polices Inter 500/600/700 ; adapter le suffixe dans la liste `["POS", "ERP", "CRM", "BI"]`
-(dictionnaire `PRODUCTS`, couleur claire + couleur sombre) pour ajouter une gamme.
-
 ```bash
-# Inter-500.ttf, Inter-600.ttf, Inter-700.ttf dans ./fonts (ou INTER_FONT_DIR)
+pip install fonttools uharfbuzz svgelements
+# Inter-600.ttf dans ./fonts (ou INTER_FONT_DIR)
 python3 generate_logos.py .
 ```
+
+Pour ajouter une gamme : une ligne dans le dictionnaire `PRODUCTS` de `generate_logos.py`
+(couleur fond clair, couleur fond sombre). Les PNG (2x) et la planche sont rendus avec
+Chromium/Playwright.
