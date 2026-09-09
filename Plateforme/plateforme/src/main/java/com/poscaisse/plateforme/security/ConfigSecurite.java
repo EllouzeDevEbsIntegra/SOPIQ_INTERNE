@@ -13,10 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -62,19 +63,60 @@ public class ConfigSecurite {
         res.getWriter().write(json.writeValueAsString(Map.of("status", statut, "code", code, "message", message)));
     }
 
-    /** Le joker avec identifiants est refuse, ici comme dans la caisse, et pour la meme raison. */
+    /**
+     * Qui a le droit d'appeler cette API depuis un navigateur.
+     *
+     * SA PROPRE ADRESSE EST TOUJOURS AUTORISEE. Le back-office sert lui-meme son ecran :
+     * la page et l'API sont a la meme adresse, et une requete d'une page vers sa propre
+     * origine n'est pas une requete distante - il n'y a rien a proteger contre soi-meme.
+     * Sans cette regle, une installation ou personne n'a pense a remplir
+     * PLATEFORME_CORS_ORIGINS s'ouvre sur un ecran de connexion qui refuse de connecter,
+     * avec pour seul indice un message JSON illisible. C'est arrive au premier
+     * deploiement, et cela reviendrait a chaque nouveau serveur.
+     *
+     * Ce n'est pas un relachement : on n'autorise l'origine QUE si elle est exactement
+     * celle a laquelle la requete s'adresse. Une page hebergee ailleurs ne peut pas
+     * remplir cette condition - c'est la definition meme de la meme origine.
+     *
+     * La liste configuree reste necessaire pour ce qui vient d'AILLEURS : l'interface de
+     * developpement sur localhost:5173, ou un jour un portail client sur un autre domaine.
+     *
+     * Le joker avec identifiants est refuse, ici comme dans la caisse, et pour la meme
+     * raison : << * >> avec des identifiants laisse n'importe quelle page piegee agir au
+     * nom de l'utilisateur connecte.
+     */
     @Bean
     public CorsConfigurationSource cors() {
-        CorsConfiguration cfg = new CorsConfiguration();
-        List<String> origines = Arrays.stream(corsOrigins.split(",")).map(String::trim).filter(o -> !o.isEmpty()).toList();
-        if (origines.contains("*"))
+        List<String> configurees = Arrays.stream(corsOrigins.split(",")).map(String::trim).filter(o -> !o.isEmpty()).toList();
+        if (configurees.contains("*"))
             throw new IllegalStateException("PLATEFORME_CORS_ORIGINS = « * » avec des identifiants : nommez les adresses.");
-        cfg.setAllowedOriginPatterns(origines);
-        cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        cfg.setAllowedHeaders(List.of("*"));
-        cfg.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource src = new UrlBasedCorsConfigurationSource();
-        src.registerCorsConfiguration("/**", cfg);
-        return src;
+
+        return requete -> {
+            CorsConfiguration cfg = new CorsConfiguration();
+            cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+            cfg.setAllowedHeaders(List.of("*"));
+            cfg.setAllowCredentials(true);
+
+            List<String> permises = new ArrayList<>(configurees);
+            String origine = requete.getHeader("Origin");
+            if (origine != null && origine.equals(laNotre(requete))) permises.add(origine);
+            cfg.setAllowedOriginPatterns(permises);
+            return cfg;
+        };
+    }
+
+    /**
+     * L'adresse a laquelle CETTE requete s'adresse, telle que le navigateur l'a ecrite.
+     *
+     * Reconstruite depuis les en-tetes que nginx pose devant nous : le protocole d'origine
+     * (X-Forwarded-Proto) et l'hote demande. Sans nginx - en developpement - on retombe sur
+     * ce que voit le serveur lui-meme.
+     */
+    private static String laNotre(HttpServletRequest requete) {
+        String hote = requete.getHeader("Host");
+        if (hote == null || hote.isBlank()) return null;
+        String protocole = requete.getHeader("X-Forwarded-Proto");
+        if (protocole == null || protocole.isBlank()) protocole = requete.getScheme();
+        return protocole + "://" + hote;
     }
 }

@@ -56,6 +56,11 @@ PLATEFORME_DB_PASSWORD=…
 PLATEFORME_PORT=8090
 ```
 
+`PLATEFORME_CORS_ORIGINS` **n'est plus nécessaire** pour l'adresse qui sert l'écran : le
+back-office autorise d'office sa propre origine. Ne la remplissez que si une page hébergée
+**ailleurs** doit appeler l'API — l'interface de développement sur `localhost:5173`, par
+exemple.
+
 `/etc/poscaisse/demo-cafe.env` — une caisse de démonstration
 ```
 POSCAISSE_DB_HOST=127.0.0.1
