@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="PosCaisse">
+  <!--
+      Le ticket de caisse : le seul objet que tout le monde reconnait de ce metier.
+      En SVG plutot qu'en .ico - un seul fichier, net a toutes les tailles, et lisible
+      dans un onglet sombre comme clair.
+  -->
+  <rect width="64" height="64" rx="12" fill="#A8401F"/>
+  <path d="M20 14h24v34l-4-3-4 3-4-3-4 3-4-3-4 3z" fill="#FFFDF9"/>
+  <g stroke="#A8401F" stroke-width="2.6" stroke-linecap="round">
+    <path d="M25 23h14"/><path d="M25 30h14"/><path d="M25 37h8"/>
+  </g>
+</svg>

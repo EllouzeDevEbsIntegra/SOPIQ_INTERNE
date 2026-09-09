@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
@@ -32,6 +33,20 @@ public class GestionErreurs {
                 .map(f -> f.getField() + " : " + f.getDefaultMessage())
                 .reduce((a, b) -> a + " ; " + b).orElse("Requête invalide.");
         return ResponseEntity.badRequest().body(corps(400, "VALIDATION", champs));
+    }
+
+    /**
+     * Une adresse qui n'existe pas n'est pas une panne.
+     *
+     * Chaque navigateur demande /favicon.ico sans qu'on le lui dise, et chaque demande
+     * ecrivait << Erreur non prevue >> suivi d'une pile de quarante lignes. Un journal qui
+     * crie au loup a chaque chargement de page est un journal que personne ne lit - et
+     * c'est la que les vraies erreurs se perdent. On rend 404, sans bruit.
+     */
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Map<String, Object>> introuvable(NoResourceFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(corps(404, "INTROUVABLE", "Cette adresse n'existe pas."));
     }
 
     @ExceptionHandler(Exception.class)
