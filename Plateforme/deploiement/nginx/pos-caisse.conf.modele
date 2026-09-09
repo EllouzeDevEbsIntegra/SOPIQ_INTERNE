@@ -12,9 +12,12 @@ server {
 }
 
 server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
-    http2 on;
+    # « listen ... http2 » plutot que la directive « http2 on » de nginx 1.25 :
+    # Ubuntu 24.04 livre nginx 1.24, qui ne la connait pas encore et REFUSE de
+    # relire sa configuration. Sur une machine qui sert cinq autres sites, une
+    # directive trop recente est un refus de rechargement, pas un detail de style.
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     server_name @NOM@.pos.ebs-integra.com;
 
     # LE MEME certificat joker pour tous les clients : c'est lui qui rend l'ouverture
