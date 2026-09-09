@@ -31,6 +31,7 @@ DEMOS="resto:8121:RESTO cafe:8122:CAFE shop:8123:SHOP vetement:8124:VETEMENT pat
 [ "$(id -u)" = 0 ] || { echo "À lancer en root : sudo $0" >&2; exit 1; }
 [ -f "$MODELE" ] || { echo "Modèle nginx introuvable : $MODELE" >&2; exit 1; }
 id poscaisse >/dev/null 2>&1 || { echo "Le compte système « poscaisse » n'existe pas." >&2; exit 1; }
+command -v openssl >/dev/null || { echo "openssl est requis pour tirer les mots de passe." >&2; exit 1; }
 [ -f /etc/letsencrypt/live/$DOMAINE/fullchain.pem ] || {
     echo "Certificat absent pour $DOMAINE — voir LISEZ-MOI.md § Le certificat." >&2; exit 1; }
 
@@ -39,10 +40,23 @@ install -d -m 755 -o poscaisse -g poscaisse /opt/poscaisse/caisses
 
 # Un secret alphanumerique : les fichiers d'environnement de systemd ne sont pas un shell,
 # mais un mot de passe sans caractere special evite aussi les surprises cote psql.
-alea() { tr -dc 'A-Za-z0-9' < /dev/urandom | head -c "$1"; }
+#
+# SANS TUBE, ET CE N'EST PAS UN DETAIL DE STYLE. La forme naturelle - « tr -dc ... <
+# /dev/urandom | head -c 32 » - tue « tr » d'un tube ferme des que head a ses 32 octets ;
+# avec « set -o pipefail » le pipeline rend 141, et « set -e » arrete le script AVANT sa
+# premiere ligne d'affichage. Le script mourait donc sans rien dire ni rien faire.
+alea() {
+    local n="$1" h
+    h="$(openssl rand -hex "$n")"      # 2n caracteres, tous alphanumeriques
+    printf '%s' "${h:0:n}"
+}
 
 # Lire une valeur deja posee : on ne change JAMAIS un mot de passe en service.
-deja() { [ -f "$2" ] && sed -n "s/^$1=//p" "$2" | head -1 || true; }
+# Sans tube non plus, et pour la meme raison.
+deja() {
+    [ -f "$2" ] || return 0
+    LC_ALL=C awk -v k="$1" 'index($0, k "=") == 1 { print substr($0, length(k) + 2); exit }' "$2"
+}
 
 for d in $DEMOS; do
     metier="${d%%:*}"; reste="${d#*:}"; port="${reste%%:*}"; profil="${reste##*:}"
