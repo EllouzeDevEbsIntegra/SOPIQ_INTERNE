@@ -87,7 +87,7 @@ const clear = () => emit('ok', { notes: units.value.map(() => '') })
           {{ n.label }}
         </button>
       </div>
-      <p v-else class="tiny muted">Aucune remarque enregistrée. Ajoutez-en dans Back-office → Remarques cuisine.</p>
+      <p v-else class="tiny muted">Aucune remarque enregistrée. Ajoutez-en dans Back-office → Remarques.</p>
 
       <div class="field">
         <label>Remarque libre{{ count > 1 ? (current === TOUTES ? ' — toutes les unités' : ' — unité ' + (current + 1)) : '' }}</label>

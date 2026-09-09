@@ -231,7 +231,7 @@ public class CatalogService {
             java.util.Set<Long> vus = new java.util.LinkedHashSet<>(r.ingredientIds());
             for (Long iid : vus) {
                 p.getIngredients().add(ingredientRepo.findById(iid)
-                        .orElseThrow(() -> BusinessException.notFound("Ingrédient")));
+                        .orElseThrow(() -> BusinessException.notFound("Mot-clé")));
             }
         }
         p.getMenuComponents().clear();

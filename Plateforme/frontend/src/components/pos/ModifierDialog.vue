@@ -265,7 +265,7 @@ function confirm() {
           </button>
         </div>
       </div>
-      <div class="field mt-8"><label>Remarque cuisine</label><input class="input" v-model="note" placeholder="ex. bien cuit, sans sel…" /></div>
+      <div class="field mt-8"><label>Remarque</label><input class="input" v-model="note" placeholder="ex. bien cuit, sans sel…" /></div>
     </template>
     <template #foot>
       <div class="grow"><span class="muted">Prix unitaire</span> <b class="num" style="font-size:20px">{{ fmt(unit, true) }}</b></div>

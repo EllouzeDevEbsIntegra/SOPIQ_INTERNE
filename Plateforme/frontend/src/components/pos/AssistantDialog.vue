@@ -467,7 +467,7 @@ function valider() {
           </div>
 
           <div class="groupe" v-if="notes.length">
-            <span class="eyebrow">Remarques cuisine</span>
+            <span class="eyebrow">Remarques</span>
             <div class="pastilles">
               <button v-for="n in notes" :key="n.id" class="past ptt"
                       :class="{ on: actifDuGroupe(v)?.notes.includes(n.label) }"

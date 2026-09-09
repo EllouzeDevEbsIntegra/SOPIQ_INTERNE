@@ -235,7 +235,7 @@ public class AdminService {
 
     @Transactional
     public KitchenNoteDto saveKitchenNote(Long id, KitchenNoteRequest r) {
-        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de modifier les remarques de cuisine.");
+        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de modifier les remarques.");
         KitchenNote n = id == null ? new KitchenNote() : kitchenNoteRepo.findById(id).orElseThrow(() -> BusinessException.notFound("Remarque"));
         // Une nouvelle remarque se range en fin de liste : la placer en tete deplacerait
         // sous les doigts du caissier des touches dont il connait la position.
@@ -248,7 +248,7 @@ public class AdminService {
 
     @Transactional
     public void deleteKitchenNote(Long id) {
-        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de supprimer une remarque de cuisine.");
+        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de supprimer une remarque.");
         // Les tickets deja passes gardent leur texte : rien ne les reference, la
         // suppression est donc sans effet sur l'historique.
         kitchenNoteRepo.deleteById(id);
@@ -274,13 +274,13 @@ public class AdminService {
 
     @Transactional
     public IngredientDto saveIngredient(Long id, IngredientRequest r) {
-        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de modifier les ingrédients.");
+        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de modifier les mots-clés.");
         String nom = r.name().trim();
         // Deux « Thon » dans la liste rendraient le filtre de la caisse incomprehensible :
         // l'utilisateur en cocherait un et manquerait les articles portant l'autre.
         ingredientRepo.findByNameIgnoreCase(nom).filter(o -> !o.getId().equals(id))
-                .ifPresent(o -> { throw BusinessException.conflict("L'ingrédient « " + nom + " » existe déjà."); });
-        Ingredient i = id == null ? new Ingredient() : ingredientRepo.findById(id).orElseThrow(() -> BusinessException.notFound("Ingrédient"));
+                .ifPresent(o -> { throw BusinessException.conflict("Le mot-clé « " + nom + " » existe déjà."); });
+        Ingredient i = id == null ? new Ingredient() : ingredientRepo.findById(id).orElseThrow(() -> BusinessException.notFound("Mot-clé"));
         // Un nouvel ingredient se range en fin de liste, comme les remarques : les touches
         // deja connues ne bougent pas sous les doigts.
         if (id == null) i.setSortOrder(ingredientRepo.findAll().stream().mapToInt(Ingredient::getSortOrder).max().orElse(0) + 1);
@@ -295,7 +295,7 @@ public class AdminService {
 
     @Transactional
     public void deleteIngredient(Long id) {
-        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de supprimer un ingrédient.");
+        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de supprimer un mot-clé.");
         // Le lien avec les articles tombe avec lui (ON DELETE CASCADE), mais leur NOM
         // garde le mot : il a ete copie a la saisie. Seule la recherche par cet
         // ingredient cesse de les trouver, ce que la confirmation annonce.
@@ -306,7 +306,7 @@ public class AdminService {
     /** Ordre des touches dans la fiche article : la liste recue fait foi. */
     @Transactional
     public void reorderIngredients(List<Long> ids) {
-        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de réordonner les ingrédients.");
+        currentUser.require(Permission.PRODUCTS_MANAGE, "Vous n'avez pas la permission de réordonner les mots-clés.");
         int i = 0;
         for (Long id : ids) {
             Ingredient n = ingredientRepo.findById(id).orElse(null);

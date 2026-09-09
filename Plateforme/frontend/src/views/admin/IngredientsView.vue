@@ -1,10 +1,16 @@
 <script setup>
 /**
- * Ingrédients composant le nom des articles : « Omelette », « Thon », « Salami ».
+ * Mots-cles composant le nom des articles : « Omelette » et « Thon » chez un restaurateur,
+ * « Oud » et « Vanille » chez un parfumeur, « Coton » et « Lin » en pret-a-porter.
+ *
+ * ILS S'APPELAIENT << INGREDIENTS >>, ET CE NOM VENAIT DU PREMIER CLIENT. Un fast-food
+ * n'y voyait rien d'etrange ; sur l'ecran d'une parfumerie, le mot devenait faux - et le
+ * pictogramme, une fourchette et un couteau, davantage encore. Ce que l'ecran fait n'a
+ * pourtant jamais eu de rapport avec la cuisine : composer un nom sans le retaper, et
+ * retrouver ensuite les articles qui portent tel mot.
  *
  * Ils ne se vendent pas et ne portent pas de prix — pour un supplément payant, ce sont
- * les options qui s'appliquent. Ils servent à composer un nom sans le retaper, et à
- * retrouver les articles qui les contiennent.
+ * les options qui s'appliquent.
  *
  * L'ordre se règle par glisser-déposer : c'est celui des touches dans la fiche article.
  */
@@ -21,11 +27,11 @@ async function load() { try { rows.value = await api.admin.ingredients() } catch
 onMounted(load)
 
 async function save() {
-  const r = await run(() => api.admin.saveIngredient(edit.value.id, edit.value), { success: 'Ingrédient enregistré' })
+  const r = await run(() => api.admin.saveIngredient(edit.value.id, edit.value), { success: 'Mot-clé enregistré' })
   if (r) { edit.value = null; load() }
 }
 async function remove(n) {
-  if (!await ui.confirm({ title: 'Supprimer', message: `Supprimer « ${n.name} » ? Les articles gardent leur nom, mais on ne pourra plus les retrouver par cet ingrédient.`, okLabel: 'Supprimer', danger: true })) return
+  if (!await ui.confirm({ title: 'Supprimer', message: `Supprimer « ${n.name} » ? Les articles gardent leur nom, mais on ne pourra plus les retrouver par ce mot-clé.`, okLabel: 'Supprimer', danger: true })) return
   if (await run(() => api.admin.deleteIngredient(n.id), { success: 'Supprimé' })) load()
 }
 
@@ -48,15 +54,15 @@ async function onDrop() {
 
 <template>
   <div class="toolbar">
-    <button class="btn primary" @click="edit = { name: '', shortName: '', active: true }">+ Nouvel ingrédient</button>
-    <span class="muted small">{{ rows.length }} ingrédient(s)</span>
+    <button class="btn primary" @click="edit = { name: '', shortName: '', active: true }">+ Nouveau mot-clé</button>
+    <span class="muted small">{{ rows.length }} mot(s)-clé(s)</span>
     <span class="hint">Glissez une ligne pour changer l'ordre des touches dans la fiche article</span>
     <span class="grow"></span>
-    <span class="muted small">Un ingrédient désactivé n'est plus proposé ; les articles déjà nommés gardent leur nom.</span>
+    <span class="muted small">Un mot-clé désactivé n'est plus proposé ; les articles déjà nommés gardent leur nom.</span>
   </div>
 
   <div class="table-wrap"><table class="table">
-    <thead><tr><th class="ord">Ordre</th><th>Ingrédient</th><th>Abréviation (ticket)</th><th>Active</th><th></th></tr></thead>
+    <thead><tr><th class="ord">Ordre</th><th>Mot-clé</th><th>Abréviation (ticket)</th><th>Active</th><th></th></tr></thead>
     <tbody>
       <tr v-for="(n, i) in rows" :key="n.id" class="drag" :class="{ dragging: dragId === n.id }" draggable="true"
           @dragstart="dragId = n.id" @dragover="onDragOver($event, i)" @drop.prevent="onDrop" @dragend="onDrop">
@@ -69,11 +75,11 @@ async function onDrop() {
           <button class="btn sm danger" @click="remove(n)">✕</button>
         </td>
       </tr>
-      <tr v-if="!rows.length"><td colspan="5" class="empty">Aucun ingrédient. Le nom des articles reste saisissable à la main.</td></tr>
+      <tr v-if="!rows.length"><td colspan="5" class="empty">Aucun mot-clé. Le nom des articles reste saisissable à la main.</td></tr>
     </tbody>
   </table></div>
 
-  <Modal v-if="edit" :title="edit.id ? 'Modifier l\'ingrédient' : 'Nouvel ingrédient'" @close="edit = null">
+  <Modal v-if="edit" :title="edit.id ? 'Modifier le mot-clé' : 'Nouveau mot-clé'" @close="edit = null">
     <div class="col gap-16">
       <div class="field"><label>Nom</label><input class="input" v-model="edit.name" maxlength="60" autofocus placeholder="ex. Thon" @keyup.enter="save" /></div>
       <!-- Le ticket fait 42 colonnes et le passeur lit vite : « Oml Moz Thon » se saisit
