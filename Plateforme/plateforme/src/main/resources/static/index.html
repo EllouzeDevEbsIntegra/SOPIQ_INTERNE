@@ -122,6 +122,7 @@ dialog h3 { margin: 0; font-size: 16px; }
       <button onclick="aller('bord')" id="n-bord" class="on">Tableau de bord</button>
       <button onclick="aller('clients')" id="n-clients">Clients</button>
       <button onclick="aller('retards')" id="n-retards">Impayés</button>
+      <button onclick="aller('demos')" id="n-demos">Démos</button>
       <button onclick="aller('journal')" id="n-journal">Journal</button>
     </nav>
     <div class="bas"><span id="qui"></span><br /><button class="btn sm" style="margin-top:8px" onclick="deconnexion()">Quitter</button></div>
@@ -178,7 +179,8 @@ function aller(quelle, arg) {
   for (const b of document.querySelectorAll('aside nav button')) b.classList.remove('on');
   const onglet = document.getElementById('n-' + quelle);
   if (onglet) onglet.classList.add('on');
-  ({ bord: voirBord, clients: voirClients, retards: voirRetards, journal: voirJournal, client: voirClient }[quelle])(arg);
+  ({ bord: voirBord, clients: voirClients, retards: voirRetards, journal: voirJournal,
+     demos: voirDemos, client: voirClient }[quelle])(arg);
 }
 
 // ---------------------------------------------------------------- tableau de bord
@@ -290,6 +292,78 @@ function tableFactures(fs, avecClient) {
       <td><span class="pastille ${f.enRetard ? 'retard' : f.statut}">${f.enRetard ? 'EN RETARD' : f.statut}</span></td>
       <td class="r">${f.statut === 'EMISE' ? `<button class="btn sm" onclick="encaisser(${f.id}, ${f.reste})">Encaisser</button>` : ''}</td>
     </tr>`).join('')}</tbody></table>`;
+}
+
+// ---------------------------------------------------------------- démos
+const duree = (min) => min == null ? '—'
+  : min >= 60 ? Math.floor(min / 60) + ' h ' + String(min % 60).padStart(2, '0') + ' min'
+  : min + ' min';
+
+async function voirDemos() {
+  const ds = await api('/demos');
+  /*
+      Le delai vient du serveur, jamais d'ici : c'est lui qui l'applique. Une demo qui
+      tourne le porte dans ses deux durees (ce qui est passe plus ce qui reste) ; quand
+      les six sont eteintes, il n'y a rien a lire et on affiche la valeur par defaut.
+      L'ecran ne doit pas annoncer un delai qu'il aurait invente.
+  */
+  const vivante = ds.find(d => d.allumee);
+  const heures = vivante ? Math.round((vivante.depuisMinutes + vivante.resteMinutes) / 60) : 24;
+  document.getElementById('ecran').innerHTML = `
+    <h2 class="titre">Démos</h2>
+    <p class="sous-titre">Une caisse par métier, à montrer à un prospect. Ce ne sont pas des clients :
+      ni abonnement, ni licence, ni facture.</p>
+    <div class="bloc" style="background:var(--or-doux);border-color:#E4D2A6">
+      <b>Toute démo s'arrête seule au bout de ${heures} h.</b>
+      Inutile de penser à l'éteindre après un rendez-vous : sa base repart à son état de
+      démonstration initial, et le prospect qui revient le lendemain trouve une carte propre.
+    </div>
+    <table>
+      <thead><tr><th>Métier</th><th>Adresse</th><th>État</th><th>Allumée</th>
+        <th>Arrêt automatique</th><th>Par</th><th class="r"></th></tr></thead>
+      <tbody>
+      ${ds.map(d => `<tr>
+        <td><b>${echap(d.metier)}</b></td>
+        <td><a href="${echap(d.url)}" target="_blank" rel="noopener">${echap(d.sousDomaine)}</a></td>
+        <td><span class="pastille ${d.allumee ? 'ACTIF' : 'PROSPECT'}">${d.allumee ? 'ALLUMÉE' : 'ÉTEINTE'}</span></td>
+        <td class="num">${d.allumee ? 'depuis ' + duree(d.depuisMinutes) : '—'}</td>
+        <td class="num">${d.allumee ? 's\'arrête dans ' + duree(d.resteMinutes) : '—'}</td>
+        <td>${echap(d.allumee ? (d.demarreePar || '') : '')}</td>
+        <td class="r">${d.allumee
+          ? `<button class="btn d sm" onclick="arreterDemo('${d.module}')">Arrêter</button>`
+          : `<button class="btn p sm" onclick="demarrerDemo('${d.module}')">Démarrer</button>`}</td>
+      </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+async function demarrerDemo(module) {
+  try {
+    dire('Démarrage en cours…');
+    const d = await api('/demos/' + module + '/demarrer', 'POST', {});
+    dire('Démo ' + d.metier + ' démarrée · ' + d.url);
+    aller('demos');
+  } catch (e) { dire(e.message, true); }
+}
+
+/**
+ * Arreter demande confirmation, et dit CE QUI DISPARAIT.
+ *
+ * C'est le seul bouton du back-office qui detruit des donnees sans les archiver. Ecrire
+ * << Confirmer l'arret ? >> serait mentir par omission : celui qui appuie croirait couper
+ * un processus, alors qu'il efface aussi les articles que le prospect vient de saisir
+ * devant lui. La phrase dit donc les deux, et dans cet ordre.
+ */
+function arreterDemo(module) {
+  boite('Arrêter cette démo', `
+    <p style="margin:0;font-size:13px">La base sera remise à son état de démonstration initial :
+      la carte du métier, les comptes de démonstration, aucune vente.
+      <b>Ce que le prospect a saisi sera perdu.</b></p>`,
+    async () => {
+      await api('/demos/' + module + '/arreter', 'POST', {});
+      dire('Démo arrêtée, base remise à neuf');
+      aller('demos');
+    });
 }
 
 // ---------------------------------------------------------------- impayés & journal

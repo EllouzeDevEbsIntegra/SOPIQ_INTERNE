@@ -72,6 +72,22 @@ public class Dtos {
                              String details, OffsetDateTime createdAt) {}
 
     /**
+     * Une caisse de demonstration, telle que l'ecran la montre.
+     *
+     * Les durees sont calculees ici, en minutes, et pas laissees au navigateur : c'est le
+     * serveur qui sait a quelle heure la demo a ete allumee et au bout de combien d'heures
+     * elle s'eteint. Un poste dont l'horloge retarde d'une heure afficherait sinon
+     * << s'arrete dans 25 h >>, et le commercial serait surpris.
+     *
+     * {@code resteMinutes} tombe a zero, jamais en dessous : une demo en sursis - la
+     * verification passe toutes les cinq minutes - affiche << s'arrete dans 0 min >> et
+     * non un compte a rebours negatif.
+     */
+    public record DemoDto(Enums.Module module, String metier, String sousDomaine, String url,
+                          boolean allumee, OffsetDateTime demarreeLe, Long depuisMinutes,
+                          Long resteMinutes, String demarreePar) {}
+
+    /**
      * La reponse a une caisse qui demande a ouvrir.
      *
      * Trois issues, et une seule est un refus sec : autorise, LECTURE SEULE - l'abonnement

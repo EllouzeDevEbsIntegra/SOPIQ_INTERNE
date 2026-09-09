@@ -34,6 +34,20 @@ plateforme:
   tarif-mensuel-par-caisse: ${PLATEFORME_TARIF:49}
   # Nombre de jours d'impaye avant suspension. Un rappel part avant, toujours.
   jours-avant-suspension: ${PLATEFORME_JOURS_SUSPENSION:15}
+  demo:
+    # Le domaine sous lequel vivent les six demos : demo-cafe.pos.ebs-integra.com. Il n'est
+    # pas en base, parce que la meme table sert sur la machine du developpeur.
+    domaine: ${PLATEFORME_DEMO_DOMAINE:pos.ebs-integra.com}
+    # Au bout de combien d'heures une demo s'eteint SEULE. Une oubliee le vendredi soir
+    # tournerait sinon tout le week-end sur la memoire des clients qui, eux, paient.
+    duree-max-heures: ${PLATEFORME_DEMO_DUREE_MAX_HEURES:24}
+    # Comment on allume un poste : << systemd >> passe par /usr/local/sbin/poscaisse-demo.
+    # Toute autre valeur laisse la place a un lanceur fourni ailleurs - c'est ce que font
+    # les tests, qui verifient la remise a neuf de la base sans lancer de vrai processus.
+    lanceur: ${PLATEFORME_DEMO_LANCEUR:systemd}
+    # A quel rythme on regarde s'il y en a une a eteindre. Cinq minutes n'est pas la
+    # precision de l'arret : c'est le retard maximum apres un redemarrage du back-office.
+    verification: ${PLATEFORME_DEMO_VERIFICATION:PT5M}
 
 management:
   endpoints:

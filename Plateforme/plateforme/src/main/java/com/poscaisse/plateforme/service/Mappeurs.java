@@ -4,6 +4,7 @@ import com.poscaisse.plateforme.domain.*;
 import com.poscaisse.plateforme.dto.Dtos.*;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -52,6 +53,35 @@ public class Mappeurs {
     public static ReglementDto reglement(Reglement r) {
         return new ReglementDto(r.getId(), r.getMontant(), r.getRecuLe(), r.getMoyen(), r.getReference(),
                 r.getNote(), r.getCreatedAt());
+    }
+
+    /**
+     * Une demo, avec ses deux durees deja calculees.
+     *
+     * {@code domaine} vient de la configuration et pas de la base : la meme table sert sur
+     * la machine du developpeur, ou l'adresse est locale, et sur le serveur de
+     * demonstration. On assemble donc le sous-domaine et le domaine ici, au dernier moment.
+     */
+    public static DemoDto demo(Demo d, String domaine, int dureeMaxHeures) {
+        Duration depuis = d.depuis();
+        Long depuisMinutes = depuis == null ? null : depuis.toMinutes();
+        Long resteMinutes = depuis == null ? null
+                : Math.max(0, dureeMaxHeures * 60L - depuis.toMinutes());
+        return new DemoDto(d.getModule(), metier(d.getModule()), d.getSousDomaine(),
+                "https://" + d.getSousDomaine() + "." + domaine, d.isAllumee(), d.getDemarreeLe(),
+                depuisMinutes, resteMinutes, d.getDemarreePar());
+    }
+
+    /** Le nom du metier tel qu'on le dit a un client, et non le nom de l'enumeration. */
+    public static String metier(Enums.Module m) {
+        return switch (m) {
+            case RESTO -> "Restaurant";
+            case CAFE -> "Café";
+            case SHOP -> "Boutique";
+            case VETEMENT -> "Prêt-à-porter";
+            case PATISSERIE -> "Pâtisserie";
+            case PARFUMERIE -> "Parfumerie";
+        };
     }
 
     public static JournalDto journal(JournalEditeur j) {

@@ -39,9 +39,14 @@ public class ApiControleur {
     private final FacturationService facturation;
     private final TableauDeBordService tableau;
     private final ProvisionnementService provisionnement;
+    private final DemoService demos;
     private final JournalService journal;
     private final AbonnementRepo abonnements;
     private final FactureRepo factures;
+
+    /** Le domaine des demos : demo-cafe + celui-ci donne l'adresse qu'on envoie au prospect. */
+    @org.springframework.beans.factory.annotation.Value("${plateforme.demo.domaine}")
+    private String domaineDemos;
 
     // ------------------------------------------------------------------ connexion
     @PostMapping("/auth/connexion") public ConnexionReponse connexion(@Valid @RequestBody ConnexionRequest r) { return auth.connexion(r); }
@@ -138,6 +143,31 @@ public class ApiControleur {
 
     @PostMapping("/factures/suspendre-les-retards")
     public List<String> suspendreLesRetards() { return facturation.suspendreLesRetards(); }
+
+    // ------------------------------------------------------------------ demonstrations
+    @GetMapping("/demos")
+    public List<DemoDto> demos() {
+        return demos.etat().stream().map(d -> Mappeurs.demo(d, domaineDemos, demos.dureeMaxHeures())).toList();
+    }
+
+    @PostMapping("/demos/{module}/demarrer")
+    public DemoDto demarrerDemo(@PathVariable Enums.Module module) {
+        return Mappeurs.demo(demos.demarrer(module), domaineDemos, demos.dureeMaxHeures());
+    }
+
+    /**
+     * Eteindre une demo, et remettre sa base a son etat initial.
+     *
+     * CE QUE CET APPEL EFFACE. Tout ce que le prospect a saisi pendant l'essai. C'est le
+     * seul appel du back-office qui detruit des donnees sans les archiver, et c'est
+     * volontaire : la demonstration suivante doit montrer la carte du metier, pas les
+     * trois articles bricoles la veille. L'ecran demande confirmation en le disant avec
+     * ces mots-la.
+     */
+    @PostMapping("/demos/{module}/arreter")
+    public DemoDto arreterDemo(@PathVariable Enums.Module module) {
+        return Mappeurs.demo(demos.arreter(module), domaineDemos, demos.dureeMaxHeures());
+    }
 
     // ------------------------------------------------------------------ le reste
     @GetMapping("/tableau-de-bord") public TableauDeBord tableauDeBord() { return tableau.calculer(); }
