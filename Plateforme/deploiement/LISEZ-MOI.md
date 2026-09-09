@@ -110,6 +110,52 @@ listage des zones, sans lequel certbot s'arrête sur un 403 avant même de touch
 zone), puis `GET`, `POST` et `DELETE` sur `/domain/zone/ebs-integra.com/*`. Et sans
 date d'expiration — sinon le renouvellement automatique casse dans un an, sans prévenir.
 
+## Les six caisses de démonstration
+
+Un seul script, à lancer une fois par serveur, depuis ce dossier :
+
+```bash
+sudo ./preparer-demos.sh
+```
+
+Il pose ce qu'une démo ne peut pas se donner elle-même — son rôle PostgreSQL, son fichier
+d'environnement, son adresse dans nginx — et rien d'autre : **il ne crée aucune base et
+n'allume aucune caisse**, le back-office reste le seul chemin. Le relancer ne change aucun
+mot de passe déjà en service.
+
+Avant lui, trois choses doivent être en place : le jar de la caisse, l'unité systemd, et
+la règle sudo.
+
+```bash
+cd ../frontend && npm ci && npm run build
+cd ../backend && JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 mvn -Pbundle -DskipTests package
+sudo install -m 644 -o root -g root target/poscaisse-backend.jar /opt/poscaisse/jars/poscaisse.jar
+cd ../deploiement
+sudo install -m 644 systemd/poscaisse-demo@.service /etc/systemd/system/
+sudo install -m 755 -o root -g root sbin/poscaisse-demo /usr/local/sbin/poscaisse-demo
+sudo install -m 440 -o root -g root sudoers.d/poscaisse-demo /etc/sudoers.d/poscaisse-demo
+sudo visudo -c && sudo systemctl daemon-reload
+```
+
+Le `-Pbundle` n'est pas optionnel : sans lui l'interface compilée n'entre pas dans le jar,
+et la caisse sert une page d'explication au lieu de l'écran de vente.
+
+Éprouver la règle sudo avant de compter dessus — sous le compte `poscaisse`, un métier
+valide doit rendre 3 (éteinte) et un nom fabriqué doit être refusé avec 2 :
+
+```bash
+sudo -u poscaisse sudo -n /usr/local/sbin/poscaisse-demo status cafe        # 3
+sudo -u poscaisse sudo -n /usr/local/sbin/poscaisse-demo start /etc/shadow  # 2
+```
+
+**Une démo met une vingtaine de secondes à répondre au premier allumage** : elle crée son
+schéma et pose sa carte. nginx affiche 502 pendant ce temps — c'est le démarrage, pas une
+panne. Le journal dit où elle en est :
+
+```bash
+sudo journalctl -u poscaisse-demo@cafe -f
+```
+
 ## Le pare-feu
 
 À faire **avant** d'ouvrir le service à des clients, et les yeux ouverts : `ufw` activé
