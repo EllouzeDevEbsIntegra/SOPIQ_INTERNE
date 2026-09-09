@@ -1,0 +1,9 @@
+# Le back-office allume et eteint les caisses de demonstration.
+#
+# UNE SEULE COMMANDE, SANS ARGUMENT LIBRE. La validation du metier est faite dans le
+# script lui-meme, ou elle est relisible - pas ici, dans une expression a joker dont
+# personne ne verifie jamais ce qu'elle accepte vraiment.
+#
+# Fichier a installer en 440, root:root, et a verifier par « visudo -c » AVANT de se
+# deconnecter : un fichier sudoers invalide rend sudo inutilisable sur toute la machine.
+poscaisse ALL=(root) NOPASSWD: /usr/local/sbin/poscaisse-demo

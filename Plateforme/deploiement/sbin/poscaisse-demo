@@ -1,0 +1,58 @@
+#!/bin/bash
+#
+# Allumer et eteindre une caisse de demonstration, pour le compte du back-office.
+#
+# POURQUOI CE SCRIPT EXISTE. Le back-office tourne sous un compte sans privilege et doit
+# pourtant demarrer un service systeme : il lui faut une regle sudo. Ecrite directement
+# sur systemctl, cette regle contiendrait un joker - « systemctl start poscaisse-demo@* »
+# - et un joker accepte n'importe quel argument. Le jour ou une faille laisse choisir cet
+# argument, elle donne le droit de demarrer en root une unite fabriquee pour l'occasion.
+#
+# Ce script supprime le joker : la regle sudo n'autorise QU'UNE commande, sans argument
+# libre, et c'est ici - en clair, relisible - que le metier recu est valide contre une
+# liste fixe. Tout le reste est refuse.
+#
+# Installation :
+#   sudo install -m 755 -o root -g root poscaisse-demo /usr/local/sbin/poscaisse-demo
+#   sudo install -m 440 -o root -g root ../sudoers.d/poscaisse-demo /etc/sudoers.d/poscaisse-demo
+#   sudo visudo -c        # verifier la syntaxe AVANT de se deconnecter
+
+set -euo pipefail
+
+METIERS="resto cafe shop vetement patisserie parfumerie"
+
+geste="${1:-}"
+metier="${2:-}"
+
+usage() {
+    echo "usage : poscaisse-demo {start|stop|status|restart} <metier>" >&2
+    echo "métiers : $METIERS" >&2
+    exit 2
+}
+
+[ -n "$geste" ] && [ -n "$metier" ] || usage
+
+# La validation, et c'est tout l'objet du fichier. Le nom recu ne devient un nom d'unite
+# QU'APRES etre passe par cette liste : il ne peut donc etre ni un chemin, ni une autre
+# unite du systeme, ni une chaine fabriquee.
+trouve=non
+for m in $METIERS; do
+    [ "$m" = "$metier" ] && trouve=oui
+done
+if [ "$trouve" != oui ]; then
+    echo "poscaisse-demo : métier « $metier » inconnu." >&2
+    usage
+fi
+
+unite="poscaisse-demo@${metier}.service"
+
+case "$geste" in
+    start)   exec systemctl start "$unite" ;;
+    stop)    exec systemctl stop "$unite" ;;
+    restart) exec systemctl restart "$unite" ;;
+    # « status » ne doit rien afficher et rendre 0 si l'unite tourne : c'est ce que le
+    # back-office teste. systemctl status, lui, rend 3 pour une unite arretee et ecrit
+    # un pave que personne ne lit.
+    status)  exec systemctl is-active --quiet "$unite" ;;
+    *)       echo "poscaisse-demo : geste « $geste » inconnu." >&2; usage ;;
+esac

@@ -1,0 +1,49 @@
+# La caisse d'un client ou d'une demonstration.
+#
+# Modele : remplacer @NOM@ (le sous-domaine, sans le reste) et @PORT@.
+# Le script poscaisse-ouvrir le fait a votre place - ce fichier est la pour qu'on
+# puisse lire ce qu'il ecrit.
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name @NOM@.pos.ebs-integra.com;
+    location / { return 301 https://$host$request_uri; }
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name @NOM@.pos.ebs-integra.com;
+
+    # LE MEME certificat joker pour tous les clients : c'est lui qui rend l'ouverture
+    # d'un client gratuite en travail. Aucun certificat n'est demande a l'ouverture.
+    ssl_certificate     /etc/letsencrypt/live/pos.ebs-integra.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/pos.ebs-integra.com/privkey.pem;
+
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header X-Content-Type-Options "nosniff" always;
+
+    # Voir le vhost du back-office : les photos d'articles voyagent dans le corps.
+    client_max_body_size 8m;
+
+    access_log /var/log/nginx/pos-@NOM@.access.log;
+    error_log  /var/log/nginx/pos-@NOM@.error.log;
+
+    location / {
+        proxy_pass http://127.0.0.1:@PORT@;
+        proxy_http_version 1.1;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # LE X-Forwarded-For N'EST PAS DECORATIF : le ralentisseur anti-force-brute de la
+        # caisse compte les essais de code PIN PAR ADRESSE. Sans cet en-tete, toutes les
+        # tentatives paraissent venir de nginx, et huit mauvais PIN fermeraient la porte
+        # a tout le magasin au lieu du seul poste fautif.
+        proxy_read_timeout 90s;
+    }
+}

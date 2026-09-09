@@ -1,0 +1,54 @@
+# Le back-office editeur : clients, abonnements, licences, factures, demos.
+#
+# Il n'ecoute QUE sur 127.0.0.1 : nginx est le seul a s'y adresser. Une application
+# qui ecoute sur toutes les interfaces est joignable depuis internet en clair, sans
+# certificat et sans journal d'acces - ce n'est jamais ce qu'on veut.
+
+[Unit]
+Description=PosCaisse — back-office éditeur
+Documentation=https://github.com/EllouzeDevEbsIntegra/SOPIQ_INTERNE
+After=network-online.target postgresql.service
+Wants=network-online.target
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=poscaisse
+Group=poscaisse
+EnvironmentFile=/etc/poscaisse/plateforme.env
+WorkingDirectory=/opt/poscaisse/plateforme
+
+# LE CHEMIN COMPLET DU JDK 21, JAMAIS « java ».
+# La machine porte deux versions de Java : le 17 pour les applications deja en place,
+# le 21 pour les notres. Ecrire « java » ferait dependre le demarrage de quelle version
+# est le defaut ce jour-la - et l'installation d'un paquet suffit a le changer.
+ExecStart=/usr/lib/jvm/java-21-openjdk-amd64/bin/java \
+  -Xms160m -Xmx384m \
+  -Djava.security.egd=file:/dev/urandom \
+  -jar /opt/poscaisse/jars/plateforme.jar
+
+# La memoire est la ressource rare de cette machine : -Xmx est le bouton a tourner
+# le jour ou il faut faire de la place, pas un chiffre grave dans le marbre.
+
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+
+# ------------------------------------------------------------------ durcissement
+#
+# PAS DE NoNewPrivileges ICI, ET C'EST DELIBERE. Le back-office demarre et arrete les
+# caisses de demonstration en passant par sudo ; NoNewPrivileges le lui interdirait,
+# et le bouton « Démarrer » echouerait avec une erreur incomprehensible. Les caisses,
+# elles, n'ont aucune raison d'escalader : leur unite le pose (voir poscaisse-demo@).
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=strict
+ReadWritePaths=/opt/poscaisse
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictRealtime=yes
+LockPersonality=yes
+
+[Install]
+WantedBy=multi-user.target

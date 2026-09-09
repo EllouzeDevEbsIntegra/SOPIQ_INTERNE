@@ -1,0 +1,42 @@
+# La caisse d'un CLIENT. Meme forme que la demonstration, autre fichier d'environnement.
+#
+# Le %i est le sous-domaine commercial : poscaisse@elbaraka, poscaisse@mistral...
+# C'est ce nom-la que le client tape tous les matins, et le seul que vous choisissez.
+
+[Unit]
+Description=PosCaisse — caisse %i
+After=network-online.target postgresql.service
+Wants=network-online.target
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=poscaisse
+Group=poscaisse
+EnvironmentFile=/etc/poscaisse/caisse-%i.env
+WorkingDirectory=/opt/poscaisse/caisses
+
+ExecStart=/usr/lib/jvm/java-21-openjdk-amd64/bin/java \
+  -Xms192m -Xmx448m \
+  -Djava.security.egd=file:/dev/urandom \
+  -jar /opt/poscaisse/jars/poscaisse.jar
+
+# Une caisse de client redemarre TOUJOURS, y compris apres un arret propre inattendu :
+# un commerce ouvert ne doit pas rester sans caisse parce qu'un processus est tombe.
+Restart=always
+RestartSec=5
+TimeoutStopSec=30
+
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=strict
+ReadWritePaths=/opt/poscaisse/caisses
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictRealtime=yes
+LockPersonality=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,44 @@
+# Une caisse de DEMONSTRATION, une par metier.
+#
+# Le %i est le metier en minuscules : poscaisse-demo@cafe, poscaisse-demo@shop...
+# Chacune lit son propre fichier d'environnement, qui porte sa base, son port et son
+# profil metier. Le back-office les allume et les eteint par le script enveloppe
+# /usr/local/sbin/poscaisse-demo.
+
+[Unit]
+Description=PosCaisse — caisse de démonstration %i
+After=network-online.target postgresql.service
+Wants=network-online.target
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=poscaisse
+Group=poscaisse
+EnvironmentFile=/etc/poscaisse/demo-%i.env
+WorkingDirectory=/opt/poscaisse/caisses
+
+ExecStart=/usr/lib/jvm/java-21-openjdk-amd64/bin/java \
+  -Xms192m -Xmx448m \
+  -Djava.security.egd=file:/dev/urandom \
+  -jar /opt/poscaisse/jars/poscaisse.jar
+
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+
+# Une caisse n'a JAMAIS besoin d'obtenir un droit qu'elle n'a pas au demarrage :
+# celle-ci se ferme donc completement, contrairement au back-office qui doit appeler sudo.
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=strict
+ReadWritePaths=/opt/poscaisse/caisses
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictRealtime=yes
+LockPersonality=yes
+
+[Install]
+WantedBy=multi-user.target
