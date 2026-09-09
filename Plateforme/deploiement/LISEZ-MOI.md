@@ -105,13 +105,56 @@ sudo certbot certonly --dns-ovh --dns-ovh-credentials /etc/letsencrypt/ovh.ini \
      -d pos.ebs-integra.com -d '*.pos.ebs-integra.com'
 ```
 
-Le jeton OVH doit être limité à `GET|POST|DELETE /domain/zone/ebs-integra.com/*` et sans
+Le jeton OVH doit porter **quatre** droits, et pas trois : `GET /domain/zone/` (le
+listage des zones, sans lequel certbot s'arrête sur un 403 avant même de toucher à la
+zone), puis `GET`, `POST` et `DELETE` sur `/domain/zone/ebs-integra.com/*`. Et sans
 date d'expiration — sinon le renouvellement automatique casse dans un an, sans prévenir.
+
+## Le pare-feu
+
+À faire **avant** d'ouvrir le service à des clients, et les yeux ouverts : `ufw` activé
+sans règle SSH coupe l'accès au serveur, définitivement si l'hébergeur n'offre pas de
+console de secours.
+
+L'ordre compte. On pose les règles pendant que le pare-feu est encore inactif, on relit,
+et on active seulement à la fin.
+
+```bash
+sudo ss -tlnp | grep sshd                        # 1. sur quel port SSH écoute-t-il vraiment ?
+sudo ufw allow 22/tcp comment 'SSH'              # 2. la règle qui sauve, en premier
+sudo ufw allow 80,443/tcp comment 'Web nginx'    # 3. le web
+sudo ufw default deny incoming                   # 4. tout le reste est refusé
+sudo ufw show added                              # 5. on relit : SSH doit y être
+sudo ufw enable                                  # 6. répondre y
+```
+
+Garder la session SSH ouverte après l'activation : c'est le filet de sécurité, et
+`sudo ufw disable` annule tout tant qu'elle vit.
+
+Les applications, elles, n'ont **aucune règle** et n'en veulent pas : nginx les joint sur
+`127.0.0.1`, et le pare-feu ne filtre jamais la boucle locale. Le vérifier plutôt que le
+supposer — un `proxy_pass` vers l'adresse publique, lui, casserait à l'activation :
+
+```bash
+sudo grep -Rn proxy_pass /etc/nginx/sites-enabled/   # -R, pas -r : ce sont des liens symboliques
+```
+
+Puis vérifier depuis une autre machine que le port d'une application est bien devenu
+injoignable, et que tous les sites répondent encore :
+
+```bash
+for d in $(sudo grep -Rh server_name /etc/nginx/sites-enabled/ | grep -v '^ *#' | sed 's/;//' \
+           | awk '{for(i=2;i<=NF;i++) print $i}' | grep -v '[*_]' | sort -u); do
+  printf '%-40s %s\n' "$d" "$(curl -s -o /dev/null -w '%{http_code}' -m 10 "https://$d/")"
+done
+```
+
+Un `000` sur un nom qui n'est pas couvert par le certificat est normal et n'a rien à voir
+avec le pare-feu : `curl -sS https://ce-nom/` le dit en clair.
 
 ## Ce qui reste manuel, et pourquoi
 
 - **La règle des 24 h sur les démos** est dans l'application, pas dans un `cron` : l'état
   « allumée depuis 14 h 32 » vit en base et survit à un redémarrage du back-office.
-- **Le pare-feu** n'est pas configuré ici. La machine porte d'autres applications, dont
-  certaines écoutent sur l'interface publique : activer `ufw` sans autoriser SSH d'abord
-  coupe l'accès au serveur. C'est une opération à faire les yeux ouverts, séparément.
+- **Le redémarrage** après les mises à jour du noyau : la machine porte d'autres
+  applications en production, la fenêtre se choisit avec le client.

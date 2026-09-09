@@ -115,6 +115,28 @@ la tenait pas.*
 
 ---
 
+## 7. Les applications étaient joignables en clair, à côté du HTTPS — **corrigé**
+
+Le serveur n'avait pas de pare-feu (`ufw` inactif). Les applications Java écoutaient sur
+`0.0.0.0`, donc sur l'interface publique : `http://<ip>:8055`, `:8056`, `:8060`, `:8061`
+répondaient depuis n'importe où sur internet. Mesuré, pas supposé — `TcpTestSucceeded :
+True` depuis une machine extérieure.
+
+Le HTTPS du site d'à côté n'y changeait rien : il existait simplement **un second chemin**
+vers la même application, sans chiffrement, sans en-têtes de sécurité, et sans passer par
+la seule porte que l'on surveille. Un mot de passe saisi par ce chemin voyage en clair.
+
+La correction ne touche pas les applications : nginx les joint sur `127.0.0.1`, et un
+pare-feu ne filtre jamais la boucle locale. Il a suffi de n'ouvrir que 22, 80 et 443 et de
+refuser le reste — la procédure exacte, dans l'ordre qui évite de se couper l'accès SSH,
+est dans `deploiement/LISEZ-MOI.md`. Vérifié après coup : `8055` injoignable de l'extérieur,
+et les huit sites du serveur répondent toujours `200`.
+
+*La leçon vaut au-delà de ce port-là : une application n'est pas protégée par le HTTPS
+qu'on a mis devant elle, mais par l'absence de tout autre chemin vers elle.*
+
+---
+
 ## Ce qui reste à faire avant d'ouvrir sur internet
 
 Par ordre d'importance. Aucun de ces points n'est un défaut du code d'aujourd'hui : ce sont
