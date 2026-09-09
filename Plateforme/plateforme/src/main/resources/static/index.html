@@ -271,7 +271,8 @@ async function voirClient(id) {
             <button class="btn sm" onclick="agir('/abonnements/${a.id}/factures', {}, 'Facture émise')">Émettre une facture</button>
             ${a.baseNom
               ? `<span class="cle" title="Base provisionnée le ${jour(a.provisionneLe)}">${a.baseNom}</span>
-                 ${a.urlClient ? `<a class="cle" style="color:var(--accent)" href="${a.urlClient}" target="_blank" rel="noopener">${a.urlClient.replace(/^https:\/\//, '')}</a>` : ''}`
+                 ${a.urlClient ? `<a class="cle" style="color:var(--accent)" href="${a.urlClient}" target="_blank" rel="noopener">${a.urlClient.replace(/^https:\/\//, '')}</a>` : ''}
+                 <button class="btn sm" onclick="lancerProvisionnement(${a.id}, null)">Accès et ouverture</button>`
               : `<button class="btn sm" onclick="provisionner(${a.id})">Préparer la base du client</button>`}
           </div>
         </div>`).join('') || '<p class="vide">Aucun abonnement. Souscrivez pour créer la licence.</p>'}
@@ -485,7 +486,17 @@ function provisionner(abonnementId) {
  */
 async function lancerProvisionnement(abonnementId, demonstration) {
   try {
-    const r = await api('/abonnements/' + abonnementId + '/provisionner', 'POST', { demonstration });
+    /*
+        DEMONSTRATION A NULL : on relit, on ne redecide pas.
+
+        Ce bouton sert a retrouver l'adresse d'un client deja provisionne - et la commande
+        qui ouvre sa caisse, qu'on n'a aucune raison d'avoir gardee. Envoyer le choix du
+        catalogue ici le REECRIRAIT sur l'abonnement avec la valeur par defaut de l'ecran,
+        alors que personne n'a rien demande. Le serveur ne touche a rien quand il recoit
+        null.
+    */
+    const corps = demonstration === null ? {} : { demonstration };
+    const r = await api('/abonnements/' + abonnementId + '/provisionner', 'POST', corps);
     const lignes = [
       ['Base', r.base], ['Hôte', r.hote + ':' + r.port], ['Utilisateur', r.utilisateur],
       r.motDePasse ? ['Mot de passe', r.motDePasse] : null,
@@ -500,7 +511,9 @@ async function lancerProvisionnement(abonnementId, demonstration) {
     */
     boite('Base préparée', `
       <p style="margin:0;font-size:13px">${echap(r.message)}</p>
-      ${r.motDePasse ? '<p style="margin:0;color:var(--rouge);font-size:12.5px"><b>Notez le mot de passe maintenant :</b> il n\'est enregistré nulle part et ne sera plus affiché.</p>' : ''}
+      ${r.motDePasse
+        ? '<p style="margin:0;color:var(--rouge);font-size:12.5px"><b>Notez le mot de passe maintenant :</b> il n\'est enregistré nulle part et ne sera plus affiché.</p>'
+        : `<p style="margin:0;color:var(--encre-3);font-size:12.5px">Le mot de passe n'est rendu qu'à la création et n'est stocké nulle part. Si vous ne l'avez plus, donnez-en un nouveau sur le serveur — la caisse le relira au redémarrage :<br /><span class="cle">sudo -u postgres psql -c "ALTER ROLE ${echap(r.utilisateur)} WITH PASSWORD '…'"</span></p>`}
       <div style="padding:12px 14px;border:1px solid var(--trait-2);border-radius:8px;background:var(--fond-2)">
         <div style="color:var(--encre-3);font-size:12px">Adresse du client</div>
         <div class="cle" style="font-size:17px;font-weight:600">${echap(r.adresse || '—')}</div>
