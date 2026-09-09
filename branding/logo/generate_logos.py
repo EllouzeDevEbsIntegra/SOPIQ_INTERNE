@@ -57,10 +57,19 @@ def icon_svg(s, x0=0, y0=0):
     kind, c1, c2 = s["icon"]
     fill = "url(#ig)" if kind == "grad" else c1
     defs = f'<linearGradient id="ig" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{c1}"/><stop offset="1" stop-color="{c2}"/></linearGradient>' if kind == "grad" else ""
-    # two slanted slabs, rounded via same-colour round-join stroke
-    common = f'fill="{fill}" stroke="{fill}" stroke-width="14" stroke-linejoin="round"'
-    left  = f'<polygon points="{x0+7},{y0+7} {x0+76},{y0+7} {x0+76},{y0+240} {x0+7},{y0+268}" {common}/>'
-    right = f'<polygon points="{x0+123},{y0+92} {x0+198},{y0+46} {x0+198},{y0+310} {x0+123},{y0+310}" {common}/>'
+    # Left bar: flat top, vertical sides, bottom edge sweeping down-left with a
+    # large rounded bottom-left corner.  Right bar: flat bottom, top edge sweeping
+    # up-right with a rounded top-right corner.  Icon box: 205 x 317.
+    X, Y = x0, y0
+    left = (f'<path fill="{fill}" d="M{X+10},{Y} L{X+73},{Y+2.5} Q{X+83},{Y+3.5} {X+83},{Y+13} '
+            f'L{X+83},{Y+238} Q{X+83},{Y+249} {X+72},{Y+253} '
+            f'C{X+50},{Y+261} {X+30},{Y+269} {X+16},{Y+274} '
+            f'Q{X},{Y+279} {X},{Y+264} L{X},{Y+10} Q{X},{Y} {X+10},{Y} Z"/>')
+    right = (f'<path fill="{fill}" d="M{X+116},{Y+98} Q{X+116},{Y+88} {X+127},{Y+84} '
+             f'C{X+150},{Y+73} {X+172},{Y+60} {X+193},{Y+46} '
+             f'Q{X+205},{Y+39} {X+205},{Y+52} '
+             f'L{X+205},{Y+307} Q{X+205},{Y+317} {X+195},{Y+317} '
+             f'L{X+126},{Y+317} Q{X+116},{Y+317} {X+116},{Y+307} Z"/>')
     return defs, left + right  # icon box: 205 x 317
 
 def build(suffix, scheme, tagline=True):
