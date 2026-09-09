@@ -42,6 +42,9 @@ class BasesMoindrePrivilegeTest {
     private static final String ADMIN = "essai_provisionneur";
     private static final String SECRET_ADMIN = "essai-provisionneur-2026";
     private static final String CLIENT = "posdemo_essai";
+    private static final String REMISE = "posdemo_remise";
+    private static final String POSE_DEHORS = "posdemo_pose_dehors";
+    private static final String SECRET_DEMO = "essai-demo-2026";
 
     private static BasesPostgres bases;
 
@@ -84,6 +87,74 @@ class BasesMoindrePrivilegeTest {
         }).hasMessageContaining("permission denied to set role");
     }
 
+
+    /**
+     * ETEINDRE UNE DEMO : le geste que le bouton << Arrêter >> declenche.
+     *
+     * Il a echoue en production sur << must be owner of database posdemo_cafe >>, et le
+     * scenario de creation ci-dessus ne pouvait pas le voir : l'appartenance au role
+     * proprietaire etait prise APRES le DROP, alors que c'est le DROP qui l'exige. La
+     * demo restait a moitie eteinte - processus tue, base intacte avec les saisies du
+     * prospect - et l'ecran montrait une erreur PostgreSQL brute.
+     *
+     * La table temoin n'est pas decorative : sans elle, le test passerait meme si
+     * remettreANeuf ne remettait rien a neuf.
+     */
+    @Test
+    void uneDemoSeRemetANeufSansEtreProprietaireDeSaBase() throws SQLException {
+        bases.creerRole(REMISE, SECRET_DEMO);
+        bases.creerBase(REMISE, REMISE);
+        dansLaBase(REMISE, "CREATE TABLE temoin (x int)");
+        assertThat(tableExiste(REMISE, "temoin")).as("le témoin est bien posé").isTrue();
+
+        bases.remettreANeuf(REMISE, REMISE);
+
+        assertThat(bases.existe(REMISE)).as("la base est reconstruite").isTrue();
+        assertThat(proprietaire(REMISE)).as("elle appartient toujours à la démo").isEqualTo(REMISE);
+        assertThat(publicPeutSeConnecter(REMISE)).as("PUBLIC reste dehors").isFalse();
+        assertThat(tableExiste(REMISE, "temoin")).as("ce que le prospect a saisi a disparu").isFalse();
+    }
+
+    /**
+     * LE CONTRAT ENTRE LE SCRIPT D'INSTALLATION ET LE BACK-OFFICE.
+     *
+     * Les roles des six demonstrations ne sont pas crees par le back-office mais par
+     * preparer-demos.sh, sous << postgres >>, parce qu'il faut en CHOISIR le mot de passe
+     * pour l'ecrire dans le fichier systemd du poste. Le back-office se retrouve alors
+     * devant un role qu'il n'a pas cree : PostgreSQL 16 ne lui donne aucun droit dessus,
+     * et son GRANT echoue - << permission denied to grant role >>, le bouton ne demarre
+     * rien. C'est exactement ce qui est arrive a cinq demos sur six, la sixieme ayant ete
+     * creee la veille par le back-office lui-meme.
+     *
+     * Le script doit donc rendre au back-office l'etat qu'il aurait eu s'il avait cree le
+     * role : l'ADMIN OPTION, et elle seule. Ce test fige ce contrat dans les deux sens -
+     * sans elle rien ne marche, avec elle tout marche, et le compte qui provisionne ne
+     * peut toujours pas endosser le role.
+     */
+    @Test
+    void unRoleCreeHorsDuBackOfficeExigeLAdminOption() throws SQLException {
+        enSuperUtilisateur("CREATE USER " + POSE_DEHORS + " WITH PASSWORD '" + SECRET_DEMO + "'");
+
+        assertThatThrownBy(() -> bases.creerBase(POSE_DEHORS, POSE_DEHORS))
+                .as("sans ADMIN OPTION, le back-office ne peut rien faire de ce rôle")
+                .isInstanceOf(ErreurMetier.class)
+                .hasMessageContaining("permission denied to grant role");
+
+        enSuperUtilisateur("GRANT " + POSE_DEHORS + " TO " + ADMIN
+                + " WITH ADMIN OPTION, INHERIT FALSE, SET FALSE");
+
+        bases.creerBase(POSE_DEHORS, POSE_DEHORS);
+        assertThat(bases.existe(POSE_DEHORS)).isTrue();
+        assertThat(proprietaire(POSE_DEHORS)).isEqualTo(POSE_DEHORS);
+
+        assertThatThrownBy(() -> {
+            try (Connection cx = source(ADMIN, SECRET_ADMIN).getConnection(); Statement st = cx.createStatement()) {
+                st.execute("SET ROLE " + POSE_DEHORS);
+            }
+        }).as("l'ADMIN OPTION administre le rôle, elle ne le prête pas")
+          .hasMessageContaining("permission denied to set role");
+    }
+
     /** Le garde-fou tient aussi ici : on ne supprime pas la base d'un client. */
     @Test
     void laBaseDUnClientNeSeRemetPasAZero() {
@@ -111,9 +182,36 @@ class BasesMoindrePrivilegeTest {
 
     private static void menage() throws SQLException {
         try (Connection cx = source(SUPER_COMPTE, SUPER_SECRET).getConnection(); Statement st = cx.createStatement()) {
-            st.executeUpdate("DROP DATABASE IF EXISTS " + CLIENT + " WITH (FORCE)");
-            st.executeUpdate("DROP ROLE IF EXISTS " + CLIENT);
+            for (String n : new String[]{CLIENT, REMISE, POSE_DEHORS}) {
+                st.executeUpdate("DROP DATABASE IF EXISTS " + n + " WITH (FORCE)");
+                st.executeUpdate("DROP ROLE IF EXISTS " + n);
+            }
             st.executeUpdate("DROP ROLE IF EXISTS " + ADMIN);
+        }
+    }
+
+    /** Une instruction executee DANS la base, sous le compte de la demo elle-meme. */
+    private static void dansLaBase(String base, String ordre) throws SQLException {
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+        ds.setDriverClassName("org.postgresql.Driver");
+        ds.setUrl("jdbc:postgresql://" + HOTE + ":" + PORT + "/" + base);
+        ds.setUsername(base);
+        ds.setPassword(SECRET_DEMO);
+        try (Connection cx = ds.getConnection(); Statement st = cx.createStatement()) {
+            st.executeUpdate(ordre);
+        }
+    }
+
+    private static boolean tableExiste(String base, String table) throws SQLException {
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+        ds.setDriverClassName("org.postgresql.Driver");
+        ds.setUrl("jdbc:postgresql://" + HOTE + ":" + PORT + "/" + base);
+        ds.setUsername(base);
+        ds.setPassword(SECRET_DEMO);
+        try (Connection cx = ds.getConnection();
+             Statement st = cx.createStatement();
+             ResultSet r = st.executeQuery("SELECT to_regclass('public." + table + "') IS NOT NULL")) {
+            return r.next() && r.getBoolean(1);
         }
     }
 

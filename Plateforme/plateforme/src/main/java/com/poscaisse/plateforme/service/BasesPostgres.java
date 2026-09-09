@@ -120,10 +120,21 @@ public class BasesPostgres {
             throw new ErreurMetier("Refus de supprimer « " + b + " » : seules les bases de démonstration ("
                     + PREFIXE_DEMO + "…) peuvent être remises à zéro.");
         avec(st -> {
-            st.executeUpdate("DROP DATABASE IF EXISTS " + b + " WITH (FORCE)");
-            // Meme necessite qu'a la creation : voir creerBase.
+            /*
+                L'APPARTENANCE COUVRE AUSSI LA SUPPRESSION, ET PAS SEULEMENT LA CREATION.
+
+                Elle etait prise APRES le DROP : le compte qui provisionne n'est pas le
+                proprietaire de la base - c'est la demo qui l'est - et PostgreSQL repondait
+                << must be owner of database posdemo_cafe >>. La demo restait alors dans un
+                etat batard : le processus etait deja tue, mais la base gardait tout ce que
+                le prospect avait saisi, et l'ecran affichait une erreur PostgreSQL brute.
+
+                Le meme oubli qu'a la creation, a trois lignes de distance et decouvert le
+                meme jour : c'est bien l'appartenance qui doit envelopper TOUT le geste.
+            */
             st.executeUpdate("GRANT " + nom(proprietaire) + " TO CURRENT_USER");
             try {
+                st.executeUpdate("DROP DATABASE IF EXISTS " + b + " WITH (FORCE)");
                 st.executeUpdate("CREATE DATABASE " + b + " OWNER " + nom(proprietaire));
                 cloisonner(st, b, proprietaire);
             } finally {

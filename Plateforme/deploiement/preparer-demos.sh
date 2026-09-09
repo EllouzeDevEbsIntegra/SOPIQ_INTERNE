@@ -23,6 +23,14 @@ set -euo pipefail
 
 DOMAINE="${DOMAINE:-pos.ebs-integra.com}"
 ICI="$(cd "$(dirname "$0")" && pwd)"
+
+# Le compte sous lequel tourne le back-office, lu dans son propre fichier : c'est lui qui
+# devra creer les bases des demos, et il lui faut pour cela l'ADMIN OPTION sur leurs roles.
+PLATEFORME_ENV="/etc/poscaisse/plateforme.env"
+# Sans tube : « set -o pipefail » a deja tue ce script une fois (voir alea plus bas).
+ADMIN="$(LC_ALL=C awk 'index($0, "PLATEFORME_DB_USER=") == 1 { print substr($0, 20); exit }' \
+         "$PLATEFORME_ENV" 2>/dev/null || true)"
+ADMIN="${ADMIN:-poscaisse_admin}"
 MODELE="$ICI/nginx/pos-caisse.conf.modele"
 
 # metier:port:profil — les ports sont ceux de la table « demo » du back-office (V3).
@@ -81,6 +89,26 @@ for d in $DEMOS; do
             -c "CREATE USER $role WITH PASSWORD '$mdp'" > /dev/null
         echo "  rôle $role : créé"
     fi
+
+    # L'ADMIN OPTION POUR LE BACK-OFFICE, ET RIEN DE PLUS.
+    #
+    # Le back-office cree la base de la demo par « CREATE DATABASE ... OWNER $role », et
+    # PostgreSQL 16 exige pour cela qu'il puisse ENDOSSER le role - il s'accorde donc
+    # l'appartenance le temps de creer la base, puis se la retire. Encore faut-il qu'il ait
+    # le droit de se l'accorder : « permission denied to grant role », sinon.
+    #
+    # Ce droit, il l'aurait eu d'office s'il avait cree le role lui-meme : PostgreSQL 16
+    # donne l'ADMIN OPTION au createur. Mais nous creons le role ICI, sous « postgres »,
+    # pour en choisir le mot de passe - et le back-office se retrouve alors devant un role
+    # qu'il ne peut pas administrer. C'est ce que cette ligne repare, en lui rendant
+    # exactement l'etat qu'il aurait eu.
+    #
+    # INHERIT FALSE, SET FALSE : l'administration du role, PAS son usage. Sans ces deux
+    # mots, le compte qui provisionne pourrait endosser le role de chaque demo et lire ses
+    # ventes en permanence, au lieu de le faire trois secondes sous son propre controle.
+    # Verifie : « permission denied to set role » apres coup.
+    sudo -u postgres psql -qv ON_ERROR_STOP=1 \
+        -c "GRANT $role TO $ADMIN WITH ADMIN OPTION, INHERIT FALSE, SET FALSE" > /dev/null
 
     # Le fichier d'environnement. 640 root:poscaisse : la caisse le lit, personne d'autre.
     # POSCAISSE_ENSEIGNE est volontairement ABSENT - vide, la caisse prend l'enseigne du
