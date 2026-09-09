@@ -38,6 +38,18 @@ public class Abonnement {
     private boolean avecDemonstration = true;
 
     private String baseNom;
+
+    /**
+     * L'adresse du client, et le port local de sa caisse.
+     *
+     * Attribues au provisionnement, uniques en base : deux clients a la meme adresse,
+     * c'est un client qui ouvre la caisse de l'autre ; deux caisses sur le meme port, et
+     * la seconde ne demarre pas.
+     */
+    private String sousDomaine;
+    private Integer port;
+
+    /** https://<sousDomaine>.<domaine> — recopie ici pour n'etre calcule qu'une fois. */
     private String urlClient;
     private String version;
     private OffsetDateTime provisionneLe;

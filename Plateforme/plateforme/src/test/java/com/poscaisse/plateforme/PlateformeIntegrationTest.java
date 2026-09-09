@@ -268,6 +268,35 @@ class PlateformeIntegrationTest {
                 .contains("LANG=C.UTF-8")
                 .contains("POSCAISSE_ENSEIGNE=");
 
+        /*
+            L'ADRESSE, ET LE PORT QUI LA REND POSSIBLE.
+
+            Le provisionnement preparait la base et s'arretait la : le client n'avait aucune
+            adresse a taper le matin, et la commande ne portait aucun port - deux caisses
+            ouvertes le meme jour se seraient battues pour le 8080, la seconde echouant sur
+            un << Address already in use >> dans un journal que personne ne lit.
+        */
+        String sousDomaine = r.get("sousDomaine").asText();
+        assertThat(sousDomaine).as("lisible au téléphone").matches("^[a-z0-9]([a-z0-9-]*[a-z0-9])?$");
+        assertThat(r.get("adresse").asText()).isEqualTo("https://" + sousDomaine + ".pos.ebs-integra.com");
+        int portCaisse = r.get("portCaisse").asInt();
+        assertThat(portCaisse).isBetween(8101, 8120);
+        assertThat(commande).contains("POSCAISSE_PORT=" + portCaisse);
+
+        /*
+            LA COMMANDE D'OUVERTURE NE PORTE PAS LE MOT DE PASSE, et ce test est la pour
+            que personne ne l'y remette par commodite : tout ce qui passe en argument se
+            lit dans << ps >> par n'importe quel compte de la machine, et reste dans
+            l'historique du shell. Le script le demande a l'ecran.
+        */
+        String ouverture = r.get("ouverture").asText();
+        assertThat(ouverture)
+                .contains("poscaisse-ouvrir")
+                .contains("--sous-domaine " + sousDomaine)
+                .contains("--port " + portCaisse)
+                .contains("--profil CAFE")
+                .doesNotContain(r.get("motDePasse").asText());
+
         // La base existe vraiment - ce n'est pas une ligne dans une table.
         try (java.sql.Connection cx = source.getConnection();
              java.sql.Statement st = cx.createStatement();
@@ -296,6 +325,11 @@ class PlateformeIntegrationTest {
         JsonNode encore = json(poster("/api/abonnements/" + abonnementId + "/provisionner", Map.of(), 200));
         assertThat(encore.get("message").asText()).contains("existait déjà");
         assertThat(encore.has("motDePasse")).as("aucun mot de passe rendu deux fois").isFalse();
+
+        // L'adresse est ECRITE SUR LE COMPTOIR du client : elle ne bouge pas parce qu'on a
+        // recliqué sur un bouton.
+        assertThat(encore.get("sousDomaine").asText()).as("l'adresse ne change jamais").isEqualTo(sousDomaine);
+        assertThat(encore.get("portCaisse").asInt()).as("le port non plus").isEqualTo(portCaisse);
 
         /*
             << REPARTIR DE ZERO >>. Le commercial change d'avis : ce client a deja son

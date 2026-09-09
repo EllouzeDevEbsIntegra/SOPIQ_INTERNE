@@ -1,8 +1,10 @@
 # La caisse d'un client ou d'une demonstration.
 #
 # Modele : remplacer @NOM@ (le sous-domaine, sans le reste) et @PORT@.
-# Le script poscaisse-ouvrir le fait a votre place - ce fichier est la pour qu'on
-# puisse lire ce qu'il ecrit.
+#
+# poscaisse-ouvrir le fait a votre place pour un client, preparer-demos.sh pour les six
+# demonstrations. Ce fichier est la pour qu'on puisse lire ce qu'ils ecrivent - et il est
+# installe en /etc/poscaisse/modeles/pos-caisse.conf, ou poscaisse-ouvrir va le chercher.
 
 server {
     listen 80;

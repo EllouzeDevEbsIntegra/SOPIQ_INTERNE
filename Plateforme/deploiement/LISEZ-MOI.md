@@ -15,7 +15,7 @@ suit ne les touche.
 |---|---|---|
 | nginx | `0.0.0.0:80`, `0.0.0.0:443` | oui, seul point d'entrée |
 | back-office | `127.0.0.1:8090` | non |
-| caisses clients | `127.0.0.1:8101…` | non |
+| caisses clients | `127.0.0.1:8101-8120` | non |
 | caisses de démo | `127.0.0.1:8121…8126` | non |
 | PostgreSQL | `127.0.0.1:5432` | non |
 
@@ -82,11 +82,20 @@ autant ne pas l'y mettre.
 
 ```bash
 sudo install -m 644 systemd/*.service /etc/systemd/system/
-sudo install -m 755 -o root -g root sbin/poscaisse-demo /usr/local/sbin/poscaisse-demo
+sudo install -m 755 -o root -g root sbin/poscaisse-demo   /usr/local/sbin/poscaisse-demo
+sudo install -m 755 -o root -g root sbin/poscaisse-ouvrir /usr/local/sbin/poscaisse-ouvrir
+sudo install -d -m 755 -o root -g root /etc/poscaisse/modeles
+sudo install -m 644 -o root -g root nginx/pos-caisse.conf.modele /etc/poscaisse/modeles/pos-caisse.conf
 sudo install -m 440 -o root -g root sudoers.d/poscaisse-demo /etc/sudoers.d/poscaisse-demo
 sudo visudo -c            # VÉRIFIER avant de se déconnecter
 sudo systemctl daemon-reload
 ```
+
+`poscaisse-ouvrir` n'a **aucune règle sudo**, contrairement à `poscaisse-demo`, et c'est
+délibéré : le back-office ne l'appelle pas. Ouvrir un client est un geste rare, fait par
+quelqu'un qui a déjà les droits sur la machine ; lui donner un chemin automatique depuis
+une application web serait ajouter une porte pour un confort qui ne sert qu'une fois par
+client.
 
 Le `visudo -c` n'est pas une politesse : un fichier sudoers invalide rend `sudo`
 inutilisable sur toute la machine, et on ne s'en aperçoit qu'après s'être déconnecté.
@@ -155,6 +164,36 @@ panne. Le journal dit où elle en est :
 ```bash
 sudo journalctl -u poscaisse-demo@cafe -f
 ```
+
+## Ouvrir la caisse d'un client
+
+Le back-office prépare la base et rend **deux** lignes. La première fait tourner un
+processus ; elle ne le rend joignable par personne. La seconde est celle-ci, à lancer en
+SSH sur le serveur :
+
+```bash
+sudo poscaisse-ouvrir --sous-domaine numberone --port 8101 \
+     --base pos_cli0001_resto --profil RESTO --enseigne 'Number One' --demonstration true
+```
+
+Elle pose le fichier d'environnement, le service qui redémarre tout seul, et le vhost
+nginx à l'adresse du client — puis vérifie nginx avant de le recharger.
+
+**Le mot de passe est demandé à l'écran, jamais en argument.** Tout ce qui passe en
+argument se lit dans `ps` par n'importe quel compte de la machine, et reste dans
+l'historique du shell. Le script vérifie d'ailleurs la connexion à la base **avant**
+d'écrire quoi que ce soit : un mot de passe mal recopié donnerait sinon un service qui
+redémarre en boucle, et l'erreur serait à chercher dans `journalctl` au lieu d'être dite
+tout de suite.
+
+Il est **idempotent** : relancé sur un client déjà ouvert, il garde son mot de passe et
+son jeton, réécrit les mêmes fichiers et redémarre le service. C'est ce qu'on veut après
+une mise à jour du jar.
+
+Le sous-domaine et le port viennent du back-office, qui les attribue une fois pour toutes
+et les garantit uniques. Le script les revalide quand même — il s'utilise aussi à la main,
+et un port déjà pris ne se voit autrement qu'au démarrage, sous la forme d'un
+« Address already in use » dans un journal que personne ne lit.
 
 ## Le pare-feu
 

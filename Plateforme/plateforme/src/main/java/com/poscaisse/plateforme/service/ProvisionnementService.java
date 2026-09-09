@@ -49,6 +49,7 @@ public class ProvisionnementService {
         que seul un serveur en moindre privilege revelait.
     */
     private final BasesPostgres bases;
+    private final AdressesClients adresses;
 
     @Value("${plateforme.provisionnement.hote:localhost}") private String hote;
     @Value("${plateforme.provisionnement.port:5432}") private String port;
@@ -74,6 +75,21 @@ public class ProvisionnementService {
         String base = a.getBaseNom() != null ? a.getBaseNom() : nomDeBase(c, a);
         String utilisateur = base;
         String motDePasse = motDePasse();
+
+        /*
+            L'ADRESSE ET LE PORT SONT ATTRIBUES UNE FOIS, ET NE BOUGENT PLUS.
+
+            Une adresse est ecrite sur le comptoir du client, dans son navigateur et dans
+            nos vhosts : la changer parce qu'un provisionnement a ete relance serait lui
+            couper l'acces sans prevenir. On ne les pose donc que s'ils manquent.
+
+            Deux provisionnements simultanes pourraient choisir le meme port ou le meme
+            nom : c'est la base qui tranche, par ses deux index uniques, et le second
+            echoue franchement au lieu de rendre une adresse qui appartient a un autre.
+        */
+        if (a.getSousDomaine() == null) a.setSousDomaine(adresses.sousDomaineLibre(c));
+        if (a.getPort() == null) a.setPort(adresses.portLibre());
+        a.setUrlClient(adresses.adresse(a.getSousDomaine()));
 
         if (bases.existe(base)) {
             /*
@@ -120,6 +136,10 @@ public class ProvisionnementService {
         m.put("module", a.getModule().name());
         m.put("avecDemonstration", Boolean.toString(a.isAvecDemonstration()));
         m.put("carteDeDemonstration", a.isAvecDemonstration() ? carte(a.getModule()) : "aucune — catalogue vide");
+        m.put("sousDomaine", a.getSousDomaine());
+        m.put("adresse", a.getUrlClient());
+        m.put("portCaisse", String.valueOf(a.getPort()));
+        m.put("ouverture", ouverture(a, base));
         m.put("commande", commande(a, base, utilisateur, motDePasse));
         return m;
     }
@@ -144,10 +164,38 @@ public class ProvisionnementService {
                 + " POSCAISSE_DB_HOST=" + hote + " POSCAISSE_DB_PORT=" + port
                 + " POSCAISSE_DB_NAME=" + base + " POSCAISSE_DB_USER=" + utilisateur
                 + (motDePasse == null ? "" : " POSCAISSE_DB_PASSWORD=" + motDePasse)
+                + (a.getPort() == null ? "" : " POSCAISSE_PORT=" + a.getPort())
                 + " POSCAISSE_PROFIL=" + a.getModule().name()
                 + " POSCAISSE_ENSEIGNE='" + enseigne.replace("'", "'\\''") + "'"
                 + " POSCAISSE_DEMO_DATA=" + a.isAvecDemonstration()
                 + " java -jar poscaisse.jar";
+    }
+
+    /**
+     * LA COMMANDE QUI OUVRE VRAIMENT LA CAISSE SUR INTERNET.
+     *
+     * La commande de lancement ci-dessus fait tourner un processus ; elle ne le rend
+     * joignable par personne. Sur le serveur d'hebergement il faut encore un fichier
+     * d'environnement, un service qui redemarre tout seul, et un vhost nginx a l'adresse
+     * du client - trois fichiers qu'un humain ecrivait a la main, donc trois occasions de
+     * se tromper d'un port ou d'un nom.
+     *
+     * LE MOT DE PASSE N'EST PAS DANS CETTE LIGNE, ET C'EST DELIBERE. Tout ce qui passe en
+     * argument d'une commande se lit dans << ps >> par n'importe quel compte de la
+     * machine, et reste dans l'historique du shell. Le script le demande donc a l'ecran,
+     * sans l'afficher.
+     */
+    private String ouverture(Abonnement a, String base) {
+        Client c = a.getClient();
+        String enseigne = (c.getEnseigne() != null && !c.getEnseigne().isBlank())
+                ? c.getEnseigne() : c.getRaisonSociale();
+        return "sudo poscaisse-ouvrir"
+                + " --sous-domaine " + a.getSousDomaine()
+                + " --port " + a.getPort()
+                + " --base " + base
+                + " --profil " + a.getModule().name()
+                + " --enseigne '" + enseigne.replace("'", "'\\''") + "'"
+                + " --demonstration " + a.isAvecDemonstration();
     }
 
     /**

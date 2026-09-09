@@ -1,0 +1,169 @@
+#!/bin/bash
+#
+# OUVRIR LA CAISSE D'UN CLIENT : lui donner une adresse, et de quoi tenir toute seule.
+#
+# Le back-office prepare la base et rend deux lignes. La premiere fait tourner un
+# processus ; elle ne le rend joignable par personne. Ce script est la seconde : il pose
+# le fichier d'environnement, le service qui redemarre tout seul, et le vhost nginx a
+# l'adresse du client - trois fichiers qu'on ecrivait a la main, donc trois occasions de
+# se tromper d'un port ou d'un nom, et de ne s'en apercevoir que le matin de l'ouverture.
+#
+#   sudo poscaisse-ouvrir --sous-domaine numberone --port 8101 \
+#        --base pos_cli0001_resto --profil RESTO --enseigne 'Number One' --demonstration true
+#
+# CE SCRIPT N'EST PAS APPELE PAR LE BACK-OFFICE, contrairement a poscaisse-demo, et il n'a
+# donc AUCUNE regle sudo. Ouvrir un client est un geste rare, fait par quelqu'un qui a deja
+# les droits sur la machine : lui donner un chemin automatique depuis une application web
+# serait ajouter une porte pour un confort qui ne se presente qu'une fois par client.
+#
+# IL EST IDEMPOTENT. Relance sur un client deja ouvert, il garde son mot de passe et son
+# jeton, reecrit les memes fichiers et redemarre le service. C'est ce qu'on veut apres une
+# mise a jour du jar.
+
+set -euo pipefail
+
+# PAS DE << TEST && ACTION >> DANS CE FICHIER, ET CE N'EST PAS UNE PREFERENCE DE STYLE.
+# Avec « set -e », « A && B » rend le code d'echec de A quand A echoue, et le script
+# s'arrete la - donc sur le cas NORMAL d'un test qui ne matche pas. Les gardes sont
+# ecrites « ... || { message; exit 1; } », qui rend 0 quand tout va bien, ou en « if ».
+
+DOMAINE="${DOMAINE:-pos.ebs-integra.com}"
+MODELE="${MODELE:-/etc/poscaisse/modeles/pos-caisse.conf}"
+PROFILS="RESTO CAFE SHOP VETEMENT PATISSERIE PARFUMERIE"
+
+sous_domaine=""; port=""; base=""; profil=""; enseigne=""; demonstration="true"
+
+usage() {
+    cat >&2 <<USAGE
+usage : poscaisse-ouvrir --sous-domaine <nom> --port <1024-65535> --base <base>
+                         --profil <metier> --enseigne <texte> [--demonstration true|false]
+
+  Le mot de passe PostgreSQL est demande a l'ecran : il ne doit PAS etre passe en
+  argument, ou n'importe quel compte de la machine le lirait dans « ps ».
+
+  metiers : $PROFILS
+USAGE
+    exit 2
+}
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --sous-domaine)  sous_domaine="${2:-}"; shift 2 ;;
+        --port)          port="${2:-}";         shift 2 ;;
+        --base)          base="${2:-}";         shift 2 ;;
+        --profil)        profil="${2:-}";       shift 2 ;;
+        --enseigne)      enseigne="${2:-}";     shift 2 ;;
+        --demonstration) demonstration="${2:-}"; shift 2 ;;
+        -h|--help)       usage ;;
+        *) echo "poscaisse-ouvrir : option inconnue « $1 »." >&2; usage ;;
+    esac
+done
+
+[ "$(id -u)" = 0 ] || { echo "À lancer en root : sudo $0 ..." >&2; exit 1; }
+
+# LA VALIDATION, ET C'EST L'ESSENTIEL DE CE FICHIER. Chacune de ces valeurs finit dans un
+# nom de fichier, un nom d'unite systemd ou une directive nginx. Aucune ne doit pouvoir
+# devenir un chemin, une option, ni un second nom de serveur.
+[ -n "$sous_domaine" ] && [ -n "$port" ] && [ -n "$base" ] && [ -n "$profil" ] || usage
+
+echo "$sous_domaine" | grep -Eq '^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$' \
+    || { echo "Sous-domaine refusé : « $sous_domaine » (minuscules, chiffres et tirets)." >&2; exit 1; }
+if echo "$sous_domaine" | grep -q '^demo-'; then
+    echo "« demo- » est réservé aux six démonstrations." >&2; exit 1
+fi
+echo "$base" | grep -Eq '^[a-z][a-z0-9_]{0,62}$' \
+    || { echo "Nom de base refusé : « $base »." >&2; exit 1; }
+echo "$port" | grep -Eq '^[0-9]+$' && [ "$port" -ge 1024 ] && [ "$port" -le 65535 ] \
+    || { echo "Port refusé : « $port »." >&2; exit 1; }
+echo " $PROFILS " | grep -q " $profil " \
+    || { echo "Métier inconnu : « $profil ». Attendu : $PROFILS" >&2; exit 1; }
+case "$demonstration" in true|false) ;; *) echo "--demonstration attend true ou false." >&2; exit 1 ;; esac
+
+[ -f "$MODELE" ] || { echo "Modèle nginx introuvable : $MODELE" >&2; exit 1; }
+id poscaisse >/dev/null 2>&1 || { echo "Le compte système « poscaisse » n'existe pas." >&2; exit 1; }
+[ -f /etc/systemd/system/poscaisse@.service ] || { echo "L'unité poscaisse@.service n'est pas installée." >&2; exit 1; }
+[ -f "/etc/letsencrypt/live/$DOMAINE/fullchain.pem" ] || { echo "Certificat absent pour $DOMAINE." >&2; exit 1; }
+command -v openssl >/dev/null || { echo "openssl est requis." >&2; exit 1; }
+
+env_fichier="/etc/poscaisse/caisse-$sous_domaine.env"
+
+# Sans tube : « set -o pipefail » a deja tue un script de ce dossier sur un SIGPIPE.
+deja() {
+    [ -f "$2" ] || return 0
+    LC_ALL=C awk -v k="$1" 'index($0, k "=") == 1 { print substr($0, length(k) + 2); exit }' "$2"
+}
+
+# LE PORT NE DOIT PAS ETRE CELUI D'UN AUTRE. Le back-office le garantit deja par un index
+# unique, mais ce script s'utilise aussi a la main, et un port pris ne se voit qu'au
+# demarrage - dans un journal, sous la forme « Address already in use ».
+for autre in /etc/poscaisse/caisse-*.env /etc/poscaisse/demo-*.env; do
+    [ -e "$autre" ] || continue
+    if [ "$autre" = "$env_fichier" ]; then continue; fi
+    if [ "$(deja POSCAISSE_PORT "$autre")" = "$port" ]; then
+        echo "Le port $port est déjà celui de $(basename "$autre" .env)." >&2; exit 1
+    fi
+done
+
+mdp="$(deja POSCAISSE_DB_PASSWORD "$env_fichier")"
+if [ -z "$mdp" ]; then
+    # A l'ecran, jamais en argument : ce qui passe en argument se lit dans « ps » par
+    # n'importe quel compte de la machine, et reste dans l'historique du shell.
+    printf 'Mot de passe PostgreSQL de la base « %s » : ' "$base" >&2
+    read -rs mdp; echo >&2
+    [ -n "$mdp" ] || { echo "Mot de passe vide : rien n'a été écrit." >&2; exit 1; }
+else
+    echo "  mot de passe : celui déjà en place (réouverture)"
+fi
+
+# On VERIFIE la connexion avant d'ecrire quoi que ce soit : un mot de passe mal recopie
+# donnerait un service qui redemarre en boucle, et l'erreur serait a chercher dans
+# journalctl au lieu d'etre dite ici.
+if command -v psql >/dev/null; then
+    PGPASSWORD="$mdp" psql -h 127.0.0.1 -U "$base" -d "$base" -tAc 'SELECT 1' >/dev/null 2>&1 \
+        || { echo "Connexion refusée à « $base » avec ce mot de passe. Rien n'a été écrit." >&2; exit 1; }
+    echo "  connexion à la base : vérifiée"
+fi
+
+jeton="$(deja POSCAISSE_JWT_SECRET "$env_fichier")"
+[ -n "$jeton" ] || { h="$(openssl rand -hex 80)"; jeton="${h:0:80}"; }
+
+install -d -m 750 -o root -g poscaisse /etc/poscaisse
+install -d -m 755 -o poscaisse -g poscaisse /opt/poscaisse/caisses
+
+# POSCAISSE_ENSEIGNE peut etre vide : la caisse prend alors celle de son profil. LANG n'est
+# pas decoratif - une machine virtuelle Java demarree sans langue lit son environnement en
+# ASCII, et l'enseigne accentuee arriverait abimee jusque sur les tickets.
+umask 027
+{
+    echo "POSCAISSE_DB_HOST=127.0.0.1"
+    echo "POSCAISSE_DB_PORT=5432"
+    echo "POSCAISSE_DB_NAME=$base"
+    echo "POSCAISSE_DB_USER=$base"
+    echo "POSCAISSE_DB_PASSWORD=$mdp"
+    echo "POSCAISSE_PORT=$port"
+    echo "POSCAISSE_PROFIL=$profil"
+    if [ -n "$enseigne" ]; then echo "POSCAISSE_ENSEIGNE=$enseigne"; fi
+    echo "POSCAISSE_DEMO_DATA=$demonstration"
+    echo "POSCAISSE_JWT_SECRET=$jeton"
+    echo "LANG=C.UTF-8"
+} > "$env_fichier"
+chown root:poscaisse "$env_fichier"; chmod 640 "$env_fichier"
+echo "  $env_fichier"
+
+sed -e "s/@NOM@/$sous_domaine/g" -e "s/@PORT@/$port/g" "$MODELE" \
+    > "/etc/nginx/sites-available/pos-$sous_domaine"
+ln -sfn "/etc/nginx/sites-available/pos-$sous_domaine" "/etc/nginx/sites-enabled/pos-$sous_domaine"
+echo "  vhost nginx posé"
+
+# nginx -t AVANT de recharger : ce serveur porte d'autres sites en production, et une
+# configuration refusee doit l'etre pendant qu'on regarde.
+nginx -t
+systemctl daemon-reload
+systemctl enable --now "poscaisse@$sous_domaine" >/dev/null
+systemctl reload nginx
+
+echo
+echo "Caisse ouverte : https://$sous_domaine.$DOMAINE"
+echo "Comptez une vingtaine de secondes au premier démarrage — elle pose son schéma"
+echo "et sa carte. Le journal dit où elle en est :"
+echo "  journalctl -u poscaisse@$sous_domaine -f"
