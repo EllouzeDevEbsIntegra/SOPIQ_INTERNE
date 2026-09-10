@@ -35,6 +35,7 @@ class AmorcageZeroTest {
     @Autowired UserRepo comptes;
     @Autowired RoleRepo roles;
     @Autowired PaymentMethodRepo paiements;
+    @Autowired PrintDestinationRepo destinations;
     @Autowired IngredientRepo ingredients;
     @Autowired KitchenNoteRepo remarques;
     @Autowired SettingsService reglages;
@@ -69,6 +70,13 @@ class AmorcageZeroTest {
             n'a jamais eu besoin de cette liste pour écrire un texte libre sur une ligne.
         */
         assertThat(remarques.count()).as("aucune remarque imposée à une supérette").isZero();
+
+        assertThat(destinations.findAll()).extracting("code")
+                .as("aucune imprimante de cuisine dans une supérette")
+                .containsExactly("CLIENT");
+        assertThat(paiements.findAll()).extracting("name")
+                .as("aucun titre propre à la restauration dans une supérette")
+                .doesNotContain("Ticket restaurant");
     }
 
     @Test void lesReglagesDeLaBoutiqueSontPoses() {
