@@ -515,14 +515,14 @@ watch(search, v => { if (v) activeCat.value = null; else if (!activeCat.value) a
 .search { flex: 1; max-width: 540px; display: flex; align-items: center; gap: 9px; height: 42px; padding: 0 12px;
   background: rgba(255, 255, 255, .08); border: 1px solid transparent; border-radius: var(--r-sm); color: #A69C90; transition: background .12s, border-color .12s; }
 .search:focus-within { background: rgba(255, 255, 255, .13); border-color: rgba(255, 255, 255, .25); }
-.search input { flex: 1; min-width: 0; background: none; border: 0; outline: none; color: #fff; font-size: 14.5px; }
+.search input { flex: 1; min-width: 0; min-height: 42px; background: none; border: 0; outline: none; color: #fff; font-size: 14.5px; }
 .search input::placeholder { color: #8A8076; }
 .clear { color: #A69C90; display: flex; padding: 4px; }
 .clear:hover { color: #fff; }
 
 .tb-actions { display: flex; align-items: center; gap: 4px; margin-left: auto; }
 .tb-btn {
-  position: relative; display: flex; align-items: center; gap: 7px; height: 42px; padding: 0 13px;
+  position: relative; display: flex; align-items: center; gap: 7px; min-width: 42px; height: 42px; padding: 0 13px;
   border-radius: var(--r-sm); color: #D8D1C8; font-size: 13.5px; font-weight: 600;
 }
 .tb-btn:hover { background: rgba(255, 255, 255, .1); color: #fff; }

@@ -200,7 +200,7 @@ const hasDiscount = computed(() => cart.lineDiscountTotal > 0 || cart.orderDisco
 .sum { padding: 11px 14px 12px; border-top: 1px solid var(--line); background: var(--surface-2); }
 .line-sum { display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 13.5px; color: var(--ink-3); padding: 3px 0; }
 .line-sum.neg { color: var(--warn); font-weight: 600; }
-.act-sum { text-align: left; border-radius: var(--r-xs); }
+.act-sum { min-height: 44px; text-align: left; border-radius: var(--r-xs); }
 .act-sum:not(:disabled):hover { color: var(--ink); }
 .total { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-top: 7px; padding-top: 9px; border-top: 1px solid var(--line); }
 .total > span { font-size: 14px; font-weight: 650; color: var(--ink-2); text-transform: uppercase; letter-spacing: .05em; }
