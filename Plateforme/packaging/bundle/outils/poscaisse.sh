@@ -62,11 +62,11 @@ pg_arrete() { pg_tourne && "$pgbin/pg_ctl" -D "$donnees" -m fast -w -t 60 stop >
 app_repond() { curl -sf "http://127.0.0.1:$APP_PORT/actuator/health" 2>/dev/null | grep -q '"status":"UP"'; }
 app_demarre() {
   app_repond && { info 'Application deja en service.'; return 0; }
-  ( cd "$racine" && setsid nohup "$java_bin" -Xms256m -Xmx768m \
+  ( cd "$racine" && export POSCAISSE_DB_PASSWORD="$PASS" && setsid nohup "$java_bin" -Xms256m -Xmx768m \
       -Duser.timezone=Africa/Tunis -Dfile.encoding=UTF-8 -jar "$jar" \
       "--server.port=$APP_PORT" \
       "--spring.datasource.url=jdbc:postgresql://127.0.0.1:$PG_PORT/$DB" \
-      "--spring.datasource.username=$USER" "--spring.datasource.password=$PASS" \
+      "--spring.datasource.username=$USER" \
       > "$journal/poscaisse.log" 2>&1 & )
   info 'Demarrage de la caisse...'
   for _ in $(seq 1 90); do app_repond && { info 'Caisse prete.'; return 0; }; sleep 2; done

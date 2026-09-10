@@ -266,7 +266,9 @@ class PlateformeIntegrationTest {
                 .contains("POSCAISSE_PROFIL=CAFE")
                 .contains("POSCAISSE_DEMO_DATA=true")
                 .contains("LANG=C.UTF-8")
-                .contains("POSCAISSE_ENSEIGNE=");
+                .contains("POSCAISSE_ENSEIGNE=")
+                .doesNotContain(r.get("motDePasse").asText())
+                .contains("read -r -s");
 
         /*
             L'ADRESSE, ET LE PORT QUI LA REND POSSIBLE.

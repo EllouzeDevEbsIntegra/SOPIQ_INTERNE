@@ -117,12 +117,18 @@ function App-Demarre($c) {
     '-jar', $jar,
     "--server.port=$($c.APP_PORT)",
     "--spring.datasource.url=$jdbc",
-    "--spring.datasource.username=$($c.USER)",
-    "--spring.datasource.password=$($c.PASS)"
+    "--spring.datasource.username=$($c.USER)"
   )
-  Start-Process -FilePath $java -ArgumentList $args -WorkingDirectory $racine -WindowStyle Hidden `
-    -RedirectStandardOutput (Join-Path $journal 'poscaisse.log') `
-    -RedirectStandardError  (Join-Path $journal 'poscaisse-erreurs.log') | Out-Null
+  $ancienSecret = [Environment]::GetEnvironmentVariable('POSCAISSE_DB_PASSWORD', 'Process')
+  try {
+    $env:POSCAISSE_DB_PASSWORD = $c.PASS
+    Start-Process -FilePath $java -ArgumentList $args -WorkingDirectory $racine -WindowStyle Hidden `
+      -RedirectStandardOutput (Join-Path $journal 'poscaisse.log') `
+      -RedirectStandardError  (Join-Path $journal 'poscaisse-erreurs.log') | Out-Null
+  } finally {
+    if ($null -eq $ancienSecret) { Remove-Item Env:POSCAISSE_DB_PASSWORD -ErrorAction SilentlyContinue }
+    else { $env:POSCAISSE_DB_PASSWORD = $ancienSecret }
+  }
 
   Info 'Demarrage de la caisse...'
   for ($i = 0; $i -lt 90; $i++) {

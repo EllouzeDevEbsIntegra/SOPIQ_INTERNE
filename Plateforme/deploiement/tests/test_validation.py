@@ -82,6 +82,14 @@ class SecretsProcessusTest(unittest.TestCase):
         self.assertEqual(dangereuses, [],
                          "Le mot de passe serait visible dans la ligne de commande du processus psql")
 
+    def test_les_lanceurs_autonomes_ne_passent_pas_le_secret_a_java(self):
+        emballage = RACINE.parent / "packaging" / "bundle" / "outils"
+        for nom in ["poscaisse.sh", "poscaisse.ps1"]:
+            with self.subTest(nom=nom):
+                texte = (emballage / nom).read_text(encoding="utf-8")
+                self.assertNotIn("--spring.datasource.password=", texte)
+                self.assertIn("POSCAISSE_DB_PASSWORD", texte)
+
 
 class EntetesNginxTest(unittest.TestCase):
     def test_les_deux_applications_posent_les_quatre_entetes_de_securite(self):

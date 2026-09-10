@@ -140,7 +140,7 @@ public class ProvisionnementService {
         m.put("adresse", a.getUrlClient());
         m.put("portCaisse", String.valueOf(a.getPort()));
         m.put("ouverture", ouverture(a, base));
-        m.put("commande", commande(a, base, utilisateur, motDePasse));
+        m.put("commande", commande(a, base, utilisateur));
         return m;
     }
 
@@ -156,19 +156,19 @@ public class ProvisionnementService {
      * nom abime s'imprimerait sur chaque ticket. La caisse s'en apercoit et refuse de
      * l'enregistrer, mais autant ne pas la mettre dans cette situation.
      */
-    private String commande(Abonnement a, String base, String utilisateur, String motDePasse) {
+    private String commande(Abonnement a, String base, String utilisateur) {
         Client c = a.getClient();
         String enseigne = (c.getEnseigne() != null && !c.getEnseigne().isBlank())
                 ? c.getEnseigne() : c.getRaisonSociale();
-        return "LANG=C.UTF-8"
+        return "(read -r -s -p 'Mot de passe PostgreSQL : ' POSCAISSE_DB_PASSWORD; echo; "
+                + "export POSCAISSE_DB_PASSWORD; LANG=C.UTF-8"
                 + " POSCAISSE_DB_HOST=" + hote + " POSCAISSE_DB_PORT=" + port
                 + " POSCAISSE_DB_NAME=" + base + " POSCAISSE_DB_USER=" + utilisateur
-                + (motDePasse == null ? "" : " POSCAISSE_DB_PASSWORD=" + motDePasse)
                 + (a.getPort() == null ? "" : " POSCAISSE_PORT=" + a.getPort())
                 + " POSCAISSE_PROFIL=" + a.getModule().name()
                 + " POSCAISSE_ENSEIGNE='" + enseigne.replace("'", "'\\''") + "'"
                 + " POSCAISSE_DEMO_DATA=" + a.isAvecDemonstration()
-                + " java -jar poscaisse.jar";
+                + " java -jar poscaisse.jar)";
     }
 
     /**
