@@ -38,7 +38,7 @@ public class CatalogService {
         List<CategoryDto> cats = categoryRepo.findAllByOrderBySortOrderAscIdAsc().stream().filter(Category::isActive)
                 .map(c -> Mappers.category(c, counts.getOrDefault(c.getId(), 0L))).toList();
         List<ProductDto> products = productRepo.findByActiveTrueOrderBySortOrderAscNameAsc().stream()
-                .filter(p -> p.getCategory().isActive()).map(Mappers::product).toList();
+                .filter(p -> p.getCategory().isActive()).map(p -> Mappers.product(p, false)).toList();
         List<PaymentMethodDto> methods = paymentMethodRepo.findAllByOrderBySortOrderAscIdAsc().stream().filter(PaymentMethod::isActive).map(Mappers::paymentMethod).toList();
         Company c = companyRepo.findAll().stream().findFirst().orElse(null);
         CompanyInfo info = c == null ? null : new CompanyInfo(c.getName(), c.getTradeName(), c.getCurrency(), c.getCurrencySymbol(), c.getDecimals(), c.getLogoData());
@@ -257,12 +257,12 @@ public class CatalogService {
     }
 
     @Transactional
-    public ProductDto setAvailability(Long id, boolean available) {
+    public Product setAvailability(Long id, boolean available) {
         Product p = productRepo.findById(id).orElseThrow(() -> BusinessException.notFound("Produit"));
         p.setAvailable(available);
         p.setUpdatedAt(OffsetDateTime.now());
         audit.log(available ? "PRODUCT_AVAILABLE" : "PRODUCT_UNAVAILABLE", "Product", id, p.getName());
-        return Mappers.product(productRepo.save(p));
+        return productRepo.save(p);
     }
 
     @Transactional

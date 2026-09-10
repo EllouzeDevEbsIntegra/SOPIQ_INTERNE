@@ -62,7 +62,7 @@ public class CatalogController {
     @PutMapping("/products/{id}/image") public ProductDto setImage(@PathVariable Long id, @RequestBody Map<String, String> body) {
         return catalog.setProductImage(id, body.get("imageUrl"));
     }
-    @PatchMapping("/products/{id}/availability") public ProductDto availability(@PathVariable Long id, @Valid @RequestBody AvailabilityRequest r) { return catalog.setAvailability(id, r.available()); }
+    @PatchMapping("/products/{id}/availability") public ProductDto availability(@PathVariable Long id, @Valid @RequestBody AvailabilityRequest r) { return com.poscaisse.service.Mappers.product(catalog.setAvailability(id, r.available()), true); }
     @PostMapping("/products/reorder") public Map<String, Boolean> reorderProducts(@RequestBody ReorderRequest r) { catalog.reorderProducts(r.ids()); return Map.of("ok", true); }
     @PutMapping("/products/favorites") public Map<String, Boolean> favorites(@RequestBody FavoritesRequest r) { catalog.setFavorites(r.productIds()); return Map.of("ok", true); }
 

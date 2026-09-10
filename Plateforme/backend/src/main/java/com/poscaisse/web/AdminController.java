@@ -60,6 +60,7 @@ public class AdminController {
     @GetMapping("/receipts/active") public ReceiptTemplateDto activeTemplate() { return print.dto(print.activeTemplate()); }
 
     // settings
+    @PreAuthorize("hasAuthority('SETTINGS_MANAGE')")
     @GetMapping("/settings") public Map<String, String> settings() { return settings.all(); }
     @PreAuthorize("hasAuthority('SETTINGS_MANAGE')") @PutMapping("/settings") public Map<String, String> saveSettings(@RequestBody Map<String, String> values) { return settings.update(values); }
 
