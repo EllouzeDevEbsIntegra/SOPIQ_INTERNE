@@ -35,23 +35,70 @@ Le dossier de travail est `Plateforme/`. Il contient **quatre** parties :
 
 ## 2. Comment faire tourner tout ça
 
-Il te faut un PostgreSQL 16 local. `docker compose up -d postgres` depuis `Plateforme/`
-en fournit un, sinon un PostgreSQL local convient.
+Il te faut **un PostgreSQL accessible en local, version 16 ou plus récente**. Rien d'autre :
+ni Docker, ni conteneur, ni service à installer.
+
+**N'exige pas Docker, et ne t'arrête pas s'il est absent.** Le `docker-compose.yml` du
+dépôt est une commodité pour qui en a un ; ce n'est pas la façon dont ce projet se teste,
+et il n'a jamais servi ici. Un PostgreSQL est presque toujours déjà là — celui qui sert au
+développement, ou celui qu'embarque le paquet autonome (`<installation>\pgsql\bin`).
+Trouve-le, et sers-t'en.
+
+Le serveur est désigné par quatre variables d'environnement, et **par elles seules** :
+`_DB_HOST`, `_DB_PORT`, `_DB_USER`, `_DB_PASSWORD`, préfixées `POSCAISSE` pour la caisse et
+`PLATEFORME` pour le back-office éditeur. Le compte doit être **superutilisateur** ou au
+moins `CREATEDB CREATEROLE` : les scénarios créent et détruisent leurs propres bases, une
+par scénario, parce qu'un test de démarrage rejoué sur une base déjà amorcée vérifierait le
+travail du test précédent.
+
+`psql` n'est **pas** nécessaire pour lancer les tests — le pilote JDBC suffit. Il n'est utile
+que pour regarder une base à la main ; sur Windows il se trouve dans
+`C:\Program Files\PostgreSQL\<version>\bin` ou dans le `pgsql\bin` du paquet autonome.
+
+Si vraiment aucun PostgreSQL n'est joignable, **dis-le et arrête-toi là** plutôt que de
+sauter les tests qui en ont besoin : un audit dont la moitié des scénarios n'a pas tourné
+doit le dire en première ligne, pas en note de bas de page.
+
+Linux ou macOS :
 
 ```bash
 # La caisse — 107 tests
 cd Plateforme/backend
-export POSCAISSE_IT=true POSCAISSE_DB_HOST=127.0.0.1 POSCAISSE_DB_USER=postgres POSCAISSE_DB_PASSWORD=postgres
+export POSCAISSE_IT=true POSCAISSE_DB_HOST=127.0.0.1 POSCAISSE_DB_PORT=5432 \
+       POSCAISSE_DB_USER=postgres POSCAISSE_DB_PASSWORD=postgres
 mvn test
 
 # Le back-office éditeur — 26 tests
 cd ../plateforme
-export PLATEFORME_IT=true PLATEFORME_DB_HOST=127.0.0.1 PLATEFORME_DB_USER=postgres PLATEFORME_DB_PASSWORD=postgres
+export PLATEFORME_IT=true PLATEFORME_DB_HOST=127.0.0.1 PLATEFORME_DB_PORT=5432 \
+       PLATEFORME_DB_USER=postgres PLATEFORME_DB_PASSWORD=postgres
 mvn test
 
 # L'interface
 cd ../frontend
 npm ci && npm run build && npm test
+```
+
+Windows / PowerShell — mêmes variables, autre syntaxe :
+
+```powershell
+$env:JAVA_HOME = 'C:\Program Files\Eclipse Adoptium\jdk-21'   # un JDK 21, pas un JRE
+$env:POSCAISSE_IT = 'true'
+$env:POSCAISSE_DB_HOST = '127.0.0.1'; $env:POSCAISSE_DB_PORT = '5432'
+$env:POSCAISSE_DB_USER = 'postgres';  $env:POSCAISSE_DB_PASSWORD = '<le mot de passe>'
+cd Plateforme\backend ; mvn test
+
+$env:PLATEFORME_IT = 'true'
+$env:PLATEFORME_DB_HOST = '127.0.0.1'; $env:PLATEFORME_DB_PORT = '5432'
+$env:PLATEFORME_DB_USER = 'postgres';  $env:PLATEFORME_DB_PASSWORD = '<le mot de passe>'
+cd ..\plateforme ; mvn test
+```
+
+Vérifie d'abord que le serveur répond, sans rien installer :
+
+```powershell
+Get-Service *postgres* | Select-Object Name, Status
+Test-NetConnection 127.0.0.1 -Port 5432 -InformationLevel Quiet   # doit rendre True
 ```
 
 **Commence par établir la ligne de base** : lance tout, note ce qui passe et ce qui ne
