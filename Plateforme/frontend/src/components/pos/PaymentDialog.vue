@@ -26,6 +26,7 @@ const customer = computed(() => cart.customer)
 const current = ref(methods.value.find(m => m.kind === 'CASH') || methods.value[0])
 const entry = ref('')
 const payments = ref([])
+const contenu = ref(null)
 
 const paid = computed(() => payments.value.reduce((s, p) => add(s, p.amount), 0))
 const remaining = computed(() => Math.max(0, sub(props.total, paid.value)))
@@ -91,15 +92,25 @@ function confirm(imprimer) {
     tendered: p.method.kind === 'CASH' ? p.tendered : null
   })), imprimer)
 }
-// Entree vaut le bouton principal : le ticket s'imprime dans la plupart des ventes.
-function onKey(e) { if (e.key === 'Enter' && canConfirm.value && !props.busy) { e.preventDefault(); confirm(true) } }
+// Entrée vaut le bouton principal uniquement depuis le fond du dialogue. Sur un bouton,
+// un champ, le pavé numérique ou une fenêtre ouverte au-dessus, le composant concerné
+// garde la touche : encaisser en arrière-plan serait irréversible pour le caissier.
+function onKey(e) {
+  if (e.key !== 'Enter' || !canConfirm.value || props.busy || e.defaultPrevented) return
+  const cible = e.target instanceof Element ? e.target : null
+  const notreDialogue = contenu.value?.closest('.modal')
+  if (cible?.closest('.modal') && cible.closest('.modal') !== notreDialogue) return
+  if (cible?.closest('button, input, textarea, select, [contenteditable="true"], [tabindex]')) return
+  e.preventDefault()
+  confirm(true)
+}
 onMounted(() => window.addEventListener('keydown', onKey))
 onUnmounted(() => window.removeEventListener('keydown', onKey))
 </script>
 
 <template>
   <Modal size="lg" title="Encaissement" :closable="!busy" @close="!busy && emit('close')">
-    <div class="pay-grid">
+    <div ref="contenu" class="pay-grid">
       <!-- colonne gauche : client, articles, montants et moyens -->
       <section class="left">
         <button v-if="cart.canPickCourier" class="customer" :class="{ set: cart.courier?.id }" @click="emit('courier')">

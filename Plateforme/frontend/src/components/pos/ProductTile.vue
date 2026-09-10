@@ -87,12 +87,16 @@ let timer = null
 function down() { timer = setTimeout(() => { timer = null; emit('hold') }, 600) }
 function up() { if (timer) { clearTimeout(timer); timer = null; emit('tap') } }
 function cancel() { if (timer) { clearTimeout(timer); timer = null } }
+// Un clic synthétique (Entrée, Espace, technologie d'assistance) n'a pas de détail
+// pointeur. Le gérer ici rend la tuile utilisable sans doubler le clic tactile.
+function clavier(e) { if (e.detail === 0) emit('tap') }
 </script>
 
 <template>
   <button
     class="tile" :class="[size, { off: !product.available }]" :style="tint"
-    @pointerdown.prevent="down" @pointerup.prevent="up" @pointerleave="cancel" @pointercancel="cancel" @contextmenu.prevent>
+    @pointerdown.prevent="down" @pointerup.prevent="up" @pointerleave="cancel" @pointercancel="cancel"
+    @click="clavier" @contextmenu.prevent>
     <span class="pic">
       <img v-if="showImages && photo" :src="photo" alt="" draggable="false" />
       <span v-else class="letter">{{ initial }}</span>
