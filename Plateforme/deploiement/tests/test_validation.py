@@ -83,5 +83,16 @@ class SecretsProcessusTest(unittest.TestCase):
                          "Le mot de passe serait visible dans la ligne de commande du processus psql")
 
 
+class EntetesNginxTest(unittest.TestCase):
+    def test_les_deux_applications_posent_les_quatre_entetes_de_securite(self):
+        requis = ["Strict-Transport-Security", "X-Frame-Options", "X-Content-Type-Options",
+                  "Content-Security-Policy"]
+        for nom in ["pos-caisse.conf.modele", "pos-plateforme.conf"]:
+            with self.subTest(nom=nom):
+                texte = (RACINE / "nginx" / nom).read_text(encoding="utf-8")
+                for entete in requis:
+                    self.assertIn("add_header " + entete, texte)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
