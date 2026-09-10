@@ -13,12 +13,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 /**
  * Contrat de la cible « une application, N bases ».
  *
- * Il se lance explicitement avec le profil Maven audit-multitenant-contract. Tant que
- * l'aiguillage n'est pas construit, il doit rester rouge : une requête part actuellement
- * vers la source de données fixe sans exiger de client.
+ * Tant que l'aiguillage n'est pas construit, il reste rouge dans la suite normale : une
+ * requête part actuellement vers la source de données fixe sans exiger de client. Le
+ * masquer ferait passer la campagne au vert en violant précisément son contrat.
  */
 @SpringBootTest
-public class TenantContextContract {
+public class TenantContextTest {
     @Autowired ProductRepo produits;
 
     @DynamicPropertySource
