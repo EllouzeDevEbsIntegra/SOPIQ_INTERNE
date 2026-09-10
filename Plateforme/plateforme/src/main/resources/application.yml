@@ -23,6 +23,8 @@ server:
   port: ${PLATEFORME_PORT:8090}
 
 plateforme:
+  # Requis seulement si la base ne contient encore aucun compte. Jamais journalise.
+  admin-password: ${PLATEFORME_ADMIN_PASSWORD:}
   jwt:
     # Vide par defaut : la cle est tiree au sort et gardee en base, comme pour la caisse.
     secret: ${PLATEFORME_JWT_SECRET:}
