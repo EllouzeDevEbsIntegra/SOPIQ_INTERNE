@@ -1,6 +1,8 @@
 package com.poscaisse.plateforme.security;
 
+import com.poscaisse.plateforme.domain.EditeurUser;
 import com.poscaisse.plateforme.domain.Enums;
+import com.poscaisse.plateforme.repository.EditeurUserRepo;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,6 +22,7 @@ import java.util.List;
 @Component @RequiredArgsConstructor
 public class JwtFiltre extends OncePerRequestFilter {
     private final JwtService jwt;
+    private final EditeurUserRepo users;
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
@@ -28,12 +31,17 @@ public class JwtFiltre extends OncePerRequestFilter {
         if (entete != null && entete.startsWith("Bearer ")) {
             try {
                 Claims c = jwt.lire(entete.substring(7));
-                Enums.Role role = Enums.Role.valueOf(c.get("role", String.class));
-                UtilisateurCourant.Principal p = new UtilisateurCourant.Principal(
-                        Long.valueOf(c.getSubject()), c.get("username", String.class), role);
-                var auth = new UsernamePasswordAuthenticationToken(p, null,
-                        List.of(new SimpleGrantedAuthority("ROLE_" + role.name())));
-                SecurityContextHolder.getContext().setAuthentication(auth);
+                Long id = Long.valueOf(c.getSubject());
+                EditeurUser u = users.findById(id).orElse(null);
+                if (u != null && u.isActive()) {
+                    UtilisateurCourant.Principal p = new UtilisateurCourant.Principal(
+                            u.getId(), u.getUsername(), u.getRole());
+                    var auth = new UsernamePasswordAuthenticationToken(p, null,
+                            List.of(new SimpleGrantedAuthority("ROLE_" + u.getRole().name())));
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                } else {
+                    SecurityContextHolder.clearContext();
+                }
             } catch (Exception e) {
                 // Jeton expire ou trafique : on ne pose personne, la suite repondra 401.
                 SecurityContextHolder.clearContext();

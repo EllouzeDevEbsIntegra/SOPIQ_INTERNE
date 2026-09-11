@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * Il ne tourne que si PLATEFORME_IT=true et qu'une base PostgreSQL est joignable.
  */
-@SpringBootTest
+@SpringBootTest(properties = "plateforme.admin-password=plateforme123")
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @EnabledIfEnvironmentVariable(named = "PLATEFORME_IT", matches = "true")
@@ -266,7 +266,9 @@ class PlateformeIntegrationTest {
                 .contains("POSCAISSE_PROFIL=CAFE")
                 .contains("POSCAISSE_DEMO_DATA=true")
                 .contains("LANG=C.UTF-8")
-                .contains("POSCAISSE_ENSEIGNE=");
+                .contains("POSCAISSE_ENSEIGNE=")
+                .doesNotContain(r.get("motDePasse").asText())
+                .contains("read -r -s");
 
         /*
             L'ADRESSE, ET LE PORT QUI LA REND POSSIBLE.

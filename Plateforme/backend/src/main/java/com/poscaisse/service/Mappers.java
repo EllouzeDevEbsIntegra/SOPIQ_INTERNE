@@ -36,6 +36,10 @@ public final class Mappers {
     }
 
     public static ProductDto product(Product p) {
+        return product(p, true);
+    }
+
+    public static ProductDto product(Product p, boolean includePurchasePrice) {
         return new ProductDto(p.getId(), p.getCode(), p.getReference(), p.getName(), p.getShortName(), p.getDescription(),
                 p.getCategory().getId(), p.getCategory().getName(), p.getProductType().name(), p.getPrice(), p.getTaxRate(),
                 p.getImageUrl(), p.getColor(), p.getSortOrder(), p.isActive(), p.isAvailable(), p.isFavorite(), p.getFavoriteOrder(),
@@ -52,7 +56,7 @@ public final class Mappers {
                 p.getVariantPrices().stream()
                         .map(vp -> new VariantPriceDto(vp.getValue().getId(), vp.getPrice(), vp.getImageUrl()))
                         .sorted(Comparator.comparingLong(VariantPriceDto::variantValueId)).toList(),
-                p.getBarcode(), p.getPurchasePrice(), p.isStockManaged(), p.getStockMin(),
+                p.getBarcode(), includePurchasePrice ? p.getPurchasePrice() : null, p.isStockManaged(), p.getStockMin(),
                 p.getUnite().name());
     }
 

@@ -66,17 +66,27 @@ done
 # devenir un chemin, une option, ni un second nom de serveur.
 [ -n "$sous_domaine" ] && [ -n "$port" ] && [ -n "$base" ] && [ -n "$profil" ] || usage
 
-echo "$sous_domaine" | grep -Eq '^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$' \
+[[ "$sous_domaine" =~ ^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$ ]] \
     || { echo "Sous-domaine refusé : « $sous_domaine » (minuscules, chiffres et tirets)." >&2; exit 1; }
 if echo "$sous_domaine" | grep -q '^demo-'; then
     echo "« demo- » est réservé aux six démonstrations." >&2; exit 1
 fi
-echo "$base" | grep -Eq '^[a-z][a-z0-9_]{0,62}$' \
+[[ "$base" =~ ^[a-z][a-z0-9_]{0,62}$ ]] \
     || { echo "Nom de base refusé : « $base »." >&2; exit 1; }
-echo "$port" | grep -Eq '^[0-9]+$' && [ "$port" -ge 1024 ] && [ "$port" -le 65535 ] \
+[[ "$port" =~ ^[0-9]{1,5}$ ]] && [ "$port" -ge 1024 ] && [ "$port" -le 65535 ] \
     || { echo "Port refusé : « $port »." >&2; exit 1; }
-echo " $PROFILS " | grep -q " $profil " \
-    || { echo "Métier inconnu : « $profil ». Attendu : $PROFILS" >&2; exit 1; }
+# Une expression grep accepte une seule ligne valide parmi plusieurs et interprète
+# les caractères du métier. Comparer la chaîne entière, puis une liste littérale.
+case "$profil" in
+    RESTO|CAFE|SHOP|VETEMENT|PATISSERIE|PARFUMERIE) ;;
+    *) echo "Métier inconnu : « $profil ». Attendu : $PROFILS" >&2; exit 1 ;;
+esac
+if [[ "$enseigne" =~ [[:cntrl:]] ]] || [[ "$enseigne" == *\\* ]]; then
+    echo "Enseigne refusée : saisissez une seule ligne sans caractère de contrôle ni antislash." >&2
+    exit 1
+fi
+[[ "$DOMAINE" =~ ^[a-z0-9]([a-z0-9.-]*[a-z0-9])?$ ]] && [[ "$DOMAINE" != *..* ]] \
+    || { echo "Domaine refusé : utilisez un nom DNS sans chemin ni espace." >&2; exit 1; }
 case "$demonstration" in true|false) ;; *) echo "--demonstration attend true ou false." >&2; exit 1 ;; esac
 
 [ -f "$MODELE" ] || { echo "Modèle nginx introuvable : $MODELE" >&2; exit 1; }

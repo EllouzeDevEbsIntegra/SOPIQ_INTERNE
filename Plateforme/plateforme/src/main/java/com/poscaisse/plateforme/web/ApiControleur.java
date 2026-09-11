@@ -59,7 +59,7 @@ public class ApiControleur {
     @GetMapping("/clients")
     public List<ClientDto> clients() {
         return clients.tous().stream()
-                .map(c -> Mappeurs.client(c, clients.abonnementsDe(c.getId()), factures.findByClientIdOrderByEmiseLeDesc(c.getId())))
+                .map(c -> Mappeurs.client(c, c.getAbonnements(), c.getFactures()))
                 .toList();
     }
 

@@ -67,6 +67,7 @@ public class OrderService {
         if (o.getServiceMode() == Enums.ServiceMode.DELIVERY && o.getCourier() == null)
             throw new BusinessException("Un ticket en livraison doit être confié à un livreur : sélectionnez-le avant d'encaisser.");
         pricing.computeOrder(o);
+        checkComputedDiscounts(o);
         applyPayments(o, req.payments(), session);
         o.setStatus(Enums.OrderStatus.PAID);
         o.setPaidAt(OffsetDateTime.now());
@@ -112,6 +113,7 @@ public class OrderService {
         SaleOrder o = new SaleOrder();
         fillOrder(o, reg, null, currentUser.entity(), req.serviceMode(), null, null, null, null, null, req.discountPercent(), req.discountAmount(), req.lines());
         pricing.computeOrder(o);
+        checkComputedDiscounts(o);
         return new PriceQuote(o.getSubtotal(), o.getLineDiscountTotal(), o.getDiscountAmount(), o.getTaxTotal(), o.getTotal(),
                 o.getLines().stream().filter(l -> l.getParentLine() == null).map(Mappers::line).toList());
     }
@@ -282,9 +284,9 @@ public class OrderService {
     }
 
     private void checkDiscount(BigDecimal percent, BigDecimal amount, String what) {
+        if (Money.nz(percent).signum() < 0 || Money.nz(amount).signum() < 0) throw new BusinessException("Remise invalide.");
         boolean any = Money.isPositive(percent) || Money.isPositive(amount);
         if (!any) return;
-        if (Money.nz(percent).signum() < 0 || Money.nz(amount).signum() < 0) throw new BusinessException("Remise invalide.");
         if (Money.nz(percent).compareTo(Money.HUNDRED) > 0) throw new BusinessException("La remise ne peut pas dépasser 100 %.");
         if (!currentUser.has(Permission.DISCOUNT_APPLY)) throw BusinessException.forbidden("Vous n'avez pas la permission d'appliquer une remise.");
         BigDecimal threshold = settings.getDecimal(SettingsService.DISCOUNT_HIGH_THRESHOLD, BigDecimal.TEN);
@@ -293,6 +295,17 @@ public class OrderService {
             throw BusinessException.forbidden("Votre remise maximale autorisée est de " + me.getMaxDiscountPercent().stripTrailingZeros().toPlainString() + " %.");
         if (Money.nz(percent).compareTo(threshold) > 0 && !currentUser.has(Permission.DISCOUNT_HIGH))
             throw BusinessException.forbidden("Une remise supérieure à " + threshold.stripTrailingZeros().toPlainString() + " % nécessite l'autorisation d'un manager.");
+    }
+
+    /**
+     * Une remise saisie en dinars n'a son pourcentage réel qu'après calcul du prix brut.
+     * Le contrôle préalable refuse les valeurs invalides ; celui-ci applique ensuite les
+     * mêmes plafonds au pourcentage effectivement accordé.
+     */
+    private void checkComputedDiscounts(SaleOrder commande) {
+        checkDiscount(commande.getDiscountPercent(), commande.getDiscountAmount(), null);
+        commande.getLines().stream().filter(l -> l.getParentLine() == null)
+                .forEach(l -> checkDiscount(l.getDiscountPercent(), l.getDiscountAmount(), l.getProductName()));
     }
 
     private void applyPayments(SaleOrder o, List<PaymentRequest> payments, RegisterSession session) {
@@ -352,6 +365,7 @@ public class OrderService {
         } else o = new SaleOrder();
         fillOrder(o, reg, session, me, req.serviceMode(), req.customerId(), req.customerName(), req.customerPhone(), req.courierId(), req.note(), req.discountPercent(), req.discountAmount(), req.lines());
         pricing.computeOrder(o);
+        checkComputedDiscounts(o);
         o.setStatus(Enums.OrderStatus.HELD);
         o.setUpdatedAt(OffsetDateTime.now());
         if (o.getHeldRef() == null) {

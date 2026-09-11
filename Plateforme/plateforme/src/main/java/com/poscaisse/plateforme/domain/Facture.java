@@ -36,6 +36,7 @@ public class Facture {
 
     @OneToMany(mappedBy = "facture", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy("recuLe ASC, id ASC")
+    @org.hibernate.annotations.BatchSize(size = 50)
     private List<Reglement> reglements = new ArrayList<>();
 
     /** Ce qui a ete encaisse sur cette facture. */

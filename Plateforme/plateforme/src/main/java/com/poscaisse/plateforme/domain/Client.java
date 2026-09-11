@@ -38,5 +38,11 @@ public class Client {
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy("id ASC")
+    @org.hibernate.annotations.BatchSize(size = 50)
     private List<Abonnement> abonnements = new ArrayList<>();
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OrderBy("emiseLe DESC")
+    @org.hibernate.annotations.BatchSize(size = 50)
+    private List<Facture> factures = new ArrayList<>();
 }

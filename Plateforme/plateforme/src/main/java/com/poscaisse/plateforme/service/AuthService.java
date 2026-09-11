@@ -86,12 +86,15 @@ public class AuthService {
     }
 
     private String adresse() {
-        String tete = requete.getHeader("X-Forwarded-For");
-        if (tete != null && !tete.isBlank()) {
-            String premiere = tete.split(",")[0].trim();
-            if (!premiere.isEmpty()) return premiere;
-        }
         String ip = requete.getRemoteAddr();
+        if ("127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip) || "::1".equals(ip)) {
+            String tete = requete.getHeader("X-Forwarded-For");
+            if (tete != null && !tete.isBlank()) {
+                String[] parties = tete.split(",");
+                String derniere = parties[parties.length - 1].trim();
+                if (!derniere.isEmpty()) return derniere;
+            }
+        }
         return ip == null ? "?" : ip;
     }
 

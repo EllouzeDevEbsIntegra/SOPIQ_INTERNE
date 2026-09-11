@@ -110,6 +110,13 @@ public class RegisterSessionService {
         throw BusinessException.forbidden("Cette caisse n'est pas la vôtre.");
     }
 
+    /** Une écriture de caisse appartient toujours au caissier qui a ouvert la session. */
+    private void exigeEcritureSurLaSienne(RegisterSession s) {
+        if (s.getOpenedBy() != null && s.getOpenedBy().getId().equals(currentUser.id())) return;
+        throw BusinessException.forbidden("Cette caisse n'est pas la vôtre : utilisez votre session ouverte.");
+    }
+
+
     public SessionSummary computeSummary(RegisterSession s) {
         BigDecimal cash = BigDecimal.ZERO, card = BigDecimal.ZERO, other = BigDecimal.ZERO;
         // Nom -> [nature, montant] : la nature suit le total, pour que l'ecran et le
@@ -220,6 +227,7 @@ public class RegisterSessionService {
     public CashMovementDto addMovement(Long sessionId, CashMovementRequest req) {
         currentUser.require(Permission.CASH_MOVEMENT, "Vous n'avez pas la permission d'effectuer un mouvement de caisse.");
         RegisterSession s = sessionRepo.findById(sessionId).orElseThrow(() -> BusinessException.notFound("Session"));
+        exigeEcritureSurLaSienne(s);
         if (s.getStatus() != Enums.SessionStatus.OPEN) throw BusinessException.conflict("La session de caisse est clôturée.");
         if (req.amount().signum() <= 0) throw new BusinessException("Le montant doit être supérieur à zéro.");
         Enums.MovementType type = Enums.MovementType.valueOf(req.type().toUpperCase());
@@ -240,7 +248,9 @@ public class RegisterSessionService {
     }
 
     public RegisterSession requireOpenSession(Long registerId) {
-        return sessionRepo.findFirstByRegisterIdAndStatus(registerId, Enums.SessionStatus.OPEN)
+        RegisterSession s = sessionRepo.findFirstByRegisterIdAndStatus(registerId, Enums.SessionStatus.OPEN)
                 .orElseThrow(() -> BusinessException.conflict("Aucune session ouverte sur cette caisse. Ouvrez la caisse avant de vendre."));
+        exigeEcritureSurLaSienne(s);
+        return s;
     }
 }

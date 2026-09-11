@@ -9,11 +9,15 @@ liste de trois cents commerçants.
 
 ```bash
 createdb plateforme
+read -r -s -p 'Mot de passe initial administrateur : ' PLATEFORME_ADMIN_PASSWORD
+export PLATEFORME_ADMIN_PASSWORD
 mvn spring-boot:run          # http://localhost:8090
 ```
 
-Premier compte créé automatiquement : **admin / plateforme123**. Le journal le dit en
-avertissement au démarrage — **changez-le** avant d'ouvrir quoi que ce soit sur internet.
+Premier compte créé automatiquement : **admin**, avec le secret fourni dans
+`PLATEFORME_ADMIN_PASSWORD` (12 caractères au minimum). Sans ce secret, une base neuve
+refuse de démarrer. Aucun mot de passe n'est journalisé. Une installation ayant déjà un
+compte ne demande plus cette variable ; retirez-la après le premier démarrage.
 
 Réglages (variables d'environnement) : `PLATEFORME_DB_*`, `PLATEFORME_PORT`,
 `PLATEFORME_JWT_SECRET` (sinon une clé propre à l'installation est tirée au sort),

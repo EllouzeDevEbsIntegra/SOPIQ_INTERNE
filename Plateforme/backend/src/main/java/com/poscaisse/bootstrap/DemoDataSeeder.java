@@ -100,9 +100,16 @@ public class DemoDataSeeder implements ApplicationRunner {
                 Permission.DRAWER_OPEN, Permission.CASH_MOVEMENT, Permission.REGISTER_CLOSE, Permission.TICKETS_VIEW, Permission.TICKETS_REPRINT));
 
         if (destRepo.count() == 0) {
-            dest("CLIENT", "Ticket client", Enums.DestinationKind.CUSTOMER, 1, true, 0); dest("CUISINE", "Cuisine", Enums.DestinationKind.PREP, 1, false, 1);
-            dest("PIZZA", "Pizza", Enums.DestinationKind.PREP, 1, false, 2); dest("BOISSONS", "Boissons", Enums.DestinationKind.PREP, 1, false, 3);
-            dest("PASSE", "Passe", Enums.DestinationKind.PREP, 0, false, 4);
+            dest("CLIENT", "Ticket client", Enums.DestinationKind.CUSTOMER, 1, true, 0);
+            ProfilMetier profil = metier.profilConfigure();
+            if (profil == null || profil == ProfilMetier.RESTO || profil == ProfilMetier.CAFE || profil == ProfilMetier.PATISSERIE)
+                dest("CUISINE", "Cuisine", Enums.DestinationKind.PREP, 1, false, 1);
+            if (profil == null || profil == ProfilMetier.RESTO)
+                dest("PIZZA", "Pizza", Enums.DestinationKind.PREP, 1, false, 2);
+            if (profil == null || profil == ProfilMetier.RESTO || profil == ProfilMetier.CAFE)
+                dest("BOISSONS", "Boissons", Enums.DestinationKind.PREP, 1, false, 3);
+            if (profil == null || profil == ProfilMetier.RESTO || profil == ProfilMetier.CAFE)
+                dest("PASSE", "Passe", Enums.DestinationKind.PREP, 0, false, 4);
         }
         if (templateRepo.count() == 0) {
             ReceiptTemplate t = new ReceiptTemplate();
@@ -289,7 +296,9 @@ public class DemoDataSeeder implements ApplicationRunner {
         pay("CASH", "Espèces", Enums.PaymentKind.CASH, true, 1);
         pay("CARD", "Carte bancaire", Enums.PaymentKind.CARD, false, 2);
         pay("CHECK", "Chèque", Enums.PaymentKind.CHECK, false, 3);
-        pay("VOUCHER", "Ticket restaurant", Enums.PaymentKind.MEAL_VOUCHER, false, 4);
+        ProfilMetier profil = metier.profilConfigure();
+        if (profil == null || profil == ProfilMetier.RESTO || profil == ProfilMetier.CAFE || profil == ProfilMetier.PATISSERIE)
+            pay("VOUCHER", "Ticket restaurant", Enums.PaymentKind.MEAL_VOUCHER, false, 4);
         pay("CREDIT", "Crédit client", Enums.PaymentKind.CREDIT, false, 5);
         pay("OTHER", "Autre", Enums.PaymentKind.OTHER, false, 6);
     }

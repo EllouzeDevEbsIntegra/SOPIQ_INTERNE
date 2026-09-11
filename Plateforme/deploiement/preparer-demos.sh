@@ -81,12 +81,10 @@ for d in $DEMOS; do
     # ALTER plutot que rien : le role « posdemo_cafe » d'un essai precedent porte un mot de
     # passe que personne ne connait, et la caisse ne pourrait pas ouvrir sa base.
     if [ "$(sudo -u postgres psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='$role'")" = 1 ]; then
-        sudo -u postgres psql -qv ON_ERROR_STOP=1 \
-            -c "ALTER ROLE $role WITH LOGIN PASSWORD '$mdp'" > /dev/null
+        echo "ALTER ROLE $role WITH LOGIN PASSWORD '$mdp';" | sudo -u postgres psql -qv ON_ERROR_STOP=1 > /dev/null
         echo "  rôle $role : mot de passe réaligné sur le fichier"
     else
-        sudo -u postgres psql -qv ON_ERROR_STOP=1 \
-            -c "CREATE USER $role WITH PASSWORD '$mdp'" > /dev/null
+        echo "CREATE USER $role WITH PASSWORD '$mdp';" | sudo -u postgres psql -qv ON_ERROR_STOP=1 > /dev/null
         echo "  rôle $role : créé"
     fi
 
@@ -107,8 +105,7 @@ for d in $DEMOS; do
     # mots, le compte qui provisionne pourrait endosser le role de chaque demo et lire ses
     # ventes en permanence, au lieu de le faire trois secondes sous son propre controle.
     # Verifie : « permission denied to set role » apres coup.
-    sudo -u postgres psql -qv ON_ERROR_STOP=1 \
-        -c "GRANT $role TO $ADMIN WITH ADMIN OPTION, INHERIT FALSE, SET FALSE" > /dev/null
+    echo "GRANT $role TO $ADMIN WITH ADMIN OPTION, INHERIT FALSE, SET FALSE;" | sudo -u postgres psql -qv ON_ERROR_STOP=1 > /dev/null
 
     # Le fichier d'environnement. 640 root:poscaisse : la caisse le lit, personne d'autre.
     # POSCAISSE_ENSEIGNE est volontairement ABSENT - vide, la caisse prend l'enseigne du

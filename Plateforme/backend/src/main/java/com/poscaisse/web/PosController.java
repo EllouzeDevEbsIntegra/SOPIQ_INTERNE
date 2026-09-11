@@ -33,7 +33,7 @@ public class PosController {
 
     @PreAuthorize("hasAuthority('SELL')")
     @PatchMapping("/products/{id}/availability")
-    public ProductDto availability(@PathVariable Long id, @RequestBody Map<String, Boolean> body) { return catalog.setAvailability(id, Boolean.TRUE.equals(body.get("available"))); }
+    public ProductDto availability(@PathVariable Long id, @RequestBody Map<String, Boolean> body) { return com.poscaisse.service.Mappers.product(catalog.setAvailability(id, Boolean.TRUE.equals(body.get("available"))), false); }
 
     @GetMapping("/registers") public List<RegisterStatusDto> registers(@RequestParam(required = false) Long posId) { return sessions.registers(posId); }
     @GetMapping("/session") public SessionDto currentSession() { return sessions.current(); }
