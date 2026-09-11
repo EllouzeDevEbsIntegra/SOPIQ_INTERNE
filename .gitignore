@@ -28,3 +28,8 @@ Plateforme/packaging/telechargements/
 Plateforme/plateforme/target/
 Plateforme/plateforme/frontend/node_modules/
 Plateforme/plateforme/frontend/dist/
+
+# Cache de compilation Python : produit en lancant les tests des scripts de
+# deploiement (deploiement/tests), jamais du code.
+__pycache__/
+*.pyc
