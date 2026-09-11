@@ -42,7 +42,7 @@ class AuditConfidentialiteIntegrationTest {
 
     @Test void lesReglagesPrivesExigentLaPermissionDeGestion() throws Exception {
         mvc.perform(get("/api/settings").header("Authorization", caissier())).andExpect(status().isForbidden());
-        mvc.perform(get("/api/settings").header("Authorization", connexion("admin", "admin123")))
+        mvc.perform(get("/api/settings").header("Authorization", connexion("admin", "mot-de-passe-de-test-0910")))
                 .andExpect(status().isOk()).andExpect(jsonPath("$['finance.marginPercent']").exists());
     }
 

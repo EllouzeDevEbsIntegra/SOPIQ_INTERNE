@@ -12,7 +12,9 @@ PREMIERE MISE EN ROUTE
 1. Copiez ce dossier sur le disque du PC — par exemple C:\PosCaisse
    (evitez le Bureau et « Mes documents » : chemins longs et synchronisation cloud).
 2. Double-cliquez sur INSTALLER.bat et attendez la fin (2 a 3 minutes).
-3. La caisse s'ouvre. Connectez-vous avec  admin / admin123
+3. La caisse s'ouvre. Connectez-vous avec l'identifiant  admin  et le mot de
+   passe affiche a la FIN de l'installation - il est propre a ce poste et se
+   relit dans  config\poscaisse.conf  (ligne ADMIN_PASS).
 4. CHANGEZ CE MOT DE PASSE tout de suite : Back-office -> Utilisateurs.
 
 

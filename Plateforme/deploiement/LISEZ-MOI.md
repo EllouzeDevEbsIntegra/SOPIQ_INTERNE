@@ -70,8 +70,20 @@ POSCAISSE_DB_PASSWORD=…
 POSCAISSE_PORT=8122
 POSCAISSE_PROFIL=CAFE
 POSCAISSE_ENSEIGNE=Café de démonstration
+POSCAISSE_ADMIN_PASSWORD=…
 LANG=C.UTF-8
 ```
+
+**`POSCAISSE_ADMIN_PASSWORD` est obligatoire sur une base vide**, et la caisse refuse de
+démarrer sans lui. Il ne sert qu'à créer le compte `admin` au tout premier démarrage ;
+ensuite elle ne le relit plus, et le commerçant a le sien. `preparer-demos.sh` et
+`poscaisse-ouvrir` le tirent au sort, l'écrivent ici et l'affichent **une fois**.
+
+L'administrateur n'a **pas de PIN** par défaut. `POSCAISSE_ADMIN_PIN` en pose un si on y
+tient, mais quatre chiffres sur le seul compte qui peut tout faire, joignable depuis
+internet, c'est une porte à dix mille clés — et le ralentisseur ne fait que ralentir. Les
+PIN sont l'outil du caissier, qui tape son code cent fois par jour devant un client qui
+attend.
 
 **`LANG=C.UTF-8` n'est pas décoratif.** Une machine virtuelle Java démarrée sans langue lit
 son environnement en ASCII : l'enseigne accentuée y perd ses accents, et ce nom abîmé

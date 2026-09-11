@@ -65,7 +65,10 @@ Sur un poste **déjà installé**, changer de version majeure rend illisible le 
 1. Copier le ZIP par clé USB, le décompresser dans **`C:\PosCaisse`**
    (éviter le Bureau et *Mes documents* : chemins longs, synchronisation cloud).
 2. Double-cliquer sur **`INSTALLER.bat`** — 2 à 3 minutes.
-3. Se connecter : `admin` / `admin123`, puis **changer ce mot de passe immédiatement**.
+3. Se connecter : `admin`, avec le mot de passe **affiché à la fin de l'installation** —
+   il est tiré au sort pour ce poste et n'existe nulle part ailleurs. Puis **le changer**
+   depuis Back-office → Utilisateurs : tant qu'il n'a pas changé, il reste lisible en
+   clair dans `config\poscaisse.conf`.
 
 L'installation crée un serveur PostgreSQL privé dans le dossier, avec un mot de passe tiré
 au hasard, à l'écoute de `127.0.0.1` seulement. Aucun service Windows n'est enregistré,

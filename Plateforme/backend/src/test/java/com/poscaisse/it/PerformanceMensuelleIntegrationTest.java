@@ -81,7 +81,7 @@ class PerformanceMensuelleIntegrationTest {
 
         String jeton = om.readTree(mvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"username\":\"admin\",\"password\":\"admin123\"}"))
+                        .content("{\"username\":\"admin\",\"password\":\"mot-de-passe-de-test-0910\"}"))
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString()).get("token").asText();
         LocalDate fin = LocalDate.now();
         LocalDate debut = fin.minusDays(29);

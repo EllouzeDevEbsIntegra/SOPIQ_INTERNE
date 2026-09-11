@@ -29,8 +29,13 @@ import java.util.*;
  * declare, c'est la carte fast-food historique, celle qui est ecrite plus bas dans ce
  * fichier.
  *
- * Comptes de demonstration : admin / admin123 (PIN 9999), manager / manager123 (PIN 2222),
- * ahmed PIN 1234, sami PIN 5678, mariem PIN 4321.
+ * Comptes : << admin >>, dont le mot de passe est EXIGE a l'installation
+ * (POSCAISSE_ADMIN_PASSWORD) et n'a aucune valeur par defaut, et l'equipe de
+ * demonstration - manager PIN 2222, ahmed 1234, sami 5678, mariem 4321 - qui n'existe que
+ * sur une base de demonstration et n'a que des PIN.
+ *
+ * Ces PIN-la sont publics et le restent : c'est ce qu'on tape devant un prospect, sur une
+ * base jetable. Le mot de passe de l'administrateur, lui, ne l'est plus.
  */
 @Component @RequiredArgsConstructor @Slf4j
 public class DemoDataSeeder implements ApplicationRunner {
@@ -119,8 +124,45 @@ public class DemoDataSeeder implements ApplicationRunner {
             templateRepo.save(t);
         }
         if (userRepo.count() == 0) {
+            /*
+                AUCUN SECRET NE VIENT D'ICI, ET C'EST LE POINT DE CE BLOC.
+
+                << admin / admin123 >>, PIN << 9999 >>, etaient ecrits dans ce fichier : donc
+                identiques sur toutes les installations, publies dans le depot, et repris
+                dans la documentation de livraison. Une caisse joignable avant que quelqu'un
+                pense a changer ce mot de passe s'administre avec une valeur que tout le
+                monde peut lire.
+
+                Le secret est donc EXIGE a l'installation. Refuser de demarrer est
+                volontairement brutal : une caisse qui ne s'ouvre pas se remarque et se
+                repare en trente secondes ; une caisse ouverte avec un mot de passe connu ne
+                se remarque pas du tout.
+
+                Douze caracteres : assez pour qu'une attaque hors ligne sur l'empreinte ne
+                soit pas une formalite, assez court pour se dicter au telephone.
+            */
+            String motDePasse = props.getAdmin().getPassword();
+            if (motDePasse == null || motDePasse.isBlank() || motDePasse.length() < 12)
+                throw new IllegalStateException(
+                        "Premier démarrage : définissez POSCAISSE_ADMIN_PASSWORD avec un mot de passe "
+                        + "d'au moins 12 caractères, puis relancez. Il ne sert qu'à créer le compte "
+                        + "« admin » de cette caisse et n'est plus relu ensuite.");
+            /*
+                LE PIN DE L'ADMINISTRATEUR EST FACULTATIF, ET VIDE PAR DEFAUT.
+
+                Quatre chiffres, c'est dix mille possibilites : le ralentisseur les rend
+                longues a essayer, il ne les rend pas impossibles. Ce risque se justifie pour
+                un caissier, qui tape son code cent fois par jour devant un client qui
+                attend ; il ne se justifie pas pour le compte qui peut changer les prix,
+                annuler des tickets et lire les recettes.
+            */
+            String pin = props.getAdmin().getPin();
+            if (pin != null && !pin.isBlank() && !pin.matches("\\d{4,6}"))
+                throw new IllegalStateException(
+                        "POSCAISSE_ADMIN_PIN doit être fait de 4 à 6 chiffres, ou rester vide.");
             Role admin = roleRepo.findByCode("ADMIN").orElseThrow();
-            user("admin", "Administrateur", admin, "admin123", "9999", "#7c3aed");
+            user("admin", "Administrateur", admin, motDePasse,
+                 pin == null || pin.isBlank() ? null : pin, "#7c3aed");
         }
         log.info("PosCaisse: core data initialised (roles, payment methods, print destinations, admin user).");
     }
@@ -154,7 +196,17 @@ public class DemoDataSeeder implements ApplicationRunner {
 
         Register r2 = new Register(); r2.setPointOfSale(pos); r2.setCode("C02"); r2.setName("CAISSE 02"); registerRepo.save(r2);
         Role manager = roleRepo.findByCode("MANAGER").orElseThrow(), cashier = roleRepo.findByCode("CASHIER").orElseThrow();
-        user("manager", "Manager Démo", manager, "manager123", "2222", "#0ea5e9");
+        /*
+            L'EQUIPE DE DEMONSTRATION A DES PIN, PLUS AUCUN MOT DE PASSE.
+
+            Ces quatre comptes existent pour montrer les roles a un prospect, sur une base
+            jetable. Leurs PIN sont donc publics et le restent : c'est ce qu'on tape devant
+            lui. Mais << manager123 >> ouvrait en plus le back-office par mot de passe, sur
+            une demonstration joignable depuis internet - avec le droit d'annuler des
+            tickets et de lire les recettes. Le PIN suffit a la demonstration ; le mot de
+            passe n'y servait a personne.
+        */
+        user("manager", "Manager Démo", manager, null, "2222", "#0ea5e9");
         User ahmed = user("ahmed", "Ahmed", cashier, null, "1234", "#f97316");
         User sami = user("sami", "Sami", cashier, null, "5678", "#22c55e");
         User mariem = user("mariem", "Mariem", cashier, null, "4321", "#ec4899");

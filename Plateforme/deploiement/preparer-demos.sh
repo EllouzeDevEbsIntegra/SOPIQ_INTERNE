@@ -77,6 +77,18 @@ for d in $DEMOS; do
     jeton="$(deja POSCAISSE_JWT_SECRET "$env")"
     [ -n "$jeton" ] || jeton="$(alea 80)"
 
+    # LE SECRET DE L'ADMINISTRATEUR DE CETTE DEMONSTRATION.
+    #
+    # Une demo est joignable depuis internet : << admin / admin123 >>, ecrit dans le code
+    # source, laissait n'importe qui saccager la carte pendant qu'on la montre a un
+    # prospect. L'equipe de demonstration garde ses PIN - c'est ce qu'on tape devant lui -
+    # mais le compte qui peut tout faire prend un secret propre a ce serveur.
+    #
+    # Il est affiche en fin de script, une fois, et relu du fichier aux relances : il ne
+    # change donc pas sous les pieds d'un commercial en rendez-vous.
+    admin_mdp="$(deja POSCAISSE_ADMIN_PASSWORD "$env")"
+    [ -n "$admin_mdp" ] || admin_mdp="$(alea 24)"
+
     # Le role : cree s'il manque, remis au mot de passe du fichier s'il est deja la.
     # ALTER plutot que rien : le role « posdemo_cafe » d'un essai precedent porte un mot de
     # passe que personne ne connait, et la caisse ne pourrait pas ouvrir sa base.
@@ -120,6 +132,7 @@ POSCAISSE_DB_PASSWORD=$mdp
 POSCAISSE_PORT=$port
 POSCAISSE_PROFIL=$profil
 POSCAISSE_DEMO_DATA=true
+POSCAISSE_ADMIN_PASSWORD=$admin_mdp
 POSCAISSE_JWT_SECRET=$jeton
 LANG=C.UTF-8
 EOF
@@ -129,7 +142,7 @@ EOF
     sed -e "s/@NOM@/$nom/g" -e "s/@PORT@/$port/g" "$MODELE" \
         > "/etc/nginx/sites-available/pos-$nom"
     ln -sfn "/etc/nginx/sites-available/pos-$nom" "/etc/nginx/sites-enabled/pos-$nom"
-    echo "  $nom.$DOMAINE → 127.0.0.1:$port"
+    echo "  $nom.$DOMAINE → 127.0.0.1:$port   (admin : $admin_mdp)"
 done
 
 systemctl daemon-reload
@@ -138,5 +151,9 @@ systemctl daemon-reload
 # configuration refusee doit l'etre pendant qu'on regarde, pas au prochain redemarrage.
 nginx -t
 systemctl reload nginx
+echo
+echo "Les mots de passe « admin » ci-dessus ouvrent le back-office de chaque démonstration."
+echo "Ils sont dans /etc/poscaisse/demo-<métier>.env, lisibles par root seul, et ne"
+echo "changent pas aux relances de ce script."
 echo
 echo "Prêt. Les six démos s'allument depuis le back-office, onglet « Démos »."

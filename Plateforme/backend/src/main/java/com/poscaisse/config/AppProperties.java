@@ -18,6 +18,29 @@ public class AppProperties {
     private boolean demoData = true;
     private String corsOrigins;
     private Metier metier = new Metier();
+    private Admin admin = new Admin();
+
+    /**
+     * Le compte administrateur du tout premier demarrage.
+     *
+     * Lu UNIQUEMENT quand la base ne contient encore aucun compte. Une caisse en service
+     * redemarre sans ces valeurs, et les ignore si elles sont la : changer la variable ne
+     * change pas le mot de passe d'un commercant qui a deja le sien.
+     */
+    @Getter @Setter
+    public static class Admin {
+        /** Obligatoire sur une base vide, douze caracteres au moins. */
+        private String password;
+        /**
+         * FACULTATIF, et vide par defaut.
+         *
+         * Un PIN de quatre chiffres sur le compte qui peut tout faire, joignable depuis
+         * internet, est une porte a dix mille cles - et le ralentisseur ne fait que
+         * ralentir. L'administrateur se connecte par mot de passe ; le PIN est l'outil du
+         * caissier, qui le tape cent fois par jour devant un client qui attend.
+         */
+        private String pin;
+    }
 
     /**
      * Le metier tenu par ce poste.

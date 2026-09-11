@@ -35,6 +35,18 @@ poscaisse:
     secret: ${POSCAISSE_JWT_SECRET:change-me-please-this-is-a-development-secret-key-with-64-bytes-min-length-0123456789}
     expiration-minutes: ${POSCAISSE_JWT_EXPIRATION_MINUTES:720}
   timezone: Africa/Tunis
+  # LE SECRET DU COMPTE ADMINISTRATEUR, ET IL N'A PAS DE VALEUR PAR DEFAUT.
+  #
+  # Il n'est lu qu'au tout premier demarrage d'une base vide, pour creer le compte
+  # << admin >>. Une caisse deja installee redemarre sans lui.
+  #
+  # Le PIN est FACULTATIF et vide par defaut : un code a quatre chiffres sur le seul
+  # compte qui peut tout faire, joignable depuis internet, est une porte a dix mille cles.
+  # L'administrateur se connecte par mot de passe ; ce sont les CAISSIERS qui ont un PIN,
+  # parce qu'eux tapent leur code cent fois par jour devant un client qui attend.
+  admin:
+    password: ${POSCAISSE_ADMIN_PASSWORD:}
+    pin: ${POSCAISSE_ADMIN_PIN:}
   # Poser la carte de demonstration du profil au premier demarrage.
   # A false : la maison, une caisse, le compte administrateur, et rien d'autre.
   demo-data: ${POSCAISSE_DEMO_DATA:true}

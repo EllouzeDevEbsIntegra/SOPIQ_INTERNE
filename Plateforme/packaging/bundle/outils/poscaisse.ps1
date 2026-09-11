@@ -41,7 +41,7 @@ function Stop-Net($m) { Write-Host ''; Write-Host "ARRET : $m" -ForegroundColor 
 # ---------------------------------------------------------------- configuration
 function Lire-Config {
   $c = @{ PG_PORT = '5433'; APP_PORT = '8080'; DB = 'poscaisse'; USER = 'poscaisse'; PASS = ''
-          KIOSQUE = '1'; AFFICHAGE = 'plein-ecran' }
+          ADMIN_PASS = ''; KIOSQUE = '1'; AFFICHAGE = 'plein-ecran' }
   if (Test-Path $config) {
     foreach ($l in Get-Content $config) {
       if ($l -match '^\s*([A-Z_]+)\s*=\s*(.*?)\s*$') { $c[$Matches[1]] = $Matches[2] }
@@ -51,7 +51,7 @@ function Lire-Config {
 }
 function Ecrire-Config($c) {
   $lignes = @('# Reglages du poste PosCaisse. Modifiable avec le Bloc-notes, application au redemarrage.')
-  foreach ($k in @('PG_PORT', 'APP_PORT', 'DB', 'USER', 'PASS', 'KIOSQUE', 'AFFICHAGE')) { $lignes += "$k=$($c[$k])" }
+  foreach ($k in @('PG_PORT', 'APP_PORT', 'DB', 'USER', 'PASS', 'ADMIN_PASS', 'KIOSQUE', 'AFFICHAGE')) { $lignes += "$k=$($c[$k])" }
   # ASCII : clefs et valeurs le sont toutes (le mot de passe est du base64 filtre sur
   # [A-Za-z0-9]). Une marque d'ordre des octets se verrait dans une console et ferait
   # echouer la premiere ligne si ce fichier etait lu par le jumeau Linux.
@@ -119,15 +119,23 @@ function App-Demarre($c) {
     "--spring.datasource.url=$jdbc",
     "--spring.datasource.username=$($c.USER)"
   )
+  # Les deux secrets passent par l'ENVIRONNEMENT, jamais par les arguments : ce qui est en
+  # argument se lit dans le gestionnaire des taches et dans l'historique de la console.
+  # ADMIN_PASS n'est lu par la caisse qu'au tout premier demarrage, pour creer le compte
+  # << admin >> ; ensuite elle l'ignore, et le commercant a le sien.
   $ancienSecret = [Environment]::GetEnvironmentVariable('POSCAISSE_DB_PASSWORD', 'Process')
+  $ancienAdmin  = [Environment]::GetEnvironmentVariable('POSCAISSE_ADMIN_PASSWORD', 'Process')
   try {
     $env:POSCAISSE_DB_PASSWORD = $c.PASS
+    if ($c.ADMIN_PASS) { $env:POSCAISSE_ADMIN_PASSWORD = $c.ADMIN_PASS }
     Start-Process -FilePath $java -ArgumentList $args -WorkingDirectory $racine -WindowStyle Hidden `
       -RedirectStandardOutput (Join-Path $journal 'poscaisse.log') `
       -RedirectStandardError  (Join-Path $journal 'poscaisse-erreurs.log') | Out-Null
   } finally {
     if ($null -eq $ancienSecret) { Remove-Item Env:POSCAISSE_DB_PASSWORD -ErrorAction SilentlyContinue }
     else { $env:POSCAISSE_DB_PASSWORD = $ancienSecret }
+    if ($null -eq $ancienAdmin) { Remove-Item Env:POSCAISSE_ADMIN_PASSWORD -ErrorAction SilentlyContinue }
+    else { $env:POSCAISSE_ADMIN_PASSWORD = $ancienAdmin }
   }
 
   Info 'Demarrage de la caisse...'
@@ -446,6 +454,13 @@ function Faire-Install {
 
   $c = Lire-Config
   if (-not $c.PASS) { $c.PASS = Mot-De-Passe }
+  # LE SECRET DU COMPTE << admin >> DE LA CAISSE.
+  #
+  # La caisse refuse de demarrer sans lui sur une base vide : << admin123 >> etait ecrit
+  # dans son code source, donc identique sur toutes les installations livrees. Celui-ci
+  # est tire pour CE poste et affiche a la fin de l'installation - c'est la seule occasion
+  # de le noter, et c'est au technicien de le remettre au commercant.
+  if (-not $c.ADMIN_PASS) { $c.ADMIN_PASS = Mot-De-Passe }
   Ecrire-Config $c
 
   Etape 'Creation de la base de donnees'
@@ -483,8 +498,16 @@ function Faire-Install {
 
   Etape 'Installation terminee'
   Info "Ouvrez la caisse par l'icone << Caisse PosCaisse >> du Bureau."
-  Info "Identifiants de depart : admin / admin123."
-  Souci 'Changez ce mot de passe des la premiere connexion (Back-office -> Utilisateurs).'
+  Write-Host ''
+  Write-Host '  -----------------------------------------------------------------'
+  Write-Host '   Compte administrateur de cette caisse'
+  Write-Host '     identifiant  : admin'
+  Write-Host "     mot de passe : $($c.ADMIN_PASS)"
+  Write-Host '   NOTEZ-LE MAINTENANT, et remettez-le au commercant. Il est propre'
+  Write-Host "   a ce poste et se relit dans config\poscaisse.conf."
+  Write-Host '  -----------------------------------------------------------------'
+  Write-Host ''
+  Souci 'Demandez au commercant de le changer (Back-office -> Utilisateurs).'
   Navigateur $c
 }
 

@@ -60,7 +60,10 @@ class PosIntegrationTest {
         JsonNode a = json(mvc.perform(post("/api/auth/pin").contentType(MediaType.APPLICATION_JSON).content("{\"pin\":\"1234\"}")).andExpect(status().isOk()).andReturn());
         cashierToken = a.get("token").asText();
         assertThat(a.get("user").get("roleCode").asText()).isEqualTo("CASHIER");
-        managerToken = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON).content("{\"username\":\"manager\",\"password\":\"manager123\"}")).andExpect(status().isOk()).andReturn()).get("token").asText();
+        // Le manager de demonstration n'a plus de mot de passe, seulement son PIN : c'est
+        // ce qu'on tape devant un prospect, et un back-office ouvert par mot de passe
+        // connu sur une demonstration joignable depuis internet ne servait a personne.
+        managerToken = json(mvc.perform(post("/api/auth/pin").contentType(MediaType.APPLICATION_JSON).content("{\"pin\":\"2222\"}")).andExpect(status().isOk()).andReturn()).get("token").asText();
         mvc.perform(post("/api/auth/pin").contentType(MediaType.APPLICATION_JSON).content("{\"pin\":\"0000\"}")).andExpect(status().isUnauthorized());
 
         JsonNode regs = json(mvc.perform(get("/api/pos/registers").header("Authorization", "Bearer " + cashierToken)).andExpect(status().isOk()).andReturn());
@@ -147,7 +150,7 @@ class PosIntegrationTest {
 
         // Le taux se pose au back-office, avec les droits qui vont avec.
         String admin = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn()).get("token").asText();
+                .content("{\"username\":\"admin\",\"password\":\"mot-de-passe-de-test-0910\"}")).andExpect(status().isOk()).andReturn()).get("token").asText();
         putJson("/api/settings", admin, java.util.Map.of("finance.marginPercent", "25"), 200);
 
         /*
@@ -213,7 +216,7 @@ class PosIntegrationTest {
      */
     @Test @Order(7) void ticketNumberingScopeFormatAndCounter() throws Exception {
         String admin = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn())
+                .content("{\"username\":\"admin\",\"password\":\"mot-de-passe-de-test-0910\"}")).andExpect(status().isOk()).andReturn())
                 .get("token").asText();
         String an = String.valueOf(java.time.Year.now(java.time.ZoneId.of("Africa/Tunis")).getValue());
 
@@ -347,7 +350,7 @@ class PosIntegrationTest {
      */
     @Test @Order(8) void stockDesPatesParVariante() throws Exception {
         String admin = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn()).get("token").asText();
+                .content("{\"username\":\"admin\",\"password\":\"mot-de-passe-de-test-0910\"}")).andExpect(status().isOk()).andReturn()).get("token").asText();
 
         // ---- le paramétrage : trois compteurs, trois emprunteuses
         JsonNode axes = json(mvc.perform(get("/api/variants").header("Authorization", "Bearer " + admin)).andExpect(status().isOk()).andReturn());
@@ -475,7 +478,7 @@ class PosIntegrationTest {
 
     @Test @Order(9) void purgeRemovesInactiveCatalogOnlyWithSalesReset() throws Exception {
         String adminToken = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn())
+                .content("{\"username\":\"admin\",\"password\":\"mot-de-passe-de-test-0910\"}")).andExpect(status().isOk()).andReturn())
                 .get("token").asText();
 
         String tinyCatalog = """
@@ -519,7 +522,7 @@ class PosIntegrationTest {
      */
     @Test @Order(10) void codeBarresEtStockParArticle() throws Exception {
         String admin = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn())
+                .content("{\"username\":\"admin\",\"password\":\"mot-de-passe-de-test-0910\"}")).andExpect(status().isOk()).andReturn())
                 .get("token").asText();
         String caissier = json(mvc.perform(post("/api/auth/pin").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"pin\":\"1234\"}")).andExpect(status().isOk()).andReturn()).get("token").asText();
@@ -640,7 +643,7 @@ class PosIntegrationTest {
 
         // ---- un caissier ne lit pas la caisse d'un autre
         String admin = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn())
+                .content("{\"username\":\"admin\",\"password\":\"mot-de-passe-de-test-0910\"}")).andExpect(status().isOk()).andReturn())
                 .get("token").asText();
         String caissier = json(mvc.perform(post("/api/auth/pin").header("X-Forwarded-For", "198.51.100.10")
                 .contentType(MediaType.APPLICATION_JSON).content("{\"pin\":\"1234\"}")).andReturn()).get("token").asText();
@@ -724,7 +727,7 @@ class PosIntegrationTest {
      */
     @Test @Order(12) void vendreAuPoids() throws Exception {
         String admin = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn())
+                .content("{\"username\":\"admin\",\"password\":\"mot-de-passe-de-test-0910\"}")).andExpect(status().isOk()).andReturn())
                 .get("token").asText();
         String caissier = json(mvc.perform(post("/api/auth/pin").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"pin\":\"1234\"}")).andExpect(status().isOk()).andReturn()).get("token").asText();
@@ -793,7 +796,7 @@ class PosIntegrationTest {
      */
     @Test @Order(13) void photoParVersion() throws Exception {
         String admin = json(mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\":\"admin\",\"password\":\"admin123\"}")).andExpect(status().isOk()).andReturn())
+                .content("{\"username\":\"admin\",\"password\":\"mot-de-passe-de-test-0910\"}")).andExpect(status().isOk()).andReturn())
                 .get("token").asText();
         String caissier = json(mvc.perform(post("/api/auth/pin").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"pin\":\"1234\"}")).andExpect(status().isOk()).andReturn()).get("token").asText();

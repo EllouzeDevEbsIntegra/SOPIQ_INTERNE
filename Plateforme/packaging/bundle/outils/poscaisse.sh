@@ -22,14 +22,14 @@ souci() { echo "  $*" >&2; }
 arret() { echo; echo "ARRET : $*" >&2; exit 1; }
 
 lire_config() {
-  PG_PORT=5433; APP_PORT=8080; DB=poscaisse; USER=poscaisse; PASS=""; KIOSQUE=0; AFFICHAGE=plein-ecran
+  PG_PORT=5433; APP_PORT=8080; DB=poscaisse; USER=poscaisse; PASS=""; ADMIN_PASS=""; KIOSQUE=0; AFFICHAGE=plein-ecran
   # « if » et non « && » : sans fichier de configuration, une liste ET renvoie un echec,
   # et sous « set -e » c'est l'appelant qui s'arrete, sans le moindre message.
   if [ -f "$config" ]; then . "$config"; fi
 }
 ecrire_config() {
   { echo "# Reglages du poste PosCaisse."
-    for k in PG_PORT APP_PORT DB USER PASS KIOSQUE AFFICHAGE; do echo "$k=${!k}"; done
+    for k in PG_PORT APP_PORT DB USER PASS ADMIN_PASS KIOSQUE AFFICHAGE; do echo "$k=${!k}"; done
   } > "$config"
   chmod 600 "$config"
 }
@@ -62,7 +62,8 @@ pg_arrete() { pg_tourne && "$pgbin/pg_ctl" -D "$donnees" -m fast -w -t 60 stop >
 app_repond() { curl -sf "http://127.0.0.1:$APP_PORT/actuator/health" 2>/dev/null | grep -q '"status":"UP"'; }
 app_demarre() {
   app_repond && { info 'Application deja en service.'; return 0; }
-  ( cd "$racine" && export POSCAISSE_DB_PASSWORD="$PASS" && setsid nohup "$java_bin" -Xms256m -Xmx768m \
+  # Par l'environnement, jamais en argument : ce qui est en argument se lit dans « ps ».
+  ( cd "$racine" && export POSCAISSE_DB_PASSWORD="$PASS" POSCAISSE_ADMIN_PASSWORD="$ADMIN_PASS" && setsid nohup "$java_bin" -Xms256m -Xmx768m \
       -Duser.timezone=Africa/Tunis -Dfile.encoding=UTF-8 -jar "$jar" \
       "--server.port=$APP_PORT" \
       "--spring.datasource.url=jdbc:postgresql://127.0.0.1:$PG_PORT/$DB" \
@@ -95,6 +96,9 @@ faire_install() {
   fi
   lire_config
   [ -n "$PASS" ] || PASS="$(mot_de_passe)"
+  # Le secret du compte « admin » : la caisse refuse de démarrer sans lui sur une base
+  # vide, et « admin123 » était écrit dans son code source, donc identique partout.
+  [ -n "$ADMIN_PASS" ] || ADMIN_PASS="$(mot_de_passe)"
   ecrire_config
 
   etape 'Creation de la base de donnees'
@@ -118,7 +122,12 @@ faire_install() {
   app_demarre
   info 'Tables et donnees de depart installees.'
   etape 'Installation terminee'
-  info "Ouvrez la caisse : ./outils/poscaisse.sh start — identifiants admin / admin123."
+  info "Ouvrez la caisse : ./outils/poscaisse.sh start"
+  info "-----------------------------------------------------------------"
+  info " Compte administrateur : admin"
+  info " Mot de passe          : $ADMIN_PASS"
+  info " NOTEZ-LE : il est propre à ce poste, et se relit dans config/poscaisse.conf."
+  info "-----------------------------------------------------------------"
   souci 'Changez ce mot de passe des la premiere connexion.'
 }
 

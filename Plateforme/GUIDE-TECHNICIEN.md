@@ -97,7 +97,9 @@ Il doit se terminer par :
 
 ```
 == Installation terminee
-  Ouvrez la caisse avec DEMARRER.bat. Identifiants de depart : admin / admin123.
+  Ouvrez la caisse avec DEMARRER.bat. L'identifiant est `admin` ; le mot de passe est
+  celui affiché à la FIN de l'installation, propre à ce poste, et relisible dans
+  `config\poscaisse.conf` (ligne `ADMIN_PASS`).
   Changez ce mot de passe des la premiere connexion (Back-office -> Utilisateurs).
 ```
 
@@ -167,8 +169,9 @@ service sur une installation douteuse.
 
 **Changez le mot de passe administrateur avec le client**, à son clavier, sans le noter.
 
-Si le compte livré est encore `admin` / `admin123`, c'est un compte connu de tous : il ne
-doit pas survivre à votre visite.
+Si le compte porte encore le mot de passe posé à l'installation, personne d'autre ne le
+connaît — mais il est écrit en clair dans `config\poscaisse.conf`, sur un poste où passent
+des gens. Il ne doit pas survivre à votre visite.
 
 ---
 

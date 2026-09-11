@@ -137,6 +137,22 @@ fi
 jeton="$(deja POSCAISSE_JWT_SECRET "$env_fichier")"
 [ -n "$jeton" ] || { h="$(openssl rand -hex 80)"; jeton="${h:0:80}"; }
 
+# LE SECRET DU COMPTE ADMINISTRATEUR DE LA CAISSE.
+#
+# La caisse REFUSE de demarrer sans lui sur une base vide : << admin / admin123 >> etait
+# ecrit dans son code source, donc identique partout et publie dans le depot.
+#
+# Tire ici, ecrit dans le fichier d'environnement, et AFFICHE UNE FOIS a la fin - c'est la
+# seule occasion de le noter. Une reouverture garde celui qui est deja pose : le
+# commercant a peut-etre deja change le sien, et le reecrire ne changerait rien en base
+# tout en faisant croire le contraire.
+admin_mdp="$(deja POSCAISSE_ADMIN_PASSWORD "$env_fichier")"
+admin_nouveau=non
+if [ -z "$admin_mdp" ]; then
+    admin_mdp="$(openssl rand -hex 12)"      # 24 caracteres, au-dessus des 12 exiges
+    admin_nouveau=oui
+fi
+
 install -d -m 750 -o root -g poscaisse /etc/poscaisse
 install -d -m 755 -o poscaisse -g poscaisse /opt/poscaisse/caisses
 
@@ -154,6 +170,7 @@ umask 027
     echo "POSCAISSE_PROFIL=$profil"
     if [ -n "$enseigne" ]; then echo "POSCAISSE_ENSEIGNE=$enseigne"; fi
     echo "POSCAISSE_DEMO_DATA=$demonstration"
+    echo "POSCAISSE_ADMIN_PASSWORD=$admin_mdp"
     echo "POSCAISSE_JWT_SECRET=$jeton"
     echo "LANG=C.UTF-8"
 } > "$env_fichier"
@@ -172,6 +189,19 @@ systemctl daemon-reload
 systemctl enable --now "poscaisse@$sous_domaine" >/dev/null
 systemctl reload nginx
 
+echo
+if [ "$admin_nouveau" = oui ]; then
+    echo "─────────────────────────────────────────────────────────────────"
+    echo " Compte administrateur de cette caisse"
+    echo "   identifiant : admin"
+    echo "   mot de passe : $admin_mdp"
+    echo " NOTEZ-LE MAINTENANT. Il est écrit dans $env_fichier, lisible par"
+    echo " root seul, et ne sera plus affiché. Remettez-le au commerçant et"
+    echo " demandez-lui de le changer depuis Back-office → Utilisateurs."
+    echo "─────────────────────────────────────────────────────────────────"
+else
+    echo "Compte administrateur : celui déjà posé (réouverture) — mot de passe inchangé."
+fi
 echo
 echo "Caisse ouverte : https://$sous_domaine.$DOMAINE"
 echo "Comptez une vingtaine de secondes au premier démarrage — elle pose son schéma"
