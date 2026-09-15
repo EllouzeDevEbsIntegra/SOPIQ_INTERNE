@@ -2,6 +2,9 @@
 //
 // Source : "Service Ledger Entry EDMS", la table d'ecritures du DMS.
 //
+// Filtre "Entry Type = Sale" : repris de la query 25006650 lue par le Power BI. Sans lui,
+// la query remonte aussi les ecritures de consommation et d'usage, sans montant de vente.
+//
 // Filtre "Type <> Item" : les pieces posees en atelier sont deja dans Value Entry, donc
 // dans la query des ventes (factures atelier FS / FSI, avoirs AS / ASI) avec leur cout
 // reel. Les inclure ici les compterait deux fois.
@@ -16,11 +19,12 @@
 //   Cout  = somme kpiSalesDaily seulement
 //   Marge = CA + Cout
 //
-// Signes : aucun ReverseSign ici. Dans cette table, "Amount (LCY)" est deja positif sur
-// les factures et negatif sur les avoirs, le cumul ressort donc naturellement positif et
-// s'additionne directement au CA des ventes. La query 25006650 pose bien un ReverseSign,
-// mais sur des grandeurs d'ecriture article negatives sur les ventes : ce n'est pas le
-// meme cas, il ne faut pas le reproduire ici.
+// Signes : dans la table brute, les montants et quantites de vente sont negatifs. Comme
+// dans la query 25006650 (ReverseSign sur "Amount (LCY)", "Amount Including VAT (LCY)",
+// Quantity et "Finished Hours"), le signe est inverse ici pour que amountLCY s'additionne
+// directement au CA des ventes. Les queries 25006659 et 25006660 n'en ont pas : elles
+// reposent sur les signes natifs de Value Entry.
+// A verifier au test : que ReverseSign se combine bien avec Method = Sum.
 query 25006661 "KPI Workshop Daily"
 {
     Caption = 'KPI atelier par jour';
@@ -36,7 +40,7 @@ query 25006661 "KPI Workshop Daily"
     {
         dataitem(Service_Ledger_Entry_EDMS; "Service Ledger Entry EDMS")
         {
-            DataItemTableFilter = Type = filter(<> Item);
+            DataItemTableFilter = "Entry Type" = const(Sale), Type = filter(<> Item);
 
             // seul regroupement
             column(postingDate; "Posting Date")
@@ -47,10 +51,12 @@ query 25006661 "KPI Workshop Daily"
             column(amountLCY; "Amount (LCY)")
             {
                 Method = Sum;
+                ReverseSign = true;
             }
             column(quantity; Quantity)
             {
                 Method = Sum;
+                ReverseSign = true;
             }
             column(entryCount)
             {
