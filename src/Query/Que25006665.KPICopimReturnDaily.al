@@ -12,13 +12,13 @@
 // 41000901, 41000981, 41000982, 41000242) ne sont pas figees ici : sellToCustomerNo est
 // expose en filter() pour que le consommateur les applique depuis sa configuration.
 //
-// Cout : dataitem imbrique "Item Ledger Entry" lie sur "Document No." et "Line No.",
-// comme la query 25006650. A valider au test : la jointure par defaut ecarte les lignes
-// sans ecriture article, le CA doit rester identique a celui sans jointure.
+// Pas de cout ni de marge en V1 : sur une vente, l'ecriture article porte le n
+// d'expedition et non le n de facture, une jointure ferait tomber des lignes de CA.
+// La marge COPIM sera traitee apres la V1 a partir des ecritures valeur.
 query 25006665 "KPI Copim Return Daily"
 {
     Caption = 'KPI COPIM retours BS par jour';
-    Permissions = tabledata "Return Receipt Line" = R, tabledata "Item Ledger Entry" = R, tabledata "Value Entry" = R;
+    Permissions = tabledata "Return Receipt Line" = R;
     QueryType = API;
     APIPublisher = 'sopiq';
     APIGroup = 'interne';
@@ -57,20 +57,6 @@ query 25006665 "KPI Copim Return Daily"
             }
             filter(locationCode; "Location Code")
             {
-            }
-
-            dataitem(Item_Ledger_Entry; "Item Ledger Entry")
-            {
-                DataItemLink = "Document No." = Return_Receipt_Line."Document No.", "Document Line No." = Return_Receipt_Line."Line No.";
-
-                column(costAmountActual; "Cost Amount (Actual)")
-                {
-                    Method = Sum;
-                }
-                column(costAmountExpected; "Cost Amount (Expected)")
-                {
-                    Method = Sum;
-                }
             }
         }
     }

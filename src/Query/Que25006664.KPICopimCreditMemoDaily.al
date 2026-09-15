@@ -10,13 +10,13 @@
 // pas aux avoirs dans le Power BI. Aucune exclusion de client dans le Power BI pour les
 // avoirs, sellToCustomerNo reste expose en filter() par homogeneite.
 //
-// Cout : dataitem imbrique "Item Ledger Entry" lie sur "Document No." et "Line No.",
-// comme la query 25006650. A valider au test : la jointure par defaut ecarte les lignes
-// sans ecriture article, le CA doit rester identique a celui sans jointure.
+// Pas de cout ni de marge en V1 : sur une vente, l'ecriture article porte le n
+// d'expedition et non le n de facture, une jointure ferait tomber des lignes de CA.
+// La marge COPIM sera traitee apres la V1 a partir des ecritures valeur.
 query 25006664 "KPI Copim Credit Memo Daily"
 {
     Caption = 'KPI COPIM avoirs par jour';
-    Permissions = tabledata "Sales Cr.Memo Line" = R, tabledata "Item Ledger Entry" = R, tabledata "Value Entry" = R;
+    Permissions = tabledata "Sales Cr.Memo Line" = R;
     QueryType = API;
     APIPublisher = 'sopiq';
     APIGroup = 'interne';
@@ -55,20 +55,6 @@ query 25006664 "KPI Copim Credit Memo Daily"
             }
             filter(locationCode; "Location Code")
             {
-            }
-
-            dataitem(Item_Ledger_Entry; "Item Ledger Entry")
-            {
-                DataItemLink = "Document No." = Sales_Cr_Memo_Line."Document No.", "Document Line No." = Sales_Cr_Memo_Line."Line No.";
-
-                column(costAmountActual; "Cost Amount (Actual)")
-                {
-                    Method = Sum;
-                }
-                column(costAmountExpected; "Cost Amount (Expected)")
-                {
-                    Method = Sum;
-                }
             }
         }
     }
