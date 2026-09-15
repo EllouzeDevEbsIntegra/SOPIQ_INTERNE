@@ -11,6 +11,10 @@
 --
 -- Suffixes des tables : 437dbf0e... = Base Application, ad36f199... = SOPICBC16A
 -- (table "Ligne archive BS" et champs ajoutes "Old Document", Amount des retours).
+--
+-- Collation : les colonnes texte de Business Central sont en Latin1_General_100_CS_AS,
+-- la base et la table temporaire en French_CI_AS. Toute comparaison de texte porte
+-- COLLATE DATABASE_DEFAULT des deux cotes pour eviter le conflit de collation.
 
 SET NOCOUNT ON;
 
@@ -33,54 +37,67 @@ CREATE TABLE #src (
 INSERT #src
 SELECT 'BS archive', l.[Document No_], l.[Line No_], l.[No_], l.[Line Amount HT],
        CASE WHEN EXISTS (SELECT 1 FROM [STE COPIM$Entete archive BS$ad36f199-c652-4e8e-9c9a-ca851e424760] h
-                         WHERE h.[No_] = l.[Document No_]) THEN 1 ELSE 0 END,
+                         WHERE h.[No_] COLLATE DATABASE_DEFAULT = l.[Document No_] COLLATE DATABASE_DEFAULT) THEN 1 ELSE 0 END,
        (SELECT COUNT(*) FROM [STE COPIM$Item Ledger Entry$437dbf0e-84ff-417a-965d-ed2bb9650972] i
-        WHERE i.[Document No_] = l.[Document No_] AND i.[Document Line No_] = l.[Line No_]),
+        WHERE i.[Document No_] COLLATE DATABASE_DEFAULT = l.[Document No_] COLLATE DATABASE_DEFAULT
+          AND i.[Document Line No_] = l.[Line No_]),
        l.[No_ BL]
 FROM [STE COPIM$Ligne archive BS$ad36f199-c652-4e8e-9c9a-ca851e424760] l
 WHERE l.[Posting Date] BETWEEN @d1 AND @d2
-  AND l.[Quantity] <> 0 AND l.[No_] <> 'ACR' AND l.[Sell-to Customer No_] <> '41000900';
+  AND l.[Quantity] <> 0
+  AND l.[No_] COLLATE DATABASE_DEFAULT <> 'ACR' COLLATE DATABASE_DEFAULT
+  AND l.[Sell-to Customer No_] COLLATE DATABASE_DEFAULT <> '41000900' COLLATE DATABASE_DEFAULT;
 
 -- Factures : Line Amount, No. <> '', No. <> 'ACR', client <> 41000901
 INSERT #src
 SELECT 'Facture', l.[Document No_], l.[Line No_], l.[No_], l.[Line Amount],
        CASE WHEN EXISTS (SELECT 1 FROM [STE COPIM$Sales Invoice Header$437dbf0e-84ff-417a-965d-ed2bb9650972] h
-                         WHERE h.[No_] = l.[Document No_]) THEN 1 ELSE 0 END,
+                         WHERE h.[No_] COLLATE DATABASE_DEFAULT = l.[Document No_] COLLATE DATABASE_DEFAULT) THEN 1 ELSE 0 END,
        (SELECT COUNT(*) FROM [STE COPIM$Item Ledger Entry$437dbf0e-84ff-417a-965d-ed2bb9650972] i
-        WHERE i.[Document No_] = l.[Document No_] AND i.[Document Line No_] = l.[Line No_]),
+        WHERE i.[Document No_] COLLATE DATABASE_DEFAULT = l.[Document No_] COLLATE DATABASE_DEFAULT
+          AND i.[Document Line No_] = l.[Line No_]),
        e.[Old Document]
 FROM [STE COPIM$Sales Invoice Line$437dbf0e-84ff-417a-965d-ed2bb9650972] l
 LEFT JOIN [STE COPIM$Sales Invoice Line$ad36f199-c652-4e8e-9c9a-ca851e424760] e
-       ON e.[Document No_] = l.[Document No_] AND e.[Line No_] = l.[Line No_]
+       ON e.[Document No_] COLLATE DATABASE_DEFAULT = l.[Document No_] COLLATE DATABASE_DEFAULT
+      AND e.[Line No_] = l.[Line No_]
 WHERE l.[Posting Date] BETWEEN @d1 AND @d2
-  AND l.[No_] <> '' AND l.[No_] <> 'ACR' AND l.[Sell-to Customer No_] <> '41000901';
+  AND l.[No_] COLLATE DATABASE_DEFAULT <> '' COLLATE DATABASE_DEFAULT
+  AND l.[No_] COLLATE DATABASE_DEFAULT <> 'ACR' COLLATE DATABASE_DEFAULT
+  AND l.[Sell-to Customer No_] COLLATE DATABASE_DEFAULT <> '41000901' COLLATE DATABASE_DEFAULT;
 
 -- Avoirs : Line Amount, No. <> ''
 INSERT #src
 SELECT 'Avoir', l.[Document No_], l.[Line No_], l.[No_], l.[Line Amount],
        CASE WHEN EXISTS (SELECT 1 FROM [STE COPIM$Sales Cr_Memo Header$437dbf0e-84ff-417a-965d-ed2bb9650972] h
-                         WHERE h.[No_] = l.[Document No_]) THEN 1 ELSE 0 END,
+                         WHERE h.[No_] COLLATE DATABASE_DEFAULT = l.[Document No_] COLLATE DATABASE_DEFAULT) THEN 1 ELSE 0 END,
        (SELECT COUNT(*) FROM [STE COPIM$Item Ledger Entry$437dbf0e-84ff-417a-965d-ed2bb9650972] i
-        WHERE i.[Document No_] = l.[Document No_] AND i.[Document Line No_] = l.[Line No_]),
+        WHERE i.[Document No_] COLLATE DATABASE_DEFAULT = l.[Document No_] COLLATE DATABASE_DEFAULT
+          AND i.[Document Line No_] = l.[Line No_]),
        NULL
 FROM [STE COPIM$Sales Cr_Memo Line$437dbf0e-84ff-417a-965d-ed2bb9650972] l
 WHERE l.[Posting Date] BETWEEN @d1 AND @d2
-  AND l.[No_] <> '';
+  AND l.[No_] COLLATE DATABASE_DEFAULT <> '' COLLATE DATABASE_DEFAULT;
 
 -- Retours BS : Amount, No. <> '', exclusion de 6 clients
 INSERT #src
 SELECT 'Retour BS', l.[Document No_], l.[Line No_], l.[No_], e.[Amount],
        CASE WHEN EXISTS (SELECT 1 FROM [STE COPIM$Return Receipt Header$437dbf0e-84ff-417a-965d-ed2bb9650972] h
-                         WHERE h.[No_] = l.[Document No_]) THEN 1 ELSE 0 END,
+                         WHERE h.[No_] COLLATE DATABASE_DEFAULT = l.[Document No_] COLLATE DATABASE_DEFAULT) THEN 1 ELSE 0 END,
        (SELECT COUNT(*) FROM [STE COPIM$Item Ledger Entry$437dbf0e-84ff-417a-965d-ed2bb9650972] i
-        WHERE i.[Document No_] = l.[Document No_] AND i.[Document Line No_] = l.[Line No_]),
+        WHERE i.[Document No_] COLLATE DATABASE_DEFAULT = l.[Document No_] COLLATE DATABASE_DEFAULT
+          AND i.[Document Line No_] = l.[Line No_]),
        NULL
 FROM [STE COPIM$Return Receipt Line$437dbf0e-84ff-417a-965d-ed2bb9650972] l
 LEFT JOIN [STE COPIM$Return Receipt Line$ad36f199-c652-4e8e-9c9a-ca851e424760] e
-       ON e.[Document No_] = l.[Document No_] AND e.[Line No_] = l.[Line No_]
+       ON e.[Document No_] COLLATE DATABASE_DEFAULT = l.[Document No_] COLLATE DATABASE_DEFAULT
+      AND e.[Line No_] = l.[Line No_]
 WHERE l.[Posting Date] BETWEEN @d1 AND @d2
-  AND l.[No_] <> ''
-  AND l.[Sell-to Customer No_] NOT IN ('41000980', '41000900', '41000901', '41000981', '41000982', '41000242');
+  AND l.[No_] COLLATE DATABASE_DEFAULT <> '' COLLATE DATABASE_DEFAULT
+  AND l.[Sell-to Customer No_] COLLATE DATABASE_DEFAULT NOT IN (
+        '41000980' COLLATE DATABASE_DEFAULT, '41000900' COLLATE DATABASE_DEFAULT,
+        '41000901' COLLATE DATABASE_DEFAULT, '41000981' COLLATE DATABASE_DEFAULT,
+        '41000982' COLLATE DATABASE_DEFAULT, '41000242' COLLATE DATABASE_DEFAULT);
 
 -- Resultat 1
 SELECT Source,
@@ -96,41 +113,50 @@ GROUP BY Source
 UNION ALL
 SELECT 'CA COPIM',
        COUNT(*),
-       CAST(SUM(CASE WHEN Source IN ('BS archive', 'Facture') THEN Montant ELSE -Montant END) AS decimal(18, 3)),
+       CAST(SUM(CASE WHEN Source COLLATE DATABASE_DEFAULT IN ('BS archive' COLLATE DATABASE_DEFAULT, 'Facture' COLLATE DATABASE_DEFAULT)
+                     THEN Montant ELSE -Montant END) AS decimal(18, 3)),
        NULL, NULL, NULL, NULL, NULL
 FROM #src;
 
 -- Resultat 2 : doublon BS archive / facture
 SELECT 'Factures jan. avec Old Document renseigne' AS Controle,
        COUNT(*) AS Lignes, CAST(SUM(Montant) AS decimal(18, 3)) AS Montant
-FROM #src WHERE Source = 'Facture' AND ISNULL(Lien, '') <> ''
+FROM #src
+WHERE Source COLLATE DATABASE_DEFAULT = 'Facture' COLLATE DATABASE_DEFAULT
+  AND ISNULL(Lien, '') COLLATE DATABASE_DEFAULT <> '' COLLATE DATABASE_DEFAULT
 UNION ALL
 SELECT 'Factures jan. dont Old Document est un BS archive',
        COUNT(*), CAST(SUM(s.Montant) AS decimal(18, 3))
 FROM #src s
-WHERE s.Source = 'Facture'
+WHERE s.Source COLLATE DATABASE_DEFAULT = 'Facture' COLLATE DATABASE_DEFAULT
   AND EXISTS (SELECT 1 FROM [STE COPIM$Ligne archive BS$ad36f199-c652-4e8e-9c9a-ca851e424760] b
-              WHERE b.[Document No_] = s.Lien)
+              WHERE b.[Document No_] COLLATE DATABASE_DEFAULT = s.Lien COLLATE DATABASE_DEFAULT)
 UNION ALL
 SELECT 'BS jan. avec facture liee (Old Document + No., toute date)',
        COUNT(*), CAST(SUM(s.Montant) AS decimal(18, 3))
 FROM #src s
-WHERE s.Source = 'BS archive'
+WHERE s.Source COLLATE DATABASE_DEFAULT = 'BS archive' COLLATE DATABASE_DEFAULT
   AND EXISTS (SELECT 1
               FROM [STE COPIM$Sales Invoice Line$ad36f199-c652-4e8e-9c9a-ca851e424760] e
               JOIN [STE COPIM$Sales Invoice Line$437dbf0e-84ff-417a-965d-ed2bb9650972] i
-                ON i.[Document No_] = e.[Document No_] AND i.[Line No_] = e.[Line No_]
-              WHERE e.[Old Document] = s.DocNo AND i.[No_] = s.ArticleNo)
+                ON i.[Document No_] COLLATE DATABASE_DEFAULT = e.[Document No_] COLLATE DATABASE_DEFAULT
+               AND i.[Line No_] = e.[Line No_]
+              WHERE e.[Old Document] COLLATE DATABASE_DEFAULT = s.DocNo COLLATE DATABASE_DEFAULT
+                AND i.[No_] COLLATE DATABASE_DEFAULT = s.ArticleNo COLLATE DATABASE_DEFAULT)
 UNION ALL
 SELECT 'BS jan. avec No. BL renseigne',
        COUNT(*), CAST(SUM(Montant) AS decimal(18, 3))
-FROM #src WHERE Source = 'BS archive' AND ISNULL(Lien, '') <> ''
+FROM #src
+WHERE Source COLLATE DATABASE_DEFAULT = 'BS archive' COLLATE DATABASE_DEFAULT
+  AND ISNULL(Lien, '') COLLATE DATABASE_DEFAULT <> '' COLLATE DATABASE_DEFAULT
 UNION ALL
 SELECT 'BS jan. dont le No. BL est facture (Shipment No. + No.)',
        COUNT(*), CAST(SUM(s.Montant) AS decimal(18, 3))
 FROM #src s
-WHERE s.Source = 'BS archive' AND ISNULL(s.Lien, '') <> ''
+WHERE s.Source COLLATE DATABASE_DEFAULT = 'BS archive' COLLATE DATABASE_DEFAULT
+  AND ISNULL(s.Lien, '') COLLATE DATABASE_DEFAULT <> '' COLLATE DATABASE_DEFAULT
   AND EXISTS (SELECT 1 FROM [STE COPIM$Sales Invoice Line$437dbf0e-84ff-417a-965d-ed2bb9650972] i
-              WHERE i.[Shipment No_] = s.Lien AND i.[No_] = s.ArticleNo);
+              WHERE i.[Shipment No_] COLLATE DATABASE_DEFAULT = s.Lien COLLATE DATABASE_DEFAULT
+                AND i.[No_] COLLATE DATABASE_DEFAULT = s.ArticleNo COLLATE DATABASE_DEFAULT);
 
 DROP TABLE #src;
