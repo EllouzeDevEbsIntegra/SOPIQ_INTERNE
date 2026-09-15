@@ -16,9 +16,11 @@
 //   Cout  = somme kpiSalesDaily seulement
 //   Marge = CA + Cout
 //
-// ReverseSign : les montants et quantites sont stockes en negatif dans la table du DMS,
-// comme dans la query 25006650 deja en place. Le signe est inverse ici pour que
-// amountLCY s'additionne directement au CA des ventes.
+// Signes : aucun ReverseSign ici. Dans cette table, "Amount (LCY)" est deja positif sur
+// les factures et negatif sur les avoirs, le cumul ressort donc naturellement positif et
+// s'additionne directement au CA des ventes. La query 25006650 pose bien un ReverseSign,
+// mais sur des grandeurs d'ecriture article negatives sur les ventes : ce n'est pas le
+// meme cas, il ne faut pas le reproduire ici.
 query 25006661 "KPI Workshop Daily"
 {
     Caption = 'KPI atelier par jour';
@@ -45,12 +47,10 @@ query 25006661 "KPI Workshop Daily"
             column(amountLCY; "Amount (LCY)")
             {
                 Method = Sum;
-                ReverseSign = true;
             }
             column(quantity; Quantity)
             {
                 Method = Sum;
-                ReverseSign = true;
             }
             column(entryCount)
             {
