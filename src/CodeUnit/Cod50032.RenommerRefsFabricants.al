@@ -2,9 +2,10 @@
 //
 // Regle, fournie par le metier et appliquee telle quelle :
 //   - uniquement les articles des fabricants indiques (LuK, FAG, INA, Vitesco) ;
-//   - si le n d'article fait 10 caracteres ET que le 10e est '0', ce '0' est retire,
-//     le n passe a 9 caracteres ;
-//   - toute autre reference est ignoree, rien n'est modifie dessus.
+//   - si le n d'article fait 10 caracteres, commence par un chiffre ET que le 10e
+//     caractere est '0', ce '0' est retire, le n passe a 9 caracteres ;
+//   - toute autre reference est ignoree, rien n'est modifie dessus. En particulier les
+//     references commencant par une lettre, qui suivent un autre format.
 //
 // Le renommage passe par Item.Rename : Business Central reporte le nouveau n sur tout
 // l'historique (ecritures article et valeur, lignes de documents, prix, stock). La
@@ -94,10 +95,16 @@ codeunit 50032 "Renommer Refs Fabricants"
         end;
     end;
 
-    // 10 caracteres et dernier caractere '0' : les deux conditions, rien d'autre.
+    // Trois conditions, rien d'autre :
+    //   - 10 caracteres ;
+    //   - le 10e est '0' ;
+    //   - le 1er est un chiffre. Les references commencant par une lettre (FB4EPK8300,
+    //     FB6PK13900, etc.) sont des codes d'un autre format, ecartees du traitement.
     procedure EstConcernee(No: Code[20]): Boolean
     begin
         if StrLen(No) <> 10 then
+            exit(false);
+        if (No[1] < '0') or (No[1] > '9') then
             exit(false);
         exit(CopyStr(No, 10, 1) = '0');
     end;
