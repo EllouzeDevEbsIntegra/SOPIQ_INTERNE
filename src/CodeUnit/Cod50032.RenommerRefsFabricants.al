@@ -33,6 +33,7 @@ codeunit 50032 "Renommer Refs Fabricants"
     var
         FabricantsParDefaut: Label 'FAB0015|FAB0096|FAB0103|FAB0350', Locked = true;
         FabricantPilote: Label 'FAB0350', Locked = true;  // Vitesco, pour l'essai
+        DebutExecution: DateTime;
 
     // Compte sans rien modifier, et journalise ce qui serait fait.
     procedure Simuler()
@@ -72,6 +73,10 @@ codeunit 50032 "Renommer Refs Fabricants"
         AncienNo: Code[20];
         NouveauNo: Code[20];
     begin
+        // Toutes les lignes d'un meme passage portent la meme valeur : le recapitulatif
+        // distingue ainsi deux executions faites le meme jour.
+        DebutExecution := CurrentDateTime();
+
         Item.SetFilter("Manufacturer Code", Fabricants);
         if Item.FindSet() then
             repeat
@@ -115,6 +120,7 @@ codeunit 50032 "Renommer Refs Fabricants"
     begin
         Log.Init();
         Log."Date Heure" := CurrentDateTime();
+        Log."Execution" := DebutExecution;
         Log."Societe" := CopyStr(CompanyName(), 1, MaxStrLen(Log."Societe"));
         Log."Fabricant" := Fabricant;
         Log."Ancien No." := AncienNo;

@@ -19,6 +19,10 @@ table 50024 "Log Renommage Refs"
         {
             Caption = 'Date et heure';
         }
+        field(15; "Execution"; DateTime)
+        {
+            Caption = 'Execution';  // identique pour toutes les lignes d'un meme passage
+        }
         field(20; "Societe"; Text[50])
         {
             Caption = 'Societe';
