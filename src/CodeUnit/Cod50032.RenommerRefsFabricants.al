@@ -31,6 +31,7 @@ codeunit 50032 "Renommer Refs Fabricants"
 
     var
         FabricantsParDefaut: Label 'FAB0015|FAB0096|FAB0103|FAB0350', Locked = true;
+        FabricantPilote: Label 'FAB0350', Locked = true;  // Vitesco, pour l'essai
 
     // Compte sans rien modifier, et journalise ce qui serait fait.
     procedure Simuler()
@@ -42,6 +43,17 @@ codeunit 50032 "Renommer Refs Fabricants"
     procedure Renommer()
     begin
         Executer(FabricantsParDefaut, false);
+    end;
+
+    // Essai sur Vitesco seul : 36 references, aucune collision connue.
+    procedure SimulerVitesco()
+    begin
+        Executer(FabricantPilote, true);
+    end;
+
+    procedure RenommerVitesco()
+    begin
+        Executer(FabricantPilote, false);
     end;
 
     procedure FabricantsParDefautTexte(): Text
