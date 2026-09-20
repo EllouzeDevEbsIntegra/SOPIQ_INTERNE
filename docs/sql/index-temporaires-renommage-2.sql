@@ -38,8 +38,10 @@ SELECT o.object_id, o.name AS Table_, c.Colonne,
 INTO #cibles
 FROM sys.objects o
 JOIN sys.columns col ON col.object_id = o.object_id
-JOIN #colonnes c ON c.Colonne = col.name
-JOIN #societes s ON o.name LIKE s.Nom + '$%'
+-- Les vues systeme sont en Latin1_General_100_CS_AS, la base en French_CI_AS :
+-- COLLATE DATABASE_DEFAULT des deux cotes de chaque comparaison de texte.
+JOIN #colonnes c ON c.Colonne COLLATE DATABASE_DEFAULT = col.name COLLATE DATABASE_DEFAULT
+JOIN #societes s ON o.name COLLATE DATABASE_DEFAULT LIKE s.Nom COLLATE DATABASE_DEFAULT + '$%'
 WHERE o.type = 'U';
 
 DELETE FROM #cibles WHERE Lignes < 5000;
