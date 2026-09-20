@@ -28,7 +28,10 @@ param(
     [switch]$Reel,
     [switch]$Vitesco,
     [string]$Serveur = '',
-    [string]$NavAdminTool = ''
+    [string]$NavAdminTool = '',
+    # Nombre de tentatives par societe en cas d'echec sur verrou, et pause entre deux.
+    [int]$Essais = 20,
+    [int]$PauseSecondes = 120
 )
 
 $ErrorActionPreference = 'Stop'
@@ -47,7 +50,7 @@ if ($Reel) {
 
 # Ce bloc s'execute la ou sont installes les outils BC : ici, ou sur le serveur distant.
 $travail = {
-    param($ServerInstance, $Societes, $Methode, $NavAdminTool)
+    param($ServerInstance, $Societes, $Methode, $NavAdminTool, $Essais, $PauseSecondes)
 
     if (-not (Get-Command Invoke-NAVCodeunit -ErrorAction SilentlyContinue)) {
         if (-not $NavAdminTool) {
@@ -68,16 +71,29 @@ $travail = {
     foreach ($societe in $Societes) {
         $chrono = [Diagnostics.Stopwatch]::StartNew()
         $erreur = ''
-        try {
-            Invoke-NAVCodeunit -ServerInstance $ServerInstance -CompanyName $societe `
-                -CodeunitId 50032 -MethodName $Methode -ErrorAction Stop -WarningAction SilentlyContinue
-        } catch {
-            $erreur = $_.Exception.Message
+        $essai = 0
+
+        # Un echec sur verrou annule la societe mais ne coute qu'une quinzaine de
+        # secondes : on repart de zero, les articles deja renommes ne sont plus
+        # candidats. On reessaie donc jusqu'a tomber sur une fenetre libre.
+        while ($essai -lt $Essais) {
+            $essai++
+            $erreur = ''
+            try {
+                Invoke-NAVCodeunit -ServerInstance $ServerInstance -CompanyName $societe `
+                    -CodeunitId 50032 -MethodName $Methode -ErrorAction Stop -WarningAction SilentlyContinue
+                break
+            } catch {
+                $erreur = $_.Exception.Message
+                Write-Host "   $societe : essai $essai sur $Essais en echec, nouvelle tentative dans $PauseSecondes s"
+                if ($essai -lt $Essais) { Start-Sleep -Seconds $PauseSecondes }
+            }
         }
         $chrono.Stop()
         [pscustomobject]@{
             Societe = $societe
             Methode = $Methode
+            Essais  = $essai
             Duree   = $chrono.Elapsed.ToString('hh\:mm\:ss')
             Etat    = $(if ($erreur) { 'Echec' } else { 'OK' })
             Erreur  = $erreur
@@ -88,10 +104,10 @@ $travail = {
 if ($Serveur) {
     Write-Host "Execution sur $Serveur ..."
     $resultats = Invoke-Command -ComputerName $Serveur -ScriptBlock $travail `
-                     -ArgumentList $ServerInstance, $Societes, $methode, $NavAdminTool
+                     -ArgumentList $ServerInstance, $Societes, $methode, $NavAdminTool, $Essais, $PauseSecondes
 } else {
-    $resultats = & $travail $ServerInstance $Societes $methode $NavAdminTool
+    $resultats = & $travail $ServerInstance $Societes $methode $NavAdminTool $Essais $PauseSecondes
 }
 
-$resultats | Format-Table Societe, Methode, Duree, Etat, Erreur -AutoSize
+$resultats | Format-Table Societe, Methode, Essais, Duree, Etat, Erreur -AutoSize
 Write-Host 'Recapitulatif detaille : lancer docs\sql\recap-renommage-refs.sql dans SSMS.'
