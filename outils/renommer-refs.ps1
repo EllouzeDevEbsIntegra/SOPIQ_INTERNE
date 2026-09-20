@@ -61,11 +61,16 @@ $travail = {
         . $NavAdminTool
     }
 
+    # Sans cela, une erreur du serveur BC (verrou, par exemple) n'est pas attrapee par
+    # try/catch et interrompt tout le script au lieu de passer a la societe suivante.
+    $ErrorActionPreference = 'Stop'
+
     foreach ($societe in $Societes) {
         $chrono = [Diagnostics.Stopwatch]::StartNew()
         $erreur = ''
         try {
-            Invoke-NAVCodeunit -ServerInstance $ServerInstance -CompanyName $societe -CodeunitId 50032 -MethodName $Methode
+            Invoke-NAVCodeunit -ServerInstance $ServerInstance -CompanyName $societe `
+                -CodeunitId 50032 -MethodName $Methode -ErrorAction Stop -WarningAction SilentlyContinue
         } catch {
             $erreur = $_.Exception.Message
         }
