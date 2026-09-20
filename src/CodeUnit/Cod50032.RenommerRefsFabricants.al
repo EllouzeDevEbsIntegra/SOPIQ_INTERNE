@@ -23,8 +23,9 @@
 //     puis la meme chose avec -MethodName Renommer. Dans ce mode aucun message ne
 //     s'affiche : le resultat se lit dans la table 50024 "Log Renommage Refs".
 //
-// Chaque appel s'execute dans une seule transaction : en cas d'erreur, la societe
-// concernee reste inchangee.
+// Chaque article est valide immediatement apres son renommage. Le traitement peut donc
+// etre interrompu et relance sans rien perdre : un article deja renomme ne fait plus
+// 10 caracteres et n'est plus candidat.
 codeunit 50032 "Renommer Refs Fabricants"
 {
     Permissions = tabledata Item = rm,
@@ -96,6 +97,15 @@ codeunit 50032 "Renommer Refs Fabricants"
                     ItemARenommer.Get(AncienNo);
                     ItemARenommer.Rename(NouveauNo);
                     Journaliser(ARenommer.Get(AncienNo), AncienNo, NouveauNo, Log.Statut::Renomme, Simulation);
+
+                    // Validation apres chaque article, comme le ferait un utilisateur qui
+                    // renomme une fiche. Sans cela toute la societe tient dans une seule
+                    // transaction : les verrous s'accumulent, les autres traitements sont
+                    // bloques, chaque renommage devient plus lent que le precedent et la
+                    // moindre erreur annule tout le travail.
+                    // Le traitement devient aussi reprenable : un article deja renomme ne
+                    // fait plus 10 caracteres, il n'est donc plus candidat au passage suivant.
+                    Commit();
                 end;
         end;
     end;
