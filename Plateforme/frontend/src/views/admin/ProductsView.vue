@@ -48,6 +48,27 @@ const dragId = ref(null)
 const ingredients = ref([])
 
 /*
+    LA ZONE DE TEXTE ET LA LISTE.
+
+    On saisit un code par ligne - c'est ce que fait le lecteur, qui envoie Entree apres
+    chaque code - et l'article porte une liste. Le pont est ici, et il nettoie au passage :
+    lignes vides, espaces, doublons. Sans ce nettoyage, un retour a la ligne de trop
+    deviendrait un code vide envoye au serveur.
+*/
+const codesSecondaires = computed({
+  get: () => ((edit.value && edit.value.barcodesSecondaires) || []).join('\n'),
+  set: (v) => {
+    if (!edit.value) return
+    const vus = []
+    for (const ligne of String(v).split(/[\s,;]+/)) {
+      const c = ligne.trim()
+      if (c && !vus.includes(c)) vus.push(c)
+    }
+    edit.value.barcodesSecondaires = vus
+  }
+})
+
+/*
     Variantes : au plus une par article.
 
     Le prix se tient ici, par version, et non sur la variante : la meme « Large » ne vaut
@@ -203,11 +224,12 @@ const marge = computed(() => {
   return Math.round(((v - a) / v) * 1000) / 10
 })
 
-function create() { const catId = Number(catFilter.value) || cats.value[0]?.id; edit.value = { code: nextCode(catId), reference: '', name: '', shortName: '', description: '', categoryId: catId, productType: 'SIMPLE', price: 0, taxRate: 0, imageUrl: '', color: '', sortOrder: rows.value.length + 1, active: true, available: true, favorite: false, favoriteOrder: 0, priceToCheck: false, printDestinationIds: [], modifierGroupIds: [], menuComponents: [], ingredientIds: [], variantId: null, defaultVariantValueId: null, askVariant: false, variantPrices: [], barcode: '', purchasePrice: 0, stockManaged: false, stockMin: 0, unite: 'PIECE' }; tab.value = 'general' }
-function open(p) { edit.value = { unite: 'PIECE', ...p, ingredientIds: [...(p.ingredientIds || [])], variantPrices: (p.variantPrices || []).map(x => ({ imageUrl: '', ...x })), modifierGroupIds: p.modifierGroups.map(g => g.id), menuComponents: p.menuComponents.map(c => ({ name: c.name, quantity: c.quantity, sortOrder: c.sortOrder, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) })) })) }; tab.value = 'general' }
+function create() { const catId = Number(catFilter.value) || cats.value[0]?.id; edit.value = { code: nextCode(catId), reference: '', name: '', shortName: '', description: '', categoryId: catId, productType: 'SIMPLE', price: 0, taxRate: 0, imageUrl: '', color: '', sortOrder: rows.value.length + 1, active: true, available: true, favorite: false, favoriteOrder: 0, priceToCheck: false, printDestinationIds: [], modifierGroupIds: [], menuComponents: [], ingredientIds: [], variantId: null, defaultVariantValueId: null, askVariant: false, variantPrices: [], barcode: '', barcodesSecondaires: [], purchasePrice: 0, stockManaged: false, stockMin: 0, unite: 'PIECE' }; tab.value = 'general' }
+function open(p) { edit.value = { unite: 'PIECE', barcodesSecondaires: [], ...p, ingredientIds: [...(p.ingredientIds || [])], variantPrices: (p.variantPrices || []).map(x => ({ imageUrl: '', ...x })), modifierGroupIds: p.modifierGroups.map(g => g.id), menuComponents: p.menuComponents.map(c => ({ name: c.name, quantity: c.quantity, sortOrder: c.sortOrder, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) })) })) }; tab.value = 'general' }
 async function save() {
   const b = { ...edit.value, price: Number(String(edit.value.price).replace(',', '.')), taxRate: Number(edit.value.taxRate) || 0,
     barcode: (edit.value.barcode || '').trim() || null,
+    barcodesSecondaires: edit.value.barcodesSecondaires || [],
     purchasePrice: Number(String(edit.value.purchasePrice ?? 0).replace(',', '.')) || 0,
     stockManaged: !!edit.value.stockManaged,
     stockMin: Number(String(edit.value.stockMin ?? 0).replace(',', '.')) || 0, menuComponents: edit.value.productType === 'MENU' ? edit.value.menuComponents.map((c, i) => ({ ...c, sortOrder: i, quantity: Number(c.quantity) || 1, options: c.options.map(o => ({ productId: o.productId, priceDelta: Number(o.priceDelta) || 0 })) })) : [] }
@@ -337,6 +359,18 @@ function onImage(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 
                     @click="edit.barcode = ''"><Icon name="close" :size="16" /></button>
           </div>
           <span class="tiny muted">Le champ écoute le lecteur : posez le curseur ici et scannez.</span>
+        </div>
+        <!--
+            LES AUTRES CODES DU MEME ARTICLE. Un produit arrive avec des EAN differents
+            selon le fournisseur, le format ou l'annee : la caisse les reconnait tous, et
+            c'est ici qu'on les lit. Un par ligne parce qu'on les scanne a la suite -
+            le lecteur envoie Entree apres chaque code, ce qui fait la ligne suivante.
+        -->
+        <div class="field" v-if="codeBarresActif">
+          <label>Autres codes-barres <span class="tiny muted">(facultatif, un par ligne)</span></label>
+          <textarea class="input num" style="height:76px" v-model="codesSecondaires"
+                    placeholder="scannez-les à la suite, ou collez-les"></textarea>
+          <span class="tiny muted">La caisse trouve l'article par n'importe lequel de ces codes.</span>
         </div>
         <div class="field" v-if="stockActif">
           <label>Prix d'achat</label>

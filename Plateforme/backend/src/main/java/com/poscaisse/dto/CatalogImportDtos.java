@@ -39,7 +39,16 @@ public final class CatalogImportDtos {
                                     sans quoi une carte importee arriverait muette sur ce qui
                                     fait justement le metier.
                                 */
-                                String barcode, BigDecimal purchasePrice, Boolean stockManaged, BigDecimal stockMin,
+                                String barcode,
+                                /*
+                                    Les AUTRES codes-barres du meme article. En superette le
+                                    meme produit arrive avec des EAN differents selon le
+                                    fournisseur ou le format : l'export du premier client en
+                                    comptait 885 pour 395 articles. Un article qui ne passe
+                                    pas a la douchette, c'est une file qui attend.
+                                */
+                                List<String> barcodesSecondaires,
+                                BigDecimal purchasePrice, Boolean stockManaged, BigDecimal stockMin,
                                 /*
                                     PIECE, KG ou LITRE. Une carte de patisserie annonce ses
                                     baklawas au kilo : sans cela, l'import les livrerait

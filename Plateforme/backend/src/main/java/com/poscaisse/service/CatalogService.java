@@ -142,13 +142,9 @@ public class CatalogService {
             Le doublon est refuse ici, en clair : la contrainte de la base le dirait aussi,
             mais avec un message que personne ne peut lire.
         */
-        String cb = r.barcode() == null || r.barcode().isBlank() ? null : r.barcode().trim();
-        if (cb != null) {
-            Product autre = productRepo.findByBarcode(cb).orElse(null);
-            if (autre != null && !autre.getId().equals(p.getId()))
-                throw new BusinessException("Le code-barres « " + cb + " » est déjà celui de « " + autre.getName() + " ».");
-        }
-        p.setBarcode(cb);
+        // Le principal ET les secondaires, verifies ensemble : un code porte par deux
+        // articles rend le scan ambigu, et l'article perdant devient invendable en silence.
+        CodesBarres.poser(p, r.barcode(), r.barcodesSecondaires(), productRepo);
         if (r.purchasePrice() != null) p.setPurchasePrice(Money.r(r.purchasePrice()));
         if (r.stockManaged() != null) p.setStockManaged(r.stockManaged());
         if (r.stockMin() != null) p.setStockMin(Money.r(r.stockMin()));

@@ -219,16 +219,8 @@ public class CatalogImportService {
                 premier, on signale le second, et l'import continue - une carte de trois
                 cents lignes ne doit pas s'arreter sur une coquille de saisie.
             */
-            String cb = p.barcode() == null || p.barcode().isBlank() ? null : p.barcode().trim();
-            if (cb != null) {
-                Product deja = productRepo.findByBarcode(cb).orElse(null);
-                if (deja != null && (isNew || !deja.getId().equals(entity.getId()))) {
-                    warnings.add("Code-barres déjà utilisé par « " + deja.getName() + " » : "
-                            + cb + " — « " + p.name() + " » est importé sans code.");
-                    cb = null;
-                }
-            }
-            entity.setBarcode(cb);
+            warnings.addAll(CodesBarres.poserTolerant(entity, p.barcode(), p.barcodesSecondaires(),
+                                                      productRepo, isNew));
             if (p.purchasePrice() != null) entity.setPurchasePrice(Money.r(p.purchasePrice()));
             entity.setStockManaged(Boolean.TRUE.equals(p.stockManaged()));
             if (p.stockMin() != null) entity.setStockMin(Money.r(p.stockMin()));

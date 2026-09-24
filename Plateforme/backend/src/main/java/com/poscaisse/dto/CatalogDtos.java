@@ -30,7 +30,8 @@ public final class CatalogDtos {
                              Long variantId, Long defaultVariantValueId, boolean askVariant,
                              List<VariantPriceDto> variantPrices,
                              /* La boutique : ce qui s'identifie au scan et ce qui se compte. */
-                             String barcode, BigDecimal purchasePrice, boolean stockManaged, BigDecimal stockMin,
+                             String barcode, List<String> barcodesSecondaires,
+                             BigDecimal purchasePrice, boolean stockManaged, BigDecimal stockMin,
                              /* PIECE, KG ou LITRE : la caisse demande un poids pour les deux dernieres. */
                              String unite) {}
 
@@ -49,7 +50,8 @@ public final class CatalogDtos {
                                  List<MenuComponentRequest> menuComponents, List<Long> ingredientIds,
                                  Long variantId, Long defaultVariantValueId, Boolean askVariant,
                                  List<VariantPriceDto> variantPrices,
-                                 String barcode, BigDecimal purchasePrice, Boolean stockManaged, BigDecimal stockMin,
+                                 String barcode, List<String> barcodesSecondaires,
+                                 BigDecimal purchasePrice, Boolean stockManaged, BigDecimal stockMin,
                                  String unite) {}
 
     public record PaymentMethodDto(Long id, String code, String name, String kind, boolean opensDrawer, int sortOrder, boolean active) {}

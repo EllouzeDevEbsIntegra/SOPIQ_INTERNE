@@ -53,6 +53,20 @@ public class Product {
     private String barcode;
 
     /**
+     * Les AUTRES codes-barres de cet article, separes par une espace.
+     *
+     * Le meme produit arrive avec des EAN differents selon le fournisseur, le format ou
+     * l'annee. L'export du premier client reel en comptait 885 pour 395 articles, jusqu'a
+     * quatorze pour un seul : un article qui ne passe pas a la douchette, c'est un caissier
+     * qui cherche a la main devant une file qui attend.
+     *
+     * Une espace comme separateur, et rien d'autre : un code-barres n'a que des chiffres,
+     * il n'y a donc ni echappement ni guillemet a craindre. Voir V19.
+     */
+    @Column(name = "barcodes_secondaires")
+    private String barcodesSecondaires;
+
+    /**
      * Le dernier prix d'achat connu, pour la marge et pour pre-remplir une entree de
      * stock. Ce n'est pas lui qui fait foi dans un calcul de marge exact : chaque entree
      * garde le sien, parce qu'il change d'un approvisionnement a l'autre.
