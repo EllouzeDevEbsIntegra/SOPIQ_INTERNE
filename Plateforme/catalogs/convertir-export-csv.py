@@ -56,6 +56,11 @@ def main():
     a.add_argument("--colonne-prix", default="PrixSolde")
     a.add_argument("--libelle", default="Reprise de carte")
     a.add_argument("--familles", help="fichier code=nom, une ligne par famille")
+    a.add_argument("--code-interne-prefixe", metavar="PREFIXE", help=(
+        "Prefixe des codes INTERNES de l'ancien logiciel (ex. 7100). Quand le code "
+        "principal d'un article commence par ce prefixe et qu'il existe un vrai code "
+        "fabricant, les deux sont echanges : le code de l'emballage devient le principal, "
+        "l'interne descend en secondaire."))
     o = a.parse_args()
 
     lignes = lire(o.articles)
@@ -111,9 +116,27 @@ def main():
         if court and court != nom:
             p["shortName"] = court
         if cb:
+            autres = list(secondaires.get(cb, []))
+            # LE CODE PRINCIPAL DOIT ETRE CELUI DE L'EMBALLAGE.
+            #
+            # L'export observe ne portait en principal que des numeros INTERNES, fabriques
+            # par l'ancien logiciel et imprimes nulle part : sur 395 articles, aucun n'etait
+            # un vrai code-barres. Les 490 codes reels etaient tous en secondaire. Laisser
+            # les choses ainsi marche au scan - la caisse cherche partout - mais affiche
+            # dans la fiche un numero que le commercant ne retrouvera sur aucun produit.
+            #
+            # L'echange est CONDITIONNEL, et c'est volontaire : un autre export portera peut
+            # etre de vrais codes en principal, et les intervertir serait alors une faute.
+            # On n'echange donc que si le principal se reconnait au prefixe annonce.
+            #
+            # L'interne n'est pas jete : il descend en secondaire. Les anciennes etiquettes
+            # de rayon le portent peut-etre, et elles doivent continuer de scanner.
+            if o.code_interne_prefixe and autres and cb.startswith(o.code_interne_prefixe):
+                autres.append(cb)
+                cb = autres.pop(0)
             p["barcode"] = cb
-            if secondaires.get(cb):
-                p["barcodesSecondaires"] = secondaires[cb]
+            if autres:
+                p["barcodesSecondaires"] = autres
         produits.append(p)
 
     carte = {
