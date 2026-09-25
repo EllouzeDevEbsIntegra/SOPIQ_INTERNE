@@ -203,7 +203,7 @@ page 50127 "Commerce de Gros KPI"
             cuegroup(BLBR)
             {
                 Caption = 'Bons de livraison et Réceptions retour validées';
-                field(FindNoTInvoicedLines; FindNotInvoiced())
+                field(FindNoTInvoicedLines; NbBLNonFactures)
                 {
                     Caption = 'BL non facturés';
                     ApplicationArea = All;
@@ -218,7 +218,7 @@ page 50127 "Commerce de Gros KPI"
                         Page.Run(Page::"Posted Sales Shipment Lines", SalesShipmentLine);
                     end;
                 }
-                field(FindNotInvoicedLinesRetur; FindNotInvoicedReturn())
+                field(FindNotInvoicedLinesRetur; NbRetoursNonFactures)
                 {
                     Caption = 'Retour non facturés';
                     ApplicationArea = All;
@@ -283,8 +283,9 @@ page 50127 "Commerce de Gros KPI"
             cuegroup(PanierBS)
             {
                 Caption = 'Panier BS';
-                field("Total BS Ligne Inc. VAT"; "Total BS Ligne Inc. VAT")
+                field("Total BS Ligne Inc. VAT"; TotalPanierBS)
                 {
+                    Caption = 'Total lignes BS TTC';
                     ApplicationArea = All;
                     trigger OnDrillDown()
                     var
@@ -772,6 +773,13 @@ page 50127 "Commerce de Gros KPI"
         KPIManagement.UpdateAlertesMgStk();
         NbArtMgStkSousMin := KPIManagement.GetNbArtMgStkSousMin();
         NbArtMgStkSansQteMin := KPIManagement.GetNbArtMgStkSansQteMin();
+
+        // Lues dans le cache, calculees par le traitement de nuit. Elles etaient
+        // auparavant recalculees a chaque ouverture, en parcourant toutes les lignes
+        // d'expedition : neuf secondes par tuile, une minute pour la page.
+        NbBLNonFactures := KPIManagement.GetNbBLNonFactures();
+        NbRetoursNonFactures := KPIManagement.GetNbRetoursNonFactures();
+        TotalPanierBS := KPIManagement.GetTotalPanierBS();
         if NbArtMgStkSousMin > 0 then
             StyleSousMin := 'Unfavorable';
         if NbArtMgStkSansQteMin > 0 then
@@ -1021,6 +1029,9 @@ page 50127 "Commerce de Gros KPI"
         KPIManagement: Codeunit "KPI Management";
         NbArtMgStkSousMin: Integer;
         NbArtMgStkSansQteMin: Integer;
+        NbBLNonFactures: Integer;
+        NbRetoursNonFactures: Integer;
+        TotalPanierBS: Decimal;
         [InDataSet]
         StyleSousMin: Code[20];
         [InDataSet]

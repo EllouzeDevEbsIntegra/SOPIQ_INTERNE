@@ -324,8 +324,9 @@ page 50129 "Admin Comm. Gros KPI"
             cuegroup(PanierBS)
             {
                 Caption = 'Panier BS';
-                field("Total BS Ligne Inc. VAT"; "Total BS Ligne Inc. VAT")
+                field("Total BS Ligne Inc. VAT"; KPIManagement.GetTotalPanierBS())
                 {
+                    Caption = 'Total lignes BS TTC';
                     ApplicationArea = All;
                     trigger OnDrillDown()
                     var

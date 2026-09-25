@@ -474,12 +474,115 @@ codeunit 50025 "KPI Management"
         KPICache."Traites Escompte" := ComputeTraiteEnEscompte();
         KPICache."Traites Impayées" := ComputeTraiteImpayee();
 
+        KPICache."Nb BL Non Facturés" := ComputeNbBLNonFactures();
+        KPICache."Nb Retours Non Facturés" := ComputeNbRetoursNonFactures();
+        KPICache."Total Panier BS TTC" := ComputeTotalPanierBS();
+
         KPICache.Modify(true);
+    end;
+
+    // Nombre de bons de livraison, hors bons de sortie, comportant au moins une ligne
+    // article non facturee.
+    //
+    // On part des en-tetes, pas des lignes : "BS" est un vrai champ sur l'en-tete, donc
+    // filtrable, alors que sur la ligne c'est un champ calcule. L'ancien code faisait
+    // l'inverse, il lisait toutes les lignes non facturees puis interrogeait l'en-tete
+    // de chacune. Ici, un en-tete coute une recherche sur la cle primaire des lignes.
+    local procedure ComputeNbBLNonFactures(): Integer
+    var
+        SalesShipmentHeader: Record "Sales Shipment Header";
+        SalesShipmentLine: Record "Sales Shipment Line";
+        Nombre: Integer;
+    begin
+        SalesShipmentHeader.Reset();
+        SalesShipmentHeader.SetRange(BS, false);
+        if SalesShipmentHeader.FindSet() then
+            repeat
+                SalesShipmentLine.Reset();
+                SalesShipmentLine.SetRange("Document No.", SalesShipmentHeader."No.");
+                SalesShipmentLine.SetRange(Type, SalesShipmentLine.Type::Item);
+                SalesShipmentLine.SetRange("Quantity Invoiced", 0);
+                if not SalesShipmentLine.IsEmpty() then
+                    Nombre += 1;
+            until SalesShipmentHeader.Next() = 0;
+
+        exit(Nombre);
+    end;
+
+    // Meme principe pour les receptions retour. L'ancien code ne filtrait pas sur BS ici,
+    // le comportement est donc conserve : toutes les receptions sont comptees.
+    local procedure ComputeNbRetoursNonFactures(): Integer
+    var
+        ReturnReceiptHeader: Record "Return Receipt Header";
+        ReturnReceiptLine: Record "Return Receipt Line";
+        Nombre: Integer;
+    begin
+        ReturnReceiptHeader.Reset();
+        if ReturnReceiptHeader.FindSet() then
+            repeat
+                ReturnReceiptLine.Reset();
+                ReturnReceiptLine.SetRange("Document No.", ReturnReceiptHeader."No.");
+                ReturnReceiptLine.SetRange(Type, ReturnReceiptLine.Type::Item);
+                ReturnReceiptLine.SetRange("Quantity Invoiced", 0);
+                if not ReturnReceiptLine.IsEmpty() then
+                    Nombre += 1;
+            until ReturnReceiptHeader.Next() = 0;
+
+        exit(Nombre);
+    end;
+
+    // Montant TTC des lignes de bons de sortie, le "panier BS a facturer".
+    local procedure ComputeTotalPanierBS(): Decimal
+    var
+        SalesShipmentHeader: Record "Sales Shipment Header";
+        SalesShipmentLine: Record "Sales Shipment Line";
+        Total: Decimal;
+    begin
+        SalesShipmentHeader.Reset();
+        SalesShipmentHeader.SetRange(BS, true);
+        if SalesShipmentHeader.FindSet() then
+            repeat
+                SalesShipmentLine.Reset();
+                SalesShipmentLine.SetRange("Document No.", SalesShipmentHeader."No.");
+                if SalesShipmentLine.FindSet() then
+                    repeat
+                        Total += SalesShipmentLine."Line Amount";
+                    until SalesShipmentLine.Next() = 0;
+            until SalesShipmentHeader.Next() = 0;
+
+        exit(Total);
     end;
 
     // =============================================================
     // 4. LECTURE RAPIDE
     // =============================================================
+    procedure GetNbBLNonFactures(): Integer
+    var
+        KPICache: Record "KPI Cache";
+    begin
+        if GetLatestCache(KPICache) then
+            exit(KPICache."Nb BL Non Facturés");
+        exit(0);
+    end;
+
+    procedure GetNbRetoursNonFactures(): Integer
+    var
+        KPICache: Record "KPI Cache";
+    begin
+        if GetLatestCache(KPICache) then
+            exit(KPICache."Nb Retours Non Facturés");
+        exit(0);
+    end;
+
+    procedure GetTotalPanierBS(): Decimal
+    var
+        KPICache: Record "KPI Cache";
+    begin
+        if GetLatestCache(KPICache) then
+            exit(KPICache."Total Panier BS TTC");
+        exit(0);
+    end;
+
     procedure GetTotalFacturesNonReglees(): Decimal
     var
         KPICache: Record "KPI Cache";

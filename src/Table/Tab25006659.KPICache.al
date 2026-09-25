@@ -135,6 +135,26 @@ table 25006659 "KPI Cache" //25006600       25006659       TableData
             DecimalPlaces = 0 : 2;
         }
 
+        // === DOCUMENTS VALIDÉS NON FACTURÉS ET PANIER BS ===
+        // Ces trois indicateurs alimentent les tuiles du responsable dépôt. Ils étaient
+        // calculés à l'ouverture de la page, en parcourant toutes les lignes d'expédition
+        // pour ne garder que celles dont l'en-tête porte le drapeau BS : un champ calculé,
+        // donc non indexable, soit 7,5 millions de pages lues et près de neuf secondes
+        // par tuile. Le tableau de bord mettait une minute à s'ouvrir.
+        field(60; "Nb BL Non Facturés"; Integer)
+        {
+            Caption = 'Nb BL non facturés';
+        }
+        field(61; "Nb Retours Non Facturés"; Integer)
+        {
+            Caption = 'Nb retours non facturés';
+        }
+        field(62; "Total Panier BS TTC"; Decimal)
+        {
+            Caption = 'Total lignes BS TTC';
+            DecimalPlaces = 0 : 2;
+        }
+
         // === MÉTA-DONNÉES ===
         field(100; "Last Calculated"; DateTime)
         {
