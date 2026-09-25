@@ -12,6 +12,20 @@ page 50129 "Admin Comm. Gros KPI"
             cuegroup(ADMIN)
             {
                 Caption = 'Notification Admin';
+
+                // Visible uniquement quand les indicateurs affiches ne sont pas ceux
+                // du jour : la legende porte alors la date du calcul reellement
+                // utilise, et la valeur le nombre de jours de retard.
+                // CaptionClass n'etant supporte ni sur une page ni sur un cuegroup,
+                // c'est le seul emplacement ou la date peut etre dynamique.
+                field(FraicheurKPI; JoursRetardCache)
+                {
+                    CaptionClass = '3,' + FraicheurCache;
+                    ApplicationArea = All;
+                    Visible = CachePerime;
+                    StyleExpr = 'Unfavorable';
+                    ToolTip = 'Nombre de jours de retard des indicateurs affichés. Le calcul n''a pas encore été effectué aujourd''hui.';
+                }
                 field("Unit price modified 2"; rec."Sales Line PU Modif")
                 {
                     Caption = 'Prix vente modifié';
@@ -518,7 +532,15 @@ page 50129 "Admin Comm. Gros KPI"
     trigger OnAfterGetRecord()
     var
         DocExchServiceSetup: Record "Doc. Exch. Service Setup";
+        DateCache: Date;
     begin
+        FraicheurCache := KPIManagement.GetCacheFreshnessSuffix();
+        CachePerime := FraicheurCache <> '';
+        JoursRetardCache := 0;
+        DateCache := KPIManagement.GetCacheDate();
+        if CachePerime and (DateCache <> 0D) then
+            JoursRetardCache := Today - DateCache;
+
         ShowDocumentsPendingDodExchService := false;
         if DocExchServiceSetup.Get then
             ShowDocumentsPendingDodExchService := DocExchServiceSetup.Enabled;
@@ -612,6 +634,14 @@ page 50129 "Admin Comm. Gros KPI"
     // === VARIABLES GLOBALES (à garder) ===
     var
         KPIManagement: Codeunit "KPI Management";
+        // fraicheur des indicateurs : suffixe vide et tuile masquee quand le
+        // cache est celui du jour
+        [InDataSet]
+        FraicheurCache: Text;
+        [InDataSet]
+        CachePerime: Boolean;
+        [InDataSet]
+        JoursRetardCache: Integer;
         Vente4, achat : Decimal;
         StatPurchaseCA: Boolean;
         StartingDate2, debutMois, FinMois : Date;

@@ -7,6 +7,9 @@ codeunit 50025 "KPI Management"
     // =============================================================
     // 1. OBTENIR OU CRÉER LE CACHE DU JOUR
     // =============================================================
+    // Reserve au calcul (UpdateAllKPICache) : cree l'enregistrement du jour s'il
+    // n'existe pas, puisqu'on s'apprete a le remplir.
+    // NE PAS appeler depuis une fonction de lecture : voir GetLatestCache.
     local procedure GetOrCreateTodayCache(var KPICache: Record "KPI Cache"): Boolean
     var
         TodayDate: Date;
@@ -22,6 +25,60 @@ codeunit 50025 "KPI Management"
         KPICache."Date" := TodayDate;
         KPICache.Insert(true);
         exit(true);
+    end;
+
+    // Lecture seule : ne cree jamais d'enregistrement.
+    // Renvoie le cache du jour s'il existe, sinon le plus recent disponible.
+    //
+    // C'est ce qui evite les zeros du tableau de bord : l'ancien code appelait
+    // GetOrCreateTodayCache depuis les fonctions de lecture, donc le premier
+    // utilisateur a ouvrir la page un jour ou le calcul n'avait pas tourne
+    // creait un enregistrement vide, et tout le monde voyait 0 partout jusqu'au
+    // passage suivant du job. Le piege etait double : le trigger OnInsert de la
+    // table renseigne "Last Calculated", si bien que l'enregistrement vide
+    // portait une date de calcul d'apparence fraiche.
+    local procedure GetLatestCache(var KPICache: Record "KPI Cache"): Boolean
+    begin
+        KPICache.Reset();
+        KPICache.SetCurrentKey("Date");
+        KPICache.SetRange("Date", Today);
+        if KPICache.FindFirst() then
+            exit(true);
+
+        KPICache.SetRange("Date");
+        KPICache.SetFilter("Date", '<%1', Today);
+        exit(KPICache.FindLast());
+    end;
+
+    // Legende affichee sur le tableau de bord quand les indicateurs ne sont pas
+    // ceux du jour. Chaine vide quand le cache est a jour : l'affichage est alors
+    // strictement inchange.
+    procedure GetCacheFreshnessSuffix(): Text
+    var
+        KPICache: Record "KPI Cache";
+        // La legende d'une tuile est courte : BC tronque au-dela d'une quinzaine de
+        // caracteres. On s'en tient donc au jour et au mois ; le nombre de jours de
+        // retard est porte par la valeur de la tuile.
+        DonneesDuLbl: Label 'Données du %1', Comment = '%1 = jour/mois du dernier calcul';
+        AucunCalculLbl: Label 'Aucun calcul';
+    begin
+        if not GetLatestCache(KPICache) then
+            exit(AucunCalculLbl);
+
+        if KPICache."Date" = Today then
+            exit('');
+
+        exit(StrSubstNo(DonneesDuLbl, Format(KPICache."Date", 0, '<Day,2>/<Month,2>')));
+    end;
+
+    // Date du cache reellement utilise pour l'affichage, 0D si aucun cache.
+    procedure GetCacheDate(): Date
+    var
+        KPICache: Record "KPI Cache";
+    begin
+        if GetLatestCache(KPICache) then
+            exit(KPICache."Date");
+        exit(0D);
     end;
 
     // =============================================================
@@ -427,7 +484,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Total Factures Non Réglées");
         exit(0);
     end;
@@ -436,7 +493,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Nb Factures Non Réglées");
         exit(0);
     end;
@@ -445,7 +502,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Total Avoirs Non Réglés");
         exit(0);
     end;
@@ -454,7 +511,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Nb Avoirs Non Réglés");
         exit(0);
     end;
@@ -463,7 +520,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Total Fact RC Non Réglées");
         exit(0);
     end;
@@ -472,7 +529,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Total Avoir RC Non Réglés");
         exit(0);
     end;
@@ -481,7 +538,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Total BL Non Réglés RC");
         exit(0);
     end;
@@ -490,7 +547,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Total BS Non Réglés RC");
         exit(0);
     end;
@@ -499,7 +556,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Total Retour BL RC");
         exit(0);
     end;
@@ -508,7 +565,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Total Retour BS RC");
         exit(0);
     end;
@@ -517,7 +574,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Ventes du Jour");
         exit(0);
     end;
@@ -526,7 +583,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Retours du Jour");
         exit(0);
     end;
@@ -535,7 +592,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Valeur Litige +");
         exit(0);
     end;
@@ -544,7 +601,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Valeur Litige -");
         exit(0);
     end;
@@ -553,7 +610,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Valeur Endommagé");
         exit(0);
     end;
@@ -562,7 +619,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Ajustement Positif");
         exit(0);
     end;
@@ -571,7 +628,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Ajustement Négatif");
         exit(0);
     end;
@@ -580,7 +637,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Chèques en Coffre");
         exit(0);
     end;
@@ -589,7 +646,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Chèques Impayés");
         exit(0);
     end;
@@ -598,7 +655,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Traites en Coffre");
         exit(0);
     end;
@@ -607,7 +664,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Traites Escompte");
         exit(0);
     end;
@@ -616,7 +673,7 @@ codeunit 50025 "KPI Management"
     var
         KPICache: Record "KPI Cache";
     begin
-        if GetOrCreateTodayCache(KPICache) then
+        if GetLatestCache(KPICache) then
             exit(KPICache."Traites Impayées");
         exit(0);
     end;
