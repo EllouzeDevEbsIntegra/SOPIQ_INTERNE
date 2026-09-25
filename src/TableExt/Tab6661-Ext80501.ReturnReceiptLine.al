@@ -58,7 +58,9 @@ tableextension 80501 "Return Receipt Line" extends "Return Receipt Line" //6661
 
     keys
     {
-        // Add changes to keys here
+        // Le cue "Sales Return Not Invoiced" filtre sur Type et "Quantity Invoiced",
+        // deux champs de la table de base : une cle de tableextension ne peut contenir
+        // que des champs ajoutes par l'extension, l'index doit donc etre cree cote SQL.
     }
 
     fieldgroups

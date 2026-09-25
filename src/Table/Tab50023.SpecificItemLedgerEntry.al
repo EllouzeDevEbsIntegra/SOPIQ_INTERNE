@@ -305,7 +305,31 @@ table 50023 "Specific Item Ledger Entry"
 
     keys
     {
+        // Cette table recevait une ligne par ecriture article SANS aucune cle :
+        // en SQL c'etait un tas (heap), donc chaque acces balayait la table entiere.
+        // Les valeurs renvoyees sont inchangees, seuls les temps d'acces changent.
 
+        // Cle primaire deja existante en base : quand le bloc keys etait vide, BC en a
+        // genere une implicitement, nommee d'apres le premier champ. Il faut reprendre
+        // ce nom a l'identique, sinon la publication est refusee :
+        //   "Unsupported key change. Key:Entry No.; Change:PrimaryKey"
+        // On ne la redeclare donc que pour pouvoir ajouter les cles secondaires en dessous.
+        key("Entry No."; "Entry No.")
+        {
+        }
+
+        // alimente le FlowField Item."NbJourRupture", affiche sur la liste articles :
+        // sum(Quantity where "Item No.", "Entry Type" = Rupture)
+        key(ItemEntryType; "Item No.", "Entry Type")
+        {
+            SumIndexFields = Quantity;
+        }
+
+        // drill-down "historique article" (page 50110, ouverte depuis 12 endroits) :
+        // filtre sur "Item No." + plage de "Posting Date"
+        key(ItemPostingDate; "Item No.", "Posting Date")
+        {
+        }
     }
 
 }

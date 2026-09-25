@@ -50,7 +50,10 @@ tableextension 80422 "Sales Shipment Line" extends "Sales Shipment Line" //111
 
     keys
     {
-        // Add changes to keys here
+        // Le cue "Sales Ship. Not Invoiced" filtre sur Type, "Quantity Invoiced" et BS.
+        // Les deux premiers sont des champs de la table de base et BS appartient a une
+        // autre extension : aucune cle AL n'est possible ici, l'index doit etre cree
+        // cote SQL.
     }
 
     fieldgroups
