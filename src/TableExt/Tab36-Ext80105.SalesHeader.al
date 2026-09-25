@@ -124,10 +124,40 @@ tableextension 80105 "Sales Header" extends "Sales Header" //36
         if (rec."Document Type" = "Document Type"::"Credit Memo") OR (rec."Document Type" = "Document Type"::"Return Order") then
             // Message('%1', "Document Type");
         ignoreStamp(rec);
-        "Shipping Agent Code" := "Shipping Agent Code SI";
-        //"Location Code" := "Location Code SI";
-        Validate("Shipping Agent Code");
-        //Validate("Location Code");
+        ReporterChampsSI();
+    end;
+
+    trigger OnModify()
+    begin
+        // Reapro peut envoyer le depot a la creation comme dans une mise a jour.
+        // On ne recopie que si le champ SI vient de changer : une saisie faite dans
+        // l'interface sur le champ standard n'est donc jamais ecrasee.
+        if "Location Code SI" <> xRec."Location Code SI" then
+            if "Location Code SI" <> '' then
+                Validate("Location Code", "Location Code SI");
+
+        if "Shipping Agent Code SI" <> xRec."Shipping Agent Code SI" then
+            if "Shipping Agent Code SI" <> '' then
+                Validate("Shipping Agent Code", "Shipping Agent Code SI");
+    end;
+
+    // Les champs "... SI" sont ceux exposes par les API (page 25006816 salesOrdersEBS).
+    // Ils portent le meme numero dans "Sales Order Entity Buffer" et dans "Sales Header",
+    // ils arrivent donc jusqu'ici, mais le standard ne renseigne pas pour autant les
+    // champs standards, que la validation d'expedition controle ("Location Code must
+    // have a value in Sales Line").
+    //
+    // La recopie est conditionnee a une valeur non vide : sans cela, toute commande
+    // creee hors API, ou ces champs sont vides, verrait son depot et son transporteur
+    // effaces. C'est ce defaut qui avait conduit a commenter la recopie du depot en
+    // juillet 2025, en laissant celle du transporteur active.
+    local procedure ReporterChampsSI()
+    begin
+        if "Location Code SI" <> '' then
+            Validate("Location Code", "Location Code SI");
+
+        if "Shipping Agent Code SI" <> '' then
+            Validate("Shipping Agent Code", "Shipping Agent Code SI");
     end;
 
     // Function for BS Return
