@@ -595,4 +595,64 @@ rabattre sur le dernier cache disponible plutôt que d'en créer un vide, et aff
 de fraîcheur. ⚠️ Ce correctif **change le comportement** (0 devient « valeur de la veille ») :
 ce n'est pas une optimisation neutre mais une correction de bug.
 
+
+### Chantier 4 — 2026-09-26 · « Tuiles articles du tableau de bord, et interface Reapro »
+
+#### Partie 1 — Tableau de bord du responsable dépôt (SOPIQ INTERNE v1.0.7.0)
+
+Mesure d'entrée sur `SOPIQ_DEV`, deux ouvertures de la page, par écart de
+`sys.dm_exec_query_stats` avant et après :
+
+| Tuile | Coût mesuré | Décision |
+|---|---|---|
+| Article avec +Emplacement | 28,9 s | cache KPI, calcul réécrit |
+| En Stock & Sans prix vente | 26,0 s | cache KPI, calcul inchangé |
+| Réception et Litige + | 5,7 s en 27 304 requêtes | Litige + au cache, Réception en temps réel par requête agrégée |
+
+Le champ calculé `"Item Bin"` de `Tab9053-Ext80101` empilait **trois niveaux** de champs
+calculés : il filtre sur `"Count Content"`, qui filtre lui-même sur `"Quantity"`, somme des
+mouvements de stock. SQL ne peut rien indexer là-dedans. Remplacé par la requête
+`Que50013 "Stock Emplacement Agrege"`, un regroupement des mouvements par emplacement que SQL
+résout sur la vue indexée `VSIFT$Key5` avec `NOEXPAND` : **0,20 s par appel**.
+
+Contrôle : la page *KPI vente Détails* (`Pag50124`) n'a pas été modifiée et sert de témoin.
+Elle affiche les mêmes nombres que le tableau de bord — 64, 0 et 60 sur DEV.
+
+**Ouverture du tableau de bord : 50 s → 25 s.** Le reste vient d'ailleurs, voir partie 2.
+
+Reste identifié, non traité : quatre requêtes de comptage sur `Sales Header` avec des
+`OUTER APPLY` sur `Sales Line`, environ 6 s par ouverture, même maladie sur une autre table.
+
+#### Partie 2 — L'interface Reapro, hors périmètre AL
+
+Découverte en mesurant le tableau de bord : les vues `ELVA_*` de la base `Amiral_LS` lisent
+**directement les tables de production** `SOPIQ_PROD_BC16`, et DEV comme PROD sont hébergées
+sur la même instance SQL `SRV-SQL`. Plus de cinq heures de travail SQL cumulé leur étaient
+imputables.
+
+| Correction | Avant | Après | Où |
+|---|---|---|---|
+| Index `IDX_PERF_ItemExt_RefOrigine` sur `[Reference Origine Lié]` | 14 527 pages, 3 analyses complètes | 3 pages, 1 recherche | PROD, fait |
+| Réécriture de la vue `ELVA_Item` | 12 M pages, 22,3 s UC, 34 à 81 s | 1,94 M pages, 6,1 s UC, **4,55 s** | PROD, fait |
+
+La réécriture remplace trois `OUTER APPLY` — une somme par article, 179 847 fois — par trois
+jointures externes sur des sommes groupées. Identité prouvée par `EXCEPT` dans les deux sens,
+sur les vingt-neuf colonnes, `NULL` compris, d'abord sur DEV puis **sur les données de
+production après bascule**. Retour arrière conservé dans
+`docs/sql/vue-elva-item-reecriture-prod.sql`.
+
+Un index couvrant sur `Reservation Entry` a été essayé sur DEV en cours de diagnostic. Il
+divisait ses lectures par dix, mais la réécriture de la vue le rend inutile : il n'a jamais
+été posé en production.
+
+**Reste à traiter, et qui ne dépend pas de nous** : l'application appelle
+`count(*) FROM ELVA_ITEM WHERE No_=@P0` **878 537 fois**, article par article. Chaque appel
+est rapide, c'est le nombre qui pèse : 2 239 s cumulées. Seul le développeur Reapro peut
+regrouper ces appels. À signaler.
+
+**Reste à traiter, et qui dépend de nous** : le filtre le plus utilisé de la vue,
+`WHERE [Vendor Item No_] IN (...)`, porte sur une expression `CASE … REPLACE(…)` et non sur
+une colonne. Aucun index ne peut le servir. Deux voies possibles, à étudier : exposer la
+colonne brute à côté de l'expression, ou une colonne calculée persistante.
+
 <!-- Compléter au fil de l'eau. -->
