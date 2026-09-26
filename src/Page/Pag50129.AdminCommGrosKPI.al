@@ -341,7 +341,9 @@ page 50129 "Admin Comm. Gros KPI"
             cuegroup(Article)
             {
                 Caption = 'Articles';
-                field("Litige +"; FilterLitige)
+                // Lue dans le cache, comme les autres tuiles de cette page : son filtre
+                // portait sur le champ calcule Quantity de "Bin Content", non indexable.
+                field("Litige +"; KPIManagement.GetNbLitigePlus())
                 {
                     ApplicationArea = All;
                     trigger OnDrillDown()
@@ -364,7 +366,7 @@ page 50129 "Admin Comm. Gros KPI"
                     DrillDown = true;
                 }
 
-                field(ItemHasStockWithoutUnitPrice; ItemHasStockWithoutUnitPrice)
+                field(ItemHasStockWithoutUnitPrice; KPIManagement.GetNbArtStockSansPrix())
                 {
                     Caption = 'En Stock & Sans prix vente';
                     ApplicationArea = All;
@@ -708,15 +710,4 @@ page 50129 "Admin Comm. Gros KPI"
         B2BStatusArray[7] := SalesOrders.Count;
     end;
 
-    local procedure FilterLitige(): Integer
-    var
-        BinContent: Record "Bin Content";
-    begin
-        InvSetup.Get();
-        BinContent.Reset();
-        BinContent.SetRange("Location Code", InvSetup."Magasin litige");
-        BinContent.SetRange("Bin Code", InvSetup."Emplacement Litige +");
-        BinContent.Setfilter(Quantity, '>0');
-        exit(BinContent.Count);
-    end;
 }

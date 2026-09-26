@@ -314,7 +314,7 @@ page 50127 "Commerce de Gros KPI"
                         Page.Run(Page::"Item Bin Contents", BinContent);
                     end;
                 }
-                field("Litige +"; FilterLitige)
+                field("Litige +"; NbLitigePlus)
                 {
                     ApplicationArea = All;
                     trigger OnDrillDown()
@@ -330,12 +330,23 @@ page 50127 "Commerce de Gros KPI"
                     end;
                 }
 
-                field("Item Bin Count"; rec."Item Bin")
+                field("Item Bin Count"; NbArticleMultiEmplacement)
                 {
                     Caption = 'Article avec +Emplacement';
                     ApplicationArea = All;
-                    DrillDownPageId = "Item Bin Contents";
-                    DrillDown = true;
+                    trigger OnDrillDown()
+                    var
+                        BinContent: Record "Bin Content";
+                    begin
+                        // Le detail reprend les filtres de l'ancien champ calcule. Il reste
+                        // lent, mais il n'est demande que lorsque l'utilisateur clique.
+                        BinContent.Reset();
+                        BinContent.SetFilter("Location Code", '<>%1', 'LITIGE');
+                        BinContent.SetFilter("Bin Code", '<>%1', 'RECEPTION');
+                        BinContent.SetFilter("Count Content", '>1');
+                        BinContent.SetFilter("Quantity (Base)", '>0');
+                        Page.Run(Page::"Item Bin Contents", BinContent);
+                    end;
                 }
 
                 field("Neg Ajust Year"; "Neg Ajust Year")
@@ -346,7 +357,7 @@ page 50127 "Commerce de Gros KPI"
                     DrillDown = true;
                 }
 
-                field(ItemHasStockWithoutUnitPrice; ItemHasStockWithoutUnitPrice)
+                field(ItemHasStockWithoutUnitPrice; NbArtStockSansPrix)
                 {
                     Caption = 'En Stock & Sans prix vente';
                     ApplicationArea = All;
@@ -784,6 +795,14 @@ page 50127 "Commerce de Gros KPI"
         NbBLNonFactures := KPIManagement.GetNbBLNonFactures();
         NbRetoursNonFactures := KPIManagement.GetNbRetoursNonFactures();
         TotalPanierBS := KPIManagement.GetTotalPanierBS();
+
+        // Trois tuiles articles lues dans le cache. Leurs filtres portaient sur des champs
+        // calcules, non indexables : 28,9 s pour "Article avec +Emplacement", 26,0 s pour
+        // "En Stock & Sans prix vente", mesure du 26/09/2026. Seule la tuile "Réception"
+        // reste calculee en temps reel, par une requete agregee.
+        NbLitigePlus := KPIManagement.GetNbLitigePlus();
+        NbArticleMultiEmplacement := KPIManagement.GetNbArticleMultiEmplacement();
+        NbArtStockSansPrix := KPIManagement.GetNbArtStockSansPrix();
         if NbArtMgStkSousMin > 0 then
             StyleSousMin := 'Unfavorable';
         if NbArtMgStkSansQteMin > 0 then
@@ -821,29 +840,14 @@ page 50127 "Commerce de Gros KPI"
 
     end;
 
+    // Tuile "Réception" : elle reste en temps reel, mais passe par la requete agregee.
+    // L'ancien code filtrait sur Quantity, un champ calcule de "Bin Content" : le serveur
+    // lisait chaque ligne d'emplacement puis lancait une somme par ligne, soit pres de
+    // 14 000 requetes par ouverture de page.
     local procedure FilterCentralReception(): Integer
-    var
-        BinContent: Record "Bin Content";
     begin
         InvSetup.Get();
-        BinContent.Reset();
-        BinContent.SetRange("Location Code", InvSetup."Magasin Central");
-        BinContent.SetRange("Bin Code", InvSetup."Emplacement Reception");
-        BinContent.Setfilter(Quantity, '>0');
-        exit(BinContent.Count);
-    end;
-
-    local procedure FilterLitige(): Integer
-    var
-        BinContent: Record "Bin Content";
-    begin
-        InvSetup.Get();
-        BinContent.Reset();
-        BinContent.SetRange("Location Code", InvSetup."Magasin litige");
-        BinContent.SetRange("Bin Code", InvSetup."Emplacement Litige +");
-        BinContent.Setfilter(Quantity, '>0');
-        exit(BinContent.Count);
-
+        exit(KPIManagement.CompterArticlesEmplacement(InvSetup."Magasin Central", InvSetup."Emplacement Reception"));
     end;
 
     local procedure FilterPositiveAdj(): Decimal
@@ -1036,6 +1040,9 @@ page 50127 "Commerce de Gros KPI"
         NbBLNonFactures: Integer;
         NbRetoursNonFactures: Integer;
         TotalPanierBS: Decimal;
+        NbLitigePlus: Integer;
+        NbArticleMultiEmplacement: Integer;
+        NbArtStockSansPrix: Integer;
         [InDataSet]
         StyleSousMin: Code[20];
         [InDataSet]

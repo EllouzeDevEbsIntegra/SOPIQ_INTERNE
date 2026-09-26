@@ -482,7 +482,99 @@ codeunit 50025 "KPI Management"
         KPICache."Nb Retours Non Facturés" := ComputeNbRetoursNonFactures();
         KPICache."Total Panier BS TTC" := ComputeTotalPanierBS();
 
+        KPICache."Nb Litige Plus" := ComputeNbLitigePlus();
+        KPICache."Nb Article Multi Emplacement" := ComputeNbArticleMultiEmplacement();
+        KPICache."Nb Art Stock Sans Prix" := ComputeNbArtStockSansPrix();
+
         KPICache.Modify(true);
+    end;
+
+    // Nombre d'articles presents dans l'emplacement "Litige +".
+    local procedure ComputeNbLitigePlus(): Integer
+    var
+        InvSetup: Record "Inventory Setup";
+    begin
+        InvSetup.Get();
+        exit(CompterArticlesEmplacement(InvSetup."Magasin litige", InvSetup."Emplacement Litige +"));
+    end;
+
+    // Nombre de contenus d'emplacement appartenant a un article stocke dans plus d'un
+    // emplacement, hors magasin LITIGE et hors emplacement RECEPTION. C'est la tuile
+    // "Article avec +Emplacement", jusqu'ici le champ calcule "Item Bin" de la table des
+    // indicateurs de vente.
+    //
+    // Ce champ calcule etait le poste le plus lourd du tableau de bord : 28,9 secondes pour
+    // deux ouvertures de page le 26/09/2026. Sa formule filtre sur "Count Content", lui-meme
+    // un champ calcule qui filtre sur "Quantity", un troisieme champ calcule. Trois niveaux
+    // que SQL ne peut pas resoudre : le serveur finit par interroger les mouvements de stock
+    // article par article.
+    //
+    // Ici, une seule requete agregee donne le stock par emplacement. On compte ensuite, par
+    // article, ses emplacements avec du stock ; un article qui en a plusieurs apporte tous
+    // ses emplacements au total, ce qui reproduit exactement l'ancien nombre.
+    local procedure ComputeNbArticleMultiEmplacement(): Integer
+    var
+        StockEmplacement: Query "Stock Emplacement Agrege";
+        NbEmplacementsParArticle: Dictionary of [Code[20], Integer];
+        NoArticle: Code[20];
+        NbEmplacements: Integer;
+        Total: Integer;
+    begin
+        StockEmplacement.SetFilter(CodeMagasin, '<>%1', 'LITIGE');
+        StockEmplacement.SetFilter(CodeEmplacement, '<>%1', 'RECEPTION');
+        StockEmplacement.Open();
+        while StockEmplacement.Read() do
+            if StockEmplacement.Quantite > 0 then begin
+                NoArticle := StockEmplacement.NoArticle;
+                if NbEmplacementsParArticle.ContainsKey(NoArticle) then
+                    NbEmplacementsParArticle.Set(NoArticle, NbEmplacementsParArticle.Get(NoArticle) + 1)
+                else
+                    NbEmplacementsParArticle.Add(NoArticle, 1);
+            end;
+        StockEmplacement.Close();
+
+        foreach NoArticle in NbEmplacementsParArticle.Keys() do begin
+            NbEmplacements := NbEmplacementsParArticle.Get(NoArticle);
+            if NbEmplacements > 1 then
+                Total += NbEmplacements;
+        end;
+
+        exit(Total);
+    end;
+
+    // Articles en stock sans prix de vente. Reprend a l'identique la formule du champ
+    // calcule ItemHasStockWithoutUnitPrice de l'extension SOPICBC16A, que nous ne pouvons
+    // pas modifier. Le filtre porte sur l'inventaire, un champ calcule : 26 secondes pour
+    // deux ouvertures de page. Le calcul reste aussi lourd, mais il a lieu ici, dans le
+    // traitement de la file d'attente, et non plus a l'ouverture du tableau de bord.
+    local procedure ComputeNbArtStockSansPrix(): Integer
+    var
+        Item: Record Item;
+    begin
+        Item.Reset();
+        Item.SetRange(Type, Item.Type::Inventory);
+        Item.SetRange("Unit Price", 0);
+        Item.SetFilter("Location Filter", '<>%1&<>%2', 'IMPORT', 'LITIGE');
+        Item.SetFilter(Inventory, '<>0');
+        exit(Item.Count);
+    end;
+
+    // Nombre d'articles ayant du stock dans un emplacement donne, en une requete SQL.
+    // Publique : la tuile "Réception" du tableau de bord reste calculee en temps reel et
+    // passe par ici, au lieu de filtrer sur le champ calcule Quantity de "Bin Content".
+    procedure CompterArticlesEmplacement(FiltreMagasin: Code[10]; FiltreEmplacement: Code[20]): Integer
+    var
+        StockEmplacement: Query "Stock Emplacement Agrege";
+        Nombre: Integer;
+    begin
+        StockEmplacement.SetRange(CodeMagasin, FiltreMagasin);
+        StockEmplacement.SetRange(CodeEmplacement, FiltreEmplacement);
+        StockEmplacement.Open();
+        while StockEmplacement.Read() do
+            if StockEmplacement.Quantite > 0 then
+                Nombre += 1;
+        StockEmplacement.Close();
+        exit(Nombre);
     end;
 
     // Nombre de bons de livraison, hors bons de sortie, comportant au moins une ligne
@@ -584,6 +676,33 @@ codeunit 50025 "KPI Management"
     begin
         if GetLatestCache(KPICache) then
             exit(KPICache."Total Panier BS TTC");
+        exit(0);
+    end;
+
+    procedure GetNbLitigePlus(): Integer
+    var
+        KPICache: Record "KPI Cache";
+    begin
+        if GetLatestCache(KPICache) then
+            exit(KPICache."Nb Litige Plus");
+        exit(0);
+    end;
+
+    procedure GetNbArticleMultiEmplacement(): Integer
+    var
+        KPICache: Record "KPI Cache";
+    begin
+        if GetLatestCache(KPICache) then
+            exit(KPICache."Nb Article Multi Emplacement");
+        exit(0);
+    end;
+
+    procedure GetNbArtStockSansPrix(): Integer
+    var
+        KPICache: Record "KPI Cache";
+    begin
+        if GetLatestCache(KPICache) then
+            exit(KPICache."Nb Art Stock Sans Prix");
         exit(0);
     end;
 

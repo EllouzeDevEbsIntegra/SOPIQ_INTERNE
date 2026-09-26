@@ -155,6 +155,24 @@ table 25006659 "KPI Cache" //25006600       25006659       TableData
             DecimalPlaces = 0 : 2;
         }
 
+        // === TUILES ARTICLES DU TABLEAU DE BORD ===
+        // Mêmes raisons que ci-dessus : leur filtre porte sur un champ calculé, donc
+        // non indexable. Mesuré à l'ouverture du tableau de bord le 26/09/2026 :
+        // 28,9 s pour les articles multi-emplacement, 26,0 s pour le stock sans prix,
+        // 2 à 3 s pour le litige. La tuile Réception reste calculée en direct.
+        field(63; "Nb Litige Plus"; Integer)
+        {
+            Caption = 'Nb articles en litige +';
+        }
+        field(64; "Nb Article Multi Emplacement"; Integer)
+        {
+            Caption = 'Nb articles avec plusieurs emplacements';
+        }
+        field(65; "Nb Art Stock Sans Prix"; Integer)
+        {
+            Caption = 'Nb articles en stock sans prix de vente';
+        }
+
         // === MÉTA-DONNÉES ===
         field(100; "Last Calculated"; DateTime)
         {
