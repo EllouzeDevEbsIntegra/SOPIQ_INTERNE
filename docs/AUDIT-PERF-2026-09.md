@@ -618,7 +618,27 @@ résout sur la vue indexée `VSIFT$Key5` avec `NOEXPAND` : **0,20 s par appel**.
 Contrôle : la page *KPI vente Détails* (`Pag50124`) n'a pas été modifiée et sert de témoin.
 Elle affiche les mêmes nombres que le tableau de bord — 64, 0 et 60 sur DEV.
 
-**Ouverture du tableau de bord : 50 s → 25 s.** Le reste vient d'ailleurs, voir partie 2.
+**Ouverture du tableau de bord : 50 s → 25 s sur DEV.**
+
+#### Résultat en production — 2026-09-26, 17:13
+
+Version 1.0.7.0 publiée, cache recalculé, société SOPIQ PROD.
+
+**Ouverture du tableau de bord : 13 secondes.**
+
+Les quatre tuiles retouchées affichent exactement les valeurs relevées juste avant
+publication, quand elles étaient encore calculées en direct :
+
+| Tuile | Avant publication, calcul direct | Après, cache ou requête agrégée |
+|---|---|---|
+| Réception | 61 | 61 (temps réel) |
+| Litige + | 0 | 0 |
+| Article avec +Emplacement | 36 | 36 |
+| En Stock & Sans prix vente | 1 | 1 |
+
+Durée du job `Cod50026` en production : de 28-40 secondes à **3 minutes**. Hausse attendue et
+voulue : le traitement a repris à son compte ce que la page faisait à chaque ouverture, pour
+chaque utilisateur.
 
 Reste identifié, non traité : quatre requêtes de comptage sur `Sales Header` avec des
 `OUTER APPLY` sur `Sales Line`, environ 6 s par ouverture, même maladie sur une autre table.
