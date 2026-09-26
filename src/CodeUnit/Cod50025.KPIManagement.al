@@ -474,6 +474,10 @@ codeunit 50025 "KPI Management"
         KPICache."Traites Escompte" := ComputeTraiteEnEscompte();
         KPICache."Traites Impayées" := ComputeTraiteImpayee();
 
+        // Les drapeaux d'alerte des magasins de stockage sont poses ici, et non plus a
+        // l'ouverture du tableau de bord ou ils coutaient pres d'une minute.
+        UpdateAlertesMgStk();
+
         KPICache."Nb BL Non Facturés" := ComputeNbBLNonFactures();
         KPICache."Nb Retours Non Facturés" := ComputeNbRetoursNonFactures();
         KPICache."Total Panier BS TTC" := ComputeTotalPanierBS();

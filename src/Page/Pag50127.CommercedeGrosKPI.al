@@ -770,7 +770,11 @@ page 50127 "Commerce de Gros KPI"
         CalcFields("Month Sum Purchase");
         achat := "Month Sum Purchase";
 
-        KPIManagement.UpdateAlertesMgStk();
+        // UpdateAlertesMgStk n'est plus appele ici : il parcourait tous les articles en
+        // stock en calculant l'inventaire par magasin, et ecrivait dans les fiches, a
+        // chaque ouverture de la page. A lui seul il expliquait la minute d'attente.
+        // Il tourne desormais dans le traitement de la file d'attente, avec le cache KPI.
+        // La page ne fait plus que lire les drapeaux deja poses sur les articles.
         NbArtMgStkSousMin := KPIManagement.GetNbArtMgStkSousMin();
         NbArtMgStkSansQteMin := KPIManagement.GetNbArtMgStkSansQteMin();
 

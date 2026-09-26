@@ -623,7 +623,8 @@ page 50129 "Admin Comm. Gros KPI"
         CalcFields("Month Sum Purchase");
         achat := "Month Sum Purchase";
 
-        KPIManagement.UpdateAlertesMgStk();
+        // Voir la page 50127 : UpdateAlertesMgStk est passe dans le traitement de la
+        // file d'attente, il ne doit plus tourner a l'ouverture d'une page.
         NbArtMgStkSousMin := KPIManagement.GetNbArtMgStkSousMin();
         NbArtMgStkSansQteMin := KPIManagement.GetNbArtMgStkSansQteMin();
         if NbArtMgStkSousMin > 0 then
