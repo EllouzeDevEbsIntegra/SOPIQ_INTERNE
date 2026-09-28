@@ -62,6 +62,18 @@ table 70015 "Recu Caisse Doc A Payer"
         {
             Caption = 'N° ligne impayé';
         }
+        // Le nom du membre d'enumeration, pas son libelle traduit : c'est ce que l'appel de
+        // creation attend en retour. Sans lui, l'appelant devrait tenir une table de
+        // correspondance entre "Bon de Livraison" et BL, qui finirait par diverger.
+        field(110; "Type Nom"; Text[30])
+        {
+            Caption = 'Nom du type';
+        }
+        // Facture et avoir d'achat : documents fournisseur, sans lien avec un client.
+        field(120; "Est Fournisseur"; Boolean)
+        {
+            Caption = 'Document fournisseur';
+        }
     }
 
     keys

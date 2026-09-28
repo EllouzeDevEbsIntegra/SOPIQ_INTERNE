@@ -48,6 +48,8 @@ page 25006940 "Recu Caisse Docs A Payer API"
                 field(entryNo; Rec."Entry No.") { Caption = 'N° séquentiel'; }
                 field(customerNo; Rec."Customer No") { Caption = 'Client'; }
                 field(type; Rec.type) { Caption = 'Type document'; }
+                field(typeCode; Rec."Type Nom") { Caption = 'Nom du type'; }
+                field(estFournisseur; Rec."Est Fournisseur") { Caption = 'Document fournisseur'; }
                 field(documentNo; Rec."Document No") { Caption = 'N° document'; }
                 field(dateDocument; Rec."Date Document") { Caption = 'Date document'; }
                 field(libelle; Rec.Libelle) { Caption = 'Libellé'; }
@@ -63,27 +65,40 @@ page 25006940 "Recu Caisse Docs A Payer API"
     var
         NoLigne: Integer;
 
+    // Deux usages, deux filtres, jamais les deux ensemble :
+    //   ?$filter=customerNo eq 'C00123'   les documents du client
+    //   ?$filter=estFournisseur eq true   les factures et avoirs d'achat, qui n'ont pas de
+    //                                     client : la fiche recu les propose tels quels,
+    //                                     toutes pieces non soldees confondues.
     trigger OnOpenPage()
     var
         ClientNo: Code[20];
+        FiltreFournisseur: Text;
     begin
         ClientNo := CopyStr(Rec.GetFilter("Customer No"), 1, MaxStrLen(ClientNo));
-        if ClientNo = '' then
-            exit;
+        FiltreFournisseur := Rec.GetFilter("Est Fournisseur");
 
         Rec.Reset();
         Rec.DeleteAll();
         NoLigne := 0;
 
-        ChargerBS(ClientNo);
-        ChargerFactures(ClientNo);
-        ChargerAvoirs(ClientNo);
-        ChargerBL(ClientNo);
-        ChargerRetours(ClientNo, true);
-        ChargerRetours(ClientNo, false);
-        ChargerImpayes(ClientNo);
+        if ClientNo <> '' then begin
+            ChargerBS(ClientNo);
+            ChargerFactures(ClientNo);
+            ChargerAvoirs(ClientNo);
+            ChargerBL(ClientNo);
+            ChargerRetours(ClientNo, true);
+            ChargerRetours(ClientNo, false);
+            ChargerImpayes(ClientNo);
+            Rec.SetRange("Customer No", ClientNo);
+            exit;
+        end;
 
-        Rec.SetRange("Customer No", ClientNo);
+        if (FiltreFournisseur = '1') or (LowerCase(FiltreFournisseur) = 'true') or (LowerCase(FiltreFournisseur) = 'yes') then begin
+            ChargerFacturesAchat();
+            ChargerAvoirsAchat();
+            Rec.SetRange("Est Fournisseur", true);
+        end;
     end;
 
     local procedure ChargerBS(ClientNo: Code[20])
@@ -214,6 +229,57 @@ page 25006940 "Recu Caisse Docs A Payer API"
         until RecuPaiement.Next() = 0;
     end;
 
+    // Factures d'achat reglees au comptoir. La fiche recu ne les filtre par aucun tiers :
+    // elle propose toutes les pieces non soldees, le caissier choisit son numero. On fait
+    // pareil, sinon la liste de l'API et celle de la fiche ne diraient pas la meme chose.
+    //
+    // Sens : un decaissement. La fiche enregistre un montant de reglement negatif, et le
+    // document est solde quand son TTC vaut l'oppose de ce qui est sorti de la caisse.
+    local procedure ChargerFacturesAchat()
+    var
+        PurchInvoice: Record "Purch. Inv. Header";
+        TotalTTC: Decimal;
+    begin
+        PurchInvoice.Reset();
+        PurchInvoice.SetRange(solde, false);
+        if not PurchInvoice.FindSet() then
+            exit;
+
+        repeat
+            PurchInvoice.CalcFields("Amount Including VAT", "Montant reçu caisse");
+            TotalTTC := PurchInvoice."Amount Including VAT" + PurchInvoice."STStamp Fiscal Amount";
+            AjouterFournisseur("Document Caisse Type"::FA, PurchInvoice."No.", PurchInvoice."Posting Date",
+                               PurchInvoice."Buy-from Vendor Name", TotalTTC,
+                               -PurchInvoice."Montant reçu caisse",
+                               TotalTTC + PurchInvoice."Montant reçu caisse", -1);
+        until PurchInvoice.Next() = 0;
+    end;
+
+    local procedure ChargerAvoirsAchat()
+    var
+        PurchCrMemo: Record "Purch. Cr. Memo Hdr.";
+    begin
+        PurchCrMemo.Reset();
+        PurchCrMemo.SetRange(solde, false);
+        if not PurchCrMemo.FindSet() then
+            exit;
+
+        repeat
+            PurchCrMemo.CalcFields("Amount Including VAT", "Montant reçu caisse");
+            AjouterFournisseur("Document Caisse Type"::AVA, PurchCrMemo."No.", PurchCrMemo."Posting Date",
+                               PurchCrMemo."Buy-from Vendor Name", PurchCrMemo."Amount Including VAT",
+                               PurchCrMemo."Montant reçu caisse",
+                               PurchCrMemo."Amount Including VAT" - PurchCrMemo."Montant reçu caisse", 1);
+        until PurchCrMemo.Next() = 0;
+    end;
+
+    local procedure AjouterFournisseur(TypeDocument: Enum "Document Caisse Type"; DocumentNo: Code[20]; DateDocument: Date; Libelle: Text; TotalTTC: Decimal; DejaRegle: Decimal; RestePayer: Decimal; Signe: Integer)
+    begin
+        Ajouter('', TypeDocument, DocumentNo, DateDocument, Libelle, TotalTTC, DejaRegle, RestePayer, Signe, 0);
+        Rec."Est Fournisseur" := true;
+        Rec.Modify();
+    end;
+
     local procedure Ajouter(ClientNo: Code[20]; TypeDocument: Enum "Document Caisse Type"; DocumentNo: Code[20]; DateDocument: Date; Libelle: Text; TotalTTC: Decimal; DejaRegle: Decimal; RestePayer: Decimal; Signe: Integer; IdLigneImpaye: Integer)
     begin
         NoLigne += 1;
@@ -230,6 +296,18 @@ page 25006940 "Recu Caisse Docs A Payer API"
         Rec."Reste A Payer" := RestePayer;
         Rec.Signe := Signe;
         Rec."Id Ligne Impaye" := IdLigneImpaye;
+        Rec."Type Nom" := CopyStr(NomDuType(TypeDocument), 1, MaxStrLen(Rec."Type Nom"));
         Rec.Insert();
+    end;
+
+    // Le nom du membre, celui que l'appel de creation attend, et non le libelle affiche.
+    local procedure NomDuType(TypeDocument: Enum "Document Caisse Type"): Text
+    var
+        Position: Integer;
+    begin
+        Position := TypeDocument.Ordinals().IndexOf(TypeDocument.AsInteger());
+        if Position = 0 then
+            exit('');
+        exit(TypeDocument.Names().Get(Position));
     end;
 }
