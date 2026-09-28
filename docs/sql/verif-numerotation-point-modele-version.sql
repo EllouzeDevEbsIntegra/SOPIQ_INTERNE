@@ -68,6 +68,9 @@ ORDER BY Societe, No_;
 /*     Pour chaque version de modele de 3S AGENCE dont le numero fait six
        chiffres, on calcule la forme pointee et on regarde si quelqu'un la
        porte deja, dans n'importe quelle societe.                         */
+/*  SQL refuse un EXISTS a l'interieur d'un agregat, message 130. On
+    rattache donc les numeros deja pris par une jointure externe, puis on
+    compte.                                                               */
 WITH Vehicules AS (
     SELECT No_,
            Description,
@@ -77,11 +80,15 @@ WITH Vehicules AS (
       AND TypeArticle = 2
       AND LEN(No_) = 6
       AND No_ NOT LIKE '%[^0-9]%'
+),
+DejaPris AS (
+    SELECT DISTINCT No_
+    FROM #articles
 )
 SELECT COUNT(*) AS NbVehiculesRenommables,
-       SUM(CASE WHEN EXISTS (SELECT 1 FROM #articles AS A
-                             WHERE A.No_ = V.NouveauNo) THEN 1 ELSE 0 END) AS NbFormesPointeesDejaPrises
-FROM Vehicules AS V;
+       SUM(CASE WHEN D.No_ IS NULL THEN 0 ELSE 1 END) AS NbFormesPointeesDejaPrises
+FROM Vehicules AS V
+LEFT JOIN DejaPris AS D ON D.No_ = V.NouveauNo;
 
 /* --- 4. Le detail des formes pointees deja prises, s'il y en a ------- */
 WITH Vehicules AS (
