@@ -14,6 +14,11 @@
    fiscal. Le rapport en comptait un, ce qui rendait ces avoirs impossibles
    a solder.
 
+   Les trois morceaux d'un avoir vivent dans trois tables :
+     - le document lui-meme, application de base ;
+     - "solde", extension SOPIQ INTERNE, champ 80436 ;
+     - "STStamp Amount", extension StandardTunisien, champ 70001.
+
    Ce script ne fait que LIRE. Il ne corrige aucune donnee.
 
    Changer la base a la premiere ligne :
@@ -25,127 +30,110 @@ USE SOPIQ_DEV;
 GO
 
 SET NOCOUNT ON;
+GO
+
+/* --- Les societes, et les trois tables de chacune --------------------- */
+IF OBJECT_ID('tempdb..#avoirs') IS NOT NULL DROP TABLE #avoirs;
+CREATE TABLE #avoirs (
+    Societe nvarchar(50) COLLATE DATABASE_DEFAULT,
+    Avoir nvarchar(20) COLLATE DATABASE_DEFAULT,
+    Client nvarchar(20) COLLATE DATABASE_DEFAULT,
+    DateDocument date,
+    MontantTTC decimal(38, 3),
+    Timbre decimal(38, 3),
+    RecuCaisse decimal(38, 3),
+    Solde bit
+);
 
 DECLARE @base nvarchar(50) = N'437dbf0e-84ff-417a-965d-ed2bb9650972';
 DECLARE @interne nvarchar(50) = N'fe610c13-6229-4f65-9f57-05b0ea985881';
 DECLARE @st nvarchar(50) = N'840d69c1-a2ae-4b41-bfb1-4b23af2cf237';
 DECLARE @sql nvarchar(max) = N'';
 
-IF OBJECT_ID('tempdb..#societes') IS NOT NULL DROP TABLE #societes;
-CREATE TABLE #societes (Nom nvarchar(50) COLLATE DATABASE_DEFAULT);
-INSERT #societes
-SELECT LEFT(name, CHARINDEX('$Sales Cr_Memo Header$', name) - 1) COLLATE DATABASE_DEFAULT
-FROM sys.tables
-WHERE name LIKE '%$Sales Cr_Memo Header$' + @base;
+SELECT @sql = @sql + N'
+INSERT #avoirs (Societe, Avoir, Client, DateDocument, MontantTTC, Timbre, RecuCaisse, Solde)
+SELECT ' + QUOTENAME(s.Nom, '''') + N' COLLATE DATABASE_DEFAULT,
+       A.[No_] COLLATE DATABASE_DEFAULT,
+       A.[Bill-to Customer No_] COLLATE DATABASE_DEFAULT,
+       A.[Posting Date],
+       ISNULL(L.MontantTTC, 0),
+       ISNULL(T.[STStamp Amount], 0),
+       ISNULL(R.RecuCaisse, 0),
+       I.[solde]
+FROM ' + QUOTENAME(s.Nom + '$Sales Cr_Memo Header$' + @base) + N' AS A
+JOIN ' + QUOTENAME(s.Nom + '$Sales Cr_Memo Header$' + @interne) + N' AS I
+    ON I.[No_] = A.[No_]
+LEFT JOIN ' + QUOTENAME(s.Nom + '$Sales Cr_Memo Header$' + @st) + N' AS T
+    ON T.[No_] = A.[No_]
+LEFT JOIN (
+    SELECT [Document No_] AS No_, SUM([Amount Including VAT]) AS MontantTTC
+    FROM ' + QUOTENAME(s.Nom + '$Sales Cr_Memo Line$' + @base) + N'
+    GROUP BY [Document No_]) AS L
+    ON L.No_ = A.[No_]
+LEFT JOIN (
+    SELECT [Document No] COLLATE DATABASE_DEFAULT AS No_,
+           SUM([Montant Reglement]) AS RecuCaisse
+    FROM ' + QUOTENAME(s.Nom + '$Recu Caisse Document$' + @interne) + N'
+    GROUP BY [Document No]) AS R
+    ON R.No_ = A.[No_] COLLATE DATABASE_DEFAULT;'
+FROM (SELECT LEFT(name, CHARINDEX('$Sales Cr_Memo Header$', name) - 1) AS Nom
+      FROM sys.tables
+      WHERE name LIKE '%$Sales Cr_Memo Header$' + @interne) AS s;
+
+EXEC sys.sp_executesql @sql;
+GO
 
 /* ---------------------------------------------------------------------
    1. L'EXEMPLE A MONTRER A LA CAISSE.
 
-   Les documents deja rembourses en partie : ceux ou l'ancienne formule et
-   la nouvelle ne disent pas la meme chose. La colonne AncienMontant est ce
-   que le rapport affichait, NouveauMontant ce qu'il affichera.
+   Les avoirs non soldes deja rembourses en partie : ceux ou l'ancienne
+   formule et la nouvelle ne disent pas la meme chose.
+     AncienMontant  ce que le rapport affichait
+     NouveauMontant ce qu'il affichera
    --------------------------------------------------------------------- */
-SELECT @sql = @sql + N'
-SELECT ' + QUOTENAME(s.Nom, '''') + N' AS Societe,
-       ''Avoir client'' AS Type_,
-       A.[No_] AS Document,
-       A.[Bill-to Customer No_] AS Client,
-       A.[Posting Date] AS DateDocument,
-       R.MontantTTC,
-       R.DejaRembourse AS RenduParLaCaisse,
-       R.MontantTTC + R.Timbre - R.RecuCaisse AS AncienMontant,
-       R.MontantTTC + R.RecuCaisse           AS NouveauMontant
-FROM ' + QUOTENAME(s.Nom + '$Sales Cr_Memo Header$' + @base) + N' AS A
-CROSS APPLY (
-    SELECT MontantTTC = ISNULL((SELECT SUM(L.[Amount Including VAT])
-                                FROM ' + QUOTENAME(s.Nom + '$Sales Cr_Memo Line$' + @base) + N' AS L
-                                WHERE L.[Document No_] = A.[No_]), 0),
-           Timbre     = ISNULL(E.[STStamp Amount], 0),
-           RecuCaisse = ISNULL((SELECT SUM(D.[Montant Reglement])
-                                FROM ' + QUOTENAME(s.Nom + '$Recu Caisse Document$' + @interne) + N' AS D
-                                WHERE D.[Document No] COLLATE DATABASE_DEFAULT = A.[No_] COLLATE DATABASE_DEFAULT), 0),
-           DejaRembourse = -ISNULL((SELECT SUM(D.[Montant Reglement])
-                                FROM ' + QUOTENAME(s.Nom + '$Recu Caisse Document$' + @interne) + N' AS D
-                                WHERE D.[Document No] COLLATE DATABASE_DEFAULT = A.[No_] COLLATE DATABASE_DEFAULT), 0)
-) AS R
-LEFT JOIN ' + QUOTENAME(s.Nom + '$Sales Cr_Memo Header$' + @st) + N' AS E
-    ON E.[No_] = A.[No_]
-WHERE A.[solde] = 0
-  AND R.RecuCaisse <> 0
-UNION ALL'
-FROM #societes AS s
-WHERE OBJECT_ID(QUOTENAME(s.Nom + '$Recu Caisse Document$' + @interne)) IS NOT NULL;
-
-IF LEN(@sql) > 0
-BEGIN
-    SET @sql = LEFT(@sql, LEN(@sql) - LEN('UNION ALL')) + N' ORDER BY Societe, Document;';
-    EXEC sys.sp_executesql @sql;
-END
-ELSE
-    SELECT 'Aucune societe trouvee' AS Resultat;
-GO
+SELECT Societe, Avoir, Client, DateDocument,
+       MontantTTC,
+       -RecuCaisse AS RenduParLaCaisse,
+       Timbre,
+       MontantTTC + Timbre - RecuCaisse AS AncienMontant,
+       MontantTTC + RecuCaisse          AS NouveauMontant
+FROM #avoirs
+WHERE Solde = 0
+  AND (RecuCaisse <> 0 OR Timbre <> 0)
+ORDER BY Societe, DateDocument;
 
 /* ---------------------------------------------------------------------
    2. LE RECENSEMENT DEMANDE : les avoirs non soldes portant un timbre.
-
-   Ce sont des erreurs de saisie anciennes. Tant qu'un timbre y figure, le
-   rapport ne pouvait pas les solder. Aucune correction n'est faite ici.
    --------------------------------------------------------------------- */
-SET NOCOUNT ON;
-
-DECLARE @base2 nvarchar(50) = N'437dbf0e-84ff-417a-965d-ed2bb9650972';
-DECLARE @st2 nvarchar(50) = N'840d69c1-a2ae-4b41-bfb1-4b23af2cf237';
-DECLARE @sql2 nvarchar(max) = N'';
-
-SELECT @sql2 = @sql2 + N'
-SELECT ' + QUOTENAME(s.Nom, '''') + N' AS Societe,
+SELECT Societe,
        COUNT(*) AS NbAvoirsNonSoldesAvecTimbre,
-       SUM(E.[STStamp Amount]) AS TotalTimbres,
-       MIN(A.[Posting Date]) AS PlusAncien,
-       MAX(A.[Posting Date]) AS PlusRecent
-FROM ' + QUOTENAME(s.Nom + '$Sales Cr_Memo Header$' + @base2) + N' AS A
-JOIN ' + QUOTENAME(s.Nom + '$Sales Cr_Memo Header$' + @st2) + N' AS E
-    ON E.[No_] = A.[No_]
-WHERE A.[solde] = 0
-  AND ISNULL(E.[STStamp Amount], 0) <> 0
-UNION ALL'
-FROM #societes AS s
-WHERE OBJECT_ID(QUOTENAME(s.Nom + '$Sales Cr_Memo Header$' + @st2)) IS NOT NULL;
-
-IF LEN(@sql2) > 0
-BEGIN
-    SET @sql2 = LEFT(@sql2, LEN(@sql2) - LEN('UNION ALL')) + N' ORDER BY Societe;';
-    EXEC sys.sp_executesql @sql2;
-END
-GO
+       SUM(Timbre) AS TotalTimbres,
+       MIN(DateDocument) AS PlusAncien,
+       MAX(DateDocument) AS PlusRecent
+FROM #avoirs
+WHERE Solde = 0
+  AND Timbre <> 0
+GROUP BY Societe
+ORDER BY Societe;
 
 /* ---------------------------------------------------------------------
    3. Le detail de ces avoirs, cinquante premiers.
    --------------------------------------------------------------------- */
-SET NOCOUNT ON;
+SELECT TOP 50 Societe, Avoir, Client, DateDocument, MontantTTC, Timbre
+FROM #avoirs
+WHERE Solde = 0
+  AND Timbre <> 0
+ORDER BY Societe, DateDocument;
 
-DECLARE @base3 nvarchar(50) = N'437dbf0e-84ff-417a-965d-ed2bb9650972';
-DECLARE @st3 nvarchar(50) = N'840d69c1-a2ae-4b41-bfb1-4b23af2cf237';
-DECLARE @sql3 nvarchar(max) = N'';
-
-SELECT @sql3 = @sql3 + N'
-SELECT TOP 50 ' + QUOTENAME(s.Nom, '''') + N' AS Societe,
-       A.[No_] AS Avoir,
-       A.[Bill-to Customer No_] AS Client,
-       A.[Posting Date] AS DateDocument,
-       E.[STStamp Amount] AS Timbre
-FROM ' + QUOTENAME(s.Nom + '$Sales Cr_Memo Header$' + @base3) + N' AS A
-JOIN ' + QUOTENAME(s.Nom + '$Sales Cr_Memo Header$' + @st3) + N' AS E
-    ON E.[No_] = A.[No_]
-WHERE A.[solde] = 0
-  AND ISNULL(E.[STStamp Amount], 0) <> 0
-UNION ALL'
-FROM #societes AS s
-WHERE OBJECT_ID(QUOTENAME(s.Nom + '$Sales Cr_Memo Header$' + @st3)) IS NOT NULL;
-
-IF LEN(@sql3) > 0
-BEGIN
-    SET @sql3 = LEFT(@sql3, LEN(@sql3) - LEN('UNION ALL')) + N' ORDER BY Societe, DateDocument;';
-    EXEC sys.sp_executesql @sql3;
-END
+/* ---------------------------------------------------------------------
+   4. Pour situer : combien d'avoirs non soldes en tout.
+   --------------------------------------------------------------------- */
+SELECT Societe,
+       COUNT(*) AS NbAvoirsNonSoldes,
+       SUM(CASE WHEN Timbre <> 0 THEN 1 ELSE 0 END) AS DontAvecTimbre,
+       SUM(CASE WHEN RecuCaisse <> 0 THEN 1 ELSE 0 END) AS DontDejaRembourses
+FROM #avoirs
+WHERE Solde = 0
+GROUP BY Societe
+ORDER BY Societe;
 GO
