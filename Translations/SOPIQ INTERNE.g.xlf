@@ -21428,6 +21428,21 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Query Items - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Query 4125875165 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>KPI valeur de stock</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query KPI Inventory Value - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Query 4292161485 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>KPI ventes par jour</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query KPI Sales Daily - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Query 3605359178 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>KPI atelier par jour</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query KPI Workshop Daily - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Query 4040440750 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Ligne archive BS</source>
           <note from="Developer" annotates="general" priority="2"></note>
