@@ -166,7 +166,11 @@ page 50133 "Recu Document Subpage"
                                         recPurchInv.SetRange("No.", "Document No");
                                         if recPurchInv.FindFirst() then begin
                                             recPurchInv.CalcFields("Amount Including VAT", "Montant reçu caisse");
-                                            "Montant Reglement" := -(recPurchInv."Amount Including VAT" + recPurchInv."STStamp Fiscal Amount" - recPurchInv."Montant reçu caisse");
+                                            // Un reglement de facture d'achat est enregistre en negatif :
+                                            // "Montant reçu caisse" est donc negatif lui aussi. L'ancienne
+                                            // formule le soustrayait, ce qui l'ajoutait au reste du : une
+                                            // facture de 100 deja reglee de 30 proposait 130 au lieu de 70.
+                                            "Montant Reglement" := -(recPurchInv."Amount Including VAT" + recPurchInv."STStamp Fiscal Amount" + recPurchInv."Montant reçu caisse");
                                             "Total TTC" := (recPurchInv."Amount Including VAT" + recPurchInv."STStamp Fiscal Amount");
                                         end;
 

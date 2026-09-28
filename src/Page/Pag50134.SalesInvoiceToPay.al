@@ -69,8 +69,11 @@ page 50134 "Sales Invoice To Pay"
 
     trigger OnAfterGetRecord()
     begin
-        rec.CalcFields("Remaining Amount", "Montant reçu caisse");
-        restePayer := "Remaining Amount" - "Montant reçu caisse";
+        // Regle unique du 28/09/2026 : le reste a payer ne regarde que les recus de caisse,
+        // jamais la comptabilite. "Remaining Amount" tenait compte des lettrages, et
+        // comptait donc deux fois un encaissement une fois celui-ci comptabilise.
+        rec.CalcFields("Amount Including VAT", "Remaining Amount", "Montant reçu caisse");
+        restePayer := "Amount Including VAT" + "STStamp Amount" - "Montant reçu caisse";
         // if (restePayer < 1) then begin
         //     rec.solde := true;
         //     rec.Modify();

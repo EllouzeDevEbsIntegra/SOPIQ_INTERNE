@@ -10,17 +10,25 @@
 //
 // Le filtre sur le client est OBLIGATOIRE : sans lui, rien n'est renvoye.
 //
-// Le reste a payer reprend, type par type, la formule des pages que la fiche recu utilise
-// pour proposer ses documents. Elle n'est pas la meme partout, c'est voulu :
-//   - factures et avoirs : "Remaining Amount", qui tient compte des reglements comptables,
-//     moins ce qui a deja ete encaisse en caisse ;
-//   - bons de sortie : "Montant TTC" du document, moins l'encaisse. Un BS ne passe pas par
-//     les ecritures client, il n'a donc pas de Remaining Amount ;
-//   - bons de livraison, retours : "Line Amount", moins l'encaisse, au signe pres.
+// LA REGLE DU RESTE A PAYER, decidee le 28/09/2026 : le recu de caisse et la comptabilite
+// sont deux circuits separes. Un document est solde, et son reste calcule, a partir des
+// seuls recus de caisse. Les reglements comptables, "Remaining Amount" et les lettrages
+// n'entrent jamais dans ce calcul.
 //
-// Les factures et avoirs d'achat ne sont pas exposes : ce sont des documents fournisseur,
-// sans lien avec un client, donc hors du parcours du comptoir. Dites-le si le besoin
-// apparait.
+//     reste a payer = montant du document - montant encaisse en caisse
+//
+// Le montant du document est celui que la regle du solde compare deja, type par type :
+//   - facture de vente : "Amount Including VAT" + timbre fiscal ;
+//   - avoir, bon de sortie, bon de livraison, retours : le montant du document ;
+//   - facture d'achat : "Amount Including VAT" + timbre, en decaissement.
+//
+// Avant cette decision, les factures et avoirs passaient par "Remaining Amount", comme les
+// listes de la fiche. Les deux sources comptaient alors le meme paiement deux fois des que
+// la caisse comptabilisait son encaissement : un recu de 100 sur une facture de 100
+// affichait un reste de -100, soit un avoir qui n'existe pas.
+//
+// Les factures et avoirs d'achat sont exposes sous le filtre estFournisseur : la fiche recu
+// les propose sans aucun filtre de tiers, on fait pareil.
 page 25006940 "Recu Caisse Docs A Payer API"
 {
     PageType = API;
@@ -130,12 +138,13 @@ page 25006940 "Recu Caisse Docs A Payer API"
             exit;
 
         repeat
-            SalesInvoice.CalcFields("Amount Including VAT", "Remaining Amount", "Montant reçu caisse");
+            SalesInvoice.CalcFields("Amount Including VAT", "Montant reçu caisse");
             Ajouter(ClientNo, "Document Caisse Type"::Invoice, SalesInvoice."No.", SalesInvoice."Posting Date",
                     SalesInvoice."Bill-to Name",
                     SalesInvoice."Amount Including VAT" + SalesInvoice."STStamp Amount",
                     SalesInvoice."Montant reçu caisse",
-                    SalesInvoice."Remaining Amount" - SalesInvoice."Montant reçu caisse", 1, 0);
+                    SalesInvoice."Amount Including VAT" + SalesInvoice."STStamp Amount"
+                        - SalesInvoice."Montant reçu caisse", 1, 0);
         until SalesInvoice.Next() = 0;
     end;
 
@@ -150,11 +159,11 @@ page 25006940 "Recu Caisse Docs A Payer API"
             exit;
 
         repeat
-            SalesCrMemo.CalcFields("Amount Including VAT", "Remaining Amount", "Montant reçu caisse");
+            SalesCrMemo.CalcFields("Amount Including VAT", "Montant reçu caisse");
             Ajouter(ClientNo, "Document Caisse Type"::CreditMemo, SalesCrMemo."No.", SalesCrMemo."Posting Date",
                     SalesCrMemo."Bill-to Name", SalesCrMemo."Amount Including VAT",
-                    SalesCrMemo."Montant reçu caisse",
-                    SalesCrMemo."Remaining Amount" - SalesCrMemo."Montant reçu caisse", -1, 0);
+                    -SalesCrMemo."Montant reçu caisse",
+                    SalesCrMemo."Amount Including VAT" + SalesCrMemo."Montant reçu caisse", -1, 0);
         until SalesCrMemo.Next() = 0;
     end;
 

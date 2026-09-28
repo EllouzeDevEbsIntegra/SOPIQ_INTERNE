@@ -314,6 +314,14 @@ codeunit 50035 "Validation Recu Caisse"
 
             // Le sens et le montant signe sont deduits du type, jamais recus de l'exterieur :
             // c'est le OnInsert de la table qui s'en charge.
+            //
+            // Une exception, celle de la fiche : la ligne Complement porte un "Montant
+            // Calcul" negatif alors que son montant est positif, et le type Complement
+            // n'est pas range parmi les decaissements. Sans ce report, un recu equilibre
+            // par un complement serait refuse comme desequilibre.
+            if TypePaiement = TypePaiement::Complement then
+                RecuPaiement."Montant Calcul" := -RecuPaiement.Montant;
+
             RecuPaiement.Insert();
         end;
     end;

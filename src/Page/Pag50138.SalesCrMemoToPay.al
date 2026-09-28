@@ -69,8 +69,9 @@ page 50138 "Sales Cr Memo To Pay"
 
     trigger OnAfterGetRecord()
     begin
-        rec.CalcFields("Remaining Amount", "Montant reçu caisse");
-        restePayer := "Remaining Amount" - "Montant reçu caisse";
+        // Regle unique du 28/09/2026 : seuls les recus de caisse entrent dans le calcul.
+        rec.CalcFields("Amount Including VAT", "Remaining Amount", "Montant reçu caisse");
+        restePayer := "Amount Including VAT" + "Montant reçu caisse";
         // if (restePayer < 1) then begin
         //     rec.solde := true;
         //     rec.Modify();
