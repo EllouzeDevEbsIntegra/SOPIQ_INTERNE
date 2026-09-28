@@ -47,6 +47,19 @@ page 25006940 "Recu Caisse Docs A Payer API"
     DelayedInsert = true;
     Extensible = false;
 
+    // Les documents a payer sont lus dans les tables de vente et d'achat. En declarant ces
+    // droits ici, le compte utilise par l'API n'a besoin d'aucune permission directe sur les
+    // documents : il ne peut les lire qu'a travers cette page, et en lecture seule.
+    Permissions = tabledata "Sales Invoice Header" = R,
+                  tabledata "Sales Cr.Memo Header" = R,
+                  tabledata "Sales Shipment Header" = R,
+                  tabledata "Return Receipt Header" = R,
+                  tabledata "Entete archive BS" = R,
+                  tabledata "Purch. Inv. Header" = R,
+                  tabledata "Purch. Cr. Memo Hdr." = R,
+                  tabledata "Recu Caisse Paiement" = R,
+                  tabledata "Company Information" = R;
+
     layout
     {
         area(Content)

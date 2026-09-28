@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--
+    Jeu de permissions du compte API utilise par Reapro, pour le recu de caisse.
+
+    Pourquoi ce fichier. En Business Central 16, un jeu de permissions ne peut pas etre
+    livre dans l'extension : l'objet permissionset n'existe qu'a partir du runtime 7.0.
+    Les permissions restent donc des DONNEES, a importer dans chaque base. Ce fichier les
+    versionne avec le code, pour qu'un objet ajoute ne soit pas oublie.
+
+    Import : Recherche > Jeux d'autorisations > Importer les jeux d'autorisations.
+    Puis affecter SOPIQ-RECU-API au compte de service utilise par Reapro, sur DEV et en
+    production.
+
+    Types d'objet : 0 = donnees de table, 1 = table, 3 = etat, 5 = codeunit, 8 = page.
+    Valeurs : 0 = aucune, 1 = oui, 2 = indirecte.
+
+    Les tables metier lues ou ecrites par le traitement, factures, avoirs, expeditions,
+    retours, ne figurent pas ici : le codeunit 50035 et les pages API portent la propriete
+    Permissions, qui accorde ces droits pendant leur execution. C'est volontaire, le compte
+    API n'a ainsi aucun droit direct sur les documents de vente.
+-->
+<PermissionSets>
+  <PermissionSet RoleID="SOPIQ-RECU-API" RoleName="API reçu de caisse Reapro">
+
+    <!-- Tables du recu : en-tete, documents, paiements -->
+    <Permission>
+      <ObjectType>0</ObjectType><ObjectID>70011</ObjectID>
+      <ReadPermission>1</ReadPermission><InsertPermission>1</InsertPermission>
+      <ModifyPermission>1</ModifyPermission><DeletePermission>0</DeletePermission>
+      <ExecutePermission>0</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+    <Permission>
+      <ObjectType>1</ObjectType><ObjectID>70011</ObjectID>
+      <ReadPermission>0</ReadPermission><InsertPermission>0</InsertPermission>
+      <ModifyPermission>0</ModifyPermission><DeletePermission>0</DeletePermission>
+      <ExecutePermission>1</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+
+    <Permission>
+      <ObjectType>0</ObjectType><ObjectID>70012</ObjectID>
+      <ReadPermission>1</ReadPermission><InsertPermission>1</InsertPermission>
+      <ModifyPermission>1</ModifyPermission><DeletePermission>1</DeletePermission>
+      <ExecutePermission>0</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+    <Permission>
+      <ObjectType>1</ObjectType><ObjectID>70012</ObjectID>
+      <ReadPermission>0</ReadPermission><InsertPermission>0</InsertPermission>
+      <ModifyPermission>0</ModifyPermission><DeletePermission>0</DeletePermission>
+      <ExecutePermission>1</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+
+    <Permission>
+      <ObjectType>0</ObjectType><ObjectID>70013</ObjectID>
+      <ReadPermission>1</ReadPermission><InsertPermission>1</InsertPermission>
+      <ModifyPermission>1</ModifyPermission><DeletePermission>1</DeletePermission>
+      <ExecutePermission>0</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+    <Permission>
+      <ObjectType>1</ObjectType><ObjectID>70013</ObjectID>
+      <ReadPermission>0</ReadPermission><InsertPermission>0</InsertPermission>
+      <ModifyPermission>0</ModifyPermission><DeletePermission>0</DeletePermission>
+      <ExecutePermission>1</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+
+    <!-- Documents a payer : table temporaire, remplie a chaque appel -->
+    <Permission>
+      <ObjectType>0</ObjectType><ObjectID>70015</ObjectID>
+      <ReadPermission>1</ReadPermission><InsertPermission>1</InsertPermission>
+      <ModifyPermission>1</ModifyPermission><DeletePermission>1</DeletePermission>
+      <ExecutePermission>0</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+    <Permission>
+      <ObjectType>1</ObjectType><ObjectID>70015</ObjectID>
+      <ReadPermission>0</ReadPermission><InsertPermission>0</InsertPermission>
+      <ModifyPermission>0</ModifyPermission><DeletePermission>0</DeletePermission>
+      <ExecutePermission>1</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+
+    <!-- Demandes de creation : c'est celle qui manquait au premier essai -->
+    <Permission>
+      <ObjectType>0</ObjectType><ObjectID>70016</ObjectID>
+      <ReadPermission>1</ReadPermission><InsertPermission>1</InsertPermission>
+      <ModifyPermission>1</ModifyPermission><DeletePermission>0</DeletePermission>
+      <ExecutePermission>0</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+    <Permission>
+      <ObjectType>1</ObjectType><ObjectID>70016</ObjectID>
+      <ReadPermission>0</ReadPermission><InsertPermission>0</InsertPermission>
+      <ModifyPermission>0</ModifyPermission><DeletePermission>0</DeletePermission>
+      <ExecutePermission>1</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+
+    <!-- Validation du recu -->
+    <Permission>
+      <ObjectType>5</ObjectType><ObjectID>50035</ObjectID>
+      <ReadPermission>0</ReadPermission><InsertPermission>0</InsertPermission>
+      <ModifyPermission>0</ModifyPermission><DeletePermission>0</DeletePermission>
+      <ExecutePermission>1</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+
+    <!-- Pages API : recu, documents, paiements, creation, documents a payer -->
+    <Permission>
+      <ObjectType>8</ObjectType><ObjectID>25006835</ObjectID>
+      <ReadPermission>0</ReadPermission><InsertPermission>0</InsertPermission>
+      <ModifyPermission>0</ModifyPermission><DeletePermission>0</DeletePermission>
+      <ExecutePermission>1</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+    <Permission>
+      <ObjectType>8</ObjectType><ObjectID>25006836</ObjectID>
+      <ReadPermission>0</ReadPermission><InsertPermission>0</InsertPermission>
+      <ModifyPermission>0</ModifyPermission><DeletePermission>0</DeletePermission>
+      <ExecutePermission>1</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+    <Permission>
+      <ObjectType>8</ObjectType><ObjectID>25006837</ObjectID>
+      <ReadPermission>0</ReadPermission><InsertPermission>0</InsertPermission>
+      <ModifyPermission>0</ModifyPermission><DeletePermission>0</DeletePermission>
+      <ExecutePermission>1</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+    <Permission>
+      <ObjectType>8</ObjectType><ObjectID>25006939</ObjectID>
+      <ReadPermission>0</ReadPermission><InsertPermission>0</InsertPermission>
+      <ModifyPermission>0</ModifyPermission><DeletePermission>0</DeletePermission>
+      <ExecutePermission>1</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+    <Permission>
+      <ObjectType>8</ObjectType><ObjectID>25006940</ObjectID>
+      <ReadPermission>0</ReadPermission><InsertPermission>0</InsertPermission>
+      <ModifyPermission>0</ModifyPermission><DeletePermission>0</DeletePermission>
+      <ExecutePermission>1</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+
+    <!-- Etat du recu, pour le PDF -->
+    <Permission>
+      <ObjectType>3</ObjectType><ObjectID>25006029</ObjectID>
+      <ReadPermission>0</ReadPermission><InsertPermission>0</InsertPermission>
+      <ModifyPermission>0</ModifyPermission><DeletePermission>0</DeletePermission>
+      <ExecutePermission>1</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+
+  </PermissionSet>
+</PermissionSets>
