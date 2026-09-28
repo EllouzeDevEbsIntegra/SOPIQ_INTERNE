@@ -30,17 +30,22 @@ CREATE TABLE #societes (Nom nvarchar(50));
 INSERT #societes VALUES ('SOPIQ PROD'), ('STE COPIM'), ('3S AGENCE'), ('STE MPAA PROD');
 
 IF OBJECT_ID('tempdb..#articles') IS NOT NULL DROP TABLE #articles;
+/*  Classement force sur les colonnes texte : les tables d'extension et la
+    base temporaire n'ont pas le meme, et SQL refuse de les comparer.      */
 CREATE TABLE #articles (
-    Societe nvarchar(50),
-    No_ nvarchar(20),
-    Description nvarchar(100),
+    Societe nvarchar(50) COLLATE DATABASE_DEFAULT,
+    No_ nvarchar(20) COLLATE DATABASE_DEFAULT,
+    Description nvarchar(100) COLLATE DATABASE_DEFAULT,
     TypeArticle int
 );
 
 /* --- Rassembler les articles des quatre societes --------------------- */
 SELECT @sql = @sql + N'
 INSERT #articles (Societe, No_, Description, TypeArticle)
-SELECT ' + QUOTENAME(s.Nom, '''') + N', I.[No_], I.[Description], I.[Item Type]
+SELECT ' + QUOTENAME(s.Nom, '''') + N' COLLATE DATABASE_DEFAULT,
+       I.[No_] COLLATE DATABASE_DEFAULT,
+       I.[Description] COLLATE DATABASE_DEFAULT,
+       I.[Item Type]
 FROM ' + QUOTENAME(s.Nom + '$Item$' + @base) + N' AS I;'
 FROM #societes AS s
 WHERE OBJECT_ID(QUOTENAME(s.Nom + '$Item$' + @base)) IS NOT NULL;
@@ -93,7 +98,9 @@ IF OBJECT_ID(QUOTENAME('items Master$fe610c13-6229-4f65-9f57-05b0ea985881')) IS 
            A.Societe AS SocieteOuLeNumeroEstUnVehicule,
            A.Description AS LibelleVehicule
     FROM [items Master$fe610c13-6229-4f65-9f57-05b0ea985881] AS M
-    JOIN #articles AS A ON A.No_ = M.[No] AND A.TypeArticle = 2
+    JOIN #articles AS A
+        ON A.No_ COLLATE DATABASE_DEFAULT = M.[No] COLLATE DATABASE_DEFAULT
+       AND A.TypeArticle = 2
     ORDER BY M.[Verified], M.[No];
 ELSE
     SELECT 'Table items Master introuvable sous ce nom' AS Resultat;
