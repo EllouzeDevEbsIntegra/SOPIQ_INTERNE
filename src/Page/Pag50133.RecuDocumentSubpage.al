@@ -145,9 +145,23 @@ page 50133 "Recu Document Subpage"
                                     begin
                                         recBL.SetRange("No.", "Document No");
                                         if recBL.FindFirst() then begin
-                                            recBL.CalcFields("Total line amount", "Line Amount", "Montant reçu caisse");
-                                            "Montant Reglement" := recBL."Line Amount" - recBL."Montant reçu caisse";
-                                            "Total TTC" := recBL."Line Amount";
+                                            recBL.CalcFields("Total line amount", "Line Amount", "Montant Ouvert", "Montant reçu caisse");
+
+                                            // Dans une societe qui fait des bons de sortie, une vente
+                                            // facturee produit deux documents : l'expedition et la
+                                            // facture. Encaisser les deux ferait payer la vente deux
+                                            // fois. Regle du rapport "Etat Solde Client" : le bon de
+                                            // livraison ne vaut que ce qui reste a facturer.
+                                            if SocieteAvecBS() then
+                                                MontantReference := recBL."Montant Ouvert"
+                                            else
+                                                MontantReference := recBL."Line Amount";
+
+                                            if MontantReference - recBL."Montant reçu caisse" = 0 then
+                                                Error(DocumentSansResteErr, recBL."No.");
+
+                                            "Montant Reglement" := MontantReference - recBL."Montant reçu caisse";
+                                            "Total TTC" := MontantReference;
                                             Modify();
                                         end;
                                     end;
@@ -155,9 +169,21 @@ page 50133 "Recu Document Subpage"
                                     begin
                                         recRetourBL.SetRange("No.", "Document No");
                                         if recRetourBL.FindFirst() then begin
-                                            recRetourBL.CalcFields("Line Amount", "Montant reçu caisse");
-                                            "Montant Reglement" := -recRetourBL."Line Amount";
-                                            "Total TTC" := -recRetourBL."Line Amount";
+                                            recRetourBL.CalcFields("Line Amount", "Montant Ouvert", "Montant reçu caisse");
+
+                                            if SocieteAvecBS() then
+                                                MontantReference := recRetourBL."Montant Ouvert"
+                                            else
+                                                MontantReference := recRetourBL."Line Amount";
+
+                                            // Le montant deja rendu au client est negatif : on le
+                                            // deduit, sinon un retour rembourse en partie serait
+                                            // propose une seconde fois pour sa totalite.
+                                            if MontantReference + recRetourBL."Montant reçu caisse" = 0 then
+                                                Error(DocumentSansResteErr, recRetourBL."No.");
+
+                                            "Montant Reglement" := -(MontantReference + recRetourBL."Montant reçu caisse");
+                                            "Total TTC" := -MontantReference;
                                         end;
 
                                     end;
@@ -276,6 +302,10 @@ page 50133 "Recu Document Subpage"
         TempDocumentNo: Code[20];
         TempLigneImpaye: Integer;
         isImpaye: Boolean;
+        InfoSociete: Record "Company Information";
+        InfoSocieteLue: Boolean;
+        MontantReference: Decimal;
+        DocumentSansResteErr: Label 'Le document %1 ne laisse plus rien à encaisser : il est entièrement facturé ou déjà réglé.', Comment = '%1 numéro du document';
 
     procedure setFilter(recuCaisse: Record "Recu Caisse")
     var
@@ -290,6 +320,16 @@ page 50133 "Recu Document Subpage"
         end;
         CurrPage.Update();
         custNo := recuCaisse."Customer No";
+    end;
+
+    // COPIM est aujourd'hui la seule societe a faire des bons de sortie.
+    local procedure SocieteAvecBS(): Boolean
+    begin
+        if not InfoSocieteLue then begin
+            InfoSociete.Get();
+            InfoSocieteLue := true;
+        end;
+        exit(InfoSociete.BS);
     end;
 
     procedure setDiversCustomer(recuCaisse: Record "Recu Caisse")

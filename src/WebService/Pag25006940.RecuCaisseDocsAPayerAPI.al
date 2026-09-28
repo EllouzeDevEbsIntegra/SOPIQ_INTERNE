@@ -72,6 +72,18 @@ page 25006940 "Recu Caisse Docs A Payer API"
 
     var
         NoLigne: Integer;
+        InfoSociete: Record "Company Information";
+        InfoSocieteLue: Boolean;
+
+    // COPIM est aujourd'hui la seule societe a faire des bons de sortie.
+    local procedure SocieteAvecBS(): Boolean
+    begin
+        if not InfoSocieteLue then begin
+            InfoSociete.Get();
+            InfoSocieteLue := true;
+        end;
+        exit(InfoSociete.BS);
+    end;
 
     // Deux usages, deux filtres, jamais les deux ensemble :
     //   ?$filter=customerNo eq 'C00123'   les documents du client
@@ -167,9 +179,19 @@ page 25006940 "Recu Caisse Docs A Payer API"
         until SalesCrMemo.Next() = 0;
     end;
 
+    // Dans une societe qui fait des bons de sortie, COPIM aujourd'hui, une vente facturee au
+    // comptoir produit deux documents : l'expedition et la facture. Les compter tous les deux
+    // ferait encaisser la vente deux fois.
+    //
+    // La regle est celle du rapport "Etat Solde Client", la reference de la caisse : pour une
+    // telle societe, un bon de livraison vaut son "Montant Ouvert", qui ne somme que les
+    // lignes restant a facturer. Un BL entierement facture tombe a zero, c'est la facture qui
+    // porte la dette, et il sort de la liste. Ailleurs, le montant du document fait foi.
     local procedure ChargerBL(ClientNo: Code[20])
     var
         SalesShipment: Record "Sales Shipment Header";
+        Reference: Decimal;
+        Reste: Decimal;
     begin
         SalesShipment.Reset();
         SalesShipment.SetRange(BS, false);
@@ -179,11 +201,19 @@ page 25006940 "Recu Caisse Docs A Payer API"
             exit;
 
         repeat
-            SalesShipment.CalcFields("Line Amount", "Montant reçu caisse");
-            Ajouter(ClientNo, "Document Caisse Type"::BL, SalesShipment."No.", SalesShipment."Posting Date",
-                    SalesShipment."Bill-to Name", SalesShipment."Line Amount",
-                    SalesShipment."Montant reçu caisse",
-                    SalesShipment."Line Amount" - SalesShipment."Montant reçu caisse", 1, 0);
+            SalesShipment.CalcFields("Line Amount", "Montant Ouvert", "Montant reçu caisse");
+
+            if SocieteAvecBS() then
+                Reference := SalesShipment."Montant Ouvert"
+            else
+                Reference := SalesShipment."Line Amount";
+
+            Reste := Reference - SalesShipment."Montant reçu caisse";
+
+            if Reste <> 0 then
+                Ajouter(ClientNo, "Document Caisse Type"::BL, SalesShipment."No.", SalesShipment."Posting Date",
+                        SalesShipment."Bill-to Name", Reference,
+                        SalesShipment."Montant reçu caisse", Reste, 1, 0);
         until SalesShipment.Next() = 0;
     end;
 
@@ -193,6 +223,8 @@ page 25006940 "Recu Caisse Docs A Payer API"
     var
         ReturnReceipt: Record "Return Receipt Header";
         TypeDocument: Enum "Document Caisse Type";
+        Reference: Decimal;
+        Reste: Decimal;
     begin
         if SurBS then
             TypeDocument := "Document Caisse Type"::RetourBS
@@ -207,11 +239,22 @@ page 25006940 "Recu Caisse Docs A Payer API"
             exit;
 
         repeat
-            ReturnReceipt.CalcFields("Line Amount", "Montant reçu caisse");
-            Ajouter(ClientNo, TypeDocument, ReturnReceipt."No.", ReturnReceipt."Posting Date",
-                    ReturnReceipt."Bill-to Name", ReturnReceipt."Line Amount",
-                    -ReturnReceipt."Montant reçu caisse",
-                    ReturnReceipt."Line Amount" + ReturnReceipt."Montant reçu caisse", -1, 0);
+            ReturnReceipt.CalcFields("Line Amount", "Montant Ouvert", "Montant reçu caisse");
+
+            // Meme regle que pour les bons de livraison, et pour la meme raison : un retour
+            // deja repris sur un avoir ne doit plus etre rembourse au comptoir.
+            if (not SurBS) and SocieteAvecBS() then
+                Reference := ReturnReceipt."Montant Ouvert"
+            else
+                Reference := ReturnReceipt."Line Amount";
+
+            // Le montant encaisse est negatif sur un retour : la caisse a rendu de l'argent.
+            Reste := Reference + ReturnReceipt."Montant reçu caisse";
+
+            if Reste <> 0 then
+                Ajouter(ClientNo, TypeDocument, ReturnReceipt."No.", ReturnReceipt."Posting Date",
+                        ReturnReceipt."Bill-to Name", Reference,
+                        -ReturnReceipt."Montant reçu caisse", Reste, -1, 0);
         until ReturnReceipt.Next() = 0;
     end;
 
