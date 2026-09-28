@@ -90,6 +90,16 @@ table 70011 "Recu Caisse"
             DataClassification = ToBeClassified;
         }
 
+        // Identifiant du brouillon Reapro a l'origine de ce recu. Il garantit qu'un meme
+        // encaissement ne soit pas enregistre deux fois si la reponse n'arrive pas jusqu'a
+        // Reapro : un second envoi du meme brouillon rend ce recu au lieu d'en creer un
+        // autre. Vide pour les recus saisis dans Business Central.
+        field(70018; "Id Brouillon Reapro"; Code[50])
+        {
+            Caption = 'Identifiant brouillon Reapro';
+            Editable = false;
+        }
+
     }
 
     keys
@@ -97,6 +107,9 @@ table 70011 "Recu Caisse"
         key(Key1; No)
         {
             Clustered = true;
+        }
+        key(Brouillon; "Id Brouillon Reapro")
+        {
         }
     }
 

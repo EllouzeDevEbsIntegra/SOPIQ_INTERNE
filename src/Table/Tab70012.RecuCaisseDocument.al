@@ -107,12 +107,17 @@ table 70012 "Recu Caisse Document"
     var
         recUserSetup: Record "User Setup";
         recuCaisse: Record "Recu Caisse";
+        PeutModifier: Boolean;
     begin
-        recUserSetup.Reset();
-        recUserSetup.Get(UserId);
+        // Le compte utilise par l'API n'a pas forcement de fiche utilisateur : sans ce
+        // test, Get plantait sur une erreur technique au lieu de refuser proprement.
+        PeutModifier := false;
+        if recUserSetup.Get(UserId) then
+            PeutModifier := recUserSetup.isRCModify;
+
         recuCaisse.Reset();
         recuCaisse.get(rec."No Recu");
-        if (recUserSetup.isRCModify = false) AND (recuCaisse.Printed = true) then begin
+        if (not PeutModifier) AND (recuCaisse.Printed = true) then begin
             Error('Vous ne pouvez pas supprmier la ligne !');
         end
 

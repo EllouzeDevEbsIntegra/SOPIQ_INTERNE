@@ -85,15 +85,15 @@ page 25006878 "Manufacturer API"
 
     trigger OnAfterGetRecord()
     begin
-        // Récupérer le Vendor No. associé au fabricant (s'il existe)
+        // Fournisseur PAR DÉFAUT du fabricant, s'il en a un.
+
         VendorByManufacturer.Reset();
         VendorByManufacturer.SetRange("Manufacturer Code", Code);
-        VendorByManufacturer."Default Vendor" := true;
+        VendorByManufacturer.SetRange("Default Vendor", true);
         if VendorByManufacturer.FindFirst() then
             vendorNo := VendorByManufacturer."Vendor Code"
         else
             Clear(vendorNo);
-
     end;
 
 }

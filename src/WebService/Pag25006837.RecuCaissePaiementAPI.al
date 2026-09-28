@@ -61,7 +61,19 @@ page 25006837 "Recu Caisse Paiement API"
                 }
                 field(Echeance; Echeance) { Caption = 'Échéance'; }
                 field(banque; banque) { Caption = 'Banque'; }
-                field(MontantCalcul; "Montant Calcul") { Caption = 'Montant Calculé'; }
+                // Le sens et le montant signé sont déduits du type par la table, à
+                // l'insertion comme à la modification. Publiés en lecture seule : le
+                // serveur en répond, l'appelant ne peut pas se tromper de signe.
+                field(MontantCalcul; "Montant Calcul")
+                {
+                    Caption = 'Montant Calculé';
+                    Editable = false;
+                }
+                field(isDecaissement; isDecaissement)
+                {
+                    Caption = 'Décaissement';
+                    Editable = false;
+                }
             }
         }
     }

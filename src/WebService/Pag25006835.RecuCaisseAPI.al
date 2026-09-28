@@ -78,7 +78,19 @@ page 25006835 "Recu Caisse API"
                 field(dateRecu; dateRecu) { Caption = 'Date Reçu'; }
                 field(user; user) { Caption = 'Code Vendeur'; }
                 field(isAcompte; isAcompte) { Caption = 'Acompte ?'; }
-                field(Printed; Printed) { Caption = 'Imprimé'; }
+                // "Imprimé" verrouille la suppression des lignes d'un reçu validé. Publié
+                // en écriture, un simple appel pouvait le décocher et rouvrir un reçu.
+                // Seule la validation le pose désormais.
+                field(Printed; Printed)
+                {
+                    Caption = 'Imprimé';
+                    Editable = false;
+                }
+                field(idBrouillonReapro; "Id Brouillon Reapro")
+                {
+                    Caption = 'Identifiant brouillon Reapro';
+                    Editable = false;
+                }
                 field(totalReg; "totalRéglement") { Caption = 'Total Règlement'; }
                 field(totalDoc; totalDocToPay) { Caption = 'Total Document à Payer'; }
             }

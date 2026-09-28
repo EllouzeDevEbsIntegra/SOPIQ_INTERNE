@@ -137,8 +137,23 @@ table 70013 "Recu Caisse Paiement"
     }
 
 
+    // Une ligne creee par l'API doit porter exactement les memes valeurs calculees qu'une
+    // ligne saisie dans la fiche. Jusqu'au 28/09/2026, seul OnModify calculait "Montant
+    // Calcul" : un paiement cree par l'API entrait dans les totaux du recu avec un montant
+    // faux, et "isDecaissement" n'etait meme pas renseigne.
     trigger OnInsert()
     begin
+        if type <> type::null then
+            isDecaissement := setIsDeciassement(type);
+
+        // Seulement si l'appelant ne l'a pas pose lui-meme. La page 50132 cree la ligne
+        // Complement avec un "Montant Calcul" de signe oppose au montant, volontairement :
+        // un calcul systematique inverserait ce cas et fausserait le total du recu.
+        if "Montant Calcul" = 0 then
+            if isDecaissement then
+                "Montant Calcul" := -Montant
+            else
+                "Montant Calcul" := Montant;
     end;
 
     trigger OnModify()
@@ -154,12 +169,17 @@ table 70013 "Recu Caisse Paiement"
     var
         recUserSetup: Record "User Setup";
         recuCaisse: Record "Recu Caisse";
+        PeutModifier: Boolean;
     begin
-        recUserSetup.Reset();
-        recUserSetup.Get(UserId);
+        // Le compte utilise par l'API n'a pas forcement de fiche utilisateur : sans ce
+        // test, Get plantait sur une erreur technique au lieu de refuser proprement.
+        PeutModifier := false;
+        if recUserSetup.Get(UserId) then
+            PeutModifier := recUserSetup.isRCModify;
+
         recuCaisse.Reset();
         recuCaisse.get(rec."No Recu");
-        if (recUserSetup.isRCModify = false) AND (recuCaisse.Printed = true) then begin
+        if (not PeutModifier) AND (recuCaisse.Printed = true) then begin
             Error('Vous ne pouvez pas supprmier la ligne !');
         end
 

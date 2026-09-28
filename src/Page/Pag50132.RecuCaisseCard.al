@@ -268,13 +268,7 @@ page 50132 "Recu Caisse Card"
                                 recuPaiement.Insert();
                                 CurrPage.Paiement.Page.Update();
                                 Commit();
-                                setDocumentSolde(rec);
-                                if (user = '') then
-                                    Error('Vous devez sélectionner le code vendeur !') else begin
-                                    CurrPage.Update(true);
-                                    CurrPage.SETSELECTIONFILTER(recuCaisse);
-                                    REPORT.RUNMODAL(REPORT::"Recu Caisse", TRUE, TRUE, recuCaisse);
-                                end;
+                                ValiderEtImprimer();
                             end
                             else begin
                                 Error('Veuillez vérifier le montant total des règlements (doit être égal à %1)', totalDocToPay);
@@ -292,13 +286,7 @@ page 50132 "Recu Caisse Card"
                                 recuPaiement.Insert();
                                 CurrPage.Paiement.Page.Update();
                                 Commit();
-                                setDocumentSolde(rec);
-                                if (user = '') then
-                                    Error('Vous devez sélectionner le code vendeur !') else begin
-                                    CurrPage.Update(true);
-                                    CurrPage.SETSELECTIONFILTER(recuCaisse);
-                                    REPORT.RUNMODAL(REPORT::"Recu Caisse", TRUE, TRUE, recuCaisse);
-                                end;
+                                ValiderEtImprimer();
                             end
                             else begin
                                 Error('Veuillez vérifier le montant total des règlements (doit être égal à %1)', totalDocToPay);
@@ -306,25 +294,7 @@ page 50132 "Recu Caisse Card"
                         end;
                     end else begin
                         Commit();
-
-                        if isAcompte = true then begin
-                            recuDocument.Reset();
-                            recuDocument.SetRange("No Recu", rec.No);
-                            if recuDocument.Findfirst() then begin
-                                rec.CalcFields("totalRéglement");
-                                recuDocument."Montant Reglement" := rec."totalRéglement";
-                                recuDocument.modify();
-                                Commit();
-                            end;
-                        end;
-                        setDocumentSolde(rec);
-                        if (user = '') then
-                            Error('Vous devez sélectionner le code vendeur !') else begin
-                            Commit();
-                            CurrPage.Update(true);
-                            CurrPage.SETSELECTIONFILTER(recuCaisse);
-                            REPORT.RUNMODAL(REPORT::"Recu Caisse", TRUE, TRUE, recuCaisse);
-                        end;
+                        ValiderEtImprimer();
                     end;
                 end;
             }
@@ -395,14 +365,14 @@ page 50132 "Recu Caisse Card"
 
         updateStat(rec."Customer No");
         testForModifPrinted := 0;
-        recUserSetup.Reset();
-        // recUserSetup.SetFilter("User ID", UserId);
-        recUserSetup.Get(UserId);
-        userSetupModifRC := recUserSetup.isRCModify;
+        // Un utilisateur sans fiche n'a pas le droit de correction, mais il doit pouvoir
+        // ouvrir la page : Get sans test levait une erreur technique.
+        userSetupModifRC := false;
+        if recUserSetup.Get(UserId) then
+            userSetupModifRC := recUserSetup.isRCModify;
         CurrPage.Update();
         if (Printed = true) then begin
-            // if recUserSetup.isRCModify = false then
-            CurrPage.Editable := recUserSetup.isRCModify;
+            CurrPage.Editable := userSetupModifRC;
             isCreated := true;
         end;
         CurrPage.Document.Page.setFilter(rec);
@@ -421,174 +391,34 @@ page 50132 "Recu Caisse Card"
         rec.CalcFields(totalDocToPay, "totalReçu", totalDepense, "totalRéglement");
     end;
 
+    // La validation elle-meme vit dans le codeunit 50035, appele aussi par l'API : une
+    // seule regle, un seul endroit. Les questions a l'ecran et la ligne d'ecart restent ici,
+    // elles n'ont pas de sens sans utilisateur devant.
+    //
+    // Le traitement de l'acompte et le passage des documents en solde se font dans le
+    // codeunit, dans le meme ordre qu'avant. "Imprimé" y est pose aussi : il l'etait
+    // jusqu'ici par le rapport, ce qui rendait la donnee dependante d'une impression.
+    local procedure ValiderEtImprimer()
+    var
+        ValidationRecu: Codeunit "Validation Recu Caisse";
+        recuCaisse: Record "Recu Caisse";
+    begin
+        ValidationRecu.ValiderRecu(Rec, true);
+        Commit();
+        CurrPage.Update(true);
+        CurrPage.SETSELECTIONFILTER(recuCaisse);
+        REPORT.RUNMODAL(REPORT::"Recu Caisse", TRUE, TRUE, recuCaisse);
+    end;
+
+    // Le contenu de cette procedure vit desormais dans le codeunit 50035, appele aussi par
+    // l'API : une seule regle, un seul endroit. Le comportement de la page est inchange,
+    // les appelants existants continuent de passer par ici.
     procedure setDocumentSolde(recRecu: Record "Recu Caisse")
     var
-        recRecuDoc: Record "Recu Caisse Document";
-        recBs: Record "Entete archive BS";
-        recInvoice: Record "Sales Invoice Header";
-        recCrMemo: Record "Sales Cr.Memo Header";
-        recRetourBS: Record "Return Receipt Header";
-        recBL: Record "Sales Shipment Header";
-        recRetourBL: Record "Return Receipt Header";
-        recPurchInvHead: Record "Purch. Inv. Header";
-        recCrMemoHead: Record "Purch. Cr. Memo Hdr.";
-        recRecuPay: Record "Recu Caisse Paiement";
+        ValidationRecu: Codeunit "Validation Recu Caisse";
     begin
-        recRecuDoc.Reset();
-        recRecuDoc.SetRange("No Recu", recRecu.No);
-        if recRecuDoc.FindSet() then begin
-            repeat
-                case recRecuDoc.type of
-                    "Document Caisse Type"::BS:
-                        begin
-                            recBs.Reset();
-                            recbs.get(recRecuDoc."Document No");
-                            if recBs.Find() then begin
-                                recBs.CalcFields("Montant TTC", "Montant reçu caisse");
-                                if recBs."Montant TTC" = recBs."Montant reçu caisse" then begin
-                                    recbs.Solde := true;
-
-                                end
-                                else
-                                    recBs.Solde := false;
-                                recBs.Modify();
-                            end;
-                            Commit();
-                        end;
-                    "Document Caisse Type"::Invoice:
-                        begin
-                            recInvoice.Reset();
-                            recInvoice.get(recRecuDoc."Document No");
-                            if recInvoice.Find() then begin
-                                recInvoice.CalcFields("Amount Including VAT", "Montant reçu caisse");
-                                if recInvoice."Amount Including VAT" + recInvoice."STStamp Amount" = recInvoice."Montant reçu caisse" then begin
-                                    recInvoice.Solde := true;
-
-                                end
-                                else
-                                    recInvoice.solde := false;
-                                recInvoice.Modify();
-                            end;
-                            Commit();
-                        end;
-                    "Document Caisse Type"::CreditMemo:
-                        begin
-                            recCrMemo.Reset();
-                            recCrMemo.get(recRecuDoc."Document No");
-                            if recCrMemo.Find() then begin
-                                recCrMemo.CalcFields("Amount Including VAT", "Montant reçu caisse");
-                                if recCrMemo."Amount Including VAT" = -recCrMemo."Montant reçu caisse" then begin
-                                    recCrMemo.Solde := true;
-
-                                end
-                                else
-                                    recCrMemo.solde := false;
-                                recCrMemo.Modify();
-                            end;
-                            Commit();
-                        end;
-                    "Document Caisse Type"::RetourBS:
-                        begin
-                            recRetourBS.Reset();
-                            recRetourBS.get(recRecuDoc."Document No");
-                            if recRetourBS.Find() then begin
-                                recRetourBS.CalcFields("Line Amount", "Montant reçu caisse");
-                                if recRetourBS."Line Amount" = -recRetourBS."Montant reçu caisse" then begin
-                                    recRetourBS.Solde := true;
-
-                                end
-                                else
-                                    recRetourBS.solde := false;
-                                recRetourBS.Modify();
-
-                            end;
-                            Commit();
-                        end;
-                    "Document Caisse Type"::BL:
-                        begin
-                            recBL.Reset();
-                            recBL.get(recRecuDoc."Document No");
-                            if recBL.Find() then begin
-                                recBL.CalcFields("Line Amount", "Montant reçu caisse");
-                                if recBL."Line Amount" = recBL."Montant reçu caisse" then begin
-                                    recBL.Solde := true;
-                                end
-                                else
-                                    recBL.solde := false;
-                                recBL.Modify();
-
-                            end;
-                            Commit();
-                        end;
-                    "Document Caisse Type"::RetourBL:
-                        begin
-                            recRetourBL.Reset();
-                            recRetourBL.get(recRecuDoc."Document No");
-                            if recRetourBL.Find() then begin
-                                recRetourBL.CalcFields("Line Amount", "Montant reçu caisse");
-                                if recRetourBL."Line Amount" = -recRetourBL."Montant reçu caisse" then begin
-                                    recRetourBL.Solde := true;
-
-                                end
-                                else
-                                    recRetourBL.solde := false;
-                                recRetourBL.Modify();
-
-                            end;
-                            Commit();
-                        end;
-                    "Document Caisse Type"::FA:
-                        begin
-                            recPurchInvHead.Reset();
-                            recPurchInvHead.Get(recRecuDoc."Document No");
-                            if recPurchInvHead.Find() then begin
-                                recPurchInvHead.CalcFields("Amount Including VAT", "Montant reçu caisse");
-                                if ((recPurchInvHead."Amount Including VAT" + recPurchInvHead."STStamp Fiscal Amount") = -recPurchInvHead."Montant reçu caisse") then begin
-                                    recPurchInvHead.solde := true;
-                                end
-                                else
-                                    recPurchInvHead.solde := false;
-                                recPurchInvHead.Modify();
-                            end;
-                            Commit();
-                        end;
-                    "Document Caisse Type"::AVA:
-                        begin
-                            recCrMemoHead.Reset();
-                            recCrMemoHead.get(recRecuDoc."Document No");
-                            if recCrMemoHead.Find() then begin
-                                recCrMemoHead.CalcFields("Amount Including VAT", "Montant reçu caisse");
-                                if (recCrMemoHead."Amount Including VAT" = recCrMemoHead."Montant reçu caisse") then begin
-                                    recCrMemoHead.solde := true;
-                                end
-                                else
-                                    recCrMemoHead.solde := false;
-                                recCrMemoHead.Modify();
-                            end;
-                            Commit();
-                        end;
-                    "Document Caisse Type"::Impaye:
-                        begin
-                            recRecuPay.Reset();
-                            recRecuPay.setrange("No Recu", recRecuDoc."Document No");
-                            recRecuPay.SetRange("Line No", recRecuDoc."id Ligne Impaye");
-                            if recRecuPay.FindFirst() then begin
-                                // Message('here %1 - %2!', recRecuPay."No Recu", recRecuPay."Line No");
-                                recRecuPay.CalcFields("Montant reçu caisse");
-                                if recRecuPay.Montant = recRecuPay."Montant reçu caisse" then begin
-                                    recRecuPay.solde := true
-                                end else
-                                    recRecuPay.solde := false;
-                                recRecuPay.Modify();
-                            end;
-                            Commit();
-                        end;
-                    else
-                        recRecuDoc.Solde := false;
-                        recRecuDoc.Modify();
-                end;
-            until recRecuDoc.Next() = 0;
-        end
+        ValidationRecu.MarquerDocumentsSoldes(recRecu);
+        Commit();
     end;
 
     procedure setSubPartVisible(recuPage: page "Recu Caisse Card")

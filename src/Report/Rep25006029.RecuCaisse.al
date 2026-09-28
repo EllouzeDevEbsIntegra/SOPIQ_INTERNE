@@ -222,11 +222,12 @@ report 25006029 "Recu Caisse"
         LibellePaiement := '';
     end;
 
+    // Ce rapport ne marque plus le recu comme imprime. Il le faisait ici, en fin
+    // d'execution, ce qui avait deux consequences : une validation sans impression ne
+    // marquait rien, et produire un PDF par l'API modifiait la donnee. C'est desormais la
+    // validation, dans le codeunit 50035, qui pose "Imprimé".
     trigger OnPostReport()
-    var
-        recCaisse: Record "Recu Caisse";
     begin
-        recCaisse.setPrinted("Recu Caisse");
     end;
 
     var
