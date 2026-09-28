@@ -55,6 +55,12 @@ FROM #societes AS s
 WHERE OBJECT_ID(QUOTENAME(s.Nom + '$Item$' + @base)) IS NOT NULL;
 
 EXEC sys.sp_executesql @sql;
+GO
+/*  Le GO ci-dessus est necessaire : SQL verifie les noms de colonnes de
+    tout un lot avant de l'executer. Si une table temporaire du meme nom
+    reste dans la session, il compare les colonnes a l'ancienne structure
+    et refuse. En coupant le lot, les requetes qui suivent sont compilees
+    apres la creation de la table. La table temporaire, elle, survit au GO.  */
 
 /* --- 1. Quelles marques portent les versions de modele de 3S ? ------- */
 /*     Pour connaitre le code exact de Mercedes et le poids des autres.   */
