@@ -125,7 +125,14 @@ page 50133 "Recu Document Subpage"
                                         recRetourBS.SetRange("No.", "Document No");
                                         if recRetourBS.FindFirst() then begin
                                             recRetourBS.CalcFields("Line Amount HT", "Line Amount", "Montant reçu caisse");
-                                            "Montant Reglement" := -recRetourBS."Line Amount";
+
+                                            // Ce que la caisse a deja rendu est negatif : sans cette
+                                            // deduction, un retour rembourse en partie etait propose
+                                            // une seconde fois pour sa totalite.
+                                            if recRetourBS."Line Amount" + recRetourBS."Montant reçu caisse" = 0 then
+                                                Error(DocumentSansResteErr, recRetourBS."No.");
+
+                                            "Montant Reglement" := -(recRetourBS."Line Amount" + recRetourBS."Montant reçu caisse");
                                             "Total TTC" := -recRetourBS."Line Amount";
                                             Modify();
                                         end
@@ -136,7 +143,13 @@ page 50133 "Recu Document Subpage"
                                         recCrMemo.SetRange("No.", "Document No");
                                         if recCrMemo.FindFirst() then begin
                                             recCrMemo.CalcFields("Amount Including VAT", "Montant reçu caisse");
-                                            "Montant Reglement" := -recCrMemo."Amount Including VAT";
+
+                                            // Meme deduction. Un avoir ne porte pas de timbre fiscal,
+                                            // son montant est le TTC seul.
+                                            if recCrMemo."Amount Including VAT" + recCrMemo."Montant reçu caisse" = 0 then
+                                                Error(DocumentSansResteErr, recCrMemo."No.");
+
+                                            "Montant Reglement" := -(recCrMemo."Amount Including VAT" + recCrMemo."Montant reçu caisse");
                                             "Total TTC" := -recCrMemo."Amount Including VAT";
                                             Modify();
                                         end;

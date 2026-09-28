@@ -297,10 +297,13 @@ report 25006118 "Etat Solde Client"
                 begin
                     mntNonSolde_RetBL := 0;
                     listeRetour_BL.CalcFields("Montant reçu caisse", "Montant Ouvert", "Line Amount");
+                    // La caisse rend de l'argent sur un retour : le montant encaisse est
+                    // negatif. L'ancienne soustraction l'ajoutait donc au solde du client.
+                    // Un retour de 100 deja rembourse de 40 affichait 140 au lieu de 60.
                     if RecCompany.BS then
-                        mntNonSolde_RetBL := "Montant Ouvert" - "Montant reçu caisse"
+                        mntNonSolde_RetBL := "Montant Ouvert" + "Montant reçu caisse"
                     else
-                        mntNonSolde_RetBL := "Line Amount" - "Montant reçu caisse";
+                        mntNonSolde_RetBL := "Line Amount" + "Montant reçu caisse";
                 end;
             }
 
@@ -347,7 +350,9 @@ report 25006118 "Etat Solde Client"
                 begin
                     mntNonSolde_RetBS := 0;
                     listeRetour_BS.CalcFields("Montant reçu caisse", "Line Amount");
-                    mntNonSolde_RetBS := "Line Amount" - "Montant reçu caisse";
+                    // Meme correction que sur les retours BL : le montant rendu par la
+                    // caisse est negatif, il se deduit.
+                    mntNonSolde_RetBS := "Line Amount" + "Montant reçu caisse";
                 end;
             }
 
@@ -474,7 +479,8 @@ report 25006118 "Etat Solde Client"
                 {
 
                 }
-                column(mntTTC_AV; "Amount Including VAT" + "STStamp Amount")
+                // Un avoir ne porte pas de timbre fiscal.
+                column(mntTTC_AV; "Amount Including VAT")
                 {
 
                 }
@@ -489,7 +495,12 @@ report 25006118 "Etat Solde Client"
                 begin
                     mntNonSolde_AV := 0;
                     listeAV.CalcFields("Amount Including VAT", "Montant reçu caisse");
-                    mntNonSolde_AV := "Amount Including VAT" + "STStamp Amount" - "Montant reçu caisse";
+                    // Deux corrections. Le montant rendu par la caisse est negatif, il se
+                    // deduit. Et un avoir ne porte pas de timbre fiscal : en compter un
+                    // rendait le document impossible a solder. Regle metier confirmee le
+                    // 28/09/2026 ; les avoirs qui en portent un dans la base sont des
+                    // erreurs de saisie anciennes.
+                    mntNonSolde_AV := "Amount Including VAT" + "Montant reçu caisse";
                 end;
             }
 
