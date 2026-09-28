@@ -263,15 +263,40 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Last Calculated - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 892373594 - Field 541644281 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nb articles en stock sans prix de vente</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Nb Art Stock Sans Prix - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 2081124476 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nb articles avec plusieurs emplacements</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Nb Article Multi Emplacement - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 892373594 - Field 729255731 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Nb Avoirs Non Réglés</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Nb Avoirs Non Réglés - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 892373594 - Field 4059968492 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nb BL non facturés</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Nb BL Non Facturés - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 892373594 - Field 2641727447 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Nb Factures Non Réglées</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Nb Factures Non Réglées - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 1281135512 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nb articles en litige +</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Nb Litige Plus - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 821709618 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nb retours non facturés</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Nb Retours Non Facturés - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 892373594 - Field 2053185933 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Retours du Jour (TTC)</source>
@@ -307,6 +332,11 @@
           <source>Total Factures Non Réglées</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Total Factures Non Réglées - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 892373594 - Field 3678968003 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total lignes BS TTC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table KPI Cache - Field Total Panier BS TTC - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 892373594 - Field 370563386 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Retour BL Non Réglés RC</source>
@@ -377,6 +407,66 @@
           <source>Description Tâche</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Labor Tasks - Field Task Description - Property caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2365572365 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Journal renommage references</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Log Renommage Refs - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2365572365 - Field 2246585627 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ancienne reference</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Log Renommage Refs - Field Ancien No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2365572365 - Field 2392971613 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date et heure</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Log Renommage Refs - Field Date Heure - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2365572365 - Field 883711285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N entree</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Log Renommage Refs - Field Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2365572365 - Field 3991974766 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Execution</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Log Renommage Refs - Field Execution - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2365572365 - Field 2743516650 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Fabricant</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Log Renommage Refs - Field Fabricant - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2365572365 - Field 1723417784 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nouvelle reference</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Log Renommage Refs - Field Nouveau No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2365572365 - Field 2341049317 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Simulation</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Log Renommage Refs - Field Simulation - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2365572365 - Field 802662350 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Societe</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Log Renommage Refs - Field Societe - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2365572365 - Field 3701822181 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Statut</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Log Renommage Refs - Field Statut - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2365572365 - Field 3701822181 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Renomme,Collision,Simule</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Log Renommage Refs - Field Statut - Property OptionCaption</note>
+        </trans-unit>
+        <trans-unit id="Table 2365572365 - Field 158156651 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Utilisateur</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Log Renommage Refs - Field Utilisateur - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 926202065 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Purchase Cart</source>
@@ -493,6 +583,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse - Field dateTime - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 4103804977 - Field 2931885792 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Identifiant brouillon Reapro</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse - Field Id Brouillon Reapro - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 4103804977 - Field 3621292693 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>isAcompte</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -532,6 +627,126 @@
           <source>user</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse - Field user - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 436150639 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Demande de reçu de caisse</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Demande - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 436150639 - Field 2803878444 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Contenu reçu</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Demande - Field Contenu - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 436150639 - Field 2392971613 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date et heure</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Demande - Field Date Heure - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 436150639 - Field 883711285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N° séquentiel</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Demande - Field Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 436150639 - Field 284836761 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Identifiant brouillon Reapro</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Demande - Field Id Brouillon - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 436150639 - Field 3080618677 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Message</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Demande - Field Message - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 436150639 - Field 2612674732 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N° reçu créé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Demande - Field Recu No - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 436150639 - Field 3701822181 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Statut</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Demande - Field Statut - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 436150639 - Field 3701822181 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
+          <source>En attente,Validé,Déjà traité,Erreur</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Demande - Field Statut - Property OptionCaption</note>
+        </trans-unit>
+        <trans-unit id="Table 436150639 - Field 158156651 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Compte appelant</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Demande - Field Utilisateur - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1378552587 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document à payer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Doc A Payer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1378552587 - Field 627846863 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Doc A Payer - Field Customer No - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1378552587 - Field 95989837 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date document</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Doc A Payer - Field Date Document - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1378552587 - Field 160930181 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Déjà réglé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Doc A Payer - Field Deja Regle - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1378552587 - Field 1792520506 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N° document</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Doc A Payer - Field Document No - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1378552587 - Field 883711285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N° séquentiel</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Doc A Payer - Field Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1378552587 - Field 1862721219 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document fournisseur</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Doc A Payer - Field Est Fournisseur - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1378552587 - Field 3585949831 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N° ligne impayé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Doc A Payer - Field Id Ligne Impaye - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1378552587 - Field 893932817 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Libellé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Doc A Payer - Field Libelle - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1378552587 - Field 2004352341 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Reste à payer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Doc A Payer - Field Reste A Payer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1378552587 - Field 642682322 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Signe</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Doc A Payer - Field Signe - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1378552587 - Field 1845139091 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Montant TTC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Doc A Payer - Field Total TTC - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1378552587 - Field 3175374588 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Type document</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Doc A Payer - Field type - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1378552587 - Field 604123464 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nom du type</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Recu Caisse Doc A Payer - Field Type Nom - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 633452020 - Field 627846863 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Customer No</source>
@@ -1568,6 +1783,21 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Transporter Setup - Field Last Fetched DateTime - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Codeunit 986387123 - Method 3976894464 - NamedType 3795269949" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Données du %1</source>
+          <note from="Developer" annotates="general" priority="2">%1 = jour/mois du dernier calcul</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit KPI Management - Method GetCacheFreshnessSuffix - NamedType DonneesDuLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 986387123 - Method 3976894464 - NamedType 2368717182" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Aucun calcul</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit KPI Management - Method GetCacheFreshnessSuffix - NamedType AucunCalculLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2822455982 - NamedType 3996203753" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ce traitement ne concerne que la société %1. Société ouverte : %2.</source>
+          <note from="Developer" annotates="general" priority="2">%1 société attendue, %2 société ouverte</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Renommer Versions Modele - NamedType SocieteErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2246482555 - Method 210834541 - NamedType 583370471" size-unit="char" translate="yes" xml:space="preserve">
           <source>&amp;Ship</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -1642,6 +1872,51 @@
           <source>The "orders" array was not found or is not a valid array in the API response.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Transporter API Integration - Method GetOrders - NamedType OrdersArrayNotFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3595859328 - NamedType 2884401674" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Le reçu doit comporter au moins un document.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Validation Recu Caisse - NamedType AucunDocumentErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3595859328 - NamedType 2514568730" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Le reçu doit comporter au moins un paiement.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Validation Recu Caisse - NamedType AucunPaiementErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3595859328 - NamedType 3541186859" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ce brouillon a déjà été traité, le reçu %1 existe.</source>
+          <note from="Developer" annotates="general" priority="2">%1 numéro de reçu</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Validation Recu Caisse - NamedType BrouillonDejaTraiteInfo</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3595859328 - NamedType 1741444182" size-unit="char" translate="yes" xml:space="preserve">
+          <source>L'identifiant de brouillon est obligatoire.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Validation Recu Caisse - NamedType BrouillonManquantErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3595859328 - NamedType 2795470158" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Le client %1 n'existe pas.</source>
+          <note from="Developer" annotates="general" priority="2">%1 numéro client</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Validation Recu Caisse - NamedType ClientInconnuErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3595859328 - NamedType 3151160976" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Le total des règlements (%1) ne correspond pas au total des documents (%2). Écart de %3. Ajoutez une ligne Remise ou Complément, ou marquez le reçu comme acompte.</source>
+          <note from="Developer" annotates="general" priority="2">%1 total règlements, %2 total documents, %3 écart</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Validation Recu Caisse - NamedType EcartErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3595859328 - NamedType 4010657093" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Le contenu envoyé n'est pas un JSON valide.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Validation Recu Caisse - NamedType PayloadErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3595859328 - NamedType 3048025605" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Valeur %1 inconnue pour %2.</source>
+          <note from="Developer" annotates="general" priority="2">%1 valeur reçue, %2 nom du champ</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Validation Recu Caisse - NamedType TypeInconnuErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3595859328 - NamedType 1251115554" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Vous devez sélectionner le code vendeur !</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Validation Recu Caisse - NamedType VendeurErr</note>
         </trans-unit>
         <trans-unit id="Page 2829331306 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Commerce de Gros</source>
@@ -2558,6 +2833,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control Discount modified - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 6969313 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nombre de jours de retard des indicateurs affichés. Le calcul n'a pas encore été effectué aujourd'hui.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control FraicheurKPI - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Page 3667168034 - Control 2010416714 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Retour du jour</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -2702,6 +2982,11 @@
           <source>Panier BS</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control PanierBS - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3667168034 - Control 1896717317 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total lignes BS TTC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Admin Comm. Gros KPI - Control Total BS Ligne Inc. VAT - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3667168034 - Control 994521915 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Non Réglée Reçu de caisse</source>
@@ -4847,6 +5132,11 @@
           <source>Panier BS</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Commerce de Gros KPI - Control PanierBS - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2082978657 - Control 1896717317 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total lignes BS TTC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Commerce de Gros KPI - Control Total BS Ligne Inc. VAT - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2082978657 - Action 742001001 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Set up the cues (status tiles) related to the role.</source>
@@ -8432,6 +8722,11 @@
           <source>Specifies the variant of the item on the line.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page itemLedgerEntries - Control VariantCode - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4145419452 - NamedType 3433488167" size-unit="char" translate="yes" xml:space="preserve">
+          <source>La référence %1 est une version de modèle de véhicule dans la société %2. Elle ne relève pas des articles master.</source>
+          <note from="Developer" annotates="general" priority="2">%1 numéro de l'article, %2 nom de la société</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Items Master List - NamedType ModeleVersionErr</note>
         </trans-unit>
         <trans-unit id="Page 4145419452 - Control 1465975551 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Date Ajout</source>
@@ -13643,6 +13938,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse API - Control dateTime - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 577961945 - Control 93514576 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Identifiant brouillon Reapro</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse API - Control idBrouillonReapro - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 577961945 - Control 3621292693 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Acompte ?</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -13778,6 +14078,101 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Card - Control totalRéglement - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3233254034 - Control 3011797068 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Contenu du reçu, en JSON</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Creation API - Control contenu - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3233254034 - Control 1053061285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date et heure</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Creation API - Control dateHeure - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3233254034 - Control 1570674201 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Identifiant brouillon</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Creation API - Control idBrouillon - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3233254034 - Control 1123684309 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Message</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Creation API - Control message - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3233254034 - Control 4006147788 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N° reçu créé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Creation API - Control recuNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3233254034 - Control 4186876613 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Statut</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Creation API - Control statut - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3473828894 - Control 1108861191 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Client</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Docs A Payer API - Control customerNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3473828894 - Control 497897109 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date document</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Docs A Payer API - Control dateDocument - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3473828894 - Control 1601989021 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Déjà réglé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Docs A Payer API - Control dejaRegle - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3473828894 - Control 73228906 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N° document</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Docs A Payer API - Control documentNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3473828894 - Control 2683860767 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N° séquentiel</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Docs A Payer API - Control entryNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3473828894 - Control 1402460283 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document fournisseur</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Docs A Payer API - Control estFournisseur - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3473828894 - Control 1584213423 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N° ligne impayé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Docs A Payer API - Control idLigneImpaye - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3473828894 - Control 63260977 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Libellé</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Docs A Payer API - Control libelle - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3473828894 - Control 595617629 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Reste à payer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Docs A Payer API - Control resteAPayer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3473828894 - Control 1078100722 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Signe</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Docs A Payer API - Control signe - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3473828894 - Control 2417678619 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Montant TTC</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Docs A Payer API - Control totalTTC - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3473828894 - Control 3175374588 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Type document</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Docs A Payer API - Control type - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3473828894 - Control 4061775919 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nom du type</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Docs A Payer API - Control typeCode - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1577914700 - Control 3689535207 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Client</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -13832,6 +14227,11 @@
           <source>Échéance</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Paiement API - Control Echeance - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1984067084 - Control 1894446929 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Décaissement</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Caisse Paiement API - Control isDecaissement - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 1984067084 - Control 1165969121 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>N° Ligne</source>
@@ -14002,6 +14402,11 @@
           <source>Document à payer</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Recu Document Subpage - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 821516379 - NamedType 3557017148" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Le document %1 ne laisse plus rien à encaisser : il est entièrement facturé ou déjà réglé.</source>
+          <note from="Developer" annotates="general" priority="2">%1 numéro du document</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Recu Document Subpage - NamedType DocumentSansResteErr</note>
         </trans-unit>
         <trans-unit id="Page 3454346139 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Liste Paiements</source>
@@ -17738,6 +18143,36 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Transporter Shipment List - Action SendEnvelope - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1430679988 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Vendor By Manufacturer API</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Vendor By Manufacturer API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1430679988 - Control 3563977649 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>defaultVendor</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Vendor By Manufacturer API - Control defaultVendor - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1430679988 - Control 3790834230 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>manufacturerCode</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Vendor By Manufacturer API - Control manufacturerCode - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1430679988 - Control 1419019084 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>manufacturerName</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Vendor By Manufacturer API - Control manufacturerName - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1430679988 - Control 1080886883 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>vendorCode</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Vendor By Manufacturer API - Control vendorCode - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1430679988 - Control 4226090658 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>vendorNoFormat</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Vendor By Manufacturer API - Control vendorNoFormat - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1148435397 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Zone Recouvrement API</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -20283,6 +20718,41 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report Recu Caisse - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Report 2088619474 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Renommer les references fabricants</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Renommer Refs Fabricants - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2088619474 - Method 2736589801 - NamedType 40525440" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Fabricants %1\Renommees : %2\Collisions laissees telles quelles : %3\Simulees : %4\\Detail dans la table 50024 Log Renommage Refs.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Renommer Refs Fabricants - Method OnPostReport - NamedType TexteResultat</note>
+        </trans-unit>
+        <trans-unit id="Report 2088619474 - Control 2346885236 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Options</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Renommer Refs Fabricants - Control Options - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2088619474 - Control 2467411975 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Codes fabricants separes par |. Par defaut LuK, FAG, INA et Vitesco.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Renommer Refs Fabricants - Control FabricantsFiltre - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Report 2088619474 - Control 2467411975 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Fabricants</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Renommer Refs Fabricants - Control FabricantsFiltre - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2088619474 - Control 2341049317 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Coche : compte les references sans rien modifier. Decoche : renomme reellement.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Renommer Refs Fabricants - Control Simulation - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Report 2088619474 - Control 2341049317 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Simulation (aucune modification)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Renommer Refs Fabricants - Control Simulation - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Report 2147451765 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Retour BL/BS COPIM</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -21428,6 +21898,51 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Query Items - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Query 4006313597 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>KPI COPIM cout BS archives par jour</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query KPI Copim Bs Archive Cost Dly - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Query 2731777852 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>KPI COPIM BS archives par jour</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query KPI Copim Bs Archive Daily - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Query 454389005 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>KPI COPIM cout avoirs par jour</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query KPI Copim Cr Memo Cost Daily - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Query 3095831792 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>KPI COPIM avoirs par jour</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query KPI Copim Credit Memo Daily - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Query 3662870112 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>KPI COPIM cout factures directes par jour</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query KPI Copim Inv Direct Cost Dly - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Query 757364046 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>KPI COPIM cout factures expediees par jour</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query KPI Copim Inv Shipped Cost Dly - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Query 3111782694 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>KPI COPIM factures par jour</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query KPI Copim Invoice Daily - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Query 1223663782 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>KPI COPIM cout retours BS par jour</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query KPI Copim Return Cost Daily - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Query 2422962539 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>KPI COPIM retours BS par jour</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query KPI Copim Return Daily - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Query 4125875165 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>KPI valeur de stock</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -21487,6 +22002,11 @@
           <source>Service Labor</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Query ServLabor - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Query 4153091758 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Stock par emplacement, agrege</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query Stock Emplacement Agrege - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 3470244815 - Action 2297996449 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3470244815">
           <source>Grand Livre Client 2</source>
