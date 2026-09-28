@@ -37,10 +37,7 @@ SELECT ' + QUOTENAME(s.Nom, '''') + N' AS Societe,
        COUNT(*) AS AvoirsNonSoldes,
        SUM(CASE WHEN ISNULL(T.[STStamp Amount], 0) <> 0 THEN 1 ELSE 0 END) AS DontAvecTimbre,
        SUM(ISNULL(T.[STStamp Amount], 0)) AS TotalTimbres,
-       SUM(CASE WHEN EXISTS (SELECT 1
-                             FROM ' + QUOTENAME(@bd) + N'.dbo.' + QUOTENAME(s.Nom + '$Recu Caisse Document$' + @interne) + N' AS D
-                             WHERE D.[Document No] COLLATE DATABASE_DEFAULT = A.[No_] COLLATE DATABASE_DEFAULT)
-                THEN 1 ELSE 0 END) AS DontVusEnCaisse,
+       SUM(CASE WHEN R.NbLignes IS NULL THEN 0 ELSE 1 END) AS DontVusEnCaisse,
        MIN(CASE WHEN ISNULL(T.[STStamp Amount], 0) <> 0 THEN A.[Posting Date] END) AS PlusAncienTimbre,
        MAX(CASE WHEN ISNULL(T.[STStamp Amount], 0) <> 0 THEN A.[Posting Date] END) AS PlusRecentTimbre
 FROM ' + QUOTENAME(@bd) + N'.dbo.' + QUOTENAME(s.Nom + '$Sales Cr_Memo Header$' + @base) + N' AS A
@@ -48,6 +45,11 @@ JOIN ' + QUOTENAME(@bd) + N'.dbo.' + QUOTENAME(s.Nom + '$Sales Cr_Memo Header$' 
     ON I.[No_] = A.[No_]
 LEFT JOIN ' + QUOTENAME(@bd) + N'.dbo.' + QUOTENAME(s.Nom + '$Sales Cr_Memo Header$' + @st) + N' AS T
     ON T.[No_] = A.[No_]
+LEFT JOIN (
+    SELECT [Document No] COLLATE DATABASE_DEFAULT AS No_, COUNT(*) AS NbLignes
+    FROM ' + QUOTENAME(@bd) + N'.dbo.' + QUOTENAME(s.Nom + '$Recu Caisse Document$' + @interne) + N'
+    GROUP BY [Document No]) AS R
+    ON R.No_ = A.[No_] COLLATE DATABASE_DEFAULT
 WHERE I.[solde] = 0
 UNION ALL'
 FROM #societes AS s;
