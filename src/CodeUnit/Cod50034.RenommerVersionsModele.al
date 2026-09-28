@@ -98,6 +98,18 @@ codeunit 50034 "Renommer Versions Modele"
                 else begin
                     ItemARenommer.Get(AncienNo);
                     ItemARenommer.Rename(NouveauNo);
+
+                    // "N° 2" porte une copie du numero, posee par le traitement des Item
+                    // Master. Ce n'est pas une relation : le renommage ne l'atteint pas et
+                    // la fiche garderait l'ancien numero dans ce champ. Or ce numero
+                    // designe une piece dans une autre societe, c'est justement ce qu'on
+                    // cherche a separer. Le balayage du 28/09/2026 n'a trouve que cette
+                    // colonne, avec "Item Unit of Measure" que BC met a jour seul.
+                    if ItemARenommer."No. 2" = AncienNo then begin
+                        ItemARenommer."No. 2" := NouveauNo;
+                        ItemARenommer.Modify();
+                    end;
+
                     Journaliser(AncienNo, NouveauNo, Log.Statut::Renomme, Simulation);
 
                     // Validation apres chaque fiche, comme le ferait un utilisateur qui
