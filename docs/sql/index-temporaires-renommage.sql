@@ -14,7 +14,7 @@
 
 SET NOCOUNT ON;
 
-DECLARE @Action varchar(10) = 'CREATE';   -- 'CREATE' ou 'DROP'
+DECLARE @Action varchar(10) = 'DROP';   -- 'CREATE' ou 'DROP'
 DECLARE @base nvarchar(50) = N'437dbf0e-84ff-417a-965d-ed2bb9650972';
 
 IF OBJECT_ID('tempdb..#societes') IS NOT NULL DROP TABLE #societes;

@@ -15,7 +15,7 @@
 
 SET NOCOUNT ON;
 
-DECLARE @Action varchar(10) = 'CREATE';   -- 'CREATE' ou 'DROP'
+DECLARE @Action varchar(10) = 'DROP';   -- 'CREATE' ou 'DROP'
 
 IF OBJECT_ID('tempdb..#societes') IS NOT NULL DROP TABLE #societes;
 CREATE TABLE #societes (Nom nvarchar(50));

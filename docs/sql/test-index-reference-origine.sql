@@ -59,7 +59,7 @@ GO
    lectures logiques, seul chiffre qui compte ici. Le temps en
    millisecondes depend de ce que fait le serveur au meme moment.
    --------------------------------------------------------------------- */
-DECLARE @Ref nvarchar(100) = N'A REMPLACER';
+DECLARE @Ref nvarchar(100) = N'MASTER0125422517';
 
 SET STATISTICS IO ON;
 SET STATISTICS TIME ON;
