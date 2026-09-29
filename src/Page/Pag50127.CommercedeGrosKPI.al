@@ -1073,17 +1073,23 @@ page 50127 "Commerce de Gros KPI"
         DocProfFilter: Text;
 
     begin
-        if FieldActive("Average Days Delayed") then
-            "Average Days Delayed" := CalculateAverageDaysDelayed;
-
-        if FieldActive("Ready to Ship") then
-            "Ready to Ship" := CountOrders(FieldNo("Ready to Ship"));
-
-        if FieldActive("Partially Shipped") then
-            "Partially Shipped" := CountOrders(FieldNo("Partially Shipped"));
-
-        if FieldActive(Delayed) then
-            Delayed := CountOrders(FieldNo(Delayed));
+        // Quatre calculs ont ete retires d'ici : "Average Days Delayed", "Ready to Ship",
+        // "Partially Shipped" et "Delayed". Leurs tuiles sont commentees dans la mise en
+        // page depuis longtemps, mais le calcul, lui, partait a chaque ouverture : on
+        // payait des tuiles qui ne s'affichaient pas.
+        //
+        // Et elles coutaient cher. Elles comptent des commandes en filtrant sur
+        // "Completely Shipped", "Shipped" et "Late Order Shipping", des FlowFields de
+        // l'en-tete vente calcules depuis les lignes. Un filtre sur un FlowField ne peut
+        // etre servi par aucun index : SQL recalcule la valeur de chaque en-tete avant de
+        // pouvoir compter. Mesure du 29/09/2026 sur STE COPIM : quatre requetes, plus de
+        // huit cent mille pages lues a chaque ouverture, par chaque utilisateur.
+        //
+        // Le metier a confirme le 29/09/2026 que ces tuiles ne servent a personne. Si
+        // elles redevenaient utiles, il faudrait les calculer dans le traitement KPI et
+        // les lire depuis le cache, comme les tuiles articles.
+        //
+        // La page 50124, temoin du chantier 4, garde le calcul d'origine.
 
         DocProfFilter := DocProfMgt.GetDocProfileFilter();
         SalesHeader.Reset();
