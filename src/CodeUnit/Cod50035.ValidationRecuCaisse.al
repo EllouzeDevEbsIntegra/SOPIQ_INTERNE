@@ -233,7 +233,7 @@ codeunit 50035 "Validation Recu Caisse"
         RecuCaisse.isAcompte := LireBooleen(Racine, 'isAcompte');
         RecuCaisse."Id Brouillon Reapro" := IdBrouillon;
         RecuCaisse.Printed := false;
-        RecuCaisse.Insert();
+        RecuCaisse.Insert(true);
 
         // Le contenu envoye est conserve sur l'en-tete : sans lui, impossible de savoir ce
         // qui avait ete demande le jour ou un recu est conteste.
@@ -271,7 +271,9 @@ codeunit 50035 "Validation Recu Caisse"
             RecuDocument."Total TTC" := LireDecimal(Ligne, 'totalTTC');
             RecuDocument."Montant Reglement" := LireDecimal(Ligne, 'montantReglement');
             RecuDocument."id Ligne Impaye" := LireEntier(Ligne, 'idLigneImpaye');
-            RecuDocument.Insert();
+            // Insert(true) : le OnInsert de la table porte la regle de la fiche, un seul
+            // document pour un recu acompte. Sans le true, elle ne s'appliquait pas ici.
+            RecuDocument.Insert(true);
         end;
     end;
 
@@ -313,7 +315,9 @@ codeunit 50035 "Validation Recu Caisse"
             end;
 
             // Le sens et le montant signe sont deduits du type, jamais recus de l'exterieur :
-            // c'est le OnInsert de la table qui s'en charge.
+            // c'est le OnInsert de la table qui s'en charge, d'ou le Insert(true) plus bas.
+            // Sans ce true le trigger ne partait pas, "Montant Calcul" restait a zero et
+            // tout recu regle autrement qu'en complement etait refuse comme desequilibre.
             //
             // Une exception, celle de la fiche : la ligne Complement porte un "Montant
             // Calcul" negatif alors que son montant est positif, et le type Complement
@@ -322,7 +326,7 @@ codeunit 50035 "Validation Recu Caisse"
             if TypePaiement = TypePaiement::Complement then
                 RecuPaiement."Montant Calcul" := -RecuPaiement.Montant;
 
-            RecuPaiement.Insert();
+            RecuPaiement.Insert(true);
         end;
     end;
 
