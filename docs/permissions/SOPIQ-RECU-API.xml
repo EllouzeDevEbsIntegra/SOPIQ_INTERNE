@@ -70,7 +70,7 @@
       <ExecutePermission>1</ExecutePermission><SecurityFilter></SecurityFilter>
     </Permission>
 
-    <!-- Pages API : recu, documents, paiements, creation, documents a payer -->
+    <!-- Pages API : recu, documents, paiements, creation, documents a payer, PDF -->
     <Permission>
       <ObjectType>8</ObjectType><ObjectID>25006835</ObjectID>
       <ReadPermission>0</ReadPermission><InsertPermission>0</InsertPermission>
@@ -97,6 +97,12 @@
     </Permission>
     <Permission>
       <ObjectType>8</ObjectType><ObjectID>25006940</ObjectID>
+      <ReadPermission>0</ReadPermission><InsertPermission>0</InsertPermission>
+      <ModifyPermission>0</ModifyPermission><DeletePermission>0</DeletePermission>
+      <ExecutePermission>1</ExecutePermission><SecurityFilter></SecurityFilter>
+    </Permission>
+    <Permission>
+      <ObjectType>8</ObjectType><ObjectID>25006941</ObjectID>
       <ReadPermission>0</ReadPermission><InsertPermission>0</InsertPermission>
       <ModifyPermission>0</ModifyPermission><DeletePermission>0</DeletePermission>
       <ExecutePermission>1</ExecutePermission><SecurityFilter></SecurityFilter>
