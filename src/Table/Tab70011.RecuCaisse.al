@@ -94,10 +94,13 @@ table 70011 "Recu Caisse"
         // encaissement ne soit pas enregistre deux fois si la reponse n'arrive pas jusqu'a
         // Reapro : un second envoi du meme brouillon rend ce recu au lieu d'en creer un
         // autre. Vide pour les recus saisis dans Business Central.
+        //
+        // Ce champ reste modifiable : c'est lui que l'appel de creation renseigne, et c'est
+        // son affectation qui declenche l'insertion cote Business Central. Declare non
+        // modifiable, l'appel repondait un succes sans rien ecrire.
         field(70018; "Id Brouillon Reapro"; Code[50])
         {
             Caption = 'Identifiant brouillon Reapro';
-            Editable = false;
         }
 
         // Le recu complet envoye par Reapro, conserve tel quel : sans lui, impossible de
@@ -175,7 +178,10 @@ table 70011 "Recu Caisse"
         Flux: InStream;
         Texte: Text;
     begin
-        CalcFields("Contenu Reapro");
+        // Le blob peut deja porter sa valeur en memoire, juste apres avoir ete ecrit et
+        // avant que la fiche ne soit relue : dans ce cas CalcFields l'ecraserait.
+        if not "Contenu Reapro".HasValue() then
+            CalcFields("Contenu Reapro");
         if not "Contenu Reapro".HasValue() then
             exit('');
         "Contenu Reapro".CreateInStream(Flux, TextEncoding::UTF8);

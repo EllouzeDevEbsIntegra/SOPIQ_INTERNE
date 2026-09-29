@@ -12,8 +12,8 @@
 // Appel :
 //   POST /api/sopiq/interne/v1.0/companies({id})/recuCaisseCreation
 //   {
-//     "idBrouillon": "REAPRO-2026-000123",
-//     "contenu": "{ ... voir plus bas ... }"
+//     "contenu": "{ ... voir plus bas ... }",
+//     "idBrouillon": "REAPRO-2026-000123"
 //   }
 //
 // Le champ contenu porte le recu, en JSON, sous forme de texte :
@@ -39,6 +39,14 @@
 // brouillon est refuse en nommant le recu deja cree : c'est le garde-fou contre le double
 // encaissement quand la reponse ne parvient pas jusqu'a Reapro. Pour retrouver ce recu :
 //   GET /recuCaisseAPI?$filter=idBrouillonReapro eq 'REAPRO-2026-000123'
+//
+// Attention, sur idBrouillon : il est branche sur le champ de la table, pas sur une variable
+// de page. C'est volontaire. Avec DelayedInsert, Business Central n'insere que si un champ
+// de l'enregistrement a ete renseigne ; quand les deux champs de l'appel etaient des
+// variables de page, rien n'etait modifie, aucune insertion n'etait tentee, OnInsertRecord
+// n'etait jamais appele et l'appel repondait 200 avec un recu vide sans rien ecrire.
+// contenu reste une variable de page faute de pouvoir exposer un blob, et il est declare
+// avant idBrouillon pour etre deja renseigne au moment ou l'insertion part.
 page 25006939 "Recu Caisse Creation API"
 {
     PageType = API;
@@ -69,13 +77,13 @@ page 25006939 "Recu Caisse Creation API"
                     Caption = 'SystemId', Locked = true;
                     Editable = false;
                 }
-                field(idBrouillon; IdBrouillon)
-                {
-                    Caption = 'Identifiant brouillon';
-                }
                 field(contenu; ContenuTexte)
                 {
                     Caption = 'Contenu du reçu, en JSON';
+                }
+                field(idBrouillon; Rec."Id Brouillon Reapro")
+                {
+                    Caption = 'Identifiant brouillon';
                 }
                 field(recuNo; Rec.No)
                 {
@@ -103,19 +111,22 @@ page 25006939 "Recu Caisse Creation API"
 
     var
         ContenuTexte: Text;
-        IdBrouillon: Code[50];
 
     trigger OnAfterGetRecord()
     begin
-        IdBrouillon := Rec."Id Brouillon Reapro";
         ContenuTexte := Rec.LireContenuReapro();
     end;
 
-    // Tout se joue ici, dans la transaction de l'appel.
+    // Tout se joue ici, dans la transaction de l'appel. Le codeunit insere le recu lui-meme,
+    // avec ses documents et ses paiements, puis le valide ; l'insertion de la page n'a donc
+    // plus lieu d'etre, d'ou exit(false). Toute erreur remonte telle quelle a l'appelant.
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     var
         ValidationRecu: Codeunit "Validation Recu Caisse";
+        IdBrouillon: Code[50];
     begin
+        // Releve avant l'appel : le codeunit repart d'un enregistrement vierge.
+        IdBrouillon := Rec."Id Brouillon Reapro";
         ValidationRecu.CreerEtValider(Rec, IdBrouillon, ContenuTexte);
         exit(false);
     end;
