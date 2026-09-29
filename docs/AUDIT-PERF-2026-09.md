@@ -724,3 +724,46 @@ journal étant horodaté par BC et `GETDATE()` par SQL, un suivi naïf fait croi
 fier à la progression du compteur, jamais à l'écart de temps.
 
 <!-- Compléter au fil de l'eau. -->
+
+### Chantier 6 — 2026-09-29 · « Les tuiles qu'on calculait sans les afficher »
+
+Le chantier 4 laissait un reste identifié : quatre requêtes de comptage sur `Sales Header` avec
+des `OUTER APPLY` sur `Sales Line`, à chaque ouverture du tableau de bord.
+
+**Trois fausses pistes, et ce qu'elles enseignent.** La première mesure n'a rien capté, faute
+d'avoir refermé la page avant la photo. La deuxième a été prise sur une autre société que celle
+où le coût apparaissait. La troisième m'a fait masquer les tuiles d'une page du verticalisateur,
+la partie « Activités » du Role Center vendeur pièces, qui portait bien des tuiles du même nom
+mais n'était pas celle que les utilisateurs ouvrent. Cette extension de page a été retirée.
+Une capture d'écran du Role Center a tranché en dix secondes ce que trois quarts d'heure de
+lecture de symboles n'avaient pas réglé : **regarder l'écran de l'utilisateur avant de fouiller
+le code**.
+
+**La cause, dans notre propre code.** La page 50127, « Commerce de Gros KPI », appelait
+`CalculateCueFieldValues` à chaque ouverture. Cette procédure calcule « Average Days Delayed »,
+« Ready to Ship », « Partially Shipped » et « Delayed », dont les tuiles sont **commentées dans
+la mise en page depuis longtemps**. On payait l'affichage de tuiles invisibles.
+
+Le coût venait de la nature des filtres : `Completely Shipped`, `Shipped` et
+`Late Order Shipping` sont des FlowFields de l'en-tête vente, calculés depuis les lignes. Aucun
+index ne peut servir un filtre sur un FlowField, SQL recalcule la valeur de chaque en-tête avant
+de pouvoir compter. C'est la cause racine R1, dans sa forme la plus coûteuse.
+
+**Résultat, mesuré sur DEV, société STE COPIM, à l'ouverture du tableau de bord**
+
+| Requête | Avant | Après |
+|---|---|---|
+| Comptage « Delayed » | 0,51 s, 346 206 pages | supprimée |
+| Comptage « Partially Shipped » | 0,31 s, 114 175 pages | supprimée |
+| Comptage « Ready to Ship » | 0,19 s, 112 097 pages | supprimée |
+| Lecture « Average Days Delayed » | 0,33 s, 276 956 pages | supprimée |
+| **Total** | **1,34 s, 849 434 pages** | **0** |
+
+Les tuiles affichées ne bougent pas : les sept statuts de commande, les BL et retours non
+facturés, les factures et avoirs, le panier BS et les articles sont calculés ailleurs.
+
+La page 50124, témoin du chantier 4, garde le calcul d'origine.
+
+**Reste identifié, et qui ne dépend pas de nous** : pendant ces mesures, l'application Reapro a
+lancé une quinzaine de requêtes sur `ELVA_ITEM` à 47 214 pages chacune, en quelques secondes.
+C'est le même sujet que le reste du chantier 4, à leur signaler.
