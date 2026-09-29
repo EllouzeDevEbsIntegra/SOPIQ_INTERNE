@@ -675,4 +675,52 @@ regrouper ces appels. À signaler.
 une colonne. Aucun index ne peut le servir. Deux voies possibles, à étudier : exposer la
 colonne brute à côté de l'expression, ou une colonne calculée persistante.
 
+
+### Chantier 5 — 2026-09-28 · « Numérotation des versions de modèle »
+
+Le même numéro d'article pouvait désigner une pièce dans une société et un véhicule dans une
+autre : `204002` valait « Vanne EGR » dans SOPIQ PROD et « C 220 CDI » dans 3S AGENCE. Le
+traitement des Item Master recopiait la pièce sur le véhicule. Business Central l'a refusé, mais
+par effet de bord : il réclamait un code traçabilité que la pièce n'avait pas. Si le véhicule
+avait eu une valorisation ordinaire, la fiche aurait été écrasée en silence.
+
+**Deux réponses, livrées le même jour.**
+
+Un garde-fou dans le code, version 1.0.8.0 : le traitement des Item Master contrôle le champ
+`Item Type` avant toute écriture. Une fiche « Modèle Version » n'est ni écrasée, ni propagée, et
+les références écartées sont listées en fin de traitement au lieu d'être tues.
+
+Une séparation des numéros, version 1.0.9.0 : les versions de modèle Mercedes de 3S AGENCE, à
+six chiffres, prennent un point entre le troisième et le quatrième chiffre. `204002` devient
+`204.002`.
+
+**Mesures avant lancement** : 850 fiches concernées en production, aucune collision, treize
+lignes dans `items Master` toutes rattachées à 3S AGENCE, et surtout un balayage des 222 colonnes
+de numéro d'article de la société, qui n'a trouvé que deux colonnes portant ces numéros —
+`Item Unit of Measure`, que Business Central met à jour seul, et le champ `N° 2` de la fiche
+article, que le renommage n'atteint pas et que le batch reporte désormais lui-même.
+
+**Résultat en production — 2026-09-28, 18:12 à 19:22**
+
+| Contrôle | Attendu | Obtenu |
+|---|---|---|
+| Fiches renommées | 850 | 850 |
+| Collisions | 0 | 0 |
+| Fiches restantes à six chiffres | 0 | 0 |
+| `N° 2` en écart | 0 | 0 |
+
+Une heure et dix minutes, soit cinq secondes par fiche : c'est le temps que met Business Central
+à reporter un numéro sur tout l'historique qui s'y rattache. La répétition sur DEV avait donné
+858 fiches en 1 h 06.
+
+**Deux enseignements pour la prochaine fois.**
+
+Le traitement valide après chaque fiche, il est donc reprenable. Il s'est interrompu une fois,
+parce qu'une commande a été tapée dans la fenêtre qui l'exécutait ; relancé, il a repris à la
+195e sans rien perdre.
+
+Le serveur Business Central et le serveur SQL n'ont pas la même heure : une heure d'écart. Le
+journal étant horodaté par BC et `GETDATE()` par SQL, un suivi naïf fait croire à un arrêt. Se
+fier à la progression du compteur, jamais à l'écart de temps.
+
 <!-- Compléter au fil de l'eau. -->
