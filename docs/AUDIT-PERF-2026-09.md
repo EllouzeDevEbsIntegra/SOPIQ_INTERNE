@@ -767,3 +767,44 @@ La page 50124, témoin du chantier 4, garde le calcul d'origine.
 **Reste identifié, et qui ne dépend pas de nous** : pendant ces mesures, l'application Reapro a
 lancé une quinzaine de requêtes sur `ELVA_ITEM` à 47 214 pages chacune, en quelques secondes.
 C'est le même sujet que le reste du chantier 4, à leur signaler.
+
+### Essai non concluant — 2026-09-29 · « Rendre indexable le filtre de ELVA_ITEM »
+
+Le chantier 4 laissait ce reste : le filtre le plus utilisé de la vue,
+`WHERE [Vendor Item No_] IN (...)`, porte sur une expression et non sur une colonne.
+
+```sql
+CASE IX.Produit WHEN 1 THEN REPLACE(I.No_, 'MASTER', '')
+                WHEN 0 THEN I.[Vendor Item No_] END
+```
+
+**L'idée essayée** : couper la lecture en deux selon `Produit`. Les 161 834 articles en
+`Produit = 0`, soit 84 %, retomberaient sur la vraie colonne `[Vendor Item No_]`, qu'un index
+peut servir. Un index a été posé sur cette colonne, l'essai lancé sur PROD, puis tout a été
+remis en état. Script conservé : `docs/sql/essai-filtre-elva-vendor-item.sql`.
+
+**Mesure, sur une liste réelle de 34 références rendant 6 lignes**
+
+| | Pages lues | Processeur | Temps rendu |
+|---|---|---|---|
+| Vue actuelle | 47 214 | 5,0 s | 2,7 s |
+| Lecture coupée en deux | 759 | 5,0 s | 5,5 à 7,2 s |
+
+**Pourquoi c'est un échec.** Le coût n'était pas la lecture mais le calcul : `REPLACE` puis
+trente-quatre comparaisons de texte sur 193 305 articles, soit plus de six millions
+d'opérations. Diviser les lectures par soixante n'y change rien. Pire, la vue actuelle est
+parallélisée par SQL Server, les cinq secondes de processeur se répartissent sur plusieurs
+cœurs ; la version coupée s'exécute sur un seul et rend la main deux fois plus tard.
+
+**Ce qu'il faudrait pour gagner vraiment**, et qui reste à décider : une colonne calculée
+persistante portant `REPLACE(No_, 'MASTER', '')` sur la table article du verticalisateur, avec
+son index. Les deux moitiés deviendraient des recherches directes, et le coût tomberait de cinq
+secondes à quelques millisecondes.
+
+Le prix : c'est une colonne ajoutée à une table gérée par Business Central. Une republication
+de l'extension du verticalisateur peut la faire disparaître, et la vue tomberait alors en panne
+pour toutes les applications connectées. À décider, pas à improviser.
+
+**Rappel de la contrainte, posée le 29/09/2026** : ces vues sont un contrat avec plusieurs
+applications. Ni leur nom, ni leurs colonnes, ni leur contenu ne doivent changer. Toute
+optimisation est de notre côté et doit rester invisible pour elles.
