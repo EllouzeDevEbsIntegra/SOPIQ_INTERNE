@@ -30,7 +30,7 @@ codeunit 50035 "Validation Recu Caisse"
     var
         VendeurErr: Label 'Vous devez sélectionner le code vendeur !';
         EcartErr: Label 'Le total des règlements (%1) ne correspond pas au total des documents (%2). Écart de %3. Ajoutez une ligne Remise ou Complément, ou marquez le reçu comme acompte.', Comment = '%1 total règlements, %2 total documents, %3 écart';
-        BrouillonDejaTraiteInfo: Label 'Ce brouillon a déjà été traité, le reçu %1 existe.', Comment = '%1 numéro de reçu';
+        BrouillonDejaTraiteInfo: Label 'Ce brouillon a déjà été traité : le reçu %1 existe. Relisez-le avec un filtre sur l''identifiant de brouillon.', Comment = '%1 numéro de reçu';
         BrouillonManquantErr: Label 'L''identifiant de brouillon est obligatoire.';
         ClientInconnuErr: Label 'Le client %1 n''existe pas.', Comment = '%1 numéro client';
         PayloadErr: Label 'Le contenu envoyé n''est pas un JSON valide.';
@@ -177,42 +177,37 @@ codeunit 50035 "Validation Recu Caisse"
     // l'appel : si quoi que ce soit echoue, rien n'est ecrit et le numero de recu n'est pas
     // consomme.
     //
+    // L'en-tete passe en parametre est celui que la page API s'apprete a inserer : on le
+    // remplit ici, on cree ses lignes, puis on valide. Il n'y a pas de table tampon, la
+    // licence du client ne permettant plus d'en creer.
+    //
     // Idempotence : l'identifiant de brouillon fourni par Reapro est enregistre sur
-    // l'en-tete. Un second envoi du meme brouillon ne cree rien et rend le recu deja cree.
-    procedure CreerEtValider(var Demande: Record "Recu Caisse Demande"; Payload: Text)
+    // l'en-tete. Un second envoi du meme brouillon est refuse, en nommant le recu deja cree ;
+    // Reapro le retrouve par un GET filtre sur cet identifiant.
+    procedure CreerEtValider(var RecuCaisse: Record "Recu Caisse"; IdBrouillon: Code[50]; Payload: Text)
     var
-        RecuCaisse: Record "Recu Caisse";
         RecuExistant: Record "Recu Caisse";
         Racine: JsonObject;
     begin
-        if Demande."Id Brouillon" = '' then
+        if IdBrouillon = '' then
             Error(BrouillonManquantErr);
 
-        // Deuxieme envoi du meme brouillon : on ne recree rien.
         RecuExistant.Reset();
-        RecuExistant.SetRange("Id Brouillon Reapro", Demande."Id Brouillon");
-        if RecuExistant.FindFirst() then begin
-            Demande."Recu No" := RecuExistant.No;
-            Demande.Statut := Demande.Statut::"Déjà traité";
-            Demande.Message := CopyStr(StrSubstNo(BrouillonDejaTraiteInfo, RecuExistant.No), 1, MaxStrLen(Demande.Message));
-            exit;
-        end;
+        RecuExistant.SetRange("Id Brouillon Reapro", IdBrouillon);
+        if RecuExistant.FindFirst() then
+            Error(BrouillonDejaTraiteInfo, RecuExistant.No);
 
         if not Racine.ReadFrom(Payload) then
             Error(PayloadErr);
 
-        CreerEntete(Racine, Demande."Id Brouillon", RecuCaisse);
+        RemplirEntete(Racine, IdBrouillon, Payload, RecuCaisse);
         CreerDocuments(Racine, RecuCaisse);
         CreerPaiements(Racine, RecuCaisse);
 
         ValiderRecu(RecuCaisse, false);
-
-        Demande."Recu No" := RecuCaisse.No;
-        Demande.Statut := Demande.Statut::Validé;
-        Demande.Message := '';
     end;
 
-    local procedure CreerEntete(Racine: JsonObject; IdBrouillon: Code[50]; var RecuCaisse: Record "Recu Caisse")
+    local procedure RemplirEntete(Racine: JsonObject; IdBrouillon: Code[50]; Payload: Text; var RecuCaisse: Record "Recu Caisse")
     var
         Client: Record Customer;
         SalesSetup: Record "Sales & Receivables Setup";
@@ -239,6 +234,11 @@ codeunit 50035 "Validation Recu Caisse"
         RecuCaisse."Id Brouillon Reapro" := IdBrouillon;
         RecuCaisse.Printed := false;
         RecuCaisse.Insert();
+
+        // Le contenu envoye est conserve sur l'en-tete : sans lui, impossible de savoir ce
+        // qui avait ete demande le jour ou un recu est conteste.
+        RecuCaisse.EcrireContenuReapro(Payload);
+        RecuCaisse.Modify();
     end;
 
     local procedure CreerDocuments(Racine: JsonObject; var RecuCaisse: Record "Recu Caisse")

@@ -5,6 +5,10 @@
 // valide dans la meme transaction : si quoi que ce soit echoue, rien n'est ecrit et le
 // numero de recu n'est pas consomme.
 //
+// La source est la table des recus elle-meme : l'enregistrement que cet appel insere EST le
+// recu. Il n'y a pas de table tampon, la licence du client plafonnant les tables a 300 et le
+// compteur etant plein.
+//
 // Appel :
 //   POST /api/sopiq/interne/v1.0/companies({id})/recuCaisseCreation
 //   {
@@ -15,7 +19,7 @@
 // Le champ contenu porte le recu, en JSON, sous forme de texte :
 //   {
 //     "customerNo": "C00123",
-//     "dateRecu": "2026-09-28",
+//     "dateRecu": "2026-09-29",
 //     "codeVendeur": "V12",
 //     "isAcompte": false,
 //     "documents": [
@@ -31,17 +35,14 @@
 // Les types acceptent le nom du membre ou son numero. Types de document : BS, Invoice,
 // CreditMemo, RetourBS, Divers, BL, RetourBL, Acompte, FA, AVA, Impaye.
 //
-// La reponse rend recuNo, statut et message. Statut vaut Validé, ou "Déjà traité" si le
-// meme identifiant de brouillon a deja ete envoye : dans ce cas rien n'est cree et recuNo
-// designe le recu existant. C'est le garde-fou contre le double encaissement quand la
-// reponse ne parvient pas jusqu'a Reapro.
-//
-// Pour savoir si un envoi a abouti :
-//   GET /recuCaisseCreation?$filter=idBrouillon eq 'REAPRO-2026-000123'
+// La reponse rend le recu cree, avec son numero. Un second envoi du meme identifiant de
+// brouillon est refuse en nommant le recu deja cree : c'est le garde-fou contre le double
+// encaissement quand la reponse ne parvient pas jusqu'a Reapro. Pour retrouver ce recu :
+//   GET /recuCaisseAPI?$filter=idBrouillonReapro eq 'REAPRO-2026-000123'
 page 25006939 "Recu Caisse Creation API"
 {
     PageType = API;
-    SourceTable = "Recu Caisse Demande";
+    SourceTable = "Recu Caisse";
     APIPublisher = 'sopiq';
     APIGroup = 'interne';
     APIVersion = 'v1.0';
@@ -50,21 +51,25 @@ page 25006939 "Recu Caisse Creation API"
     ODataKeyFields = SystemId;
     DelayedInsert = true;
     Extensible = false;
+    ModifyAllowed = false;
+    DeleteAllowed = false;
 
-    Permissions = tabledata "Recu Caisse Demande" = rim;
+    Permissions = tabledata "Recu Caisse" = rim,
+                  tabledata "Recu Caisse Document" = rimd,
+                  tabledata "Recu Caisse Paiement" = rimd;
 
     layout
     {
         area(Content)
         {
-            repeater(Demandes)
+            repeater(Recus)
             {
                 field(id; Rec.SystemId)
                 {
                     Caption = 'SystemId', Locked = true;
                     Editable = false;
                 }
-                field(idBrouillon; Rec."Id Brouillon")
+                field(idBrouillon; IdBrouillon)
                 {
                     Caption = 'Identifiant brouillon';
                 }
@@ -72,24 +77,24 @@ page 25006939 "Recu Caisse Creation API"
                 {
                     Caption = 'Contenu du reçu, en JSON';
                 }
-                field(recuNo; Rec."Recu No")
+                field(recuNo; Rec.No)
                 {
                     Caption = 'N° reçu créé';
                     Editable = false;
                 }
-                field(statut; Rec.Statut)
+                field(customerNo; Rec."Customer No")
                 {
-                    Caption = 'Statut';
+                    Caption = 'Client';
                     Editable = false;
                 }
-                field(message; Rec.Message)
+                field(dateRecu; Rec.dateRecu)
                 {
-                    Caption = 'Message';
+                    Caption = 'Date reçu';
                     Editable = false;
                 }
-                field(dateHeure; Rec."Date Heure")
+                field(printed; Rec.Printed)
                 {
-                    Caption = 'Date et heure';
+                    Caption = 'Imprimé';
                     Editable = false;
                 }
             }
@@ -98,10 +103,12 @@ page 25006939 "Recu Caisse Creation API"
 
     var
         ContenuTexte: Text;
+        IdBrouillon: Code[50];
 
     trigger OnAfterGetRecord()
     begin
-        ContenuTexte := Rec.LireContenu();
+        IdBrouillon := Rec."Id Brouillon Reapro";
+        ContenuTexte := Rec.LireContenuReapro();
     end;
 
     // Tout se joue ici, dans la transaction de l'appel.
@@ -109,7 +116,7 @@ page 25006939 "Recu Caisse Creation API"
     var
         ValidationRecu: Codeunit "Validation Recu Caisse";
     begin
-        Rec.EcrireContenu(ContenuTexte);
-        ValidationRecu.CreerEtValider(Rec, ContenuTexte);
+        ValidationRecu.CreerEtValider(Rec, IdBrouillon, ContenuTexte);
+        exit(false);
     end;
 }

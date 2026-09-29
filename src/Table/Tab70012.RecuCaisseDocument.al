@@ -65,6 +65,43 @@ table 70012 "Recu Caisse Document"
             DataClassification = ToBeClassified;
         }
 
+        // Les champs qui suivent ne servent qu'a l'API des documents a payer, qui utilise
+        // cette table en mode temporaire : elle n'ecrit donc jamais ces valeurs en base, et
+        // la fiche recu ne les affiche pas.
+        //
+        // Ils vivent ici plutot que dans une table dediee parce que la licence du client
+        // plafonne les tables a 300 et que le compteur est plein. Ajouter un champ a une
+        // table existante ne coute rien, creer une table est refuse a la publication.
+        field(70030; "Date Document"; Date)
+        {
+            Caption = 'Date du document';
+            DataClassification = ToBeClassified;
+        }
+        field(70031; "Reste A Payer"; Decimal)
+        {
+            Caption = 'Reste à payer';
+            DecimalPlaces = 0 : 3;
+            DataClassification = ToBeClassified;
+        }
+        // -1 pour un avoir ou un retour, qui viennent en deduction, 1 sinon.
+        field(70032; Signe; Integer)
+        {
+            Caption = 'Signe';
+            DataClassification = ToBeClassified;
+        }
+        field(70033; "Est Fournisseur"; Boolean)
+        {
+            Caption = 'Document fournisseur';
+            DataClassification = ToBeClassified;
+        }
+        // Le nom du membre d'enumeration, pas son libelle traduit : c'est lui que l'appel de
+        // creation attend en retour.
+        field(70034; "Type Nom"; Text[30])
+        {
+            Caption = 'Nom du type';
+            DataClassification = ToBeClassified;
+        }
+
     }
 
     keys

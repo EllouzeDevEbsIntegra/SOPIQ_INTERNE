@@ -2,8 +2,9 @@
 //
 // Le vendeur du comptoir choisit, parmi les documents non soldes de son client, ceux qu'il
 // encaisse. Ces documents vivent dans huit tables differentes ; une page API n'ayant qu'une
-// seule source, la table 70014 est declaree temporaire et remplie a chaque appel. C'est le
-// patron des pages d'etat de Business Central.
+// seule source, celle des lignes de recu est declaree temporaire et remplie a chaque appel.
+// Rien n'est donc ecrit en base, et aucune table nouvelle n'est creee : la licence du client
+// plafonne les tables a 300 et le compteur est plein.
 //
 // Appel :
 //   GET /api/sopiq/interne/v1.0/companies({id})/recuCaisseDocsAPayer?$filter=customerNo eq 'C00123'
@@ -32,14 +33,14 @@
 page 25006940 "Recu Caisse Docs A Payer API"
 {
     PageType = API;
-    SourceTable = "Recu Caisse Doc A Payer";
+    SourceTable = "Recu Caisse Document";
     SourceTableTemporary = true;
     APIPublisher = 'sopiq';
     APIGroup = 'interne';
     APIVersion = 'v1.0';
     EntityName = 'recuCaisseDocAPayer';
     EntitySetName = 'recuCaisseDocsAPayer';
-    ODataKeyFields = "Entry No.";
+    ODataKeyFields = "Line No";
     Editable = false;
     InsertAllowed = false;
     ModifyAllowed = false;
@@ -66,7 +67,7 @@ page 25006940 "Recu Caisse Docs A Payer API"
         {
             repeater(Documents)
             {
-                field(entryNo; Rec."Entry No.") { Caption = 'N° séquentiel'; }
+                field(entryNo; Rec."Line No") { Caption = 'N° séquentiel'; }
                 field(customerNo; Rec."Customer No") { Caption = 'Client'; }
                 field(type; Rec.type) { Caption = 'Type document'; }
                 field(typeCode; Rec."Type Nom") { Caption = 'Nom du type'; }
@@ -75,7 +76,7 @@ page 25006940 "Recu Caisse Docs A Payer API"
                 field(dateDocument; Rec."Date Document") { Caption = 'Date document'; }
                 field(libelle; Rec.Libelle) { Caption = 'Libellé'; }
                 field(totalTTC; Rec."Total TTC") { Caption = 'Montant TTC'; }
-                field(dejaRegle; Rec."Deja Regle") { Caption = 'Déjà réglé'; }
+                field(dejaRegle; Rec."Montant Reglement") { Caption = 'Déjà réglé'; }
                 field(resteAPayer; Rec."Reste A Payer") { Caption = 'Reste à payer'; }
                 field(signe; Rec.Signe) { Caption = 'Signe'; }
                 field(idLigneImpaye; Rec."Id Ligne Impaye") { Caption = 'N° ligne impayé'; }
@@ -350,14 +351,14 @@ page 25006940 "Recu Caisse Docs A Payer API"
         NoLigne += 1;
 
         Rec.Init();
-        Rec."Entry No." := NoLigne;
+        Rec."Line No" := NoLigne;
         Rec."Customer No" := ClientNo;
         Rec.type := TypeDocument;
         Rec."Document No" := DocumentNo;
         Rec."Date Document" := DateDocument;
         Rec.Libelle := CopyStr(Libelle, 1, MaxStrLen(Rec.Libelle));
         Rec."Total TTC" := TotalTTC;
-        Rec."Deja Regle" := DejaRegle;
+        Rec."Montant Reglement" := DejaRegle;
         Rec."Reste A Payer" := RestePayer;
         Rec.Signe := Signe;
         Rec."Id Ligne Impaye" := IdLigneImpaye;

@@ -100,6 +100,14 @@ table 70011 "Recu Caisse"
             Editable = false;
         }
 
+        // Le recu complet envoye par Reapro, conserve tel quel : sans lui, impossible de
+        // savoir ce qui avait ete demande le jour ou un recu est conteste. Vide pour les
+        // recus saisis dans Business Central.
+        field(70019; "Contenu Reapro"; Blob)
+        {
+            Caption = 'Contenu envoyé par Reapro';
+        }
+
     }
 
     keys
@@ -151,6 +159,28 @@ table 70011 "Recu Caisse"
         if GuiAllowed() then begin
             Message('Ticket %1 imprimé avec succées ********* ', recRecuCaisse.No);
         end;
+    end;
+
+    procedure EcrireContenuReapro(Texte: Text)
+    var
+        Flux: OutStream;
+    begin
+        Clear("Contenu Reapro");
+        "Contenu Reapro".CreateOutStream(Flux, TextEncoding::UTF8);
+        Flux.WriteText(Texte);
+    end;
+
+    procedure LireContenuReapro(): Text
+    var
+        Flux: InStream;
+        Texte: Text;
+    begin
+        CalcFields("Contenu Reapro");
+        if not "Contenu Reapro".HasValue() then
+            exit('');
+        "Contenu Reapro".CreateInStream(Flux, TextEncoding::UTF8);
+        Flux.ReadText(Texte);
+        exit(Texte);
     end;
 
 }
