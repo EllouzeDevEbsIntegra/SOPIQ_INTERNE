@@ -21,6 +21,6 @@ JOIN [STE COPIM$Sales Shipment Header$ad36f199-c652-4e8e-9c9a-ca851e424760] he
 WHERE he.[BS] = 1
   AND l.[Type] = 2
   AND l.[Quantity] <> 0
-  -- Format sans tirets : sur un serveur en francais, '20260925' est lu en
-  -- annee-jour-mois et provoque une erreur de conversion.
+  -- Date sans tirets : sur un serveur en francais, la forme avec tirets est lue
+  -- en annee-jour-mois et provoque une erreur de conversion.
   AND l.[Posting Date] >= '20260925';

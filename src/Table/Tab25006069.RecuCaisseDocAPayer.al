@@ -6,7 +6,7 @@
 //
 // C'est le patron des pages d'etat de Business Central, par exemple
 // "Aged Accounts Receivable".
-table 25006069 "Recu Caisse Doc A Payer"
+table 25006655 "Recu Caisse Doc A Payer"
 {
     Caption = 'Document à payer';
     DataClassification = ToBeClassified;

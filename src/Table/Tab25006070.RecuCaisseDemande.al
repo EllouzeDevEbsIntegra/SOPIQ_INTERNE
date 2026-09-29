@@ -8,7 +8,7 @@
 // fois le meme client si la reponse n'arrive pas jusqu'a Reapro. Il est unique, il est
 // recopie sur l'en-tete du recu, et un second envoi du meme brouillon rend le recu deja
 // cree au lieu d'en creer un autre.
-table 25006070 "Recu Caisse Demande"
+table 25006656 "Recu Caisse Demande"
 {
     Caption = 'Demande de reçu de caisse';
     DataClassification = ToBeClassified;
