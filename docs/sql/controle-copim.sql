@@ -18,8 +18,8 @@
 
 SET NOCOUNT ON;
 
-DECLARE @d1 date = '2026-01-01';
-DECLARE @d2 date = '2026-01-31';
+DECLARE @d1 date = '20260101';
+DECLARE @d2 date = '20260131';
 
 IF OBJECT_ID('tempdb..#src') IS NOT NULL DROP TABLE #src;
 CREATE TABLE #src (

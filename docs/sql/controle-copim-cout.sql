@@ -14,8 +14,8 @@
 
 SET NOCOUNT ON;
 
-DECLARE @d1 date = '2026-01-01';
-DECLARE @d2 date = '2026-01-31';
+DECLARE @d1 date = '20260101';
+DECLARE @d2 date = '20260131';
 
 IF OBJECT_ID('tempdb..#bs') IS NOT NULL DROP TABLE #bs;
 IF OBJECT_ID('tempdb..#fv') IS NOT NULL DROP TABLE #fv;
