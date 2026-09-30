@@ -833,3 +833,39 @@ Le comptoir n'a jamais été empêché d'encaisser.
 changé d'une ligne. Ici, poser `Imprimé` à la validation était juste, mais rendait dirty un
 enregistrement qu'une page écrivait juste avant un `RunModal`. Devant tout déplacement
 d'écriture, chercher les `Commit` des appelants et se demander ce qu'ils protégeaient.
+
+### Chantier 7 — 2026-09-30 · « L'encours de la liste clients »
+
+La liste clients recalcule l'encours de chaque client affiché. Le champ `Shipped Not Invoiced BL`
+somme les lignes vente avec deux filtres qui interdisent à Business Central d'utiliser ses sommes
+précalculées : `"Shipped Not Invoiced (LCY)" = FILTER(> 0)`, un filtre sur le montant qu'il somme,
+et `"Expédition type" = filter('Expédition')`, un champ calculé de la ligne qui va chercher
+l'en-tête vente. Il lit donc les lignes une à une, pour chaque client à l'écran.
+
+**Mesure de départ**, ouverture de la liste : 58 exécutions, 1 467 709 pages lues, 3,91 s.
+
+**Trois voies possibles**, et le choix du moins risqué. Un index ne change ni le code, ni les
+chiffres affichés. Corriger la formule aurait donné plus, mais les montants pouvaient bouger.
+Calculer l'encours dans le batch de nuit aurait été le plus rapide à l'écran, mais un encours de
+la veille ne vaut rien pour un contrôle de crédit.
+
+**Essai sur DEV, sur cinquante clients**
+
+| | Pages lues | Temps |
+|---|---|---|
+| Avant | 55 639 | 94 ms |
+| Après | 340 | 11 ms |
+
+Valeurs identiques client par client. Après publication, la boucle a disparu de la mesure de la
+page, et l'utilisateur a confirmé le gain à l'usage.
+
+**Posé en production le 30/09/2026 à 11h46**, sur les quatre sociétés, en 3,9 secondes au total
+et sans blocage ressenti. Script et retour arrière dans `docs/sql/index-prod-liste-clients.sql`.
+
+**Reste à traiter** : une seconde boucle par client, sur `Sales Shipment Line`, 695 276 pages,
+qui cherche les bons de livraison non facturés. Ce n'est pas un champ calculé mais du code AL,
+à localiser.
+
+**Et une correction fonctionnelle en attente**, notée dans l'audit sous V1.6 et toujours vraie :
+`"Return Receipts Not Invoiced"` entre dans le total de l'encours mais n'est jamais calculé. Il
+vaut donc toujours zéro, et l'encours affiché ignore les retours non facturés.
