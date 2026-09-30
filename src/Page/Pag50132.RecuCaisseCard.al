@@ -404,8 +404,18 @@ page 50132 "Recu Caisse Card"
         recuCaisse: Record "Recu Caisse";
     begin
         ValidationRecu.ValiderRecu(Rec, true);
-        Commit();
+
+        // L'ordre compte. CurrPage.Update(true) ecrit la fiche, donc ouvre une transaction
+        // d'ecriture, et Business Central refuse alors de lancer un rapport avec sa fenetre
+        // de demande. Il faut donc valider la transaction APRES cette ecriture, pas avant.
+        //
+        // Jusqu'au 29/09/2026 le Commit venait en premier et cela passait : la fiche n'avait
+        // rien a ecrire a cet instant. Depuis que la validation pose "Imprimé", elle est
+        // modifiee en memoire, Update l'ecrit, et le comptoir recevait une erreur technique
+        // au lieu de son ticket.
         CurrPage.Update(true);
+        Commit();
+
         CurrPage.SETSELECTIONFILTER(recuCaisse);
         REPORT.RUNMODAL(REPORT::"Recu Caisse", TRUE, TRUE, recuCaisse);
     end;
