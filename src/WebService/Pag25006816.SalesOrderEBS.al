@@ -424,6 +424,51 @@ page 25006816 "Sales Order EBS"
                     end;
                 }
 
+                // Le client a imprimer sur les documents issus de cette commande. Chez COPIM,
+                // beaucoup de ventes sont au compte « client passager » de la comptabilite,
+                // alors que le comptoir doit imprimer le vrai client. Ces quatre valeurs
+                // suivent la commande jusqu'au bon de sortie, au bon de livraison et a la
+                // facture, et ce sont elles que les appels d'impression rendent.
+                //
+                // Ils portent les memes numeros de champ que sur l'en-tete vente, ce qui
+                // suffit a les faire voyager du tampon vers la commande.
+                field(custPrintName; rec.custNameImprime)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Nom client à imprimer';
+                    trigger OnValidate()
+                    begin
+                        RegisterFieldSet(Rec.FieldNo(custNameImprime));
+                    end;
+                }
+                field(custPrintAdress; rec.custAdresseImprime)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Adresse client à imprimer';
+                    trigger OnValidate()
+                    begin
+                        RegisterFieldSet(Rec.FieldNo(custAdresseImprime));
+                    end;
+                }
+                field(custPrintMF; rec.custMFImprime)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Matricule fiscal à imprimer';
+                    trigger OnValidate()
+                    begin
+                        RegisterFieldSet(Rec.FieldNo(custMFImprime));
+                    end;
+                }
+                field(custPrintVIN; rec.custVINImprime)
+                {
+                    ApplicationArea = All;
+                    Caption = 'VIN à imprimer';
+                    trigger OnValidate()
+                    begin
+                        RegisterFieldSet(Rec.FieldNo(custVINImprime));
+                    end;
+                }
+
             }
         }
     }

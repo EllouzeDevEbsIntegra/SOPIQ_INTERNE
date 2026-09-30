@@ -582,7 +582,7 @@ report 25006121 "Sales Cr Memo COPIM"
     var
         recSalesInvHeader: Record "Sales Cr.Memo Header";
     begin
-        if (editCustInfo = true) then begin
+        if (editCustInfo = true) and (not SansEcritureInfoClient) then begin
             recSalesInvHeader.reset();
             recSalesInvHeader.SetRange("No.", "Sales Cr.Memo Header"."No.");
             if recSalesInvHeader.FindFirst() then begin
@@ -600,6 +600,7 @@ report 25006121 "Sales Cr Memo COPIM"
     var
         custNameImp, custAdressImp, custMFImp, custVINImp : text;
         editCustInfo: Boolean;
+        SansEcritureInfoClient: Boolean;
         showDiscount: Boolean;
         increment: Integer;
         RecGClient: Record 18;
@@ -642,5 +643,35 @@ report 25006121 "Sales Cr Memo COPIM"
         PourcTva: Decimal;
         VatBustPostGrp: Record "VAT Posting Setup";
 
-}
 
+    // ---------------------------------------------------------------------------------
+    // Impression pilotee par l'API, pour Reapro. Rien de tout ceci ne change ce que fait
+    // le bouton d'impression de Business Central : ces procedures ne sont appelees que par
+    // la page d'API, qui lance l'etat sans sa fenetre de demande.
+    //
+    // Pourquoi un interrupteur separe. La maquette n'imprime le client saisi que si la case
+    // « Modifier information client » est cochee, et c'est cette meme case qui declenche la
+    // reecriture du document en fin d'etat. Les deux etaient donc lies. L'API veut imprimer
+    // ce qui est deja enregistre sur le document sans rien reecrire : elle coche la case
+    // pour l'affichage, et ferme l'ecriture par SansEcritureInfoClient.
+    // ---------------------------------------------------------------------------------
+    procedure DefinirOptionsImpression(AfficherReference: Boolean; AfficherRemise: Boolean; TroisiemeOption: Boolean)
+    begin
+        showReference := AfficherReference;
+        showDiscount := AfficherRemise;
+        PrintNoBL := TroisiemeOption;
+    end;
+
+    // Les quatre valeurs viennent du document lui-meme. Vides, l'etat imprime le client de
+    // la comptabilite, comme aujourd'hui.
+    procedure DefinirInfoClientImprimee(Nom: Text; Adresse: Text; MF: Text; VIN: Text)
+    begin
+        custNameImp := Nom;
+        custAdressImp := Adresse;
+        custMFImp := MF;
+        custVINImp := VIN;
+        editCustInfo := (Nom <> '') or (Adresse <> '') or (MF <> '') or (VIN <> '');
+        SansEcritureInfoClient := true;
+    end;
+
+}
