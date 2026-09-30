@@ -808,3 +808,28 @@ pour toutes les applications connectées. À décider, pas à improviser.
 **Rappel de la contrainte, posée le 29/09/2026** : ces vues sont un contrat avec plusieurs
 applications. Ni leur nom, ni leurs colonnes, ni leur contenu ne doivent changer. Toute
 optimisation est de notre côté et doit rester invisible pour elles.
+
+### Incident — 2026-09-30 · « Le comptoir ne pouvait plus imprimer »
+
+Premier matin de la version 1.1.12.0 en production. À 7 h 56, un agent de COPIM valide un reçu
+et reçoit une erreur technique au lieu de son ticket : Business Central refuse de lancer un
+rapport avec sa fenêtre de demande tant qu'une transaction d'écriture est ouverte.
+
+**La cause.** Dans la fiche reçu, la séquence était `Commit`, puis `CurrPage.Update(true)`, puis
+`Report.RunModal`. Or `Update(true)` écrit la fiche, donc rouvre une transaction d'écriture,
+juste avant le rapport. Cette séquence existait depuis longtemps et ne posait pas de problème :
+à cet instant la fiche n'avait rien à écrire. Elle en a depuis que la validation pose `Imprimé`,
+changement livré la veille. Le `Commit` protégeait une écriture qui n'existait plus et ne
+protégeait pas celle qui venait d'apparaître.
+
+**Le correctif**, version 1.1.13.0 : inverser les deux lignes. La fiche est écrite, la
+transaction est validée, puis le rapport part.
+
+**Ce qui a limité les dégâts.** Le reçu était bien créé, avec ses documents et ses paiements :
+seule l'impression échouait, et le ticket se ressortait par le rapport avec le numéro en filtre.
+Le comptoir n'a jamais été empêché d'encaisser.
+
+**La leçon.** Déplacer une écriture dans un code partagé peut casser un appelant qui n'a pas
+changé d'une ligne. Ici, poser `Imprimé` à la validation était juste, mais rendait dirty un
+enregistrement qu'une page écrivait juste avant un `RunModal`. Devant tout déplacement
+d'écriture, chercher les `Commit` des appelants et se demander ce qu'ils protégeaient.
