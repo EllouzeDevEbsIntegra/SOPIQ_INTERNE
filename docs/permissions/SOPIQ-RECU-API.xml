@@ -7,7 +7,12 @@
     Les permissions restent donc des DONNEES, a importer dans chaque base. Ce fichier les
     versionne avec le code, pour qu'un objet ajoute ne soit pas oublie.
 
-    Import : Recherche > Jeux d'autorisations > Importer les jeux d'autorisations.
+    INUTILE EN L'ETAT, et c'est voulu : Reapro se connecte avec le compte ADMINNAV, qui est
+    SUPER dans toutes les societes. Il n'y a donc rien a importer, et rien a affecter, tant
+    que ce compte reste celui de l'interface. Ce fichier ne sert que le jour ou un compte de
+    service dedie sera cree, avec les seuls droits necessaires.
+
+    Import, ce jour-la : Recherche > Jeux d'autorisations > Importer les jeux d'autorisations.
     Puis affecter SOPIQ-RECU-API au compte de service utilise par Reapro, sur DEV et en
     production.
 
