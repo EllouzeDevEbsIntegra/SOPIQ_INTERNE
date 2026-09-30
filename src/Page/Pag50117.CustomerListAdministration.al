@@ -348,7 +348,9 @@ page 50117 "Customer List Administration"
                     Editable = true;
                 }
 
-                field("Dépassement (% Encours princiapl)"; "Dep Enc Princ.")
+                // La valeur vient d'une variable et non plus du champ de la fiche client :
+                // pour l'y ecrire, la page enregistrait une modification par ligne affichee.
+                field("Dépassement (% Encours princiapl)"; DepassementPrincipal)
                 {
                     Caption = 'Dépassement (% Encours princiapl)';
                     Editable = false;
@@ -1658,13 +1660,19 @@ page 50117 "Customer List Administration"
 
         Depassement := "Credit Limit (LCY)" - TotalEncours;
 
+        // Ces deux valeurs vivaient dans la fiche client, et la page les y ecrivait : une
+        // modification enregistree pour chaque ligne affichee, et autant a chaque
+        // defilement. Une liste qui ecrit est lente, remplit le journal des transactions et
+        // pose des verrous a ceux qui travaillent sur les memes clients.
+        //
+        // Elles ne servaient qu'a l'affichage de cette page, et "Total Encours Financier"
+        // etait deja affiche depuis la variable. Aucun autre objet du projet ne les lit.
+        // Les champs 80113 et 90000 de la fiche client restent en place avec leur derniere
+        // valeur ecrite, personne ne s'en sert.
         if "Crédit autorisé" - TotalEncours < 0 then
-            rec."Dep Enc Princ." := Depassement
+            DepassementPrincipal := Depassement
         else
-            rec."Dep Enc Princ." := 0;
-
-        rec."Total Encours Financier" := TotalEncoursFinancier;
-        rec.Modify();
+            DepassementPrincipal := 0;
 
         FieldStyle := SetStyleAmount(Depassement);
         FieldStyle2 := SetStyleAmount(Depassement2);
@@ -1730,7 +1738,7 @@ page 50117 "Customer List Administration"
     end;
 
     var
-        TotalEncours, Depassement, Depassement2, TotalEncoursFinancier : Decimal;
+        TotalEncours, Depassement, Depassement2, TotalEncoursFinancier, DepassementPrincipal : Decimal;
         FieldStyle, FieldStyle2 : Text;
         beginDate, endDate : date;
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
