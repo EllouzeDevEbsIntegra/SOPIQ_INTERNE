@@ -37,6 +37,10 @@ codeunit 50035 "Validation Recu Caisse"
         AucunDocumentErr: Label 'Le reçu doit comporter au moins un document.';
         AucunPaiementErr: Label 'Le reçu doit comporter au moins un paiement.';
         TypeInconnuErr: Label 'Valeur %1 inconnue pour %2.', Comment = '%1 valeur reçue, %2 nom du champ';
+        CorrectionIdManquantErr: Label 'L''identifiant de correction est obligatoire.';
+        MotifManquantErr: Label 'Le motif de la correction est obligatoire.';
+        VersionPerimeeErr: Label 'Le reçu a changé depuis votre lecture : vous corrigez la version %1, il en est à la version %2. Relisez le reçu et recommencez.', Comment = '%1 version envoyée, %2 version actuelle';
+        ClientDifferentErr: Label 'Une correction ne peut pas changer le client du reçu. Le reçu est au client %1, la correction porte le client %2.', Comment = '%1 client du reçu, %2 client envoyé';
 
     // =================================================================
     // 1. VALIDATION
@@ -80,9 +84,33 @@ codeunit 50035 "Validation Recu Caisse"
 
     // Reprise a l'identique de la procedure setDocumentSolde de la page 50132, sans les
     // Commit intermediaires : l'appel API doit pouvoir etre annule entierement.
+    // Recalcule le solde des documents payes par ce recu. Chaque document est recalcule a
+    // partir de la somme de ce que la caisse a recu pour lui, tous recus confondus : le
+    // calcul est donc auto-correcteur, un document dont on retire la ligne redevient a payer
+    // tout seul. C'est ce qui permet a une correction de rendre a payer un document retire.
     procedure MarquerDocumentsSoldes(var RecuCaisse: Record "Recu Caisse")
     var
         RecuDocument: Record "Recu Caisse Document";
+    begin
+        RecuDocument.Reset();
+        RecuDocument.SetRange("No Recu", RecuCaisse.No);
+        if not RecuDocument.FindSet() then
+            exit;
+
+        repeat
+            // Les types sans document d'origine, acompte ou divers, n'ont rien a solder
+            // ailleurs : c'est la ligne du recu elle-meme qui porte l'information.
+            if not RecalculerSoldeDocument(RecuDocument.type, RecuDocument."Document No", RecuDocument."id Ligne Impaye") then begin
+                RecuDocument.Solde := false;
+                RecuDocument.Modify();
+            end;
+        until RecuDocument.Next() = 0;
+    end;
+
+    // Recalcule le solde d'un document d'origine. Rend false quand le type n'a pas de
+    // document d'origine, a charge de l'appelant d'en tirer les consequences.
+    procedure RecalculerSoldeDocument(TypeDocument: Enum "Document Caisse Type"; NoDocument: Code[20]; IdLigneImpaye: Integer): Boolean
+    var
         ArchiveBS: Record "Entete archive BS";
         SalesInvoice: Record "Sales Invoice Header";
         SalesCrMemo: Record "Sales Cr.Memo Header";
@@ -92,81 +120,73 @@ codeunit 50035 "Validation Recu Caisse"
         PurchCrMemo: Record "Purch. Cr. Memo Hdr.";
         RecuPaiement: Record "Recu Caisse Paiement";
     begin
-        RecuDocument.Reset();
-        RecuDocument.SetRange("No Recu", RecuCaisse.No);
-        if not RecuDocument.FindSet() then
-            exit;
-
-        repeat
-            case RecuDocument.type of
-                "Document Caisse Type"::BS:
-                    if ArchiveBS.Get(RecuDocument."Document No") then begin
-                        ArchiveBS.CalcFields("Montant TTC", "Montant reçu caisse");
-                        ArchiveBS.Solde := ArchiveBS."Montant TTC" = ArchiveBS."Montant reçu caisse";
-                        ArchiveBS.Modify();
-                    end;
-                "Document Caisse Type"::Invoice:
-                    if SalesInvoice.Get(RecuDocument."Document No") then begin
-                        SalesInvoice.CalcFields("Amount Including VAT", "Montant reçu caisse");
-                        SalesInvoice.Solde :=
-                            SalesInvoice."Amount Including VAT" + SalesInvoice."STStamp Amount"
-                            = SalesInvoice."Montant reçu caisse";
-                        SalesInvoice.Modify();
-                    end;
-                "Document Caisse Type"::CreditMemo:
-                    if SalesCrMemo.Get(RecuDocument."Document No") then begin
-                        SalesCrMemo.CalcFields("Amount Including VAT", "Montant reçu caisse");
-                        SalesCrMemo.Solde :=
-                            SalesCrMemo."Amount Including VAT" = -SalesCrMemo."Montant reçu caisse";
-                        SalesCrMemo.Modify();
-                    end;
-                "Document Caisse Type"::RetourBS,
-                "Document Caisse Type"::RetourBL:
-                    if ReturnReceipt.Get(RecuDocument."Document No") then begin
-                        ReturnReceipt.CalcFields("Line Amount", "Montant reçu caisse");
-                        ReturnReceipt.Solde :=
-                            ReturnReceipt."Line Amount" = -ReturnReceipt."Montant reçu caisse";
-                        ReturnReceipt.Modify();
-                    end;
-                "Document Caisse Type"::BL:
-                    if SalesShipment.Get(RecuDocument."Document No") then begin
-                        SalesShipment.CalcFields("Line Amount", "Montant reçu caisse");
-                        SalesShipment.Solde :=
-                            SalesShipment."Line Amount" = SalesShipment."Montant reçu caisse";
-                        SalesShipment.Modify();
-                    end;
-                "Document Caisse Type"::FA:
-                    if PurchInvoice.Get(RecuDocument."Document No") then begin
-                        PurchInvoice.CalcFields("Amount Including VAT", "Montant reçu caisse");
-                        PurchInvoice.Solde :=
-                            PurchInvoice."Amount Including VAT" + PurchInvoice."STStamp Fiscal Amount"
-                            = -PurchInvoice."Montant reçu caisse";
-                        PurchInvoice.Modify();
-                    end;
-                "Document Caisse Type"::AVA:
-                    if PurchCrMemo.Get(RecuDocument."Document No") then begin
-                        PurchCrMemo.CalcFields("Amount Including VAT", "Montant reçu caisse");
-                        PurchCrMemo.Solde :=
-                            PurchCrMemo."Amount Including VAT" = PurchCrMemo."Montant reçu caisse";
-                        PurchCrMemo.Modify();
-                    end;
-                "Document Caisse Type"::Impaye:
-                    begin
-                        RecuPaiement.Reset();
-                        RecuPaiement.SetRange("No Recu", RecuDocument."Document No");
-                        RecuPaiement.SetRange("Line No", RecuDocument."id Ligne Impaye");
-                        if RecuPaiement.FindFirst() then begin
-                            RecuPaiement.CalcFields("Montant reçu caisse");
-                            RecuPaiement.solde := RecuPaiement.Montant = RecuPaiement."Montant reçu caisse";
-                            RecuPaiement.Modify();
-                        end;
-                    end;
-                else begin
-                    RecuDocument.Solde := false;
-                    RecuDocument.Modify();
+        case TypeDocument of
+            "Document Caisse Type"::BS:
+                if ArchiveBS.Get(NoDocument) then begin
+                    ArchiveBS.CalcFields("Montant TTC", "Montant reçu caisse");
+                    ArchiveBS.Solde := ArchiveBS."Montant TTC" = ArchiveBS."Montant reçu caisse";
+                    ArchiveBS.Modify();
                 end;
-            end;
-        until RecuDocument.Next() = 0;
+            "Document Caisse Type"::Invoice:
+                if SalesInvoice.Get(NoDocument) then begin
+                    SalesInvoice.CalcFields("Amount Including VAT", "Montant reçu caisse");
+                    SalesInvoice.Solde :=
+                        SalesInvoice."Amount Including VAT" + SalesInvoice."STStamp Amount"
+                        = SalesInvoice."Montant reçu caisse";
+                    SalesInvoice.Modify();
+                end;
+            "Document Caisse Type"::CreditMemo:
+                if SalesCrMemo.Get(NoDocument) then begin
+                    SalesCrMemo.CalcFields("Amount Including VAT", "Montant reçu caisse");
+                    SalesCrMemo.Solde :=
+                        SalesCrMemo."Amount Including VAT" = -SalesCrMemo."Montant reçu caisse";
+                    SalesCrMemo.Modify();
+                end;
+            "Document Caisse Type"::RetourBS,
+            "Document Caisse Type"::RetourBL:
+                if ReturnReceipt.Get(NoDocument) then begin
+                    ReturnReceipt.CalcFields("Line Amount", "Montant reçu caisse");
+                    ReturnReceipt.Solde :=
+                        ReturnReceipt."Line Amount" = -ReturnReceipt."Montant reçu caisse";
+                    ReturnReceipt.Modify();
+                end;
+            "Document Caisse Type"::BL:
+                if SalesShipment.Get(NoDocument) then begin
+                    SalesShipment.CalcFields("Line Amount", "Montant reçu caisse");
+                    SalesShipment.Solde :=
+                        SalesShipment."Line Amount" = SalesShipment."Montant reçu caisse";
+                    SalesShipment.Modify();
+                end;
+            "Document Caisse Type"::FA:
+                if PurchInvoice.Get(NoDocument) then begin
+                    PurchInvoice.CalcFields("Amount Including VAT", "Montant reçu caisse");
+                    PurchInvoice.Solde :=
+                        PurchInvoice."Amount Including VAT" + PurchInvoice."STStamp Fiscal Amount"
+                        = -PurchInvoice."Montant reçu caisse";
+                    PurchInvoice.Modify();
+                end;
+            "Document Caisse Type"::AVA:
+                if PurchCrMemo.Get(NoDocument) then begin
+                    PurchCrMemo.CalcFields("Amount Including VAT", "Montant reçu caisse");
+                    PurchCrMemo.Solde :=
+                        PurchCrMemo."Amount Including VAT" = PurchCrMemo."Montant reçu caisse";
+                    PurchCrMemo.Modify();
+                end;
+            "Document Caisse Type"::Impaye:
+                begin
+                    RecuPaiement.Reset();
+                    RecuPaiement.SetRange("No Recu", NoDocument);
+                    RecuPaiement.SetRange("Line No", IdLigneImpaye);
+                    if RecuPaiement.FindFirst() then begin
+                        RecuPaiement.CalcFields("Montant reçu caisse");
+                        RecuPaiement.solde := RecuPaiement.Montant = RecuPaiement."Montant reçu caisse";
+                        RecuPaiement.Modify();
+                    end;
+                end;
+            else
+                exit(false);
+        end;
+        exit(true);
     end;
 
     // =================================================================
@@ -424,4 +444,200 @@ codeunit 50035 "Validation Recu Caisse"
         if not Evaluate(TypeBanque, Valeur) then
             Error(TypeInconnuErr, Valeur, NomChamp);
     end;
+
+    // =================================================================
+    // 4. CORRECTION D'UN RECU DEJA VALIDE
+    // =================================================================
+
+    // Corrige un recu existant a partir du contenu complet corrige, au meme format que la
+    // creation. Le recu garde son numero : c'est le meme recu, corrige.
+    //
+    // Quatre garde-fous, demandes par l'equipe Reapro le 30/09/2026.
+    //
+    // Tout ou rien : tout se joue dans la transaction de l'appel. Si le contenu corrige est
+    // refuse, par exemple parce que les reglements ne correspondent plus aux documents, rien
+    // n'est ecrit et le recu reste exactement tel qu'il etait.
+    //
+    // Pas de correction sur une version perimee : le recu porte un compteur de corrections.
+    // Reapro le lit, le renvoie, et la correction est refusee s'il a change entre-temps.
+    //
+    // Pas de double application : l'identifiant de correction est conserve dans
+    // l'historique. Renvoyer la meme correction ne la rejoue pas, la procedure rend false et
+    // le recu n'est pas touche.
+    //
+    // Une trace : chaque correction ajoute une entree a l'historique, avec la date, l'auteur
+    // annonce par Reapro, le motif, et le contenu du recu avant et apres.
+    //
+    // Un document retire du recu redevient a payer de lui-meme : son solde est recalcule a
+    // partir de ce que la caisse a recu pour lui, tous recus confondus.
+    procedure CorrigerRecu(var RecuCaisse: Record "Recu Caisse"; Payload: Text; Motif: Text; Auteur: Text; IdCorrection: Code[50]; VersionLue: Integer): Boolean
+    var
+        RecuDocument: Record "Recu Caisse Document";
+        RecuPaiement: Record "Recu Caisse Paiement";
+        Racine: JsonObject;
+        TypesRetires: List of [Integer];
+        NosRetires: List of [Code[20]];
+        LignesRetirees: List of [Integer];
+        TypeRetire: Enum "Document Caisse Type";
+        ContenuAvant: Text;
+        ClientEnvoye: Code[20];
+        CodeVendeur: Code[20];
+        Indice: Integer;
+    begin
+        if IdCorrection = '' then
+            Error(CorrectionIdManquantErr);
+        if Motif = '' then
+            Error(MotifManquantErr);
+
+        if CorrectionDejaAppliquee(RecuCaisse, IdCorrection) then
+            exit(false);
+
+        if VersionLue <> RecuCaisse."Version Correction" then
+            Error(VersionPerimeeErr, VersionLue, RecuCaisse."Version Correction");
+
+        if not Racine.ReadFrom(Payload) then
+            Error(PayloadErr);
+
+        // Une correction ne change pas le client : ce serait un autre recu.
+        ClientEnvoye := CopyStr(LireTexte(Racine, 'customerNo'), 1, MaxStrLen(ClientEnvoye));
+        if (ClientEnvoye <> '') and (ClientEnvoye <> RecuCaisse."Customer No") then
+            Error(ClientDifferentErr, RecuCaisse."Customer No", ClientEnvoye);
+
+        ContenuAvant := ContenuActuel(RecuCaisse);
+
+        // Les documents actuellement payes par ce recu sont releves avant d'etre effaces :
+        // ceux que la correction ne reprend pas devront redevenir a payer.
+        RecuDocument.Reset();
+        RecuDocument.SetRange("No Recu", RecuCaisse.No);
+        if RecuDocument.FindSet() then
+            repeat
+                TypesRetires.Add(RecuDocument.type.AsInteger());
+                NosRetires.Add(RecuDocument."Document No");
+                LignesRetirees.Add(RecuDocument."id Ligne Impaye");
+            until RecuDocument.Next() = 0;
+
+        // Suppression sans declencher les triggers de table. Celui des lignes refuse la
+        // suppression sur un recu imprime : ce garde-fou est pense pour la fiche, ou il
+        // protege d'une fausse manoeuvre. Ici le droit de corriger est verifie par Reapro,
+        // et un recu valide est toujours marque imprime.
+        RecuDocument.DeleteAll(false);
+
+        RecuPaiement.Reset();
+        RecuPaiement.SetRange("No Recu", RecuCaisse.No);
+        RecuPaiement.DeleteAll(false);
+
+        CodeVendeur := CopyStr(LireTexte(Racine, 'codeVendeur'), 1, MaxStrLen(CodeVendeur));
+        if CodeVendeur <> '' then
+            RecuCaisse.user := CodeVendeur;
+        RecuCaisse.isAcompte := LireBooleen(Racine, 'isAcompte');
+        RecuCaisse.Modify();
+
+        CreerDocuments(Racine, RecuCaisse);
+        CreerPaiements(Racine, RecuCaisse);
+        ValiderRecu(RecuCaisse, false);
+
+        for Indice := 1 to TypesRetires.Count() do begin
+            TypeRetire := "Document Caisse Type".FromInteger(TypesRetires.Get(Indice));
+            RecalculerSoldeDocument(TypeRetire, NosRetires.Get(Indice), LignesRetirees.Get(Indice));
+        end;
+
+        RecuCaisse."Version Correction" += 1;
+        AjouterAHistorique(RecuCaisse, IdCorrection, Motif, Auteur, ContenuAvant, ContenuActuel(RecuCaisse));
+        RecuCaisse.Modify();
+        exit(true);
+    end;
+
+    // Le contenu du recu tel qu'il est en base, au meme format que celui de la creation. Le
+    // type est rendu par son numero et non par son nom : c'est ce que l'appel de creation
+    // sait relire sans ambiguite, quelle que soit la langue.
+    procedure ContenuActuel(var RecuCaisse: Record "Recu Caisse"): Text
+    var
+        RecuDocument: Record "Recu Caisse Document";
+        RecuPaiement: Record "Recu Caisse Paiement";
+        Racine: JsonObject;
+        Documents: JsonArray;
+        Paiements: JsonArray;
+        Ligne: JsonObject;
+        Texte: Text;
+    begin
+        Racine.Add('customerNo', RecuCaisse."Customer No");
+        Racine.Add('dateRecu', Format(RecuCaisse.dateRecu, 0, 9));
+        Racine.Add('codeVendeur', RecuCaisse.user);
+        Racine.Add('isAcompte', RecuCaisse.isAcompte);
+
+        RecuDocument.Reset();
+        RecuDocument.SetRange("No Recu", RecuCaisse.No);
+        if RecuDocument.FindSet() then
+            repeat
+                Clear(Ligne);
+                Ligne.Add('type', RecuDocument.type.AsInteger());
+                Ligne.Add('documentNo', RecuDocument."Document No");
+                Ligne.Add('libelle', RecuDocument.Libelle);
+                Ligne.Add('totalTTC', RecuDocument."Total TTC");
+                Ligne.Add('montantReglement', RecuDocument."Montant Reglement");
+                Ligne.Add('idLigneImpaye', RecuDocument."id Ligne Impaye");
+                Documents.Add(Ligne);
+            until RecuDocument.Next() = 0;
+
+        RecuPaiement.Reset();
+        RecuPaiement.SetRange("No Recu", RecuCaisse.No);
+        if RecuPaiement.FindSet() then
+            repeat
+                Clear(Ligne);
+                Ligne.Add('type', RecuPaiement.type.AsInteger());
+                Ligne.Add('name', RecuPaiement.Name);
+                Ligne.Add('paiementNo', RecuPaiement."Paiment No");
+                Ligne.Add('montant', RecuPaiement.Montant);
+                Ligne.Add('echeance', Format(RecuPaiement.Echeance, 0, 9));
+                Ligne.Add('banque', RecuPaiement.banque.AsInteger());
+                Paiements.Add(Ligne);
+            until RecuPaiement.Next() = 0;
+
+        Racine.Add('documents', Documents);
+        Racine.Add('paiements', Paiements);
+        Racine.WriteTo(Texte);
+        exit(Texte);
+    end;
+
+    local procedure CorrectionDejaAppliquee(var RecuCaisse: Record "Recu Caisse"; IdCorrection: Code[50]): Boolean
+    var
+        Historique: JsonArray;
+        Jeton: JsonToken;
+    begin
+        if not Historique.ReadFrom(RecuCaisse.LireHistoriqueCorrections()) then
+            exit(false);
+
+        foreach Jeton in Historique do
+            if LireTexte(Jeton.AsObject(), 'idCorrection') = IdCorrection then
+                exit(true);
+
+        exit(false);
+    end;
+
+    local procedure AjouterAHistorique(var RecuCaisse: Record "Recu Caisse"; IdCorrection: Code[50]; Motif: Text; Auteur: Text; ContenuAvant: Text; ContenuApres: Text)
+    var
+        Historique: JsonArray;
+        Entree: JsonObject;
+        AvantObjet: JsonObject;
+        ApresObjet: JsonObject;
+        Texte: Text;
+    begin
+        if not Historique.ReadFrom(RecuCaisse.LireHistoriqueCorrections()) then
+            Clear(Historique);
+
+        Entree.Add('idCorrection', IdCorrection);
+        Entree.Add('quand', Format(CurrentDateTime(), 0, 9));
+        Entree.Add('qui', Auteur);
+        Entree.Add('motif', Motif);
+        Entree.Add('version', RecuCaisse."Version Correction");
+        if AvantObjet.ReadFrom(ContenuAvant) then
+            Entree.Add('avant', AvantObjet);
+        if ApresObjet.ReadFrom(ContenuApres) then
+            Entree.Add('apres', ApresObjet);
+
+        Historique.Add(Entree);
+        Historique.WriteTo(Texte);
+        RecuCaisse.EcrireHistoriqueCorrections(Texte);
+    end;
+
 }

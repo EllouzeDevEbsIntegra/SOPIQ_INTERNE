@@ -111,6 +111,26 @@ table 70011 "Recu Caisse"
             Caption = 'Contenu envoyé par Reapro';
         }
 
+        // Compteur de corrections. Il part de zero et augmente d'une unite a chaque
+        // correction acceptee. Reapro lit le recu, garde ce numero, et le renvoie avec sa
+        // correction : s'il ne correspond plus, c'est que le recu a change entre-temps et la
+        // correction est refusee. C'est ce qui empeche deux personnes de se corriger l'une
+        // l'autre sans le savoir.
+        field(70021; "Version Correction"; Integer)
+        {
+            Caption = 'Version de correction';
+            Editable = false;
+        }
+
+        // L'historique des corrections, en JSON : un tableau dont chaque entree porte la
+        // date, l'auteur, le motif, l'identifiant de la correction, et le contenu du recu
+        // avant et apres. Il vit ici plutot que dans une table dediee parce que la licence
+        // du client plafonne les tables a 300 et que le compteur est plein.
+        field(70022; "Historique Corrections"; Blob)
+        {
+            Caption = 'Historique des corrections';
+        }
+
     }
 
     keys
@@ -171,6 +191,31 @@ table 70011 "Recu Caisse"
         Clear("Contenu Reapro");
         "Contenu Reapro".CreateOutStream(Flux, TextEncoding::UTF8);
         Flux.WriteText(Texte);
+    end;
+
+    procedure EcrireHistoriqueCorrections(Texte: Text)
+    var
+        Flux: OutStream;
+    begin
+        Clear("Historique Corrections");
+        "Historique Corrections".CreateOutStream(Flux, TextEncoding::UTF8);
+        Flux.WriteText(Texte);
+    end;
+
+    procedure LireHistoriqueCorrections(): Text
+    var
+        Flux: InStream;
+        Texte: Text;
+    begin
+        if not "Historique Corrections".HasValue() then
+            CalcFields("Historique Corrections");
+        if not "Historique Corrections".HasValue() then
+            exit('[]');
+        "Historique Corrections".CreateInStream(Flux, TextEncoding::UTF8);
+        Flux.ReadText(Texte);
+        if Texte = '' then
+            exit('[]');
+        exit(Texte);
     end;
 
     procedure LireContenuReapro(): Text
