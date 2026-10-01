@@ -39,6 +39,11 @@
 //   Les lignes transformees sont exactement celles que l'appel designe, et elles sont
 //   passees par un filtre sur leur identifiant : les coches laissees par un autre vendeur
 //   dans la base ne sont ni lues ni touchees.
+//
+//   accepterAutreClient a faux, le defaut, refuse les lignes qui ne sont pas au client
+//   annonce. A vrai, elles sont confiees a l'etat malgre tout : c'est le cas du bon de
+//   sortie fait au client de passage et facture a un client en compte. Ce que l'etat fait
+//   alors du client reste a eprouver, voir la reponse du 01/10/2026.
 page 25006958 "Si Panier BS API"
 {
     PageType = API;
@@ -187,7 +192,7 @@ page 25006958 "Si Panier BS API"
     // Rend le ou les documents produits, le compte des lignes transformees, et la liste des
     // lignes refusees avec leur motif.
     [ServiceEnabled]
-    procedure transformerEnBL(customerNo: Text; lignes: Text): Text
+    procedure transformerEnBL(customerNo: Text; lignes: Text; accepterAutreClient: Boolean): Text
     var
         Ligne: Record "Sales Shipment Line";
         Expedition: Record "Sales Shipment Header";
@@ -253,8 +258,9 @@ page 25006958 "Si Panier BS API"
                                 Refus.Add('motif', 'Ligne masquée');
                                 Refusees.Add(Refus);
                             end else
-                                if Ligne."Bill-to Customer No." <> NoClient then begin
-                                    Refus.Add('motif', 'Cette ligne est au client ' + Ligne."Bill-to Customer No.");
+                                if (Ligne."Bill-to Customer No." <> NoClient) and (not accepterAutreClient) then begin
+                                    Refus.Add('motif', 'Cette ligne est au client ' + Ligne."Bill-to Customer No." +
+                                                       '. Passez accepterAutreClient à vrai pour facturer quand même.');
                                     Refusees.Add(Refus);
                                 end else begin
                                     if FiltreIds <> '' then

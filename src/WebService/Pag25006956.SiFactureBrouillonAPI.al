@@ -250,4 +250,51 @@ page 25006956 "Si Facture Brouillon API"
         LigneFacture.SetRange("Document No.", Facture."No.");
         exit(LigneFacture.Count());
     end;
+
+    var
+        RienAValiderErr: Label 'Le document %1 n''a aucune ligne : il n''y a rien à valider.', Comment = '%1 = numéro du document';
+        PasEnregistreErr: Label 'Le document %1 a été traité mais le document enregistré est introuvable.', Comment = '%1 = numéro du brouillon';
+
+    // Valide le brouillon par le traitement de Business Central, celui du bouton
+    // « Valider » de la fiche. Rend le numero du document enregistre.
+    //
+    // Tout refus de Business Central remonte tel quel a l'appelant, et rien n'est valide :
+    // periode fermee, client bloque, ligne sans quantite, credit depasse. Le brouillon reste
+    // alors exactement tel qu'il etait.
+    [ServiceEnabled]
+    procedure valider(): Text
+    var
+        Brouillon: Record "Sales Header";
+        Ligne: Record "Sales Line";
+        Enregistre: Record "Sales Invoice Header";
+        Reponse: JsonObject;
+        Texte: Text;
+        NoBrouillon: Code[20];
+    begin
+        Brouillon.Get(Rec."Document Type", Rec."No.");
+        NoBrouillon := Brouillon."No.";
+
+        Ligne.Reset();
+        Ligne.SetRange("Document Type", Brouillon."Document Type");
+        Ligne.SetRange("Document No.", Brouillon."No.");
+        if Ligne.IsEmpty() then
+            Error(RienAValiderErr, NoBrouillon);
+
+        Brouillon.Ship := true;
+        Brouillon.Invoice := true;
+        Brouillon.Modify();
+
+        Codeunit.Run(Codeunit::"Sales-Post", Brouillon);
+
+        Enregistre.Reset();
+        Enregistre.SetRange("Pre-Assigned No.", NoBrouillon);
+        if not Enregistre.FindLast() then
+            Error(PasEnregistreErr, NoBrouillon);
+
+        Reponse.Add('brouillonNo', NoBrouillon);
+        Reponse.Add('documentNo', Enregistre."No.");
+        Reponse.WriteTo(Texte);
+        exit(Texte);
+    end;
+
 }
