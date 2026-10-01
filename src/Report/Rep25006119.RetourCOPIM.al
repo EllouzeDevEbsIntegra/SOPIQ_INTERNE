@@ -495,7 +495,7 @@ report 25006119 "Retour COPIM"
     var
         recSalesShipHeader: Record "Return Receipt Header";
     begin
-        if (editCustInfo = true) then begin
+        if (editCustInfo = true) and (not SansEcritureInfoClient) then begin
             recSalesShipHeader.reset();
             recSalesShipHeader.SetRange("No.", DataItem1000000001."No.");
             if recSalesShipHeader.FindFirst() then begin
@@ -515,6 +515,7 @@ report 25006119 "Retour COPIM"
         masquerRemiseColumn: Boolean;
         showDiscount: Boolean;
         editCustInfo: Boolean;
+        SansEcritureInfoClient: Boolean;
         custNameImp, custAdressImp, custMFImp, custVINImp : text;
         PrixVente: Decimal;
         MTHT, NETHT, Remise, MntTVAR, MntTTCR : Decimal;
@@ -565,5 +566,28 @@ report 25006119 "Retour COPIM"
         Caption_OdrerType: Label 'Order Type';
         Caption_ShipmentDate: Label 'Shipment Date';
         Caption_StampSign: Label 'Stamp and Signature';
-}
 
+    // ---------------------------------------------------------------------------------
+    // Impression pilotee par l'API, pour Reapro. Meme principe que les etats des documents
+    // COPIM : la case « Modifier information client » commande a la fois l'affichage du
+    // client saisi et sa reecriture sur le document. L'API coche l'affichage et ferme
+    // l'ecriture. Le bouton de la fiche est inchange.
+    // ---------------------------------------------------------------------------------
+    procedure DefinirOptionsImpression(AfficherReference: Boolean; AfficherRemise: Boolean; MasquerColonneRemise: Boolean)
+    begin
+        showReference := AfficherReference;
+        showDiscount := AfficherRemise;
+        masquerRemiseColumn := MasquerColonneRemise;
+    end;
+
+    procedure DefinirInfoClientImprimee(Nom: Text; Adresse: Text; MF: Text; VIN: Text)
+    begin
+        custNameImp := Nom;
+        custAdressImp := Adresse;
+        custMFImp := MF;
+        custVINImp := VIN;
+        editCustInfo := (Nom <> '') or (Adresse <> '') or (MF <> '') or (VIN <> '');
+        SansEcritureInfoClient := true;
+    end;
+
+}
