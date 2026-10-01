@@ -241,7 +241,12 @@ page 25006958 "Si Panier BS API"
             if not Ligne.Get(NoDocument, NoLigne) then begin
                 Refus.Add('motif', 'Ligne introuvable');
                 Refusees.Add(Refus);
-            end else
+            end else begin
+                // BS n'est pas une colonne de la ligne mais un champ calcule qui va voir
+                // l'en-tete de l'expedition. Un Get ne le calcule pas : sans ce CalcFields
+                // il reste a faux, et toutes les lignes etaient refusees.
+                Ligne.CalcFields(BS);
+
                 if not Ligne.BS then begin
                     Refus.Add('motif', 'Cette ligne n''appartient pas à un bon de sortie');
                     Refusees.Add(Refus);
@@ -268,6 +273,7 @@ page 25006958 "Si Panier BS API"
                                     FiltreIds += Format(Ligne.SystemId, 0, 4);
                                     NbRetenues += 1;
                                 end;
+            end;
         end;
 
         if NbRetenues = 0 then begin
