@@ -208,6 +208,9 @@ page 25006958 "Si Panier BS API"
         Texte: Text;
         FiltreIds: Text;
         ExpeditionsAvant: List of [Code[20]];
+        DocumentsRetenus: List of [Code[20]];
+        LignesRetenues: List of [Integer];
+        Indice: Integer;
         NoDocument: Code[20];
         NoLigne: Integer;
         NoClient: Code[20];
@@ -271,6 +274,8 @@ page 25006958 "Si Panier BS API"
                                     if FiltreIds <> '' then
                                         FiltreIds += '|';
                                     FiltreIds += Format(Ligne.SystemId, 0, 4);
+                                    DocumentsRetenus.Add(Ligne."Document No.");
+                                    LignesRetenues.Add(Ligne."Line No.");
                                     NbRetenues += 1;
                                 end;
             end;
@@ -312,14 +317,16 @@ page 25006958 "Si Panier BS API"
                     Produits.Add(Expedition."No.");
             until Expedition.Next() = 0;
 
-        // Ce qui a quitte le panier : les lignes retenues qui n'y figurent plus.
-        Ligne.Reset();
-        Ligne.SetFilter(SystemId, FiltreIds);
-        if Ligne.FindSet() then
-            repeat
-                if (Ligne."Quantity Invoiced" <> 0) or (Ligne."Qty BS To Invoice" <= 0) then
+        // Ce qui a quitte le panier. L'etat supprime les lignes d'expedition qu'il reprend :
+        // une ligne introuvable est donc une ligne transformee, et non une anomalie. Une
+        // relecture par filtre les manquait toutes, d'ou un compteur a zero alors que le
+        // bon de livraison existait.
+        for Indice := 1 to DocumentsRetenus.Count() do
+            if not Ligne.Get(DocumentsRetenus.Get(Indice), LignesRetenues.Get(Indice)) then
+                NbTransformees += 1
+            else
+                if (Ligne."Quantity Invoiced" <> 0) or (Ligne."Qty BS To Invoice" <= 0) or Ligne.Masque then
                     NbTransformees += 1;
-            until Ligne.Next() = 0;
 
         Reponse.Add('transformees', NbTransformees);
         Reponse.Add('retenues', NbRetenues);
