@@ -843,5 +843,87 @@ page 25006816 "Sales Order EBS"
 
     end;
 
-}
 
+    // ---------------------------------------------------------------------------------
+    // Valider la commande en bon de sortie ou en bon de livraison.
+    //
+    // C'est le champ « Expédition type » de la commande qui decide, exactement comme la
+    // fiche : « Bon de sortie » pose l'indicateur BS avant de valider, « Expédition »
+    // produit un bon de livraison ordinaire. L'indicateur est remis a faux apres, comme
+    // dans la fiche, car il ne sert qu'a marquer le document produit.
+    //
+    // typeExpedition permet de poser ce champ au passage, pour les cas ou la commande n'en
+    // porte pas encore. Laisse vide, c'est la valeur de la commande qui s'applique.
+    //
+    // Rend le type et le numero du document produit, par exemple
+    // { "documentType": "BS", "documentNo": "BS26-5025" }. L'archive du bon de sortie porte
+    // le meme numero que l'expedition : ce numero sert donc aussi bien a getPdfBonSortieCopim
+    // qu'a getPdfBonLivraisonCopim.
+    // ---------------------------------------------------------------------------------
+    [ServiceEnabled]
+    procedure expedier(typeExpedition: Text): Text
+    var
+        Commande: Record "Sales Header";
+        Expedition: Record "Sales Shipment Header";
+        Reponse: JsonObject;
+        Texte: Text;
+        EstBonDeSortie: Boolean;
+    begin
+        Commande.Get(Commande."Document Type"::Order, Rec."No.");
+
+        if typeExpedition <> '' then begin
+            case UpperCase(typeExpedition) of
+                'BS', 'BON DE SORTIE':
+                    Commande."Expédition type" := Commande."Expédition type"::"Bon de sortie";
+                'BL', 'EXPEDITION', 'EXPÉDITION':
+                    Commande."Expédition type" := Commande."Expédition type"::"Expédition";
+                else
+                    Error(TypeExpeditionInconnuErr, typeExpedition);
+            end;
+            Commande.Modify();
+        end;
+
+        case Commande."Expédition type" of
+            Commande."Expédition type"::" ":
+                Error(TypeExpeditionVideErr, Commande."No.");
+            Commande."Expédition type"::"Bon de sortie":
+                begin
+                    EstBonDeSortie := true;
+                    Commande.BS := true;
+                end;
+        end;
+
+        Commande.Ship := true;
+        Commande.Modify();
+
+        Codeunit.Run(Codeunit::"Sales-Post", Commande);
+
+        // La commande survit a une validation sans facturation : on la remet dans son etat
+        // d'origine, comme le fait la fiche.
+        if Commande.Get(Commande."Document Type"::Order, Rec."No.") then begin
+            Commande.BS := false;
+            Commande.Ship := false;
+            Commande."Statut B2B" := Commande."Statut B2B"::"Livré";
+            Commande.Modify();
+        end;
+
+        Expedition.Reset();
+        Expedition.SetRange("Order No.", Rec."No.");
+        if not Expedition.FindLast() then
+            Error(AucuneExpeditionErr, Rec."No.");
+
+        if EstBonDeSortie then
+            Reponse.Add('documentType', 'BS')
+        else
+            Reponse.Add('documentType', 'BL');
+        Reponse.Add('documentNo', Expedition."No.");
+        Reponse.WriteTo(Texte);
+        exit(Texte);
+    end;
+
+    var
+        TypeExpeditionInconnuErr: Label 'Type d''expédition inconnu : %1. Attendu BS ou BL.', Comment = '%1 = valeur reçue';
+        TypeExpeditionVideErr: Label 'La commande %1 n''a pas de type d''expédition. Précisez BS ou BL.', Comment = '%1 = numéro de commande';
+        AucuneExpeditionErr: Label 'Aucun document n''a été produit pour la commande %1.', Comment = '%1 = numéro de commande';
+
+}

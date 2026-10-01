@@ -492,7 +492,7 @@ report 25006030 "DEVIS COPIM"
     var
         recSalesHeader: Record "Sales Header";
     begin
-        if (editCustInfo = true) then begin
+        if (editCustInfo = true) and (not SansEcritureInfoClient) then begin
             recSalesHeader.reset();
             recSalesHeader.SetRange("No.", "Sales Header"."No.");
             if recSalesHeader.FindFirst() then begin
@@ -559,6 +559,29 @@ report 25006030 "DEVIS COPIM"
         PaymentTerms: Record 3;
         PrintItemNo: Boolean;
         masquerRemiseColumn: Boolean;
+        SansEcritureInfoClient: Boolean;
+
+
+    // ---------------------------------------------------------------------------------
+    // Impression pilotee par l'API, pour Reapro. Meme principe que les quatre etats des
+    // documents COPIM : la case « Modifier information client » commande a la fois
+    // l'affichage du client saisi et sa reecriture sur le devis. L'API coche l'affichage et
+    // ferme l'ecriture. Le bouton de la fiche est inchange.
+    // ---------------------------------------------------------------------------------
+    procedure DefinirOptionsImpression(AfficherCodeArticle: Boolean; MasquerColonneRemise: Boolean)
+    begin
+        PrintItemNo := AfficherCodeArticle;
+        masquerRemiseColumn := MasquerColonneRemise;
+    end;
+
+    procedure DefinirInfoClientImprimee(Nom: Text; Adresse: Text; MF: Text; VIN: Text)
+    begin
+        custNameImp := Nom;
+        custAdressImp := Adresse;
+        custMFImp := MF;
+        custVINImp := VIN;
+        editCustInfo := (Nom <> '') or (Adresse <> '') or (MF <> '') or (VIN <> '');
+        SansEcritureInfoClient := true;
+    end;
 
 }
-
