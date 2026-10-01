@@ -869,3 +869,35 @@ qui cherche les bons de livraison non facturés. Ce n'est pas un champ calculé 
 **Et une correction fonctionnelle en attente**, notée dans l'audit sous V1.6 et toujours vraie :
 `"Return Receipts Not Invoiced"` entre dans le total de l'encours mais n'est jamais calculé. Il
 vaut donc toujours zéro, et l'encours affiché ignore les retours non facturés.
+
+---
+
+## 01/10/2026 : mise en production de Reapro, et de 1.1.27.0
+
+Reapro est passé en production. Avec lui, la version **1.1.27.0** a été publiée sur le serveur de
+production, qui restait en 1.1.13.0 depuis le 30/09 : les quatorze versions intermédiaires n'avaient
+vécu que sur DEV, le temps que l'équipe web éprouve chaque écran.
+
+**Ce que la version apporte** : dix-neuf pages API nouvelles (impression des documents COPIM, devis
+et versions de devis, lignes à extraire, panier BS, brouillons de facture et d'avoir, correction de
+reçu), deux champs sur le reçu de caisse pour l'historique des corrections, et trois corrections
+visibles depuis Business Central : la liste « Administration des clients » qui n'écrit plus en base à
+l'affichage, les six états COPIM qui n'écrasent plus le client imprimé quand c'est Reapro qui
+imprime, et la page API de commande vente qui expose le client imprimé.
+
+**Ce que ça change pour la suite** : jusqu'ici, une API qui se trompait ne coûtait rien, puisque
+personne ne l'appelait en production. Ce n'est plus vrai. Le retour arrière, lui, est devenu un geste
+lourd : il n'enlève pas seulement du code, il arrête Reapro. La bonne réponse à un défaut est
+désormais la correction en avant, ou la suspension de l'écran côté web.
+
+Procédure de secours et contrôle préalable : `docs/RETOUR-ARRIERE-1.1.27.0.md` et
+`docs/sql/controle-avant-retour-arriere-1.1.27.sql`. Paquet de la version précédente reconstruit dans
+`D:\ELLOUZE\SOPIQ_INTERNE\retour-arriere\`.
+
+**Un point de vigilance noté le soir même** : en appel API, du code tente d'ouvrir la page du
+document enregistré après l'enregistrement d'une facture, ce qui est impossible sans interface.
+L'auteur n'a pas pu être identifié : ce n'est ni notre extension, ni l'une des quatre du
+verticalisateur, dont les abonnements ont été vérifiés dans les symboles. Restent `ECR`, `ECR001`,
+`Purge Table` et `AjoutNumCmdSurListBL`, que BC16 ne permet pas d'exporter pour inspection. La
+1.1.27.0 contourne le problème en jugeant l'enregistrement sur le document présent en base. Si un
+jour une de ces extensions est republiée depuis ses sources, c'est l'occasion de regarder.
