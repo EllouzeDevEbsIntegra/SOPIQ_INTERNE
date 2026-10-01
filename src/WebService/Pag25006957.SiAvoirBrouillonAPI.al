@@ -259,6 +259,7 @@ page 25006957 "Si Avoir Brouillon API"
         Enregistre: Record "Sales Cr.Memo Header";
         Reponse: JsonObject;
         Texte: Text;
+        EchecSignale: Text;
         NoBrouillon: Code[20];
     begin
         Brouillon.Get(Rec."Document Type", Rec."No.");
@@ -274,15 +275,30 @@ page 25006957 "Si Avoir Brouillon API"
         Brouillon.Invoice := true;
         Brouillon.Modify();
 
-        Codeunit.Run(Codeunit::"Sales-Post", Brouillon);
+        // La modification du brouillon est validee avant d'enregistrer : c'est la condition pour
+        // pouvoir piloter l'erreur de l'enregistrement au lieu de la subir.
+        Commit();
+
+        // Enregistrement tolerant a l'echec d'affichage. En appel API, du code tente d'ouvrir la
+        // page du document enregistre juste apres l'enregistrement : sans interface, cela leve une
+        // erreur alors que le document est deja enregistre et valide. On juge donc l'enregistrement
+        // sur ce que montre la base, pas sur le retour de l'appel.
+        if not Codeunit.Run(Codeunit::"Sales-Post", Brouillon) then
+            EchecSignale := GetLastErrorText();
 
         Enregistre.Reset();
         Enregistre.SetRange("Pre-Assigned No.", NoBrouillon);
-        if not Enregistre.FindLast() then
+        if not Enregistre.FindLast() then begin
+            // Rien en base : l'echec est un vrai refus d'enregistrement, on le remonte tel quel.
+            if EchecSignale <> '' then
+                Error(EchecSignale);
             Error(PasEnregistreErr, NoBrouillon);
+        end;
 
         Reponse.Add('brouillonNo', NoBrouillon);
         Reponse.Add('documentNo', Enregistre."No.");
+        if EchecSignale <> '' then
+            Reponse.Add('avertissement', EchecSignale);
         Reponse.WriteTo(Texte);
         exit(Texte);
     end;
