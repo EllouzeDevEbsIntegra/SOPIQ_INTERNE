@@ -99,6 +99,15 @@ page 25006947 "Si Bom Component API"
         ParentManquantErr: Label 'L''article parent est obligatoire.';
         ComposantManquantErr: Label 'Le composant est obligatoire.';
 
+    // Le type est pose ici, et non a l'insertion : la table standard refuse un composant
+    // sans type, et ce refus tombe pendant que l'appel pose ses champs, donc bien avant
+    // OnInsertRecord. Un appel qui ne precise pas le type doit marcher comme la fiche, ou
+    // Article est le defaut.
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        Rec.Type := Rec.Type::Item;
+    end;
+
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     var
         LigneExistante: Record "BOM Component";
@@ -121,15 +130,10 @@ page 25006947 "Si Bom Component API"
                 Rec."Line No." := 10000;
         end;
 
-        // Type Article par defaut : c'est le seul present dans les donnees du client.
-        if Rec.Type = Rec.Type::" " then
-            Rec.Type := Rec.Type::Item;
-
-        // La designation et l'unite viennent de l'article, comme une saisie dans la fiche.
-        // Validate rend aussi les refus de Business Central, article inexistant ou bloque.
-        Rec.Validate(Type);
-        Rec.Validate("No.");
-
+        // Ne jamais revalider le type ici. Sa validation standard vide le composant, et
+        // l'appel perdait donc le "No." qu'il venait de poser : la ligne se creait avec une
+        // designation et une unite justes, et aucun composant. La designation et l'unite
+        // sont deja reprises de l'article au moment ou l'appel pose le composant.
         if Rec."Quantity per" = 0 then
             Rec.Validate("Quantity per", 1);
 
