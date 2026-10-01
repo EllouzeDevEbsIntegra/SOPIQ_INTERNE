@@ -39,7 +39,6 @@ page 25006948 "Si Devis API"
     ODataKeyFields = SystemId;
     DelayedInsert = true;
     Extensible = false;
-    InsertAllowed = false;
     DeleteAllowed = false;
 
     Permissions = tabledata "Sales Header" = rm,
@@ -94,6 +93,10 @@ page 25006948 "Si Devis API"
                 {
                     Caption = 'Type d''expédition';
                 }
+                field(locationCode; Rec."Location Code")
+                {
+                    Caption = 'Magasin';
+                }
                 field(amount; Rec.Amount)
                 {
                     Caption = 'Montant HT';
@@ -130,6 +133,7 @@ page 25006948 "Si Devis API"
     }
 
     var
+        ClientManquantErr: Label 'Le client est obligatoire pour créer un devis.';
         AucuneCommandeErr: Label 'La commande n''a pas pu être créée à partir du devis %1.', Comment = '%1 = numéro du devis';
 
     trigger OnAfterGetRecord()
@@ -181,4 +185,50 @@ page 25006948 "Si Devis API"
         Reponse.WriteTo(Texte);
         exit(Texte);
     end;
+
+    // Cree un devis, comme le bouton « Nouveau » de la liste des devis : la souche donne le
+    // numero, et le client renseigne le reste, dates, vendeur, magasin, conditions, type
+    // d'expedition. Seul le client est obligatoire ; tout ce qui est envoye en plus est pose
+    // apres, et prend donc le pas sur ce que le client a apporte.
+    //
+    // Le magasin merite une attention : sans lui, la commande issue du devis refuse d'etre
+    // expediee. Il vient de la fiche client quand elle en porte un. Si vos clients n'en ont
+    // pas, envoyez locationCode a la creation.
+    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
+    var
+        Devis: Record "Sales Header";
+    begin
+        if Rec."Sell-to Customer No." = '' then
+            Error(ClientManquantErr);
+
+        Devis.Init();
+        Devis."Document Type" := Devis."Document Type"::Quote;
+        Devis."No." := '';
+        Devis.Insert(true);
+
+        Devis.Validate("Sell-to Customer No.", Rec."Sell-to Customer No.");
+
+        if Rec."Document Date" <> 0D then
+            Devis.Validate("Document Date", Rec."Document Date");
+        if Rec."Quote Valid Until Date" <> 0D then
+            Devis."Quote Valid Until Date" := Rec."Quote Valid Until Date";
+        if Rec."Salesperson Code" <> '' then
+            Devis.Validate("Salesperson Code", Rec."Salesperson Code");
+        if Rec."Location Code" <> '' then
+            Devis.Validate("Location Code", Rec."Location Code");
+        if Rec."Expédition type" <> Rec."Expédition type"::" " then
+            Devis."Expédition type" := Rec."Expédition type";
+
+        Devis.custNameImprime := Rec.custNameImprime;
+        Devis.custAdresseImprime := Rec.custAdresseImprime;
+        Devis.custMFImprime := Rec.custMFImprime;
+        Devis.custVINImprime := Rec.custVINImprime;
+
+        Devis.Modify(true);
+
+        // La reponse porte le devis cree, avec son numero.
+        Rec := Devis;
+        exit(false);
+    end;
+
 }
